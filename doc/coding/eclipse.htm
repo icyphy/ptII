@@ -6,7 +6,9 @@
 <link href="../default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<!--eclipseSimple-->
 <h1>Setting up Ptolemy II and Eclipse</h1>
+
 <p>
 These instructions assume you are using Eclipse Helios under 
 Windows or Mac OS X.
@@ -19,8 +21,10 @@ Other ways of setting up and building Ptolemy II are described on the
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
   <ul>
   <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
+<!--/eclipseSimple-->
   <li> <a href="#NoSubversive">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
   <li> <a href="#Subversive">Eclipse is aware of the Subversion aspects of the project.</a> 
+<!--eclipseSimple-->
   </ul>
 <li><a href="#simpleDebug">Simple Debugging Session</a></h2>
 <li><a href="#Optional">Optional Extensions</a>
@@ -36,7 +40,7 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org#in_browser" target="_top">http://www.eclipse.org</a>.
- <br>In September, 2010, we chose
+ <br>In October, 2010, we chose
  <B>Eclipse for RCP and RAP Developers</B>, which is 190Mb.
 The <B>Eclipse for RCP and RAP Developers</B> version includes the
 plug-in development environment (PDE), which is needed by the backtrack
@@ -46,11 +50,13 @@ does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 
 <p>Eclipse is available as both 32-bit and 64-bit binaries.  Deciding
-which one to download can be complex.  See below for details.
-The basic idea is that to use a 64-bit version of Eclipse, you must
+which one to download can be complex.</p>
+<p>The basic idea is that to use a 64-bit version of Eclipse, you must
 have a 64-bit JVM and an operating system that will support 64-bit
 applications.  When in doubt, choose the 32-bit version of Eclipse,
-it is more likely to work than the 64-bit version.
+it is more likely to work than the 64-bit version.</p>
+
+<p>See below for details.
 </p>
 
 <h3>32-bit or 64-bit?</h3>
@@ -71,14 +77,20 @@ Java HotSpot(TM) 64-Bit Server VM (build 1.5.0_22-b03, mixed mode)
 
 <li> (<i>Mac OS X</i>):
 Under Mac OS X 10.5 and 10.6, the default JVM is 1.6, which is 64-bit.  However,
-Java 1.6.0_20 does not work well with Eclipse.  The issue is that
+Java 1.6.0_20 does not work well.  The issue is that
 the following stack trace appears:
 <pre>
 2010-10-10 11:50:02.263 java[7823:613] java.lang.NullPointerException
 at apple.awt.CToolkit.postEvent(CToolkit.java:1086)
 at apple.awt.EventFactoryProxy.forwardEvent(EventFactoryProxy.java:53)
 </pre>
-See:
+The bug happens when running from Eclipse or from the command line.
+The bug requires UI interactions such as mouse movement or clicking.
+The bug is probably a threading bug and may only show up on multi-core
+machines.  The downside is that when the bug occurs, the debugging
+session in Eclipse may become non-responsive.
+
+<p>For further information, see:
 <a href="http://lists.apple.com/archives/java-dev/2010/May/msg00140.html"><code>http://lists.apple.com/archives/java-dev/2010/May/msg00140.html</code></a>.
 
 <br>So, at this time, we are recommending the 32-bit version with Java 1.5.
@@ -115,6 +127,17 @@ See:
   </ol>
   For details about <code>eclipse.ini</code>, see
   <a href="http://wiki.eclipse.org/Eclipse.ini#in_browser">http://wiki.eclipse.org/Eclipse.ini</a>
+  <br>When you start up Eclipse, if you want to verify which version
+  of Java you are running
+   <ul>
+     <li>(<i>Mac OS X</i>): <code>Eclipse</code> | <code>About Eclipse</code>
+       | <code>Installation Details</code> | <code>Configuration</code>.
+     <br>For Java 1.5, the <code>java.class.version</code> property should be
+     <code>49.0</code>.
+     <br>For a 64-bit JVM, the <code>java.vm.name</code> property <i>might</i>
+     have the string <code>64</code> in it.
+   </ul>
+ 
 
 
 <li> (<i>Windows</i>): Determine whether you are running a 32-bit or
@@ -171,7 +194,7 @@ find . -name *.dll -exec chmod a+x {} \;
 Eclipse has the notion of a workspace, which is a collection of
 one or more projects.  Ptolemy II is a project. 
 
-<br>When the "Select a workspace" window comes up, either stick with the default
+<br>When the "Workspace Launcher" window comes up, either stick with the default
 or choose a new directory.  Note that the projects can be located outside
 of the workspace directory.  One caveat is that Eclipse will not permit
 the project directory to be a parent of the workspace directory, so placing the
@@ -183,7 +206,7 @@ workspace in a subdirectory such as the default location is best.
 The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
 <ol>
-<li>(<i>Optional</i>): Short cuts and Memory Size
+<li>(<i>Optional</i>): Shortcuts and Memory Size
 <ul>
 <li>(<i>Mac OS X</i>):
   In <code>Applications/eclipse</code>, drag the
@@ -198,13 +221,11 @@ so a few changes are necessary.
   In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
 directory where Eclipse is installed, right clicking on eclipse.exe 
 and selecting <code>Create Shortcut</code>. 
-
+  <br>To add Eclipse to the start menu, right click on the shortcut and 
+select <code>Pin to Start Menu</code>
   <br>There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
   <code>eclipse.ini</code> file.
 
-
-   <br>To add Eclipse to the start menu, right click on the shortcut and 
-select <code>Pin to Start Menu</code>
 </ul>
 
 <li>Eclipse requires some customization to build Ptolemy II
@@ -221,6 +242,7 @@ is invoked via <code>Eclipse</code> | <code>Preferences</code>.
 changes, hit <code>Apply</code>.  When all the changes are done, hit
 <code>OK</code>, which will close the Eclipse Preferences Window.
 
+<!--/eclipseSimple-->
 <li>
 By default, Eclipse rebuilds a project when any change is made
 to a file.  This will result in thousands of errors when Ptolemy II
@@ -240,6 +262,7 @@ Below is the <code>General</code> | <code>Workspace</code> window:
 <p><img src="../img/eclipsePreferencesGeneralWorkspace.png" alt="Eclipse Preferemces General Workspace" width="624" height="537"></p>
 </center>
 <p>
+<!--/eclipseSimple-->
 <li>
 
 Ptolemy II source files are worked on by many people with different
@@ -256,7 +279,11 @@ to format comments.  We hope to change this policy in the future.
 
 <br>We handle these changes together:
  <ol>
-  <li> While still in the preferences window
+  <li> While 
+<!--/eclipseSimple-->
+still
+<!--eclipseSimple-->
+in the preferences window
    <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
    <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <li> Go to <code>Java</code> | <code>Code Style</code> | <code>Formatter</code> and click
@@ -360,7 +387,9 @@ a JRE.
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 
 <p>Eclipse will manage your ptII code tree as a <em>project</em> called
-the ptII project.  There several ways to set up the ptII project,
+the ptII project.  
+<!--/eclipseSimple-->
+There several ways to set up the ptII project,
 <ol>
 
 <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
@@ -379,19 +408,26 @@ and don't want to update regularly, then use this choice.
 You can use both Eclipse and shell version of Subversion to update the tree.
 <br>(Use both the Eclipse Subversion plug-in (Subversive) and the
 shell <code>svn</code> command).
-
 </ol>
+<!--eclipseSimple-->
 
+
+<!--/eclipseSimple-->
 Without Subversive, you'll need to manage the Subversion aspects in the
 usual way, i.e. with Subversion commands being submitted to a bash
 shell.  With Subversive, Eclipse will do all sorts of things to "help"
 you. Most of these things are good, but there is a learning curve.
 
-<p>Please choose <b>one</b> of the methods below to set up Eclipse for Ptolemy II. 
+
+<p>Please choose <b>one</b> of the methods below to set up Eclipse for
+Ptolemy II.
 
 <h3><a name="NoSVN">1. Eclipse is unaware of the version control aspects of the project.</a> (No Subversion)</h3>
+
 If you are downloading the source from major Ptolemy release,
 and don't want to update regularly
+<!--eclipseSimple-->
+
 <ol>
 
 <li> Download a ptII source tree from
@@ -416,12 +452,12 @@ install a separate source-only download.
   </ol>
 
   Choose <b>one</b> of the options below
-   <h4>1. Copy .classpath to .classpath.default</h4>
+   <h4>A. Copy .classpath to .classpath.default</h4>
    <ul>
    <li>(<i>Mac OS X</i>): 
      Unfortunately, by default the Mac OS X Finder hides files whose names
      begin with a period, such as <code>.classpath</code>.  One solution
- is to follow th instructions from:
+ is to follow the instructions from:
   <a href="http://www.macworld.com/article/51830/2006/07/showallfinder.html"><code>http://www.macworld.com/article/51830/2006/07/showallfinder.html</code></a>:
      <ol>
        <li>Start up the Terminal application, which may be found as
@@ -456,10 +492,23 @@ install a separate source-only download.
        to <code>.classpath.default</code>.
      </ol>
    </ul>
-   <h4>Or. 2. Run ./configure</h4> 
-    A slightly more complex choice is to run <code>./configure</code>.
-      The advantage to this method is that it searches the environment for
-      third party software and configures your environment.  
+   <p><b>OR</b></p>
+   <h4><a name="#runConfigure">B. Run ./configure</a></h4> 
+
+   Ptolemy II includes a number of packages that rely on software that
+   you may or may not have installed, such as MATLAB, the rxtx
+   package (for serial port connections), joystick support, Java
+   Advanced Imaging (JAI), the Java Media Framework (JMF), and Java
+   3D.  If you wish to use or extend these features, you will need to
+   perform a few extra steps.  These steps require execution of a
+   script called <code>configure</configure in the Ptolemy II home
+   directory, which in turn requires (on Windows) installation of
+   Cygwin, a package that offers Unix-like facilities within Windows.
+
+   <p>The procedure below will modify the <code>.classpath</code> file
+   that is provided in the version control repository to customize it
+   for the software that you have installed.</p>
+
     <ul>
      <li>(<i>Mac OS X</i>): Using the Terminal to run configure
      <ol>
@@ -482,23 +531,31 @@ install a separate source-only download.
 
    <li>(<i>Windows</i>): Install Cygwin and run configure
 
-   Unfortunately Windows does not ship with Unix shell commands like <code>make</code>.  The workaround is to install Cygwin,
-     see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a>
+   Unfortunately Windows does not ship with Unix shell commands
+   like <code>make</code>.  The workaround is to install Cygwin,
+   see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a>
       <ol>
-	<li> Start up the Cygwin Bash shell: Start | Run | Cygwin
+	<li> Start up the Cygwin Bash shell: <code>Start</code> | <code>Run</code> | <code>Cygwin</code>
 	<li> Change to the directory where the Ptolemy II source code was
 	  installed.  For example:
 	  <pre>
 	    cd c:/Ptolemy/ptII8.0.1
           </pre>
+	  Note that if there are <b>spaces</b> in the path name to the directory
+	    where your Ptolemy installation is located, then you should use
+	    double quotes around the path:
+	    <code>cd "c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
 	<li> Set <code>$PTII</code> to the location of the Ptolemy II source tree:
 	  <pre>
 	    export PTII=c:/Ptolemy/ptII8.0.1
 	  </pre>
+	    Again, if there are spaces in the path, use double quotes:
+            <code> export PTII="c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
 	<li>  Run:
 	  <pre>
 	    ./configure
 	  </pre>  
+	  This will create <code>$PTII/.classpath</code>
       </ol>
     </ul>
 
@@ -538,13 +595,20 @@ install a separate source-only download.
   <p><img src="../img/eclipseNewJavaProject2.png" alt="Eclipse New Java Project" width="603" height="704"></p>
   </center>
 <li>When asked if you want to shift to the Java perspective, click on Yes.
+<!--/eclipseSimple-->
 <li>Under the "Project" menu choice, select "Build All", 
 "Run in background" and then "Build Automatically" 
+<!--eclipseSimple-->
 <li>The workspace will take a few minutes to build.
+<!--/eclipseSimple-->
 <li>Go to <a href="#runningPtolemy">Running Ptolemy II</a> below.
+<!--eclipseSimple-->
 </ul>
 
 </ol>
+
+<!--/eclipseSimple-->
+
 <h3>OR</h3>
 <h3><a name="NoSubversive">2. Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a></h3>
 
@@ -1031,8 +1095,33 @@ that you probably don't have installed many optional packages that
 are needed to build subsets of Ptolemy II. You can ignore the errors
 (not advised, since they will mask errors you make), or you can copy
 the <CODE>.classpath.default</CODE> file and rebuild.
-Alternatively, you can <a href="#Optional">install
-the optional packages and run configure</a>.
+
+<h4>Running configure</h4>
+Alternatively, you can <a href="#runConfigure">run <code>./configure</code></a>,
+which searches your environment for 3rd party packages and updates
+<code>.classpath</code>.
+
+<ul>
+
+<li>If, after running <code>configure</code< you plan on running the
+Ptolemy II startup scripts in
+<CODE>$PTII/bin</CODE> on the command line, you will probably
+want to run the following commands within Cygwin bash:
+<pre>
+cd $PTII/bin
+make
+</pre>
+
+<li> In Eclipse, after running <code>configure</code>, perform a Refresh on the ptII project
+by <code>Window</code>| <code>Open Perspective</code> | <code>Java</code>
+<br> &nbsp;&nbsp;&nbsp;Go to the Package Explorer or the Navigator.
+<br> &nbsp;&nbsp;&nbsp;Right mouse click on the ptII icon and select Refresh.
+<br> This will
+cause Eclipse to see the new <code>ptII/.classpath</code> and to build
+the project (or you may have to manually rebuild if you turned
+off automatic rebuild).
+</ol>
+</ol>  
 
 <p>
 <li> Build Ptolemy II by selecting <code>Project</code> | </code>Build All</code>.
@@ -1041,7 +1130,7 @@ not disabled and Ptolemy has been built.  See above for more about Build Automat
 You will get many warnings that you can ignore, but hopefully no errors.
 
 </ol>
-
+<!--eclipseSimple-->
 <h3><a name="runningPtolemy">Running Ptolemy II</a></h3>
 
 <ol>
@@ -1081,69 +1170,7 @@ of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then <code>Run</code> | <code>Deb
 as above. Open the Lorenz CT demo from the Quick Tour and run it.
  </ol>
 
-<h2><a name="Optional">Optional Extensions</a></h2>
-<p>
-Ptolemy II includes a number of packages that rely on software that you may
-or may not have installed, such as MATLAB, the Java comm package (for serial
-port connections), joystick support, Java Advanced Imaging (JAI), the Java
-Media Framework (JMF), and Java 3D.  If you wish to use or extend these
-features, you will need to perform a few extra steps.  These steps
-require execution of a script called "configure" in the Ptolemy II
-home directory, which in turn requires (on Windows) installation of
-Cygwin, a package that offers Unix-like facilities within Windows.
-You can find instructions for installing Cygwin at
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</a>.
-<p>
-The procedure below will modify the .classpath file that is
-provided in the version control repository to customize it for
-the software that you have installed.
-The procedure is as follows:
-<ol>
-<li> Start up Cygwin bash shell.
-
-<li> Set the PTII variable and export it
- <br><B>Windows:</B>
-<pre>
-export PTII=c:/Documents\ and\ Settings/<i>yourLogin</i>/workspace/ptII 
-</pre>
- <br><B>Mac:</B>
-<pre>
-export PTII=c:/Users/<i>yourLogin</i>/workspace/ptII 
-</pre>
-
-<li>
-cd to the PTII directory
-<pre>
-cd "$PTII"
-</pre>
-<i>Note that we use double quotes around <code>PTII</code> because
-the value of <code>PTII</code> has spaces in it.</i>
-<li>Run configure:
-<pre>
-./configure
-</pre>
-This will create <code>$PTII/.classpath</code>
-
-<li>
-If you plan on running the Ptolemy II startup scripts in 
-<CODE>$PTII/bin</CODE> on the command line, you will probably
-want to run the following commands within Cygwin bash:
-<pre>
-cd $PTII/bin
-make
-</pre>
-
-<li> In Eclipse, perform a Refresh on the ptII project
-by <code>Window</code>Open Perspective</code> | <code>Java</code>
-<br> &nbsp;&nbsp;&nbsp;Go to the Package Explorer or the Navigator.
-<br> &nbsp;&nbsp;&nbsp;Right mouse click on the ptII icon and select Refresh.
-<br> This will
-cause Eclipse to see the new <code>ptII/.classpath</code> and to build
-the project (or you may have to manually rebuild if you turned
-off automatic rebuild).
-</ol>  
-
-
+<!--/eclipseSimple-->
 <h3>Synchronizing with the repository</h3>
 
 <ol>
@@ -1193,7 +1220,7 @@ tests.
 The nice thing of using Eclipse is that you can very easily locate where 
 the exception is thrown by clicking the classes listed in the stack trace. 
 You may further register a breakpoint to do more diagnosis.
-
+<!--eclipseSimple-->
 
 <h2><a name="Troubleshooting">Troubleshooting</a></h2>
 
@@ -1207,7 +1234,8 @@ about any projects that you may have set up</b>
 
 <h3>Build Error: Assert cannot be resolved</h3>
 <p>If, when building, the Problem tab shows "Assert cannot be resolved",
-then the problem is that Junit is not being found
+then the problem is that Junit is not being found.
+
 <h3>Rebuilding Briefly flashes a window</h3> 
 <p>If you have problems where clicking on build briefly flashes up
 a window, look in <code>$PTII/.classpath</code> for and empty
@@ -1238,22 +1266,24 @@ binary and selecting Pin to Start Menu.  My solution was to remove the
 Eclipse bogus entry in the start menu and then create a shortcut,
 change Start in property and then pin that shortcut to my start menu.
 
+<!--/eclipseSimple-->
 
 <h2>Instructions for adding an actor in Eclipse</h2>
 Based on text by Mehran Meschian.
 <p>In this example, we copy <code>ptolemy/actor/lib/Ramp.java</code> and create a new actor
 called <code>Ramp2</code>
 <ol>
-<li> Open Eclipse and choose the work space that you have your Ptolemy project there (mine is PtII 7.0.1)
-<li> Open the PtII7.0.1 folder in eclipse and then open  Ptolemy -&gt; actor -&gt; lib -&gt; string
+<li> Open Eclipse and choose the work space that you have your Ptolemy project there (mine is PtII 8.0.1)
+<li> Open the PtII8.0.1 folder in eclipse and then open  Ptolemy -&gt; actor -&gt; lib -&gt; string
 <li> In string folder copy the java class (our simple actor)
 <li> Rename the java file to Bmh and debug the errors that come because of this renaming.
-<li> At the first line of the java codes add:     package ptolemy.actor.lib.string;
+<li> At the first line of the Java code add:     package ptolemy.actor.lib.string;
 
 <li> When there is no more error Run the java file and you should see a Bmh.class file in the tree as well (In the string branch). For now close the GUI window that opened after running.
 
 <li>	In the same place that Bmh.java and Bmh.class files exist, there is a string.xml file. Open it.
-<li>	At the top of the eclipse console, you should see two options: Design & Source. Click on Source to see the content of the xml <li>.	Add the following bold and red text to the location in the xml file. Then save and run the xml file:
+<li>	At the top of the eclipse console, you should see two options: Design & Source. Click on Source to see the content of the xml
+<li>	Add the following bold and red text to the location in the xml file. Then save and run the xml file:
 <pre>
 &lt;property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon"&gt;
           &lt;property name="attributeName" value="function"/&gt;
