@@ -736,13 +736,6 @@ public class LatticeOntologySolver extends OntologySolver {
         _resolvedUnacceptableList = new ArrayList<InequalityTerm>();
     }
     
-    protected void _isTermAcceptable() {
-        // null is acceptable
-        
-       
-        
-    }
-    
     // Illegal action exception thrown from getOntology() 
     
     // Collect all information related to whether or not terms are unacceptable
