@@ -53,6 +53,8 @@ JSRCS = \
 	ModelAlreadyExistException.java \
 	DBModelNotFoundException.java \
 	IllegalNameException.java \
+	SearchCriteriaParseException.java \
+	UnSavedParentModelsException.java \
 	XMLDBModelParsingException.java
 
 EXTRA_SRCS =	$(JSRCS)

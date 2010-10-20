@@ -64,15 +64,23 @@ JSRCS = \
 	ArrayModelList.java \
 	AttributeListEditFrame.java \
 	AttributesListPanel.java \
+	AttributesSearchListPanel.java \
 	CancelObservable.java \
 	ConfigureAttributesFrame.java \
 	DatabaseSetupFrame.java \
+	DBActorController.java \
+	DBReferenceActorInteractionAddon.java \
+	GenericAttributePanel.java \
 	GraphPatternSearchEditor.java \
 	ModelAttributePanel.java \
 	ModelMigrationFrame.java \
 	ModelPanel.java \
+	ModelsListFrame.java \
 	ParentHierarchyPanel.java \
 	ParentPanel.java \
+	PTDBBasicFrame.java \
+	PTDBContainedFramesManager.java \
+	RenameModelFrame.java \
 	SaveModelToDBFrame.java \
 	SearchResultPanel.java \
 	SearchResultsFrame.java \
@@ -92,15 +100,12 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	'ActorGraphDBFrame$$1.class' \
+	'ActorGraphDBFrame$$AllModelsListAction.class' \
 	'ActorGraphDBFrame$$ConfigureAttributesAction.class' \
-	'ActorGraphDBFrame$$DBHistoryMenuListener.class' \
 	'ActorGraphDBFrame$$DatabaseSetupAction.class' \
-	'ActorGraphDBFrame$$LoadModelFromDBAction.class' \
-	'ActorGraphDBFrame$$ModelSearchResults$$1.class' \
-	'ActorGraphDBFrame$$ModelSearchResults$$2.class' \
-	'ActorGraphDBFrame$$ModelSearchResults.class' \
+	'ActorGraphDBFrame$$DBHistoryMenuListener.class' \
 	'ActorGraphDBFrame$$OpenModelMigrationFrameAction.class' \
-	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
+	'ActorGraphDBFrame$$RenameModelAction.class' \
 	'ActorGraphDBFrame$$SaveModelToDBAction.class' \
 	'ActorGraphDBFrame$$SimpleSearchAction.class' \
 	'ActorGraphDBTableau$$Factory.class' \
@@ -115,6 +120,10 @@ OPTIONAL_FILES = \
 	'AttributesListPanel$$1.class' \
 	'AttributesListPanel$$2.class' \
 	'AttributesListPanel$$3.class' \
+	'AttributesListPanel$$4.class' \
+	'AttributesListPanel$$5.class' \
+	'AttributesSearchListPanel$$1.class' \
+	'AttributesSearchListPanel$$2.class' \
 	'ConfigureAttributesFrame$$1.class' \
 	'ConfigureAttributesFrame$$2.class' \
 	'ConfigureAttributesFrame$$3.class' \
@@ -128,7 +137,12 @@ OPTIONAL_FILES = \
 	'DatabaseSetupFrame$$2.class' \
 	'DatabaseSetupFrame$$3.class' \
 	'DatabaseSetupFrame$$4.class' \
+	'DatabaseSetupFrame$$5.class' \
+	'GenericAttributePanel$$1.class' \
+	'GenericAttributePanel$$2.class' \
+	'GenericAttributePanel$$3.class' \
 	'GraphPatternSearchEditor$$DBMatchAction.class' \
+	'GraphPatternSearchEditor$$SaveAction.class' \
 	'ModelAttributePanel$$1.class' \
 	'ModelAttributePanel$$2.class' \
 	'ModelAttributePanel$$3.class' \
@@ -138,18 +152,34 @@ OPTIONAL_FILES = \
 	'ModelMigrationFrame$$3.class' \
 	'ModelMigrationFrame$$4.class' \
 	'ModelPanel$$1.class' \
+	'ModelsListFrame$$1.class' \
+	'ModelsListFrame$$2.class' \
+	'ModelsListFrame$$3.class' \
+	'ModelsListFrame$$4.class' \
+	'ModelsListFrame$$5.class' \
 	'ParentPanel$$1.class' \
+	'RenameModelFrame$$1.class' \
+	'RenameModelFrame$$2.class' \
+	'RenameModelFrame$$3.class' \
 	'SaveModelToDBFrame$$1.class' \
-	'SaveModelToDBFrame$$2$$1.class' \
 	'SaveModelToDBFrame$$2.class' \
 	'SaveModelToDBFrame$$3.class' \
 	'SaveModelToDBFrame$$4.class' \
+	'SaveModelToDBFrame$$ParentModelItemPanel$$1.class' \
+	'SaveModelToDBFrame$$ParentModelItemPanel$$2.class' \
+	'SaveModelToDBFrame$$ParentModelItemPanel.class' \
+	'SaveModelToDBFrame$$ParentValidateFrame$$1.class' \
+	'SaveModelToDBFrame$$ParentValidateFrame$$2.class' \
+	'SaveModelToDBFrame$$ParentValidateFrame$$3.class' \
+	'SaveModelToDBFrame$$ParentValidateFrame.class' \
 	'SearchResultsFrame$$1.class' \
 	'SearchResultsFrame$$2.class' \
 	'SearchResultsFrame$$3.class' \
 	'SimpleSearchFrame$$1.class' \
 	'SimpleSearchFrame$$2.class' \
 	'SimpleSearchFrame$$3.class' \
+	'SimpleSearchFrame$$4.class' \
+	'SimpleSearchFrame$$5.class' \
 	'SimpleSearchFrame$$ExitSearchCriteriaAction.class' \
 	'SimpleSearchFrame$$NewSearchCriteriaAction.class' \
 	'SimpleSearchFrame$$OpenPatternSearchFrameAction.class' \

@@ -59,6 +59,7 @@ JSRCS = \
 	PatternMatchGraphSearcher.java \
 	ResultHandler.java \
 	SearchManager.java \
+	SearchCriteriaManager.java \
 	SearchResultBuffer.java \
 	XQueryGraphSearcher.java
 
