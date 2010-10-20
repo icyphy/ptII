@@ -93,8 +93,10 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  @exception IllegalActionException If there are any issues when 
-     *  attempting to initialize a GiottoDirector.
+     * @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public GiottoDirector() throws IllegalActionException,
             NameDuplicationException {
@@ -865,11 +867,15 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /* Initialize the director by creating a scheduler and parameters.
     *  @exception NameDuplicationException If the container reports an entity
     *  that duplicates an existing name during initialization.
-    *  @exception IllegalActionException If the initializing call to setToken 
-    *  returns an exception
+    *  @exception IllegalActionException If any of the methods called by 
+    *  _init()throws an exception. For instance a call to setToken() may
+    *  throw an IllegalActionException if the token type is not
+    *  compatible with specified constraints, or if you are attempting
+    *  to set to null a variable that has value dependents, or if the
+    *  container rejects the change.
     */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init() throws NameDuplicationException,
+            IllegalActionException {
         GiottoScheduler scheduler = new GiottoScheduler(workspace());
         setScheduler(scheduler);
 

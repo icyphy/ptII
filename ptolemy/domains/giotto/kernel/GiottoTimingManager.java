@@ -44,6 +44,7 @@ import ptolemy.data.LongToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.Entity;
@@ -86,7 +87,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  * of each actor. It currently uses the java.util.Random pseudo random number
  * generator to generate a random execution time in the range [0,2*<i>WCET</i>] 
  * for each iteration of each actor. The random number generator can be seeded 
- * by the <i>seed<\i> parameter. The default value of the seed
+ * by the <i>seed</i> parameter. The default value of the seed
  * is 0L interpreted as not having a seed. The user also has the option to reset to 
  * the seed on each run by selecting the <i>resetOnEachRun<\i> parameter. 
  * A future modification could include adding a parameter to have
@@ -156,6 +157,11 @@ public class GiottoTimingManager extends SingletonAttribute implements
                 GiottoTimingManager.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
 
+        probabilityDistribution = new StringParameter(this,
+                "probabilityDistribution");
+        probabilityDistribution.setExpression("none");
+        probabilityDistribution.addChoice("none");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,6 +195,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
      */
     public SharedParameter seed;
 
+    public StringParameter probabilityDistribution;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -206,6 +214,9 @@ public class GiottoTimingManager extends SingletonAttribute implements
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
             }
+        }
+        if (attribute == probabilityDistribution) {
+
         } else {
             super.attributeChanged(attribute);
         }
@@ -584,9 +595,11 @@ public class GiottoTimingManager extends SingletonAttribute implements
         _needNewGenerator = false;
         _needNew = true;
     }
-
+    /**
+     * Generate the next random number.
+     */
     protected void _generateRandomNumber() throws IllegalActionException {
-
+        _current = _random.nextDouble();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -604,7 +617,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /** Indicator that a new random number is needed. */
     protected boolean _needNew = false;
 
-    /**/
+    /** The Current value of the randomly generated number.*/
     protected double _current = 0.0;
 
     ///////////////////////////////////////////////////////////////////
