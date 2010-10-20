@@ -148,15 +148,6 @@ public class FiniteConcept extends Concept implements Flowable {
         return postdominators;
     }
 
-    /** Return a hash code for this finite concept,
-     *  which is uniquely determined from the containing
-     *  ontology and the concept name.
-     *  @return The concept's hash code.
-     */
-    public int hashCode() {
-        return getOntology().hashCode() + _name.hashCode();
-    }
-
     /**
      * Return the string that represents this concept, its name.
      * 

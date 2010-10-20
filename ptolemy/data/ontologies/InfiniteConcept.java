@@ -21,6 +21,7 @@
  */
 package ptolemy.data.ontologies;
 
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -69,6 +70,25 @@ public abstract class InfiniteConcept extends Concept {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return if this concept is equal to the given object,
+     *  which is only the case if compare returns CPO.SAME.
+     *
+     *  @param object Object with which to compare.
+     *  @return True, if both concepts are the same. False, otherwise.
+     */
+    public boolean equals(Object object) {
+        if (object instanceof Concept) {
+            Concept concept = (Concept)object;
+            try {
+                return compare(concept) == CPO.SAME;
+            } catch (IllegalActionException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     /** Return the ontology to which this concept belongs.
      *
      *  @return This concept's ontology.
@@ -76,7 +96,13 @@ public abstract class InfiniteConcept extends Concept {
     public Ontology getOntology() {
         return _ontology;
     }
-    
+
+    /** Return a hash code for this Concept.
+     *  @return A valid hash code.
+     *  @see java.lang.Object#hashCode()
+     */
+    abstract public int hashCode();
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
