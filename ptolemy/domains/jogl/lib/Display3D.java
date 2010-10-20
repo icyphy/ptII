@@ -142,8 +142,6 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
     }
 
 
-    private Container _container;
-
     public void place(Container container) {
         _container = container;
 
@@ -237,15 +235,25 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
      */
     public TypedIOPort output;
     
-    /**
-     * Height of the frame  
-     */
-    protected int _height = 480;
+    
+    /** Drive display() in a loop. */    
+    protected Animator _animator; 
+ 
+    
+    /** This is added to the frame and drawable part of the frame. */  
+    protected GLCanvas _canvas;  
     
     /**
-     * Width of the frame 
+     * Specify a set of OpenGL capabilities that a rendering 
+     * context must support,such as color depth and whether stereo 
+     * is enabled. 
      */
-    protected int _width = 640;
+    protected GLCapabilities _capabilities;
+    
+    /**
+     * Specify the frame associated with the container.
+     */ 
+    protected JFrame _frame; 
     
     /**
      * gl is an interface handle to OpenGL methods. All OpenGL
@@ -254,27 +262,16 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
      */    
     protected GL _gl; 
     
-    /**
-     * Drive display() in a loop 
-     */    
-    protected Animator _animator; 
     
-    /**
-     * Drawable part of the frame 
-     */  
-    protected GLCanvas _canvas;  
+    /** Specify height of the frame. */
+    protected int _height = 480;
     
-    /**
-     * Specifies the frame associated with the container.
-     */ 
-    protected JFrame _frame;    
+
+    /** Specify width of the frame. */
+    protected int _width = 640;
     
-    /**
-     * Specifies a set of OpenGL capabilities that a rendering 
-     * context must support,such as color depth and whether stereo 
-     * is enabled. 
-     */
-    protected GLCapabilities _capabilities;
+
+    private Container _container;  
 
 }
    

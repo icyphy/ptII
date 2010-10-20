@@ -44,9 +44,7 @@ public class Translate3D extends Transformer{
 
     }
     
-    /**
-     *  Specifies the axis of translation  
-     * */
+    /** Specify the axis of translation. */
 
     public PortParameter translation;
 
