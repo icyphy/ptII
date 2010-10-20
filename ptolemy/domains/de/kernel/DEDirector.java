@@ -392,29 +392,18 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return causality.describeDepths();
     }
 
-    /** Advance the current model tag to that of the earliest event in
-     *  the event queue, and fire all actors that have requested or
-     *  are triggered to be fired at the current tag. If
-     *  <i>synchronizeToRealTime</i> is true, then before firing, wait
-     *  until real time matches or exceeds the timestamp of the
-     *  event. Note that the default unit for time is seconds.
-     *  <p>
-     *  Each actor is fired repeatedly (prefire(), fire()),
-     *  until either it has no more input tokens, or its prefire() method
-     *  returns false. Note that if the actor fails to consume its
-     *  inputs, then this can result in an infinite loop.
-     *  Each actor that is fired is then postfired once at the
-     *  conclusion of the iteration.
-     *  </p><p>
-     *  If there are no events in the event queue, then the behavior
-     *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
-     *  false, then this thread will stall until events become
-     *  available in the event queue. Otherwise, time will advance to
-     *  the stop time and the execution will halt.</p>
+    /** Fire actors according to events in the event queue. The actual
+     *  selecting which events to process is done in _fire(). _fire()
+     *  will return whether the previous firing was successful. According
+     *  to this information, it is decided whether _fire() should be called
+     *  again in order to keep processing events. After each actor firing,
+     *  book keeping procedures are called, to keep track of the current
+     *  state of the scheduler. The model time of the next events are also
+     *  checked to see if 
      *
-     *  @exception IllegalActionException If the firing actor throws it, or
-     *   event queue is not ready, or an event is missed, or time is set
-     *   backwards.
+     *  @exception IllegalActionException if _fire() or _checkForNextEvent()
+     *   throws it.
+     *  @see #_fire
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
@@ -1230,11 +1219,21 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Placeholder for book keeping procedures after actor firing.
+    /** Placeholder for book keeping procedures after actor firing. This
+     *  method does nothing in this class, instead it's a placeholder for
+     *  subclasses to override.
      */
     protected void _actorFired() {
     }
-
+    
+    /** Enforces a firing of a DE director only handles events with the
+     *  same tag. Checks what is the model time of the earliest event
+     *  in the event queue.
+     *  @return true if the earliest event in the event queue is at the
+     *  same model time as the event that was just processed. Else if
+     *  that event's timestamp is in the future, return false.
+     *  @throws IllegalActionException if model time is set backwords.
+     */
     protected boolean _checkForNextEvent() throws IllegalActionException {
       // The following code enforces that a firing of a
       // DE director only handles events with the same tag.
@@ -1247,7 +1246,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
 
               if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
                   // If the next event is in the future time,
-                  // jump out of the big while loop and
+                  // jump out of the big while loop in fire() and
                   // proceed to postfire().
                   // NOTE: we reset the microstep to 0 because it is
                   // the contract that if the event queue has some events
@@ -1257,8 +1256,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                   _microstep = 0;
                   return false;
               } else if (next.microstep() > _microstep) {
-                  // If the next event is has a bigger microstep,
-                  // jump out of the big while loop and
+                  // If the next event has a bigger microstep,
+                  // jump out of the big while loop in fire() and
                   // proceed to postfire().
                   return false;
               } else if ((next.timeStamp().compareTo(getModelTime()) < 0)
@@ -1399,6 +1398,35 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         _eventQueue.put(newEvent);
     }
 
+    /** Advance the current model tag to that of the earliest event in
+     *  the event queue, and fire all actors that have requested or
+     *  are triggered to be fired at the current tag. If
+     *  <i>synchronizeToRealTime</i> is true, then before firing, wait
+     *  until real time matches or exceeds the timestamp of the
+     *  event. Note that the default unit for time is seconds.
+     *  <p>
+     *  Each actor is fired repeatedly (prefire(), fire()),
+     *  until either it has no more input tokens, or its prefire() method
+     *  returns false. Note that if the actor fails to consume its
+     *  inputs, then this can result in an infinite loop.
+     *  Each actor that is fired is then postfired once at the
+     *  conclusion of the iteration.
+     *  </p><p>
+     *  If there are no events in the event queue, then the behavior
+     *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
+     *  false, then this thread will stall until events become
+     *  available in the event queue. Otherwise, time will advance to
+     *  the stop time and the execution will halt.</p>
+     * 
+     *  @return 0 if firing was successful, and the next event in event
+     *   queue should be checked for processing.
+     *   -1 if there's no actor to fire, and we should not keep firing, 
+     *   1 if there's no actor to fire, but the next event should be
+     *   checked for processing.
+     *  @throws IllegalActionException If the firing actor throws it, or
+     *   event queue is not ready, or an event is missed, or time is set
+     *   backwards.
+     */
     protected int _fire() throws IllegalActionException {
         // Find the next actor to be fired.
         Actor actorToFire = _getNextActorToFire();

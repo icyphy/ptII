@@ -168,7 +168,7 @@ public class AbsoluteDelay extends TimeDelay {
         return super.postfire();
     }
 
-    /** Declare _outputTime parameter to be of Time with default value 0.0
+    /** Declare _outputTime parameter to be of Time with default value 0.0.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

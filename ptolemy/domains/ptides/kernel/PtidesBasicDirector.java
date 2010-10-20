@@ -72,19 +72,45 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
-/**
- *  This director has a local notion time, decoupled from that of the
+/** This director implements the Ptides programming model.
+ *  The Ptides director is based on the DE director. Like the DE director,
+ *  this director maintains a totally ordered set of events and processes 
+ *  these events in the order defined on their tags and depths.
+ *  However, unlike the DE director,
+ *  this director has a local notion time, decoupled from that of the
  *  enclosing director. The enclosing director's time
- *  represents physical time, whereas this time represents model
- *  time in the Ptides model.
+ *  represents physical time, whereas this director's time represents model
+ *  time in the Ptides model. In other words, this director must have a
+ *  enclosing director to simulate the passage of physical time. Normally, the
+ *  DE director is used as the enclosing director.
+ *  <p>
+ *  An event in the Ptides programming model is in the same sense as an event
+ *  in DE. It also consist of a tag as well as value token, as well as fields
+ *  such as depth, which is used to define the scheduling semantics. For this
+ *  reason, PtidesEvent is a subclass of DEEvent. Unlike in DE, however,
+ *  Ptides allow event execution out of timestamp order. In other words, at
+ *  any point in time, all events are considered for processing. To ensure DE
+ *  semantics is still enforced, Ptides introduces a safe-to-process analysis.
+ *  This safe-to-process analysis consist of a set of algorithm, using information
+ *  such the events that are currently in the event queue, their model time
+ *  relationship with each other, as well as the current physical time. The safe
+ *  to process analysis then uses this information to determine which event(s)
+ *  can be processed, and then pick one of them to process. In this particular
+ *  version of the Ptides scheduler, the safe-to-process analysis is straight
+ *  forward. We simply take the top (smallest timestamp) event, and compares
+ *  its timestamp with the current physical time + a pre-computed offset. If
+ *  the physical time is larger, then this event is safe to process. Otherwise,
+ *  we wait for physical time to pass until this event becomes safe, at which
+ *  point it is processed. This is the most basic version of the Ptides scheduler
+ *  (thus the name), however subclasses of this director provides more 
+ *  sophisticated scheduling algorithms that conform to Ptides semantics.
+ *  <p>
+ *  In the preinitialize method, some stuff happen... fixme...
  *  <p>
  *  Preemption is disallowed in this scheduler.
  *  <p>
  *  The receiver used in this case is the PtidesBasicReceiver.
  *  @see PtidesBasicReceiver
- *  <p>
- *  This director deals with pure events differently than DEDirector.
- *  @see PtidesEvent
  *
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
@@ -144,16 +170,18 @@ public class PtidesBasicDirector extends DEDirector {
     public Parameter highlightModelTimeDelays;
 
     /** If true, then it can be assumed that actors receive events in timestamp
-     *  order. This simplifies the safe to process analysis.
+     *  order. Setting this parameter could potentially simplifies the safe to 
+     *  process analysis.
+     *  This is a boolean that defaults to false.
      */
     public Parameter actorsReceiveEventsInTimestampOrder;
 
-    /** A parameter that stores the synchronization error in the platform governed
-     *  by this Ptides director.
+    /** Store the synchronization error in the platform governed by this 
+     *  tides director.
      *  In a distributed Ptides environment, each distributed platform is modeled 
-     *  by a composite actor that is governed by a PtidesBasicDirector 
+     *  by a composite actor that is governed by a Ptides director 
      *  (or its subclass). In reality, these platforms will have (physical) time
-     *  synchronization errors between them, and this error is captured within
+     *  synchronization errors between them. This error is captured within
      *  this parameter.  
      */
     public Parameter syncError;
@@ -202,7 +230,7 @@ public class PtidesBasicDirector extends DEDirector {
      * Return the default dependency between input and output ports which for
      * the Ptides domain is a SuperdenseDependency.
      *
-     * @return The default dependency which describes a time delay of 0.0,
+     * @return The default dependency that describes a time delay of 0.0,
      *          and a index delay of 0 between ports.
      */
     public Dependency defaultDependency() {
@@ -223,7 +251,7 @@ public class PtidesBasicDirector extends DEDirector {
         return SuperdenseDependency.valueOf(delay, index);
     }
 
-    /** Get the current Tag.
+    /** Return the current Tag.
      *  @return timestamp and microstep of the current time.
      */
     public Tag getModelTag() {
@@ -294,7 +322,7 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
-    /** Get the synchronization error of this platform.
+    /** Return the synchronization error of this platform.
      *  @return the synchronization error.
      *  @exception IllegalActionException
      */
@@ -302,29 +330,9 @@ public class PtidesBasicDirector extends DEDirector {
         return ((DoubleToken) syncError.getToken()).doubleValue();
     }
 
-    /** Advance the current model tag to that of the earliest event in
-     *  the event queue, and fire all actors that have requested or
-     *  are triggered to be fired at the current tag. If
-     *  <i>synchronizeToRealTime</i> is true, then before firing, wait
-     *  until real time matches or exceeds the timestamp of the
-     *  event. Note that the default unit for time is seconds.
-     *  <p>
-     *  Each actor is fired repeatedly (prefire(), fire()),
-     *  until either it has no more input tokens, or its prefire() method
-     *  returns false. Note that if the actor fails to consume its
-     *  inputs, then this can result in an infinite loop.
-     *  Each actor that is fired is then postfired once at the
-     *  conclusion of the iteration.
-     *  </p><p>
-     *  If there are no events in the event queue, then the behavior
-     *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
-     *  false, then this thread will stall until events become
-     *  available in the event queue. Otherwise, time will advance to
-     *  the stop time and the execution will halt.</p>
-     *
-     *  @exception IllegalActionException If the firing actor throws it, or
-     *   event queue is not ready, or an event is missed, or time is set
-     *   backwards.
+    /** Print out debugging information if we are in debugging mode. Call
+     *  fire() of the super class.
+     *  @exception IllegalActionException If the super class throws it.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
@@ -333,16 +341,14 @@ public class PtidesBasicDirector extends DEDirector {
         }
         
         super.fire();
-        
-        // At the end of firing, clear the private variables used to keep track of
-        // the consumed event.
 
         if (_debugging) {
             _debug("PtidesBasicDirector fired!");
         }
     }
 
-    /** Initialize the actors and request a refiring at the current
+    /** Create new variables, initialize the actors and request a refiring 
+     *  at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
      *  @exception IllegalActionException If the superclass throws
@@ -396,20 +402,20 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Uses the preinitialize() method in the super class.
-     *  However we use the DEListEventQueue instead of the calendar queue because we need
-     *  to access to not just the first event in the event queue.
-     *  Also parameters minDelay is calculated here.
+     *  However the PtidesListEventQueue is used instead of the calendar 
+     *  queue because we need to access to not only the first event 
+     *  in the event queue, but all events in the event queue, in sorted order.
+     *  Also the minDelay offsets for all input ports are calculated here.
+     *  @see #_calculateMinDelayOffsets
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         // Initialize an event queue.
         _eventQueue = new PtidesListEventQueue();
 
-        //        ((CausalityInterfaceForComposites)getCausalityInterface()).invalidate();
-        //        ((CausalityInterfaceForComposites)getCausalityInterface()).checkForCycles();
         _calculateMinDelayOffsets();
 
-        // In Ptides, we should never stop when queue is empty...
+        // In Ptides, we should never stop when queue is empty.
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
     }
@@ -512,11 +518,6 @@ public class PtidesBasicDirector extends DEDirector {
         if (_lastExecutingActor != null) {
             _clearHighlight(_lastExecutingActor, false);
         }
-        /*
-        if (((BooleanToken)animateModelTimeDelay.getToken()).booleanValue()) {
-            _annotateModelDelays((CompositeActor) getContainer(), true);
-        }
-        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -533,15 +534,21 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** An actor has just been fired. An actuation event could have been
-     *  produced, so we transfer that event to the outside. Also, we clear 
-     *  bookkeeping structures that keeps track of what actor has just fired.
+    /** Perform book keeping after actor firing. This procedure consist of
+     *  two actions:
+     *  <p>
+     *  1. An actor has just been fired. An actuation event could have been
+     *  produced. If so, that event is taken out of event queue, and the token
+     *  is placed at the actuator/network port, ready for transfer to the outside.
+     *  <p>
+     *  2. Also, we clear bookkeeping structures that keeps track of which actor 
+     *  has just fired.
      */
     protected void _actorFired() {
         
         _getNextActuationEvent();
 
-        // Now need to clear _pureEvent* if an actor has finished firing.
+        // Now clear _pureEvent* since an actor has finished firing.
         if (_lastActorFired != null) {
             _pureEventDeadlines.remove(_lastActorFired);
             _pureEventDelays.remove(_lastActorFired);
@@ -549,9 +556,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
     
-    /** Causality analysis that happens at the preinitialization phase.
-     *  The goal is to annotate each port with a minDelay parameter,
-     *  which is the offset used for safe to process analysis.
+    /** Calculates the minDelay offset for each input port in the model, and
+     *  annotate the ports with these offsets.
+     *  This causality analysis usually happens at the preinitialize phase.
      *  <p>
      *  Start from each input port that is connected to the outside of the platform
      *  (These input ports indicate sensors and network interfaces, call them startPorts),
@@ -560,10 +567,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  a minDelay parameter. This parameter is an array of doubles, where each double
      *  corresponds to the minimum delay offset for a particular channel of that port.
      *  This minimum delay offset is used for the safe to process analysis.
-     *  </p>
-     *  FIXME: currently this algorithm does not support transparent composite actors,
-     *  but it should.
-     *  @exception IllegalActionException
+     *  <p>
+     *  Note: for all transparent composite actors, the minDelay offsets are not
+     *  calculated for their input ports. Instead, the offsets are calculated and
+     *  annotated for input ports that are inside of these actors.
+     *  @exception IllegalActionException If _clearMinDelayOffsets(), _isNetworkPort()
+     *   _getNetworkDelay(), _getRealTimeDelay(), _traverseToCalcMinDelay(),
+     *   getRemoteReceivers(), or getChannelForReceiver() throws it.
      */
     protected void _calculateMinDelayOffsets() throws IllegalActionException {
 
@@ -851,7 +861,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param refEvent The reference event.
      *  @param event The event to be compared to the refEvent.
      *  @return whether the two input events are destined to the same equivalence class.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException If _finiteEquivalentPorts() throws it.
      */
     protected boolean _destinedToSameEquivalenceClass(PtidesEvent refEvent,
             PtidesEvent event) throws IllegalActionException {
@@ -986,7 +996,8 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param port The given port to find finite dependent ports.
      *  @return Collection of finite dependent ports.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If Actor's getCausalityInterface()
+     *          method, or CausalityInterface's getDependency() throws it.
      */
     protected static Collection<IOPort> _finiteDependentPorts(IOPort port)
             throws IllegalActionException {
@@ -1036,7 +1047,7 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param input The input port.
      *  @return Collection of finite equivalent ports.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If _finiteDependentPorts() throws it.
      */
     protected static Collection<IOPort> _finiteEquivalentPorts(IOPort input)
             throws IllegalActionException {
@@ -1124,7 +1135,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port at which execution time is denoted.
      *  @param actor  an Actor object.
      *  @return executionTime parameter.
-     *  @exception IllegalActionException.
+     *  @exception IllegalActionException If getExecutionTime() throws it.
      */
     protected static double _getExecutionTime(IOPort port, Actor actor)
             throws IllegalActionException {
@@ -1153,7 +1164,11 @@ public class PtidesBasicDirector extends DEDirector {
                 + "  </property>";
     }
 
-    /** Returns the minDelay parameter.
+    /** Return the minDelay parameter. The minDelay parameter is related to the
+     *  safe to process analysis of Ptides. In Ptides, an event of timestamp
+     *  \tau is safe to process at physical time t if t >= \tau - minDelay.
+     *  For all non-pure(trigger) events, this minDelay offset is stored at 
+     *  each channel of each input port.
      *  @param port The port where this minDelay parameter is associated to.
      *  @param channel The channel where this minDelay parameter is associated to.
      *  @return minDelay parameter.
@@ -1165,6 +1180,8 @@ public class PtidesBasicDirector extends DEDirector {
         // If the event is a pure event, and if actors receive events in timestamp
         // order, then the minDelay is actually the smallest min delay among all
         // the equivalence classes.
+        // FIXME: what if the event is a pure event, and actorsReceiveEventsInTimestampOrder
+        // is false??
         if (pureEvent
                 && ((BooleanToken) actorsReceiveEventsInTimestampOrder
                         .getToken()).booleanValue()) {
@@ -1500,11 +1517,13 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Return the actor associated with the events. All events should point to the same actor.
-     *  @param events list of events that are destined for the
+    /** Return the actor associated with the events. All events within the
+     *  input list of events should have the same destination actor.
+     *  @param Events list of events that are destined for the
      *  same actor and of the same tag.
-     *  @return Actor associated with the event.
-     *  @exception IllegalActionException
+     *  @return Actor Destination actor of the input events.
+     *  @exception IllegalActionException If input list of events do not
+     *          share the same actor as their destination.
      */
     protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
             throws IllegalActionException {
@@ -1526,13 +1545,13 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the next event we want to process. Notice this event returned must
      *  be safe to process. Any overriding method must ensure this is true (by
-     *  calling some version of _safeToProcess().
+     *  calling some version of _safeToProcess()).
      *  <p>
      *  Notice if there are multiple
      *  events in the queue that are safe to process, this function can choose to
      *  return any one of these events, it can also choose to return null depending
      *  on the implementation.
-     *  <P>
+     *  <p>
      *  Also notice this method should _NOT_ take the event from the event queue.
      *  <p>
      *  In this baseline implementation, we only check if
@@ -1550,7 +1569,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Returns the realTimeDelay parameter.
+    /** Return the value stored in realTimeDelay parameter.
      *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
      *  @exception IllegalActionException
@@ -1712,14 +1731,10 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in, AND are destined to the same finite equivalence class. These events
-     *  should be removed from the event queue in the process.
-     *  <p>
-     *  FIXME: Note if the event to be processed is a pure event, the no other event is to
-     *  be processed with this event at the same firing. Is this the desired behavior?
-     *  
+     *  should be removed from the event queue in the process. 
      *  @param event The reference event.
      *  @return List of events of the same tag.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If _destinedToSameEquivalenceClass() throws it.
      */
     protected List<PtidesEvent> _takeAllSameTagEventsFromQueue(PtidesEvent event)
             throws IllegalActionException {
@@ -2011,9 +2026,10 @@ public class PtidesBasicDirector extends DEDirector {
         boolean result = false;
         Tag physicalTag = getPhysicalTag();
         int compare = 0;
-        // FIXME: notice this is done NOT for the specific port
-        // in question. Instead, we do it for ALL events that can be transferred out of
-        // this platform.
+        // The following code does not transfer output tokens specifically for "port", the
+        // input of this method. Instead, for all events in _realTimeOutputEventQueue,
+        // those that has timestamp equal to the current physical time are transferred
+        // to the outside of this platform.
         // FIXME: there is _NO_ guarantee from the priorityQueue that these events are sent out
         // in the order they arrive at the actuator. We can only be sure that they are sent
         // in the order of the timestamps, but for two events of the same timestamp at an
