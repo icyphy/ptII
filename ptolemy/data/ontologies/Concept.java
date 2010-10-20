@@ -93,6 +93,25 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     public abstract int compare(Concept concept)
             throws IllegalActionException;
     
+    /** Return if this concept is equal to the given object,
+     *  which is only the case if compare returns CPO.SAME.
+     *
+     *  @param object Object with which to compare.
+     *  @return True, if both concepts are the same. False, otherwise.
+     */
+    public boolean equals(Object object) {
+        if (object instanceof Concept) {
+            Concept concept = (Concept)object;
+            try {
+                return compare(concept) == CPO.SAME;
+            } catch (IllegalActionException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     /** Return null.
      *  For variable InequaliyTerms, this method will return a reference to the
      *  model object associated with that InequalityTerm. For concepts,
