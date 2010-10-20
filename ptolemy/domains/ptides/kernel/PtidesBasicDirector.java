@@ -1519,7 +1519,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the actor associated with the events. All events within the
      *  input list of events should have the same destination actor.
-     *  @param Events list of events that are destined for the
+     *  @param events list of events that are destined for the
      *  same actor and of the same tag.
      *  @return Actor Destination actor of the input events.
      *  @exception IllegalActionException If input list of events do not
