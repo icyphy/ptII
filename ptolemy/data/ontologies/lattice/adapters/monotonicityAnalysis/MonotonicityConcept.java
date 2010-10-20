@@ -164,6 +164,15 @@ public class MonotonicityConcept extends InfiniteConcept {
         return (FiniteConcept)getOntology().getGraph().bottom();
     }
 
+    /** Return the hash code of this monotonicity concept, which is uniquely
+     *  determined by the ontology and the set of variable-monotonicity
+     *  mappings.
+     *  @return The hash code of this concept.
+     */
+    public int hashCode() {
+        return getOntology().hashCode() + _variableToMonotonicity.hashCode();
+    }
+
     /** Set the monotonicity of this concept with respect to a specific
      *  variable.
      *

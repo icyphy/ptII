@@ -149,6 +149,12 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return _EMPTY_ARRAY;
     }
 
+    /** Return a hash code for this Concept.
+     *  @return A valid hash code.
+     *  @see java.lang.Object#hashCode()
+     */
+    abstract public int hashCode();
+
     /** Throw an exception. This object is not a variable.
      * 
      *  @param object The object used to initialize the InequalityTerm; not used
