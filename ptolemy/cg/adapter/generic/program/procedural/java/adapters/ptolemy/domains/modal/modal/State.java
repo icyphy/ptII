@@ -48,9 +48,14 @@ public class State
         extends
         NamedProgramCodeGeneratorAdapter  {
 
+    /** Construct the code generator adapter associated with the given
+     *  state.
+     *  @param componentThe associated
+     *  ptolemy.domains.modal.kernel.State
+     */
     public State(ptolemy.domains.modal.kernel.State component) {
         super(component);
-        // TODO Auto-generated constructor stub
+        
     }
 
     /** Generate code for transferring enough tokens to fulfill the output
