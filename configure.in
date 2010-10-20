@@ -2262,7 +2262,7 @@ PTJUNIT_DIR=
 JUNIT_JAR=
 
 # We only need to look for JUnit if this directory is present
-JUNIT_USER_DIR="$PTII/util/testsuite/junit"
+JUNIT_USER_DIR="$PTII/ptolemy/util/test/junit"
 
 if test ! -d "$JUNIT_USER_DIR"; then
     PT_MSG_STATUS([$JUNIT_USER_DIR is not present,
@@ -2292,7 +2292,7 @@ else
 fi
 
 if test -z "$PTJUNIT_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|util/testsuite/junit"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/util/test/junit/|**/junit/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$JUNIT_JAR\"/>"
