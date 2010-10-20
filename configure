@@ -7322,7 +7322,7 @@ echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTJUNIT_JAR" >&5
 echo "${ECHO_T}$PTJUNIT_JAR" >&6; fi
 	PTJUNIT_DIR=junit
         # PTJUNIT_PACKAGES is used in ptII/doc/makefile
-	PTJUNIT_PACKAGES=util.testsuite.junit
+	PTJUNIT_PACKAGES=ptolemy.util.test.junit
     fi
 
     if test "$PTJUNIT_DIR" = ""; then
