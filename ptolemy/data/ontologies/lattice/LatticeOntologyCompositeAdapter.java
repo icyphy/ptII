@@ -124,7 +124,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
             for (TypedIOPort port : (List<TypedIOPort>) adapter
                     ._getConstraintedPorts(constraintSource)) {
 
-                _constraintObject(adapter.interconnectConstraintType, port,
+                _constrainObject(adapter.interconnectConstraintType, port,
                         _getConstraintingPorts(constraintSource, port));
             }
         }
@@ -132,7 +132,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         // Set up inner composite connection constraints.
         for (TypedIOPort port : (List<TypedIOPort>) _getConstraintedInsidePorts(isConstraintSource())) {
 
-            _constraintObject(interconnectConstraintType, port, port
+            _constrainObject(interconnectConstraintType, port, port
                     .insidePortList());
         }
 

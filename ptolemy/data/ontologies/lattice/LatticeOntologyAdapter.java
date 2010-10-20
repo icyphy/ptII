@@ -219,7 +219,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
-            _constraintObject(actorConstraintType, port, portList2);
+            _constrainObject(actorConstraintType, port, portList2);
         }
     }
 
@@ -273,7 +273,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                     List list = new ArrayList();
                     list.add(node);
 
-                    _constraintObject(astAdapter.interconnectConstraintType,
+                    _constrainObject(astAdapter.interconnectConstraintType,
                             attribute, list);
                     //setSameAs(attribute, getParseTree(attribute));
                     //setAtLeast(attribute, getParseTree(attribute));
@@ -298,8 +298,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * represents the sources for the default constraints
      * @exception IllegalActionException If an exception is thrown
      */
-    // FIXME: Should this be named _constrainObject? Should this be private?
-    protected void _constraintObject(ConstraintType constraintType,
+    protected void _constrainObject(ConstraintType constraintType,
             Object object, List objectList) throws IllegalActionException {
 
         boolean isEquals = constraintType == ConstraintType.EQUALS;

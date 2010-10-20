@@ -7,19 +7,9 @@
     <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
         </property>
-        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="custom">
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
         <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
-        </property>
-        <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out == in">
-        </property>
-        <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
-        </property>
-        <property name="compositeConnectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
-        </property>
-        <property name="fsmConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
-        </property>
-        <property name="expressionASTNodeConstraintType" class="ptolemy.data.expr.StringParameter" value="parent &gt;= child">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
         </property>

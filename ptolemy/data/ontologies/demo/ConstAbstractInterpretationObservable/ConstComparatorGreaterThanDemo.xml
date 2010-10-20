@@ -7,19 +7,9 @@
     <property name="ConstUnobservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constAbsIntObservable/ConstAbsIntObservableSolverModel.xml">
         </property>
-        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="custom">
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
         <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
-        </property>
-        <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out == in">
-        </property>
-        <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
-        </property>
-        <property name="compositeConnectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
-        </property>
-        <property name="fsmConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
-        </property>
-        <property name="expressionASTNodeConstraintType" class="ptolemy.data.expr.StringParameter" value="parent &gt;= child">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
         </property>
@@ -28,13 +18,13 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 106, 1012, 810}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 169, 1012, 810}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 693]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{476.4545454545454, 412.9985795454545}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{490.3749999999999, 412.9985795454545}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -60,7 +50,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstPositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
         </property>
     </property>
     <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
@@ -81,7 +71,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstPositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
         </property>
     </property>
     <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
@@ -102,7 +92,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstZero">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
         </property>
     </property>
     <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
@@ -123,7 +113,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
         </property>
     </property>
     <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
@@ -144,7 +134,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
         </property>
     </property>
     <entity name="Display8" class="ptolemy.actor.lib.gui.Display">

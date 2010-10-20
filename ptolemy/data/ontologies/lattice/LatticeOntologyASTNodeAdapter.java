@@ -98,7 +98,8 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        boolean constraintParent = (interconnectConstraintType == ConstraintType.SINK_GE_SOURCE);
+        boolean constrainParent = (interconnectConstraintType == ConstraintType.SINK_GE_SOURCE);
+        boolean isEqualConstraint = interconnectConstraintType == ConstraintType.EQUALS;
 
         if (getComponent() instanceof ASTPtLeafNode) {
             ASTPtLeafNode node = (ASTPtLeafNode) getComponent();
@@ -113,8 +114,13 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
                         node.getName());
 
                 if (namedObj != null) {
+                    // Set up bidirectional constraint when the constraint type
+                    // is equal.
+                    if (isEqualConstraint) {
+                        setSameAs(node, namedObj);
+                        
                     // Set up one-direction constraint.
-                    if (constraintParent) {
+                    } else if (constrainParent) {
                         setAtLeast(node, namedObj);
                     } else {
                         setAtLeast(namedObj, node);
@@ -134,18 +140,15 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
             boolean isNone = interconnectConstraintType == ConstraintType.NONE;
 
             for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-
-                if (!constraintParent && !isNone) {
+                if (!constrainParent && !isNone) {
                     // Set child >= parent.
                     setAtLeast(node.jjtGetChild(i), node);
-
-                } else {
-                    children.add(node.jjtGetChild(i));
-                }
+                }                
+                children.add(node.jjtGetChild(i));
             }
 
-            if (constraintParent) {
-                _constraintObject(interconnectConstraintType, node, children);
+            if (constrainParent || isEqualConstraint) {
+                _constrainObject(interconnectConstraintType, node, children);
             }
         }
 
