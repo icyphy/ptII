@@ -367,6 +367,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     
     /** Set node as a feedback node in specified direction, true being feed out.
      *  @param direction The direction to make the feedback node.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void setFeedback(boolean direction)  
         throws IllegalActionException, NameDuplicationException {
@@ -799,7 +801,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     
     /** Get the label of the node.
      *  @return label of the node.
-     *  #see setLabel
+     *  @see #setLabel
      */
     public String getLabel() {
         return _label;

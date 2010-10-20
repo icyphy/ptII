@@ -39,7 +39,7 @@ import java.util.List;
  with <b>m</b> inputs and <b>n</b> outputs along the first <b>k</b>
  of each, where <b>k</b> is a parameter of the operator called 
  <i>degree</i> in the class. The result is a term (as an interface) 
- with <b>m-k</k> inputs and <b>n-k</b> outputs. The operand term being 
+ with <b>m-k</b> inputs and <b>n-k</b> outputs. The operand term being 
  contracted is the <i>kernel</i> of the operator and is referred to 
  by the class as such. 
  

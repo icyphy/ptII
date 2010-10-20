@@ -90,6 +90,8 @@ public class SyntacticPort extends ComponentPort {
      *  @param port Port referred to by this SyntacticPort.
      *  @param direction True if input, false if output.
      *  @param name Name of this port.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      * */
     public SyntacticPort(SyntacticNode container, Port port, boolean direction, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -132,6 +134,7 @@ public class SyntacticPort extends ComponentPort {
      *  Each SyntacticPort only represents a single channel of 
      *  the represented port.
      *  @param channel The channel of the represented port.
+     *  @see #getChannel
      */
     public void setChannel(int channel) {
         _representedChannel = channel >= 0 ? channel : 0;
@@ -146,6 +149,7 @@ public class SyntacticPort extends ComponentPort {
     
     /** Get the channel of the represented port.
      *  @return represented channel of the port.
+     *  @see #setChannel
      */
     public int getChannel() {
         return _representedChannel;
@@ -214,7 +218,7 @@ public class SyntacticPort extends ComponentPort {
      * 
      *  @param port Port to check for exteriority.
      *  @param entity Entity to check inside of.
-     *  @return
+     *  @return whether port is exterior for the given entity.
      */
     static public boolean isPortExterior(Port port, CompositeEntity entity) {
         return port.getContainer() == (NamedObj)entity;
@@ -237,6 +241,7 @@ public class SyntacticPort extends ComponentPort {
      * 
      *  @param port Port to find the width of.
      *  @return the width of the port or null if not a port.
+     *  @throws IllegalActionException
      */
     static public Integer portWidth(Port port)
         throws IllegalActionException {
@@ -249,10 +254,20 @@ public class SyntacticPort extends ComponentPort {
     
     /** Represent IO type for ports. */
     public enum IOType { 
-        in, out, io, none; 
+        /** Input port. */
+        in, 
+        
+        /** Output port. */
+        out, 
+        
+        /** Input/Output port. */
+        io, 
+        
+        /** Port with undefined or unclear directionality. */
+        none; 
         
         /** Get the reversed IO type.
-         *  @returns reversed IO type.
+         *  @return reversed IO type.
          */
         public IOType reverse() {
             return this == in  ? out 

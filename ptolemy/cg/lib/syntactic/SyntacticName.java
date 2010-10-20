@@ -168,6 +168,7 @@ public class SyntacticName implements SyntacticTerm {
     
     /** Set the name of the term.
      *  @param name Name for the term.
+     *  @see #getName
      */
     public void setName(String name) {
         _name = name;
@@ -183,6 +184,7 @@ public class SyntacticName implements SyntacticTerm {
     
     /** Get the name of the term.
      *  @return name of term.
+     *  @see #setName
      */
     public String getName() {
         return _name;

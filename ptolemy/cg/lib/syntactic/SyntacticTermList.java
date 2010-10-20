@@ -202,6 +202,7 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
     /** Remove a term at a given index.
      *
      *  @param index Index at which to remove the term.
+     *  @return term that has been removed.
      */
     public SyntacticTerm remove(int index) {
         // TODO Auto-generated method stub

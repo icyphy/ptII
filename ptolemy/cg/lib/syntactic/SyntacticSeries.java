@@ -124,6 +124,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *  this essentially means it must have the same number of 
      *  inputs and outputs.
      * 
+     *  @param index Index at which to add the term.
      *  @param term Term to add to series.
      */
     public void add(int index, SyntacticTerm term) {
@@ -155,6 +156,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *  of inputs and outputs to complete this operation.
      *  
      *  @param term Term to remove from series.
+     *  @return whether term has been removed.
      */
     public boolean remove(SyntacticTerm term) {
         if (!contains(term)) return false;
