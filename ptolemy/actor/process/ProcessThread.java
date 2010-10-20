@@ -123,7 +123,9 @@ public class ProcessThread extends PtolemyThread {
      *  on the actor.
      */
     public void run() {
-        _debug("-- Starting thread.");
+        if (_debugging) {
+                _debug("-- Starting thread.");
+        }
 
         Workspace workspace = _director.workspace();
         boolean iterate = true;
@@ -142,7 +144,9 @@ public class ProcessThread extends PtolemyThread {
                 // to return false, which will stop its execution.
                 if (_director.isStopFireRequested()) {
                     // And wait until the flag has been cleared.
-                    _debug("-- Thread pause requested. Get lock on director.");
+                    if (_debugging) {
+                        _debug("-- Thread pause requested. Get lock on director.");
+                    }
 
                     int depth = 0;
                     try {
@@ -156,13 +160,17 @@ public class ProcessThread extends PtolemyThread {
                                 // to a stopFire, then stop execution
                                 // altogether and skip to wrapup().
                                 if (_director.isStopRequested()) {
-                                    _debug("-- Thread stop requested, "
-                                            + "so cancel iteration.");
+                                    if (_debugging) {
+                                        _debug("-- Thread stop requested, "
+                                                + "so cancel iteration.");
+                                    }
                                     break;
                                 }
 
-                                _debug("-- Thread waiting for "
-                                        + "canceled pause request.");
+                                if (_debugging) {
+                                        _debug("-- Thread waiting for "
+                                                        + "canceled pause request.");
+                                }
 
                                 // NOTE: We cannot use workspace.wait(Object) here without
                                 // introducing a race condition, because we have to release
@@ -173,11 +181,15 @@ public class ProcessThread extends PtolemyThread {
                                 _director.wait();
                             }
                             _director.threadHasResumed(this);
-                            _debug("-- Thread resuming.");
+                            if (_debugging) {
+                                _debug("-- Thread resuming.");
+                            }
                         }
                     } catch (InterruptedException ex) {
-                        _debug("-- Thread interrupted, "
-                                + "so cancel iteration.");
+                        if (_debugging) {
+                                _debug("-- Thread interrupted, "
+                                                + "so cancel iteration.");
+                        }
                         break;
                     } finally {
                         if (depth > 0) {
@@ -259,24 +271,34 @@ public class ProcessThread extends PtolemyThread {
                 synchronized (_director) {
                     _director.removeThread(this);
                 }
-                _debug("-- Thread stopped.");
+                if (_debugging) {
+                        _debug("-- Thread stopped.");
+                }
 
                 boolean rethrow = false;
 
                 if (thrownWhenIterate instanceof TerminateProcessException) {
                     // Process was terminated.
-                    _debug("-- Blocked Receiver call "
-                            + "threw TerminateProcessException.");
+                    if (_debugging) {
+                        _debug("-- Blocked Receiver call "
+                                        + "threw TerminateProcessException.");
+                    }
                 } else if (thrownWhenIterate instanceof InterruptedException) {
                     // Process was terminated by call to stop();
-                    _debug("-- Thread was interrupted: " + thrownWhenIterate);
+                    if (_debugging) {
+                        _debug("-- Thread was interrupted: " + thrownWhenIterate);
+                    }
                 } else if (thrownWhenIterate instanceof InterruptedIOException
                         || ((thrownWhenIterate != null) && thrownWhenIterate
                                 .getCause() instanceof InterruptedIOException)) {
                     // PSDF has problems here when run with JavaScope
-                    _debug("-- IO was interrupted: " + thrownWhenIterate);
+                    if (_debugging) {
+                        _debug("-- IO was interrupted: " + thrownWhenIterate);
+                    }
                 } else if (thrownWhenIterate instanceof IllegalActionException) {
-                    _debug("-- Exception: " + thrownWhenIterate);
+                    if (_debugging) {
+                        _debug("-- Exception: " + thrownWhenIterate);
+                    }
                     _manager
                             .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
                 } else if (thrownWhenIterate != null) {
@@ -284,7 +306,9 @@ public class ProcessThread extends PtolemyThread {
                 }
 
                 if (thrownWhenWrapup instanceof IllegalActionException) {
-                    _debug("-- Exception: " + thrownWhenWrapup);
+                    if (_debugging) {
+                        _debug("-- Exception: " + thrownWhenWrapup);
+                    }
                     _manager
                             .notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
                 } else if (thrownWhenWrapup != null) {
@@ -307,7 +331,9 @@ public class ProcessThread extends PtolemyThread {
      *   thread.
      */
     public void wrapup() throws IllegalActionException {
-        _debug("-- Thread wrapup() called.");
+        if (_debugging) {
+                _debug("-- Thread wrapup() called.");
+        }
         _actor.wrapup();
     }
 
