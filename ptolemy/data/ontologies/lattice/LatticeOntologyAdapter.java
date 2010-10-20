@@ -135,12 +135,12 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * Returns true if the interconnectConstraintType is for sources, false otherwise.
      * It will return only true if {@linkplain #interconnectConstraintType
      * interconnectConstraintType} is set to
-     * {@linkplain ConstraintType#SRC_EQUALS_GREATER SRC_EQUALS_GREATER}
+     * {@linkplain ConstraintType#SOURCE_GE_SINK SRC_EQUALS_GREATER}
      * 
      * @return true if the interconnectConstraintType is for sources, false otherwise
      */
     public boolean isConstraintSource() {
-        boolean constraintSource = interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER;
+        boolean constraintSource = interconnectConstraintType == ConstraintType.SOURCE_GE_SINK;
         return constraintSource;
     }
 
@@ -205,7 +205,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             return;
         }
 
-        boolean constraintSource = actorConstraintType == ConstraintType.SRC_EQUALS_GREATER;
+        boolean constraintSource = actorConstraintType == ConstraintType.SOURCE_GE_SINK;
 
         List<Object> portList1 = constraintSource ? ((AtomicActor) getComponent())
                 .inputPortList()
@@ -312,7 +312,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
                 } else {
                     if (object2 instanceof ASTPtRootNode) {
-                        if (constraintType == ConstraintType.SINK_EQUALS_GREATER) {
+                        if (constraintType == ConstraintType.SINK_GE_SOURCE) {
                             setAtLeast(object, object2);
                         } else {
                             setAtLeast(object2, object);

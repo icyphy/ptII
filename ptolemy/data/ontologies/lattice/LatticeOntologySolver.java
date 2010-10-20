@@ -854,10 +854,10 @@ public class LatticeOntologySolver extends OntologySolver {
         String fixedPoint = solvingFixedPoint.stringValue();
         if ((strategy.equals("forward") && fixedPoint.equals("least"))
                 || (strategy.equals("backward") && fixedPoint.equals("greatest"))) {
-            return ConstraintType.SINK_EQUALS_GREATER;
+            return ConstraintType.SINK_GE_SOURCE;
         } else if ((strategy.equals("backward") && fixedPoint.equals("least"))
                 || (strategy.equals("forward") && fixedPoint.equals("greatest"))) {
-            return ConstraintType.SRC_EQUALS_GREATER;
+            return ConstraintType.SOURCE_GE_SINK;
         } else if (strategy.equals("bidirectional")) {
             return ConstraintType.EQUALS;
         } else if (strategy.equals("none")) {
@@ -883,10 +883,10 @@ public class LatticeOntologySolver extends OntologySolver {
         NONE,
 
         /** Represents that the sink must be >= the source. */
-        SINK_EQUALS_GREATER,
+        SINK_GE_SOURCE,
 
         /** Represents that the source must be >= the sink. */
-        SRC_EQUALS_GREATER
+        SOURCE_GE_SINK
     }
 
     ///////////////////////////////////////////////////////////////////
