@@ -194,7 +194,12 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  This parameter contains a LongToken, initially with value 0.
      */
     public SharedParameter seed;
-
+    /**
+     *  The value that controls the type of the probability distribution
+     *  used for random number generation.
+     *  The probability distribution defaults to none, which is interpreted 
+     *  as an equal distribution of numbers between 0 and 1.
+     */
     public StringParameter probabilityDistribution;
 
     ///////////////////////////////////////////////////////////////////

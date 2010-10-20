@@ -93,10 +93,10 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     * @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *  the director is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+     *  an entity with the specified name.
      */
     public GiottoDirector() throws IllegalActionException,
             NameDuplicationException {
