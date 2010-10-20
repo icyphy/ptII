@@ -37,6 +37,8 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -61,7 +63,8 @@ public class LeftRightDirector extends StaticSchedulingDirector {
     /** Constructor. A director is an Attribute.
      *  @param container The container for the director.
      *  @param name The name of the director.
-     *  @throws IllegalActionException If the container cannot contain this director.
+     *  @throws IllegalActionException If the container cannot contain 
+     *   this director.
      *  @throws NameDuplicationException If the container already contains an
      *   Attribute with this name.
      */
@@ -70,18 +73,50 @@ public class LeftRightDirector extends StaticSchedulingDirector {
         super(container, name);
         // Set the scheduler.
         setScheduler(new LeftRightScheduler(this, "LeftRightScheduler"));
+        
+        iterations = new Parameter(this, "iterations");
+        iterations.setExpression("1");
     }
+    
+    /** Parameter specifying the number of iterations.
+     *  If the value is 0 or less, then the model does not stop
+     *  executing on its own.
+     *  This is an int that defaults to 1.
+     */
+    public Parameter iterations;
+        
+    /** Override to initialize the iteration count. */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _iterationCount = 0;
+    }
+    
+    /** Override to check the number of iterations. */
+    public boolean postfire() throws IllegalActionException {
+        boolean result = super.postfire();
+        _iterationCount++;
+        int iterationsValue = ((IntToken)iterations.getToken()).intValue();
+        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
+                return false;
+        }
+        return result;
+    }
+    
+    /** Count of the number of iterations. */
+    private int _iterationCount;
 
     /** Inner class defining the scheduler.
      */
     public static class LeftRightScheduler extends Scheduler {
 
-        /** Constructor. A Scheduler is an Attribute, normally contained by a director.
+        /** Constructor. A Scheduler is an Attribute,
+         *  normally contained by a director.
          *  @param director The director that will use this scheduler.
          *  @param name The name of the scheduler.
-         *  @throws IllegalActionException If the director cannot use this scheduler.
-         *  @throws NameDuplicationException If the director already contains an
-         *   Attribute with this name.
+         *  @throws IllegalActionException If the director cannot use
+         *   this scheduler.
+         *  @throws NameDuplicationException If the director already
+         *   contains an Attribute with this name.
          */
         public LeftRightScheduler(LeftRightDirector director, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -94,11 +129,14 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.
-            CompositeActor compositeActor = (CompositeActor) (director.getContainer());
+            CompositeActor compositeActor
+                    = (CompositeActor) (director.getContainer());
             // Get the actors to be fired by the director.
             List<Actor> actors = compositeActor.deepEntityList();
-            // Create a sorted list of actors, sorted by a speciallized comparator.
-            TreeSet<Actor> sortedActors = new TreeSet(new LeftRightComparator());
+            // Create a sorted list of actors, sorted by
+            // a specialized comparator.
+            TreeSet<Actor> sortedActors
+                    = new TreeSet(new LeftRightComparator());
             sortedActors.addAll(actors);
             // Construct a Schedule from the sorted list.
             Schedule schedule = new Schedule();
@@ -109,13 +147,14 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             return schedule;
         }
 
-        /** Inner class that implements a specialized comparator that compares
-         *  the horizontal positions of the two arguments, which are assumed to
-         *  actors.
+        /** Inner class that implements a specialized comparator
+         *  that compares the horizontal positions of the two
+         *  arguments, which are assumed to actors.
          */
         public static class LeftRightComparator implements Comparator {
             public int compare(Object o1, Object o2) {
-                // In case there is no location for an actor, provide a default.
+                // In case there is no location for an actor,
+                // provide a default.
                 double[] location1 = { Double.NEGATIVE_INFINITY,
                         Double.NEGATIVE_INFINITY };
                 double[] location2 = { Double.NEGATIVE_INFINITY,
@@ -124,9 +163,11 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                 // Attribute that implements the Locatable interface.
                 // Get a list of all such attributes, and use the first one
                 // (normally there will be only one).
-                List locations = ((Entity) o1).attributeList(Locatable.class);
+                List locations 
+                        = ((Entity) o1).attributeList(Locatable.class);
                 if (locations.size() > 0) {
-                    location1 = ((Locatable) locations.get(0)).getLocation();
+                    location1
+                            = ((Locatable) locations.get(0)).getLocation();
                 }
                 locations = ((Entity) o2).attributeList(Locatable.class);
                 if (locations.size() > 0) {
