@@ -74,29 +74,4 @@ public class Source extends AtomicActor {
 
         return super.constraintList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /* 12/17/09 Charles Shelton
-     * Commented out because ptolemy.graph.InequalityTerm does
-     * not have a setEffective() method
-     * 
-    
-    protected void _setEffectiveTerms() {
-        ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
-
-        for (TypedIOPort port : (List<TypedIOPort>) actor.portList()) {
-            if ((port.numLinks() <= 0)
-                    && (port.isInput())
-                    && (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
-
-                if (!isAnnotated(port)) {
-                    getPropertyTerm(port).setEffective(false);
-                }
-            }
-        }
-    }
-    
-    */
 }

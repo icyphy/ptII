@@ -106,23 +106,4 @@ public class RecordAssembler extends AtomicActor {
 
         return super.constraintList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    //    ////                         protected methods                 ////
-    //
-    //    @Override
-    //    protected void _setEffectiveTerms() {
-    //        ptolemy.actor.lib.RecordAssembler actor = (ptolemy.actor.lib.RecordAssembler) getComponent();
-    //
-    //        for (TypedIOPort port : (List<TypedIOPort>) actor.portList()) {
-    //            if (port.numLinks() <= 0
-    //                    && port.isInput()
-    //                    && interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER) {
-    //
-    //                if (!isAnnotated(port)) {
-    //                    getPropertyTerm(port).setEffective(false);
-    //                }
-    //            }
-    //        }
-    //    }
 }
