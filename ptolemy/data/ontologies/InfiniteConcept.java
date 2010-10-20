@@ -91,6 +91,7 @@ public abstract class InfiniteConcept extends Concept {
             throws IllegalActionException, NameDuplicationException {
           super(ontology, "InfiniteConcept_" + ++_conceptNumber);
           setName(getName() + " (of " + getClass().getSimpleName() + ")");
+          _ontology = ontology;
     }
 
     ///////////////////////////////////////////////////////////////////
