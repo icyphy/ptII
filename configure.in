@@ -2347,7 +2347,7 @@ else
 	PT_MSG_RESULT([$PTJUNIT_JAR])
 	PTJUNIT_DIR=junit
         # PTJUNIT_PACKAGES is used in ptII/doc/makefile
-	PTJUNIT_PACKAGES=util.testsuite.junit
+	PTJUNIT_PACKAGES=ptolemy.util.test.junit
     fi	
 
     if test "$PTJUNIT_DIR" = ""; then
