@@ -50,7 +50,7 @@ public class State
 
     /** Construct the code generator adapter associated with the given
      *  state.
-     *  @param componentThe associated
+     *  @param component The associated
      *  ptolemy.domains.modal.kernel.State
      */
     public State(ptolemy.domains.modal.kernel.State component) {
