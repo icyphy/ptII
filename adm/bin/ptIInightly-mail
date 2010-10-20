@@ -99,9 +99,10 @@ $AWK ' $0 ~ /Entering directory/ { indir=$0 }
 
 echo "" >> $mailmsg
 # Note that in JDK1.4, the warning message format from javadoc changed
-echo "javadoc had the following `grep ': warning -' $ptbuildlog | wc -l` warnings" >> $mailmsg
+echo "javadoc had the following `grep ': warning -' $ptbuildlog | grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer" | wc -l` warnings" >> $mailmsg
 
-$AWK ' $0 ~ /^Generating/ { indir=$0 }
+grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer
+" | $AWK ' $0 ~ /^Generating/ { indir=$0 }
       { if ($0 ~ /: warning -/) {
 	    print indir
 	    print $0
@@ -115,7 +116,7 @@ $AWK ' $0 ~ /^Generating/ { indir=$0 }
    	        print ""
 	    }
 	}
-      }' $ptbuildlog >> $mailmsg
+      }' >> $mailmsg
 
 
 echo "" >> $mailmsg
