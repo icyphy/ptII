@@ -28,8 +28,6 @@
 
 package ptolemy.domains.ptides.kernel.test.junit;
 
-import tcl.lang.Interp;
-import java.io.File;
 import ptolemy.util.test.junit.JUnitTclTestBase;
 
 ///////////////////////////////////////////////////////////////////
@@ -64,7 +62,7 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
- */ 
+ */
 public class JUnitTclTest extends JUnitTclTestBase {
     /** Run a test.
      *  <p>If the fileName JVM property is set, then the file named by
@@ -72,8 +70,8 @@ public class JUnitTclTest extends JUnitTclTestBase {
      *  is sourced and the doallTests Tcl proc that is defined
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
-     */ 
-    @org.junit.Test 
+     */
+    @org.junit.Test
     public void run() throws Exception {
         super.run();
     }

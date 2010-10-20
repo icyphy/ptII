@@ -46,11 +46,11 @@ import ptolemy.kernel.util.NamedObj;
  *  order to support this flexibility, fields such as token, receiver,
  *  and absoluteDeadline are added.
  *  <p>
- *  A Ptides event can be of two kinds. A pure event, or a non-pure 
- *  (trigger) event. For all pure events, the absolute deadline of 
+ *  A Ptides event can be of two kinds. A pure event, or a non-pure
+ *  (trigger) event. For all pure events, the absolute deadline of
  *  this event is saved. For all non-pure events, the token as well
  *  as the destination receiver is saved. These information are saved
- *  in addition to the information that is stored in the super class, 
+ *  in addition to the information that is stored in the super class,
  *  such as the timestamp, etc. This class is used in the Ptides domain.
  *  <p>
  *  Note in PtidesEvent, unlike DEEvent, the ioPort parameter is overloaded.
@@ -60,10 +60,10 @@ import ptolemy.kernel.util.NamedObj;
  *  <p>
  *  The semantics of equals() and compareTo() in this method are tricky.
  *  equals() indicates two Ptides events are equal if all fields in this
- *  class and the superclass are equal (including absoluteDeadline, token, 
+ *  class and the superclass are equal (including absoluteDeadline, token,
  *  channel, and receiver, etc).
  *  However, the compareTo() method does not override that of the super class.
- *  The semantics of the compareTo() is such that two events are equal 
+ *  The semantics of the compareTo() is such that two events are equal
  *  if the timestamps, microstep, depth, and priority fields indicate they
  *  are equal. Note
  *  CompareTo() should be called by Ptides directors that try to order
@@ -82,7 +82,7 @@ public class PtidesEvent extends DEEvent {
     /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, depth, and absoluteDeadline.
      *  This constructor should be used if this event is a pure event.
-     *  A pure event is one that does not contained a token (value) that 
+     *  A pure event is one that does not contained a token (value) that
      *  is destined to an input port.
      *  @param actor The destination actor
      *  @param ioPort The causally related IO port.
@@ -117,7 +117,7 @@ public class PtidesEvent extends DEEvent {
      *  @param depth The topological depth of the destination IO Port.
      *  @param token The token associated with the event. This field should
      *          not be null.
-     *  @param receiver The Receiver the event is destined to. This field 
+     *  @param receiver The Receiver the event is destined to. This field
      *          should not be null.
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
@@ -135,7 +135,7 @@ public class PtidesEvent extends DEEvent {
 
     /** Return the absolute deadline of this event if the event is a
      *  pure event.
-     *  A pure event is one that does not contained a token (value) that 
+     *  A pure event is one that does not contained a token (value) that
      *  is destined to an input port.
      *  @return absolute deadline if the event is a pure event.
      *  @exception InternalErrorException If event is not a pure event,
@@ -152,7 +152,6 @@ public class PtidesEvent extends DEEvent {
         return _absoluteDeadline;
     }
 
-
     /** Return the destination channel for this event.
      *  @return The channel The destination channel for this event.
      */
@@ -163,7 +162,7 @@ public class PtidesEvent extends DEEvent {
     /** Indicate whether some other object is equal to this PtidesEvent.
      *  PtidesEvents are equal if the super class indicates they are equal
      *  and the event types (pure vs. non-pure) are the same, and
-     *  their receivers are the same object, and the channels, tokens, 
+     *  their receivers are the same object, and the channels, tokens,
      *  and absoluteDeadline values are the same.
      *  @param object The object with which to compare.
      *  @return true if the object is a DEEvent and the fields of
@@ -179,11 +178,11 @@ public class PtidesEvent extends DEEvent {
         if (!event.isPureEvent()) {
             result = result && event.token().equals(_token);
         } else {
-            result = result && event.absoluteDeadline().equals(_absoluteDeadline);
+            result = result
+                    && event.absoluteDeadline().equals(_absoluteDeadline);
         }
         return result && event.isPureEvent() == _isPureEvent
-                && event.receiver() == _receiver
-                && event.channel() == _channel;
+                && event.receiver() == _receiver && event.channel() == _channel;
     }
 
     /** Return the hash code for the event object.
@@ -192,9 +191,8 @@ public class PtidesEvent extends DEEvent {
      */
     public int hashCode() {
         int primitiveFieldHash = super.hashCode() >>> _channel;
-        int objectFieldHash = (isPureEvent() ? 
-                _absoluteDeadline.hashCode() : 
-                    (_token.hashCode()) >>> _receiver.hashCode());
+        int objectFieldHash = (isPureEvent() ? _absoluteDeadline.hashCode()
+                : (_token.hashCode()) >>> _receiver.hashCode());
         return primitiveFieldHash >>> objectFieldHash;
     }
 
@@ -223,8 +221,8 @@ public class PtidesEvent extends DEEvent {
      */
     public final Token token() {
         if (!isPureEvent() && (_token == null)) {
-            throw new InternalErrorException("A non-pure event should " +
-                        "not have a token field that is null");
+            throw new InternalErrorException("A non-pure event should "
+                    + "not have a token field that is null");
         }
         return _token;
     }
@@ -240,22 +238,30 @@ public class PtidesEvent extends DEEvent {
         if (_actor != null) {
             name = ((NamedObj) _actor).getFullName();
         }
-        return "PtidesEvent{time = " + _timestamp + ", microstep = "
-            + _microstep + ", depth = " + _depth
-            + ", token = " + _token
-            + ", absoluteDeadline = " 
-            + (_absoluteDeadline == null ? "null" : _absoluteDeadline.toString())
-            + ", dest = " + name + "."
-            + (_ioPort == null ? "null" : _ioPort.getName())
-            + "." + _channel
-            + ", receiver = "
-            + (_receiver == null ? "null" : getClass().getName() + " {"
-                    + (_receiver.getContainer() != null ? 
-                    _receiver.getContainer().getFullName() : "")
-                    + ".receiver }")
-            + ", isPureEvent = "
-            + _isPureEvent
-            + "}";
+        return "PtidesEvent{time = "
+                + _timestamp
+                + ", microstep = "
+                + _microstep
+                + ", depth = "
+                + _depth
+                + ", token = "
+                + _token
+                + ", absoluteDeadline = "
+                + (_absoluteDeadline == null ? "null" : _absoluteDeadline
+                        .toString())
+                + ", dest = "
+                + name
+                + "."
+                + (_ioPort == null ? "null" : _ioPort.getName())
+                + "."
+                + _channel
+                + ", receiver = "
+                + (_receiver == null ? "null" : getClass().getName()
+                        + " {"
+                        + (_receiver.getContainer() != null ? _receiver
+                                .getContainer().getFullName() : "")
+                        + ".receiver }") + ", isPureEvent = " + _isPureEvent
+                + "}";
     }
 
     ///////////////////////////////////////////////////////////////////

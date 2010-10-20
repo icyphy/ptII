@@ -28,8 +28,7 @@
 
 package ptolemy.domains.ptides.kernel.test.junit;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
 
 ///////////////////////////////////////////////////////////////////
@@ -41,12 +40,12 @@ import ptolemy.domains.ptides.kernel.PtidesEvent;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
- */ 
+ */
 public class PtidesEventJUnitTest {
     /** 
      *  
-     */ 
-    @org.junit.Test 
+     */
+    @org.junit.Test
     public void constructorWithNulls() throws Exception {
         PtidesEvent event = new PtidesEvent(null, null, null, 1, 2, null);
 
@@ -56,6 +55,7 @@ public class PtidesEventJUnitTest {
     }
 
     public static void main(String args[]) {
-        org.junit.runner.JUnitCore.main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
+        org.junit.runner.JUnitCore
+                .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
     }
 }

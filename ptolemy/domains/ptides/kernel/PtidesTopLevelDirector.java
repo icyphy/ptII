@@ -70,13 +70,13 @@ public class PtidesTopLevelDirector extends DEDirector {
      *  the PTIDES actor.
      *  @param actor  an Actor object.
      *  @param time   a Time object.
-     *  @throws IllegalActionException if the super method throws it.
+     *  @exception IllegalActionException if the super method throws it.
      *  @return Time of fireAt.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         if (actor.getDirector() instanceof PtidesBasicDirector) {
-            return super.fireAt(actor, time.subtract(_ptidesPlatformSyncError
-                    .get(actor)));
+            return super.fireAt(actor,
+                    time.subtract(_ptidesPlatformSyncError.get(actor)));
         } else {
             return super.fireAt(actor, time);
         }

@@ -197,7 +197,7 @@ public class PtidesActorProperties {
      *            The actor for which the worst case execution time is
      *            requested.
      * @return The worst case execution time.
-     * @throws IllegalActionException Thrown if WCET is not a double.
+     * @exception IllegalActionException Thrown if WCET is not a double.
      */
     public static double getWCET(Actor actor) throws IllegalActionException {
         try {
@@ -230,7 +230,7 @@ public class PtidesActorProperties {
      *            The port for which the worst case execution time is
      *            requested.
      * @return The worst case execution time.
-     * @throws IllegalActionException Thrown if the parameter is not a double.
+     * @exception IllegalActionException Thrown if the parameter is not a double.
      */
     public static Double getWCET(IOPort port) throws IllegalActionException {
         try {

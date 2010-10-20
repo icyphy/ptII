@@ -50,7 +50,7 @@ public class Tag implements Comparable {
         this.timestamp = timestamp;
         this.microstep = microstep;
     }
-    
+
     /** Construct an empty Tag.
      */
     public Tag() {

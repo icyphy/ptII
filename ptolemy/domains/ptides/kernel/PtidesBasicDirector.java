@@ -74,7 +74,7 @@ import ptolemy.moml.MoMLChangeRequest;
 
 /** This director implements the Ptides programming model.
  *  The Ptides director is based on the DE director. Like the DE director,
- *  this director maintains a totally ordered set of events, and processes 
+ *  this director maintains a totally ordered set of events, and processes
  *  these events in the order defined on their tags and depths.
  *  However, unlike the DE director,
  *  this director has a local notion time, decoupled from that of the
@@ -89,37 +89,37 @@ import ptolemy.moml.MoMLChangeRequest;
  *  An event in the Ptides programming model is in the same sense as an event
  *  in DE. It also consists of a tag as well as value token, as well as fields
  *  such as depth, which is used to define the scheduling semantics. Because
- *  of the similarities, PtidesEvent is a subclass of DEEvent. PtidesEvent 
- *  is different from DE event, however, in that it holds the token value within 
- *  the event structure, instead of immediately transfer tokens to downstream 
+ *  of the similarities, PtidesEvent is a subclass of DEEvent. PtidesEvent
+ *  is different from DE event, however, in that it holds the token value within
+ *  the event structure, instead of immediately transfer tokens to downstream
  *  ports. When an event is to be processed, as the event is taken out of
  *  the event queue, the token is transmitted to the input port, ready to be
- *  consumed.  
+ *  consumed.
  *  <p>
  *  Ptides allow event execution out of timestamp order. In other words, at
  *  any point in time, all events are considered for processing. To ensure DE
  *  semantics is still enforced, Ptides introduces a safe-to-process analysis.
- *  This analysis returns a boolean to indicate whether an event can be 
+ *  This analysis returns a boolean to indicate whether an event can be
  *  processed without violating DE semantics, based on information
- *  such as events currently in the event queue, their model time relationship 
+ *  such as events currently in the event queue, their model time relationship
  *  with each other, as well as the current physical time. In this particular
- *  version of the Ptides scheduler, we simply take the top (smallest timestamp) 
- *  event, and compares its timestamp with the current physical time + 
+ *  version of the Ptides scheduler, we simply take the top (smallest timestamp)
+ *  event, and compares its timestamp with the current physical time +
  *  a pre-computed offset (call this the minDelay offset). If
  *  the physical time is larger, then this event is safe to process. Otherwise,
  *  we wait for physical time to pass until this event becomes safe, at which
  *  point it is processed. This is the most basic version of the Ptides scheduler
- *  (thus the name), however subclasses of this director provides more 
+ *  (thus the name), however subclasses of this director provides more
  *  sophisticated scheduling algorithms.
  *  <p>
- *  Like in the DE domain, Directed loops of IO ports with no delay will trigger 
+ *  Like in the DE domain, Directed loops of IO ports with no delay will trigger
  *  an exception. For detailed explanation, @see DEDirector. Unlike in DE however,
- *  Ptides uses superdense-dependency to not only indicate whether model time 
+ *  Ptides uses superdense-dependency to not only indicate whether model time
  *  delay exists between components, but also what the delay value is.
  *  <p>
- *  In the preinitialize method, according to the model graph structure, the 
+ *  In the preinitialize method, according to the model graph structure, the
  *  minDelay offsets are calculated, using superdense dependency between
- *  connected components. 
+ *  connected components.
  *  <p>
  *  Preemption is disallowed in this scheduler.
  *  <p>
@@ -189,19 +189,19 @@ public class PtidesBasicDirector extends DEDirector {
     public Parameter highlightModelTimeDelays;
 
     /** If true, then it can be assumed that actors receive events in timestamp
-     *  order. Setting this parameter could potentially simplifies the safe to 
+     *  order. Setting this parameter could potentially simplifies the safe to
      *  process analysis.
      *  This is a boolean that defaults to false.
      */
     public Parameter actorsReceiveEventsInTimestampOrder;
 
-    /** Store the synchronization error in the platform governed by this 
+    /** Store the synchronization error in the platform governed by this
      *  tides director.
-     *  In a distributed Ptides environment, each distributed platform is modeled 
-     *  by a composite actor that is governed by a Ptides director 
+     *  In a distributed Ptides environment, each distributed platform is modeled
+     *  by a composite actor that is governed by a Ptides director
      *  (or its subclass). In reality, these platforms will have (physical) time
      *  synchronization errors between them. This error is captured within
-     *  this parameter.  
+     *  this parameter.
      */
     public Parameter syncError;
 
@@ -283,7 +283,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Return the model microstep of the enclosing director, which is our model
      *  of physical time.
      *  @return Physical time.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     /*public Time getPhysicalTime() throws IllegalActionException {
         Director director = this;
@@ -313,7 +313,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Return the model time of the enclosing director, which is our model
      *  of physical time.
      *  @return Physical time.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     public Tag getPhysicalTag() throws IllegalActionException {
         Tag tag = new Tag();
@@ -362,7 +362,7 @@ public class PtidesBasicDirector extends DEDirector {
             _debug("========= PtidesBasicDirector fires at " + getModelTime()
                     + "  with microstep as " + _microstep);
         }
-        
+
         super.fire();
 
         if (_debugging) {
@@ -370,7 +370,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Create new variables, initialize the actors and request a refiring 
+    /** Create new variables, initialize the actors and request a refiring
      *  at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
@@ -425,14 +425,14 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Call the preinitialize() method in the super class. The superclass
-     *  instantiates an event queue structure, however, here a 
-     *  PtidesListEventQueue structure is instantiated in its place. 
-     *  This is because we need to access 
-     *  not only the first event in the event queue, but all events in the 
-     *  event queue, in sorted order. Then the minDelay offsets used in the 
+     *  instantiates an event queue structure, however, here a
+     *  PtidesListEventQueue structure is instantiated in its place.
+     *  This is because we need to access
+     *  not only the first event in the event queue, but all events in the
+     *  event queue, in sorted order. Then the minDelay offsets used in the
      *  safe-to-process analysis is calculated. Also, a check is performed
      *  to see if sensors, actuators, and networks ports are annotated with
-     *  the corresponding parameters, and whether they are connected to the 
+     *  the corresponding parameters, and whether they are connected to the
      *  corresponding sensor/actuator/network actors.
      *  Finally, the stopWhenQueueIsEmpty is set to false, since the Ptides
      *  environment could wait for outside events to trigger its execution,
@@ -571,11 +571,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  is placed at the actuator/network port, ready to be transferred
      *  to the outside.
      *  <p>
-     *  2. Bookkeeping structures that keeps track of which actor 
+     *  2. Bookkeeping structures that keeps track of which actor
      *  has just fired are cleared.
      */
     protected void _actorFired() {
-        
+
         _getNextActuationEvent();
 
         // Now clear _pureEvent* since an actor has finished firing.
@@ -585,7 +585,7 @@ public class PtidesBasicDirector extends DEDirector {
             _pureEventSourcePorts.remove(_lastActorFired);
         }
     }
-    
+
     /** Calculate the minDelay offset for each input port in the model, and
      *  annotate the ports with these offsets.
      *  This causality analysis usually happens at the preinitialize phase.
@@ -593,7 +593,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  Start from each input port that is connected to the outside of the platform
      *  (These input ports indicate sensors and network interfaces, call them startPorts),
      *  and traverse the graph until we reach the output port connected to the outside of
-     *  the platform (actuators/network ports). For each input port in between, 
+     *  the platform (actuators/network ports). For each input port in between,
      *  annotate it with
      *  a minDelay parameter. This parameter is an array of doubles, where each double
      *  corresponds to the minimum delay offset for a particular channel of that port.
@@ -696,8 +696,7 @@ public class PtidesBasicDirector extends DEDirector {
                                         channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                     }
                                     channelDependency
-                                            .put(
-                                                    Integer.valueOf(channel),
+                                            .put(Integer.valueOf(channel),
                                                     SuperdenseDependency.OPLUS_IDENTITY);
                                     _inputModelTimeDelays.put(receivePort,
                                             channelDependency);
@@ -729,8 +728,8 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Check whether we should process more events in the same firing. 
-     *  If there are events in the event queue of the same timestamp, 
+    /** Check whether we should process more events in the same firing.
+     *  If there are events in the event queue of the same timestamp,
      *  return true, otherwise return false.
      *  @return true if there are events of the same timestamp, otherwise
      *   return false.
@@ -781,7 +780,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  be connected to a NetworkInputDeivce. Also, it should not have a realTimeDelay
      *  attribute.
      *  </p>
-     *  @exception IllegalActionException If sensor ports are connected to 
+     *  @exception IllegalActionException If sensor ports are connected to
      *   NetworkInputDevice or have a networkDelay attribute; Or if a
      *   network port is not connected to a NetworkInputDeivce, or it has a
      *   realTimeDelay attribute.
@@ -798,10 +797,12 @@ public class PtidesBasicDirector extends DEDirector {
                         .deepInsidePortList()) {
                     if (_isNetworkPort(port)) {
                         if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
-                            throw new IllegalActionException(port, sinkPort
-                                    .getContainer(), "An input network "
-                                    + "port must have a NetworkInputDevice as "
-                                    + "its sink.");
+                            throw new IllegalActionException(
+                                    port,
+                                    sinkPort.getContainer(),
+                                    "An input network "
+                                            + "port must have a NetworkInputDevice as "
+                                            + "its sink.");
                         }
                         Parameter parameter = (Parameter) ((NamedObj) port)
                                 .getAttribute("realTimeDelay");
@@ -929,7 +930,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  this method does nothing.
      *  </p><p>
      *  The causal port as well as the absolute deadline for this event are
-     *  also calculated. 
+     *  also calculated.
      *  @param actor The actor to be fired.
      *  @param time The timestamp of the event.
      *  @exception IllegalActionException If the time argument is less than
@@ -1020,9 +1021,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         // Register this trigger event.
-        PtidesEvent newEvent = new PtidesEvent(ioPort, ioPort
-                .getChannelForReceiver(receiver), getModelTime(), _microstep,
-                depth, token, receiver);
+        PtidesEvent newEvent = new PtidesEvent(ioPort,
+                ioPort.getChannelForReceiver(receiver), getModelTime(),
+                _microstep, depth, token, receiver);
         _eventQueue.put(newEvent);
     }
 
@@ -1176,7 +1177,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port at which execution time is denoted.
      *  @param actor an Actor object.
      *  @return executionTime parameter.
-     *  @exception IllegalActionException If excution time from 
+     *  @exception IllegalActionException If excution time from
      *   PtidesActorProperties cannot be obtained.
      */
     protected static double _getExecutionTime(IOPort port, Actor actor)
@@ -1209,7 +1210,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Return the minDelay parameter. The minDelay parameter is related to the
      *  safe to process analysis of Ptides. In Ptides, an event of timestamp
      *  \tau is safe to process at physical time t if t >= \tau - minDelay.
-     *  For all non-pure(trigger) events, this minDelay offset is stored at 
+     *  For all non-pure(trigger) events, this minDelay offset is stored at
      *  each channel of each input port.
      *  @param port The port where this minDelay parameter is associated to.
      *  @param channel The channel where this minDelay parameter is associated to.
@@ -1380,7 +1381,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // Request a refiring so we can process the next event
                 // on the event queue at the current physical time.
                 executiveDirector.fireAtCurrentTime((Actor) container);
-                
+
                 _lastActorFired = _getActorFromEventList((List<PtidesEvent>) currentEventList.contents);
 
                 return _lastActorFired;
@@ -1456,7 +1457,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         // If the firing of this event triggered another pure event, we need to calculate the
-        // deadline of the pure event through the use of the last timestamp, the (smallest) 
+        // deadline of the pure event through the use of the last timestamp, the (smallest)
         // deadline of the last event(s), and the (smallest) \delta of the causality delays.
         // which we save here.
         _saveEventInformation(eventsToProcess);
@@ -1472,7 +1473,7 @@ public class PtidesBasicDirector extends DEDirector {
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
             executiveDirector.fireAtCurrentTime((Actor) container);
-            
+
             _lastActorFired = actorToFire;
 
             return actorToFire;
@@ -1528,8 +1529,7 @@ public class PtidesBasicDirector extends DEDirector {
                     eventsToProcess, executionTime));
             _physicalTimeExecutionStarted = physicalTag.timestamp;
             if (_debugging) {
-                _debug("Actor "
-                        + actorToFire.toString()
+                _debug("Actor " + actorToFire.toString()
                         + " starts executing at physical time "
                         + physicalTag.timestamp);
             }
@@ -1549,15 +1549,15 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _getNextActuationEvent() {
         int eventIndex = 0;
-        synchronized(_eventQueue) {
+        synchronized (_eventQueue) {
             while (eventIndex < _eventQueue.size()) {
                 PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
                         .get(eventIndex);
                 if (nextEvent.ioPort() != null &&
-                    //(nextEvent.ioPort().getContainer() == getContainer()) &&
-                    nextEvent.ioPort().isOutput()) {
-                        ((PtidesListEventQueue)_eventQueue).take(eventIndex);
-                        continue;
+                //(nextEvent.ioPort().getContainer() == getContainer()) &&
+                        nextEvent.ioPort().isOutput()) {
+                    ((PtidesListEventQueue) _eventQueue).take(eventIndex);
+                    continue;
                 }
                 eventIndex++;
             }
@@ -1716,7 +1716,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         // This should actually never happen, since _getNextActuationEvent() should
         // move all actuation events to the outputs.
-        assert(!port.isOutput());
+        assert (!port.isOutput());
         // Port is an output port, this could only happen if it is the output port
         // of a composite actor. Thus transferOutput should take care of this, and
         // we say it's always safe to process.
@@ -1780,7 +1780,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in, AND are destined to the same finite equivalence class. These events
-     *  should be removed from the event queue in the process. 
+     *  should be removed from the event queue in the process.
      *  @param event The reference event.
      *  @return List of events of the same tag.
      *  @exception IllegalActionException If _destinedToSameEquivalenceClass() throws it.
@@ -1949,10 +1949,10 @@ public class PtidesBasicDirector extends DEDirector {
 
                 Time lastModelTime = _currentTime;
                 if (_isNetworkPort(realTimeEvent.port)) {
-                    // If the token is transferred from a network port, then there is no 
-                    // need to set the proper timestamp associated with the token. This 
-                    // is because we rely on the fact every network input port is directly 
-                    // connected to a networkInputDevice, which will set the correct 
+                    // If the token is transferred from a network port, then there is no
+                    // need to set the proper timestamp associated with the token. This
+                    // is because we rely on the fact every network input port is directly
+                    // connected to a networkInputDevice, which will set the correct
                     // timestamp associated with the token.
                     _realTimeInputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel,
@@ -2195,9 +2195,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  @see #_saveEventInformation(List)
      */
     private Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
-        
-        Time timeDiff = (Time)_pureEventDelays.get(actor);
-        Time lastAbsoluteDeadline = (Time)_pureEventDeadlines.get(actor);
+
+        Time timeDiff = (Time) _pureEventDelays.get(actor);
+        Time lastAbsoluteDeadline = (Time) _pureEventDeadlines.get(actor);
         // This could happen during initialization, and a modal model calls fireAt() in order
         // to be initialized. In which case we give it the highest priority because it is
         // an initialization event.
@@ -2205,9 +2205,9 @@ public class PtidesBasicDirector extends DEDirector {
             return Time.NEGATIVE_INFINITY;
         }
         timeDiff = nextTimestamp.subtract(timeDiff);
-        // If the difference between the new timestamp and the old timestamp is 
+        // If the difference between the new timestamp and the old timestamp is
         // less than the minimum model time delay, then the absolute deadline is
-        // simply that of the trigger event. 
+        // simply that of the trigger event.
         // This case could happen if a pure event
         // is produced, which later triggers another firing of the actor, and produces
         // an event that is of timestamp greater than or equal to the minimum model
@@ -2277,7 +2277,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return The min delay associated with this port channel pair.
      *  @exception IllegalActionException If finite dependent ports cannot
      *   be evaluated, or token of actorsReceiveEventsInTimestampOrder
-     *   parameter cannot be evaluated. 
+     *   parameter cannot be evaluated.
      */
     private double _calculateMinDelayForPortChannel(IOPort inputPort,
             Integer channel) throws IllegalActionException {
@@ -2329,7 +2329,7 @@ public class PtidesBasicDirector extends DEDirector {
         // source port from the hashmap, because more than one pure events can
         // be produced during one firing. In which case, the last source port
         // can be used again.
-        IOPort lastSourcePort = (IOPort)_pureEventSourcePorts.get(actor);
+        IOPort lastSourcePort = (IOPort) _pureEventSourcePorts.get(actor);
         // Causality marker does not exist, we take the conservative approach, and say all inputs
         // causally affect the pure event.
         if (causalityMarker == null) {
@@ -2404,7 +2404,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  and the minimum model time delay of the last executing event. These information
      *  is used to calculate the absolute deadline of the produced pure event.
      *  @param eventsToProcess The list of events to be processed.
-     *  @exception IllegalActionException If abslute deadline of an event, 
+     *  @exception IllegalActionException If abslute deadline of an event,
      *   finite dependent ports of a port, or dependency between two ports
      *   cannot be evaluated.
      */
@@ -2417,7 +2417,7 @@ public class PtidesBasicDirector extends DEDirector {
         Actor actorToFire = eventsToProcess.get(0).actor();
 
         // If the firing of this event triggered another pure event, we need to calculate the
-        // deadline of the pure event through the use of the last timestamp, the (smallest) 
+        // deadline of the pure event through the use of the last timestamp, the (smallest)
         // deadline of the last event(s), and the (smallest) \delta of the causality delays.
         // which we save here.
         Time lastTimestamp = eventsToProcess.get(0).timeStamp();
@@ -2454,7 +2454,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
         _pureEventSourcePorts.put(actorToFire, eventsToProcess.get(0).ioPort());
-        _pureEventDelays.put(actorToFire, 
+        _pureEventDelays.put(actorToFire,
                 lastTimestamp.add(lastDependency.timeValue()));
         _pureEventDeadlines.put(actorToFire, lastAbsoluteDeadline);
     }
@@ -2521,7 +2521,7 @@ public class PtidesBasicDirector extends DEDirector {
             IOPort port = (IOPort) portDependency.port;
             SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
             Actor actor = (Actor) port.getContainer();
-            // if this actor has not been visited before, add it to the visitedActor set. 
+            // if this actor has not been visited before, add it to the visitedActor set.
             if (!_visitedActors.contains(actor)) {
                 _visitedActors.add(actor);
             }
@@ -2571,8 +2571,8 @@ public class PtidesBasicDirector extends DEDirector {
                                         if (channelDependency == null) {
                                             channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                         }
-                                        channelDependency.put(Integer
-                                                .valueOf(channel),
+                                        channelDependency.put(
+                                                Integer.valueOf(channel),
                                                 prevDependency);
                                         _inputModelTimeDelays.put(sinkPort,
                                                 channelDependency);
@@ -2637,7 +2637,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  to calculate the minDelay parameter, which is used for safe to process analysis.
      */
     private Map _inputModelTimeDelays;
-    
+
     /** Save the last actor that was fired by this director. If null, the after
      *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
      *  _pureEventSourcePorts that are associated with this actor should be removed.
@@ -2664,19 +2664,19 @@ public class PtidesBasicDirector extends DEDirector {
     /** Maps ports to dependencies. Used to determine minDelay parameter
      */
     private Map _portDelays;
-    
+
     /** Stores absolute deadline information for pure events that will be produced
      *  in the future.
      */
     private Map _pureEventDeadlines;
-    
+
     /** Store delays of pure events for the calculation of absolute deadline.
      */
     private Map _pureEventDelays;
-    
+
     /** Store source port information for pure events that will be produced
      *  in the future.
-     *  This variable maps the next actor to be fired to the source input port of the 
+     *  This variable maps the next actor to be fired to the source input port of the
      *  last event. This is used to determine the causality information
      *  of the pure event that is to be produced.
      */
@@ -2782,7 +2782,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
             return (compareTo(arg0) == 0);
         }
-        
+
         /** Hashcode for this class.
          *  @return hashcode for this class.
          */

@@ -49,7 +49,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** This director allows users to define deadlines themselves. Unlike 
+/** This director allows users to define deadlines themselves. Unlike
  *  PtidesPreemptiveEDFDirector, which automatically calculates the deadline
  *  using model time delays, this director can work with arbitrary deadlines.
  *  The safe to process analysis in this director guarantees the correct
@@ -106,9 +106,9 @@ public class PtidesPreemptiveUserEDFDirector extends
     ////                         protected methods                 ////
 
     /** Only calculate the deadline using model time delay if asked to.
-     *  Calculates the deadline for each channel in each input port within the 
-     *  composite actor governed by this Ptides director. Deadlines are calculated 
-     *  with only model time delays, not worst-case-execution-times (WCET). 
+     *  Calculates the deadline for each channel in each input port within the
+     *  composite actor governed by this Ptides director. Deadlines are calculated
+     *  with only model time delays, not worst-case-execution-times (WCET).
      */
     protected void _calculateDeadline() throws IllegalActionException {
         BooleanToken token = (BooleanToken) calculateDeadlineFromModelDelay
@@ -241,7 +241,7 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  to check if there are any events in the same platform that may result in
      *  this event unsafe to process. If so, return false, else return true.
      *  @param event The event of interest.
-     *  @return true if there are no events from the outside of the platform that 
+     *  @return true if there are no events from the outside of the platform that
      *  may result in this event unsafe.
      *  @exception IllegalActionException
      */
@@ -274,7 +274,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                         .get(eventIndex);
                 // Since the event queue is sorted in the order of timestamps, any event with
                 // larger timestamp cannot causally affect the execution of the event of interest.
-                // Any smaller event will also 
+                // Any smaller event will also
                 if (earlierEvent == event) {
                     break;
                 }
@@ -285,7 +285,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                 if (earlierEvent.isPureEvent()) {
                     if (earlierPort == null) {
                         // The earlier event doesn't have a ioPort, so we assume the pure event
-                        // can result in events at all of its output ports. 
+                        // can result in events at all of its output ports.
                         earlierPort = _getOneSinkPort((IOPort) earlierEvent
                                 .actor().inputPortList().get(0));
                     } else {
@@ -333,10 +333,10 @@ public class PtidesPreemptiveUserEDFDirector extends
     private Map<IOPort, Map<IOPort, Dependency>> _inputPairDependencies;
 
     /** Given an input port (a), return one input port (b) such that \delta_0{a, o) < \infty,
-     *  where o is an output port, and o is directly connected to b. 
+     *  where o is an output port, and o is directly connected to b.
      *  @param thisPort
      *  @return one input port.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     private IOPort _getOneSinkPort(IOPort thisPort)
             throws IllegalActionException {

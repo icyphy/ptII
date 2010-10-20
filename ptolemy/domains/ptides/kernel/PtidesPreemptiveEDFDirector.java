@@ -101,10 +101,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Calculates the deadline for each channel in each input port within the 
-     *  composite actor governed by this Ptides director. Deadlines are calculated 
+    /** Calculates the deadline for each channel in each input port within the
+     *  composite actor governed by this Ptides director. Deadlines are calculated
      *  with only model time delays, not worst-case-execution-times (WCET).
-     *  @throws IllegalActionException when ports that are both input/output ports exist.
+     *  @exception IllegalActionException when ports that are both input/output ports exist.
      */
     protected void _calculateDeadline() throws IllegalActionException {
         // The algorithm used is exactly the same as the one in _calculateMinDelay. The only
@@ -329,7 +329,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                     } // else if they are equal, take the previous event.
                 }
             } // if the actor is currently firing, or if it's not safe to process, we
-            // do not considering firing it.
+              // do not considering firing it.
         }
 
         if (_eventToProcess == null) {
@@ -403,8 +403,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         + " with another event at actor: "
                         + _eventToProcess.actor()
                         + ". This preemption happened at physical time "
-                        + getPhysicalTag().timestamp
-                        + "." + getPhysicalTag().microstep);
+                        + getPhysicalTag().timestamp + "."
+                        + getPhysicalTag().microstep);
             }
 
             return true;
