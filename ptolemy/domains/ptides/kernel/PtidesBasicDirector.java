@@ -2121,6 +2121,10 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
+        // FIXME: since ports that are annotated with transferImmediately
+        // are not checked for deadline violations, do they still count
+        // as actuation ports? i.e., when calculating deadline, should we
+        // start at ports that are annotated with transferImmediately?
         if (_isNetworkPort(port) || _transferImmediately(port)) {
             // If we transferred once to the network output, then return true,
             // and go through this once again.
@@ -2176,7 +2180,7 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Calculates the absolute deadline for the pure event. This uses
+    /** Calculate the absolute deadline for the pure event. This uses
      *  information stored earlier. The exact calculation is done as follows:
      *  <p>
      *  If the new event(e') is produced due to the processing of a trigger
@@ -2220,9 +2224,13 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** For all deeply contained actors, if annotateModelDelay is true,
      *  the actor has a dependency that is not equal to the OTimesIdenty is
-     *  annotated with a certain color. We repeat this process recursively.
+     *  annotated with a certain color. This process is repeated recursively.
      *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
+     *  @param compositeActor actor to highlight model delays.
+     *  @exception IllegalActionException If causality interface cannot
+     *   be evaluated, dependency cannot be evaluated, or finite dependent
+     *   ports cannot be evaluated.
      */
     private void _highlightModelDelays(CompositeActor compositeActor,
             boolean highlightModelDelay) throws IllegalActionException {
@@ -2267,7 +2275,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param inputPort The input port to find min delay for.
      *  @param channel The channel at this input port.
      *  @return The min delay associated with this port channel pair.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If finite dependent ports cannot
+     *   be evaluated, or token of actorsReceiveEventsInTimestampOrder
+     *   parameter cannot be evaluated. 
      */
     private double _calculateMinDelayForPortChannel(IOPort inputPort,
             Integer channel) throws IllegalActionException {
@@ -2306,10 +2316,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  to return whether the pure event is causally related to a set of input ports.
      *  If it does, return one input port from that equivalence class, otherwise, return
      *  null.
-     * 
      *  @param actor The destination actor.
      *  @return whether the future pure event is causally related to any input port(s)
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If whether causality marker contains
+     *   source port cannot be evaluated.
      */
     private IOPort _getCausalPortForThisPureEvent(Actor actor)
             throws IllegalActionException {
@@ -2320,7 +2330,7 @@ public class PtidesBasicDirector extends DEDirector {
         // be produced during one firing. In which case, the last source port
         // can be used again.
         IOPort lastSourcePort = (IOPort)_pureEventSourcePorts.get(actor);
-        // causality marker does not exist, we take the conservative approach, and say all inputs
+        // Causality marker does not exist, we take the conservative approach, and say all inputs
         // causally affect the pure event.
         if (causalityMarker == null) {
             return lastSourcePort;
@@ -2341,10 +2351,10 @@ public class PtidesBasicDirector extends DEDirector {
         return currentEventList.get(0).actor();
     }
 
-    /** check if the port is a networkPort
-     *  this method is default to return false, i.e., an output port to the outside of the
-     *  platform is by default an actuator port.
-     *  @exception IllegalActionException
+    /** Return the network delay of the port.
+     *  @param port The port with network delay.
+     *  @exception IllegalActionException If token of networkDelay parameter
+     *   cannot be evaluated.
      */
     private static double _getNetworkDelay(IOPort port)
             throws IllegalActionException {
@@ -2359,7 +2369,8 @@ public class PtidesBasicDirector extends DEDirector {
     /** Returns the relativeDeadline parameter.
      *  @param port The port the relativeDeadline is associated with.
      *  @return relativeDeadline parameter
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If token of relativeDeadline
+     *   parameter cannot be evaluated.
      */
     private static double _getRelativeDeadline(IOPort port)
             throws IllegalActionException {
@@ -2372,10 +2383,11 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** check if the port is a networkPort
+    /** Return whether the port is a networkPort.
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If token of networkPort cannot be
+     *   evaluated.
      */
     private static boolean _isNetworkPort(IOPort port)
             throws IllegalActionException {
@@ -2391,8 +2403,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  the source port of the last firing event, the timestamp, absolute deadline,
      *  and the minimum model time delay of the last executing event. These information
      *  is used to calculate the absolute deadline of the produced pure event.
-     *  @param eventsToProcess
-     *  @exception IllegalActionException
+     *  @param eventsToProcess The list of events to be processed.
+     *  @exception IllegalActionException If abslute deadline of an event, 
+     *   finite dependent ports of a port, or dependency between two ports
+     *   cannot be evaluated.
      */
     private void _saveEventInformation(List<PtidesEvent> eventsToProcess)
             throws IllegalActionException {
@@ -2448,7 +2462,8 @@ public class PtidesBasicDirector extends DEDirector {
     /** Set the minDelay of a port to an array of minDelay values.
      *  @param inputPort The input port to be annotated.
      *  @param minDelays The minDelay values to annotate.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If minDelay parameter already
+     *   exists, or the minDelay parameter cannot be set.
      */
     private static void _setMinDelay(IOPort inputPort, double[] minDelays)
             throws IllegalActionException {
@@ -2471,7 +2486,9 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** check if we should output to the conclosing director immediately.
      *  this method is default to return false.
-     *  @exception IllegalActionException
+     *  @param port Output port to transmit output event immediately.
+     *  @exception IllegalActionException If token of this parameter
+     *   cannot be evaluated.
      */
     private static boolean _transferImmediately(IOPort port)
             throws IllegalActionException {
@@ -2484,7 +2501,9 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Starting from the startPort, traverse the graph to calculate the minDelay offset.
-     *  @exception IllegalActionException 
+     *  @param startPort, port to start traversing at.
+     *  @exception IllegalActionException If there are ports that are both input
+     *   and output ports.
      */
     private void _traverseToCalcMinDelay(IOPort startPort)
             throws IllegalActionException {
@@ -2614,29 +2633,28 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Maps input ports to model time delays. These model time delays are then used
+    /** Map input ports to model time delays. These model time delays are then used
      *  to calculate the minDelay parameter, which is used for safe to process analysis.
      */
     private Map _inputModelTimeDelays;
     
-    /** Saves the last actor that was fired by this director. If null, the after
+    /** Save the last actor that was fired by this director. If null, the after
      *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
      *  _pureEventSourcePorts that are associated with this actor should be removed.
      */
     private Actor _lastActorFired;
 
-    /** Each actor keeps track of the tag of the last event that was consumed when this
+    /** Map actors to tags.
+     *  Each actor keeps track of the tag of the last event that was consumed when this
      *  actor fired. This helps to identify cases where safe-to-process analysis failed
      *  unexpectedly.
      */
     private HashMap<NamedObj, Tag> _lastConsumedTag;
 
-    /** Last executing actor
-     *  Keeps track of the last actor with non-zero executing time that was executing
+    /** Keeps track of the last actor with non-zero executing time that was executing
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
-
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
@@ -2652,23 +2670,24 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Map _pureEventDeadlines;
     
+    /** Store delays of pure events for the calculation of absolute deadline.
+     */
     private Map _pureEventDelays;
     
-    /** Stores source port information for pure events that will be produced
+    /** Store source port information for pure events that will be produced
      *  in the future.
      *  This variable maps the next actor to be fired to the source input port of the 
      *  last event. This is used to determine the causality information
      *  of the pure event that is to be produced.
-
      */
     private Map _pureEventSourcePorts;
 
-    /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
+    /** A sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
     private PriorityQueue _realTimeOutputEventQueue;
 
-    /** a sorted queue of RealTimeEvents that stores events when they arrive at the input of
-     *  the platform, but are not yet visible to the platform (because of real time delay d_o)
+    /** A sorted queue of RealTimeEvents that stores events when they arrive at the input of
+     *  the platform, but are not yet visible to the platform (because of real time delay d_o).
      */
     private PriorityQueue _realTimeInputEventQueue;
 
