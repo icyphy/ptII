@@ -2251,6 +2251,73 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#	See if there was a command-line option for where Jacl is
+#       Jacl is a 100% Java implementation of a subset of Tcl.
+#       We use Jacl for unit tests.
+#--------------------------------------------------------------------
+
+# We only need to find Jacl if $PTII/util/testsuite
+# exists.  If we are shipping ptplot, then this directory might not
+# exist
+PTJACL_JAR=$PTII/lib/ptjacl.jar
+# JTCLSH uses JAVAFLAGS for use with the 
+# vergil/test/VergilConfiguration.tcl test
+# We set the ptolemy.ptII.dir property for use in the 
+# actor.lib.test.auto.FileWriter{1,2}.xml tests
+# JTCLSHFLAGS gets set to -Dptolemy.ptII.isRunningNightlyBuild=true
+# when we are running the nightlybuild
+# Codegen uses up lots of memory while running
+JTCLSH='["$(JAVA)" -Xmx1000M $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl.lang.Shell]'
+# PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
+# if the ptjacl.jar file was found
+PTJACL_DIR= 
+
+if test ! -d "$PTII/util/testsuite"; then
+    PT_MSG_STATUS([$PTII/util/testsuite is not present,
+    so we need not find Jacl.])
+else
+    AC_MSG_CHECKING([for ptjacl.jar])
+    AC_ARG_WITH(ptjacl_jar, [  --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
+                           used for running the test scripts],
+	PTJACL_JAR=$withval, PTJACL_JAR=$PTII/lib/ptjacl.jar)
+
+    if test -f "$PTJACL_JAR"; then
+	PT_MSG_RESULT([$PTJACL_JAR])
+	AC_MSG_CHECKING([for how to run jacl with "$JAVA"])
+	# This command starts up Jacl
+	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
+		PT_MSG_RESULT(ok)
+		PTJACL_DIR=ptjacl
+	else
+		PT_MSG_RESULT([CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell failed])
+		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
+		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
+			PT_MSG_RESULT(ok)
+		else
+			PT_MSG_RESULT(['CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell' failed,
+	use 'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell'
+	instead. ptjacl is used by the test suite, so you may be able to
+	ignore this error.])
+		fi
+		JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLFLAGS tcl.lang.Shell]'
+	fi
+    else
+	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
+    ptjacl.jar is only necessary if you plan on running the test suite.
+    You can download ptjacl.jar from
+    http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html])
+    fi
+fi
+
+if test -z "$PTJACL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/ptjacl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTJACL_JAR\"/>"
+fi 
+
+
+#--------------------------------------------------------------------
 #       JUnit is the Java Unit testing framework
 #--------------------------------------------------------------------
 
@@ -2262,10 +2329,12 @@ PTJUNIT_DIR=
 JUNIT_JAR=
 
 # We only need to look for JUnit if this directory is present
+# and if Jacl is presnt
 JUNIT_USER_DIR="$PTII/ptolemy/util/test/junit"
 
-if test ! -d "$JUNIT_USER_DIR"; then
-    PT_MSG_STATUS([$JUNIT_USER_DIR is not present,
+if test ! -d "$JUNIT_USER_DIR" -o ! -f "$PTJACL_JAR"; then
+    PT_MSG_STATUS([Either '$JUNIT_USER_DIR' is not present,
+    or the Jacl jar file '$PTJACL_JAR' was not found,
     so we need not find JUnit - the Java Unit Testing Framework.])
 else
     AC_MSG_CHECKING([for the JUnit - the Java Unit Testing Framework])
@@ -3021,70 +3090,6 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
 	JAVACC=touch
     fi
 fi
-
-#--------------------------------------------------------------------
-#	See if there was a command-line option for where Jacl is
-#--------------------------------------------------------------------
-
-# We only need to find Jacl if $PTII/util/testsuite
-# exists.  If we are shipping ptplot, then this directory might not
-# exist
-PTJACL_JAR=$PTII/lib/ptjacl.jar
-# JTCLSH uses JAVAFLAGS for use with the 
-# vergil/test/VergilConfiguration.tcl test
-# We set the ptolemy.ptII.dir property for use in the 
-# actor.lib.test.auto.FileWriter{1,2}.xml tests
-# JTCLSHFLAGS gets set to -Dptolemy.ptII.isRunningNightlyBuild=true
-# when we are running the nightlybuild
-# Codegen uses up lots of memory while running
-JTCLSH='["$(JAVA)" -Xmx1000M $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl.lang.Shell]'
-# PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
-# if the ptjacl.jar file was found
-PTJACL_DIR= 
-
-if test ! -d "$PTII/util/testsuite"; then
-    PT_MSG_STATUS([$PTII/util/testsuite is not present,
-    so we need not find Jacl.])
-else
-    AC_MSG_CHECKING([for ptjacl.jar])
-    AC_ARG_WITH(ptjacl_jar, [  --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
-                           used for running the test scripts],
-	PTJACL_JAR=$withval, PTJACL_JAR=$PTII/lib/ptjacl.jar)
-
-    if test -f "$PTJACL_JAR"; then
-	PT_MSG_RESULT([$PTJACL_JAR])
-	AC_MSG_CHECKING([for how to run jacl with "$JAVA"])
-	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
-		PT_MSG_RESULT(ok)
-		PTJACL_DIR=ptjacl
-	else
-		PT_MSG_RESULT([CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell failed])
-		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
-		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
-			PT_MSG_RESULT(ok)
-		else
-			PT_MSG_RESULT(['CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell' failed,
-	use 'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell'
-	instead. ptjacl is used by the test suite, so you may be able to
-	ignore this error.])
-		fi
-		JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLFLAGS tcl.lang.Shell]'
-	fi
-    else
-	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
-    ptjacl.jar is only necessary if you plan on running the test suite.
-    You can download ptjacl.jar from
-    http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html])
-    fi
-fi
-
-if test -z "$PTJACL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/ptjacl/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$PTJACL_JAR\"/>"
-fi 
 
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
