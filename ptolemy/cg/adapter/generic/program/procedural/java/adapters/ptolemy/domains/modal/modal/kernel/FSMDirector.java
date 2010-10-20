@@ -44,6 +44,13 @@ Code generator helper for FSMDirector.
 public class FSMDirector
         extends
         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+
+    
+    /** Construct the code generator adapter associated with the given
+     *  FSMDirector.
+     *  @param director The associated 
+     *  ptolemy.domains.modal.kernel.FSMDirector
+     */
     public FSMDirector(ptolemy.domains.modal.kernel.FSMDirector director) {
         super(director);
     }
