@@ -38,6 +38,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
@@ -146,7 +147,7 @@ public class DocBuilder extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the command to compile ptII/doc/PtDoclet.
+    /** Return the command to compile ptII/doc/doclets/PtDoclet.
      */
     private static String _compilePtDoclet(File ptII) {
         String results = "";
@@ -159,11 +160,24 @@ public class DocBuilder extends Attribute {
                 if (toolsJarFile.exists()) {
                     results = "javac -classpath \"" + ptII + File.pathSeparator
                             + javaHome + toolsJarFileBase
-                            + "\" doc/doclets/PtDoclet.java";
+                            + "\" doc/doclets/PtDoclet.java";         
+                } else {
+                    if (StringUtilities.getProperty("os.name").equals("Mac OS X")) {
+                        results = "javac -classpath \"" + ptII
+                            + "\" doc/doclets/PtDoclet.java";   
+                    } else {
+                        results = "echo \"Warning: Failed to generate commands to compile "
+                            + "ptII/doc/doclets/PtDoclet.java. The jar file tools.jar at "
+                            + toolsJarFile.getCanonicalPath() 
+                            + " does not exist?\"";
+                    } 
                 }
             }
         } catch (Throwable throwable) {
-            // Ignore, return the empty string.
+            results = "echo \"Warning, failed to generate command "
+                + "to compile ptII/doc/doclets/PtDoclet.java: "
+                + KernelException.stackTraceToString(throwable) + "\"";
+ 
         }
         return results;
     }

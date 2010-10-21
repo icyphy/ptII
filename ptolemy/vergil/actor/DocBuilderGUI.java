@@ -173,7 +173,9 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         // Create a JTextAreaExec without Start and Cancel buttons.
         final JTextAreaExec exec = new JTextAreaExec("Documentation Builder"
-                + "Commands", false);
+                + " Commands", false);
+        
+        exec.setPreferredSize(new Dimension(500, 300));
 
         docBuilder.setConfiguration(configuration);
 
