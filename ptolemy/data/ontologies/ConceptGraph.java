@@ -26,9 +26,11 @@ package ptolemy.data.ontologies;
 
 import java.util.Collection;
 
+import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// ConceptGraph
@@ -96,21 +98,37 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  ptolemy.graph.CPO.HIGHER, ptolemy.graph.CPO.INCOMPARABLE, indicating the
      *  first argument is lower than, equal to, higher than, or incomparable with
      *  the second argument in the property hierarchy, respectively.
-     *  @param concept1 An instance of {@link FiniteConcept}.
-     *  @param concept2 An instance of {@link FiniteConcept}.
+     *  @param e1 An instance of {@link FiniteConcept}.
+     *  @param e2 An instance of {@link FiniteConcept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
      *  @exception IllegalArgumentException If one or both arguments are not
      *   instances of {@link FiniteConcept}.
      */
-    public int compare(Object concept1, Object concept2) {
-        if (!(concept1 instanceof FiniteConcept) || !(concept2 instanceof FiniteConcept)) {
+    public int compare(Object e1, Object e2) {
+        if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
             throw new IllegalArgumentException("ConceptGraph.compare: "
-                    + "Arguments are not instances of FiniteConcept: "
-                    + " concept1 = " + concept1 + ", concept2 = " + concept2);
+                    + "Arguments are not instances of Concept: "
+                    + " arg1 = " + e1 + ", arg2 = " + e2);
         }
-        return super.compare(concept1, concept2);
+
+        if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
+            return super.compare(e1, e2);
+        } else if (e1 instanceof InfiniteConcept) {
+            try {
+                return ((InfiniteConcept)e1).compare((Concept)e2);
+            } catch (IllegalActionException e) {
+                return CPO.INCOMPARABLE;
+            }
+        } else { // (e2 instanceof InfiniteConcept)
+            try {
+                int oppositeResult = ((InfiniteConcept)e2).compare((Concept)e1);
+                return reverseCompareCode(oppositeResult);
+            } catch (IllegalActionException e) {
+                return CPO.INCOMPARABLE;
+            }
+        }
     }
-    
+
     /** Compute the down-set of an element in this CPO.
      *  The down-set of an element is the subset consisting of
      *  all the elements lower than or the same as the specified element.
