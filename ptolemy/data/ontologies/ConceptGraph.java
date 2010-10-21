@@ -52,12 +52,6 @@ import ptolemy.graph.Node;
  */
 public class ConceptGraph extends DirectedAcyclicGraph {
 
-    /** Construct a new empty concept graph.
-     */
-    public ConceptGraph() {
-        super();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -96,47 +90,6 @@ public class ConceptGraph extends DirectedAcyclicGraph {
         return super.addNodeWeight(weight);
     }
 
-    /**
-     * Add structured properties. The parameter flag is a bit-wise OR union of
-     * the structured properties desired to add. The class provides a set of
-     * symbolic constants for these structured property types. For example,
-     * invoke addStructuredProperties(RECORD) to add the RecordProperty. This
-     * method should be called after all base elements have been added. The user
-     * is responsible for ensuring a lattice structure before calling this
-     * method. The lattice structure should be preserved after calling this
-     * method, so there is no need to do another check.
-     * @param structuredPropertiesToAdd The bit-wise OR union of the structured
-     * properties desired to add.
-     * @exception IllegalActionException
-     */
-    /* FIXME: To support structured concepts:
-    public void addStructuredProperties(int structuredPropertiesToAdd)
-            throws IllegalActionException {
-
-        if ((structuredPropertiesToAdd & RECORD) != 0) {
-            Property record = new RecordProperty(this, new String[0],
-                    new LatticeProperty[0]).getRepresentative();
-
-            if (!isLattice()) {
-                throw new IllegalActionException(
-                        "This ontology needs to be a lattice "
-                                + "before adding structured types.");
-            }
-
-            Object bottom = bottom();
-            Object top = top();
-
-            addNodeWeight(record);
-            addEdge(bottom, record);
-            addEdge(record, top);
-        }
-
-        if ((structuredPropertiesToAdd & ARRAY) != 0) {
-            // FIXME: add Array structure.
-        }
-    }
-    */
-
     /** Compare two concepts in the ontology. The arguments must be
      *  instances of {@link FiniteConcept}, otherwise an exception will be thrown.
      *  This method returns one of ptolemy.graph.CPO.LOWER, ptolemy.graph.CPO.SAME,
@@ -155,47 +108,6 @@ public class ConceptGraph extends DirectedAcyclicGraph {
                     + "Arguments are not instances of Concept: "
                     + " concept1 = " + concept1 + ", concept2 = " + concept2);
         }
-
-        Concept t1Rep = _toRepresentative((Concept) concept1);
-        Concept t2Rep = _toRepresentative((Concept) concept2);
-
-        /* FIXME: Support structured concepts using something like this:
-        if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredProperty) {
-            return ((StructuredProperty) t1)
-                    ._compare((StructuredProperty) t2);
-        }
-        */
-
-        return super.compare(t1Rep, t2Rep);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                          public fields                    ////
-
-    /** Public symbolic constant value for the RecordProperty. */
-    // FIXME: For structured concepts.
-    // public final int RECORD = 0x1;
-
-    /** Public symbolic constant value for the ArrayProperty. */
-    // FIXME: For structured concepts:
-    // public final int ARRAY = 0x2;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** If the argument is a structured concept, return its representative;
-     *  otherwise, return the argument.
-     *  @param p The specified concept for which to return a representative.
-     *  @return The representative for the specified concept.
-     */
-    private Concept _toRepresentative(Concept p) {
-        /* FIXME: Support structured concepts using something like this:
-        if (p instanceof StructuredProperty) {
-            return ((StructuredProperty) p).getRepresentative();
-        } else {
-            return p;
-        }
-        */
-        return p;
+        return super.compare(concept1, concept2);
     }
 }
