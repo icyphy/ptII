@@ -77,21 +77,6 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Compare this concept with the given concept.
-     *  Returns an int value that corresponds to the ordering between
-     *  the elements as given in the CPO interface.
-     * 
-     *  @param concept The concept with which we are comparing.
-     *  @return CPO.HIGHER if this concept is above the given concept,
-     *          CPO.LOWER if this concept is below the given concept,
-     *          CPO.SAME if both concepts are the same,
-     *      and CPO.INCOMPARABLE if concepts are incomparable.
-     *  @exception IllegalActionException If the specified concept
-     *          does not have the same ontology as this one.
-     */
-    public abstract int compare(Concept concept)
-            throws IllegalActionException;
 
     /** Return null.
      *  For variable InequaliyTerms, this method will return a reference to the
