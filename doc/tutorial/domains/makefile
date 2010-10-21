@@ -58,7 +58,8 @@ MODELS = \
 	AmorphousExample.xml \
 	InconsistentModel.xml \
 	LeftRightModel.xml \
-	NondogmaticPNModel.xml
+	NondogmaticPNModel.xml \
+	NondogmaticPNModelSimpler.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	domainOverview.htm \
