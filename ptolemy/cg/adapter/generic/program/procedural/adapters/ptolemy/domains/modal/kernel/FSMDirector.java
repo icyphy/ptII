@@ -76,8 +76,6 @@ public class FSMDirector extends Director {
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
 
-        actors = ((CompositeActor) _director.getContainer()).deepEntityList()
-                .iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor.getFullName().contains("_Controller")) {

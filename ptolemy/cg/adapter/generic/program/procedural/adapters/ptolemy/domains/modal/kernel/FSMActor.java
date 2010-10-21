@@ -452,9 +452,6 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                 }
                             }
                         } else if (destination instanceof Variable) {
-                            if (getCodeGenerator() == null) {
-
-                            }
                             codeBuffer.append(getCodeGenerator()
                                     .generateVariableName(destination)
                                     + " = ");
