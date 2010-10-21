@@ -376,9 +376,12 @@ a JRE.
 
 <li> (<i>Windows</i>): While in the "Installed JREs" window, under Java 1.6,
 <code>tools.jar</code> must be added the external jars:
-
-<li>Select the default JRE | <code>Edit</code> | <code>Add External Jars</code>  <code></i>Path to JDK</i>/lib/tools.jar</code>
-
+  <ol>
+  <li>Select the default JRE | <code>Edit</code> | <code>Add External Jars</code>.
+  
+  <li> Browse to the path of your JDK for example <code>c:\Program Files\Java JDK1.6.0_22\lib</code>
+  <li> Hit <code>Open</code>, select <code>tools.jar</code> and then finish.
+  </ol>
 
 <li> Click OK  in the Preferences window to apply all of the above changes.
 </ol>
@@ -523,6 +526,10 @@ install a separate source-only download.
 	 <pre>
 	   export PTII=`pwd`  
 	 </pre>  
+       <li> Make <code>configure</code> executable.
+	 <pre>
+	   chmod a+x configure
+	 <pre>
        <li> Run <code>./configure</code>
          <pre>
 	   ./configure
