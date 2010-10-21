@@ -1,4 +1,4 @@
-/* A marker that aids to distinguish the Ptides directors from others.
+/* This director implements the Ptides programming model.
 
 @Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
@@ -105,7 +105,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  with each other, as well as the current physical time. In this particular
  *  version of the Ptides scheduler, we simply take the top (smallest timestamp)
  *  event, and compares its timestamp with the current physical time +
- *  a pre-computed offset (call this the minDelay offset). If
+ *  a pre-computed offset (call this the delayOffset). If
  *  the physical time is larger, then this event is safe to process. Otherwise,
  *  we wait for physical time to pass until this event becomes safe, at which
  *  point it is processed. This is the most basic version of the Ptides scheduler
@@ -118,7 +118,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  delay exists between components, but also what the delay value is.
  *  <p>
  *  In the preinitialize method, according to the model graph structure, the
- *  minDelay offsets are calculated, using superdense dependency between
+ *  delayOffsets are calculated, using superdense dependency between
  *  connected components.
  *  <p>
  *  Preemption is disallowed in this scheduler.
@@ -134,8 +134,8 @@ import ptolemy.moml.MoMLChangeRequest;
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Yellow (cxh)
- *  @Pt.AcceptedRating Red (cxh)
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
  *
  */
 public class PtidesBasicDirector extends DEDirector {
@@ -144,39 +144,53 @@ public class PtidesBasicDirector extends DEDirector {
      *  Parameters for this director are created and initialized.
      *  @param container The container
      *  @param name The name
-     *  @exception IllegalActionException If the superclass throws it.
-     *  @exception NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it, or if
+     *   failed to create and/or initialize the following parameters: 
+     *   animateExecution, highlightModelTimeDelays,
+     *   actorsReceiveEventsInTimestampOrder, and syncError.
+     *  @exception NameDuplicationException If the superclass throws it, or
+     *   if there's name duplication for the following parameters;
+     *   animateExecution, highlightModelTimeDelays,
+     *   actorsReceiveEventsInTimestampOrder, and syncError.
      */
     public PtidesBasicDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         animateExecution = new Parameter(this, "animateExecution");
-        animateExecution.setExpression("false");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
-
+        animateExecution.setExpression("false");
+        
         highlightModelTimeDelays = new Parameter(this,
                 "highlightModelTimeDelay");
-        highlightModelTimeDelays.setExpression("false");
         highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
-
+        highlightModelTimeDelays.setExpression("false");
+        
         actorsReceiveEventsInTimestampOrder = new Parameter(this,
                 "actorsReceiveEventsInTimestampOrder");
-        actorsReceiveEventsInTimestampOrder.setExpression("false");
         actorsReceiveEventsInTimestampOrder.setTypeEquals(BaseType.BOOLEAN);
-
-        syncError = new Parameter(this, "synchronizationError");
-        syncError.setExpression("0.0");
-        syncError.setTypeEquals(BaseType.DOUBLE);
-
+        actorsReceiveEventsInTimestampOrder.setExpression("false");
+        
+        platformSynchronizationError = new Parameter(this, "synchronizationError");
+        platformSynchronizationError.setTypeEquals(BaseType.DOUBLE);
+        platformSynchronizationError.setExpression("0.0");
+        
         _zero = new Time(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
+    /** If true, then it can be assumed that actors receive events in timestamp
+     *  order. Setting this parameter could potentially simplifies the safe to 
+     *  process analysis.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter actorsReceiveEventsInTimestampOrder;
+
     /** If true, modify the icon for this director to indicate
-     *  the state of execution. This is a boolean that defaults to false.
+     *  the state of execution as the model is running. 
+     *  This is a boolean that defaults to false.
      */
     public Parameter animateExecution;
 
@@ -188,14 +202,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter highlightModelTimeDelays;
 
-    /** If true, then it can be assumed that actors receive events in timestamp
-     *  order. Setting this parameter could potentially simplifies the safe to
-     *  process analysis.
-     *  This is a boolean that defaults to false.
-     */
-    public Parameter actorsReceiveEventsInTimestampOrder;
-
-    /** Store the synchronization error in the platform governed by this
+    /** Store the synchronization error in the platform governed by this 
      *  tides director.
      *  In a distributed Ptides environment, each distributed platform is modeled
      *  by a composite actor that is governed by a Ptides director
@@ -203,17 +210,17 @@ public class PtidesBasicDirector extends DEDirector {
      *  synchronization errors between them. This error is captured within
      *  this parameter.
      */
-    public Parameter syncError;
+    public Parameter platformSynchronizationError;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to update local variables.
+    /** Update the director parameters when the attribute has changed.
+     *  If the parameter
+     *  <i>highlightModelTimeDelays</i> has changed, then all actors
+     *  in this director should be highlighted.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If timeResolution is
-     *   being changed and the model is executing (and not in
-     *   preinitialize()).
-     *  @exception If model delays cannot be highlighted, delay dependencies
+     *  @exception IllegalActionException If model delays cannot be highlighted, delay dependencies
      *   cannot be declared, attribute cannot be changed to a particular
      *   value, or the super class throws it.
      */
@@ -227,30 +234,22 @@ public class PtidesBasicDirector extends DEDirector {
                     ((AtomicActor) actor).declareDelayDependency();
                 }
             }
-            if (highlightModelTimeDelays.getExpression().equals("true")) {
+            if (((BooleanToken)highlightModelTimeDelays.getToken()).booleanValue()) {
                 _highlightModelDelays((CompositeActor) getContainer(), true);
                 _timeDelayHighlighted = true;
-            } else if (highlightModelTimeDelays.getExpression().equals("false")) {
+            } else {
                 if (_timeDelayHighlighted) {
                     _timeDelayHighlighted = false;
                     _highlightModelDelays((CompositeActor) getContainer(),
                             false);
                 }
-            } else {
-                throw new IllegalActionException(
-                        this,
-                        "Attribute change for "
-                                + "highlightModelTimeDelay"
-                                + ", but the attributed changed to a value that cannot be "
-                                + "dealt with: "
-                                + highlightModelTimeDelays.getExpression());
             }
         }
     }
 
     /**
      * Return the default dependency between input and output ports, which for
-     * the Ptides domain is a SuperdenseDependency.
+     * the Ptides domain is a {@link SuperdenseDependency}.
      *
      * @return The default dependency that describes a time delay of 0.0,
      *          and a index delay of 0 between ports.
@@ -260,7 +259,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /**
-     * Return a superdense dependency representing a model-time delay of the
+     * Return a {@link SuperdenseDependency} representing a model-time delay of the
      * specified amount.
      *
      * @param delay
@@ -273,47 +272,23 @@ public class PtidesBasicDirector extends DEDirector {
         return SuperdenseDependency.valueOf(delay, index);
     }
 
-    /** Return the current Tag.
-     *  @return timestamp and microstep of the current time.
+    /** Return the current {@link ptolemy.domains.ptides.kernel.Tag}.
+     *  @return timestamp and microstep (A microstep is an
+     *   integer which represents the index of the sequence of execution 
+     *   phases when this director processes events with the same timestamp)
+     *   of the current model time.
      */
     public Tag getModelTag() {
         return new Tag(_currentTime, _microstep);
     }
 
-    /** Return the model microstep of the enclosing director, which is our model
-     *  of physical time.
-     *  @return Physical time.
-     *  @exception IllegalActionException
-     */
-    /*public Time getPhysicalTime() throws IllegalActionException {
-        Director director = this;
-        while (director instanceof PtidesBasicDirector) {
-            director = ((Actor) director.getContainer().getContainer())
-                    .getDirector();
-        }
-        if (!(director instanceof DEDirector)) {
-            throw new IllegalActionException(
-                    director,
-                    "The enclosing director of the Ptides "
-                            + "director is not a DE Director or a PtidesTopLevelDirector.");
-        }
-        if (director instanceof PtidesTopLevelDirector) {
-            return ((PtidesTopLevelDirector) director)
-                    .getSimulatedPhysicalTime((Actor) getContainer());
-        } else {
-            if (getSyncError() != 0.0) {
-                throw new IllegalActionException(this,
-                        "The synchronization error is non-zero, the top level"
-                                + "needs to be a PtidesTopLevelDirector.");
-            }
-            return director.getModelTime();
-        }
-    }*/
-
     /** Return the model time of the enclosing director, which is our model
-     *  of physical time.
-     *  @return Physical time.
-     *  @exception IllegalActionException
+     *  of time in the physical environment.
+     *  @return the model time of the enclosing director, which is a model of
+     *   time in the physical environment.
+     *  @exception IllegalActionException If enclosing director is not a DE
+     *   of PtidesTopLevelDirector, or if the platform synchronization error
+     *   is non-zero and the enclosing director is not a PtidesTopLevelDirector.
      */
     public Tag getPhysicalTag() throws IllegalActionException {
         Tag tag = new Tag();
@@ -323,17 +298,18 @@ public class PtidesBasicDirector extends DEDirector {
                     .getDirector();
         }
         if (!(director instanceof DEDirector)) {
-            throw new IllegalActionException(
+            IllegalActionException up = new IllegalActionException(
                     director,
                     "The enclosing director of the Ptides "
                             + "director is not a DE Director or a PtidesTopLevelDirector.");
+            throw up;
         }
         if (director instanceof PtidesTopLevelDirector) {
             tag.timestamp = ((PtidesTopLevelDirector) director)
                     .getSimulatedPhysicalTime((Actor) getContainer());
             tag.microstep = ((PtidesTopLevelDirector) director).getMicrostep();
         } else {
-            if (getSyncError() != 0.0) {
+            if (getSynchronizationError() != 0.0) {
                 throw new IllegalActionException(this,
                         "The synchronization error is non-zero, the top level"
                                 + "needs to be a PtidesTopLevelDirector.");
@@ -344,16 +320,18 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
-    /** Return the synchronization error of this platform.
+    /** Return the platform synchronization error of this platform.
+     *  @see #platformSynchronizationError
      *  @return the synchronization error.
-     *  @exception IllegalActionException If syncError parameter does not
-     *   contain a valid token.
+     *  @exception IllegalActionException If platformSynchornizationError 
+     *   parameter does not contain a valid token.
      */
-    public double getSyncError() throws IllegalActionException {
-        return ((DoubleToken) syncError.getToken()).doubleValue();
+    public double getSynchronizationError() throws IllegalActionException {
+        return ((DoubleToken) platformSynchronizationError.getToken())
+            .doubleValue();
     }
 
-    /** Print out debugging information if we are in debugging mode. Call
+    /** Print out debugging information if we are in debugging mode and call
      *  fire() of the super class.
      *  @exception IllegalActionException If the super class throws it.
      */
@@ -375,7 +353,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
      *  @exception IllegalActionException If the superclass throws
-     *   it or if there is no executive director.
+     *  it or if there is no executive director.
      */
     public void initialize() throws IllegalActionException {
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
@@ -406,6 +384,14 @@ public class PtidesBasicDirector extends DEDirector {
         _setIcon(_getIdleIcon(), true);
     }
 
+    /** Return false to get the superclass DE director to behave exactly
+     *  as if it is executing at the top level.
+     *  @return False.
+     */
+    public boolean isEmbedded() {
+        return false;
+    }
+    
     /** Return whether this director is at the top level.
      *  @return true if this director is at the top level.
      */
@@ -413,7 +399,7 @@ public class PtidesBasicDirector extends DEDirector {
         return !isEmbedded();
     }
 
-    /** Return a new receiver of the type PtidesBasicReceiver.
+    /** Return a new receiver of the type {@link PtidesBasicReceiver}.
      *  @return A new PtidesBasicReceiver.
      */
     public Receiver newReceiver() {
@@ -424,39 +410,10 @@ public class PtidesBasicDirector extends DEDirector {
         return new PtidesBasicReceiver();
     }
 
-    /** Call the preinitialize() method in the super class. The superclass
-     *  instantiates an event queue structure, however, here a
-     *  PtidesListEventQueue structure is instantiated in its place.
-     *  This is because we need to access
-     *  not only the first event in the event queue, but all events in the
-     *  event queue, in sorted order. Then the minDelay offsets used in the
-     *  safe-to-process analysis is calculated. Also, a check is performed
-     *  to see if sensors, actuators, and networks ports are annotated with
-     *  the corresponding parameters, and whether they are connected to the
-     *  corresponding sensor/actuator/network actors.
-     *  Finally, the stopWhenQueueIsEmpty is set to false, since the Ptides
-     *  environment could wait for outside events to trigger its execution,
-     *  without any events in its event queue.
-     *  @see #_calculateMinDelayOffsets
-     *  @exception If minDelay offsets cannot be calculated, sensor/actuator/
-     *   network consistency cannot be checked, or if the  super class throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Initialize an event queue.
-        _eventQueue = new PtidesListEventQueue();
-
-        _calculateMinDelayOffsets();
-
-        // In Ptides, we should never stop when queue is empty.
-        stopWhenQueueIsEmpty.setExpression("false");
-        _checkSensorActuatorNetworkConsistency();
-    }
-
     /** Return false if there are no more actors to be fired or the stop()
      *  method has been called.
      *  @return True If this director will be fired again.
-     *  @exception IllegalActionException If stopWhenQueueIsEmpty parameter
+     *  @exception IllegalActionException If the stopWhenQueueIsEmpty parameter
      *   does not contain a valid token, or refiring can not be requested.
      */
     public boolean postfire() throws IllegalActionException {
@@ -489,8 +446,41 @@ public class PtidesBasicDirector extends DEDirector {
         return true;
     }
 
-    /** Set the microstep to some value.
-     *  @see #getMicrostep
+    /** Instantiate new model structures to get ready for a simulation run.
+     *  Call the preinitialize() method in the super class. The superclass
+     *  instantiates an event queue structure, however, here a 
+     *  PtidesListEventQueue structure is instantiated in its place. 
+     *  This is because we need to access 
+     *  not only the first event in the event queue, but all events in the 
+     *  event queue, in sorted order. Then the delayOffset used in the 
+     *  safe-to-process analysis is calculated. Also, a check is performed
+     *  to see if sensors, actuators, and networks ports are annotated with
+     *  the corresponding parameters, and whether they are connected to the 
+     *  corresponding sensor/actuator/network actors.
+     *  Finally, the stopWhenQueueIsEmpty is set to false. In general, Ptides
+     *  models should never stop when the event queue is empty, because
+     *  it can wait and react to future sensor input events.
+     *  @see #_calculateMinDelayOffsets
+     *  @exception IllegalActionException If delayOffset cannot be calculated, 
+     *  sensor/actuator/network consistency cannot be checked, or if the 
+     *  super class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        // Initialize an event queue.
+        _eventQueue = new PtidesListEventQueue();
+
+        _calculateMinDelayOffsets();
+
+        // In Ptides, we should never stop when queue is empty.
+        stopWhenQueueIsEmpty.setExpression("false");
+        _checkSensorActuatorNetworkConsistency();
+    }
+
+    /** Set the microstep. A microstep is an
+     *  integer which represents the index of the sequence of execution 
+     *  phases when this director processes events with the same timestamp.
+     *  @see #getMicrostep()
      *  @param microstep An int specifying the microstep value.
      */
     public void setMicrostep(int microstep) {
@@ -498,13 +488,13 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Set a new value to the current time of the model, where
-     *  the new time _can_ be smaller than the current model time,
+     *  the new time <i>can</i> be smaller than the current model time,
      *  because Ptides allow events to be processed out of timestamp order.
-     *
+     *  @param newTime The new current simulation time.
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
-     *  @param newTime The new current simulation time.
      *  @see #getModelTime()
+     *  
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         int comparisonResult = _currentTime.compareTo(newTime);
@@ -527,7 +517,8 @@ public class PtidesBasicDirector extends DEDirector {
     /** Set the timestamp and microstep of the current time.
      *  @param timestamp A Time object specifying the timestamp.
      *  @param microstep An integer specifying the microstep.
-     *  @exception IllegalActionException if setModelTime() throws it.
+     *  @exception IllegalActionException if setting of model time is
+     *  unsuccessful.
      *  @see #setModelTime(Time)
      */
     public void setTag(Time timestamp, int microstep)
@@ -536,8 +527,8 @@ public class PtidesBasicDirector extends DEDirector {
         setMicrostep(microstep);
     }
 
-    /** Override the base class to reset the icon idle if animation for
-     *  model time delay or for execution is turned on.
+    /** Reset the icon idle if the animation for
+     *  actor firing is turned on.
      *  @exception IllegalActionException If the wrapup() method of
      *  one of the associated actors throws it.
      */
@@ -558,7 +549,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Zero time.
      */
-    protected Time _zero;
+    protected static Time _zero;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -586,7 +577,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Calculate the minDelay offset for each input port in the model, and
+    /** Calculate the delayOffset for each input port in the model, and
      *  annotate the ports with these offsets.
      *  This causality analysis usually happens at the preinitialize phase.
      *  <p>
@@ -595,11 +586,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  and traverse the graph until we reach the output port connected to the outside of
      *  the platform (actuators/network ports). For each input port in between,
      *  annotate it with
-     *  a minDelay parameter. This parameter is an array of doubles, where each double
+     *  a delayOffset parameter. This parameter is an array of doubles, where each double
      *  corresponds to the minimum delay offset for a particular channel of that port.
      *  This minimum delay offset is used for the safe to process analysis.
      *  <p>
-     *  Note: for all transparent composite actors, the minDelay offsets are not
+     *  Note: for all transparent composite actors, the delayOffsets are not
      *  calculated for their input ports. Instead, the offsets are calculated and
      *  annotated for input ports that are inside of these actors.
      *  @exception IllegalActionException If _clearMinDelayOffsets(), _isNetworkPort()
@@ -617,7 +608,7 @@ public class PtidesBasicDirector extends DEDirector {
         _clearMinDelayOffsets();
 
         // A map that saves a dependency for a port channel pair. This dependency is later used to
-        // calculate minDelay.
+        // calculate delayOffset.
         _inputModelTimeDelays = new HashMap<IOPort, Map<Integer, SuperdenseDependency>>();
 
         // NOTE: In portDelays and localPortDelays, which saves the corresponding model time delays
@@ -625,10 +616,10 @@ public class PtidesBasicDirector extends DEDirector {
         // is a real-time port) and each output
         // port in the graph to to have width 1, even though their width might be of some other
         // value. We do this because each output port and starting port do no need to be annotated
-        // with the minDelay parameter, and we assume all dependencies at each port is the same for
+        // with the delayOffset parameter, and we assume all dependencies at each port is the same for
         // all channels. For regular input ports however, their width is correctly reflected in
         // portDelays and localPortDelays, because we need all model time delays to each channel
-        // to calculate the minDelay parameter.
+        // to calculate the delayOffset parameter.
 
         // FIXME: If there are composite actors within the top level composite actor,
         // does this algorithm work?
@@ -673,7 +664,7 @@ public class PtidesBasicDirector extends DEDirector {
                 _traverseToCalcMinDelay(startPort);
             }
 
-            // for all unvisited actors, the sink port that's connected to its output ports
+            // For all unvisited actors, the sink port that's connected to its output ports
             // should be annotated with dependency SuperdenseDependency.OPLUS_IDENTITY,
             // because events arriving at these ports are always safe to process.
             for (Actor actor : (List<Actor>) ((CompositeActor) getContainer())
@@ -708,23 +699,23 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        // inputModelTimeDelays is the delays as calculated through shortest path algorithm. Now we
-        // need to use these delays to calculate the minDelay, which is calculated as follows:
+        // The inputModelTimeDelays hashset is the delays as calculated through shortest path algorithm. Now we
+        // need to use these delays to calculate the delayOffset, which is calculated as follows:
         // For each port, get all finite equivalent ports except itself. Now for a particular port
         // channel pair, Find the smallest model time delay among all of the channels on all these
-        // ports, if they exist. that smallest delay is  the minDelay for that port channel pair.
+        // ports, if they exist. that smallest delay is  the delayOffset for that port channel pair.
         // If this smallest value does not exist, then the event arriving at this port channel pair
-        // is always safe to process, thus minDelay does not change (it was by default set to
+        // is always safe to process, thus delayOffset does not change (it was by default set to
         // double.POSITIVE_INFINITY.
         for (IOPort inputPort : (Set<IOPort>) _inputModelTimeDelays.keySet()) {
             Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
                     .get(inputPort);
-            double[] minDelays = new double[channelDependency.size()];
+            double[] delayOffsets = new double[channelDependency.size()];
             for (Integer portChannelMinDelay : channelDependency.keySet()) {
-                minDelays[portChannelMinDelay.intValue()] = _calculateMinDelayForPortChannel(
+                delayOffsets[portChannelMinDelay.intValue()] = _calculateMinDelayForPortChannel(
                         inputPort, portChannelMinDelay);
             }
-            _setMinDelay(inputPort, minDelays);
+            _setMinDelay(inputPort, delayOffsets);
         }
     }
 
@@ -865,11 +856,11 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** For each input port within the composite actor where this director resides.
-     *  If the input port has a minDelay parameter, set the value of that parameter
+     *  If the input port has a delayOffset parameter, set the value of that parameter
      *  to Infinity (meaning events arriving at this port will always be safe to
-     *  process). If it does not have a minDelay parameter.
+     *  process). If it does not have a delayOffset parameter.
      *  @exception IllegalActionException If cannot evaluate the width of an input
-     *   port, or if token of the parameter minDelay cannot be evaluated.
+     *   port, or if token of the parameter delayOffset cannot be evaluated.
      */
     protected void _clearMinDelayOffsets() throws IllegalActionException {
         if (getContainer() instanceof TypedCompositeActor) {
@@ -880,7 +871,7 @@ public class PtidesBasicDirector extends DEDirector {
                 for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
                         .inputPortList())) {
                     Parameter parameter = (Parameter) (inputPort)
-                            .getAttribute("minDelay");
+                            .getAttribute("delayOffset");
                     if (parameter != null) {
                         int channels = inputPort.getWidth();
                         if (channels > 0) {
@@ -1177,7 +1168,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port at which execution time is denoted.
      *  @param actor an Actor object.
      *  @return executionTime parameter.
-     *  @exception IllegalActionException If excution time from
+     *  @exception IllegalActionException If excution time from 
      *   PtidesActorProperties cannot be obtained.
      */
     protected static double _getExecutionTime(IOPort port, Actor actor)
@@ -1207,21 +1198,21 @@ public class PtidesBasicDirector extends DEDirector {
                 + "  </property>";
     }
 
-    /** Return the minDelay parameter. The minDelay parameter is related to the
+    /** Return the delayOffset parameter. The delayOffset parameter is related to the
      *  safe to process analysis of Ptides. In Ptides, an event of timestamp
-     *  \tau is safe to process at physical time t if t >= \tau - minDelay.
-     *  For all non-pure(trigger) events, this minDelay offset is stored at
+     *  \tau is safe to process at physical time t if t >= \tau - delayOffset.
+     *  For all non-pure(trigger) events, this delayOffset is stored at
      *  each channel of each input port.
-     *  @param port The port where this minDelay parameter is associated to.
-     *  @param channel The channel where this minDelay parameter is associated to.
-     *  @return minDelay parameter.
+     *  @param port The port where this delayOffset parameter is associated to.
+     *  @param channel The channel where this delayOffset parameter is associated to.
+     *  @return delayOffset parameter.
      *  @param pureEvent  a boolean -- true if the event is a pure event.
-     *  @exception IllegalActionException if minDelay parameter cannot be evaluated.
+     *  @exception IllegalActionException if delayOffset parameter cannot be evaluated.
      */
-    protected double _getMinDelay(IOPort port, int channel, boolean pureEvent)
+    protected double _getMininumDelayOffset(IOPort port, int channel, boolean pureEvent)
             throws IllegalActionException {
         // If the event is a pure event, and if actors receive events in timestamp
-        // order, then the minDelay is actually the smallest min delay among all
+        // order, then the delayOffset is actually the smallest min delay among all
         // the equivalence classes.
         // FIXME: what if the event is a pure event, and actorsReceiveEventsInTimestampOrder
         // is false??
@@ -1232,7 +1223,7 @@ public class PtidesBasicDirector extends DEDirector {
             Collection<IOPort> equivalentPorts = _finiteEquivalentPorts(port);
             for (IOPort input : equivalentPorts) {
                 Parameter parameter = (Parameter) ((NamedObj) input)
-                        .getAttribute("minDelay");
+                        .getAttribute("delayOffset");
                 if (parameter != null) {
                     for (int i = 0; i < input.getWidth(); i++) {
                         DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
@@ -1243,14 +1234,14 @@ public class PtidesBasicDirector extends DEDirector {
                             }
                         } else {
                             throw new IllegalActionException(port,
-                                    "minDelay parameter is needed"
+                                    "delayOffset parameter is needed"
                                             + "for channel, "
                                             + "but it does not exist.");
                         }
                     }
                 } else {
                     throw new IllegalActionException(port,
-                            "minDelay parameter is needed, "
+                            "delayOffset parameter is needed, "
                                     + "but it does not exist.");
                 }
             }
@@ -1258,7 +1249,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("minDelay");
+                .getAttribute("delayOffset");
         if (parameter != null) {
             DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
                     .getToken()).arrayValue()[channel]);
@@ -1266,12 +1257,12 @@ public class PtidesBasicDirector extends DEDirector {
                 return token.doubleValue();
             } else {
                 throw new IllegalActionException(port,
-                        "minDelay parameter is needed for channel " + channel
+                        "delayOffset parameter is needed for channel " + channel
                                 + ", but it does not exist.");
             }
         } else {
             throw new IllegalActionException(port,
-                    "minDelay parameter is needed, " + "but it does not exist.");
+                    "delayOffset parameter is needed, " + "but it does not exist.");
         }
     }
 
@@ -1542,28 +1533,6 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Among all events in the event queue, find the first event that
-     *  is destined to an output port of the containing composite actor.
-     *  This event is taken from the event queue, and the token is sent
-     *  to the actuator/network output port.
-     */
-    protected void _getNextActuationEvent() {
-        int eventIndex = 0;
-        synchronized (_eventQueue) {
-            while (eventIndex < _eventQueue.size()) {
-                PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
-                        .get(eventIndex);
-                if (nextEvent.ioPort() != null &&
-                //(nextEvent.ioPort().getContainer() == getContainer()) &&
-                        nextEvent.ioPort().isOutput()) {
-                    ((PtidesListEventQueue) _eventQueue).take(eventIndex);
-                    continue;
-                }
-                eventIndex++;
-            }
-        }
-    }
-
     /** Return the actor associated with the events. All events within the
      *  input list of events should have the same destination actor.
      *  @param events list of events that are destined for the
@@ -1588,6 +1557,28 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
         return eventInList.actor();
+    }
+
+    /** Among all events in the event queue, find the first event that
+     *  is destined to an output port of the containing composite actor.
+     *  This event is taken from the event queue, and the token is sent
+     *  to the actuator/network output port.
+     */
+    protected void _getNextActuationEvent() {
+        int eventIndex = 0;
+        synchronized(_eventQueue) {
+            while (eventIndex < _eventQueue.size()) {
+                PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                        .get(eventIndex);
+                if (nextEvent.ioPort() != null &&
+                    //(nextEvent.ioPort().getContainer() == getContainer()) &&
+                    nextEvent.ioPort().isOutput()) {
+                        ((PtidesListEventQueue)_eventQueue).take(eventIndex);
+                        continue;
+                }
+                eventIndex++;
+            }
+        }
     }
 
     /** Return the next event to be process. Notice this event returned must
@@ -1667,14 +1658,6 @@ public class PtidesBasicDirector extends DEDirector {
         return isEmbedded();
     }
 
-    /** Return false to get the superclass DE director to behave exactly
-     *  as if it is executing at the top level.
-     *  @return False.
-     */
-    public boolean isEmbedded() {
-        return false;
-    }
-
     /** Return whether we want to preempt the currently executing actor
      *  and instead execute the earliest event on the event queue.
      *  This base class returns false, indicating that the currently
@@ -1687,10 +1670,10 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** If the event's destination port
-     *  does not have a minDelay parameter, or if there doesn't exist
+     *  does not have a delayOffset parameter, or if there doesn't exist
      *  a destination port (in case of pure event) then the event is
      *  always safe to process. Otherwise:
-     *  If the current physical time has passed the timestamp of the event minus minDelay of
+     *  If the current physical time has passed the timestamp of the event minus delayOffset of
      *  the port, then the event is safe to process. Otherwise the event is not safe to
      *  process, and we calculate the physical time when the event is safe to process and
      *  setup a timed interrupt.
@@ -1724,9 +1707,9 @@ public class PtidesBasicDirector extends DEDirector {
         if (port.isOutput()) {
             return true;
         }*/
-        double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(),
+        double delayOffset = _getMininumDelayOffset(port, ((PtidesEvent) event).channel(),
                 event.isPureEvent());
-        Time waitUntilPhysicalTime = event.timeStamp().subtract(minDelay);
+        Time waitUntilPhysicalTime = event.timeStamp().subtract(delayOffset);
         if (getPhysicalTag().timestamp.subtract(waitUntilPhysicalTime)
                 .compareTo(_zero) >= 0
                 && (getPhysicalTag().microstep - event.microstep() >= 0)) {
@@ -1767,15 +1750,12 @@ public class PtidesBasicDirector extends DEDirector {
     /** Call fireAt() of the executive director, which is in charge of bookkeeping the
      *  physical time.
      *  @param wakeUpTime The time to wake up.
+     * @throws IllegalActionException If cannot call fireAt of enclosing director.
      */
-    protected void _setTimedInterrupt(Time wakeUpTime) {
+    protected void _setTimedInterrupt(Time wakeUpTime) throws IllegalActionException {
         Actor container = (Actor) getContainer();
         Director executiveDirector = ((Actor) container).getExecutiveDirector();
-        try {
-            executiveDirector.fireAt((Actor) container, wakeUpTime);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
+        executiveDirector.fireAt((Actor) container, wakeUpTime);
     }
 
     /** Return all the events in the event queue that are of the same tag as the event
@@ -2222,6 +2202,118 @@ public class PtidesBasicDirector extends DEDirector {
         return lastAbsoluteDeadline.add(timeDiff);
     }
 
+    /** For a particular input port channel pair, find the min delay.
+     *  @param inputPort The input port to find min delay for.
+     *  @param channel The channel at this input port.
+     *  @return The min delay associated with this port channel pair.
+     *  @exception IllegalActionException If finite dependent ports cannot
+     *   be evaluated, or token of actorsReceiveEventsInTimestampOrder
+     *   parameter cannot be evaluated.
+     */
+    private double _calculateMinDelayForPortChannel(IOPort inputPort,
+            Integer channel) throws IllegalActionException {
+        SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
+        // for each port that's in the same equivalence class as the input port,
+        for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
+            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
+                    .get(port);
+            if (channelDependency != null) {
+                for (Integer integer : channelDependency.keySet()) {
+                    if (((BooleanToken) actorsReceiveEventsInTimestampOrder
+                            .getToken()).booleanValue()) {
+                        if (!(port == inputPort && integer.equals(channel))) {
+                            SuperdenseDependency candidate = channelDependency
+                                    .get(integer);
+                            if (smallestDependency.compareTo(candidate) > 0) {
+                                smallestDependency = candidate;
+                            }
+                        }
+                    } else {
+                        // cannot assume events arrive in timestamp order.
+                        SuperdenseDependency candidate = channelDependency
+                                .get(integer);
+                        if (smallestDependency.compareTo(candidate) > 0) {
+                            smallestDependency = candidate;
+                        }
+
+                    }
+                }
+            }
+        }
+        return smallestDependency.timeValue();
+    }
+
+    /** Return the actor associated with the events in the list. All events
+     *  within the list should be destined for the same actor.
+     *  @param currentEventList A list of events.
+     *  @return Actor associated with events in the list.
+     */
+    private Actor _getActorFromEventList(List<PtidesEvent> currentEventList) {
+        return currentEventList.get(0).actor();
+    }
+
+    /** This function is called when an pure event is produced. Given an actor, we need
+     *  to return whether the pure event is causally related to a set of input ports.
+     *  If it does, return one input port from that equivalence class, otherwise, return
+     *  null.
+     *  @param actor The destination actor.
+     *  @return whether the future pure event is causally related to any input port(s)
+     *  @exception IllegalActionException If whether causality marker contains
+     *   source port cannot be evaluated.
+     */
+    private IOPort _getCausalPortForThisPureEvent(Actor actor)
+            throws IllegalActionException {
+        CausalityMarker causalityMarker = (CausalityMarker) ((NamedObj) actor)
+                .getAttribute("causalityMarker");
+        // Last last source port is gotten. However, we do not remove the last
+        // source port from the hashmap, because more than one pure events can
+        // be produced during one firing. In which case, the last source port
+        // can be used again.
+        IOPort lastSourcePort = (IOPort) _pureEventSourcePorts.get(actor);
+        // Causality marker does not exist, we take the conservative approach, and say all inputs
+        // causally affect the pure event.
+        if (causalityMarker == null) {
+            return lastSourcePort;
+        }
+        if (causalityMarker.containsPort(lastSourcePort)) {
+            return lastSourcePort;
+        } else {
+            return null;
+        }
+    }
+
+    /** Return the network delay of the port.
+     *  @param port The port with network delay.
+     *  @exception IllegalActionException If token of networkDelay parameter
+     *   cannot be evaluated.
+     */
+    private static double _getNetworkDelay(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("networkDelay");
+        if (parameter != null) {
+            return ((DoubleToken) parameter.getToken()).doubleValue();
+        }
+        return 0.0;
+    }
+
+    /** Returns the relativeDeadline parameter.
+     *  @param port The port the relativeDeadline is associated with.
+     *  @return relativeDeadline parameter
+     *  @exception IllegalActionException If token of relativeDeadline
+     *   parameter cannot be evaluated.
+     */
+    private static double _getRelativeDeadline(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("relativeDeadline");
+        if (parameter != null) {
+            return ((DoubleToken) parameter.getToken()).doubleValue();
+        } else {
+            return Double.NEGATIVE_INFINITY;
+        }
+    }
+
     /** For all deeply contained actors, if annotateModelDelay is true,
      *  the actor has a dependency that is not equal to the OTimesIdenty is
      *  annotated with a certain color. This process is repeated recursively.
@@ -2271,118 +2363,6 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** For a particular input port channel pair, find the min delay.
-     *  @param inputPort The input port to find min delay for.
-     *  @param channel The channel at this input port.
-     *  @return The min delay associated with this port channel pair.
-     *  @exception IllegalActionException If finite dependent ports cannot
-     *   be evaluated, or token of actorsReceiveEventsInTimestampOrder
-     *   parameter cannot be evaluated.
-     */
-    private double _calculateMinDelayForPortChannel(IOPort inputPort,
-            Integer channel) throws IllegalActionException {
-        SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
-        // for each port that's in the same equivalence class as the input port,
-        for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
-            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
-                    .get(port);
-            if (channelDependency != null) {
-                for (Integer integer : channelDependency.keySet()) {
-                    if (((BooleanToken) actorsReceiveEventsInTimestampOrder
-                            .getToken()).booleanValue()) {
-                        if (!(port == inputPort && integer.equals(channel))) {
-                            SuperdenseDependency candidate = channelDependency
-                                    .get(integer);
-                            if (smallestDependency.compareTo(candidate) > 0) {
-                                smallestDependency = candidate;
-                            }
-                        }
-                    } else {
-                        // cannot assume events arrive in timestamp order.
-                        SuperdenseDependency candidate = channelDependency
-                                .get(integer);
-                        if (smallestDependency.compareTo(candidate) > 0) {
-                            smallestDependency = candidate;
-                        }
-
-                    }
-                }
-            }
-        }
-        return smallestDependency.timeValue();
-    }
-
-    /** This function is called when an pure event is produced. Given an actor, we need
-     *  to return whether the pure event is causally related to a set of input ports.
-     *  If it does, return one input port from that equivalence class, otherwise, return
-     *  null.
-     *  @param actor The destination actor.
-     *  @return whether the future pure event is causally related to any input port(s)
-     *  @exception IllegalActionException If whether causality marker contains
-     *   source port cannot be evaluated.
-     */
-    private IOPort _getCausalPortForThisPureEvent(Actor actor)
-            throws IllegalActionException {
-        CausalityMarker causalityMarker = (CausalityMarker) ((NamedObj) actor)
-                .getAttribute("causalityMarker");
-        // Last last source port is gotten. However, we do not remove the last
-        // source port from the hashmap, because more than one pure events can
-        // be produced during one firing. In which case, the last source port
-        // can be used again.
-        IOPort lastSourcePort = (IOPort) _pureEventSourcePorts.get(actor);
-        // Causality marker does not exist, we take the conservative approach, and say all inputs
-        // causally affect the pure event.
-        if (causalityMarker == null) {
-            return lastSourcePort;
-        }
-        if (causalityMarker.containsPort(lastSourcePort)) {
-            return lastSourcePort;
-        } else {
-            return null;
-        }
-    }
-
-    /** Return the actor associated with the events in the list. All events
-     *  within the list should be destined for the same actor.
-     *  @param currentEventList A list of events.
-     *  @return Actor associated with events in the list.
-     */
-    private Actor _getActorFromEventList(List<PtidesEvent> currentEventList) {
-        return currentEventList.get(0).actor();
-    }
-
-    /** Return the network delay of the port.
-     *  @param port The port with network delay.
-     *  @exception IllegalActionException If token of networkDelay parameter
-     *   cannot be evaluated.
-     */
-    private static double _getNetworkDelay(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("networkDelay");
-        if (parameter != null) {
-            return ((DoubleToken) parameter.getToken()).doubleValue();
-        }
-        return 0.0;
-    }
-
-    /** Returns the relativeDeadline parameter.
-     *  @param port The port the relativeDeadline is associated with.
-     *  @return relativeDeadline parameter
-     *  @exception IllegalActionException If token of relativeDeadline
-     *   parameter cannot be evaluated.
-     */
-    private static double _getRelativeDeadline(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("relativeDeadline");
-        if (parameter != null) {
-            return ((DoubleToken) parameter.getToken()).doubleValue();
-        } else {
-            return Double.NEGATIVE_INFINITY;
-        }
-    }
-
     /** Return whether the port is a networkPort.
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.
@@ -2399,7 +2379,7 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** Saves the information of the events ready to be processed. This includes
+    /** Save the information of the events ready to be processed. This includes
      *  the source port of the last firing event, the timestamp, absolute deadline,
      *  and the minimum model time delay of the last executing event. These information
      *  is used to calculate the absolute deadline of the produced pure event.
@@ -2459,26 +2439,26 @@ public class PtidesBasicDirector extends DEDirector {
         _pureEventDeadlines.put(actorToFire, lastAbsoluteDeadline);
     }
 
-    /** Set the minDelay of a port to an array of minDelay values.
+    /** Set the delayOffset of a port to an array of delayOffset values.
      *  @param inputPort The input port to be annotated.
-     *  @param minDelays The minDelay values to annotate.
-     *  @exception IllegalActionException If minDelay parameter already
-     *   exists, or the minDelay parameter cannot be set.
+     *  @param delayOffsets The delayOffset values to annotate.
+     *  @exception IllegalActionException If delayOffset parameter already
+     *   exists, or the delayOffset parameter cannot be set.
      */
-    private static void _setMinDelay(IOPort inputPort, double[] minDelays)
+    private static void _setMinDelay(IOPort inputPort, double[] delayOffsets)
             throws IllegalActionException {
-        Parameter parameter = (Parameter) (inputPort).getAttribute("minDelay");
+        Parameter parameter = (Parameter) (inputPort).getAttribute("delayOffset");
         if (parameter == null) {
             try {
-                parameter = new Parameter(inputPort, "minDelay");
+                parameter = new Parameter(inputPort, "delayOffset");
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(
-                        "A minDelay parameter already exists");
+                        "A delayOffset parameter already exists");
             }
         }
-        DoubleToken[] tokens = new DoubleToken[minDelays.length];
-        for (int i = 0; i < minDelays.length; i++) {
-            tokens[i] = new DoubleToken(minDelays[i]);
+        DoubleToken[] tokens = new DoubleToken[delayOffsets.length];
+        for (int i = 0; i < delayOffsets.length; i++) {
+            tokens[i] = new DoubleToken(delayOffsets[i]);
         }
         ArrayToken arrayToken = new ArrayToken(tokens);
         parameter.setToken(arrayToken);
@@ -2500,7 +2480,7 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** Starting from the startPort, traverse the graph to calculate the minDelay offset.
+    /** Starting from the startPort, traverse the graph to calculate the delayOffset offset.
      *  @param startPort, port to start traversing at.
      *  @exception IllegalActionException If there are ports that are both input
      *   and output ports.
@@ -2634,7 +2614,7 @@ public class PtidesBasicDirector extends DEDirector {
     ////                         private variables                 ////
 
     /** Map input ports to model time delays. These model time delays are then used
-     *  to calculate the minDelay parameter, which is used for safe to process analysis.
+     *  to calculate the delayOffset parameter, which is used for safe to process analysis.
      */
     private Map _inputModelTimeDelays;
 
@@ -2661,10 +2641,10 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Time _physicalTimeExecutionStarted;
 
-    /** Maps ports to dependencies. Used to determine minDelay parameter
+    /** Maps ports to dependencies. Used to determine delayOffset parameter
      */
     private Map _portDelays;
-
+    
     /** Stores absolute deadline information for pure events that will be produced
      *  in the future.
      */
@@ -2682,20 +2662,20 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Map _pureEventSourcePorts;
 
-    /** A sorted queue of RealTimeEvents that buffer events before they are sent to the output.
-     */
-    private PriorityQueue _realTimeOutputEventQueue;
-
     /** A sorted queue of RealTimeEvents that stores events when they arrive at the input of
      *  the platform, but are not yet visible to the platform (because of real time delay d_o).
      */
     private PriorityQueue _realTimeInputEventQueue;
 
+    /** A sorted queue of RealTimeEvents that buffer events before they are sent to the output.
+     */
+    private PriorityQueue _realTimeOutputEventQueue;
+
     /** Keeps track of whether time delay actors have been highlighted.
      */
     private boolean _timeDelayHighlighted = false;
 
-    /** A set that keeps track of visited actors during minDelay calculation.
+    /** A set that keeps track of visited actors during delayOffset calculation.
      */
     private Set _visitedActors;
 
