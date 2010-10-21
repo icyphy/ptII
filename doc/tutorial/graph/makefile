@@ -69,6 +69,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	junit \
 	'ConnectivityReporter$$DoubleClickHandler.class' \
 	'HelloWorld$$DoubleClickHandler.class' \
 	'ShortestPathFinder$$Calculate.class' \
