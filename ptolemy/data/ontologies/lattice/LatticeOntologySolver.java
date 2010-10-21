@@ -837,16 +837,16 @@ public class LatticeOntologySolver extends OntologySolver {
         return output.toString();
     }
 
-    /** Return the constraint type based on the solver strategy.
-     *  Forward inference gives constraints that the sinks be greater than
-     *  the sources, backward inference gives the reverse, biderectional
-     *  inference requires them to be equal, etc.
+    /** Return the constraint type based on the solver strategy and the
+     *  type of the fixed point.
+     *  Least fixed points with forward inference give constraints
+     *  that the sinks be greater that the sources, biderectional
+     *  inference requires sources and sinks to be equal, etc.
      *
-     *  @param solverStrategy The string represention of the solver strategy.
      *  @return The enumeration from ConstraintType corresponding to the
-     *     given solver strategy.
-     *  @exception IllegalActionException If an unknown solver strategy
-     *     is given.
+     *      given solver strategy.
+     *  @exception IllegalActionException If solver strategy or fixed point
+     *      type cannot be understood. 
      */
     protected ConstraintType _getConstraintType()
             throws IllegalActionException {

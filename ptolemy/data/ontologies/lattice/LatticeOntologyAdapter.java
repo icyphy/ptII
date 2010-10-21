@@ -38,11 +38,8 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -383,13 +380,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @param constraintType The default ConstraintType for generic model component
      * connections; will be used if the model component is not one of the following
      * types
-     * @param compositeConstraintType The default ConstraintType for
-     * composite actor connections; will be used if the model component is a
-     * composite actor
-     * @param fsmConstraintType The default ConstraintType for
-     * finite state machine transition connections; will be used if the model component
-     * is a ModalModel component or an FSMActor
-     * @param expressionASTNodeConstraintType The default ConstraintType
      * for Ptolemy expression language AST nodes; will be used it the model component
      * is an AST node
      * @exception IllegalActionException If an exception is thrown
