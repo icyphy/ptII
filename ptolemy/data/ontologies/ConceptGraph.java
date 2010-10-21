@@ -149,7 +149,12 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2) {
-        throw new IllegalArgumentException("Method not implemented!");
+        if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
+            throw new IllegalArgumentException("ConceptGraph.greatestLowerBound:"
+                    + " Arguments are not instances of FiniteConcept: "
+                    + " arg1 = " + e1 + ", arg2 = " + e2);
+        }
+        return super.greatestLowerBound(e1, e2);
     }
 
     /** Compute the greatest lower bound (GLB) of a subset.
