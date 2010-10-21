@@ -129,8 +129,8 @@ public class DocBuilderGUI extends PtolemyFrame {
                     // FIXME: Help should bring this up as well.
                     URL infoURL = Thread.currentThread()
                             .getContextClassLoader().getResource(infoFile);
-                    configuration.openModel(null, infoURL, infoURL
-                            .toExternalForm());
+                    configuration.openModel(null, infoURL,
+                            infoURL.toExternalForm());
                 } catch (Exception ex) {
                     throw new InternalErrorException(docBuilder, ex,
                             "Failed to open " + infoFile);
@@ -173,7 +173,9 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         // Create a JTextAreaExec without Start and Cancel buttons.
         final JTextAreaExec exec = new JTextAreaExec("Documentation Builder"
-                + "Commands", false);
+                + " Commands", false);
+        
+        exec.setPreferredSize(new Dimension(500, 300));
 
         docBuilder.setConfiguration(configuration);
 

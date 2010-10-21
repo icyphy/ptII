@@ -433,6 +433,10 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     final String[] commandTokens = StringUtilities
                             .tokenizeForExec((String) commands.next());
 
+                    if (commandTokens.length < 1) {
+                        stdout("Warning, an empty string was passed as a command.");
+                        continue;
+                    }
                     stdout("In \"" + _workingDirectory
                             + "\", about to execute:\n");
 
