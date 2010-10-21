@@ -57,8 +57,7 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = ModalController.java \
-	RefinementActor.java \
-	State.java
+	   State.java
 
 OTHER_FILES_TO_BE_JARED = 
 
