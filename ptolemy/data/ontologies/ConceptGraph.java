@@ -185,7 +185,12 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Object leastUpperBound(Object e1, Object e2) {
-        throw new IllegalArgumentException("Method not implemented!");
+        if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
+            throw new IllegalArgumentException("ConceptGraph.leastUpperBound:"
+                    + " Arguments are not instances of FiniteConcept: "
+                    + " arg1 = " + e1 + ", arg2 = " + e2);
+        }
+        return super.leastUpperBound(e1, e2);
     }
 
     /** Compute the least upper bound (LUB) of a subset.
