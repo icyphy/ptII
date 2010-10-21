@@ -247,6 +247,23 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         return _lubShared(subset);
     }
 
+    /** Return the opposite of the given compare return code, as if the
+     *  arguments had been given to compare in the reverse order.
+     *  @param compareCode One of <code>CPO.SAME, CPO.HIGHER,
+     *      CPO.LOWER, CPO.INCOMPARABLE</code>.
+     *  @return The compare code that represents the opposite result
+     *      from the given compare code.
+     */
+    public static final int reverseCompareCode(int compareCode) {
+        if (compareCode == CPO.HIGHER) {
+            return CPO.LOWER;
+        } else if (compareCode == CPO.LOWER) {
+            return CPO.HIGHER;
+        } else {
+            return compareCode;
+        }
+    }
+
     /** Return the top element of this CPO.
      *  @return An Object representing the top element, or
      *   <code>null</code> if the top does not exist.
