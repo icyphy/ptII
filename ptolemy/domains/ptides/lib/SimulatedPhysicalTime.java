@@ -28,6 +28,7 @@
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.lib.TimedSource;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -62,7 +63,7 @@ public class SimulatedPhysicalTime extends TimedSource {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // set the type constraints.
+        // Set the type constraints.
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -71,16 +72,14 @@ public class SimulatedPhysicalTime extends TimedSource {
 
     /** Send the simulated physical time to the output, which is the
      *  currentTime of the enclosing DE director.
-     *  @exception IllegalActionException If send() throws it.
+     *  @exception IllegalActionException If send was unsuccessful.
      */
     public void fire() throws IllegalActionException {
         PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
 
-        if (1==1) {
-        throw new IllegalActionException("Fails to compile, there is no director.getPhysicalTime()");
-        //        output.send(0, new DoubleToken(director.getPhysicalTime()
-        //.getDoubleValue()));
-        }
+        output.send(0, new DoubleToken((director.getPhysicalTag().timestamp
+        .getDoubleValue())));
+        
         super.fire();
     }
 

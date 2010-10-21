@@ -147,11 +147,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If the superclass throws it, or if
      *   failed to create and/or initialize the following parameters: 
      *   animateExecution, highlightModelTimeDelays,
-     *   actorsReceiveEventsInTimestampOrder, and syncError.
+     *   actorsReceiveEventsInTimestampOrder, and platformSynchronizationError.
      *  @exception NameDuplicationException If the superclass throws it, or
      *   if there's name duplication for the following parameters;
      *   animateExecution, highlightModelTimeDelays,
-     *   actorsReceiveEventsInTimestampOrder, and syncError.
+     *   actorsReceiveEventsInTimestampOrder, and platformSynchronizationError.
      */
     public PtidesBasicDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -460,7 +460,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  Finally, the stopWhenQueueIsEmpty is set to false. In general, Ptides
      *  models should never stop when the event queue is empty, because
      *  it can wait and react to future sensor input events.
-     *  @see #_calculateMinDelayOffsets
+     *  @see #_calculateDelayOffsets
      *  @exception IllegalActionException If delayOffset cannot be calculated, 
      *  sensor/actuator/network consistency cannot be checked, or if the 
      *  super class throws it.
@@ -470,7 +470,7 @@ public class PtidesBasicDirector extends DEDirector {
         // Initialize an event queue.
         _eventQueue = new PtidesListEventQueue();
 
-        _calculateMinDelayOffsets();
+        _calculateDelayOffsets();
 
         // In Ptides, we should never stop when queue is empty.
         stopWhenQueueIsEmpty.setExpression("false");
@@ -556,14 +556,15 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Perform book keeping after actor firing. This procedure consist of
      *  two actions:
-     *  <p>
-     *  1. An actor has just been fired. An actuation event could have been
-     *  produced. If so, that event is taken out of event queue, and the token
+     *  <ol>
+     *  <li>An actor has just been fired. A token destined to the outside of
+     *  the Ptides platform could have been produced. If so, the corresponding 
+     *  event is taken out of event queue, and the token
      *  is placed at the actuator/network port, ready to be transferred
-     *  to the outside.
-     *  <p>
-     *  2. Bookkeeping structures that keeps track of which actor
-     *  has just fired are cleared.
+     *  to the outside.</li>
+     *  <li> Bookkeeping structures that keeps track of which actor
+     *  has just fired are cleared.</li>
+     *  </ol>
      */
     protected void _actorFired() {
 
@@ -593,11 +594,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  Note: for all transparent composite actors, the delayOffsets are not
      *  calculated for their input ports. Instead, the offsets are calculated and
      *  annotated for input ports that are inside of these actors.
-     *  @exception IllegalActionException If _clearMinDelayOffsets(), _isNetworkPort()
-     *   _getNetworkDelay(), _getRealTimeDelay(), _traverseToCalcMinDelay(),
-     *   getRemoteReceivers(), or getChannelForReceiver() throws it.
+     *  @exception IllegalActionException If failed to clear or calculate delayOffset,
+     *  cannot check whether the current port is a network port, cannot get the
+     *  network delay of the current port, cannot get the real time delay of the
+     *  current port, cannot get remote receivers, or cannot get the port channel
+     *  for a particular receiver.
      */
-    protected void _calculateMinDelayOffsets() throws IllegalActionException {
+    protected void _calculateDelayOffsets() throws IllegalActionException {
 
         // A set that keeps track of all the actors that have been traversed to. At the end of
         // the traversal, if some actor is not visited, that means that actor is a source in
@@ -605,7 +608,7 @@ public class PtidesBasicDirector extends DEDirector {
         // we throw an exception if sources are found.
         _visitedActors = new HashSet<Actor>();
 
-        _clearMinDelayOffsets();
+        _clearDelayOffsets();
 
         // A map that saves a dependency for a port channel pair. This dependency is later used to
         // calculate delayOffset.
@@ -723,7 +726,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  If there are events in the event queue of the same timestamp,
      *  return true, otherwise return false.
      *  @return true if there are events of the same timestamp, otherwise
-     *   return false.
+     *  return false.
      */
     protected boolean _checkForNextEvent() {
         // The following code enforces that a firing of a
@@ -772,13 +775,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  attribute.
      *  </p>
      *  @exception IllegalActionException If sensor ports are connected to
-     *   NetworkInputDevice or have a networkDelay attribute; Or if a
-     *   network port is not connected to a NetworkInputDeivce, or it has a
-     *   realTimeDelay attribute.
+     *  NetworkInputDevice or have a networkDelay attribute; Or if a
+     *  network port is not connected to a NetworkInputDeivce, or it has a
+     *  realTimeDelay attribute.
      */
     protected void _checkSensorActuatorNetworkConsistency()
             throws IllegalActionException {
-        // These checks are constantly being updated. It is not yet complete.
         if (getContainer() instanceof TypedCompositeActor) {
             // If we are expanding the configuration, then the container might
             // be an EntityLibrary.  See ptolemy/configs/test/
@@ -840,7 +842,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param overwriteHighlight a boolean -- true if the current highlighting
      *  color is to be overridden.
      *  @exception IllegalActionException If the animateExecution
-     *   parameter cannot be evaluated.
+     *  parameter cannot be evaluated.
      */
     protected void _clearHighlight(Actor actor, boolean overwriteHighlight)
             throws IllegalActionException {
@@ -860,9 +862,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  to Infinity (meaning events arriving at this port will always be safe to
      *  process). If it does not have a delayOffset parameter.
      *  @exception IllegalActionException If cannot evaluate the width of an input
-     *   port, or if token of the parameter delayOffset cannot be evaluated.
+     *  port, or if token of the parameter delayOffset cannot be evaluated.
      */
-    protected void _clearMinDelayOffsets() throws IllegalActionException {
+    protected void _clearDelayOffsets() throws IllegalActionException {
         if (getContainer() instanceof TypedCompositeActor) {
             // If we are expanding the configuration, then the container might
             // be an EntityLibrary.  See ptolemy/configs/test/
@@ -936,7 +938,7 @@ public class PtidesBasicDirector extends DEDirector {
             return;
         }
 
-        // Adjust the microstep.
+        // Reset the microstep to 0.
         int microstep = 0;
 
         if (time.compareTo(getModelTime()) == 0) {
@@ -1030,7 +1032,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The given port to find finite dependent ports.
      *  @return Collection of finite dependent ports.
      *  @exception IllegalActionException If Actor's getCausalityInterface()
-     *          method, or CausalityInterface's getDependency() throws it.
+     *  method, or CausalityInterface's getDependency() throws it.
      */
     protected static Collection<IOPort> _finiteDependentPorts(IOPort port)
             throws IllegalActionException {
@@ -1080,7 +1082,7 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param input The input port.
      *  @return Collection of finite equivalent ports.
-     *  @exception IllegalActionException If _finiteDependentPorts() throws it.
+     *  @exception IllegalActionException If failed to get finite dependent ports.
      */
     protected static Collection<IOPort> _finiteEquivalentPorts(IOPort input)
             throws IllegalActionException {
@@ -1104,7 +1106,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param event Event to find deadline for.
      *  @return deadline of this event.
      *  @exception IllegalActionException If relative deadline of the event
-     *   cannot be obtained.
+     *  cannot be obtained.
      */
     protected Time _getAbsoluteDeadline(PtidesEvent event)
             throws IllegalActionException {
@@ -1121,7 +1123,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param input The input port.
      *  @param output The output port.
      *  @return The dependency between the specified input port
-     *   and the specified output port.
+     *  and the specified output port.
      *  @exception IllegalActionException If the ports do not belong to the
      *  same actor.
      */
@@ -1153,7 +1155,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param actorExecuting The actor that's exeucting.
      *  @return A MoML string.
      *  @exception IllegalActionException If the animateExecution parameter cannot
-     *   be evaluated.
+     *  be evaluated.
      */
     protected String _getExecutingIcon(Actor actorExecuting)
             throws IllegalActionException {
@@ -1169,7 +1171,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param actor an Actor object.
      *  @return executionTime parameter.
      *  @exception IllegalActionException If excution time from 
-     *   PtidesActorProperties cannot be obtained.
+     *  PtidesActorProperties cannot be obtained.
      */
     protected static double _getExecutionTime(IOPort port, Actor actor)
             throws IllegalActionException {
@@ -1539,7 +1541,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  same actor and of the same tag.
      *  @return Actor Destination actor of the input events.
      *  @exception IllegalActionException If input list of events do not
-     *          share the same actor as their destination.
+     *  share the same actor as their destination.
      */
     protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
             throws IllegalActionException {
@@ -1597,7 +1599,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  we return null. Otherwise we return the top event.
      *  @return Next safe event.
      *  @exception IllegalActionException if whether the event is safe to process
-     *   cannot be determined.
+     *  cannot be determined.
      */
     protected PtidesEvent _getNextSafeEvent() throws IllegalActionException {
         PtidesEvent eventFromQueue = (PtidesEvent) _eventQueue.get();
@@ -1612,7 +1614,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
      *  @exception IllegalActionException If the token of the realTimeDelay
-     *   parameter cannot be evaluated.
+     *  parameter cannot be evaluated.
      */
     protected double _getRealTimeDelay(IOPort port)
             throws IllegalActionException {
@@ -1628,12 +1630,12 @@ public class PtidesBasicDirector extends DEDirector {
     /** Highlight the specified actor with the specified color.
      *  @param actor The actor to highlight.
      *  @param color The color, given as a string description in
-     *   the form "{red, green, blue, alpha}", where each of these
-     *   is a number between 0.0 and 1.0.
-     *  @exception IllegalActionException If the animateExecution is not allowed.
+     *  the form "{red, green, blue, alpha}", where each of these
+     *  is a number between 0.0 and 1.0.
      *  @param overwriteHighlight  a boolean -- true if the current
      *  color is to be overwritten.
-     *   parameter cannot be evaluated.
+     *  parameter cannot be evaluated.
+     *  @exception IllegalActionException If the animateExecution is not allowed.
      */
     protected void _highlightActor(Actor actor, String color,
             boolean overwriteHighlight) throws IllegalActionException {
@@ -1692,7 +1694,7 @@ public class PtidesBasicDirector extends DEDirector {
                 throw new IllegalActionException(port, "Event is expected"
                         + "to be a pure event, however it is not.");
             }
-            // Port could be null only if the event is a pure event, and the pure
+            // The event's port could be null only if the event is a pure event, and the pure
             // event is not causally related to any input port. thus the event
             // is always safe to process.
             return true;
@@ -1700,7 +1702,7 @@ public class PtidesBasicDirector extends DEDirector {
         // This should actually never happen, since _getNextActuationEvent() should
         // move all actuation events to the outputs.
         assert (!port.isOutput());
-        // Port is an output port, this could only happen if it is the output port
+        // The port is an output port, this could only happen if it is the output port
         // of a composite actor. Thus transferOutput should take care of this, and
         // we say it's always safe to process.
         /*
@@ -1750,7 +1752,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Call fireAt() of the executive director, which is in charge of bookkeeping the
      *  physical time.
      *  @param wakeUpTime The time to wake up.
-     * @throws IllegalActionException If cannot call fireAt of enclosing director.
+     *  @exception IllegalActionException If cannot call fireAt of enclosing director.
      */
     protected void _setTimedInterrupt(Time wakeUpTime) throws IllegalActionException {
         Actor container = (Actor) getContainer();
@@ -1813,7 +1815,7 @@ public class PtidesBasicDirector extends DEDirector {
             return;
         }
 
-        // FIXME: this is a hack. We have this because the network inteface may receive
+        // FIXME: This is a hack. We have this because the network inteface may receive
         // many events at the same physical time, but then they will decode the incoming token
         // to produce events of (hopefully) different timestamps. Thus here we do not need to
         // check if safe to process was correct if the actor is a NetworkInputDevice.
@@ -1872,8 +1874,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
-     *   input port, if the super class throws it, if physical tag cannot be
-     *   evaulated, if token cannot be sent to the inside.
+     *  input port, if the super class throws it, if physical tag cannot be
+     *  evaulated, if token cannot be sent to the inside.
      */
     protected boolean _transferInputs(IOPort port)
             throws IllegalActionException {
@@ -1982,7 +1984,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         Parameter parameter = (Parameter) ((NamedObj) port)
                 .getAttribute("realTimeDelay");
-        // realTimeDelay is default to 0.0;
+        // The realTimeDelay is default to 0.0;
         double realTimeDelay = 0.0;
         if (parameter != null) {
             realTimeDelay = ((DoubleToken) parameter.getToken()).doubleValue();
@@ -2202,18 +2204,17 @@ public class PtidesBasicDirector extends DEDirector {
         return lastAbsoluteDeadline.add(timeDiff);
     }
 
-    /** For a particular input port channel pair, find the min delay.
+    /** For a particular input port channel pair, find the delay offset.
      *  @param inputPort The input port to find min delay for.
      *  @param channel The channel at this input port.
      *  @return The min delay associated with this port channel pair.
      *  @exception IllegalActionException If finite dependent ports cannot
-     *   be evaluated, or token of actorsReceiveEventsInTimestampOrder
-     *   parameter cannot be evaluated.
+     *  be evaluated, or token of actorsReceiveEventsInTimestampOrder
+     *  parameter cannot be evaluated.
      */
     private double _calculateMinDelayForPortChannel(IOPort inputPort,
             Integer channel) throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
-        // for each port that's in the same equivalence class as the input port,
         for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
             Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
                     .get(port);
@@ -2229,7 +2230,7 @@ public class PtidesBasicDirector extends DEDirector {
                             }
                         }
                     } else {
-                        // cannot assume events arrive in timestamp order.
+                        // Cannot assume events arrive in timestamp order.
                         SuperdenseDependency candidate = channelDependency
                                 .get(integer);
                         if (smallestDependency.compareTo(candidate) > 0) {
@@ -2259,7 +2260,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param actor The destination actor.
      *  @return whether the future pure event is causally related to any input port(s)
      *  @exception IllegalActionException If whether causality marker contains
-     *   source port cannot be evaluated.
+     *  source port cannot be evaluated.
      */
     private IOPort _getCausalPortForThisPureEvent(Actor actor)
             throws IllegalActionException {
@@ -2285,7 +2286,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Return the network delay of the port.
      *  @param port The port with network delay.
      *  @exception IllegalActionException If token of networkDelay parameter
-     *   cannot be evaluated.
+     *  cannot be evaluated.
      */
     private static double _getNetworkDelay(IOPort port)
             throws IllegalActionException {
@@ -2301,7 +2302,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port the relativeDeadline is associated with.
      *  @return relativeDeadline parameter
      *  @exception IllegalActionException If token of relativeDeadline
-     *   parameter cannot be evaluated.
+     *  parameter cannot be evaluated.
      */
     private static double _getRelativeDeadline(IOPort port)
             throws IllegalActionException {
@@ -2321,8 +2322,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  the highlighting is cleared.
      *  @param compositeActor actor to highlight model delays.
      *  @exception IllegalActionException If causality interface cannot
-     *   be evaluated, dependency cannot be evaluated, or finite dependent
-     *   ports cannot be evaluated.
+     *  be evaluated, dependency cannot be evaluated, or finite dependent
+     *  ports cannot be evaluated.
      */
     private void _highlightModelDelays(CompositeActor compositeActor,
             boolean highlightModelDelay) throws IllegalActionException {
@@ -2367,7 +2368,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.
      *  @exception IllegalActionException If token of networkPort cannot be
-     *   evaluated.
+     *  evaluated.
      */
     private static boolean _isNetworkPort(IOPort port)
             throws IllegalActionException {
@@ -2385,8 +2386,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  is used to calculate the absolute deadline of the produced pure event.
      *  @param eventsToProcess The list of events to be processed.
      *  @exception IllegalActionException If abslute deadline of an event,
-     *   finite dependent ports of a port, or dependency between two ports
-     *   cannot be evaluated.
+     *  finite dependent ports of a port, or dependency between two ports
+     *  cannot be evaluated.
      */
     private void _saveEventInformation(List<PtidesEvent> eventsToProcess)
             throws IllegalActionException {
@@ -2443,7 +2444,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param inputPort The input port to be annotated.
      *  @param delayOffsets The delayOffset values to annotate.
      *  @exception IllegalActionException If delayOffset parameter already
-     *   exists, or the delayOffset parameter cannot be set.
+     *  exists, or the delayOffset parameter cannot be set.
      */
     private static void _setMinDelay(IOPort inputPort, double[] delayOffsets)
             throws IllegalActionException {
@@ -2464,11 +2465,11 @@ public class PtidesBasicDirector extends DEDirector {
         parameter.setToken(arrayToken);
     }
 
-    /** check if we should output to the conclosing director immediately.
+    /** Check if we should output to the enclosing director immediately.
      *  this method is default to return false.
      *  @param port Output port to transmit output event immediately.
      *  @exception IllegalActionException If token of this parameter
-     *   cannot be evaluated.
+     *  cannot be evaluated.
      */
     private static boolean _transferImmediately(IOPort port)
             throws IllegalActionException {
@@ -2483,7 +2484,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Starting from the startPort, traverse the graph to calculate the delayOffset offset.
      *  @param startPort, port to start traversing at.
      *  @exception IllegalActionException If there are ports that are both input
-     *   and output ports.
+     *  and output ports.
      */
     private void _traverseToCalcMinDelay(IOPort startPort)
             throws IllegalActionException {
@@ -2501,7 +2502,7 @@ public class PtidesBasicDirector extends DEDirector {
             IOPort port = (IOPort) portDependency.port;
             SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
             Actor actor = (Actor) port.getContainer();
-            // if this actor has not been visited before, add it to the visitedActor set.
+            // If this actor has not been visited before, add it to the visitedActor set.
             if (!_visitedActors.contains(actor)) {
                 _visitedActors.add(actor);
             }
@@ -2510,7 +2511,7 @@ public class PtidesBasicDirector extends DEDirector {
                         "the causality analysis cannot deal with"
                                 + "port that are both input and output");
             }
-            // we do not want to traverse to the outside of the platform.
+            // Do not want to traverse to the outside of the platform.
             if (actor != getContainer()) {
                 if (port.isInput()) {
                     Collection<IOPort> outputs = _finiteDependentPorts(port);
@@ -2518,7 +2519,7 @@ public class PtidesBasicDirector extends DEDirector {
                         SuperdenseDependency minimumDelay = (SuperdenseDependency) _getDependency(
                                 port, outputPort);
                         // FIXME: what do we do with the microstep portion of the dependency?
-                        // need to make sure we did not visit this port before.
+                        // Need to make sure we did not visit this port before.
                         SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency
                                 .oTimes(minimumDelay);
                         if (((SuperdenseDependency) localPortDelays
@@ -2528,7 +2529,7 @@ public class PtidesBasicDirector extends DEDirector {
                                     modelTime));
                         }
                     }
-                } else { // port is an output port
+                } else { // The port is an output port
                     // For each receiving port channel pair, add the dependency in inputModelTimeDelays.
                     // We do not need to check whether there already exists a dependency because if
                     // a dependency already exists for that pair, that dependency must have a greater
