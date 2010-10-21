@@ -105,9 +105,109 @@ public class ConceptGraph extends DirectedAcyclicGraph {
     public int compare(Object concept1, Object concept2) {
         if (!(concept1 instanceof FiniteConcept) || !(concept2 instanceof FiniteConcept)) {
             throw new IllegalArgumentException("ConceptGraph.compare: "
-                    + "Arguments are not instances of Concept: "
+                    + "Arguments are not instances of FiniteConcept: "
                     + " concept1 = " + concept1 + ", concept2 = " + concept2);
         }
         return super.compare(concept1, concept2);
+    }
+    
+    /** Compute the down-set of an element in this CPO.
+     *  The down-set of an element is the subset consisting of
+     *  all the elements lower than or the same as the specified element.
+     *  @param e An Object representing an element in this CPO.
+     *  @return An array of Objects representing the elements in the
+     *   down-set of the specified element.
+     *  @exception IllegalArgumentException If the specified Object is not
+     *   an element in this CPO, or the resulting set is infinite.
+     */
+    public Object[] downSet(Object e) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the greatest element of a subset.
+     *  The greatest element of a subset is an element in the
+     *  subset that is higher than all the other elements in the
+     *  subset.
+     *  @param subset An array of Objects representing the subset.
+     *  @return An Object representing the greatest element of the subset,
+     *   or <code>null</code> if the greatest element does not exist.
+     *  @exception IllegalArgumentException If at least one Object in the
+     *   specified array is not an element of this CPO.
+     */
+    public Object greatestElement(Object[] subset) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the greatest lower bound (GLB) of two elements.
+     *  The GLB of two elements is the greatest element in the CPO
+     *  that is lower than or the same as both of the two elements.
+     *  @param e1 An Object representing an element in this CPO.
+     *  @param e2 An Object representing an element in this CPO.
+     *  @return An Object representing the GLB of the two specified
+     *   elements, or <code>null</code> if the GLB does not exist.
+     *  @exception IllegalArgumentException If at least one of the
+     *   specified Objects is not an element of this CPO.
+     */
+    public Object greatestLowerBound(Object e1, Object e2) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the greatest lower bound (GLB) of a subset.
+     *  The GLB of a subset is the greatest element in the CPO that
+     *  is lower than or the same as all the elements in the
+     *  subset.
+     *  @param subset An array of Objects representing the subset.
+     *  @return Nothing.
+     *  @exception IllegalArgumentException Always thrown.
+     */
+    public Object greatestLowerBound(Object[] subset) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the least element of a subset.
+     *  The least element of a subset is an element in the
+     *  subset that is lower than all the other element in the
+     *  subset.
+     *  @param subset An array of Objects representing the subset.
+     *  @return Nothing.
+     *  @exception IllegalArgumentException Always thrown.
+     */
+    public Object leastElement(Object[] subset) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the least upper bound (LUB) of two elements.
+     *  The LUB of two elements is the least element in the CPO
+     *  that is greater than or the same as both of the two elements.
+     *  @param e1 An Object representing an element in this CPO.
+     *  @param e2 An Object representing an element in this CPO.
+     *  @return Nothing.
+     *  @exception IllegalArgumentException Always thrown.
+     */
+    public Object leastUpperBound(Object e1, Object e2) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the least upper bound (LUB) of a subset.
+     *  The LUB of a subset is the least element in the CPO that
+     *  is greater than or the same as all the elements in the
+     *  subset.
+     *  @param subset An array of Objects representing the subset.
+     *  @return Nothing.
+     *  @exception IllegalArgumentException Always thrown.
+     */
+    public Object leastUpperBound(Object[] subset) {
+        throw new IllegalArgumentException("Method not implemented!");
+    }
+
+    /** Compute the up-set of an element in this CPO.
+     *  The up-set of an element is the subset consisting of
+     *  all the elements higher than or the same as the specified element.
+     *  @param e An Object representing an element in this CPO.
+     *  @return Nothing.
+     *  @exception IllegalArgumentException Always thrown.
+     */
+    public Object[] upSet(Object e) {
+        throw new IllegalArgumentException("Method not implemented!");
     }
 }
