@@ -26,6 +26,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
@@ -114,6 +115,7 @@ public class MonotonicityConcept extends InfiniteConcept {
             return CPO.INCOMPARABLE;
         }
         MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
+        ConceptGraph graph = getOntology().getGraph();
 
         Set<String> keys = _variableToMonotonicity.keySet();
         keys.addAll(righthandSide._variableToMonotonicity.keySet());
@@ -122,8 +124,8 @@ public class MonotonicityConcept extends InfiniteConcept {
         boolean seenLower = false;
         boolean seenIncomparable = false;
         for (String key : keys) {
-            int result = getMonotonicity(key)
-                    .compare(righthandSide.getMonotonicity(key));
+            int result = graph.compare(getMonotonicity(key),
+                    righthandSide.getMonotonicity(key));
             switch (result) {
             case CPO.HIGHER:       seenHigher = true; break;
             case CPO.LOWER:        seenLower = true; break;
