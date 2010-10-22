@@ -2378,7 +2378,9 @@ cleanSrc:
 	@echo "#"
 	@echo "# cleanSrc: removing files created by configure"
 	@echo "# `date`"
-	(cd src/ptII$(VERSION)/bin; mv Vergil.app Ptiny.app ..; $(MAKE) clean; mv ../Vergil.app ../Ptiny.app .)
+	if [ -f src/ptII$(VERSION)/mk/ptII.mk ]; then \
+		(cd src/ptII$(VERSION)/bin; mv Vergil.app Ptiny.app ..; $(MAKE) clean; mv ../Vergil.app ../Ptiny.app .); \
+	fi
 	rm -f src/ptII$(VERSION)/mk/ptII.mk
 	rm -f src/ptII$(VERSION)/.classpath
 	rm -f src/ptII$(VERSION)/lib/ptII.properties
