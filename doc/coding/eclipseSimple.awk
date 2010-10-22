@@ -51,7 +51,7 @@ $0 ~ /<body.*>/ {
     if (sawBody!=1) {
 	print $0;
     } else {
-	if ($0 ~/eclipseSimple/) {
+	if ($0 ~ /<!--/ && $0 ~/eclipseSimple/) {
 	    sawEclipseSimple=1;
 	    if ($0 ~/\/eclipseSimple/) {
 		sawEclipseSimple=0;
