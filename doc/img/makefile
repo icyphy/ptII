@@ -103,6 +103,11 @@ OTHER_FILES_TO_BE_JARED = \
 	codegen8.gif \
 	codegen9.gif \
 	codegena.gif \
+	eclipseNewJavaProject.png \
+	eclipseNewJavaProject2.png \
+	eclipseNewProject.png \
+	eclipsePreferencesGeneralWorkspace.png \
+	eclipseWorkspaceLauncher.png \
 	navnext.gif \
 	navprev.gif \
 	navtoc.gif \

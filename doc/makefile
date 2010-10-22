@@ -109,11 +109,6 @@ EXTRA_SRCS = \
 	doctoc.htm \
 	domainCompatibility.htm \
 	domains.htm \
-	eclipseNewJavaProject.png \
-	eclipseNewJavaProject2.png \
-	eclipseNewProject.png \
-	eclipsePreferencesGeneralWorkspace.png \
-	eclipseWorkspaceLauncher.png \
 	findbugs-exclude.xml \
 	findbugs-include.xml \
 	footer.htm \
