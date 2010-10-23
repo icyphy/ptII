@@ -442,7 +442,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Reset the solver.  
      */
     public void reset() {
-        _resolvedProperties = new HashMap<Object, FiniteConcept>();
+        _resolvedProperties = new HashMap<Object, Concept>();
         _nonSettables = new HashSet<Object>();
         _adapterStore = new HashMap<Object, OntologyAdapter>();
     }
@@ -475,7 +475,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @param property The specified property.
      * @see #getResolvedConcept(Object, boolean)
      */
-    public void setResolvedConcept(Object object, FiniteConcept property) {
+    public void setResolvedConcept(Object object, Concept property) {
         _resolvedProperties.put(object, property);
     }
 
@@ -643,7 +643,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Property values.  Each mapping is a pair of Object and
      * Property.
      */
-    protected HashMap<Object, FiniteConcept> _resolvedProperties = new HashMap<Object, FiniteConcept>();
+    protected HashMap<Object, Concept> _resolvedProperties = new HashMap<Object, Concept>();
 
     /**
      * The utilities shared between all solvers.

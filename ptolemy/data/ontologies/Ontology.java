@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.graph.CPO;
 import ptolemy.graph.GraphStateException;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -82,6 +83,21 @@ public class Ontology extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the complete partial order of the concepts in this ontology.
+     *  In the base class it just returns the ontology graph from getGraph().
+     *  However, the derived ProductLatticeOntology class is composed from
+     *  a tuple of ontologies, and does not contain its own ontology graph.
+     *  But a CPO is still needed in order to apply the least fixed point
+     *  algorithm.
+     *  @see #getGraph
+     *  @see ptolemy.data.ontologies.lattice.ProductLatticeOntology ProductLatticeOntology
+     *  @see ptolemy.data.ontologies.lattice.ProductLatticeCPO ProductLatticeCPO
+     *  @return The complete partial order of the concepts in this ontology.
+     */
+    public CPO getCompletePartialOrder() {
+        return getGraph();
+    }
+    
     /** Return the graph represented by this ontology.
      *  Graph is weighted by Concepts on the nodes and ConceptRelations on
      *  the edges.

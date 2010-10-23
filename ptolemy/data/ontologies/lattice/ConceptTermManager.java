@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -149,6 +148,8 @@ public class ConceptTermManager implements ConceptTermFactory {
         /** The model object associated with the InequalityTerm. */
         protected Object _object;
 
+        /** Represents whether or not the inequality term should be considered
+         *  for the solver. */
         private boolean _isEffective;
 
         /**
@@ -174,7 +175,6 @@ public class ConceptTermManager implements ConceptTermFactory {
          * 
          * @return The resolved Concept of this InequalityTerm, or null if this
          * term is not effective
-         * @exception IllegalActionException If an exception is thrown
          * @see #setValue(Object)
          */
         public Object getValue() {
@@ -230,17 +230,17 @@ public class ConceptTermManager implements ConceptTermFactory {
                                 + "Cannot initialize a constant property.");
             }
 
-            if (!(property instanceof FiniteConcept)) {
+            if (!(property instanceof Concept)) {
                 throw new IllegalActionException(
                         "ptolemy.graph.InequalityTerm.initialize: "
                                 + "The argument is not a Concept.");
             }
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
-            if (_object instanceof FiniteConcept) {
-                _solver.setResolvedConcept(_object, (FiniteConcept) _object);
+            if (_object instanceof Concept) {
+                _solver.setResolvedConcept(_object, (Concept) _object);
             } else {
-                _solver.setResolvedConcept(_object, (FiniteConcept) property);
+                _solver.setResolvedConcept(_object, (Concept) property);
             }
         }
 
@@ -310,7 +310,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                         "The property is not settable.");
             }
 
-            _solver.setResolvedConcept(_object, (FiniteConcept) property);
+            _solver.setResolvedConcept(_object, (Concept) property);
         }
 
         /** Override the base class to give a description of the port
