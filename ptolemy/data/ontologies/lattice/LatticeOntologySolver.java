@@ -69,15 +69,13 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class LatticeOntologySolver extends OntologySolver {
 
-    /**
-     * Constructor for the OntologySolver.
-     * 
-     * @param container The model that contains the OntologySolver
-     * @param name The name of the OntologySolver
-     * @exception IllegalActionException If there is any problem creating the
-     * OntologySolver object.
-     * @exception NameDuplicationException If there is already a component
-     * in the container with the same name
+    /** Constructor for the OntologySolver.
+     *  @param container The model that contains the OntologySolver
+     *  @param name The name of the OntologySolver
+     *  @exception IllegalActionException If there is any problem creating the
+     *   OntologySolver object.
+     *  @exception NameDuplicationException If there is already a component
+     *   in the container with the same name
      */
     public LatticeOntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
