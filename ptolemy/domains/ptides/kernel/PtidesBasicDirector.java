@@ -72,62 +72,104 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
-/** This director implements the Ptides programming model.
+/** This director implements the Ptides programming model. 
+ *  PTIDES models define the interaction of distributed real-time software
+ *  components, the networks that bind them together, sensors, actuators,
+ *  and physical dynamics. Since Ptides is formulated to aid the design 
+ *  of distributed real-time systems,
+ *  this director provides a set of features to address both
+ *  the distributed and the real-time aspects of system design.
+ *  <p>
+ *  To address the real-time aspect, this director allows for the simulation
+ *  of system timing behavior. This is achieved by allowing actors in
+ *  the Ptides model to be annotated by parameters such as <i>WCET</i> and
+ *  <i>executionTime</i>, while requiring a Ptides
+ *  director placed inside a composite actor. The composite actor is then
+ *  governed by an enclosing director, and the enclosing director's notion of 
+ *  time is used to simulate the passage of physical time based on
+ *  the <i>WCET</i> and <i>executionTime</i> parameters of Ptides' actors.
+ *  <p>
+ *  To address the distributed aspect, each composite actor that has a
+ *  Ptides director inside simulates a
+ *  computation platform (e.g., a microprocessor), while the enclosing
+ *  director simulates the physical world. Actors under Ptides director
+ *  then communicate to the outside via sensors, actuators, or networks.
+ *  These components are simulated by input/output ports of the composite
+ *  actors, as well as special actors that simulate network devices.
+ *  <p>
  *  The Ptides director is based on the DE director. Like the DE director,
  *  this director maintains a totally ordered set of events, and processes
- *  these events in the order defined on their tags and depths.
- *  However, unlike the DE director,
- *  this director has a local notion time, decoupled from that of the
- *  enclosing director. The enclosing director's time
- *  represents physical time, whereas this director's time represents model
- *  time in the Ptides model. In other words, this director must have an
- *  enclosing director that simulates the passage of physical time. Normally, the
- *  DE director is used as the enclosing director. One major reason for using
- *  DE as the enclosing director is that time cannot go backwards in DE, which
+ *  these events in the order defined by their timestamps. These timestamps
+ *  are also referred to as model time. In particular, if an event of timestamp
+ *  \tau is being processed by the director, then we say the current model
+ *  time of the director is \tau.
+ *  Unlike in DE, where the local notion of model time is tightly coupled with
+ *  with that of the enclosing director (@see DEDirector), 
+ *  This director's notion of model time
+ *  is decoupled from that of the enclosing director. As mentioned before,
+ *  this design allows the use the time in the enclosing 
+ *  director to simulate time in the physical world. Normally, the
+ *  DE director is used as the enclosing director. One reason for using
+ *  the DE director is that time cannot go backwards in DE, which
  *  is an important physical time property.
  *  <p>
- *  An event in the Ptides programming model is in the same sense as an event
- *  in DE. It also consists of a tag as well as value token, as well as fields
- *  such as depth, which is used to define the scheduling semantics. Because
- *  of the similarities, PtidesEvent is a subclass of DEEvent. PtidesEvent
- *  is different from DE event, however, in that it holds the token value within
- *  the event structure, instead of immediately transfer tokens to downstream
- *  ports. When an event is to be processed, as the event is taken out of
- *  the event queue, the token is transmitted to the input port, ready to be
- *  consumed.
+ *  This director does not simulate event preemption. That is, if an event <i>e</i>
+ *  is processed at simulated physical time <i>t</t>, and the
+ *  <i>executionTime</i> parameter of the destination actor is set to
+ *  <i>d</t>, then from
+ *  simulated physical time <i>t</t> to <i>t + d</t>, <i>e</i> will be the only
+ *  event that is processed. Subclasses of this director, however, could
+ *  choose to enable preemption.
  *  <p>
- *  Ptides allow event execution out of timestamp order. In other words, at
- *  any point in time, all events are considered for processing. To ensure DE
- *  semantics is still enforced, Ptides introduces a safe-to-process analysis.
+ *  The following paragraphs describe implementation details of
+ *  this director. The operation semantics of this domain is given in:
+ *  Jia Zou, Slobodan Matic, Edward A. Lee, Thomas Huining Feng, Patricia Derler.
+ *  <a href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution Strategies for PTIDES, a Programming Model for Distributed Embedded Systems</a>,
+ *  15th IEEE Real-Time and Embedded
+ *  Technology and Applications Symposium, 2009, IEEE Computer
+ *  Society, 77-86, April, 2009
+ *  <p>
+ *  The operational semantics implies at any point in time, all events in the 
+ *  event queue are considered for processing. This is contrary to DE, where
+ *  only the earliest event in the event queue is processed. To ensure actor states
+ *  are updated in timestamp order in a Ptides model, the operational semantics
+ *  defines a safe-to-process analysis.
  *  This analysis returns a boolean to indicate whether an event can be
  *  processed without violating DE semantics, based on information
  *  such as events currently in the event queue, their model time relationship
  *  with each other, as well as the current physical time. In this particular
- *  version of the Ptides scheduler, we simply take the top (smallest timestamp)
- *  event, and compares its timestamp with the current physical time +
+ *  version of the Ptides scheduler, the director takes the 
+ *  earliest (smallest timestamp) event from the event queue, and compares
+ *  its timestamp with the current physical time +
  *  a pre-computed offset (call this the delayOffset). If
  *  the physical time is larger, then this event is safe to process. Otherwise,
  *  we wait for physical time to pass until this event becomes safe, at which
- *  point it is processed. This is the most basic version of the Ptides scheduler
- *  (thus the name), however subclasses of this director provides more
+ *  point it is processed. For more detailed information about how the
+ *  delayOffset parameter is calculated, refer to the above paper reference.
+ *  This is the most basic version of the Ptides scheduler
+ *  (thus the name), however subclasses of this director may provide more
  *  sophisticated scheduling algorithms.
- *  <p>
- *  Like in the DE domain, Directed loops of IO ports with no delay will trigger
- *  an exception. For detailed explanation, @see DEDirector. Unlike in DE however,
- *  Ptides uses superdense-dependency to not only indicate whether model time
- *  delay exists between components, but also what the delay value is.
  *  <p>
  *  In the preinitialize method, according to the model graph structure, the
  *  delayOffsets are calculated, using superdense dependency between
  *  connected components.
  *  <p>
- *  Preemption is disallowed in this scheduler.
+ *  Like in the DE domain, directed loops of IO ports with no model time
+ *  delay will trigger
+ *  an exception. For detailed explanation, @see DEDirector. Unlike in DE however,
+ *  Ptides uses {@link SuperdenseDependency} to not only indicate 
+ *  whether model time delay exists between input and output ports of an
+ *  actor, but also what the delay value is.
  *  <p>
- *  An input port in a DE model contains an instance of PtidesBasicReceiver.
- *  When a token is put into a PtidesBasicReceiver, that receiver posts a trigger
- *  event to the director. This director sorts trigger events in a global event
- *  queue.
- *  @see DEDirector
+ *  An event in the Ptides programming model is similar to an event
+ *  in DE. It also consists of a timestamp, a value token, as well as fields
+ *  such as microstep and depth, which are used to define the scheduling 
+ *  semantics. Because
+ *  of these similarities, PtidesEvent is a subclass of DEEvent. PtidesEvent
+ *  is different from DE event, however, in that it holds the token value within
+ *  the event structure. The director only transmits token to the destination
+ *  receiver when it is ready to process the event. The PtidesBasicReceiver is
+ *  the receiver used in a Ptides model.
  *  @see PtidesEvent
  *  @see PtidesBasicReceiver
  *
@@ -145,13 +187,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param container The container
      *  @param name The name
      *  @exception IllegalActionException If the superclass throws it, or if
-     *   failed to create and/or initialize the following parameters: 
-     *   animateExecution, highlightModelTimeDelays,
-     *   actorsReceiveEventsInTimestampOrder, and platformSynchronizationError.
+     *  failed to create and/or initialize director parameters.
      *  @exception NameDuplicationException If the superclass throws it, or
-     *   if there's name duplication for the following parameters;
-     *   animateExecution, highlightModelTimeDelays,
-     *   actorsReceiveEventsInTimestampOrder, and platformSynchronizationError.
+     *  if the container already contains an entity with the specified name.
      */
     public PtidesBasicDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -182,8 +220,10 @@ public class PtidesBasicDirector extends DEDirector {
     ////                     parameters                            ////
 
     /** If true, then it can be assumed that actors receive events in timestamp
-     *  order. Setting this parameter could potentially simplifies the safe to 
-     *  process analysis.
+     *  order. Setting this parameter could potentially simplify the safe to 
+     *  process analysis. This parameter should not be set if the network
+     *  model could potentially reorder packets, or if an actor such as
+     *  {@link ptolemy.domains.de.lib.VariableDelay} is used.
      *  This is a boolean that defaults to false.
      */
     public Parameter actorsReceiveEventsInTimestampOrder;
@@ -203,7 +243,7 @@ public class PtidesBasicDirector extends DEDirector {
     public Parameter highlightModelTimeDelays;
 
     /** Store the synchronization error in the platform governed by this 
-     *  tides director.
+     *  Ptides director.
      *  In a distributed Ptides environment, each distributed platform is modeled
      *  by a composite actor that is governed by a Ptides director
      *  (or its subclass). In reality, these platforms will have (physical) time
@@ -377,7 +417,8 @@ public class PtidesBasicDirector extends DEDirector {
         Director executiveDirector = ((Actor) container).getExecutiveDirector();
         if (executiveDirector == null) {
             throw new IllegalActionException(this,
-                    "The PtidesBasicDirector can only be used within an enclosing director.");
+                    "The PtidesBasicDirector can only be used " +
+                    "within an enclosing director.");
         }
         executiveDirector.fireAtCurrentTime((Actor) container);
 
@@ -450,14 +491,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  Call the preinitialize() method in the super class. The superclass
      *  instantiates an event queue structure, however, here a 
      *  PtidesListEventQueue structure is instantiated in its place. 
-     *  This is because we need to access 
-     *  not only the first event in the event queue, but all events in the 
-     *  event queue, in sorted order. Then the delayOffset used in the 
-     *  safe-to-process analysis is calculated. Also, a check is performed
+     *  We do this because a Ptides scheduler not only need to access the
+     *  first event in the event queue, but all other events, in sorted order. 
+     *  Also, the delayOffset used in the 
+     *  safe-to-process analysis is calculated. This is followed by a check
      *  to see if sensors, actuators, and networks ports are annotated with
      *  the corresponding parameters, and whether they are connected to the 
      *  corresponding sensor/actuator/network actors.
-     *  Finally, the stopWhenQueueIsEmpty is set to false. In general, Ptides
+     *  Finally, the parameter stopWhenQueueIsEmpty is set to false. 
+     *  In general, Ptides
      *  models should never stop when the event queue is empty, because
      *  it can wait and react to future sensor input events.
      *  @see #_calculateDelayOffsets
@@ -1415,7 +1457,6 @@ public class PtidesBasicDirector extends DEDirector {
         // got preempted.
         if (_eventQueue.isEmpty()) {
             // Nothing to fire.
-
             // Animate if appropriate.
             _setIcon(_getIdleIcon(), false);
 
@@ -1424,10 +1465,8 @@ public class PtidesBasicDirector extends DEDirector {
 
         PtidesEvent eventFromQueue = _getNextSafeEvent();
         if (eventFromQueue == null) {
-            // No event is there to be process.
             return null;
         }
-        //            PtidesEvent eventFromQueue = _eventQueue.get();
         Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
         int microstepOfEventFromQueue = eventFromQueue.microstep();
 
@@ -1592,7 +1631,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  return any one of these events, it can also choose to return null depending
      *  on the implementation.
      *  <p>
-     *  Also notice this method should _NOT_ take the event from the event queue.
+     *  Also notice this method should <i>not</i> take the event from the event
+     *  queue.
      *  <p>
      *  In this baseline implementation, we only check if
      *  the event at the top of the queue is safe to process. If it is not, then

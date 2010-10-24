@@ -399,11 +399,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  again in order to keep processing events. After each actor firing,
      *  book keeping procedures are called, to keep track of the current
      *  state of the scheduler. The model time of the next events are also
-     *  checked to see if 
-     *
-     *  @exception IllegalActionException if _fire() or _checkForNextEvent()
-     *   throws it.
+     *  checked to see if we have produced an event of smaller timestamp.
      *  @see #_fire
+     *  @exception IllegalActionException if we couldn't process an event
+     *  or if an event of smaller timestamp is found within the event queue.
+     *  throws it.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
@@ -1419,8 +1419,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  the stop time and the execution will halt.</p>
      * 
      *  @return 0 if firing was successful, and the next event in event
-     *   queue should be checked for processing.
-     *   -1 if there's no actor to fire, and we should not keep firing, 
+     *   queue should be checked for processing;
+     *   -1 if there's no actor to fire, and we should not keep firing;
      *   1 if there's no actor to fire, but the next event should be
      *   checked for processing.
      *  @throws IllegalActionException If the firing actor throws it, or
