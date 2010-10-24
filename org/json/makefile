@@ -44,10 +44,6 @@ VPATH =	$(ROOT)/$(ME)
 CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = mlc
-
 # Used to build jar files
 PTPACKAGE = json
 PTCLASSJAR = $(PTPACKAGE).jar
@@ -70,7 +66,8 @@ JSRCS = \
 	XML.java \
 	XMLTokener.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	json-license.htm
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

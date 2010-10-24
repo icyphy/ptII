@@ -646,6 +646,12 @@ PTJOYSTICK_DIR =     	@PTJOYSTICK_DIR@
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
 
+# Set to json and used in $PTII/org/makefile if the JavaScript Object Notation was found.
+PTJSON_DIR =		@PTJSON_DIR@
+
+# Set to json.org and used in $PTII/doc/makefile if JSON was found.
+PTJSON_PACKAGES = 	@PTJSON_PACKAGES@
+
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
 PTJUNIT_DIR =		@PTJUNIT_DIR@
 

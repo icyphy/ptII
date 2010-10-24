@@ -3466,6 +3466,48 @@ else
     fi
 fi
 
+#--------------------------------------------------------------------
+#      	The JavaScript Object Notation (JSON) package.
+#	JSON can be downloaded from http://www.json.org
+#	JSON is used by ptolemy/cg/syntactic
+#--------------------------------------------------------------------
+
+# PTJSON_DIR is set to json and used in
+# $PTII/ptolemy/cg/lib/syntatic if json was found
+PTJSON_DIR=
+
+# Note that we don't substitute in the ${PTII} or $(JSON_DIR) here
+# Defaults for ptII.mk and bin/ptinvoke.in
+# Use {} here instead of () because bin/ptinvoke uses JSON_DIR and JSON_CLASSES
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+#JSON_DIR='${PTII}/vendors/jode/1.1.2-pre1'
+#JSON_CLASSES='${JSON_DIR}/jode.jar'
+
+# We only need to look for jode if this director exists:
+JSON_USER_DIR="$PTII/ptolemy/cg/lib/syntactic"
+if test ! -d "$JSON_USER_DIR"; then
+    PT_MSG_STATUS([$JSON_USER_DIR is not present,
+    so we need not find JSON, the JavaScript Object Notation package.])
+else
+    AC_MSG_CHECKING([for json directory])
+    AC_ARG_WITH(jode, [  --with-json=DIR       use JSON from DIR,
+                          defaults to \$PTII/org/json],
+	JSON_DIR=$withval,
+	JSON_DIR=$PTII/org/json)
+
+    if test -d "$JSON_DIR"; then
+	PT_MSG_RESULT([$JSON_DIR])
+	# Used in org/makefile
+	PTJSON_DIR=json
+	# Used in doc/makefile
+	PTJSON_PACKAGES=org.json
+    else
+        AC_MSG_WARN([Failed to find $PTII/org/json/
+    perhaps JSON is not installed?
+    JSON is the JavaScript Object Notation package used by the cg/syntactic
+    work.  You need only have JSON if you plan on using the cg/syntactic work.])
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       KVM is the JDK for PalmOS
@@ -5338,6 +5380,12 @@ AC_SUBST(PTJOYSTICK_DIR)
 # Ptolemy II packages that use the Java Joystick facilty
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJOYSTICK_PACKAGES)
+
+# Set to json and used in $PTII/org/makefile if the JavaScript Object Notation was found.
+AC_SUBST(PTJSON_DIR)
+
+# Set to json.org and used in $PTII/doc/makefile if JSON was found.
+AC_SUBST(PTJSON_PACKAGES)
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
 AC_SUBST(PTJUNIT_DIR)

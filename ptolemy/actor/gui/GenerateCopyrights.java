@@ -115,6 +115,10 @@ public class GenerateCopyrights {
                 "jni/launcher/launcher-copyright.htm");
 
         _addIfPresent(copyrightsMap,
+                "org.json.JSONObject",
+                "org/json/json-license.htm");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.gui.run.RunLayoutFrame",
                 "org/mlc/mlc-copyright.htm");
 

@@ -30,7 +30,8 @@
 ##########################################################################
 
 # configure sets PTBSH_MLC_DIR to mlc if BSH, the Java Bean Shell.
-DIRS = $(PTBSH_MLC_DIR)
+# configure sets PTJSON_DIR to json if JSON, the JavaScript Object Notation was found.
+DIRS = $(PTBSH_MLC_DIR) $(PTJSON_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		..
