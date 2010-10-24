@@ -384,6 +384,8 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies \
 	ptolemy.data.ontologies.gui \
 	ptolemy.data.ontologies.lattice \
+	ptolemy.data.ontologies.lattice.adapters.constAbsIntObservable.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.dimensionSystem \
