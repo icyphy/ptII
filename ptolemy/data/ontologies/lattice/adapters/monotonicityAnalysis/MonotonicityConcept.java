@@ -24,6 +24,7 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptGraph;
@@ -124,8 +125,11 @@ public class MonotonicityConcept extends InfiniteConcept {
         MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
         ConceptGraph graph = getOntology().getGraph();
 
-        Set<String> keys = _variableToMonotonicity.keySet();
-        keys.addAll(righthandSide._variableToMonotonicity.keySet());
+        // For some reason Set.addAll throws an UnsupportedOperationException,
+        // so we use a TreeSet here purely to avoid that problem.
+        TreeSet<String> keys = new TreeSet<String>(_variableToMonotonicity.keySet());
+        Set<String> morekeys = righthandSide._variableToMonotonicity.keySet(); 
+        keys.addAll(morekeys);
         
         boolean seenHigher = false;
         boolean seenLower = false;
@@ -209,7 +213,10 @@ public class MonotonicityConcept extends InfiniteConcept {
      */
     public Concept leastUpperBound(MonotonicityConcept concept) throws IllegalActionException {
         MonotonicityConcept result = createMonotonicityConcept(getOntology());
-        Set<String> allKeys = this._variableToMonotonicity.keySet();
+        // For some reason Set.addAll throws an UnsupportedOperationException,
+        // so we use a TreeSet here purely to avoid that problem.
+        TreeSet<String> allKeys = new TreeSet<String>(
+                this._variableToMonotonicity.keySet());
         allKeys.addAll(concept._variableToMonotonicity.keySet());
         for (String variableName : allKeys) {
             ConceptGraph graph = this.getOntology().getGraph();
