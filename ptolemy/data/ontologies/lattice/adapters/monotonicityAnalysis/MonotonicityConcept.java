@@ -172,15 +172,13 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
         return (FiniteConcept)getOntology().getGraph().bottom();
     }
-    
+
     /** Compute the least upper bound (LUB) of this and another concept.
      *  
      *  @param concept The other concept
      *  @return The concept that is the LUB of this and the given concept.
-     *  @exception IllegalArgumentException If given a MonotonicityConcept
-     *      (this is not yet supported, but a FIXME).
      */
-    public Concept leastUpperBound(Concept concept) throws IllegalArgumentException {
+    public Concept leastUpperBound(Concept concept) {
         Concept top = (Concept)getOntology().getGraph().top();
         if (concept instanceof FiniteConcept) {
             if (concept.equals(getOntology().getGraph().bottom())) {
@@ -193,8 +191,34 @@ public class MonotonicityConcept extends InfiniteConcept {
                 return top;
             }
             // We have two MonotonicityConcepts
-            throw new IllegalArgumentException("LUB between two MonotonicityConcepts not yet supported.");
+            try {
+                return leastUpperBound((MonotonicityConcept) concept);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+                return top;
+            }
         }
+    }
+    
+    /** Compute the least upper bound (LUB) of this and another monotonicity concept.
+     *  
+     *  @param concept The other monotonicity concept
+     *  @return The concept that is the LUB of this and the given concept.
+     *  @throws IllegalActionException If there is an error creating a new
+     *    monotonicity concept.
+     */
+    public Concept leastUpperBound(MonotonicityConcept concept) throws IllegalActionException {
+        MonotonicityConcept result = createMonotonicityConcept(getOntology());
+        Set<String> allKeys = this._variableToMonotonicity.keySet();
+        allKeys.addAll(concept._variableToMonotonicity.keySet());
+        for (String variableName : allKeys) {
+            ConceptGraph graph = this.getOntology().getGraph();
+            FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
+                    this.getMonotonicity(variableName),
+                    concept.getMonotonicity(variableName));
+            result.putMonotonicity(variableName, monotonicity);
+        }
+        return result;
     }
 
     /** Return the hash code of this monotonicity concept, which is uniquely
