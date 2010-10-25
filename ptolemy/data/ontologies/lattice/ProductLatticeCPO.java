@@ -36,7 +36,15 @@ import ptolemy.graph.CPO;
 /** A complete partial order for product lattice-based ontologies.
  *  Given a product lattice defined by a list of {@link ProductLatticeConcept}s,
  *  this class provides the implementation for all complete partial order
- *  operations on the product lattice.
+ *  operations on the product lattice. Note that this complete partial order
+ *  implementation is not derived from a graph of the concepts, but rather by
+ *  doing comparison operations that depend on the structure of the individual
+ *  lattices that comprise the product lattice.  For example, take a product
+ *  lattice P that is composed of two lattices L1 and L2.  Each lattice element
+ *  concept in P is a tuple of the form &lt;C(L1), C(L2)&gt;.  To decide the
+ *  relationship between two concepts in p1 and p2 in P, it is determined by
+ *  the relationships of the individual concepts in their tuples. So:
+ *  p1 >= p2 iff C1(L1) >= C2(L1) and C1(L2) >= C2(L2)
  * 
  *  @author Charles Shelton
  *  @version $Id$

@@ -145,7 +145,7 @@ public abstract class ConceptFunction {
                 for (Concept argument : argValues) {
                     if (argument != null
                         && !_argumentDomainOntologies.get(index).entityList(
-                                FiniteConcept.class).contains(argument)) {
+                                Concept.class).contains(argument)) {
                         throw new IllegalActionException("The input value "
                             + argument + " at argument index " + index
                             + " to the ConceptFunction " + this

@@ -252,7 +252,6 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      * Return the list of sub-adapters. In this base class,
      * return an empty list.
      * @return The list of sub-adapters.
-     * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<OntologyAdapter> _getSubAdapters() {
         return new ArrayList<OntologyAdapter>();

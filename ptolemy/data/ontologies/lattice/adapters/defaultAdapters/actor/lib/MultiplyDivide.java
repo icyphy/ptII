@@ -52,18 +52,33 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class MultiplyDivide extends LatticeOntologyAdapter {
 
-    /**
-     * Construct a MultiplyDivide adapter for the flatUnitSystem lattice.
-     * @param solver The given solver.
-     * @param actor The given MultiplyDivide actor.
-     * @exception IllegalActionException If the adapter cannot be initialized.
+    /** Construct a default lattice ontology adapter for the MultiplyDivide actor.
+     *  @param solver The given solver.
+     *  @param actor The given MultiplyDivide actor.
+     *  @exception IllegalActionException If the adapter cannot be initialized.
      */
     public MultiplyDivide(LatticeOntologySolver solver,
             ptolemy.actor.lib.MultiplyDivide actor)
             throws IllegalActionException {
         super(solver, actor, false);
+        
+        _multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
+                .getContainedModel())
+                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+        _divideDefinition = (DivideConceptFunctionDefinition) (_solver
+                .getContainedModel())
+                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+        
+        // If neither definition for a multiplication or divison concept
+        // function can be found, just use the default constraints.
+        if (_multiplyDefinition == null && _divideDefinition == null) {
+            _useDefaultConstraints = true;
+        }        
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
     /** Return the list of constraints for the MultiplyDivide actor.
      *  @return The list of constraints for this adapter.
      *  @throws IllegalActionException If there is an error creating
@@ -80,19 +95,13 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
         }
 
         ConceptFunction multiplyFunction = null;
-        MultiplyConceptFunctionDefinition multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
-        if (multiplyDefinition != null) {
-            multiplyFunction = multiplyDefinition.createConceptFunction();
+        if (_multiplyDefinition != null) {
+            multiplyFunction = _multiplyDefinition.createConceptFunction();
         }
 
         ConceptFunction divideFunction = null;
-        DivideConceptFunctionDefinition divideDefinition = (DivideConceptFunctionDefinition) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
-        if (divideDefinition != null) {
-            divideFunction = divideDefinition.createConceptFunction();
+        if (_divideDefinition != null) {
+            divideFunction = _divideDefinition.createConceptFunction();
         }
 
         // If the multiplyFunction is not defined in the ontology solver model
@@ -105,12 +114,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                             getPropertyTerm(actor.divide) }));
         }
 
-        if (divideFunction == null) {
-            // Use these default constraints if the divideFunction is not
-            // defined in the ontology solver model.
-            setAtLeast(actor.output, actor.multiply);
-            setAtLeast(actor.output, actor.divide);
-        } else {
+        if (divideFunction != null) {
             setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
                     divideFunction, new InequalityTerm[] {
                             getPropertyTerm(actor.multiply),
@@ -123,4 +127,13 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
 
         return super.constraintList();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+    
+    /** The multiplication concept function definition found in the solver model. */
+    private MultiplyConceptFunctionDefinition _multiplyDefinition;
+    
+    /** The division concept function definition found in the solver model. */
+    private DivideConceptFunctionDefinition _divideDefinition;
 }

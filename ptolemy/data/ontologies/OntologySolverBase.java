@@ -235,7 +235,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Get the attribute that corresponds to the specified
      * ASTPtRootNode. This assumes that the correspondence is recorded
      * previously through calling
-     * {@link ptolemy.data.properties.PropertyHelper#putAttribute(ASTPtRootNode, Attribute)}.
+     * {@link ptolemy.data.ontologies.OntologySolverUtilities#putAttribute(ASTPtRootNode, Attribute)}.
      *
      * @param node The specified ASTPtRootNode.
      * @return The attribute associated with the specified ASTPtRootNode.
@@ -411,9 +411,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         return _resolvedProperties.get(object);
     }
 
-    /**
-     * Return the shared utility object.
-     * @return The shared utility object.
+    /** Return the shared utility object.
+     *  @return The shared utility object.
+     *  @see #setOntologySolverUtilities
      */
     public OntologySolverUtilities getOntologySolverUtilities() {
         return _ontologySolverUtilities;
@@ -469,6 +469,14 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public abstract void resolveConcepts() throws KernelException;
 
+    /** Set the shared utility object to the given object.
+     *  @param solverUtilities The given ontology solver utilities object.
+     *  @see #getOntologySolverUtilities
+     */
+    public void setOntologySolverUtilities(OntologySolverUtilities solverUtilities) {
+        _ontologySolverUtilities = solverUtilities;
+    }
+    
     /**
      * Set the resolved property of the specified object.
      * @param object The specified object.

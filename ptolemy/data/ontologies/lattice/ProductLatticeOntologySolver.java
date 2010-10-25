@@ -23,13 +23,15 @@
 
 package ptolemy.data.ontologies.lattice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologySolverModel;
-import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.data.ontologies.OntologySolverUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,12 +67,128 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
+    /** Return all the LatticeOntologySolvers contained in the ProductLatticeOntologySolver's
+     *  model. These are the solvers that are associated with each ontology that
+     *  comprises the product lattice ontology for this solver.
+     *  @return The list of LatticeOntologySolvers contained in the solver model, or null
+     *   if the solver model is null.
+     */
+    public List<LatticeOntologySolver> getAllContainedOntologySolvers() {
+        OntologySolverModel solverModel = (OntologySolverModel) getContainedModel();
+        if (solverModel != null) {
+            List containedSolvers = solverModel.attributeList(LatticeOntologySolver.class);
+            return (List<LatticeOntologySolver>) containedSolvers;
+        } else {
+            return null;
+        }
+    }
+    
+    /** Return the product lattice ontology for this constraint solver.
+     *  If this solver contains more than one product lattice ontology, then return the
+     *  last one added. If it contains no product lattice ontologies, then return null.
+     *  A product lattice ontology solver must contain at least one product lattice ontology.
+     *  Ontologies that are not product lattice ontologies are ignored.
+     *  @return The product lattice ontology for this constraint solver.
+     *  @exception IllegalActionException Thrown if there is an error getting the
+     *   ontology objects from the solver model.
+     */
+    public ProductLatticeOntology getOntology() throws IllegalActionException {
+        List<Ontology> ontologies = getAllContainedOntologies();
+        List<ProductLatticeOntology> productLatticeOntologies = new ArrayList<ProductLatticeOntology>();
+        for (Ontology ontology : ontologies) {
+            if (ontology instanceof ProductLatticeOntology) {
+                productLatticeOntologies.add((ProductLatticeOntology) ontology);
+            }
+        }
+        
+        if (!productLatticeOntologies.isEmpty()) {
+            return productLatticeOntologies.get(productLatticeOntologies.size() - 1);
+        } else {
+            return null;
+        }
+    }
+    
+    /** Return the LatticeOntologySolver associated with the given ontology that
+     *  is contained in the ProductLatticeOntologySolver model, or null if there
+     *  is none.
+     *  @param containedOntology The ontology that is a subcomponent of the
+     *   product lattice ontology.
+     *  @return The LatticeOntologySolver that is associated with the given
+     *   ontology.
+     *  @throws IllegalActionException If there is an error getting the contained
+     *   LatticeOntologySolvers.
+     */
+    public LatticeOntologySolver getRelatedSolver(Ontology containedOntology)
+            throws IllegalActionException {
+        if (containedOntology != null) {
+            List<LatticeOntologySolver> containedSolvers = getAllContainedOntologySolvers();
+            if (containedSolvers != null) {
+                for (LatticeOntologySolver innerSolver : containedSolvers) {
+                    Ontology innerOntology = innerSolver.getOntology();
+                    if (innerOntology != null &&
+                            innerOntology.getName().equals(containedOntology.getName())) {
+                        return (LatticeOntologySolver) innerSolver;
+                    }
+                }
+            }
+        }        
+        return null;
+    }
+    
+    /** Initialize the solver:  Reset the solver (superclass) and then collect 
+     *  all of the initial constraints from the model. For a ProductLatticeOntologySolver,
+     *  all the LatticeOntologySolvers for the ontologies that compose the ProductLatticeOntology
+     *  must have their solver utilities object set to the same object as the
+     *  ProductLatticeOntologySolver.
+     *  @exception IllegalActionException If an exception occurs when
+     *  collecting the constraints.
+     */
+    public void initialize() throws IllegalActionException {
+        OntologySolverUtilities productLatticeSolverUtilities = getOntologySolverUtilities();
+        
+        // Before calling initialize set all the sub ontology solvers to use the same shared utilities
+        // object as the product lattice ontology solver.  This is necessary to keep track of
+        // constraint relationships between Ptolemy expressions and the model elements that contain them.
+        List<LatticeOntologySolver> containedSolvers = getAllContainedOntologySolvers();
+        if (containedSolvers != null) {
+            for (LatticeOntologySolver innerSolver : containedSolvers) {
+                innerSolver.setOntologySolverUtilities(productLatticeSolverUtilities);
+            }
+        }
+        
+        super.initialize();
+    }
+    
+    /** Reset the solver. This removes the internal states of the
+     *  solver (e.g.  previously recorded properties, statistics,
+     *  etc.). Also resets the {@linkplain ConceptTermManager} to null
+     *  and clears the trained constraints. For the ProductLatticeOntologySolver,
+     *  also reset the solvers for the component ontologies in the solver model.
+     */
+    public void reset() {
+        super.reset();
+        
+        List<LatticeOntologySolver> containedSolvers = getAllContainedOntologySolvers();
+        if (containedSolvers != null) {
+            for (LatticeOntologySolver innerSolver : containedSolvers) {
+                innerSolver.reset();
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
     
     /** Return the LatticeOntologyAdapter for the specified
      *  component. This instantiates a new OntologyAdapter if it does
      *  not already exist for the specified component.  This returns
-     *  specific LatticeOntologyAdapters for the LatticeOntologySolver.
+     *  specific LatticeOntologyAdapters for the LatticeOntologySolver. For
+     *  the ProductLatticeOntologySolver it will create new adapters that are
+     *  derived from the adapters of the individual LatticeOntologySolvers
+     *  for the component ontologies of the product lattice ontology, unless
+     *  the user has specified new adapters in the solver model.
      * 
      *  @param component The specified component.
      *  @return The LatticeOntologyAdapter for the specified component.
@@ -98,11 +216,18 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         }
         
         if (adapter == null) {
-            adapter = new ProductLatticeOntologyAdapter(this, component, false);            
+            if (component instanceof CompositeEntity) {
+                adapter = new LatticeOntologyCompositeAdapter(this,
+                        (CompositeEntity) component);
+            } else if (component instanceof ASTPtRootNode) {
+                adapter = new ProductLatticeOntologyASTNodeAdapter(this,
+                        (ASTPtRootNode) component, false);
+            } else {
+                adapter = new ProductLatticeOntologyAdapter(this, component, false);
+            }
         }
 
         _adapterStore.put(component, adapter);
         return adapter;
     }
-
 }

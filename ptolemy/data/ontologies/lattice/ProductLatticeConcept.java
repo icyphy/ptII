@@ -38,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  Represents a concept that is composed of a tuple of other concepts derived
  *  from other ontologies.
  * 
+ *  @see ProductLatticeOntology
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1

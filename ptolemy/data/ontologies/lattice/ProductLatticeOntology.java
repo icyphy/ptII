@@ -109,19 +109,8 @@ public class ProductLatticeOntology extends Ontology {
             // previous concepts contained in the ontology.
             _removeAllConcepts();
             
-            // The latticeOntologies parameter is type constrainted to always
-            // contain an array token of Ontology objects.
-            ArrayToken ontologies = (ArrayToken) latticeOntologies.getToken();            
-            if (ontologies != null && ontologies.length() != 0) {
-                Token[] ontologiesTokenArray = (Token[]) ontologies.arrayValue();            
-                List<Ontology> ontologiesList = new ArrayList<Ontology>();
-                for (int i = 0; i < ontologiesTokenArray.length; i++) {     
-                    Ontology ontology = (Ontology) ((ObjectToken) ontologiesTokenArray[i]).getValue(); 
-                    if (ontology != null) {
-                        ontologiesList.add(ontology);
-                    }
-                }            
-                
+            List<Ontology> ontologiesList = getLatticeOntologies();           
+            if (ontologiesList != null) {
                 List<List<Concept>> conceptTuples = _createAllConceptTuples(ontologiesList);
                 for (List<Concept> tuple : conceptTuples) {
                     try {
@@ -155,7 +144,50 @@ public class ProductLatticeOntology extends Ontology {
         }
         
         return _cpo;
-    }    
+    }
+    
+    /** Return the list of lattice ontologies that comprise the product
+     *  lattice ontology.
+     *  @return The list of lattice ontology objects.
+     *  @throws IllegalActionException If the latticeOntologies parameter does
+     *   not return an array token that contains the ontology objects, or
+     *   at least one of the specified component ontologies is not a lattice.
+     */
+    public List<Ontology> getLatticeOntologies() throws IllegalActionException {
+        if (workspace().getVersion() != _latticeVersion) {        
+            // The latticeOntologies parameter is type constrainted to always
+            // contain an array token of Ontology objects.
+            ArrayToken ontologies = (ArrayToken) latticeOntologies.getToken();
+
+            if (ontologies != null && ontologies.length() != 0) {
+                Token[] ontologiesTokenArray = (Token[]) ontologies.arrayValue();            
+                List<Ontology> ontologiesList = new ArrayList<Ontology>();
+                for (int i = 0; i < ontologiesTokenArray.length; i++) {     
+                    Ontology ontology = (Ontology) ((ObjectToken) ontologiesTokenArray[i]).getValue(); 
+                    if (ontology != null) {
+                        if (ontology.isLattice()) {
+                            ontologiesList.add(ontology);
+                        } else {
+                            throw new IllegalActionException(this, "All the ontologies" +
+                                    " that comprise a product lattice ontology" +
+                                    " must be lattices. The ontology " +
+                                    ontology.getName() + " is not a lattice.");
+                        }
+                    }
+                }
+
+                _latticeOntologies = ontologiesList;
+            } else {
+                _latticeOntologies = null;
+            }
+            
+            // Set the lattice version after creating the new list of
+            // lattice ontologies.
+            _latticeVersion = workspace().getVersion();
+        }
+        
+        return _latticeOntologies;
+    }
     
     /** Return true if the product lattice ontology is a lattice. If all the
      *  component onotlogies are lattices, then the product lattice ontology
@@ -182,6 +214,7 @@ public class ProductLatticeOntology extends Ontology {
     /** Create all combinations of concept tuples from the given list of
      *  ontologies. This list is used to generate the list of
      *  {@link ProductLatticeConcept}s that define the product lattice ontology.
+     *  The method is recursive.
      * 
      *  @param ontologiesList The given list of ontologies that comprise this
      *   product lattice ontology.
@@ -275,4 +308,10 @@ public class ProductLatticeOntology extends Ontology {
     
     /** The workspace version at which the cached CPO was valid. */
     private long _cpoVersion = -1L;
+    
+    /** The list of Ontologies that comprise the product lattice ontology. */
+    private List<Ontology> _latticeOntologies;
+    
+    /** The workspace version at which the cached product lattice was valid. */
+    private long _latticeVersion = -1L;
 }

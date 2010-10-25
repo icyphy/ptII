@@ -113,6 +113,19 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
         return array;
     }
 
+    /** Return the array of dependent terms contained by this term.  For a
+     *  ConceptFunctionInequalityTerm, these terms represent the input
+     *  arguments to the concept function in the order they are passed
+     *  to the function.
+     *  @return An array of InequalityTerms that represent the dependent terms.
+     */
+    public final InequalityTerm[] getDependentTerms() {
+        InequalityTerm[] array = new InequalityTerm[_dependentTerms.length];
+        System.arraycopy(_dependentTerms, 0, array, 0, _dependentTerms.length);
+    
+        return array;
+    }
+
     /** Return the value of this inequality term. Since this term is
      *  for a concept function, return the evaluation of the concept
      *  function based on the current values of variables passed into
@@ -217,9 +230,6 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
             return output.toString() + "INVALID" + ")";
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     /** The concept function to be evaluated for the inequality term. */
     private ConceptFunction _conceptFunction;
