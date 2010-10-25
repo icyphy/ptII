@@ -236,12 +236,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                                 + "The argument is not a Concept.");
             }
 
-            // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
-            if (_object instanceof Concept) {
-                _solver.setResolvedConcept(_object, (Concept) _object);
-            } else {
-                _solver.setResolvedConcept(_object, (Concept) property);
-            }
+            _solver.setResolvedConcept(_object, (Concept) property);
         }
 
         /**

@@ -34,7 +34,6 @@ import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.properties.PropertyResolutionException;
 import ptolemy.graph.Inequality;
