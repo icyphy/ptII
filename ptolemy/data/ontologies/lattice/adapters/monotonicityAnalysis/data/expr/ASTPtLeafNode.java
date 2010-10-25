@@ -1,4 +1,4 @@
-/* Adapter for RelationalNodes in the monotonicity analysis.
+/* Adapter for LeafNodes in the monotonicity analysis.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -35,6 +35,7 @@ import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
+import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  */
-public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
+public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
     /**
      * Construct an property constraint adapter for the given ASTPtRelationalNode.
@@ -60,8 +61,8 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      * @exception IllegalActionException Thrown if the parent construct
      *  throws it.
      */
-    public ASTPtRelationalNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtRelationalNode node)
+    public ASTPtLeafNode(LatticeOntologySolver solver,
+            ptolemy.data.expr.ASTPtLeafNode node)
             throws IllegalActionException {
         super(solver, node, false);
     }
@@ -75,10 +76,10 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.data.expr.ASTPtRelationalNode _relationalNode = (ptolemy.data.expr.ASTPtRelationalNode) _getNode();
+        ptolemy.data.expr.ASTPtLeafNode leafNode = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
 
-        ASTPtRelationalNodeFunction astRelationFunction = new ASTPtRelationalNodeFunction(
-                _relationalNode.getOperator(),
+        ASTPtLeafNodeFunction astRelationFunction = new ASTPtLeafNodeFunction(
+                leafNode,
                 getSolver().getOntology());
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
@@ -95,7 +96,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      *  monotonicity of conditional nodes (if nodes) in the abstract
      *  syntax trees of Ptolemy expressions.
      */
-    private class ASTPtRelationalNodeFunction extends MonotonicityConceptFunction {
+    private class ASTPtLeafNodeFunction extends MonotonicityConceptFunction {
 
         /** Create a new function for inferring the monotonicity concept
          *  over a relational node, given the operator at the node,
@@ -105,62 +106,33 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  @param monotonicityOntology The monotonicity ontology.
          *  @throws IllegalActionException If a function cannot be created.
          */
-        public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
+        public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
                 Ontology monotonicityOntology) throws IllegalActionException {
-            super("defaultASTPtRelationalNodeFunction", 2,
+            super("MonotonicityASTPtLeafNodeFunction", 0,
                     monotonicityOntology);
-            _operator = operator.toString();
+            _leafNode = leafNode;
         }
 
         /** Return the monotonicity concept that results from analyzing the
-         *  relational statement.  We abuse the notation here slightly,
-         *  as the return type of a relational statement (an inequality)
-         *  is boolean, so the monotonicity of a realational statement would
-         *  depend on an ordering of booleans.  This analysis assumes that
-         *  true <= false.
-         *  This means, for example, that for a monotonic variable x,
-         *  x <= Constant
-         *  is monotonic, and
-         *  x >= Constant
-         *  is antimonotonic.
-         *  
-         *  @param inputConceptValues The list of concept inputs to the function.
-         *    (i.e. The monotonicity of each of the conditional's branches)
-         *  @return Either Constant, Monotonic, Antimonotonic, or
-         *    Nonmonotonic, depending on the result of the analysis.
-         *  @exception IllegalActionException If there is an error evaluating the function.
-         *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
+         *  leaf node.  This is independent of the input concept values.
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 
-            Concept lhs = inputConceptValues.get(0);
-            Concept rhs = inputConceptValues.get(1);
-            if (_constantConcept.isAboveOrEqualTo(lhs) && _constantConcept.isAboveOrEqualTo(rhs)) {
-                return _constantConcept;
+            MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
+            
+            if (_leafNode.isIdentifier()) {
+                result.putMonotonicity(_leafNode.getName(), _monotonicConcept);
             }
-            boolean monotonicAntimonotonic = _monotonicConcept.isAboveOrEqualTo(lhs) && _antimonotonicConcept.isAboveOrEqualTo(rhs);
-            boolean antimonotonicMonotonic = _antimonotonicConcept.isAboveOrEqualTo(lhs) && _monotonicConcept.isAboveOrEqualTo(rhs);
-            if (_operator == "<=" || _operator == "<") {
-                if (monotonicAntimonotonic) {
-                    return _monotonicConcept;
-                } else if (antimonotonicMonotonic) {
-                    return _antimonotonicConcept;
-                }
-            } else if (_operator == ">=" || _operator == ">") {
-                if (monotonicAntimonotonic) {
-                    return _antimonotonicConcept;
-                } else if (antimonotonicMonotonic) {
-                    return _monotonicConcept;
-                }               
-            } 
-            return _generalConcept;
+            
+            
+            return result;
         }
         
         /** String representation of the operator for the relational node
          *  that this function is defined over. 
          */
-        private String _operator;
+        private ptolemy.data.expr.ASTPtLeafNode _leafNode;
 
     }
 
