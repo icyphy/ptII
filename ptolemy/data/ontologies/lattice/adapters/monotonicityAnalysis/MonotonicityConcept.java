@@ -111,7 +111,13 @@ public class MonotonicityConcept extends InfiniteConcept {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }
-        if (concept instanceof FiniteConcept) {
+        
+        // Original bottom and top remain bottom and top.
+        if (concept.equals(getOntology().getGraph().bottom())) {
+            return CPO.HIGHER;
+        } else if (concept.equals(getOntology().getGraph().top())) {
+            return CPO.LOWER;
+        } else if (concept instanceof FiniteConcept) {
             return CPO.INCOMPARABLE;
         }
         MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
