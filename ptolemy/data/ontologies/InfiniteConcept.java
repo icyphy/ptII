@@ -119,6 +119,15 @@ public abstract class InfiniteConcept extends Concept {
      */
     abstract public int hashCode();
 
+    /** Compute the least upper bound (LUB) of this and another concept.
+     *  
+     *  @param concept The other concept
+     *  @return The concept that is the LUB of this and the given concept.
+     *  @exception IllegalArgumentException If concepts are not drawn from
+     *      the same ontology.
+     */
+    public abstract Concept leastUpperBound(Concept concept) throws IllegalArgumentException;
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 

@@ -204,16 +204,24 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  that is greater than or the same as both of the two elements.
      *  @param e1 An Object representing an element in this CPO.
      *  @param e2 An Object representing an element in this CPO.
-     *  @return Nothing.
-     *  @exception IllegalArgumentException Always thrown.
+     *  @return An Object representing the LUB of the two specified
+     *   elements, or <code>null</code> if the LUB does not exist.
+     *  @exception IllegalArgumentException If at least one of the
+     *   specified Objects is not an element of this CPO.
      */
     public Object leastUpperBound(Object e1, Object e2) {
-        if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
+        if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
             throw new IllegalArgumentException("ConceptGraph.leastUpperBound:"
-                    + " Arguments are not instances of FiniteConcept: "
+                    + " Arguments are not instances of Concept: "
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
-        return super.leastUpperBound(e1, e2);
+        if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
+            return super.leastUpperBound(e1, e2);
+        } else if (e1 instanceof InfiniteConcept) {
+            return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
+        } else { // (e2 instanceof InfiniteConcept)
+            return ((InfiniteConcept)e2).leastUpperBound((Concept)e1);
+        }
     }
 
     /** Compute the least upper bound (LUB) of a subset.
