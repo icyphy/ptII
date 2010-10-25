@@ -88,14 +88,15 @@ public abstract class InfiniteConcept extends Concept {
     /** Return if this concept is equal to the given object,
      *  which is only the case if compare returns CPO.SAME.
      *
-     *  @param object Object with which to compare.
+     *  @param concept Object with which to compare.
      *  @return True, if both concepts are the same. False, otherwise.
      */
-    public boolean equals(Object object) {
-        if (object instanceof Concept) {
-            Concept concept = (Concept)object;
+    public boolean equals(Object concept) {
+        if (concept instanceof Concept
+                && getOntology() != null
+                && ((Concept)concept).getOntology() != null) {
             try {
-                return compare(concept) == CPO.SAME;
+                return compare((Concept)concept) == CPO.SAME;
             } catch (IllegalActionException e) {
                 return false;
             }
