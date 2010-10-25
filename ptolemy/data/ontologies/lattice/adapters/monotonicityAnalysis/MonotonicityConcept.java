@@ -111,7 +111,7 @@ public class MonotonicityConcept extends InfiniteConcept {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }
-        
+
         // Original bottom and top remain bottom and top.
         if (concept.equals(getOntology().getGraph().bottom())) {
             return CPO.HIGHER;
@@ -120,6 +120,7 @@ public class MonotonicityConcept extends InfiniteConcept {
         } else if (concept instanceof FiniteConcept) {
             return CPO.INCOMPARABLE;
         }
+
         MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
         ConceptGraph graph = getOntology().getGraph();
 
@@ -170,6 +171,30 @@ public class MonotonicityConcept extends InfiniteConcept {
             return _variableToMonotonicity.get(variableName);
         }
         return (FiniteConcept)getOntology().getGraph().bottom();
+    }
+    
+    /** Compute the least upper bound (LUB) of this and another concept.
+     *  
+     *  @param concept The other concept
+     *  @return The concept that is the LUB of this and the given concept.
+     *  @exception IllegalArgumentException If given a MonotonicityConcept
+     *      (this is not yet supported, but a FIXME).
+     */
+    public Concept leastUpperBound(Concept concept) throws IllegalArgumentException {
+        Concept top = (Concept)getOntology().getGraph().top();
+        if (concept instanceof FiniteConcept) {
+            if (concept.equals(getOntology().getGraph().bottom())) {
+                return this;
+            } else {
+                return top;
+            }
+        } else {
+            if (!(concept instanceof MonotonicityConcept)) {
+                return top;
+            }
+            // We have two MonotonicityConcepts
+            throw new IllegalArgumentException("LUB between two MonotonicityConcepts not yet supported.");
+        }
     }
 
     /** Return the hash code of this monotonicity concept, which is uniquely
