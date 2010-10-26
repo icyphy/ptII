@@ -73,10 +73,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
 /** This director implements the Ptides programming model. 
- *  PTIDES models define the interaction of distributed real-time software
- *  components, the networks that bind them together, sensors, actuators,
- *  and physical dynamics. Since Ptides is formulated to aid the design 
- *  of distributed real-time systems,
+ *  which is used for the design of distributed real-time systems.
  *  this director provides a set of features to address both
  *  the distributed and the real-time aspects of system design.
  *  <p>
@@ -88,7 +85,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  governed by an enclosing director, and the enclosing director's notion of 
  *  time is used to simulate the passage of physical time based on
  *  the <i>WCET</i> and <i>executionTime</i> parameters of Ptides' actors.
- *  <p>
+ *  </p><p>
  *  To address the distributed aspect, each composite actor that has a
  *  Ptides director inside simulates a
  *  computation platform (e.g., a microprocessor), while the enclosing
@@ -96,13 +93,13 @@ import ptolemy.moml.MoMLChangeRequest;
  *  then communicate to the outside via sensors, actuators, or networks.
  *  These components are simulated by input/output ports of the composite
  *  actors, as well as special actors that simulate network devices.
- *  <p>
+ *  </p><p>
  *  The Ptides director is based on the DE director. Like the DE director,
  *  this director maintains a totally ordered set of events, and processes
  *  these events in the order defined by their timestamps. These timestamps
  *  are also referred to as model time. In particular, if an event of timestamp
- *  \tau is being processed by the director, then we say the current model
- *  time of the director is \tau.
+ *  tau is being processed by the director, then we say the current model
+ *  time of the director is tau.
  *  Unlike in DE, where the local notion of model time is tightly coupled with
  *  with that of the enclosing director (@see DEDirector), 
  *  This director's notion of model time
@@ -112,7 +109,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  DE director is used as the enclosing director. One reason for using
  *  the DE director is that time cannot go backwards in DE, which
  *  is an important physical time property.
- *  <p>
+ *  </p><p>
  *  This director does not simulate event preemption. That is, if an event <i>e</i>
  *  is processed at simulated physical time <i>t</t>, and the
  *  <i>executionTime</i> parameter of the destination actor is set to
@@ -120,15 +117,16 @@ import ptolemy.moml.MoMLChangeRequest;
  *  simulated physical time <i>t</t> to <i>t + d</t>, <i>e</i> will be the only
  *  event that is processed. Subclasses of this director, however, could
  *  choose to enable preemption.
- *  <p>
+ *  </p><p>
  *  The following paragraphs describe implementation details of
- *  this director. The operation semantics of this domain is given in:
+ *  this director. The implementation is based on the operation semantics 
+ *  of Ptides, as described in:
  *  Jia Zou, Slobodan Matic, Edward A. Lee, Thomas Huining Feng, Patricia Derler.
  *  <a href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution Strategies for PTIDES, a Programming Model for Distributed Embedded Systems</a>,
  *  15th IEEE Real-Time and Embedded
  *  Technology and Applications Symposium, 2009, IEEE Computer
- *  Society, 77-86, April, 2009
- *  <p>
+ *  Society, 77-86, April, 2009.
+ *  </p><p>
  *  The operational semantics implies at any point in time, all events in the 
  *  event queue are considered for processing. This is contrary to DE, where
  *  only the earliest event in the event queue is processed. To ensure actor states
@@ -149,29 +147,28 @@ import ptolemy.moml.MoMLChangeRequest;
  *  This is the most basic version of the Ptides scheduler
  *  (thus the name), however subclasses of this director may provide more
  *  sophisticated scheduling algorithms.
- *  <p>
+ *  </p><p>
  *  In the preinitialize method, according to the model graph structure, the
  *  delayOffsets are calculated, using superdense dependency between
  *  connected components.
- *  <p>
+ *  </p><p>
  *  Like in the DE domain, directed loops of IO ports with no model time
  *  delay will trigger
  *  an exception. For detailed explanation, @see DEDirector. Unlike in DE however,
  *  Ptides uses {@link SuperdenseDependency} to not only indicate 
  *  whether model time delay exists between input and output ports of an
  *  actor, but also what the delay value is.
- *  <p>
+ *  </p><p>
  *  An event in the Ptides programming model is similar to an event
- *  in DE. It also consists of a timestamp, a value token, as well as fields
+ *  in DE. A {@link ptolemy.domains.ptides.kernel.PtidesEvent} also consists 
+ *  of a timestamp, a value token, as well as fields
  *  such as microstep and depth, which are used to define the scheduling 
  *  semantics. Because
  *  of these similarities, PtidesEvent is a subclass of DEEvent. PtidesEvent
  *  is different from DE event, however, in that it holds the token value within
  *  the event structure. The director only transmits token to the destination
- *  receiver when it is ready to process the event. The PtidesBasicReceiver is
- *  the receiver used in a Ptides model.
+ *  receiver when it is ready to process the event.
  *  @see PtidesEvent
- *  @see PtidesBasicReceiver
  *
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
@@ -1244,7 +1241,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the delayOffset parameter. The delayOffset parameter is related to the
      *  safe to process analysis of Ptides. In Ptides, an event of timestamp
-     *  \tau is safe to process at physical time t if t >= \tau - delayOffset.
+     *  tau is safe to process at physical time t if t >= tau - delayOffset.
      *  For all non-pure(trigger) events, this delayOffset is stored at
      *  each channel of each input port.
      *  @param port The port where this delayOffset parameter is associated to.
@@ -2207,13 +2204,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  <p>
      *  If the new event(e') is produced due to the processing of a trigger
      *  event(e), then the absolute deadline of the new event
-     *  AD(e') = AD(e) + (\tau(e') - \tau(e) - \delta). Here, \tau(e') and
-     *  \tau(e) are the timestamps of e' and e, while \delta is the minimum
+     *  AD(e') = AD(e) + (tau(e') - tau(e) - delta). Here, tau(e') and
+     *  tau(e) are the timestamps of e' and e, while delta is the minimum
      *  dependency between the destination port of the trigger event and any
      *  of the output ports.
      *  </p><p>
      *  If the new event (e') is produced due to the processing of a earlier
-     *  pure event, then the formula is the same, only \delta == 0;
+     *  pure event, then the formula is the same, only delta == 0;
      *  @see #_saveEventInformation(List)
      */
     private Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {

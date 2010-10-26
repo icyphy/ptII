@@ -401,9 +401,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  state of the scheduler. The model time of the next events are also
      *  checked to see if we have produced an event of smaller timestamp.
      *  @see #_fire
-     *  @exception IllegalActionException if we couldn't process an event
+     *  @exception IllegalActionException If we couldn't process an event
      *  or if an event of smaller timestamp is found within the event queue.
-     *  throws it.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
