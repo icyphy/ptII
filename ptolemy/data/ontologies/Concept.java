@@ -136,8 +136,8 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      */
     public boolean isAboveOrEqualTo(Concept concept)
             throws IllegalActionException {
-        ConceptGraph graph = getOntology().getGraph();
-        int comparisonResult = graph.compare(this, concept);
+        CPO cpo = getOntology().getCompletePartialOrder();
+        int comparisonResult = cpo.compare(this, concept);
         return comparisonResult == CPO.SAME || comparisonResult == CPO.HIGHER;
     }
 

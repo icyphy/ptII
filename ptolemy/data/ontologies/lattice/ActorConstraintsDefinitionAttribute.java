@@ -255,6 +255,37 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         super.attributeChanged(attribute);
     }
     
+    /** Get the adapter defined by this attribute.
+     *  @param component The model component for which the adapter will be created.
+     *  @return The ActorConstraintsDefinitionAdapter specified by this attribute.
+     *  @exception IllegalActionException If the container model's
+     *   solver cannot be found or there is a problem initializing the
+     *   adapter.
+     */
+    public ActorConstraintsDefinitionAdapter createAdapter(ComponentEntity component)
+            throws IllegalActionException {
+        if (!_validateComponentClass(component)) {
+            throw new IllegalActionException(this, "The component "
+                    + component
+                    + " passed in for the adapter is not of class "
+                    + actorClassName.getExpression() + ".");
+        }
+    
+        LatticeOntologySolver solver = (LatticeOntologySolver) ((OntologySolverModel) getContainer())
+                .getContainerSolver();
+    
+        // If the solver is null, throw an exception.
+        if (solver == null) {
+            throw new IllegalActionException(this, "The OntologySolverModel "
+                    + " does not have an associated OntologySolver so no "
+                    + " OntologyAdapter can be created.");
+        }
+    
+        // Get the adapter for the actor.
+        return new ActorConstraintsDefinitionAdapter(solver, component,
+                _constraintTermExpressions);
+    }
+
     /** Return a constraint parameter name based on the name
      *  of the specified actor element. This method supports ports and
      *  attributes.
@@ -295,43 +326,6 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         return elementName;
     }
 
-    /** Get the adapter defined by this attribute.
-     *  @param component The model component for which the adapter will be created.
-     *  @return The ActorConstraintsDefinitionAdapter specified by this attribute.
-     *  @exception IllegalActionException If the container model's
-     *   solver cannot be found or there is a problem initializing the
-     *   adapter.
-     */
-    public ActorConstraintsDefinitionAdapter createAdapter(ComponentEntity component)
-            throws IllegalActionException {
-        String actorClassNameString = ((StringToken) actorClassName.getToken()).stringValue();
-        try {
-            if (component.getClass() != Class.forName(actorClassNameString)) {
-                throw new IllegalActionException(this, "The component "
-                        + component
-                        + " passed in for the adapter is not of class "
-                        + actorClassName.getExpression() + ".");
-            }
-        } catch (ClassNotFoundException classEx) {
-            throw new IllegalActionException(this, classEx, "Actor class "
-                    + actorClassNameString + " not found.");
-        }
-
-        LatticeOntologySolver solver = (LatticeOntologySolver) ((OntologySolverModel) getContainer())
-                .getContainerSolver();
-
-        // If the solver is null, throw an exception.
-        if (solver == null) {
-            throw new IllegalActionException(this, "The OntologySolverModel "
-                    + " does not have an associated OntologySolver so no "
-                    + " OntologyAdapter can be created.");
-        }
-
-        // Get the adapter for the actor.
-        return new ActorConstraintsDefinitionAdapter(solver, component,
-                _constraintTermExpressions);
-    }
-    
     /** Return the string constraint direction for the given constraint expression specified
      *  as a string.
      *  @param constraintExpressionString The string that specifies a single constraint
@@ -522,6 +516,28 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     		"attribute when trying to set the actor icon.");
                 }
             }
+        }
+    }
+    
+    /** Check to make sure the class of the component passed in matches the class
+     *  of the actor constraints defintion attribute.
+     *  @param component The specified model component for which we want to
+     *   generate constraints.
+     *  @return true if the class matches, false otherwise.
+     *  @throws IllegalActionException Thrown if the component class cannot be
+     *   found.
+     */
+    protected boolean _validateComponentClass(ComponentEntity component) throws IllegalActionException {
+        String actorClassNameString = ((StringToken) actorClassName.getToken()).stringValue();
+        try {
+            if (component.getClass() == Class.forName(actorClassNameString)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ClassNotFoundException classEx) {
+            throw new IllegalActionException(this, classEx, "Actor class "
+                    + actorClassNameString + " not found.");
         }
     }
     

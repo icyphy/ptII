@@ -77,7 +77,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, component, useDefaultConstraints);
         
-        _initializeAdapter(solver, component);
+       _tupleAdapters =  getTupleAdapters(solver, component);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -93,9 +93,10 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
     public List<Inequality> constraintList() throws IllegalActionException {
         if (!_useDefaultConstraints) {
             for (LatticeOntologyAdapter adapter : _tupleAdapters) {
-                if (adapter != null) {        
+                if (adapter != null) {
+                    Ontology adapterOntology = adapter.getSolver().getOntology();
                     adapter._addDefaultConstraints(adapter.getSolver()._getConstraintType());
-                    addConstraintsFromTupleOntologyAdapter(adapter, this);
+                    addConstraintsFromTupleOntologyAdapter(adapter.constraintList(), adapterOntology, this);
                 }
             }
         }
@@ -120,21 +121,20 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
     
     /** Create constraints for the ProductLatticeOntologyAdapter that are
      *  derived from the given component LatticeOntologyAdapter.
-     *  @param sourceAdapter The LatticeOntologyAdapter that contains the
-     *   source constraints from which to derive constraints for the
-     *   ProductLatticeOntologyAdapter
+     *  @param constraints The list of constraints from the original LatticeOntologyAdapter.
+     *  @param sourceOntology The ontology over which the original constraints
+     *   from the LatticeOntologyAdapter are defined.
      *  @param productLatticeOntologyAdapter The ProductLatticeOntologyAdapter
      *   for which we create new constraints.
      *  @throws IllegalActionException Thrown if there is an error creating
      *   the new constraints.
      */
-    public static void addConstraintsFromTupleOntologyAdapter(LatticeOntologyAdapter sourceAdapter,
+    public static void addConstraintsFromTupleOntologyAdapter(List<Inequality> constraints,
+            Ontology sourceOntology,
             LatticeOntologyAdapter productLatticeOntologyAdapter)
                 throws IllegalActionException {
-        List<Inequality> constraints = sourceAdapter.constraintList();
         ProductLatticeOntology productOntology =
             ((ProductLatticeOntologySolver) productLatticeOntologyAdapter.getSolver()).getOntology();
-        Ontology sourceOntology = sourceAdapter.getSolver().getOntology();
         
         for (Inequality constraint : constraints) {
             Object greater = constraint.getGreaterTerm().getAssociatedObject();
@@ -239,18 +239,16 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
         }
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-    /** Initialize the adapters for each tuple ontology that comprises the
+    /** Return the adapters for each tuple ontology that comprises the
      *  product lattice ontology for this solver and model component.
      *  @param solver The ProductLatticeOntologySolver for this adapter.
      *  @param component The model component object for this adapter.
+     *  @return The list of LatticeOntologyAdapters for the tuple ontology solvers.
      *  @throws IllegalActionException Thrown if there is an error in initializing
      *   the tuple ontology adapters.
      */
-    private void _initializeAdapter(ProductLatticeOntologySolver solver, Object component) throws IllegalActionException {
-        _tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
+    public static final List<LatticeOntologyAdapter> getTupleAdapters(ProductLatticeOntologySolver solver, Object component) throws IllegalActionException {
+        List<LatticeOntologyAdapter> tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
         List<Ontology> tupleOntologies = ((ProductLatticeOntology) solver.getOntology()).getLatticeOntologies();        
         List<LatticeOntologySolver> containedSolvers = solver.getAllContainedOntologySolvers();
         
@@ -259,13 +257,14 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                 for (LatticeOntologySolver innerSolver : containedSolvers) {
                     if (innerSolver.getOntology().getName().equals(ontology.getName())) {
                         LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) innerSolver.getAdapter(component);
-                        _tupleAdapters.add(adapter);
+                        tupleAdapters.add(adapter);
                         break;
                     }
                 }
             }
         }
-    }
+        return tupleAdapters;
+    }  
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

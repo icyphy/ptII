@@ -24,7 +24,6 @@
 
 package ptolemy.data.ontologies.lattice;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -72,7 +71,7 @@ public class ProductLatticeOntologyASTNodeAdapter extends
             throws IllegalActionException {
         super(solver, node, useDefaultConstraints);
         
-        _initializeAdapter(solver, node);
+        _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver, node);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -89,43 +88,15 @@ public class ProductLatticeOntologyASTNodeAdapter extends
     public List<Inequality> constraintList() throws IllegalActionException {
         if (!_useDefaultConstraints) {
             for (LatticeOntologyAdapter adapter : _tupleAdapters) {
-                if (adapter != null) {        
+                if (adapter != null) {
+                    Ontology adapterOntology = adapter.getSolver().getOntology();
                     adapter._addDefaultConstraints(adapter.getSolver()._getConstraintType());
-                    ProductLatticeOntologyAdapter.addConstraintsFromTupleOntologyAdapter(adapter, this);
+                    ProductLatticeOntologyAdapter.
+                        addConstraintsFromTupleOntologyAdapter(adapter.constraintList(), adapterOntology, this);
                 }
             }
         }
         return super.constraintList();
-    }
-    
- 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-    /** Initialize the adapters for each tuple ontology that comprises the
-     *  product lattice ontology for this solver and Ptolemy expression
-     *  language node.
-     *  @param solver The ProductLatticeOntologySolver for this adapter.
-     *  @param node The expression language node object for this adapter.
-     *  @throws IllegalActionException Thrown if there is an error in initializing
-     *   the tuple ontology adapters.
-     */
-    private void _initializeAdapter(ProductLatticeOntologySolver solver, ASTPtRootNode node) throws IllegalActionException {
-        _tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
-        List<Ontology> tupleOntologies = ((ProductLatticeOntology) solver.getOntology()).getLatticeOntologies();        
-        List<LatticeOntologySolver> containedSolvers = solver.getAllContainedOntologySolvers();
-        
-        if (tupleOntologies != null && containedSolvers != null) {
-            for (Ontology ontology : tupleOntologies) {
-                for (LatticeOntologySolver innerSolver : containedSolvers) {
-                    if (innerSolver.getOntology().getName().equals(ontology.getName())) {
-                        LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) innerSolver.getAdapter(node);
-                        _tupleAdapters.add(adapter);
-                        break;
-                    }
-                }
-            }
-        }
     }
     
     ///////////////////////////////////////////////////////////////////

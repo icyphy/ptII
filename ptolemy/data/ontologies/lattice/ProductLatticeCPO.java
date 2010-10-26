@@ -24,7 +24,9 @@
 package ptolemy.data.ontologies.lattice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
@@ -70,6 +72,8 @@ public class ProductLatticeCPO implements CPO {
         
         _findBottom();
         _findTop();
+        _cachedGLBs = new HashMap<List<ProductLatticeConcept>, ProductLatticeConcept>();
+        _cachedLUBs = new HashMap<List<ProductLatticeConcept>, ProductLatticeConcept>();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -212,19 +216,25 @@ public class ProductLatticeCPO implements CPO {
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2) {
-        ProductLatticeConcept glb = _bottomConcept;
+        List<ProductLatticeConcept> inputs = new ArrayList<ProductLatticeConcept>();
+        inputs.add((ProductLatticeConcept) e1);
+        inputs.add((ProductLatticeConcept) e2);
         
-        for (ProductLatticeConcept concept : _conceptList) {
-            int e1Compare = compare(concept, e1);
-            int e2Compare = compare(concept, e2);
-            
-            if (compare(concept, glb) == CPO.HIGHER &&
-                    (e1Compare == CPO.LOWER || e1Compare == CPO.SAME) &&
-                    (e2Compare == CPO.LOWER || e2Compare == CPO.SAME)) {
-                glb = concept;
+        ProductLatticeConcept glb = _cachedGLBs.get(inputs);        
+        if (glb == null) {
+            glb = _bottomConcept;
+            for (ProductLatticeConcept concept : _conceptList) {
+                int e1Compare = compare(concept, e1);
+                int e2Compare = compare(concept, e2);
+
+                if (compare(concept, glb) == CPO.HIGHER &&
+                        (e1Compare == CPO.LOWER || e1Compare == CPO.SAME) &&
+                        (e2Compare == CPO.LOWER || e2Compare == CPO.SAME)) {
+                    glb = concept;
+                }
             }
-        }
-        
+            _cachedGLBs.put(inputs, glb);
+        }        
         return glb;
     }
 
@@ -276,19 +286,25 @@ public class ProductLatticeCPO implements CPO {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Object leastUpperBound(Object e1, Object e2) {
-        ProductLatticeConcept lub = _topConcept;
+        List<ProductLatticeConcept> inputs = new ArrayList<ProductLatticeConcept>();
+        inputs.add((ProductLatticeConcept) e1);
+        inputs.add((ProductLatticeConcept) e2);
         
-        for (ProductLatticeConcept concept : _conceptList) {
-            int e1Compare = compare(concept, e1);
-            int e2Compare = compare(concept, e2);
-            
-            if (compare(concept, lub) == CPO.LOWER &&
-                    (e1Compare == CPO.HIGHER || e1Compare == CPO.SAME) &&
-                    (e2Compare == CPO.HIGHER || e2Compare == CPO.SAME)) {
-                lub = concept;
+        ProductLatticeConcept lub = _cachedLUBs.get(inputs);        
+        if (lub == null) {
+            lub = _topConcept;
+            for (ProductLatticeConcept concept : _conceptList) {
+                int e1Compare = compare(concept, e1);
+                int e2Compare = compare(concept, e2);
+
+                if (compare(concept, lub) == CPO.LOWER &&
+                        (e1Compare == CPO.HIGHER || e1Compare == CPO.SAME) &&
+                        (e2Compare == CPO.HIGHER || e2Compare == CPO.SAME)) {
+                    lub = concept;
+                }
             }
-        }
-        
+            _cachedLUBs.put(inputs, lub);
+        }        
         return lub;
     }
 
@@ -357,6 +373,12 @@ public class ProductLatticeCPO implements CPO {
     
     /** The bottom concept of the product lattice. */
     private ProductLatticeConcept _bottomConcept;
+    
+    /** The map of cached greatest lower bounds that have already been calculated by the CPO. */
+    private Map<List<ProductLatticeConcept>, ProductLatticeConcept> _cachedGLBs;
+    
+    /** The map of cached least upper bounds that have already been calculated by the CPO. */
+    private Map<List<ProductLatticeConcept>, ProductLatticeConcept> _cachedLUBs;
 
     /** The list of {@link ProductLatticeConcept}s that define the product lattice. */
     private List<ProductLatticeConcept> _conceptList;

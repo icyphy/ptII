@@ -4,13 +4,13 @@
 <entity name="ConstAbsIntObservableProductSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 262, 873, 492}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 281, 863, 475}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[648, 358]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.2682291666666, 87.2270359848485}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.9422348484849, 82.2542613636364}">
     </property>
     <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../observableLattice/ObservableSolverModel.xml">
@@ -36,6 +36,66 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
+    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 75.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+    </property>
+    <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<polygon points="-30,-20 30,-4 30,4 -30,20" style="fill:white"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(input, factor, output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+        <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(factor, input, output)">
+        </property>
+        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        </property>
+    </property>
+    <property name="otherFactorZero" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+        <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableLattice">
+        </property>
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;factor&quot;, &quot;otherFactor&quot;, &quot;product&quot;}">
+        </property>
+        <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constObservableLattice&quot;, &quot;constObservableLattice&quot;, &quot;constObservableLattice&quot;}">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor == UnobservableUnknown ? UnobservableUnknown :&#10; factor == ObservableUnknown ? ObservableUnknown :&#10;  factor &lt;= ObservableScalarNonConst &amp;&amp; factor != ObservableZero &amp;&amp; factor != UnobservableZero &amp;&amp; (otherFactor == UnobservableZero || otherFactor == ObservableZero) ? UnobservableUnknown :&#10;   product &gt;= ObservableUnknown ? ObservableUnknown :&#10;    UnobservableUnknown">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 215.0]">
+        </property>
+    </property>
     <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, -5.0]">
         </property>
@@ -52,145 +112,97 @@
         <entity name="UnobservableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 0.0]">
-            </property>
         </entity>
         <entity name="UnobservableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -25.0]">
             </property>
         </entity>
         <entity name="UnobservableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 170.0]">
-            </property>
         </entity>
         <entity name="UnobservableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 200.0]">
             </property>
         </entity>
         <entity name="UnobservableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, -55.0]">
-            </property>
         </entity>
         <entity name="UnobservablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -25.0]">
             </property>
         </entity>
         <entity name="UnobservableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 145.0]">
-            </property>
         </entity>
         <entity name="UnobservableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 170.0]">
             </property>
         </entity>
         <entity name="UnobservableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, -130.0]">
-            </property>
         </entity>
         <entity name="UnobservableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, -165.0]">
             </property>
         </entity>
         <entity name="UnobservableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -150.0]">
-            </property>
         </entity>
         <entity name="UnobservableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -85.0]">
             </property>
         </entity>
         <entity name="ObservableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, -140.0]">
-            </property>
         </entity>
         <entity name="ObservableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, 130.0]">
             </property>
         </entity>
         <entity name="ObservableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 160.0]">
-            </property>
         </entity>
         <entity name="ObservableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 125.0]">
             </property>
         </entity>
         <entity name="ObservableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 30.0]">
-            </property>
         </entity>
         <entity name="ObservablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, 30.0]">
             </property>
         </entity>
         <entity name="ObservableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, -95.0]">
-            </property>
         </entity>
         <entity name="ObservableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, -15.0]">
             </property>
         </entity>
         <entity name="ObservableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 90.0]">
-            </property>
         </entity>
         <entity name="ObservableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -90.0]">
             </property>
         </entity>
         <entity name="ObservableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 80.0]">
-            </property>
         </entity>
         <entity name="ObservableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, -40.0]">
             </property>
         </entity>
     </entity>

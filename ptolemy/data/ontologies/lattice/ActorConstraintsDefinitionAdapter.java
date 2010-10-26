@@ -1,4 +1,4 @@
-/* A class that creates lattice-based ontology adapter from
+/* A class that creates a lattice-based ontology adapter from
  * a model-based actor constraints definition attribute.
  * 
  * Copyright (c) 2010 The Regents of the University of California. All
@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.FiniteConcept;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.ExpressionConceptFunction;
@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
 //// ActorConstraintsDefinitionAdapter.java
 
 /**
- * A class that creates lattice-based ontology adapter from
+ * A class that creates a lattice-based ontology adapter from
  * a model-based actor constraints definition attribute.
  * 
  * @see ActorConstraintsDefinitionAttribute
@@ -343,7 +343,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // If the right term is an attribute or port in the actor,
             // check to make sure it is not set to be ignored for the
             // ontology analysis.
-            if (RHSTerm != null && !(RHSTerm instanceof FiniteConcept)) {
+            if (RHSTerm != null && !(RHSTerm instanceof Concept)) {
                 for (StringParameter constraintExpression : _constraintTermExpressions) {
                     if (getActorElementName(constraintExpression).equals(objName)) {
                         if (isActorElementIgnored(constraintExpression)) {
@@ -391,8 +391,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                     setAtMost(actorElement, RHSTerm);
                 }
             } else if (constraintDir.equals(EQ)) {
-                if (RHSTerm instanceof FiniteConcept) {
-                    setEquals(actorElement, (FiniteConcept) RHSTerm);
+                if (RHSTerm instanceof Concept) {
+                    setEquals(actorElement, (Concept) RHSTerm);
                 } else {
                     setSameAs(actorElement, RHSTerm);
                 }

@@ -33,6 +33,7 @@ import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -153,8 +154,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
 
         if (node.getFunctionName().compareTo("lub") == 0) {
-            ConceptGraph g = ((Ontology) argValues.get(0).getContainer()).getGraph();
-            FiniteConcept bound = (FiniteConcept) g.leastUpperBound(argValues.toArray());
+            CPO cpo = ((Ontology) argValues.get(0).getContainer()).getCompletePartialOrder();
+            Concept bound = (Concept) cpo.leastUpperBound(argValues.toArray());
             _evaluatedChildToken = new ConceptToken(bound);
             return;
         }
@@ -237,9 +238,9 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     protected void _addConceptConstants() throws IllegalActionException {
         for (Ontology domainOntology : _domainOntologies) {
             for (Object entity : domainOntology.allAtomicEntityList()) {
-                if (entity instanceof FiniteConcept) {
+                if (entity instanceof Concept) {
                     Constants.add(((Concept) entity).getName(),
-                            new ConceptToken((FiniteConcept)entity));
+                            new ConceptToken((Concept)entity));
                 }
             }
         }
@@ -273,12 +274,12 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @return The concept with the specified name if it is found.
      *  @throws IllegalActionException If the concept cannot be found.
      */
-    protected FiniteConcept _getNamedConcept(String conceptName)
+    protected Concept _getNamedConcept(String conceptName)
         throws IllegalActionException {
 
-        FiniteConcept outputConcept = null;
+        Concept outputConcept = null;
         for (Ontology domainOntology : _domainOntologies) {
-            outputConcept = (FiniteConcept) domainOntology.getEntity(conceptName);
+            outputConcept = (Concept) domainOntology.getEntity(conceptName);
             if (outputConcept != null) {
                 break;
             }
