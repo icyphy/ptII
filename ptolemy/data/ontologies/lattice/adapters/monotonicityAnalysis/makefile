@@ -52,12 +52,13 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-MonotonicityConcept.java \
-MonotonicityConceptFunction.java \
-MonotonicityCounterexamples.java
+	MonotonicityConcept.java \
+	MonotonicityConceptFunction.java \
+	MonotonicityCounterexamples.java
 
 OTHER_FILES_TO_BE_JARED = \
-	monotonicityAnalysis.xml 
+	monotonicityAnalysis.xml \
+	MonotonicitySolverModel.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -68,7 +69,8 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	
+OPTIONAL_FILES = \
+	'MonotonicityCounterexamples$$ConceptPair.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -56,7 +56,8 @@ JSRCS = \
 	DimensionSystemAdapter.java
 
 OTHER_FILES_TO_BE_JARED = \
-	dimensionSystem.xml
+	dimensionSystem.xml \
+	DimensionSystemSolverModel.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

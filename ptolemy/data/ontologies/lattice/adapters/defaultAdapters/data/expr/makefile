@@ -52,8 +52,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
-	ASTPtProductNode.java
-	
+	ASTPtProductNode.java \
+	ASTPtSumNode.java \
+	ASTPtUnaryNode.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
