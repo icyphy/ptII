@@ -84,7 +84,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  director placed inside a composite actor. The composite actor is then
  *  governed by an enclosing director, and the enclosing director's notion of 
  *  time is used to simulate the passage of physical time based on
- *  the <i>WCET</i> and <i>executionTime</i> parameters of Ptides' actors.
+ *  the <i>WCET</i> and <i>executionTime</i> parameters of Ptides' actors. 
  *  </p><p>
  *  To address the distributed aspect, each composite actor that has a
  *  Ptides director inside simulates a
