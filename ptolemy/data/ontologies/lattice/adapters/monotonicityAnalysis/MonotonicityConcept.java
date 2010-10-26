@@ -33,6 +33,7 @@ import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept that represents the monotoncity of an expression.
@@ -195,12 +196,7 @@ public class MonotonicityConcept extends InfiniteConcept {
                 return top;
             }
             // We have two MonotonicityConcepts
-            try {
-                return leastUpperBound((MonotonicityConcept) concept);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-                return top;
-            }
+            return leastUpperBound((MonotonicityConcept) concept);
         }
     }
     
@@ -208,11 +204,16 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  
      *  @param concept The other monotonicity concept
      *  @return The concept that is the LUB of this and the given concept.
-     *  @throws IllegalActionException If there is an error creating a new
-     *    monotonicity concept.
      */
-    public Concept leastUpperBound(MonotonicityConcept concept) throws IllegalActionException {
-        MonotonicityConcept result = createMonotonicityConcept(getOntology());
+    public Concept leastUpperBound(MonotonicityConcept concept) {
+        MonotonicityConcept result;
+        try {
+            result = createMonotonicityConcept(getOntology());
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(
+                    "There was an error creating a new MonotonicityConcept" +
+                    "in the " + getOntology() + "ontology");
+        }
         // For some reason Set.addAll throws an UnsupportedOperationException,
         // so we use a TreeSet here purely to avoid that problem.
         TreeSet<String> allKeys = new TreeSet<String>(
