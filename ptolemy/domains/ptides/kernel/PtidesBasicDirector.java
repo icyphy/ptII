@@ -118,14 +118,15 @@ import ptolemy.moml.MoMLChangeRequest;
  *  event that is processed. Subclasses of this director, however, could
  *  choose to enable preemption.
  *  </p><p>
- *  The following paragraphs describe implementation details of
- *  this director. The implementation is based on the operation semantics 
- *  of Ptides, as described in:
- *  Jia Zou, Slobodan Matic, Edward A. Lee, Thomas Huining Feng, Patricia Derler.
- *  <a href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution Strategies for PTIDES, a Programming Model for Distributed Embedded Systems</a>,
- *  15th IEEE Real-Time and Embedded
- *  Technology and Applications Symposium, 2009, IEEE Computer
- *  Society, 77-86, April, 2009.
+ *  The following paragraphs describe implementation details of this
+ *  director. The implementation is based on the operation semantics
+ *  of Ptides, as described in: Jia Zou, Slobodan Matic, Edward
+ *  A. Lee, Thomas Huining Feng, Patricia Derler.  <a
+ *  href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution
+ *  Strategies for PTIDES, a Programming Model for Distributed
+ *  Embedded Systems</a>, 15th IEEE Real-Time and Embedded Technology
+ *  and Applications Symposium, 2009, IEEE Computer Society, 77-86,
+ *  April, 2009.
  *  </p><p>
  *  The operational semantics implies at any point in time, all events in the 
  *  event queue are considered for processing. This is contrary to DE, where
