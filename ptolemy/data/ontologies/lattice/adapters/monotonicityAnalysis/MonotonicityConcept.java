@@ -178,6 +178,16 @@ public class MonotonicityConcept extends InfiniteConcept {
         return (FiniteConcept)getOntology().getGraph().bottom();
     }
 
+    /** Get the set of all variable names refered to by this monotonicity
+     *  concept.
+     *
+     *  @return A set of names of variables which are not set to Constant
+     *    in this monotonicity concept.
+     */
+    public Set<String> keySet() {
+        return _variableToMonotonicity.keySet();
+    }
+
     /** Compute the least upper bound (LUB) of this and another concept.
      *  
      *  @param concept The other concept

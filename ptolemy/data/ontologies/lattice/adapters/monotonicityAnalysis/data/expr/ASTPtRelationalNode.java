@@ -29,12 +29,15 @@
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
 import java.util.List;
+import java.util.TreeSet;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
+import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
@@ -115,7 +118,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
         /** Return the monotonicity concept that results from analyzing the
          *  relational statement.  We abuse the notation here slightly,
          *  as the return type of a relational statement (an inequality)
-         *  is boolean, so the monotonicity of a realational statement would
+         *  is boolean, so the monotonicity of a relational statement would
          *  depend on an ordering of booleans.  This analysis assumes that
          *  true <= false.
          *  This means, for example, that for a monotonic variable x,
@@ -133,9 +136,34 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
+            
+            Concept c1 = inputConceptValues.get(0);
+            Concept c2 = inputConceptValues.get(1);
+            if (c1.equals(_monotonicityAnalysisOntology.getGraph().bottom())
+                    || c2.equals(_monotonicityAnalysisOntology.getGraph().bottom())) {
+                return (Concept)_monotonicityAnalysisOntology.getGraph().bottom();
+            } else if (c1 instanceof MonotonicityConcept
+                    && c2 instanceof MonotonicityConcept) {
+                MonotonicityConcept lhs = (MonotonicityConcept) c1;
+                MonotonicityConcept rhs = (MonotonicityConcept) c2;
 
-            Concept lhs = inputConceptValues.get(0);
-            Concept rhs = inputConceptValues.get(1);
+                MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
+                TreeSet<String> variables = new TreeSet<String>(lhs.keySet());
+                variables.addAll(rhs.keySet());
+
+                for (String v : variables) {
+                    FiniteConcept monotonicity = _evaluateFininteConcept(lhs.getMonotonicity(v), rhs.getMonotonicity(v));
+                    result.putMonotonicity(v, monotonicity);
+                }
+
+                return result;
+            } else {
+                return (Concept)_monotonicityAnalysisOntology.getGraph().top();
+            }
+        }
+
+        private FiniteConcept _evaluateFininteConcept(FiniteConcept lhs, FiniteConcept rhs)
+                throws IllegalActionException {
             if (_constantConcept.isAboveOrEqualTo(lhs) && _constantConcept.isAboveOrEqualTo(rhs)) {
                 return _constantConcept;
             }
