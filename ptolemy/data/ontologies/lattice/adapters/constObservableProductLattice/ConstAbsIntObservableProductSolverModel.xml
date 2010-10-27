@@ -4,7 +4,7 @@
 <entity name="ConstAbsIntObservableProductSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 281, 863, 475}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 293, 863, 475}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[648, 358]">
     </property>
@@ -79,7 +79,7 @@
         </property>
         <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(factor, input, output)">
         </property>
-        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
     <property name="otherFactorZero" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
@@ -91,9 +91,9 @@
         </property>
         <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constObservableLattice&quot;, &quot;constObservableLattice&quot;, &quot;constObservableLattice&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor == UnobservableUnknown ? UnobservableUnknown :&#10; factor == ObservableUnknown ? ObservableUnknown :&#10;  factor &lt;= ObservableScalarNonConst &amp;&amp; factor != ObservableZero &amp;&amp; factor != UnobservableZero &amp;&amp; (otherFactor == UnobservableZero || otherFactor == ObservableZero) ? UnobservableUnknown :&#10;   product &gt;= ObservableUnknown ? ObservableUnknown :&#10;    UnobservableUnknown">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor &lt;= ObservableScalarNonConst &amp;&amp; otherFactor &lt;= ObservableZero &amp;&amp; factor != ObservableZero &amp;&amp; factor != UnobservableZero ? UnobservableUnknown :&#10; product &gt;= ObservableUnknown ? ObservableUnknown :&#10;  UnobservableUnknown">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 215.0}">
         </property>
     </property>
     <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">

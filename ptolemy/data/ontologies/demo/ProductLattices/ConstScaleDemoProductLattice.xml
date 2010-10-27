@@ -4,13 +4,13 @@
 <entity name="ConstScaleDemoProductLattice" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 163, 1008, 793}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={200, 10, 1129, 1059}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[793, 676]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[914, 942]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.6953125, 227.134375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.9492187499999, 431.7812499999999}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -195,6 +195,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -272,6 +274,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -351,6 +355,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -428,6 +434,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -507,6 +515,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -558,6 +568,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -611,6 +623,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -662,6 +676,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -715,6 +731,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -766,6 +784,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -845,6 +865,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -896,6 +918,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -949,6 +973,8 @@
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -974,6 +1000,8 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -1046,19 +1074,21 @@
         </port>
     </entity>
     <entity name="Scale15" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{253.25, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 190.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

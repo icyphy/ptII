@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  * between concepts contained by this ontology.
  * 
  * @see ConceptGraph
- * @see FiniteConcept
+ * @see Concept
  * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.0

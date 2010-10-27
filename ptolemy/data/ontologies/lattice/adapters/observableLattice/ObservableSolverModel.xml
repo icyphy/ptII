@@ -4,18 +4,18 @@
 <entity name="ObservableSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 81, 1066, 750}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 81, 901, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[851, 633]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[686, 601]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.953125">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5625">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{416.8653952020202, 109.3565176767676}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.0653952020202, 99.1165176767676}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Observable Sink Actors">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, -55.0]">
         </property>
     </property>
     <property name="DisplayActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
@@ -25,16 +25,16 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg>
-<rect x="-20" y="-15" width="40" height="30" style="fill:lightGrey"/>
-<rect x="-15" y="-10" width="30" height="20" style="fill:white"/>
-<line x1="-13" y1="-6" x2="-4" y2="-6" style="stroke:grey"/>
-<line x1="-13" y1="-2" x2="0" y2="-2" style="stroke:grey"/>
-<line x1="-13" y1="2" x2="-8" y2="2" style="stroke:grey"/>
-<line x1="-13" y1="6" x2="4" y2="6" style="stroke:grey"/>
+<rect x="-20" y="-15" width="40" height="30" style="fill:lightGrey"></rect>
+<rect x="-15" y="-10" width="30" height="20" style="fill:white"></rect>
+<line x1="-13" y1="-6" x2="-4" y2="-6" style="stroke:grey"></line>
+<line x1="-13" y1="-2" x2="0" y2="-2" style="stroke:grey"></line>
+<line x1="-13" y1="2" x2="-8" y2="2" style="stroke:grey"></line>
+<line x1="-13" y1="6" x2="4" y2="6" style="stroke:grey"></line>
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 15.0]">
         </property>
         <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Observable">
         </property>
@@ -54,12 +54,12 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg>
-<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
-<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"></rect>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"></polygon>
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 160.0]">
         </property>
         <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
         </property>
@@ -75,12 +75,12 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg>
-<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
-<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"></rect>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"></polygon>
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 230.0]">
         </property>
         <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Observable">
         </property>
@@ -95,8 +95,41 @@
         <property name="trainingModeAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
+    <property name="TimedPlotterActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.gui.TimedPlotter">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.gui.TimedPlotter">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:lightGrey"/>
+<rect x="-12" y="-12" width="24" height="24" style="fill:white"/>
+<rect x="2" y="-18" width="4" height="4" style="fill:grey"/>
+<rect x="8" y="-18" width="4" height="4" style="fill:grey"/>
+<rect x="14" y="-18" width="4" height="4" style="fill:grey"/>
+<polyline points="-10,0, -5,-8, 5,8, 10,0" style="stroke:red"/>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 85.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Observable">
+        </property>
+        <property name="fillOnWrapupAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="automaticRescaleAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="legendAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="startingDatasetAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="disconnectGraphOnAbsentValueAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="useLocalTimeAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
     <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 0.0]">
         </property>
     </entity>
 </entity>

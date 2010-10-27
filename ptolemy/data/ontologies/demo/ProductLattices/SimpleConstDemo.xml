@@ -9,31 +9,31 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 65.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={406, 61, 1039, 781}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 70, 1029, 764}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[814, 647]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1514313919052">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.1705246913578, 221.6421467764046}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates the constant-nonconstant analysis.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -30.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.7547163529829, 178.8697468150746}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates a simple product lattice that&#10;combines the constant-nonconstant and observable-unobservable&#10;analyses.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -65.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
