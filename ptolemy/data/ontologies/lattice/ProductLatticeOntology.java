@@ -115,8 +115,7 @@ public class ProductLatticeOntology extends Ontology {
                 for (List<Concept> tuple : conceptTuples) {
                     try {
                         String conceptName = _getNameFromConceptTuple(tuple);
-                        ProductLatticeConcept newConcept = new ProductLatticeConcept(this, conceptName, tuple);
-                        _conceptList.add(newConcept);
+                        new ProductLatticeConcept(this, conceptName, tuple);
                     } catch (NameDuplicationException nameDupEx) {
                         throw new IllegalActionException(this, nameDupEx, "Could not " +
                          "create ProductLatticeConcept for the ProductLatticeOntology.");
@@ -133,16 +132,11 @@ public class ProductLatticeOntology extends Ontology {
      */
     public CPO getCompletePartialOrder() {
         if (workspace().getVersion() != _cpoVersion) {            
-            if (_conceptList != null && !_conceptList.isEmpty()) {
-                _cpo = new ProductLatticeCPO(_conceptList);
-            } else {
-                _cpo = null;
-            }
+            _cpo = new ProductLatticeCPO(this);
             
             // Set the CPO version after creating the new CPO
             _cpoVersion = workspace().getVersion();
-        }
-        
+        }        
         return _cpo;
     }
     
@@ -279,7 +273,6 @@ public class ProductLatticeOntology extends Ontology {
         }
         
         latticeOntologies.setTypeEquals(new ArrayType(new ObjectType(Ontology.class)));
-        _conceptList = new ArrayList<ProductLatticeConcept>();
     }
     
     /** Remove all concepts from the product lattice ontology and clear the list
@@ -296,12 +289,10 @@ public class ProductLatticeOntology extends Ontology {
                 		"remove concepts from the ProductLatticeOntology.");
             }
         }
-        
-        _conceptList.clear();
     }
 
-    /** The list of {@link ProductLatticeConcept}s that define the ontology. */
-    private List<ProductLatticeConcept> _conceptList;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     /** The cached CPO. */
     private CPO _cpo;

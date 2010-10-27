@@ -31,6 +31,7 @@ import java.util.Map;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// ProductLatticeCPO
@@ -58,16 +59,17 @@ public class ProductLatticeCPO implements CPO {
     
     /** Create a new ProductLatticeCPO from the given list of
      *  ProductLatticeConcepts.
-     *  @param conceptList The list of {@link ProductLatticeConcept}s that define
-     *   the product lattice.
+     *  @param productOntology The product lattice ontology for which this CPO
+     *   is a complete partial order.
      */
-    public ProductLatticeCPO(List<ProductLatticeConcept> conceptList) {
-        _conceptList = conceptList;        
-        List<Concept> tuple = _conceptList.get(0).getConceptTuple();
-        
-        _ontologyList = new ArrayList<Ontology>(tuple.size());
-        for (Concept concept : tuple) {
-            _ontologyList.add(concept.getOntology());
+    public ProductLatticeCPO(ProductLatticeOntology productOntology) {
+        _productOntology = productOntology;          
+        try {
+            _ontologyList = _productOntology.getLatticeOntologies();
+        } catch (IllegalActionException ex) {
+            throw new IllegalArgumentException("Invalid product lattice ontology; " +
+            		"could not get the list of tuple ontologies for the product " +
+            		"lattice ontology.", ex);
         }
         
         _findBottom();
@@ -94,7 +96,7 @@ public class ProductLatticeCPO implements CPO {
      *  This method returns one of ptolemy.graph.CPO.LOWER, ptolemy.graph.CPO.SAME,
      *  ptolemy.graph.CPO.HIGHER, ptolemy.graph.CPO.INCOMPARABLE, indicating the
      *  first argument is lower than, equal to, higher than, or incomparable with
-     *  the second argument in the property hierarchy, respectively.
+     *  the second argument in the product lattice hierarchy, respectively.
      *  @param e1 An instance of {@link ProductLatticeConcept}.
      *  @param e2 An instance of {@link ProductLatticeConcept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
@@ -103,40 +105,13 @@ public class ProductLatticeCPO implements CPO {
      *   the same ontology, or either argument has an empty or null concept tuple list.
      */
     public int compare(Object e1, Object e2) {
-        if (!(e1 instanceof ProductLatticeConcept) || !(e2 instanceof ProductLatticeConcept)) {
-            throw new IllegalArgumentException("ProductLatticeCPO.compare: "
-                    + "Arguments are not instances of ProductLatticeConcept: "
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
+        if (e1 == null || e2 == null) {
+            return CPO.INCOMPARABLE;
         }
         
-        if (!(((ProductLatticeConcept) e1).getOntology().equals(((ProductLatticeConcept) e2).getOntology()))) {
-            throw new IllegalArgumentException("Attempt to compare elements from two distinct ontologies: "
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
-        }       
-        
+        _validateInputArguments(e1, e2);            
         List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
         List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
-        
-        if (leftArgTuple == null || leftArgTuple.isEmpty()) {
-           throw new IllegalArgumentException("Attempt to compare ProductLatticeConcept " +
-                        "elements where one does not have a valid " +
-                        "concept tuple: arg1 = " + e1);
-        }
-        
-        if (rightArgTuple == null || rightArgTuple.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to compare ProductLatticeConcept " +
-                         "elements where one does not have a valid " +
-                         "concept tuple: arg2 = " + e2);
-         }
-        
-        if (leftArgTuple.size() != rightArgTuple.size()) {
-            throw new IllegalArgumentException("Attemp to compare " +
-                        "ProductLatticeConcept elements that do not have the same size " +
-                        "concept tuple arrays even though they are in the same " +
-                        "Ontology. This is an error."
-                        + " arg1 = " + e1 + ", arg2 = " + e2);
-        }
-        
         int tupleSize = leftArgTuple.size();
         int numSame = 0;
         int numHigher = 0;
@@ -222,17 +197,23 @@ public class ProductLatticeCPO implements CPO {
         
         ProductLatticeConcept glb = _cachedGLBs.get(inputs);        
         if (glb == null) {
-            glb = _bottomConcept;
-            for (ProductLatticeConcept concept : _conceptList) {
-                int e1Compare = compare(concept, e1);
-                int e2Compare = compare(concept, e2);
-
-                if (compare(concept, glb) == CPO.HIGHER &&
-                        (e1Compare == CPO.LOWER || e1Compare == CPO.SAME) &&
-                        (e2Compare == CPO.LOWER || e2Compare == CPO.SAME)) {
-                    glb = concept;
-                }
+            if (e1 == null || e2 == null) {
+                return null;
             }
+            
+            _validateInputArguments(e1, e2);            
+            List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
+            List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+            int tupleSize = leftArgTuple.size();
+
+            String glbName = new String("");
+            for (int i = 0; i < tupleSize; i++) {
+                Ontology tupleOntology = leftArgTuple.get(i).getOntology();
+                glbName += ((Concept) (tupleOntology.getCompletePartialOrder().
+                        greatestLowerBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName();
+            }
+
+            glb = (ProductLatticeConcept) _productOntology.getEntity(glbName);
             _cachedGLBs.put(inputs, glb);
         }        
         return glb;
@@ -260,8 +241,7 @@ public class ProductLatticeCPO implements CPO {
             if (!ontology.isLattice()) {
                 return false;
             }
-        }
-        
+        }        
         return true;
     }
 
@@ -292,17 +272,23 @@ public class ProductLatticeCPO implements CPO {
         
         ProductLatticeConcept lub = _cachedLUBs.get(inputs);        
         if (lub == null) {
-            lub = _topConcept;
-            for (ProductLatticeConcept concept : _conceptList) {
-                int e1Compare = compare(concept, e1);
-                int e2Compare = compare(concept, e2);
-
-                if (compare(concept, lub) == CPO.LOWER &&
-                        (e1Compare == CPO.HIGHER || e1Compare == CPO.SAME) &&
-                        (e2Compare == CPO.HIGHER || e2Compare == CPO.SAME)) {
-                    lub = concept;
-                }
+            if (e1 == null || e2 == null) {
+                return null;
             }
+            
+            _validateInputArguments(e1, e2);            
+            List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
+            List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+            int tupleSize = leftArgTuple.size();
+
+            String lubName = new String("");
+            for (int i = 0; i < tupleSize; i++) {
+                Ontology tupleOntology = leftArgTuple.get(i).getOntology();
+                lubName += ((Concept) (tupleOntology.getCompletePartialOrder().
+                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName();
+            }
+
+            lub = (ProductLatticeConcept) _productOntology.getEntity(lubName);
             _cachedLUBs.put(inputs, lub);
         }        
         return lub;
@@ -347,24 +333,65 @@ public class ProductLatticeCPO implements CPO {
     /** Set the bottom concept of the product lattice.
      */
     private void _findBottom() {
-        _bottomConcept = _conceptList.get(0);
-        
-        for (ProductLatticeConcept concept : _conceptList) {
-            if (compare(concept, _bottomConcept) == CPO.LOWER) {
-                _bottomConcept = concept;
-            }
+        String productLatticeConceptName = new String("");
+        for (Ontology ontology : _ontologyList) {
+            productLatticeConceptName += ((Concept) ontology.getCompletePartialOrder().bottom()).getName();
         }
+        
+        _bottomConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
     }
     
     /** Set the top concept of the product lattice.
      */
     private void _findTop() {
-        _topConcept = _conceptList.get(0);
+        String productLatticeConceptName = new String("");
+        for (Ontology ontology : _ontologyList) {
+            productLatticeConceptName += ((Concept) ontology.getCompletePartialOrder().top()).getName();
+        }
         
-        for (ProductLatticeConcept concept : _conceptList) {
-            if (compare(concept, _topConcept) == CPO.HIGHER) {
-                _topConcept = concept;
-            }
+        _topConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
+    }
+    
+    /** Validate that the input arguments are valid ProductLatticeConcepts in the same
+     *  ontology before trying to compare them or find the greatest lower or least upper
+     *  bound.  Throw an IllegalArgumentException if either argument is invalid.
+     *  @param e1 The first ProductLatticeConcept argument.
+     *  @param e2 The second ProductLatticeConcept argument.
+     *  @throws IllegalArgumentException Thrown if either argument is invalid.
+     */
+    private void _validateInputArguments(Object e1, Object e2) {
+        if (!(e1 instanceof ProductLatticeConcept) || !(e2 instanceof ProductLatticeConcept)) {
+            throw new IllegalArgumentException("ProductLatticeCPO.compare: "
+                    + "Arguments are not instances of ProductLatticeConcept: "
+                    + " arg1 = " + e1 + ", arg2 = " + e2);
+        }
+
+        if (!(((ProductLatticeConcept) e1).getOntology().equals(((ProductLatticeConcept) e2).getOntology()))) {
+            throw new IllegalArgumentException("Attempt to compare elements from two distinct ontologies: "
+                    + " arg1 = " + e1 + ", arg2 = " + e2);
+        }       
+
+        List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
+        List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+
+        if (leftArgTuple == null || leftArgTuple.isEmpty()) {
+            throw new IllegalArgumentException("Attempt to compare ProductLatticeConcept " +
+                    "elements where one does not have a valid " +
+                    "concept tuple: arg1 = " + e1);
+        }
+
+        if (rightArgTuple == null || rightArgTuple.isEmpty()) {
+            throw new IllegalArgumentException("Attempt to compare ProductLatticeConcept " +
+                    "elements where one does not have a valid " +
+                    "concept tuple: arg2 = " + e2);
+        }
+
+        if (leftArgTuple.size() != rightArgTuple.size()) {
+            throw new IllegalArgumentException("Attempt to compare " +
+                    "ProductLatticeConcept elements that do not have the same size " +
+                    "concept tuple arrays even though they are in the same " +
+                    "Ontology. This is an error."
+                    + " arg1 = " + e1 + ", arg2 = " + e2);
         }
     }
     
@@ -379,14 +406,14 @@ public class ProductLatticeCPO implements CPO {
     
     /** The map of cached least upper bounds that have already been calculated by the CPO. */
     private Map<List<ProductLatticeConcept>, ProductLatticeConcept> _cachedLUBs;
-
-    /** The list of {@link ProductLatticeConcept}s that define the product lattice. */
-    private List<ProductLatticeConcept> _conceptList;
     
     /** The list of Ontologies for each element in the concept tuple of
      *  each ProductLatticeConcept in the product lattice.
      */
     private List<Ontology> _ontologyList;
+    
+    /** The product lattice ontology for which this is a complete partial order. */
+    private ProductLatticeOntology _productOntology; 
     
     /** The bottom concept of the product lattice. */
     private ProductLatticeConcept _topConcept;

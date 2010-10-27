@@ -80,18 +80,23 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
     protected Concept _evaluateFunction(List<Concept> argValues)
     throws IllegalActionException {
         ProductLatticeConcept inputConcept = (ProductLatticeConcept) argValues.get(0);
-        List<Concept> conceptTuple = inputConcept.getConceptTuple();
+        
+        if (inputConcept != null) {
+            List<Concept> conceptTuple = inputConcept.getConceptTuple();
 
-        Concept originalOntologyInputConcept = null;
-        for (Concept concept : conceptTuple) {
-            if (concept.getOntology().getName().equals(_originalConceptOntology.getName())) {
-                originalOntologyInputConcept = concept;
-                break;
-            } 
-        }        
-        return ProductLatticeOntologyAdapter.
-            getDerivedConceptForProductLattice(originalOntologyInputConcept,
+            Concept originalOntologyInputConcept = null;
+            for (Concept concept : conceptTuple) {
+                if (concept.getOntology().getName().equals(_originalConceptOntology.getName())) {
+                    originalOntologyInputConcept = concept;
+                    break;
+                } 
+            }        
+            return ProductLatticeOntologyAdapter.
+                getDerivedConceptForProductLattice(originalOntologyInputConcept,
                     (ProductLatticeOntology) _outputRangeOntology);
+        } else {
+            return null;
+        }
     }        
 
     /** The original ontology from which the input concept was taken. */

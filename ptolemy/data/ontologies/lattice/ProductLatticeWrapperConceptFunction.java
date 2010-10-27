@@ -82,6 +82,9 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
 
         List<Concept> originalArgs = new ArrayList<Concept>();
         for (Concept arg : argValues) {
+            if (arg == null) {
+                return null;
+            }
             List<Concept> argTuple = ((ProductLatticeConcept) arg).getConceptTuple();
             for (Concept innerArg : argTuple) {
                 if (innerArg.getOntology().getName().equals(_originalFunctionOntology.getName())) {
