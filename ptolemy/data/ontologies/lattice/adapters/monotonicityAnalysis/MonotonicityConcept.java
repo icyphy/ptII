@@ -178,7 +178,7 @@ public class MonotonicityConcept extends InfiniteConcept {
         return (FiniteConcept)getOntology().getGraph().bottom();
     }
 
-    /** Get the set of all variable names refered to by this monotonicity
+    /** Get the set of all variable names referred to by this monotonicity
      *  concept.
      *
      *  @return A set of names of variables which are not set to Constant
