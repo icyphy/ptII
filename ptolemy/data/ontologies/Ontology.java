@@ -85,7 +85,7 @@ public class Ontology extends CompositeEntity {
 
     /** Return the complete partial order of the concepts in this ontology.
      *  In the base class it just returns the ontology graph from getGraph().
-     *  However, the derived ProductLatticeOntology class is composed from
+     *  However, the subclass ProductLatticeOntology class is composed from
      *  a tuple of ontologies, and does not contain its own ontology graph.
      *  But a CPO is still needed in order to apply the least fixed point
      *  algorithm.
@@ -95,6 +95,20 @@ public class Ontology extends CompositeEntity {
      *  @return The complete partial order of the concepts in this ontology.
      */
     public CPO getCompletePartialOrder() {
+        return _buildConceptGraph();
+    }
+    
+    /** Return the graph represented by this ontology.
+     *  Graph is weighted by Concepts on the nodes and ConceptRelations on
+     *  the edges. Currently we only have ontologies that are lattices. If the
+     *  graph is always a lattice, then the method {@link #getCompletePartialOrder}
+     *  is sufficient for all ontology solvers. But an ontology can represent
+     *  more general relationships that might have a graph structure that is not
+     *  a lattice.  So we provide the getGraph() method in the base class for
+     *  any future ontology subclasses that are not lattices.
+     *  @return The concept graph.
+     */
+    public ConceptGraph getGraph() {
         return _buildConceptGraph();
     }
     

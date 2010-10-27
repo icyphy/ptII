@@ -11,8 +11,6 @@
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
   <configure>
     <entity name="OntologyLibrary" class="ptolemy.data.ontologies.Ontology">
-      <input source="ptolemy/configs/basicUtilities.xml"/>
-      <input source="ptolemy/configs/properties/propertiesAttributeLibrary.xml"/>
       <input source="ptolemy/data/ontologies/ontologyLibrary.xml"/>
     </entity>
   </configure>
