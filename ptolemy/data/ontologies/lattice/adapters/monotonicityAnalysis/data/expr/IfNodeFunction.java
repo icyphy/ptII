@@ -37,6 +37,7 @@ import ptolemy.data.ontologies.ExpressionConceptFunctionParseTreeEvaluator;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** A representation of the monotonic function used to infer the
@@ -225,7 +226,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             toCheck = new MonotonicityCounterexamples();
         }
         // Get counterexamples to check from this predicate's border
-        ConceptGraph inputLattice = _domainOntology.getGraph();
+        CPO inputLattice = _domainOntology.getCompletePartialOrder();
         List downsetList = Arrays.asList(inputLattice.downSet(constant));
         List<FiniteConcept> downset = (List<FiniteConcept>) downsetList;
         for (FiniteConcept b : downset) {
@@ -274,8 +275,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     private FiniteConcept _standardIfAnalysis(List<FiniteConcept> inputConceptValues)
     throws IllegalActionException {
-        ConceptGraph monotonicityLattice = _monotonicityAnalysisOntology.getGraph();
-        ConceptGraph inputLattice = _domainOntology.getGraph();
+        CPO monotonicityLattice = _monotonicityAnalysisOntology.getCompletePartialOrder();
+        CPO inputLattice = _domainOntology.getCompletePartialOrder();
 
         // This represents the if rule. (from p144)
         Concept conditional = inputConceptValues.get(0);

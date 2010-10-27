@@ -121,7 +121,7 @@ public class ProductLatticeCPO implements CPO {
         // track which ones are higher, same, or lower.
         for (int i = 0; i < tupleSize; i++) {
             Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-            int comparison = tupleOntology.getGraph().compare(leftArgTuple.get(i), rightArgTuple.get(i));
+            int comparison = tupleOntology.getCompletePartialOrder().compare(leftArgTuple.get(i), rightArgTuple.get(i));
             
             if (comparison == CPO.HIGHER) {
                 numHigher++;

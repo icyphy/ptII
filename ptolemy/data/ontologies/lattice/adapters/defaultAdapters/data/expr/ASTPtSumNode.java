@@ -203,7 +203,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                                     .evaluateFunction(conceptInputs);
                         } else {
                             // FIXME: Implement LUB and change this
-                            result = (Concept) _outputRangeOntology.getGraph()
+                            result = (Concept) _outputRangeOntology.getCompletePartialOrder()
                                     .leastUpperBound(result, nodeChildConcept);
                         }
 
@@ -214,7 +214,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                                     .evaluateFunction(conceptInputs);
                         } else {
                             // FIXME: Implement LUB and change this
-                            result = (Concept) _outputRangeOntology.getGraph()
+                            result = (Concept) _outputRangeOntology.getCompletePartialOrder()
                                     .leastUpperBound(result, nodeChildConcept);
                         }
                     }

@@ -138,9 +138,9 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
             
             Concept c1 = inputConceptValues.get(0);
             Concept c2 = inputConceptValues.get(1);
-            if (c1.equals(_monotonicityAnalysisOntology.getGraph().bottom())
-                    || c2.equals(_monotonicityAnalysisOntology.getGraph().bottom())) {
-                return (Concept)_monotonicityAnalysisOntology.getGraph().bottom();
+            if (c1.equals(_monotonicityAnalysisOntology.getCompletePartialOrder().bottom())
+                    || c2.equals(_monotonicityAnalysisOntology.getCompletePartialOrder().bottom())) {
+                return (Concept)_monotonicityAnalysisOntology.getCompletePartialOrder().bottom();
             } else if (c1 instanceof MonotonicityConcept
                     && c2 instanceof MonotonicityConcept) {
                 MonotonicityConcept lhs = (MonotonicityConcept) c1;
@@ -157,7 +157,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
 
                 return result;
             } else {
-                return (Concept)_monotonicityAnalysisOntology.getGraph().top();
+                return (Concept)_monotonicityAnalysisOntology.getCompletePartialOrder().top();
             }
         }
 

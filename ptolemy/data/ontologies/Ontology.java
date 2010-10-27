@@ -95,41 +95,7 @@ public class Ontology extends CompositeEntity {
      *  @return The complete partial order of the concepts in this ontology.
      */
     public CPO getCompletePartialOrder() {
-        return getGraph();
-    }
-    
-    /** Return the graph represented by this ontology.
-     *  Graph is weighted by Concepts on the nodes and ConceptRelations on
-     *  the edges.
-     *  @return The concept graph.
-     */
-    public ConceptGraph getGraph() {
-        if (workspace().getVersion() != _graphVersion) {
-            // Construct the graph.
-            _graph = new ConceptGraph();
-            List<FiniteConcept> concepts = entityList(FiniteConcept.class);
-            for (Concept concept : concepts) {
-                _graph.addNodeWeight(concept);
-            }
-            for (FiniteConcept concept : concepts) {
-                List<ConceptRelation> relationLinks = concept.abovePort
-                        .linkedRelationList();
-                for (ConceptRelation link : relationLinks) {
-                    List<ComponentPort> remotePorts = link
-                            .linkedPortList(concept.abovePort);
-                    assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
-                    for (ComponentPort remotePort : remotePorts) {
-                        _graph
-                                .addEdge(concept, remotePort.getContainer(),
-                                        link);
-                    }
-                }
-            }
-
-            // Set the graph version after creating the new graph
-            _graphVersion = workspace().getVersion();
-        }
-        return _graph;
+        return _buildConceptGraph();
     }
     
     /** Return a set of all concepts which are unacceptable solutions in all situations.
@@ -159,7 +125,7 @@ public class Ontology extends CompositeEntity {
      *  @return True if the graph is a lattice.
      */
     public boolean isLattice() {
-        _graph = getGraph();
+        _graph = _buildConceptGraph();
 
         // 01/04/2010 Charles Shelton - Debug information for isLattice() function:
         // - Catch the exception from the directed acyclic graph _validate() method
@@ -238,6 +204,43 @@ public class Ontology extends CompositeEntity {
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return the graph represented by this ontology.
+     *  Graph is weighted by Concepts on the nodes and ConceptRelations on
+     *  the edges.
+     *  @return The concept graph.
+     */
+    private ConceptGraph _buildConceptGraph() {
+        if (workspace().getVersion() != _graphVersion) {
+            // Construct the graph.
+            _graph = new ConceptGraph();
+            List<FiniteConcept> concepts = entityList(FiniteConcept.class);
+            for (Concept concept : concepts) {
+                _graph.addNodeWeight(concept);
+            }
+            for (FiniteConcept concept : concepts) {
+                List<ConceptRelation> relationLinks = concept.abovePort
+                        .linkedRelationList();
+                for (ConceptRelation link : relationLinks) {
+                    List<ComponentPort> remotePorts = link
+                            .linkedPortList(concept.abovePort);
+                    assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
+                    for (ComponentPort remotePort : remotePorts) {
+                        _graph
+                                .addEdge(concept, remotePort.getContainer(),
+                                        link);
+                    }
+                }
+            }
+
+            // Set the graph version after creating the new graph
+            _graphVersion = workspace().getVersion();
+        }
+        return _graph;
     }
 
     ///////////////////////////////////////////////////////////////////
