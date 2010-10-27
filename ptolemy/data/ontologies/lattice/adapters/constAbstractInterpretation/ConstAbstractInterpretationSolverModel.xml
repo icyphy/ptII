@@ -245,7 +245,7 @@ _
         <property name="expressionAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
     </property>
-    <entity name="constAbstractInterpretation" class="ptolemy/data.ontologies.lattice.adapters.constAbstractInterpretation.constAbstractInterpretation">
+    <entity name="constAbstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.constAbstractInterpretation">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 65.0]">
         </property>
     </entity>

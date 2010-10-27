@@ -212,7 +212,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             String productLatticeConceptName = new String("");
 
             for (Ontology ontology : tupleOntologies) {
-                if (sourceOntology.getName().equals(ontology.getName())) {
+                if (sourceOntology.getClassName().equals(ontology.getClassName())) {
                     productLatticeConceptName += concept.getName();
                     foundOntology = true;
                 } else {
@@ -255,7 +255,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
         if (tupleOntologies != null && containedSolvers != null) {
             for (Ontology ontology : tupleOntologies) {
                 for (LatticeOntologySolver innerSolver : containedSolvers) {
-                    if (innerSolver.getOntology().getName().equals(ontology.getName())) {
+                    if (innerSolver.getOntology().getClassName().equals(ontology.getClassName())) {
                         LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) innerSolver.getAdapter(component);
                         tupleAdapters.add(adapter);
                         break;

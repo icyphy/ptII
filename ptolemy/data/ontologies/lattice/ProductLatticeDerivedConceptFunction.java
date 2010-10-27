@@ -86,7 +86,7 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
 
             Concept originalOntologyInputConcept = null;
             for (Concept concept : conceptTuple) {
-                if (concept.getOntology().getName().equals(_originalConceptOntology.getName())) {
+                if (concept.getOntology().getClassName().equals(_originalConceptOntology.getClassName())) {
                     originalOntologyInputConcept = concept;
                     break;
                 } 
