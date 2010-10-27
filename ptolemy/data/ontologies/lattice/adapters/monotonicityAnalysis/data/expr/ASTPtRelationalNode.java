@@ -115,22 +115,21 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
             _operator = operator.toString();
         }
 
-        /** Return the monotonicity concept that results from analyzing the
-         *  relational statement.  We abuse the notation here slightly,
-         *  as the return type of a relational statement (an inequality)
-         *  is boolean, so the monotonicity of a relational statement would
-         *  depend on an ordering of booleans.  This analysis assumes that
-         *  true <= false.
+        /** Return the monotonicity concept that results from running the
+         *  monotonicity analysis on the given relational statement.
+         *  We abuse the notation here slightly, as the return type of a
+         *  relational statement (an inequality) is boolean, so the
+         *  monotonicity of a relational statement would depend on an
+         *  ordering of booleans.  This analysis assumes that true <= false.
          *  This means, for example, that for a monotonic variable x,
          *  x <= Constant
-         *  is monotonic, and
+         *  is monotonic with respect to x, and
          *  x >= Constant
-         *  is antimonotonic.
+         *  is antimonotonic with respect to x.
          *  
          *  @param inputConceptValues The list of concept inputs to the function.
          *    (i.e. The monotonicity of each of the conditional's branches)
-         *  @return Either Constant, Monotonic, Antimonotonic, or
-         *    Nonmonotonic, depending on the result of the analysis.
+         *  @return The monotonicity of the overall relational statement.
          *  @exception IllegalActionException If there is an error evaluating the function.
          *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
          */
@@ -162,6 +161,21 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
             }
         }
 
+        /** Return the finite concept from the monotonicity lattice that
+         *  results from analyzing the relational statement with respect
+         *  to a given variable.  We again abuse the notation, assuming
+         *  a relationship between boolean values of true <= false.
+         *
+         *  @param lhs The monotonicity of the left hand side of the
+         *    relational node for a specific variable.  One of
+         *    <code>Constant, Monotonic, Antimonotonic, Nonmonotonic</code>.
+         *  @param rhs The monotonicity of the right hand side of the
+         *    relational node for a specific variable.  One of
+         *    <code>Constant, Monotonic, Antimonotonic, Nonmonotonic</code>.
+         *  @return One of <code>Constant, Monotonic, Antimonotonic,
+         *    Nonmonotonic</code>, depending on the result of the analysis.
+         *  @exception IllegalActionException If there is an error evaluating the function.
+         */
         private FiniteConcept _evaluateFininteConcept(FiniteConcept lhs, FiniteConcept rhs)
                 throws IllegalActionException {
             if (_constantConcept.isAboveOrEqualTo(lhs) && _constantConcept.isAboveOrEqualTo(rhs)) {
