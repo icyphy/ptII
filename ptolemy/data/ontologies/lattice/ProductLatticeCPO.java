@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
@@ -55,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ProductLatticeCPO implements CPO {
+public class ProductLatticeCPO extends ConceptGraph {
     
     /** Create a new ProductLatticeCPO from the given list of
      *  ProductLatticeConcepts.
@@ -121,7 +122,7 @@ public class ProductLatticeCPO implements CPO {
         // track which ones are higher, same, or lower.
         for (int i = 0; i < tupleSize; i++) {
             Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-            int comparison = tupleOntology.getCompletePartialOrder().compare(leftArgTuple.get(i), rightArgTuple.get(i));
+            int comparison = tupleOntology.getConceptGraph().compare(leftArgTuple.get(i), rightArgTuple.get(i));
             
             if (comparison == CPO.HIGHER) {
                 numHigher++;
@@ -209,7 +210,7 @@ public class ProductLatticeCPO implements CPO {
             String glbName = new String("");
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                glbName += ((Concept) (tupleOntology.getCompletePartialOrder().
+                glbName += ((Concept) (tupleOntology.getConceptGraph().
                         greatestLowerBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName();
             }
 
@@ -284,7 +285,7 @@ public class ProductLatticeCPO implements CPO {
             String lubName = new String("");
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                lubName += ((Concept) (tupleOntology.getCompletePartialOrder().
+                lubName += ((Concept) (tupleOntology.getConceptGraph().
                         leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName();
             }
 
@@ -335,7 +336,7 @@ public class ProductLatticeCPO implements CPO {
     private void _findBottom() {
         String productLatticeConceptName = new String("");
         for (Ontology ontology : _ontologyList) {
-            productLatticeConceptName += ((Concept) ontology.getCompletePartialOrder().bottom()).getName();
+            productLatticeConceptName += ((Concept) ontology.getConceptGraph().bottom()).getName();
         }
         
         _bottomConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
@@ -346,7 +347,7 @@ public class ProductLatticeCPO implements CPO {
     private void _findTop() {
         String productLatticeConceptName = new String("");
         for (Ontology ontology : _ontologyList) {
-            productLatticeConceptName += ((Concept) ontology.getCompletePartialOrder().top()).getName();
+            productLatticeConceptName += ((Concept) ontology.getConceptGraph().top()).getName();
         }
         
         _topConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);

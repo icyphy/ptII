@@ -31,6 +31,7 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.ObjectType;
@@ -127,17 +128,17 @@ public class ProductLatticeOntology extends Ontology {
         }
     }
     
-    /** Get the complete partial order for this product lattice ontology.
-     *  @return The complete partial order which is a {@link ProductLatticeCPO}.
+    /** Get the concept graph for this product lattice ontology.
+     *  @return The concept graph which is a {@link ProductLatticeCPO}.
      */
-    public CPO getCompletePartialOrder() {
+    public ConceptGraph getGraph() {
         if (workspace().getVersion() != _cpoVersion) {            
-            _cpo = new ProductLatticeCPO(this);
+            _conceptGraph = new ProductLatticeCPO(this);
             
             // Set the CPO version after creating the new CPO
             _cpoVersion = workspace().getVersion();
         }        
-        return _cpo;
+        return _conceptGraph;
     }
     
     /** Return the list of lattice ontologies that comprise the product
@@ -189,11 +190,11 @@ public class ProductLatticeOntology extends Ontology {
      *  for this lattice.
      *  @return true if the product lattice ontology is a lattice, false
      *   otherwise.
-     *  @see #getCompletePartialOrder()
+     *  @see #getGraph()
      *  @see ProductLatticeCPO
      */
     public boolean isLattice() {
-        CPO ontologyCPO = getCompletePartialOrder();
+        CPO ontologyCPO = getGraph();
         
         if (ontologyCPO != null) {
             return ontologyCPO.isLattice();
@@ -295,7 +296,7 @@ public class ProductLatticeOntology extends Ontology {
     ////                         private variables                 ////
     
     /** The cached CPO. */
-    private CPO _cpo;
+    private ConceptGraph _conceptGraph;
     
     /** The workspace version at which the cached CPO was valid. */
     private long _cpoVersion = -1L;

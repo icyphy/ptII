@@ -216,7 +216,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                     productLatticeConceptName += concept.getName();
                     foundOntology = true;
                 } else {
-                    productLatticeConceptName += ((Concept) ontology.getCompletePartialOrder().bottom()).getName();
+                    productLatticeConceptName += ((Concept) ontology.getConceptGraph().bottom()).getName();
                 }
             }
             

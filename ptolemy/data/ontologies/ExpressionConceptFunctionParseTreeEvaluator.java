@@ -154,7 +154,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
 
         if (node.getFunctionName().compareTo("lub") == 0) {
-            CPO cpo = ((Ontology) argValues.get(0).getContainer()).getCompletePartialOrder();
+            CPO cpo = ((Ontology) argValues.get(0).getContainer()).getConceptGraph();
             Concept bound = (Concept) cpo.leastUpperBound(argValues.toArray());
             _evaluatedChildToken = new ConceptToken(bound);
             return;

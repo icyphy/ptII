@@ -115,16 +115,16 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
 
         // Original bottom and top remain bottom and top.
-        if (concept.equals(getOntology().getCompletePartialOrder().bottom())) {
+        if (concept.equals(getOntology().getConceptGraph().bottom())) {
             return CPO.HIGHER;
-        } else if (concept.equals(getOntology().getCompletePartialOrder().top())) {
+        } else if (concept.equals(getOntology().getConceptGraph().top())) {
             return CPO.LOWER;
         } else if (concept instanceof FiniteConcept) {
             return CPO.INCOMPARABLE;
         }
 
         MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
-        CPO graph = getOntology().getCompletePartialOrder();
+        CPO graph = getOntology().getConceptGraph();
 
         // For some reason Set.addAll throws an UnsupportedOperationException,
         // so we use a TreeSet here purely to avoid that problem.
@@ -175,7 +175,7 @@ public class MonotonicityConcept extends InfiniteConcept {
         if (_variableToMonotonicity.containsKey(variableName)) {
             return _variableToMonotonicity.get(variableName);
         }
-        return (FiniteConcept)getOntology().getCompletePartialOrder().bottom();
+        return (FiniteConcept)getOntology().getConceptGraph().bottom();
     }
 
     /** Get the set of all variable names referred to by this monotonicity
@@ -194,9 +194,9 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(Concept concept) {
-        Concept top = (Concept)getOntology().getCompletePartialOrder().top();
+        Concept top = (Concept)getOntology().getConceptGraph().top();
         if (concept instanceof FiniteConcept) {
-            if (concept.equals(getOntology().getCompletePartialOrder().bottom())) {
+            if (concept.equals(getOntology().getConceptGraph().bottom())) {
                 return this;
             } else {
                 return top;
@@ -230,7 +230,7 @@ public class MonotonicityConcept extends InfiniteConcept {
                 this._variableToMonotonicity.keySet());
         allKeys.addAll(concept._variableToMonotonicity.keySet());
         for (String variableName : allKeys) {
-            CPO graph = this.getOntology().getCompletePartialOrder();
+            CPO graph = this.getOntology().getConceptGraph();
             FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
                     this.getMonotonicity(variableName),
                     concept.getMonotonicity(variableName));
@@ -257,7 +257,7 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @see MonotonicityConcept#getMonotonicity(String)
      */
     public void putMonotonicity(String variable, FiniteConcept monotonicity) {
-        if (monotonicity.equals((FiniteConcept)getOntology().getCompletePartialOrder().bottom())) {
+        if (monotonicity.equals((FiniteConcept)getOntology().getConceptGraph().bottom())) {
             _variableToMonotonicity.remove(monotonicity);
         } else {
             _variableToMonotonicity.put(variable, monotonicity);

@@ -714,7 +714,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 // Check to see if the ontology is a lattice
                 // and throw an exception if it isn't.                
                 if (getOntology().isLattice()) {
-                    lattice = getOntology().getCompletePartialOrder();
+                    lattice = getOntology().getConceptGraph();
                 } else {
                     throw new IllegalActionException(
                             this,

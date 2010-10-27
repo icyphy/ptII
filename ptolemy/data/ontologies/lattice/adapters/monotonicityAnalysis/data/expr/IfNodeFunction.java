@@ -226,7 +226,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             toCheck = new MonotonicityCounterexamples();
         }
         // Get counterexamples to check from this predicate's border
-        CPO inputLattice = _domainOntology.getCompletePartialOrder();
+        CPO inputLattice = _domainOntology.getConceptGraph();
         List downsetList = Arrays.asList(inputLattice.downSet(constant));
         List<FiniteConcept> downset = (List<FiniteConcept>) downsetList;
         for (FiniteConcept b : downset) {
@@ -275,8 +275,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     private FiniteConcept _standardIfAnalysis(List<FiniteConcept> inputConceptValues)
     throws IllegalActionException {
-        CPO monotonicityLattice = _monotonicityAnalysisOntology.getCompletePartialOrder();
-        CPO inputLattice = _domainOntology.getCompletePartialOrder();
+        CPO monotonicityLattice = _monotonicityAnalysisOntology.getConceptGraph();
+        CPO inputLattice = _domainOntology.getConceptGraph();
 
         // This represents the if rule. (from p144)
         Concept conditional = inputConceptValues.get(0);
