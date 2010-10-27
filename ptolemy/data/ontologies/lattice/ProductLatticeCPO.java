@@ -87,7 +87,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return An Object representing the bottom element, or
      *   <code>null</code> if the bottom does not exist.
      */
-    public Object bottom() {
+    public Concept bottom() {
         return _bottomConcept;
     }
 
@@ -162,7 +162,7 @@ public class ProductLatticeCPO implements CPO {
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO, or the resulting set is infinite.
      */
-    public Object[] downSet(Object e) {
+    public Concept[] downSet(Object e) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -176,7 +176,7 @@ public class ProductLatticeCPO implements CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
-    public Object greatestElement(Object[] subset) {
+    public Concept greatestElement(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -190,7 +190,7 @@ public class ProductLatticeCPO implements CPO {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
-    public Object greatestLowerBound(Object e1, Object e2) {
+    public Concept greatestLowerBound(Object e1, Object e2) {
         List<ProductLatticeConcept> inputs = new ArrayList<ProductLatticeConcept>();
         inputs.add((ProductLatticeConcept) e1);
         inputs.add((ProductLatticeConcept) e2);
@@ -227,7 +227,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object greatestLowerBound(Object[] subset) {
+    public Concept greatestLowerBound(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -253,7 +253,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object leastElement(Object[] subset) {
+    public Concept leastElement(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -265,7 +265,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object leastUpperBound(Object e1, Object e2) {
+    public Concept leastUpperBound(Object e1, Object e2) {
         List<ProductLatticeConcept> inputs = new ArrayList<ProductLatticeConcept>();
         inputs.add((ProductLatticeConcept) e1);
         inputs.add((ProductLatticeConcept) e2);
@@ -302,7 +302,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object leastUpperBound(Object[] subset) {
+    public Concept leastUpperBound(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -312,7 +312,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return An Object representing the top element, or
      *   <code>null</code> if the top does not exist.
      */
-    public Object top() {
+    public Concept top() {
         return _topConcept;
     }
 
@@ -323,7 +323,7 @@ public class ProductLatticeCPO implements CPO {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object[] upSet(Object e) {
+    public Concept[] upSet(Object e) {
         throw new IllegalArgumentException("Method not implemented!");
     }    
     

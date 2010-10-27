@@ -133,12 +133,12 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  The down-set of an element is the subset consisting of
      *  all the elements lower than or the same as the specified element.
      *  @param e An Object representing an element in this CPO.
-     *  @return An array of Objects representing the elements in the
-     *   down-set of the specified element.
+     *  @return An array of Concepts of the down-set of the
+     *   specified element.
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO, or the resulting set is infinite.
      */
-    public Object[] downSet(Object e) {
+    public Concept[] downSet(Object e) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -152,7 +152,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
-    public Object greatestElement(Object[] subset) {
+    public Concept greatestElement(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -166,13 +166,13 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
-    public Object greatestLowerBound(Object e1, Object e2) {
+    public Concept greatestLowerBound(Object e1, Object e2) {
         if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
             throw new IllegalArgumentException("ConceptGraph.greatestLowerBound:"
                     + " Arguments are not instances of FiniteConcept: "
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
-        return super.greatestLowerBound(e1, e2);
+        return (Concept)super.greatestLowerBound(e1, e2);
     }
 
     /** Compute the greatest lower bound (GLB) of a subset.
@@ -183,7 +183,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object greatestLowerBound(Object[] subset) {
+    public Concept greatestLowerBound(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -195,7 +195,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object leastElement(Object[] subset) {
+    public Concept leastElement(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -209,14 +209,14 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
-    public Object leastUpperBound(Object e1, Object e2) {
+    public Concept leastUpperBound(Object e1, Object e2) {
         if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
             throw new IllegalArgumentException("ConceptGraph.leastUpperBound:"
                     + " Arguments are not instances of Concept: "
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            return super.leastUpperBound(e1, e2);
+            return (Concept)super.leastUpperBound(e1, e2);
         } else if (e1 instanceof InfiniteConcept) {
             return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
         } else { // (e2 instanceof InfiniteConcept)
@@ -232,7 +232,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object leastUpperBound(Object[] subset) {
+    public Concept leastUpperBound(Object[] subset) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 
@@ -243,7 +243,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @return Nothing.
      *  @exception IllegalArgumentException Always thrown.
      */
-    public Object[] upSet(Object e) {
+    public Concept[] upSet(Object e) {
         throw new IllegalArgumentException("Method not implemented!");
     }
 }
