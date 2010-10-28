@@ -55,6 +55,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.matlab.Engine.ConversionParameters;
 
 ///////////////////////////////////////////////////////////////////
@@ -216,6 +217,29 @@ public class Expression extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the <code>iteration</code>
+     *  public member to the parameters of the new actor.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Expression newObject = (Expression) super.clone(workspace);
+
+        newObject._addPathCommand = null;
+        newObject._iterationCount = 1;
+        try {
+            newObject._iteration.setToken(new IntToken(_iterationCount));
+        } catch (IllegalActionException ex) {
+            throw new CloneNotSupportedException("Failed to set _iteration "
+                    + "to 1");
+        }
+        newObject._previousPath = null;
+        return newObject;
+    }
 
     /** Must specify port types using moml (TypeAttribute) - the default
      *  TypedAtomicActor type constraints do not apply in this case, since the
