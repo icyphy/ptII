@@ -131,7 +131,7 @@ public class ProductLatticeOntology extends Ontology {
     /** Get the concept graph for this product lattice ontology.
      *  @return The concept graph which is a {@link ProductLatticeCPO}.
      */
-    public ConceptGraph getGraph() {
+    public ConceptGraph getConceptGraph() {
         if (workspace().getVersion() != _cpoVersion) {            
             _conceptGraph = new ProductLatticeCPO(this);
             
@@ -194,7 +194,7 @@ public class ProductLatticeOntology extends Ontology {
      *  @see ProductLatticeCPO
      */
     public boolean isLattice() {
-        CPO ontologyCPO = getGraph();
+        CPO ontologyCPO = getConceptGraph();
         
         if (ontologyCPO != null) {
             return ontologyCPO.isLattice();
