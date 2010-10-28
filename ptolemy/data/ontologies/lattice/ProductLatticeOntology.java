@@ -190,7 +190,7 @@ public class ProductLatticeOntology extends Ontology {
      *  for this lattice.
      *  @return true if the product lattice ontology is a lattice, false
      *   otherwise.
-     *  @see #getGraph()
+     *  @see #getConceptGraph()
      *  @see ProductLatticeCPO
      */
     public boolean isLattice() {
@@ -252,12 +252,11 @@ public class ProductLatticeOntology extends Ontology {
      *  @return The name of the product lattice concept
      */
     private String _getNameFromConceptTuple(List<Concept> tuple) {
-        String name = new String("");
+        StringBuffer nameBuffer = new StringBuffer();
         for(Concept concept : tuple) {
-            name += concept.getName();
-        }
-        
-        return name;
+            nameBuffer.append(concept.getName());
+        }        
+        return nameBuffer.toString();
     }
     
     /** Initialize the latticeOntologies parameter and internal concept list.

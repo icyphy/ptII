@@ -207,13 +207,13 @@ public class ProductLatticeCPO extends ConceptGraph {
             List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
             int tupleSize = leftArgTuple.size();
 
-            String glbName = new String("");
+            StringBuffer conceptNameBuffer = new StringBuffer();
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                glbName += ((Concept) (tupleOntology.getConceptGraph().
-                        greatestLowerBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName();
+                conceptNameBuffer.append(((Concept) (tupleOntology.getConceptGraph().
+                        greatestLowerBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName());
             }
-
+            String glbName = conceptNameBuffer.toString();
             glb = (ProductLatticeConcept) _productOntology.getEntity(glbName);
             _cachedGLBs.put(inputs, glb);
         }        
@@ -282,13 +282,13 @@ public class ProductLatticeCPO extends ConceptGraph {
             List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
             int tupleSize = leftArgTuple.size();
 
-            String lubName = new String("");
+            StringBuffer conceptNameBuffer = new StringBuffer();
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                lubName += ((Concept) (tupleOntology.getConceptGraph().
-                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName();
-            }
-
+                conceptNameBuffer.append(((Concept) (tupleOntology.getConceptGraph().
+                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName());
+            }            
+            String lubName = conceptNameBuffer.toString();
             lub = (ProductLatticeConcept) _productOntology.getEntity(lubName);
             _cachedLUBs.put(inputs, lub);
         }        
@@ -334,22 +334,22 @@ public class ProductLatticeCPO extends ConceptGraph {
     /** Set the bottom concept of the product lattice.
      */
     private void _findBottom() {
-        String productLatticeConceptName = new String("");
+        StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
-            productLatticeConceptName += ((Concept) ontology.getConceptGraph().bottom()).getName();
-        }
-        
+            conceptNameBuffer.append(((Concept) ontology.getConceptGraph().bottom()).getName());
+        }        
+        String productLatticeConceptName = conceptNameBuffer.toString();
         _bottomConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
     }
     
     /** Set the top concept of the product lattice.
      */
     private void _findTop() {
-        String productLatticeConceptName = new String("");
+        StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
-            productLatticeConceptName += ((Concept) ontology.getConceptGraph().top()).getName();
+            conceptNameBuffer.append(((Concept) ontology.getConceptGraph().top()).getName());
         }
-        
+        String productLatticeConceptName = conceptNameBuffer.toString();
         _topConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
     }
     

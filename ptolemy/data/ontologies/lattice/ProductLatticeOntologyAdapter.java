@@ -208,15 +208,14 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
         Ontology sourceOntology = concept.getOntology();
         boolean foundOntology = false;
         
-        if (tupleOntologies != null) {            
-            String productLatticeConceptName = new String("");
-
+        if (tupleOntologies != null) {
+            StringBuffer conceptNameBuffer = new StringBuffer();
             for (Ontology ontology : tupleOntologies) {
                 if (sourceOntology.getClassName().equals(ontology.getClassName())) {
-                    productLatticeConceptName += concept.getName();
+                    conceptNameBuffer.append(concept.getName());
                     foundOntology = true;
                 } else {
-                    productLatticeConceptName += ((Concept) ontology.getConceptGraph().bottom()).getName();
+                    conceptNameBuffer.append(((Concept) ontology.getConceptGraph().bottom()).getName());
                 }
             }
             
@@ -225,7 +224,8 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                         " belongs to an ontology " + sourceOntology.getName() +
                         " that is not a component of the given product lattice ontology " + productOntology.getName() + ".");
             }
-
+            
+            String productLatticeConceptName = conceptNameBuffer.toString();
             ProductLatticeConcept value =
                 (ProductLatticeConcept) productOntology.getEntity(productLatticeConceptName);            
             if (value == null) {

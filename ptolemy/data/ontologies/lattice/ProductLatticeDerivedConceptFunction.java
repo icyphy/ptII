@@ -90,10 +90,14 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
                     originalOntologyInputConcept = concept;
                     break;
                 } 
-            }        
-            return ProductLatticeOntologyAdapter.
-                getDerivedConceptForProductLattice(originalOntologyInputConcept,
-                    (ProductLatticeOntology) _outputRangeOntology);
+            }
+            if (originalOntologyInputConcept != null) {
+                return ProductLatticeOntologyAdapter.
+                    getDerivedConceptForProductLattice(originalOntologyInputConcept,
+                            (ProductLatticeOntology) _outputRangeOntology);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
