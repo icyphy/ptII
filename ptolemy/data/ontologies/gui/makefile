@@ -54,7 +54,8 @@ PTCLASSALLJARS =
 JSRCS = \
 	DeltaConstraintSolverDisplayActions.java \
 	OntologyDisplayActions.java \
-	OntologySolverGUIFactory.java
+	OntologySolverGUIFactory.java \
+	ProductLatticeOntologySolverDisplayActions.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -75,6 +76,9 @@ OPTIONAL_FILES = \
 	'OntologyDisplayActions$$HighlighterController.class' \
 	'OntologyDisplayActions$$HighlightProperty.class' \
 	'OntologyDisplayActions$$ShowProperty.class' \
+	'ProductLatticeOntologySolverDisplayActions$$ProductLatticeHighlighterController.class' \
+	'ProductLatticeOntologySolverDisplayActions$$SetHighlightColorsAction.class' \
+	'ProductLatticeOntologySolverDisplayActions$$SetHighlightColorsMenu.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

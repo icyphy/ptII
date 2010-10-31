@@ -1,10 +1,10 @@
-# Makefile for ontologies
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # $Id$
 #
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =		ptolemy/data/ontologies/lattice/adapters/reachableLattice
 
-DIRS = 		demo doc gui lattice util test
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,57 +43,28 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ontologies
+PTPACKAGE = 	reachableLattice
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	doc/doc.jar \
-	gui/gui.jar \
-	lattice/lattice.jar \
-	util/util.jar
+PTCLASSALLJARS =
+PTCLASSALLJAR =
+PTCLASSJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-    ActorModelScope.java \
-	Concept.java \
-	ConceptAttribute.java \
-	ConceptFunction.java \
-	ConceptFunctionDefinitionAttribute.java \
-	ConceptFunctionInequalityTerm.java \
-	ConceptGraph.java \
-	ConceptRelation.java \
-	ConceptToken.java \
-	ExpressionConceptFunction.java \
-	ExpressionConceptFunctionParseTreeEvaluator.java \
-	FiniteConcept.java \
-	InfiniteConcept.java \
-	Ontology.java \
-	OntologyAdapter.java \
-	OntologyAnnotationAttribute.java \
-	OntologyMoMLHandler.java \
-	OntologyResolutionException.java \
-	OntologySolver.java \
-	OntologySolverBase.java \
-	OntologySolverModel.java \
-	OntologySolverUtilities.java \
-	ParseTreeAnnotationEvaluator.java \
-	ParseTreeASTNodeAdapterCollector.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
+	reachableLattice.xml \
+	reachableSolverModel.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = doc gui lattice util
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+OPTIONAL_FILES = 	
 
 JCLASS = $(JSRCS:%.java=%.class)
 

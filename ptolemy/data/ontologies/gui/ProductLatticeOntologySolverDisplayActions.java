@@ -52,8 +52,8 @@ import diva.graph.GraphController;
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (mankit)
- *  @Pt.AcceptedRating Red (mankit)
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayActions {
 
@@ -116,7 +116,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                     highlightColorsActions[i] = displayActions.new SetHighlightColorsAction(subOntologies.get(i));
                 }
             } catch (IllegalActionException ex) {
-                throw new IllegalArgumentException("Could not create the highlight " +
+                throw new IllegalStateException("Could not create the highlight " +
                 		"colors menu actions for the ProductLatticeOntologySolver" + displayActions.
                                 getContainer().getName(), ex);
             }
@@ -167,7 +167,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 target.setHighlightOntology(_highlightOntology);
                 target.highlightConcepts();
             } catch (IllegalActionException ex) {
-                throw new IllegalArgumentException("Could not highlight " +
+                throw new IllegalStateException("Could not highlight " +
                 		"the concept colors for the ontology " +
                 		_highlightOntology.getName() + ".", ex);
             }

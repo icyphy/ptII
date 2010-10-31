@@ -53,18 +53,35 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActorConstraintsDefinitionAdapter.java \
 	ActorConstraintsDefinitionAttribute.java \
+	ActorProductLatticeConstraintsDefinitionAdapter.java \
+	ActorProductLatticeConstraintsDefinitionAttribute.java \
+	AddConceptFunctionDefinition.java \
 	BinaryOperationMonotonicFunctionDefinition.java \
 	CollectLatticeOntologySolverDetails.java \
 	ConceptTermFactory.java \
 	ConceptTermManager.java \
 	ConstraintManager.java \
+	DeltaConstraintSolver.java \
 	DivideConceptFunctionDefinition.java \
+	InequalityConceptFunctionDefinition.java \
 	LatticeOntologyAdapter.java \
 	LatticeOntologyASTNodeAdapter.java \
 	LatticeOntologyCompositeAdapter.java \
 	LatticeOntologySolver.java \
+	LogicOpConceptFunctionDefinition.java \
 	MultiplyConceptFunctionDefinition.java \
-	ParseTreeConstraintAnnotationEvaluator.java
+	ParseTreeConstraintAnnotationEvaluator.java \
+	ProductLatticeConcept.java \
+	ProductLatticeCPO.java \
+	ProductLatticeDerivedConceptFunction.java \
+	ProductLatticeOntology.java \
+	ProductLatticeOntologyAdapter.java \
+	ProductLatticeOntologyASTNodeAdapter.java \
+	ProductLatticeOntologyMoMLHandler.java \
+	ProductLatticeOntologySolver.java \
+	ProductLatticeWrapperConceptFunction.java \
+	SubtractConceptFunctionDefinition.java \
+	UnaryOperationMonotonicFunctionDefinition.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

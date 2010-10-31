@@ -109,7 +109,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, -5.0]">
         </property>
-        <entity name="UnobservableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
@@ -157,7 +157,7 @@
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="ObservableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>

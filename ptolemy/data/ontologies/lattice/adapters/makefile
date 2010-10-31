@@ -34,7 +34,8 @@ ME =		ptolemy/data/ontologies/lattice/adapters
 DIRS = 		constAbsIntObservable constAbstractInterpretation \
 		constLattice constObservableProductLattice \
 		defaultAdapters dimensionSystem monotonicityAnalysis \
-		observableLattice
+		observableLattice \
+		reachableLattice
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -57,6 +58,7 @@ PTCLASSALLJARS = \
 	dimensionSystem/dimensionSystem.jar \
 	monotonicityAnalysis/monotonicityAnalysis.jar \
 	observableLattice/observableLattice.jar
+	reachableLattice/reachableLattice.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

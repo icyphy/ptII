@@ -52,8 +52,8 @@ import ptolemy.moml.MoMLChangeRequest;
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (mankit)
- *  @Pt.AcceptedRating Red (mankit)
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ProductLatticeOntologyMoMLHandler extends OntologyMoMLHandler {
 

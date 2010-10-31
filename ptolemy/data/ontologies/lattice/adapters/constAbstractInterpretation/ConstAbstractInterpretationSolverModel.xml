@@ -61,7 +61,7 @@ _
         </property>
     </property>
     <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= Unknown || factor2 &lt;= Unknown ? Unknown :&#10; (factor1 &lt;= Zero || factor2 &lt;= Zero) &amp;&amp; factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? Zero :&#10;  (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Positive) || (factor1 &lt;= Negative &amp;&amp; factor2 &lt;= Negative) ? Positive :&#10;   (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Negative) || (factor2 &lt;= Positive &amp;&amp; factor1 &lt;= Negative) ? Negative :&#10;    factor1 &lt;= ScalarConst &amp;&amp; factor2 &lt;= ScalarConst ? ScalarConst :&#10;     factor1 &lt;= UnknownConst &amp;&amp; factor2 &lt;= UnknownConst ? UnknownConst :&#10;      factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? ScalarNonConst :&#10;       UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= Unknown || factor2 &lt;= Unknown ? Unknown :&#10; (factor1 &lt;= Zero || factor2 &lt;= Zero) &amp;&amp; factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? Zero :&#10;  (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Positive) || (factor1 &lt;= Negative &amp;&amp; factor2 &lt;= Negative) ? Positive :&#10;   (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Negative) || (factor2 &lt;= Positive &amp;&amp; factor1 &lt;= Negative) ? Negative :&#10;    factor1 &lt;= ScalarConst &amp;&amp; factor2 &lt;= ScalarConst ? ScalarConst :&#10;     factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -69,7 +69,7 @@ _
         </property>
     </property>
     <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend &lt;= Unknown || divisor &lt;= Zero ? Unknown :&#10; dividend &lt;= Zero &amp;&amp; divisor &lt;= ScalarNonConst ? Zero :&#10;  (dividend &lt;= Positive &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Negative &amp;&amp; divisor &lt;= Negative) ? Positive :&#10;   (dividend &lt;= Negative &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Positive &amp;&amp; divisor &lt;= Negative) ? Negative :&#10;    dividend &lt;= ScalarConst &amp;&amp; divisor &lt;= ScalarConst ? ScalarConst :&#10;     dividend &lt;= UnknownConst &amp;&amp; divisor &lt;= UnknownConst ? UnknownConst :&#10;      dividend &lt;= ScalarNonConst &amp;&amp; divisor &lt;= ScalarNonConst ? ScalarNonConst :&#10;       UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend &lt;= Unknown || divisor &lt;= Zero ? Unknown :&#10; dividend &lt;= Zero &amp;&amp; divisor &lt;= ScalarNonConst ? Zero :&#10;  (dividend &lt;= Positive &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Negative &amp;&amp; divisor &lt;= Negative) ? Positive :&#10;   (dividend &lt;= Negative &amp;&amp; divisor &lt;= Positive) || (dividend &lt;= Positive &amp;&amp; divisor &lt;= Negative) ? Negative :&#10;    dividend &lt;= ScalarConst &amp;&amp; divisor &lt;= ScalarConst ? ScalarConst :&#10;     dividend &lt;= ScalarNonConst &amp;&amp; divisor &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -155,7 +155,7 @@ _
         </property>
     </property>
     <property name="andFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= Unknown || booleanVar1 &lt;= Unknown ? Unknown :&#10; booleanVar0 &lt;= BooleanFalse || booleanVar1 &lt;= BooleanFalse ? BooleanFalse :&#10;  booleanVar0 &lt;= BooleanTrue &amp;&amp; booleanVar1 &lt;= BooleanTrue ? BooleanTrue :&#10;   booleanVar0 &lt;= BooleanConst &amp;&amp; booleanVar1 &lt;= BooleanConst ? BooleanConst :&#10;    booleanVar0 &lt;= UnknownConst || booleanVar1 &lt;= UnknownConst ? UnknownConst :&#10;     booleanVar0 &lt;= BooleanNonConst &amp;&amp; booleanVar1 &lt;= BooleanNonConst ? BooleanNonConst :&#10;      UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= Unknown || booleanVar1 &lt;= Unknown ? Unknown :&#10; booleanVar0 &lt;= BooleanFalse || booleanVar1 &lt;= BooleanFalse ? BooleanFalse :&#10;  booleanVar0 &lt;= BooleanTrue &amp;&amp; booleanVar1 &lt;= BooleanTrue ? BooleanTrue :&#10;   booleanVar0 &lt;= BooleanConst &amp;&amp; booleanVar1 &lt;= BooleanConst ? BooleanConst :&#10;    booleanVar0 &lt;= BooleanNonConst &amp;&amp; booleanVar1 &lt;= BooleanNonConst ? BooleanNonConst :&#10;     Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -163,7 +163,7 @@ _
         </property>
     </property>
     <property name="orFunction" class="ptolemy.data.ontologies.lattice.LogicOpConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= Unknown || booleanVar1 &lt;= Unknown ? Unknown :&#10; booleanVar0 &lt;= BooleanTrue || booleanVar1 &lt;= BooleanTrue ? BooleanTrue :&#10;  booleanVar0 &lt;= BooleanFalse &amp;&amp; booleanVar1 &lt;= BooleanFalse ? BooleanFalse :&#10;   booleanVar0 &lt;= BooleanConst &amp;&amp; booleanVar1 &lt;= BooleanConst ? BooleanConst :&#10;    booleanVar0 &lt;= UnknownConst || booleanVar1 &lt;= UnknownConst ? UnknownConst :&#10;     booleanVar0 &lt;= BooleanNonConst &amp;&amp; booleanVar1 &lt;= BooleanNonConst ? BooleanNonConst :&#10;      UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="booleanVar0 &lt;= Unknown || booleanVar1 &lt;= Unknown ? Unknown :&#10; booleanVar0 &lt;= BooleanTrue || booleanVar1 &lt;= BooleanTrue ? BooleanTrue :&#10;  booleanVar0 &lt;= BooleanFalse &amp;&amp; booleanVar1 &lt;= BooleanFalse ? BooleanFalse :&#10;   booleanVar0 &lt;= BooleanConst &amp;&amp; booleanVar1 &lt;= BooleanConst ? BooleanConst :&#10;    booleanVar0 &lt;= BooleanNonConst &amp;&amp; booleanVar1 &lt;= BooleanNonConst ? BooleanNonConst :&#10;     Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -171,7 +171,7 @@ _
         </property>
     </property>
     <property name="greaterThan" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanTrue :&#10;  left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanTrue :&#10;   (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanFalse :&#10;    left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanFalse :&#10;     left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;      left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;       left &lt;= UnknownConst || right &lt;= UnknownConst ? UnknownConst :&#10;        left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;         UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanTrue :&#10;  left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanTrue :&#10;   (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanFalse :&#10;    left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanFalse :&#10;     left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;      left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;       left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;        Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -179,7 +179,7 @@ _
         </property>
     </property>
     <property name="lessThan" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;  left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanFalse :&#10;   (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanTrue :&#10;    left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanTrue :&#10;     left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;      left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;       left &lt;= UnknownConst || right &lt;= UnknownConst ? UnknownConst :&#10;        left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;         UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;  left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanFalse :&#10;   (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanTrue :&#10;    left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanTrue :&#10;     left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;      left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;       left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;        Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -187,7 +187,7 @@ _
         </property>
     </property>
     <property name="equalTo" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanTrue :&#10;  left &lt;= BooleanTrue &amp;&amp; right &lt;= BooleanTrue ? BooleanTrue :&#10;   left &lt;= BooleanFalse &amp;&amp; right &lt;= BooleanFalse ? BooleanTrue :&#10;    left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;     left &lt;= Zero &amp;&amp; (right &lt;= Positive || right &lt;= Negative) ? BooleanFalse :&#10;      left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanFalse :&#10;       left &lt;= BooleanTrue &amp;&amp; right &lt;= BooleanFalse ? BooleanFalse :&#10;        left &lt;= BooleanFalse &amp;&amp; right &lt;= BooleanTrue ? BooleanFalse :&#10;         left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;          left &lt;= BooleanConst &amp;&amp; right &lt;= BooleanConst ? BooleanConst :&#10;           left &lt;= UnknownConst &amp;&amp; right &lt;= UnknownConst ? UnknownConst :&#10;            left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;             left &lt;= BooleanNonConst &amp;&amp; right &lt;= BooleanNonConst ? BooleanNonConst :&#10;              UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanTrue :&#10;  left &lt;= BooleanTrue &amp;&amp; right &lt;= BooleanTrue ? BooleanTrue :&#10;   left &lt;= BooleanFalse &amp;&amp; right &lt;= BooleanFalse ? BooleanTrue :&#10;    left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;     left &lt;= Zero &amp;&amp; (right &lt;= Positive || right &lt;= Negative) ? BooleanFalse :&#10;      left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanFalse :&#10;       left &lt;= BooleanTrue &amp;&amp; right &lt;= BooleanFalse ? BooleanFalse :&#10;        left &lt;= BooleanFalse &amp;&amp; right &lt;= BooleanTrue ? BooleanFalse :&#10;         left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;          left &lt;= BooleanConst &amp;&amp; right &lt;= BooleanConst ? BooleanConst :&#10;           left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;            left &lt;= BooleanNonConst &amp;&amp; right &lt;= BooleanNonConst ? BooleanNonConst :&#10;             Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -195,7 +195,7 @@ _
         </property>
     </property>
     <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= Unknown || addend2 &lt;= Unknown ? Unknown :&#10; addend1 &lt;= Positive &amp;&amp; (addend2 &lt;= Positive || addend2 &lt;= Zero) ? Positive :&#10;  addend1 &lt;= Negative &amp;&amp; (addend2 &lt;= Negative || addend2 &lt;= Zero) ? Negative :&#10;   addend2 &lt;= Positive &amp;&amp; (addend1 &lt;= Positive || addend1 &lt;= Zero) ? Positive :&#10;    addend2 &lt;= Negative &amp;&amp; (addend1 &lt;= Negative || addend1 &lt;= Zero) ? Negative :&#10;     addend1 &lt;= Zero &amp;&amp; addend2 &lt;= Zero ? Zero :&#10;      addend1 &lt;= UnknownConst &amp;&amp; addend2 &lt;= UnknownConst ? UnknownConst :&#10;       addend1 &lt;= ScalarNonConst &amp;&amp; addend2 &lt;= ScalarNonConst : ScalarNonConst :&#10;        UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= Unknown || addend2 &lt;= Unknown ? Unknown :&#10; addend1 &lt;= Positive &amp;&amp; (addend2 &lt;= Positive || addend2 &lt;= Zero) ? Positive :&#10;  addend1 &lt;= Negative &amp;&amp; (addend2 &lt;= Negative || addend2 &lt;= Zero) ? Negative :&#10;   addend2 &lt;= Positive &amp;&amp; (addend1 &lt;= Positive || addend1 &lt;= Zero) ? Positive :&#10;    addend2 &lt;= Negative &amp;&amp; (addend1 &lt;= Negative || addend1 &lt;= Zero) ? Negative :&#10;     addend1 &lt;= Zero &amp;&amp; addend2 &lt;= Zero ? Zero :&#10;      addend1 &lt;= ScalarNonConst &amp;&amp; addend2 &lt;= ScalarNonConst : ScalarNonConst :&#10;       Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -211,7 +211,7 @@ _
         </property>
     </property>
     <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Positive ? Negative :&#10;  arg &lt;= Negative ? Positive :&#10;   arg &lt;= Zero ? Zero :&#10;    arg &lt;= ScalarConst ? ScalarConst :&#10;     arg &lt;= UnknownConst ? UnknownConst :&#10;      arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;       UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Positive ? Negative :&#10;  arg &lt;= Negative ? Positive :&#10;   arg &lt;= Zero ? Zero :&#10;    arg &lt;= ScalarConst ? ScalarConst :&#10;     arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -219,7 +219,7 @@ _
         </property>
     </property>
     <property name="notFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= BooleanTrue ? BooleanFalse :&#10;  arg &lt;= BooleanFalse ? BooleanTrue :&#10;   arg &lt;= BooleanConst ? BooleanConst :&#10;    arg &lt;= UnknownConst ? UnknownConst :&#10;     arg &lt;= BooleanNonConst ? BooleanNonConst :&#10;      UnknownNonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= BooleanTrue ? BooleanFalse :&#10;  arg &lt;= BooleanFalse ? BooleanTrue :&#10;   arg &lt;= BooleanConst ? BooleanConst :&#10;    arg &lt;= BooleanNonConst ? BooleanNonConst :&#10;     Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
@@ -264,7 +264,7 @@ _
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    trueInput == Unknown &amp;&amp; falseInput == Unknown ? Unknown :&#10;     trueInput == Zero &amp;&amp; falseInput == Zero &amp;&amp; control &lt;= BooleanNonConst ? Zero :&#10;      control == BooleanTrue ? trueInput :&#10;       control == BooleanFalse ? falseInput : &#10;        trueInput &lt;= ScalarNonConst &amp;&amp; falseInput &lt;= ScalarNonConst &amp;&amp; control &lt;= BooleanNonConst ? ScalarNonConst :&#10;         trueInput == falseInput &amp;&amp; trueInput &lt; BooleanConst &amp;&amp; falseInput &lt; BooleanConst &amp;&amp; control &lt;= BooleanNonConst ? trueInput :&#10;          trueInput &lt;= BooleanNonConst &amp;&amp; falseInput &lt;= BooleanNonConst &amp;&amp; control &lt;= BooleanNonConst ? BooleanNonConst :&#10;           UnknownNonConst">
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    trueInput == Unknown &amp;&amp; falseInput == Unknown ? Unknown :&#10;     trueInput == Zero &amp;&amp; falseInput == Zero &amp;&amp; control &lt;= BooleanNonConst ? Zero :&#10;      control == BooleanTrue ? trueInput :&#10;       control == BooleanFalse ? falseInput : &#10;        trueInput &lt;= ScalarNonConst &amp;&amp; falseInput &lt;= ScalarNonConst &amp;&amp; control &lt;= BooleanNonConst ? ScalarNonConst :&#10;         trueInput == falseInput &amp;&amp; trueInput &lt; BooleanConst &amp;&amp; falseInput &lt; BooleanConst &amp;&amp; control &lt;= BooleanNonConst ? trueInput :&#10;          trueInput &lt;= BooleanNonConst &amp;&amp; falseInput &lt;= BooleanNonConst &amp;&amp; control &lt;= BooleanNonConst ? BooleanNonConst :&#10;           Undefined">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -526,7 +526,7 @@ _
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
-        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanTrue ? input :&#10;     control == BooleanFalse ? Unknown :&#10;      UnknownNonConst">
+        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanTrue ? input :&#10;     control == BooleanFalse ? Unknown :&#10;      Undefined">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -534,7 +534,7 @@ _
                 </property>
             </property>
         </property>
-        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanFalse ? input :&#10;     control == BooleanTrue ? Unknown :&#10;      UnknownNonConst">
+        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanFalse ? input :&#10;     control == BooleanTrue ? Unknown :&#10;      Undefined">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
