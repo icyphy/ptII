@@ -4,18 +4,18 @@
 <entity name="BooleanSwitchDemoProductLattice" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 36, 1203, 1035}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={651, 62, 1189, 956}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[988, 918]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[974, 839]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{474.9492187499999, 419.7812499999999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{455.7426097972974, 383.278610641892}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 15.0]">
         </property>
     </property>
     <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
@@ -34,9 +34,9 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 60.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
@@ -55,9 +55,9 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
@@ -76,9 +76,9 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 100.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableZero">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
@@ -97,9 +97,9 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 120.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
@@ -118,9 +118,9 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 140.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="ConstAbsIntObservableReachableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
@@ -128,7 +128,43 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 25.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/observableLattice/ObservableSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 80.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="ReachableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/reachableLattice/ReachableSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 155.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
@@ -141,15 +177,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 200.0]">
@@ -157,13 +193,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -177,23 +213,23 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -204,12 +240,12 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -219,15 +255,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 10.0]">
@@ -235,13 +271,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -255,23 +291,23 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -282,18 +318,18 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -307,23 +343,23 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Scale6" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -334,18 +370,18 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const9" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -359,23 +395,23 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Scale9" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -386,12 +422,12 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -401,29 +437,29 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const13" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="546.72">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -433,43 +469,43 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{53.25, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[53.25, 240.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Scale15" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 270.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -479,24 +515,24 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -506,15 +542,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 365.0]">
@@ -522,7 +558,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -532,15 +568,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 455.0]">
@@ -548,13 +584,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -564,23 +600,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 510.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -594,13 +630,13 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -610,24 +646,24 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -637,15 +673,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 380.0]">
@@ -653,7 +689,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -663,15 +699,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 465.0]">
@@ -679,13 +715,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -699,19 +735,19 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -725,67 +761,67 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 675.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 650.0]">
         </property>
         <port name="trueInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="falseInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 670.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 645.0]">
         </property>
         <port name="trueInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="falseInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -795,23 +831,23 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 740.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 715.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -821,29 +857,29 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, 730.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 705.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -853,23 +889,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 825.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 770.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -879,23 +915,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 820.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 765.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -905,23 +941,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 610.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 585.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -931,23 +967,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 730.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 705.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -957,23 +993,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 600.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
     <entity name="Const15" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -983,17 +1019,17 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 720.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 695.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Undetermined">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
             </property>
         </port>
     </entity>
@@ -1025,25 +1061,25 @@
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display.input" relation="relation"/>
     <link port="Const.output" relation="relation2"/>

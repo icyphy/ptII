@@ -31,7 +31,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 80.0]">
         </property>
-        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>

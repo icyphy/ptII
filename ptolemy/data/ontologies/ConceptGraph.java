@@ -153,7 +153,16 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *   specified array is not an element of this CPO.
      */
     public Concept greatestElement(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
+        if (subset != null && subset.length > 0) {
+            Concept greatest = (Concept) subset[0];
+            for (Object concept : subset) {
+                if (compare(concept, greatest) == CPO.HIGHER) {
+                    greatest = (Concept) concept;
+                }
+            }
+            return greatest;
+        }
+        return null;
     }
 
     /** Compute the greatest lower bound (GLB) of two elements.
@@ -184,7 +193,15 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Concept greatestLowerBound(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
+        if (subset != null && subset.length > 0) {
+            Concept glb = (Concept) subset[0];
+            for (Object concept : subset) {
+                glb = greatestLowerBound(glb, concept);
+            }
+            return glb;
+        } else {
+            return null;
+        }
     }
 
     /** Compute the least element of a subset.
@@ -196,7 +213,16 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Concept leastElement(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
+        if (subset != null && subset.length > 0) {
+            Concept least = (Concept) subset[0];
+            for (Object concept : subset) {
+                if (compare(concept, least) == CPO.LOWER) {
+                    least = (Concept) concept;
+                }
+            }
+            return least;
+        }
+        return null;
     }
 
     /** Compute the least upper bound (LUB) of two elements.
@@ -233,7 +259,15 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Concept leastUpperBound(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
+        if (subset != null && subset.length > 0) {
+            Concept lub = (Concept) subset[0];
+            for (Object concept : subset) {
+                lub = leastUpperBound(lub, concept);
+            }
+            return lub;
+        } else {
+            return null;
+        }
     }
 
     /** Compute the up-set of an element in this CPO.

@@ -153,33 +153,6 @@ public class ProductLatticeCPO extends ConceptGraph {
             return CPO.INCOMPARABLE;
         }
     }
-    
-    /** Compute the down-set of an element in this CPO.
-     *  The down-set of an element is the subset consisting of
-     *  all the elements lower than or the same as the specified element.
-     *  @param e An Object representing an element in this CPO.
-     *  @return An array of Objects representing the elements in the
-     *   down-set of the specified element.
-     *  @exception IllegalArgumentException If the specified Object is not
-     *   an element in this CPO, or the resulting set is infinite.
-     */
-    public Concept[] downSet(Object e) {
-        throw new IllegalArgumentException("Method not implemented!");
-    }
-
-    /** Compute the greatest element of a subset.
-     *  The greatest element of a subset is an element in the
-     *  subset that is higher than all the other elements in the
-     *  subset.
-     *  @param subset An array of Objects representing the subset.
-     *  @return An Object representing the greatest element of the subset,
-     *   or <code>null</code> if the greatest element does not exist.
-     *  @exception IllegalArgumentException If at least one Object in the
-     *   specified array is not an element of this CPO.
-     */
-    public Concept greatestElement(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
-    }
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the CPO
@@ -220,18 +193,6 @@ public class ProductLatticeCPO extends ConceptGraph {
         return glb;
     }
 
-    /** Compute the greatest lower bound (GLB) of a subset.
-     *  The GLB of a subset is the greatest element in the CPO that
-     *  is lower than or the same as all the elements in the
-     *  subset.
-     *  @param subset An array of Objects representing the subset.
-     *  @return Nothing.
-     *  @exception IllegalArgumentException Always thrown.
-     */
-    public Concept greatestLowerBound(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
-    }
-
     /** Test if this CPO is a lattice. A Product Lattice CPO is a lattice if
      *  all of its component ontologies are lattices.
      *  @return True if this CPO is a lattice;
@@ -244,18 +205,6 @@ public class ProductLatticeCPO extends ConceptGraph {
             }
         }        
         return true;
-    }
-
-    /** Compute the least element of a subset.
-     *  The least element of a subset is an element in the
-     *  subset that is lower than all the other element in the
-     *  subset.
-     *  @param subset An array of Objects representing the subset.
-     *  @return Nothing.
-     *  @exception IllegalArgumentException Always thrown.
-     */
-    public Concept leastElement(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
     }
 
     /** Compute the least upper bound (LUB) of two elements.
@@ -295,18 +244,6 @@ public class ProductLatticeCPO extends ConceptGraph {
         return lub;
     }
 
-    /** Compute the least upper bound (LUB) of a subset.
-     *  The LUB of a subset is the least element in the CPO that
-     *  is greater than or the same as all the elements in the
-     *  subset.
-     *  @param subset An array of Objects representing the subset.
-     *  @return Nothing.
-     *  @exception IllegalArgumentException Always thrown.
-     */
-    public Concept leastUpperBound(Object[] subset) {
-        throw new IllegalArgumentException("Method not implemented!");
-    }
-
     /** Return the top element of this CPO.
      *  The top element is the element in the CPO that is higher than
      *  all the other elements.
@@ -316,17 +253,6 @@ public class ProductLatticeCPO extends ConceptGraph {
     public Concept top() {
         return _topConcept;
     }
-
-    /** Compute the up-set of an element in this CPO.
-     *  The up-set of an element is the subset consisting of
-     *  all the elements higher than or the same as the specified element.
-     *  @param e An Object representing an element in this CPO.
-     *  @return Nothing.
-     *  @exception IllegalArgumentException Always thrown.
-     */
-    public Concept[] upSet(Object e) {
-        throw new IllegalArgumentException("Method not implemented!");
-    }    
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

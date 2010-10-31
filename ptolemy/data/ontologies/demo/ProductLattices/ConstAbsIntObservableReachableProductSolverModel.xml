@@ -4,7 +4,7 @@
 <entity name="ConstAbsIntObservableReachableProductSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={374, 70, 986, 621}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={657, 245, 986, 621}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 504]">
     </property>
@@ -91,7 +91,7 @@
         </property>
         <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constObservableReachableLattice&quot;, &quot;constObservableReachableLattice&quot;, &quot;constObservableReachableLattice&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor &lt;= ObservableUndecidableScalarNonConst &amp;&amp; otherFactor &lt;= ObservableUndecidableZero &amp;&amp;&#10;  factor != ObservableUnreachableZero &amp;&amp; factor != UnobservableReachableZero &amp;&amp;&#10;  factor != UnobservableUnreachableZero &amp;&amp; factor != ObservableReachableZero &amp;&amp;&#10;  factor != UnobservableUndecidableZero &amp;&amp; factor != ObservableUndecidableZero ? UnobservableReachableUnknown :&#10; product &gt;= ObservableReachableUnknown ? ObservableReachableUnknown :&#10;  UnobservableReachableUnknown">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor &lt;= ObservableReachableScalarNonConst &amp;&amp; otherFactor &lt;= ObservableReachableZero &amp;&amp;&#10;  factor != ObservableUnreachableZero &amp;&amp; factor != UnobservableReachableZero &amp;&amp;&#10;  factor != UnobservableUnreachableZero &amp;&amp; factor != ObservableReachableZero ? UnobservableUnreachableUnknown :&#10; product &gt;= ObservableUnreachableUnknown ? ObservableUnreachableUnknown :&#10;  UnobservableUnreachableUnknown">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 215.0}">
         </property>
@@ -121,7 +121,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 275.0]">
         </property>
-        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ObservableUndecidableUnknown ? UnobservableReachableUnknown :&#10;    trueOutput &lt;= UnobservableUndecidableUnknownNonConst &amp;&amp; falseOutput &lt;= UnobservableUndecidableUnknownNonConst ? UnobservableReachableUnknown :&#10;     control &lt;= ObservableUndecidableBooleanTrue &amp;&amp; trueOutput &lt;= UnobservableReachableUnknownNonConst ? UnobservableReachableUnknown :&#10;      control &lt;= ObservableUndecidableBooleanFalse &amp;&amp; falseOutput &lt;= UnobservableReachableUnknownNonConst ? UnobservableReachableUnknown :&#10;       ObservableReachableUnknown">
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ObservableReachableUnknown ? UnobservableUnreachableUnknown :&#10;    trueOutput &lt;= UnobservableReachableUnknownNonConst &amp;&amp; falseOutput &lt;= UnobservableReachableUnknownNonConst ? UnobservableUnreachableUnknown :&#10;     control &lt;= ObservableReachableBooleanTrue &amp;&amp; trueOutput &lt;= UnobservableReachableUnknownNonConst ? UnobservableUnreachableUnknown :&#10;      control &lt;= ObservableReachableBooleanFalse &amp;&amp; falseOutput &lt;= UnobservableReachableUnknownNonConst ? UnobservableUnreachableUnknown :&#10;       ObservableUnreachableUnknown">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -131,9 +131,9 @@
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
         </property>
-        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanReachable(control); &gt;= input">
+        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanTrueReachable(control, input)">
         </property>
-        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanUnreachable(control); &gt;= input">
+        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanFalseReachable(control, input)">
         </property>
         <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -254,22 +254,6 @@
                 <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
                 </property>
             </property>
-        </property>
-    </property>
-    <property name="booleanReachable" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= ObservableReachableBooleanTrue ? UnobservableReachableUnknown :&#10; arg &lt;= ObservableUnreachableBooleanTrue ? UnobservableUnreachableUnknown :&#10;  arg &gt;= UnobservableReachableBooleanFalse &amp;&amp; arg &lt;= ObservableUndecidableBooleanFalse ? UnobservableUnreachableUnknown :&#10;   UnobservableUndecidableUnknown">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 350.0]">
-        </property>
-    </property>
-    <property name="booleanUnreachable" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= ObservableReachableBooleanFalse ? UnobservableReachableUnknown :&#10; arg &lt;= ObservableUnreachableBooleanFalse ? UnobservableUnreachableUnknown :&#10;  arg &gt;= UnobservableReachableBooleanTrue &amp;&amp; arg &lt;= ObservableUndecidableBooleanTrue ? UnobservableUnreachableUnknown :&#10;   UnobservableUndecidableUnknown">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 350.0}">
         </property>
     </property>
     <property name="BooleanSelectActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
@@ -283,7 +267,7 @@
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 275.0}">
         </property>
         <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -405,13 +389,13 @@
                 </property>
             </property>
         </property>
-        <property name="trueInputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanObservable(control, output)">
+        <property name="trueInputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanTrueObservable(control, output)">
         </property>
-        <property name="falseInputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanUnobservable(control, output)">
+        <property name="falseInputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= booleanFalseObservable(control, output)">
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
         </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ObservableUndecidableUnknown ? UnobservableReachableUnknown :&#10;    control &lt;= ObservableUndecidableBooleanTrue ? trueInput :&#10;     control &lt;= ObservableUndecidableBooleanFalse ? falseInput :&#10;      lub(trueInput, falseInput)">
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;    control &lt;= ObservableUnreachableUnknownNonConst ? UnobservableUnreachableUnknown :&#10;     control &lt;= ObservableReachableBooleanTrue ? trueInput :&#10;      control &lt;= ObservableReachableBooleanFalse ? falseInput :&#10;       trueInput &lt;= ObservableReachableUnknown || falseInput &lt;= ObservableReachableUnknown ? UnobservableUnreachableUnknown :&#10;        (trueInput &lt;= ObservableReachableZero &amp;&amp; trueInput &gt;= UnobservableUnreachableZero &amp;&amp;&#10;        falseInput &lt;= ObservableReachableZero &amp;&amp; falseInput &gt;= UnobservableUnreachableZero) ||&#10;        (trueInput &lt;= ObservableReachableBooleanTrue &amp;&amp; trueInput &gt;= UnobservableUnreachableBooleanTrue &amp;&amp;&#10;        falseInput &lt;= ObservableReachableBooleanTrue &amp;&amp; falseInput &gt;= UnobservableUnreachableBooleanTrue) ||&#10;        (trueInput &lt;= ObservableReachableBooleanFalse &amp;&amp; trueInput &gt;= UnobservableUnreachableBooleanFalse &amp;&amp;&#10;        falseInput &lt;= ObservableReachableBooleanFalse &amp;&amp; falseInput &gt;= UnobservableUnreachableBooleanFalse) ? lub(trueInput, falseInput) :&#10;         trueInput &lt;= ObservableReachableScalarNonConst &amp;&amp;&#10;         falseInput &lt;= ObservableReachableScalarNonConst &amp;&amp;&#10;         control &lt;= ObservableReachableBooleanNonConst ? lub(trueInput, falseInput, UnobservableUnreachableScalarNonConst) :&#10;          trueInput &lt;= ObservableReachableBooleanNonConst &amp;&amp;&#10;          falseInput &lt;= ObservableReachableBooleanNonConst &amp;&amp;&#10;          control &lt;= ObservableReachableBooleanNonConst ? lub(trueInput, falseInput, UnobservableUnreachableBooleanNonConst) :&#10;           lub(trueInput, falseInput, UnobservableUnreachableUnknownNonConst)">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -538,24 +522,44 @@
             </property>
         </property>
     </property>
-    <property name="booleanObservable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
+    <property name="booleanTrueObservable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
         <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;control&quot;, &quot;output&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUndecidableBooleanFalse ? UnobservableReachableUnknown :&#10; control &gt;= UnobservableReachableBooleanTrue &amp;&amp; output &gt;= ObservableReachableUnknown ? ObservableReachableUnknown :&#10;  UnobservableReachableUnknown">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableReachableBooleanFalse ? UnobservableUnreachableUnknown :&#10; control &gt;= UnobservableUnreachableBooleanTrue &amp;&amp; output &gt;= ObservableUnreachableUnknown ? ObservableUnreachableUnknown :&#10;  UnobservableUnreachableUnknown">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 350.0]">
         </property>
     </property>
-    <property name="booleanUnobservable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
+    <property name="booleanFalseObservable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
         <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;control&quot;, &quot;output&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUndecidableBooleanTrue ? UnobservableReachableUnknown :&#10; control &gt;= UnobservableReachableBooleanFalse &amp;&amp; output &gt;= ObservableReachableUnknown ? ObservableReachableUnknown :&#10;  UnobservableReachableUnknown">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableReachableBooleanTrue ? UnobservableUnreachableUnknown :&#10; control &gt;= UnobservableUnreachableBooleanFalse &amp;&amp; output &gt;= ObservableUnreachableUnknown ? ObservableUnreachableUnknown :&#10;  UnobservableUnreachableUnknown">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 395.0]">
+        </property>
+    </property>
+    <property name="booleanTrueReachable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;control&quot;, &quot;input&quot;}">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUnreachableUnknownNonConst ? UnobservableUnreachableUnknown :&#10; control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;  control &lt;= ObservableReachableBooleanFalse ? UnobservableUnreachableUnknown :&#10;   control &lt;= ObservableReachableBooleanTrue ? input :&#10;    lub(input, UnobservableUnreachableUnknownNonConst)">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 350.0]">
+        </property>
+    </property>
+    <property name="booleanFalseReachable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;control&quot;, &quot;input&quot;}">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUnreachableUnknownNonConst ? UnobservableUnreachableUnknown :&#10; control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;  control &lt;= ObservableReachableBooleanTrue ? UnobservableUnreachableUnknown :&#10;   control &lt;= ObservableReachableBooleanFalse ? input :&#10;    lub(input, UnobservableUnreachableUnknownNonConst)">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 395.0]">
         </property>
     </property>
     <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
@@ -571,51 +575,51 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -15.0]">
         </property>
-        <entity name="UnobservableUndecidableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndecidableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableReachableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
@@ -667,99 +671,51 @@
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableReachableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUndecidableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableReachableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
@@ -808,54 +764,6 @@
             </property>
         </entity>
         <entity name="ObservableUnreachableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableUnknownNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableBooleanFalse" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableBooleanTrue" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableBooleanConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableScalarConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableScalarNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableReachableBooleanNonConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>

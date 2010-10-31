@@ -1,4 +1,4 @@
-/* An attribute that creates an editor to configure and run a code generator.
+/* GUI element that provides context menus for an OntologySolver.
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -27,17 +27,12 @@
  */
 package ptolemy.data.ontologies.gui;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
-import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.data.ontologies.OntologySolver;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.MoMLModelAttributeController;
 import ptolemy.vergil.basic.NamedObjController;
@@ -49,27 +44,24 @@ import diva.graph.GraphController;
 ///////////////////////////////////////////////////////////////////
 //// OntologyDisplayActions
 
-/**
- This is an attribute that creates an editor for configuring and
- running a code generator.  This is designed to be contained by
- an instance of CodeGenerator or a subclass of CodeGenerator.
- It customizes the user interface for "configuring" the code
- generator. This UI will be invoked when you double click on the
- code generator.
-
- @author Man-Kit Leung
- @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
+/** GUI element that provides context menus for an OntologySolver.
+ *  This UI will be invoked when you right click on the
+ *  OntologySolver.
+ *  
+ *  @author Man-Kit Leung
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
  */
 public class OntologyDisplayActions extends NodeControllerFactory {
 
-    /** Construct a PropertyHighlighter with the specified container and name.
-     *  @param container The container.
-     *  @param name The name of the PropertyHighlighter.
-     *  @exception IllegalActionException If the PropertyHighlighter is not of an
-     *   acceptable attribute for the container.
+    /** Construct an OntologyDisplayActions object with the specified container
+     *  and name.
+     *  @param container The container which should be an OntologySolver object.
+     *  @param name The name of the OntologyDisplayActions object.
+     *  @exception IllegalActionException If the OntologyDisplayActions object
+     *   cannot be created.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -79,7 +71,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
+    ////                         public methods                    ////
 
     /** Return a new node controller.  This base class returns an
      *  instance of IconController.  Derived
@@ -94,54 +86,14 @@ public class OntologyDisplayActions extends NodeControllerFactory {
         return new HighlighterController(this, controller);
     }
     
-    /** The action for the clear concept resolution command to be added to the
-     *  context menu.  This clears the list of resolved concepts (if any)
-     *  and also clears the display.
-     */
-    private class ClearResolution extends FigureAction {
-        public ClearResolution() {
-            super("Clear Concepts");
-        }
-        
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-            
-            NamedObj container = getContainer();
-            if (container instanceof OntologySolver) {
-                try {
-                    ((OntologySolver) container).reset();
-                    ((OntologySolver) container).getMoMLHandler()
-                    .clearDisplay();
-                } catch (IllegalActionException e1) {
-                 MessageHandler.error("Clearing concepts failed", e1);
-                }
-            }
-        }
-    }
-
-    /** The action for the resolve concepts command to be added
-     *  to the context menu.
-     */
-    private class ResolveConcepts extends FigureAction {
-        public ResolveConcepts() {
-            super("Resolve Concepts");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            NamedObj container = getContainer();
-            if (container instanceof OntologySolver) {
-                ((OntologySolver) container).getMoMLHandler().invokeSolver();
-                }
-        }
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected inner classes               ////
+    
     /** The controller that adds commands to the context menu.
      */
     protected static class HighlighterController extends MoMLModelAttributeController {
 
-        /** Create a DependencyController that is associated with a controller.
+        /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
          *  @param controller The controller.
          */
@@ -159,5 +111,72 @@ public class OntologyDisplayActions extends NodeControllerFactory {
                     resolveConcepts));
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private inner classes                 ////
+    
+    /** The action for the clear concept resolution command to be added to the
+     *  context menu.  This clears the list of resolved concepts (if any)
+     *  and also clears the display.
+     */
+    private class ClearResolution extends FigureAction {
+        
+        /** Create a new ClearResolution object to be added to the
+         *  OntologySolver's context menu.
+         */
+        public ClearResolution() {
+            super("Clear Concepts");
+        }
+        
+        /** Called when the gui "Clear Concepts" menu action is
+         *  clicked. This method calls the OntologySolver's MoML
+         *  handler to clear the concept display highlighting and
+         *  annotations.
+         *  @param e The action event that is passed in when the action
+         *   is triggered. 
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            
+            NamedObj container = getContainer();
+            if (container instanceof OntologySolver) {
+                try {
+                    ((OntologySolver) container).reset();
+                    ((OntologySolver) container).getMoMLHandler()
+                    .clearDisplay(true, true);
+                } catch (IllegalActionException e1) {
+                 MessageHandler.error("Clearing concepts failed", e1);
+                }
+            }
+        }
+    }
 
+    /** The action for the resolve concepts command to be added
+     *  to the context menu.
+     */
+    private class ResolveConcepts extends FigureAction {
+        
+        /** Create a new ResolveConcepts object to be added to the
+         *  OntologySolver's context menu.
+         */
+        public ResolveConcepts() {
+            super("Resolve Concepts");
+        }
+
+        /** Called when the gui "Resolve Concepts" menu action is
+         *  clicked. This method calls the OntologySolver's MoML
+         *  handler to invoke the solver and perform the ontology solver
+         *  concept resolution.
+         *  @param e The action event that is passed in when the action
+         *   is triggered. 
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            NamedObj container = getContainer();
+            if (container instanceof OntologySolver) {
+                ((OntologySolver) container).getMoMLHandler().invokeSolver();
+            }
+        }
+    }
 }

@@ -64,6 +64,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
     public ProductLatticeOntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _momlHandler = new ProductLatticeOntologyMoMLHandler(this, "ProductLatticeOntologyMoMLHandler");
     }
     
     ///////////////////////////////////////////////////////////////////
