@@ -52,7 +52,7 @@ import java.util.Map;
  * layout manager. It aligns components vertically and horizontally in
  * a dynamic rectangular grid of cells, with each component occupying one or
  * more cells.
- * A <a href="../../../../../whitepaper.pdf" target="secondary">whitepaper</a>
+ * A whitepaper
  * about the FormLayout ships with the product documentation and is available
  * <a href="http://www.jgoodies.com/articles/forms.pdf">online</a>.<p>
  *
