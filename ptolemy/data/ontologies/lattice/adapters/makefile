@@ -57,7 +57,7 @@ PTCLASSALLJARS = \
 	defaultAdapters/defaultAdapters.jar \
 	dimensionSystem/dimensionSystem.jar \
 	monotonicityAnalysis/monotonicityAnalysis.jar \
-	observableLattice/observableLattice.jar
+	observableLattice/observableLattice.jar \
 	reachableLattice/reachableLattice.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
