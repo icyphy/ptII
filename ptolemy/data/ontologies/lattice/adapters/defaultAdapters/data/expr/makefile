@@ -44,11 +44,8 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     expr
-
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
+PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSALLJAR = 
 PTCLASSALLJARS =
 
 JSRCS = \
@@ -65,7 +62,8 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'ASTPtProductNode$$ASTPtProductNodeFunction.class'
+	'ASTPtProductNode$$ASTPtProductNodeFunction.class' \
+	'ASTPtSumNode$$ASTPtSumNodeFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

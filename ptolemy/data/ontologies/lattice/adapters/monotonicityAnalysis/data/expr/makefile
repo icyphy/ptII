@@ -68,6 +68,7 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'ASTPtFunctionalIfNode$$ASTPtFunctionalIfNodeFunction.class' \
+	'ASTPtLeafNode$$ASTPtLeafNodeFunction.class' \
 	'ASTPtRelationalNode$$ASTPtRelationalNodeFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

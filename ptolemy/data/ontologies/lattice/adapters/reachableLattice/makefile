@@ -53,7 +53,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	reachableLattice.xml \
-	reachableSolverModel.xml
+	reachableSolverModel.xml \
+	ReachableSolverModel.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
