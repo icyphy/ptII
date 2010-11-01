@@ -4,7 +4,7 @@
 <entity name="ConstAbsIntObservableReachableProductSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={657, 245, 986, 621}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={262, 240, 986, 621}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 504]">
     </property>
@@ -395,7 +395,7 @@
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
         </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;    control &lt;= ObservableUnreachableUndefined ? UnobservableUnreachableUnknown :&#10;     control &lt;= ObservableReachableBooleanTrue ? trueInput :&#10;      control &lt;= ObservableReachableBooleanFalse ? falseInput :&#10;       trueInput &lt;= ObservableReachableUnknown || falseInput &lt;= ObservableReachableUnknown ? UnobservableUnreachableUnknown :&#10;        (trueInput &lt;= ObservableReachableZero &amp;&amp; trueInput &gt;= UnobservableUnreachableZero &amp;&amp;&#10;        falseInput &lt;= ObservableReachableZero &amp;&amp; falseInput &gt;= UnobservableUnreachableZero) ||&#10;        (trueInput &lt;= ObservableReachableBooleanTrue &amp;&amp; trueInput &gt;= UnobservableUnreachableBooleanTrue &amp;&amp;&#10;        falseInput &lt;= ObservableReachableBooleanTrue &amp;&amp; falseInput &gt;= UnobservableUnreachableBooleanTrue) ||&#10;        (trueInput &lt;= ObservableReachableBooleanFalse &amp;&amp; trueInput &gt;= UnobservableUnreachableBooleanFalse &amp;&amp;&#10;        falseInput &lt;= ObservableReachableBooleanFalse &amp;&amp; falseInput &gt;= UnobservableUnreachableBooleanFalse) ? lub(trueInput, falseInput) :&#10;         trueInput &lt;= ObservableReachableScalarNonConst &amp;&amp;&#10;         falseInput &lt;= ObservableReachableScalarNonConst &amp;&amp;&#10;         control &lt;= ObservableReachableBooleanNonConst ? lub(trueInput, falseInput, UnobservableUnreachableScalarNonConst) :&#10;          trueInput &lt;= ObservableReachableBooleanNonConst &amp;&amp;&#10;          falseInput &lt;= ObservableReachableBooleanNonConst &amp;&amp;&#10;          control &lt;= ObservableReachableBooleanNonConst ? lub(trueInput, falseInput, UnobservableUnreachableBooleanNonConst) :&#10;           lub(trueInput, falseInput, UnobservableUnreachableUndefined)">
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;    control &lt;= ObservableUnreachableUndefined ? UnobservableUnreachableUnknown :&#10;     control &lt;= ObservableReachableBooleanTrue ? trueInput :&#10;      control &lt;= ObservableReachableBooleanFalse ? falseInput :&#10;       control &lt;= ObservableReachableBooleanConst ? lub(trueInput, falseInput) :&#10;        trueInput &lt;= ObservableReachableUnknown || falseInput &lt;= ObservableReachableUnknown ? UnobservableUnreachableUnknown :&#10;         (trueInput &lt;= ObservableReachableZero &amp;&amp; trueInput &gt;= UnobservableUnreachableZero &amp;&amp;&#10;         falseInput &lt;= ObservableReachableZero &amp;&amp; falseInput &gt;= UnobservableUnreachableZero) ||&#10;         (trueInput &lt;= ObservableReachableBooleanTrue &amp;&amp; trueInput &gt;= UnobservableUnreachableBooleanTrue &amp;&amp;&#10;         falseInput &lt;= ObservableReachableBooleanTrue &amp;&amp; falseInput &gt;= UnobservableUnreachableBooleanTrue) ||&#10;         (trueInput &lt;= ObservableReachableBooleanFalse &amp;&amp; trueInput &gt;= UnobservableUnreachableBooleanFalse &amp;&amp;&#10;         falseInput &lt;= ObservableReachableBooleanFalse &amp;&amp; falseInput &gt;= UnobservableUnreachableBooleanFalse) ? lub(trueInput, falseInput) :&#10;          trueInput &lt;= ObservableReachableScalarNonConst &amp;&amp;&#10;          falseInput &lt;= ObservableReachableScalarNonConst &amp;&amp;&#10;          control &lt;= ObservableReachableBooleanNonConst ? lub(trueInput, falseInput, UnobservableUnreachableScalarNonConst) :&#10;           trueInput &lt;= ObservableReachableBooleanNonConst &amp;&amp;&#10;           falseInput &lt;= ObservableReachableBooleanNonConst &amp;&amp;&#10;           control &lt;= ObservableReachableBooleanNonConst ? lub(trueInput, falseInput, UnobservableUnreachableBooleanNonConst) :&#10;            lub(trueInput, falseInput, UnobservableUnreachableUndefined)">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -545,7 +545,7 @@
     <property name="booleanTrueReachable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
         <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;control&quot;, &quot;input&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUnreachableUndefined ? UnobservableUnreachableUnknown :&#10; control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;  control &lt;= ObservableReachableBooleanFalse ? UnobservableUnreachableUnknown :&#10;   control &lt;= ObservableReachableBooleanTrue ? input :&#10;    lub(input, UnobservableUnreachableUndefined)">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUnreachableUndefined ? UnobservableUnreachableUnknown :&#10; control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;  control &lt;= ObservableReachableBooleanFalse ? UnobservableUnreachableUnknown :&#10;   control &lt;= ObservableReachableBooleanNonConst ? input :&#10;    lub(input, UnobservableUnreachableUndefined)">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
         </property>
@@ -555,7 +555,7 @@
     <property name="booleanFalseReachable" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
         <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;control&quot;, &quot;input&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUnreachableUndefined ? UnobservableUnreachableUnknown :&#10; control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;  control &lt;= ObservableReachableBooleanTrue ? UnobservableUnreachableUnknown :&#10;   control &lt;= ObservableReachableBooleanFalse ? input :&#10;    lub(input, UnobservableUnreachableUndefined)">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="control &lt;= ObservableUnreachableUndefined ? UnobservableUnreachableUnknown :&#10; control &lt;= ObservableReachableScalarNonConst ? UnobservableUnreachableUnknown :&#10;  control &lt;= ObservableReachableBooleanTrue ? UnobservableUnreachableUnknown :&#10;   control &lt;= ObservableReachableBooleanNonConst ? input :&#10;    lub(input, UnobservableUnreachableUndefined)">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableReachableLattice">
         </property>
@@ -596,10 +596,6 @@
             </property>
         </entity>
         <entity name="UnobservableReachablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="UnobservableReachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
@@ -647,10 +643,6 @@
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUnreachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
         <entity name="UnobservableUnreachableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -695,10 +687,6 @@
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="ObservableReachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
         <entity name="ObservableReachableUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -740,10 +728,6 @@
             </property>
         </entity>
         <entity name="ObservableUnreachablePositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUnreachableUnknownConst" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>

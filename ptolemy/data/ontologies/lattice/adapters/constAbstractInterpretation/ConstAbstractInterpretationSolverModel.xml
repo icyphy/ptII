@@ -264,7 +264,7 @@ _
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    trueInput == Unknown &amp;&amp; falseInput == Unknown ? Unknown :&#10;     trueInput == Zero &amp;&amp; falseInput == Zero &amp;&amp; control &lt;= BooleanNonConst ? Zero :&#10;      control == BooleanTrue ? trueInput :&#10;       control == BooleanFalse ? falseInput : &#10;        trueInput &lt;= ScalarNonConst &amp;&amp; falseInput &lt;= ScalarNonConst &amp;&amp; control &lt;= BooleanNonConst ? ScalarNonConst :&#10;         trueInput == falseInput &amp;&amp; trueInput &lt; BooleanConst &amp;&amp; falseInput &lt; BooleanConst &amp;&amp; control &lt;= BooleanNonConst ? trueInput :&#10;          trueInput &lt;= BooleanNonConst &amp;&amp; falseInput &lt;= BooleanNonConst &amp;&amp; control &lt;= BooleanNonConst ? BooleanNonConst :&#10;           Undefined">
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    trueInput == Unknown &amp;&amp; falseInput == Unknown ? Unknown :&#10;     trueInput == Zero &amp;&amp; falseInput == Zero &amp;&amp; control &lt;= BooleanNonConst ? Zero :&#10;      control == BooleanTrue ? trueInput :&#10;       control == BooleanFalse ? falseInput :&#10;        control == BooleanConst ? lub(trueInput, falseInput) :&#10;         trueInput &lt;= ScalarNonConst &amp;&amp; falseInput &lt;= ScalarNonConst &amp;&amp; control &lt;= BooleanNonConst ? ScalarNonConst :&#10;          trueInput == falseInput &amp;&amp; trueInput &lt; BooleanConst &amp;&amp; falseInput &lt; BooleanConst &amp;&amp; control &lt;= BooleanNonConst ? trueInput :&#10;           trueInput &lt;= BooleanNonConst &amp;&amp; falseInput &lt;= BooleanNonConst &amp;&amp; control &lt;= BooleanNonConst ? BooleanNonConst :&#10;            Undefined">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -526,7 +526,7 @@ _
         </property>
         <property name="controlPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
-        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanTrue ? input :&#10;     control == BooleanFalse ? Unknown :&#10;      Undefined">
+        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanFalse ? Unknown :&#10;     control &lt;= BooleanNonConst ? input :&#10;      Undefined">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -534,7 +534,7 @@ _
                 </property>
             </property>
         </property>
-        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanFalse ? input :&#10;     control == BooleanTrue ? Unknown :&#10;      Undefined">
+        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= control &lt;= ScalarNonConst ? Unknown :&#10;    control == BooleanTrue ? Unknown :&#10;     control &lt;= BooleanNonConst ? input :&#10;      Undefined">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
