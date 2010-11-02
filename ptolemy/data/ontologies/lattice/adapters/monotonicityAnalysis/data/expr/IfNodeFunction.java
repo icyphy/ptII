@@ -54,8 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class IfNodeFunction extends MonotonicityConceptFunction {
 
-
-
     /** Create a new function from the given ifNode and
      *  over the given monotonicity ontology.
      *  
@@ -65,13 +63,10 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *   should be interpreted. 
      *  @throws IllegalActionException If a function cannot be created.
      */
-    public IfNodeFunction(
-            ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
-            Ontology monotonicityOntology,
-            Ontology domainOntology)
-    throws IllegalActionException {
-        super("defaultASTPtFunctionalIfNodeFunction", 3,
-                monotonicityOntology);
+    public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
+            Ontology monotonicityOntology, Ontology domainOntology)
+            throws IllegalActionException {
+        super("defaultASTPtFunctionalIfNodeFunction", 3, monotonicityOntology);
         _ifNode = ifNode;
         _domainOntology = domainOntology;
     }
@@ -94,9 +89,12 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         Concept c2 = inputConceptValues.get(1);
         Concept c3 = inputConceptValues.get(2);
         if (c1.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
-                || c2.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
-                || c3.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())) {
-            return (Concept)_monotonicityAnalysisOntology.getConceptGraph().bottom();
+                || c2.equals(_monotonicityAnalysisOntology.getConceptGraph()
+                        .bottom())
+                || c3.equals(_monotonicityAnalysisOntology.getConceptGraph()
+                        .bottom())) {
+            return (Concept) _monotonicityAnalysisOntology.getConceptGraph()
+                    .bottom();
         } else if (c1 instanceof MonotonicityConcept
                 && c2 instanceof MonotonicityConcept
                 && c3 instanceof MonotonicityConcept) {
@@ -104,7 +102,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             MonotonicityConcept mc2 = (MonotonicityConcept) c2;
             MonotonicityConcept mc3 = (MonotonicityConcept) c3;
 
-            MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
+            MonotonicityConcept result = MonotonicityConcept
+                    .createMonotonicityConcept(_monotonicityAnalysisOntology);
             TreeSet<String> variables = new TreeSet<String>(mc1.keySet());
             variables.addAll(mc2.keySet());
             variables.addAll(mc3.keySet());
@@ -120,10 +119,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
 
             return result;
         } else {
-            return (Concept)_monotonicityAnalysisOntology.getConceptGraph().top();
+            return (Concept) _monotonicityAnalysisOntology.getConceptGraph()
+                    .top();
         }
     }
-    
+
     /** Return the monotonicity concept that results from analyzing the
      *  conditional statement with respect to a single variable.  Note
      *  that the analysis is sound but conservative, so it is possible
@@ -136,13 +136,15 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *    Nonmonotonic, depending on the result of the analysis.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    protected FiniteConcept _finiteEvaluateFunction(List<FiniteConcept> inputConceptValues)
+    protected FiniteConcept _finiteEvaluateFunction(
+            List<FiniteConcept> inputConceptValues)
             throws IllegalActionException {
         _nodeToCounterexamples.remove(_ifNode);
         FiniteConcept result = _standardIfAnalysis(inputConceptValues);
         if (result.isAboveOrEqualTo(_generalConcept)) {
             if (_checkConditionalStructure(inputConceptValues)) {
-                ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode.jjtGetChild(0);
+                ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode
+                        .jjtGetChild(0);
                 Concept constant = _extractConstant(condition);
                 result = _specialIfAnalysis(constant);
             }
@@ -160,7 +162,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @exception IllegalActionException If there is a problem
      *    evaluating the constant.
      */
-    private boolean _checkConditionalStructure(List<FiniteConcept> inputConceptValues) throws IllegalActionException {
+    private boolean _checkConditionalStructure(
+            List<FiniteConcept> inputConceptValues)
+            throws IllegalActionException {
         Concept mconditional = inputConceptValues.get(0);
         Concept me3 = inputConceptValues.get(1);
         Concept me4 = inputConceptValues.get(2);
@@ -174,10 +178,13 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             return false;
         }
 
-        ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode.jjtGetChild(0);
-        ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition.jjtGetChild(1);
+        ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode
+                .jjtGetChild(0);
+        ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition
+                .jjtGetChild(1);
         String conditionalType = condition.getOperator().toString();
-        if (conditionalType != "<=" || !(rhs instanceof ptolemy.data.expr.ASTPtLeafNode)) {
+        if (conditionalType != "<="
+                || !(rhs instanceof ptolemy.data.expr.ASTPtLeafNode)) {
             return false;
         }
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
@@ -185,13 +192,13 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
                 argumentDomains);
-        Token rhsToken = evaluator.evaluateParseTree(rhs);    
+        Token rhsToken = evaluator.evaluateParseTree(rhs);
         if (!(rhsToken instanceof ConceptToken)) {
             return false;
         }
         return true;
     }
-    
+
     /** Assuming the right hand side of a conditional is constant, evaluate
      *  and return that constant.
      *  @param condition The AST node for the conditional expression.
@@ -199,15 +206,18 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @throws IllegalActionException If the right hand side of the
      *   conditional is not properly formed.
      */
-    private Concept _extractConstant(ptolemy.data.expr.ASTPtRelationalNode condition) throws IllegalActionException {
-        ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition.jjtGetChild(1);
+    private Concept _extractConstant(
+            ptolemy.data.expr.ASTPtRelationalNode condition)
+            throws IllegalActionException {
+        ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition
+                .jjtGetChild(1);
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
         argumentDomains.add(_domainOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
                 argumentDomains);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
-        Concept constant = ((ConceptToken)rhsToken).conceptValue();
+        Concept constant = ((ConceptToken) rhsToken).conceptValue();
         return constant;
     }
 
@@ -221,8 +231,10 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *      evaluating the parse tree, or an invalid childNumber is
      *      passed.
      */
-    private Concept _evaluateChild(int childNumber, FiniteConcept xValue) throws IllegalActionException {
-        ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _ifNode.jjtGetChild(childNumber);
+    private Concept _evaluateChild(int childNumber, FiniteConcept xValue)
+            throws IllegalActionException {
+        ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _ifNode
+                .jjtGetChild(childNumber);
 
         Map<String, Concept> arguments = new HashMap<String, Concept>();
         arguments.put("x", xValue);
@@ -244,7 +256,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
 
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 arguments, null, _domainOntology);
-        ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(node);
+        ConceptToken evaluatedToken = (ConceptToken) evaluator
+                .evaluateParseTree(node);
         return evaluatedToken.conceptValue();
     }
 
@@ -267,9 +280,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @exception IllegalActionException If there is a problem
      *    evaluating the subexpressions of the conditional.
      */
-    private FiniteConcept _specialIfAnalysis(Concept constant) throws IllegalActionException {
+    private FiniteConcept _specialIfAnalysis(Concept constant)
+            throws IllegalActionException {
         // Get counterexamples to check from subexpressions
-        MonotonicityCounterexamples toCheck = _nodeToCounterexamples.get(_ifNode.jjtGetChild(2));
+        MonotonicityCounterexamples toCheck = _nodeToCounterexamples
+                .get(_ifNode.jjtGetChild(2));
         if (toCheck == null) {
             toCheck = new MonotonicityCounterexamples();
         }
@@ -296,7 +311,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             Concept fd = _evaluateNode(_ifNode, dArguments);
             if (!fd.isAboveOrEqualTo(fb)) {
                 counterexamples.add(pair.getKey(), pair.getValue());
-            } 
+            }
         }
         if (counterexamples.containsCounterexamples()) {
             _nodeToCounterexamples.put(_ifNode, counterexamples);
@@ -305,7 +320,6 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             return _monotonicConcept;
         }
     }
-
 
     /** Perform the most general type of conditional analysis.
      *  This version does not make any assumptions about the structure
@@ -321,9 +335,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *    Nonmonotonic, depending on the result of the analysis.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    private FiniteConcept _standardIfAnalysis(List<FiniteConcept> inputConceptValues)
-    throws IllegalActionException {
-        CPO monotonicityLattice = _monotonicityAnalysisOntology.getConceptGraph();
+    private FiniteConcept _standardIfAnalysis(
+            List<FiniteConcept> inputConceptValues)
+            throws IllegalActionException {
+        CPO monotonicityLattice = _monotonicityAnalysisOntology
+                .getConceptGraph();
         CPO inputLattice = _domainOntology.getConceptGraph();
 
         // This represents the if rule. (from p144)
@@ -333,30 +349,40 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         // Case 5 (my case) from the simple if table
         // i.e.    0    0    a    a   none    a
         if (conditional == _constantConcept) {
-            return (FiniteConcept) monotonicityLattice.leastUpperBound(me3, me4);
+            return (FiniteConcept) monotonicityLattice
+                    .leastUpperBound(me3, me4);
         }
 
-        boolean bothBranchesMonotonic = _monotonicConcept.isAboveOrEqualTo(me3) && _monotonicConcept.isAboveOrEqualTo(me4);
-        boolean bothBranchesAntimonotonic = _antimonotonicConcept.isAboveOrEqualTo(me3) && _antimonotonicConcept.isAboveOrEqualTo(me4);
+        boolean bothBranchesMonotonic = _monotonicConcept.isAboveOrEqualTo(me3)
+                && _monotonicConcept.isAboveOrEqualTo(me4);
+        boolean bothBranchesAntimonotonic = _antimonotonicConcept
+                .isAboveOrEqualTo(me3)
+                && _antimonotonicConcept.isAboveOrEqualTo(me4);
 
         if (_antimonotonicConcept.isAboveOrEqualTo(conditional)) {
 
-            Concept e3Bot = _evaluateChild(1, (FiniteConcept)inputLattice.bottom());
-            Concept e4Top = _evaluateChild(2, (FiniteConcept)inputLattice.top());
+            Concept e3Bot = _evaluateChild(1,
+                    (FiniteConcept) inputLattice.bottom());
+            Concept e4Top = _evaluateChild(2,
+                    (FiniteConcept) inputLattice.top());
             if (bothBranchesMonotonic && e3Bot.isAboveOrEqualTo(e4Top)) {
                 // Case 1: \phi = e3(bot) >= e4(top)
                 return _monotonicConcept;
-            } else if (bothBranchesAntimonotonic && e4Top.isAboveOrEqualTo(e3Bot)) {
+            } else if (bothBranchesAntimonotonic
+                    && e4Top.isAboveOrEqualTo(e3Bot)) {
                 // Case 2: \phi = e3(bot) <= e4(top)
                 return _antimonotonicConcept;
             }
         } else if (_monotonicConcept.isAboveOrEqualTo(conditional)) {
-            Concept e3Top = _evaluateChild(1, (FiniteConcept)inputLattice.top());
-            Concept e4Bot = _evaluateChild(2, (FiniteConcept)inputLattice.bottom());
+            Concept e3Top = _evaluateChild(1,
+                    (FiniteConcept) inputLattice.top());
+            Concept e4Bot = _evaluateChild(2,
+                    (FiniteConcept) inputLattice.bottom());
             if (bothBranchesMonotonic && e4Bot.isAboveOrEqualTo(e3Top)) {
                 // Case 3: \phi = e3(top) <= e4(bot)
                 return _monotonicConcept;
-            } else if (bothBranchesAntimonotonic && e3Top.isAboveOrEqualTo(e4Bot)) {
+            } else if (bothBranchesAntimonotonic
+                    && e3Top.isAboveOrEqualTo(e4Bot)) {
                 // Case 4: \phi = e3(top) >= e4(bot)
                 return _antimonotonicConcept;
             }
@@ -374,14 +400,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  variables and constants are drawn from.
      */
     private Ontology _domainOntology;
-    
+
     /** A static Map that keeps track of the counterexamples at different
      *  nodes in the Ptolemy AST.  This doesn't seem like the right way
      *  to keep track of these things, and should probably be redesigned.
      *  FIXME: Rethink this approach.
      */
-    private static Map<ptolemy.data.expr.ASTPtFunctionalIfNode,
-                       MonotonicityCounterexamples> _nodeToCounterexamples =
-           new HashMap<ptolemy.data.expr.ASTPtFunctionalIfNode,
-                       MonotonicityCounterexamples>();   
+    private static Map<ptolemy.data.expr.ASTPtFunctionalIfNode, MonotonicityCounterexamples> _nodeToCounterexamples = new HashMap<ptolemy.data.expr.ASTPtFunctionalIfNode, MonotonicityCounterexamples>();
 }
