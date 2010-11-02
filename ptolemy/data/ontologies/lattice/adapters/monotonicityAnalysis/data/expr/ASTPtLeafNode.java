@@ -30,7 +30,6 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
 import java.util.List;
 
-import ptolemy.data.expr.Constants;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
@@ -95,17 +94,19 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
     
     /** A representation of the monotonic function used to infer the
-     *  monotonicity of conditional nodes (if nodes) in the abstract
+     *  monotonicity of leaf nodes in the abstract
      *  syntax trees of Ptolemy expressions.
      */
     private class ASTPtLeafNodeFunction extends MonotonicityConceptFunction {
 
         /** Create a new function for inferring the monotonicity concept
-         *  over a relational node, given the operator at the node,
-         *  the monotonicity ontology.
+         *  over a leaf node, given the ontologies representing both the
+         *  domain in question and the monotonicity analysis lattice itself.
          *
-         *  @param operator Token for the operator at this node.
+         *  @param leafNode The leaf node in question
          *  @param monotonicityOntology The monotonicity ontology.
+         *  @param domainOntology The ontology over which the expression
+         *    is defined.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
@@ -118,6 +119,11 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
         /** Return the monotonicity concept that results from analyzing the
          *  leaf node.  This is independent of the input concept values.
+         *
+         *  @param inputConceptValues Ignored in this leaf node (should be an empty list).
+         *  @return The monotonicity concept that this leaf node evaluates to.
+         *  @throws IllegalActionException If there is an error creating a new
+         *    monotonicity concept.
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
@@ -138,8 +144,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             return result;
         }
         
-        /** String representation of the operator for the relational node
-         *  that this function is defined over. 
+        /** The leaf node that this function is defined over. 
          */
         private ptolemy.data.expr.ASTPtLeafNode _leafNode;
     }

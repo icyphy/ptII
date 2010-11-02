@@ -27,7 +27,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
@@ -279,8 +278,8 @@ public class MonotonicityConcept extends InfiniteConcept {
             result.append(getMonotonicity(key));
             result.append(',');
         }
-        if (result.charAt(result.length() -1) == ',') {
-            result.deleteCharAt(result.length()-1);
+        if (result.charAt(result.length() - 1) == ',') {
+            result.deleteCharAt(result.length() - 1);
         }
         result.append(" }");
         return result.toString();
