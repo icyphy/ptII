@@ -175,7 +175,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
-                ((OntologySolver) container).getMoMLHandler().invokeSolver();
+                ((OntologySolver) container).invokeSolver();
             }
         }
     }

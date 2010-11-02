@@ -207,8 +207,6 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public Hashtable getInitialSolverInformation()
             throws IllegalActionException {
-        resetAll();
-
         initialize();
 
         String initialSolverConstraints = 
@@ -235,14 +233,7 @@ public class LatticeOntologySolver extends OntologySolver {
     public Hashtable getResolvedSolverInformation()
             throws IllegalActionException {
         if (_resolvedConstraintList == null) {
-            try {
-                resolveConcepts();
-            } catch (KernelException kernelEx) {
-                throw new IllegalActionException(this, kernelEx,
-                        "Error while trying to execute LatticeOntologySolver "
-                                + getName() + " resolution algorithm: "
-                                + kernelEx);
-            }
+            invokeSolver(false);
         }
 
         String resolvedSolverConstraints = _getConstraintsAsString(_resolvedConstraintList);
@@ -387,6 +378,19 @@ public class LatticeOntologySolver extends OntologySolver {
         _clearLists();
         _conceptTermManager = null;
     }
+    
+    /** Resolve the concept values for the toplevel entity that contains this
+     *  solver, given the model analyzer that invokes this.
+     *  @exception KernelException If there is an exception thrown during the OntologySolver
+     *   resolution.
+     */
+    public void resolveConcepts() throws KernelException {        
+        NamedObj toplevel = _toplevel();
+        LatticeOntologyAdapter toplevelAdapter = 
+            (LatticeOntologyAdapter) getAdapter(toplevel);
+
+        _resolveConcepts(toplevel, toplevelAdapter, _initialConstraintList);
+    }
 
     /** Run concept inference and check the values match those trained.
      * 
@@ -402,7 +406,6 @@ public class LatticeOntologySolver extends OntologySolver {
     public void test() throws IllegalActionException {
         try {
             workspace().getWriteAccess();
-            resetAll();
             invokeSolver();
         } finally {
             workspace().doneWriting();
@@ -444,7 +447,6 @@ public class LatticeOntologySolver extends OntologySolver {
     public void train() throws IllegalActionException {
         try {
             workspace().getWriteAccess();
-            resetAll();
             invokeSolver();
             for (NamedObj conceptable : getAllConceptableNamedObjs()) {
                 Concept inferred = getConcept(conceptable);
@@ -603,7 +605,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 if (((StringToken) ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
                         .getToken()).stringValue().equals(component.getClass().getName())) {
                     adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute)
-                            .createAdapter((ComponentEntity) component);
+                            .createAdapter((ComponentEntity) component, this);
                     break;
                 }
             }
@@ -650,25 +652,6 @@ public class LatticeOntologySolver extends OntologySolver {
         //      FIXME: doesn't work for other use-cases!
         //      return new StaticDynamicTermManager(this);
         return new ConceptTermManager(this);
-    }    
-    
-    /**
-     * Resolve the concept values for the toplevel entity that contains this
-     * solver, given the model analyzer that invokes this.
-     * @exception KernelException If there is an exception thrown during the OntologySolver
-     * resolution
-     */
-    protected void _resolveConcepts() throws KernelException {
-        // Reset the list of resolved constraints and list of acceptable 
-        // inequality terms before executing the ontology solver resolution. 
-        _clearLists();
-        initialize();
-        
-        NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = 
-            (LatticeOntologyAdapter) getAdapter(toplevel);
-
-        _resolveConcepts(toplevel, toplevelAdapter, _initialConstraintList);
     }
 
     /** Resolve the concepts for the given top-level container,

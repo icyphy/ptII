@@ -28,7 +28,6 @@
 package ptolemy.data.ontologies.lattice;
 
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,12 +75,14 @@ public class ActorProductLatticeConstraintsDefinitionAttribute extends ActorCons
     
     /** Get the adapter defined by this attribute.
      *  @param component The model component for which the adapter will be created.
+     *  @param solver The product lattice ontology solver for which this adapter is being created.
      *  @return The ActorConstraintsDefinitionAdapter specified by this attribute.
      *  @exception IllegalActionException If the container model's
      *   solver cannot be found or there is a problem initializing the
      *   adapter.
      */
-    public ActorProductLatticeConstraintsDefinitionAdapter createAdapter(ComponentEntity component)
+    public ActorProductLatticeConstraintsDefinitionAdapter createAdapter(ComponentEntity component,
+            ProductLatticeOntologySolver solver)
             throws IllegalActionException {
         if (!_validateComponentClass(component)) {
             throw new IllegalActionException(this, "The component "
@@ -89,9 +90,6 @@ public class ActorProductLatticeConstraintsDefinitionAttribute extends ActorCons
                     + " passed in for the adapter is not of class "
                     + actorClassName.getExpression() + ".");
         }
-    
-        ProductLatticeOntologySolver solver = (ProductLatticeOntologySolver) ((OntologySolverModel) getContainer())
-                .getContainerSolver();
     
         // If the solver is null, throw an exception.
         if (solver == null) {

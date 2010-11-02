@@ -236,7 +236,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                                 + "The argument is not a Concept.");
             }
 
-            _solver.setResolvedConcept(_object, (Concept) property);
+            _solver.setConcept(_object, (Concept) property);
         }
 
         /**
@@ -305,7 +305,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                         "The property is not settable.");
             }
 
-            _solver.setResolvedConcept(_object, (Concept) property);
+            _solver.setConcept(_object, (Concept) property);
         }
 
         /** Override the base class to give a description of the port

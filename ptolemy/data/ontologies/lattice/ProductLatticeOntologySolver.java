@@ -210,7 +210,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                 if (((StringToken) ((ActorProductLatticeConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
                         .getToken()).stringValue().equals(component.getClass().getName())) {
                     adapter = ((ActorProductLatticeConstraintsDefinitionAttribute) adapterDefinitionAttribute)
-                            .createAdapter((ComponentEntity) component);
+                            .createAdapter((ComponentEntity) component, this);
                     break;
                 }
             }

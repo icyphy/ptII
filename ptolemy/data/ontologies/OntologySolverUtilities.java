@@ -31,10 +31,8 @@ package ptolemy.data.ontologies;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
@@ -71,16 +69,7 @@ public class OntologySolverUtilities {
      */
     public void addErrors(String error) {
         _errors.add(error);
-    }
-
-    /**
-     * Mark the given property solver as already activated.
-     * @param solver The given solver.
-     */
-    public void addRanSolvers(OntologySolver solver) {
-        _ranSolvers.add(solver);
-    }
-    
+    }    
 
     /**
      * Return the map that maps root ast node (keys) to the corresponding
@@ -110,14 +99,6 @@ public class OntologySolverUtilities {
     }
 
     /**
-     * Return the set of solvers that were marked activated.
-     * @return The set of solvers that were activated previously.
-     */
-    public Set<OntologySolver> getRanSolvers() {
-        return _ranSolvers;
-    }
-
-    /**
      * Clear and return the previously recorded errors.
      * @return The list of previously recorded errors.
      */
@@ -126,27 +107,15 @@ public class OntologySolverUtilities {
         _errors.clear();
         return result;
     }
-    
-    /**
-     * Removes the specified solver from the set of ran solvers, if this
-     * solver was in the set.  Does nothing otherwise.
-     * @param solver  The solver to remove from the set of ran solvers
-     */
-    public void removeRanSolver(OntologySolver solver) {
-        _ranSolvers.remove(solver);
-    }
-    
 
     /**
      * Clear the states of this shared object. The states include all previously
      * recorded information.
      */
     public void resetAll() {
-        _ranSolvers = new HashSet<OntologySolver>();
         _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
         _attributes = new HashMap<ASTPtRootNode, Attribute>();
         _errors = new ArrayList<String>();
-
     }
 
     /**
@@ -168,11 +137,6 @@ public class OntologySolverUtilities {
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
         _attributes.put(node, attribute);
     }
-
-    /**
-     * The set of solvers that have already been invoked.
-     */
-    private HashSet<OntologySolver> _ranSolvers = new HashSet<OntologySolver>();
 
     private Map<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
 

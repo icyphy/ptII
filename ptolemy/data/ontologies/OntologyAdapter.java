@@ -213,7 +213,7 @@ public abstract class OntologyAdapter {
      * @param property The specified property.
      */
     public void setEquals(Object object, Concept property) {
-        _solver.setResolvedConcept(object, property);
+        _solver.setConcept(object, property);
         _solver.markAsNonSettable(object);
     }
 

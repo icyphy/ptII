@@ -174,7 +174,13 @@ public class ConceptRelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the variables of this relation. */
+    /** Initialize the variables of this relation.
+     *  @throws IllegalActionException Thrown if the relation's variables
+     *   cannot be initialized.
+     *  @throws NameDuplicationException Thrown if any of the names of attributes
+     *   created for this relation conflict with existing attributes in this
+     *   relation.
+     */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         annotation = new StringParameter(this, "annotation");

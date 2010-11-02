@@ -38,14 +38,13 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////
 ////OntologySolver
 
-/**
- * A extended base abstract class for an ontology solver.
+/** An extended base abstract class for an ontology solver.
  * 
- * @author Man-Kit Leung
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ *  @author Man-Kit Leung
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
  */
 public abstract class OntologySolver extends OntologySolverBase implements
         Testable {
@@ -164,26 +163,20 @@ public abstract class OntologySolver extends OntologySolverBase implements
         return invokeSolver(true);
     }
     
-    /**
-     * Invoke the solver directly, with a choice as to whether or not this 
-     * solver should display its resolved concepts.
+    /** Invoke the solver directly, with a choice as to whether or not this 
+     *  solver should display its resolved concepts.
      * 
-     * @param displayProperties  True if the solver should display its 
+     *  @param displayProperties  True if the solver should display its 
      *          properties; false otherwise (for example, if it is called
      *          from another solver)
-     * @return True if the invocation succeeds; otherwise false which means an
-     * error has occurred during the process.
-     */
-    
+     *  @return True if the invocation succeeds; otherwise false which means an
+     *   error has occurred during the process.
+     */    
     public boolean invokeSolver(boolean displayProperties) {
         boolean success = false;
         try {
-            initialize();
-            
+            initialize();            
             resolveConcepts();
-
-            updateConcepts();
-
             checkErrors();
 
             if (displayProperties) {
@@ -191,7 +184,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
             }
 
         } catch (KernelException e) {
-            resetAll();
+            reset();
             throw new InternalErrorException(e);
         }
 
@@ -217,51 +210,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void reset() {
         super.reset();
-        _ontologySolverUtilities.removeRanSolver(this);
     }
-
-    /**
-     * Invoke the OntologySolver and run its algorithm to resolve
-     * which Concepts in the Ontology are assigned to each object in the
-     * model.
-     * 
-     * @throws KernelException If the ontology resolution fails.
-     */
-    public void resolveConcepts() throws KernelException {
-        getOntologySolverUtilities().addRanSolvers(this);
-        _resolveConcepts();
-        checkResolutionErrors();
-    }
-
-    /**
-     * Update the property. This method is called from both invoked and
-     * auxiliary solvers.
-     * @exception IllegalActionException If the properties cannot be updated.
-     */
-    public void updateConcepts() throws IllegalActionException {
-        for (Object propertyable : getAllPropertyables()) {
-
-            if (!NamedObj.class.isInstance(propertyable)) {
-                // FIXME: This happens when the propertyable is an ASTNodes,
-                // or any non-Ptolemy objects. We are not updating their
-                // property values, nor doing regression test for them.
-                continue;
-            }
-
-            NamedObj namedObj = (NamedObj) propertyable;
-
-            // Get the value resolved by the solver.
-            getConcept(namedObj);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Run the solver.
-     *  @exception KernelException If the solver fails.
-     */
-    protected abstract void _resolveConcepts() throws KernelException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

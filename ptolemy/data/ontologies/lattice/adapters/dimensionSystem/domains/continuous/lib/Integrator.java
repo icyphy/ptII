@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;

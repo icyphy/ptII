@@ -257,22 +257,21 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
     
     /** Get the adapter defined by this attribute.
      *  @param component The model component for which the adapter will be created.
+     *  @param solver The lattice ontology solver for which this adapter is being created.
      *  @return The ActorConstraintsDefinitionAdapter specified by this attribute.
      *  @exception IllegalActionException If the container model's
      *   solver cannot be found or there is a problem initializing the
      *   adapter.
      */
-    public ActorConstraintsDefinitionAdapter createAdapter(ComponentEntity component)
-            throws IllegalActionException {
+    public ActorConstraintsDefinitionAdapter createAdapter(ComponentEntity component,
+            LatticeOntologySolver solver)
+                throws IllegalActionException {
         if (!_validateComponentClass(component)) {
             throw new IllegalActionException(this, "The component "
                     + component
                     + " passed in for the adapter is not of class "
                     + actorClassName.getExpression() + ".");
         }
-    
-        LatticeOntologySolver solver = (LatticeOntologySolver) ((OntologySolverModel) getContainer())
-                .getContainerSolver();
     
         // If the solver is null, throw an exception.
         if (solver == null) {

@@ -88,6 +88,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;
         _solver = solver;
+        _ownConstraints = new LinkedList<Inequality>();
+        _subHelperConstraints = new LinkedList<Inequality>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,6 +141,17 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     public boolean isConstraintSource() {
         boolean constraintSource = interconnectConstraintType == ConstraintType.SOURCE_GE_SINK;
         return constraintSource;
+    }
+    
+    /** Reset and initialize the LatticeOntologyAdapter. This clears all
+     *  the cached constraints and the states of their inequality terms.
+     *  @exception IllegalActionException Thrown if
+     *   {@link #getPropertyables()} throws it.
+     */
+    public void reinitialize() throws IllegalActionException {
+        _ownConstraints = new LinkedList<Inequality>();
+        _subHelperConstraints = new LinkedList<Inequality>();
+        super.reinitialize();
     }
 
     /** Set an inequality constraint between the two specified objects, such that
@@ -399,9 +412,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         interconnectConstraintType = constraintType;
     }
 
-    /** The list of permanent property constraints. */
-    protected List<Inequality> _subHelperConstraints = new LinkedList<Inequality>();
-
     /**
      * Return the union of the two specified lists of inequality constraints by
      * appending the second list to the end of the first list.
@@ -422,9 +432,12 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     ////                         protected variables               ////
 
     /** The list of Inequality constraints contained by this LatticeOntologyAdapter. */
-    protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
+    protected List<Inequality> _ownConstraints = null;
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
+    
+    /** The list of permanent property constraints. */
+    protected List<Inequality> _subHelperConstraints = null;
 
 }

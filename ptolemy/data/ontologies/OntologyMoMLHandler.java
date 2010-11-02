@@ -85,7 +85,7 @@ public class OntologyMoMLHandler extends Attribute {
             for (Object propertyable : solver.getAllPropertyables()) {
                 if (propertyable instanceof NamedObj) {
                     Concept concept = solver
-                    .getResolvedConcept(propertyable, false);
+                    .getConcept(propertyable);
                     if (concept != null
                             || ((((NamedObj) propertyable).getAttribute("_showInfo") != null) && colors ||
                                     (((NamedObj) propertyable).getAttribute("_highlightColor") != null) && text)) {
@@ -131,7 +131,7 @@ public class OntologyMoMLHandler extends Attribute {
 
             for (Object object : objects) {
                 if (object instanceof NamedObj) {
-                    Concept concept = solver.getResolvedConcept(object, false);
+                    Concept concept = solver.getConcept(object);
                     if (concept != null) {
                         // Use the color in the concept instance.
                         List<ColorAttribute> colors = concept
@@ -153,13 +153,6 @@ public class OntologyMoMLHandler extends Attribute {
             // Force a single repaint after all the above requests have been processed.
             solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
         }
-    }    
-
-    /** Invoke the solver.
-     */    
-    public void invokeSolver() {
-        OntologySolver solver = (OntologySolver) getContainer();
-        solver.invokeSolver();
     }
     
     /** Show all concept values as text annotations on each model element.
@@ -170,7 +163,7 @@ public class OntologyMoMLHandler extends Attribute {
         OntologySolver solver = (OntologySolver) getContainer();
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
-                Concept concept = solver.getResolvedConcept(propertyable, false);
+                Concept concept = solver.getConcept(propertyable);
                 if (concept != null) {
                     String request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
                             + concept.toString() + "\"/>";

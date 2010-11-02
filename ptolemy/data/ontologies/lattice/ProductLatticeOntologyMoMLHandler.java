@@ -88,7 +88,7 @@ public class ProductLatticeOntologyMoMLHandler extends OntologyMoMLHandler {
             
             for (Object object : objects) {
                 if (object instanceof NamedObj) {
-                    ProductLatticeConcept productLatticeConcept = (ProductLatticeConcept) solver.getResolvedConcept(object, false);
+                    ProductLatticeConcept productLatticeConcept = (ProductLatticeConcept) solver.getConcept(object);
                     Concept concept = _getTupleConcept(productLatticeConcept, _highlightColorsOntology);
                     if (concept != null) {
                         // Use the color in the concept instance.

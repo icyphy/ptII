@@ -47,7 +47,6 @@ import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -67,15 +66,14 @@ Ptolemy class (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A
 model component, in turn, may have one or multiple objects to which
 ontology concepts can be attached.
 
-<p>Every OntologySolver is linked together by the SharedParameter called
-"ontologySolverUtilitiesWrapper", which contains the shared utility object.
-This allows every OntologySolver to find other solvers in the model.
-
-<p>Subclasses needs to implement
-{@link ptolemy.data.ontologies.OntologySolverBase#resolveConcepts()}
+<p>Subclasses needs to implement {@link #resolveConcepts()}
 to specify exactly how to perform the ontology concept resolution. For example,
 one may gather all the constraints from the OntologyAdapters and feed them
 into a constraint solver.
+
+<p>Every OntologySolver is linked together by the SharedParameter called
+"ontologySolverUtilitiesWrapper", which contains the shared utility object.
+This allows every OntologySolver to find other solvers in the model.
 
 @author Man-Kit Leung
 @version $Id$
@@ -359,55 +357,11 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         return parseTrees.get(attribute);
     }  
 
-    /**
-     * Return the concept value associated with the specified object.
-     * @param object The specified object.
-     * @return The property of the specified object.
+    /** Return the concept value associated with the specified object.
+     *  @param object The specified object.
+     *  @return The property of the specified object.
      */
     public Concept getConcept(Object object) {
-        return getResolvedConcept(object, false);
-    }
-
-    /**
-     * Return the resolved property for the specified object. The specified
-     * resolve flag indicates whether to force resolution to happen.
-     * @param object The specified object.
-     * @param resolve Whether or not to force resolution.
-     * @return The resolved property for the specified object.
-     * @see #setResolvedConcept(Object, Concept)
-     */
-    public Concept getResolvedConcept(Object object, boolean resolve) {
-        Concept property = _resolvedProperties.get(object);
-
-        // See if it is already resolved.
-        if (property != null) {
-            return property;
-        }
-
-        // Get from the PropertyAttribute in the model.
-        /* FIXME: Not using ConceptAttribute.
-        if (object instanceof NamedObj) {
-            ConceptAttribute attribute = (ConceptAttribute) ((NamedObj) object)
-                    .getAttribute(getExtendedUseCaseName());
-
-            if ((attribute != null) && (attribute.getProperty() != null)) {
-                return attribute.getProperty();
-            }
-        }
-        */
-
-        // Try resolve the property.
-        try {
-            if (resolve
-                    && !getOntologySolverUtilities().getRanSolvers().contains(
-                            this)) {
-                resolveConcepts();
-            }
-        } catch (KernelException ex) {
-            throw new InternalErrorException(KernelException
-                    .stackTraceToString(ex));
-        }
-
         return _resolvedProperties.get(object);
     }
 
@@ -445,6 +399,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         _resolvedProperties = new HashMap<Object, Concept>();
         _nonSettables = new HashSet<Object>();
         _adapterStore = new HashMap<Object, OntologyAdapter>();
+        _resetParser();
+        getOntologySolverUtilities().resetAll();
     }
 
     /**
@@ -463,9 +419,10 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         //PropertyLattice.resetAll();
     }
 
-    /**
-     * Perform property resolution.
-     * @exception KernelException Thrown if sub-class throws it.
+    /** Execute the OntologySolver's algorithm to resolve
+     *  which Concepts in the Ontology are assigned to each object in the
+     *  model.
+     *  @throws KernelException If the ontology resolution fails.
      */
     public abstract void resolveConcepts() throws KernelException;
 
@@ -477,13 +434,12 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         _ontologySolverUtilities = solverUtilities;
     }
     
-    /**
-     * Set the resolved property of the specified object.
-     * @param object The specified object.
-     * @param property The specified property.
-     * @see #getResolvedConcept(Object, boolean)
+    /** Set the resolved property of the specified object.
+     *  @param object The specified object.
+     *  @param property The specified property.
+     *  @see #getConcept(Object)
      */
-    public void setResolvedConcept(Object object, Concept property) {
+    public void setConcept(Object object, Concept property) {
         _resolvedProperties.put(object, property);
     }
 
