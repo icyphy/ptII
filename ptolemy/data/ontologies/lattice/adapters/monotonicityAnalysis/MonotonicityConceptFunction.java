@@ -27,6 +27,9 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
+import ptolemy.data.expr.Constants;
+import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptToken;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.Ontology;
@@ -52,6 +55,8 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *   this number is fixed, and -1 otherwise.
      *  @param monotonicityAnalysisOntology The ontology that represents
      *   monotonicity lattice.
+     *  @param domainOntology The ontology that represents the domain of
+     *   the function that we are checking for monotonicity.
      *  @exception IllegalActionException If the output ontology is null,
      *   or numArgs is invalid.
      */
@@ -63,6 +68,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
 
         _monotonicityAnalysisOntology = monotonicityAnalysisOntology;
         _domainOntology = domainOntology;
+        _addConceptConstants(domainOntology);
 
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
@@ -89,6 +95,29 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
         if (_generalConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept General not found in monotonicityAnalysis ontology.");
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    /** Add the concepts from the domain ontologies as constants
+     *  for the parse tree evaluator.
+     *
+     *    FIXME: Is there a better alternative?
+     *
+     *  @param domainOntology The domain ontology containing the concepts
+     *    to add.
+     *  @throws IllegalActionException If there is a problem adding any
+     *   of the concepts to the Constants hash table.
+     */
+    private void _addConceptConstants(Ontology domainOntology)
+            throws IllegalActionException {
+        for (Object entity : domainOntology.allAtomicEntityList()) {
+            if (entity instanceof Concept) {
+                Constants.add(((Concept) entity).getName(),
+                        new ConceptToken((Concept)entity));
+            }
         }
     }
 
