@@ -280,11 +280,11 @@ public abstract class OntologyAdapter {
         return astHelpers;
     }
 
-    /**
-     * Return the list of parse trees for all settable Attributes
-     * of the component.
-     * @return The list of ASTPtRootNodes.
-     * @exception IllegalActionException
+    /** Return the list of parse trees for all settable Attributes
+     *  of the component.
+     *  @return The list of ASTPtRootNodes.
+     *  @exception IllegalActionException Thrown if there is a problem getting
+     *   the parse trees for the attributes.
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees()
             throws IllegalActionException {
@@ -552,6 +552,6 @@ public abstract class OntologyAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /* The associated component. */
+    /** The associated component. */
     private Object _component;
 }

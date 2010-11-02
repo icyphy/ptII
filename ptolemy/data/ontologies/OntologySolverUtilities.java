@@ -38,7 +38,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// SharedUtilities.
+//// SharedUtilities
 
 /**
  A class representing shared utilities for ontology solvers in the ontologies package.
@@ -138,13 +138,18 @@ public class OntologySolverUtilities {
         _attributes.put(node, attribute);
     }
 
+    /** The map of attributes to the Ptolemy expression root nodes they contain. */
     private Map<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
 
+    /** The map of Ptolemy expression root nodes to the attributes that contain them. */
     private Map<ASTPtRootNode, Attribute> _attributes = new HashMap<ASTPtRootNode, Attribute>();
 
+    /** The list of errors that have been collected from the ontology solvers. */
     private ArrayList<String> _errors = new ArrayList<String>();
 
+    /** The number of ontology solvers using this a shared utilities object. */
     private static int _count = 0;
 
+    /** The id number for the ontology solver using this utilities object. */
     private final int _id;
 }

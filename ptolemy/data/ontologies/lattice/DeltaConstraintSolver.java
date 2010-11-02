@@ -35,7 +35,6 @@ import java.util.List;
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyResolutionException;
-import ptolemy.data.properties.PropertyResolutionException;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -137,14 +136,14 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
               continue while loop;
          size = size/2;
        </pre>
-     * @param toplevel
-     * @param toplevelHelper
+     * @param toplevel The toplevel NamedObj of the model.
+     * @param toplevelHelper The adapter for the toplevel NamedObj.
      * @param constraintList A list of constraints that causes an error
-     * @exception TypeConflictException
-     * @exception PropertyResolutionException
-     * @exception IllegalActionException
-     */   
-    
+     * @exception TypeConflictException Thrown if there is a type conflict
+     *  during the execution of the delta iteration.
+     * @exception IllegalActionException Thrown if there is a problem
+     *  executing the delta iteration.
+     */
     private void _doDeltaIteration(NamedObj toplevel,
             LatticeOntologyAdapter toplevelHelper,
             List<Inequality> constraintList) throws TypeConflictException, IllegalActionException {

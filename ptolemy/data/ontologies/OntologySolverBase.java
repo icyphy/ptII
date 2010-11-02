@@ -313,14 +313,14 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         return _parser;
     }
 
-    /**
-     * Return the root ASTPtRootNode associated with the specified
-     * attribute.
+    /** Return the root ASTPtRootNode associated with the specified
+     *  attribute.
      *
-     * @param attribute The specified attribute.
-     * @return The root ASTPtRootNode associated with the specified
-     * attribute.
-     * @exception IllegalActionException
+     *  @param attribute The specified attribute.
+     *  @return The root ASTPtRootNode associated with the specified
+     *   attribute.
+     *  @exception IllegalActionException Thrown if there is a problem getting
+     *   the parse tree.
      */
     // FIXME: Why is this here? It does not seem to belong...
     public ASTPtRootNode getParseTree(Attribute attribute)
@@ -550,11 +550,11 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         return (OntologyAdapter) adapterObject;
     }
 
-    /**
-     * Return the package name that contains the class of this solver.
+    /** Return the package name that contains the class of this solver.
      *
-     * @return The package name.
-     * @exception IllegalActionException 
+     *  @return The package name.
+     *  @exception IllegalActionException Thrown if there is a problem
+     *   getting the ontology package name.
      */
     protected String _getPackageName() throws IllegalActionException {
         // FIXME: Is it a good idea to hard code the adapters string in the package name?
@@ -617,7 +617,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _resetParser() {
+    /** Reset the Ptolemy expression parser.
+     */
+    private static void _resetParser() {
         // Avoid FindBugs: Write to static field from instance method.
         _parser = null;
     }

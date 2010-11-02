@@ -103,29 +103,31 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
         public ProductLatticeHighlighterController(ProductLatticeOntologySolverDisplayActions displayActions, GraphController controller) {
             super(displayActions, controller);
 
-            SetHighlightColorsAction[] highlightColorsActions = null;
-            
             // Create a new SetHighlightColorsAction for each ontology contained
             // in the product lattice ontology.
             try {
                 ProductLatticeOntology ontology = ((ProductLatticeOntologySolver) displayActions.
                         getContainer()).getOntology();
                 List<Ontology> subOntologies = ontology.getLatticeOntologies();
+                SetHighlightColorsAction[] highlightColorsActions = null;
                 highlightColorsActions = new SetHighlightColorsAction[subOntologies.size() + 1];
+                
                 for (int i = 0; i < subOntologies.size(); i++) {
                     highlightColorsActions[i] = displayActions.new SetHighlightColorsAction(subOntologies.get(i));
                 }
+                
+                // Also create a "None" option for when we want to show no colors.
+                highlightColorsActions[highlightColorsActions.length - 1] = displayActions.new SetHighlightColorsAction(null);
+                
+                // Create the set highlight colors sub menu and add it to the context menu.
+                SetHighlightColorsMenu highlightColorsMenu = displayActions.new SetHighlightColorsMenu(highlightColorsActions, "Set Highlight Colors");           
+                _menuFactory.addMenuItemFactory(highlightColorsMenu);
+                
             } catch (IllegalActionException ex) {
                 throw new IllegalStateException("Could not create the highlight " +
                 		"colors menu actions for the ProductLatticeOntologySolver" + displayActions.
                                 getContainer().getName(), ex);
             }
-            // Also create a "None" option for when we want to show no colors.
-            highlightColorsActions[highlightColorsActions.length - 1] = displayActions.new SetHighlightColorsAction(null);
-            
-            // Create the set highlight colors sub menu and add it to the context menu.
-            SetHighlightColorsMenu highlightColorsMenu = displayActions.new SetHighlightColorsMenu(highlightColorsActions, "Set Highlight Colors");           
-            _menuFactory.addMenuItemFactory(highlightColorsMenu);
         }
     }
     

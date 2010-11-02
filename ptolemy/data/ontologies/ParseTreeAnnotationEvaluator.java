@@ -54,6 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -193,6 +194,56 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
     }
      */
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Return the label for the leaf node.
+     * 
+     * @param node The given leaf node
+     * @return The string label for the node; If the node
+     * is constant this is the token contained in the node
+     * as a string, if not then this is the name of the node.
+     */
+    protected String _getNodeLabel(ASTPtLeafNode node) {
+        if (node.isConstant()) {
+            return node.getToken().toString();
+        } else {
+            return node.getName();
+        }
+    }
+    
+    /**
+     * Return an exception that describes an unsupported node type.
+     * 
+     * @param name The name of the node type.
+     * @return An exception that describes an unsupported node type.
+     */
+    protected IllegalActionException _unsupportedVisitException(String name) {
+        return new IllegalActionException("Nodes of type " + name
+                + " cannot be visited by a " + getClass().getName() + ".");
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variable                ////
+
+    /** The property adapter that contains the top level model
+     *  component containing actors that could be referenced
+     *  by the node label.
+     */
+    protected OntologyAdapter _adapter;
+
+    /** The model component that the parse tree node refers to. */
+    protected Object _evaluatedObject;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Use the specified name to find an object contained in the container.
+     *  @param name The specified name.
+     *  @param container The specified NamedObj container.
+     *  @return A NamedObj contained in the container with the given name.
+     */
     private Object _resolveLabel(String name, Object container) {
         int dotIndex = name.indexOf('.');
 
@@ -248,41 +299,4 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
         return null;
     }
-
-    /**
-     * Return an exception that describes an unsupported node type.
-     * 
-     * @param name The name of the node type.
-     * @return An exception that describes an unsupported node type.
-     */
-    protected IllegalActionException _unsupportedVisitException(String name) {
-        return new IllegalActionException("Nodes of type " + name
-                + " cannot be visited by a " + getClass().getName() + ".");
-    }
-
-    /**
-     * Return the label for the leaf node.
-     * 
-     * @param node The given leaf node
-     * @return The string label for the node; If the node
-     * is constant this is the token contained in the node
-     * as a string, if not then this is the name of the node.
-     */
-    protected String _getNodeLabel(ASTPtLeafNode node) {
-        if (node.isConstant()) {
-            return node.getToken().toString();
-        } else {
-            return node.getName();
-        }
-    }
-
-    /** The property adapter that contains the top level model
-     *  component containing actors that could be referenced
-     *  by the node label.
-     */
-    protected OntologyAdapter _adapter;
-
-    /** The model component that the parse tree node refers to. */
-    protected Object _evaluatedObject;
-
 }

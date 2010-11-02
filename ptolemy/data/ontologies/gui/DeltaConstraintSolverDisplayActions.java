@@ -80,36 +80,12 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
         return new DeltaConstraintSolverHighlighterController(this, controller);
     }
     
-    /** The action for the highlight conflicts command to be added
-     *  to the context menu.
-     */
-    private class HighlightConflicts extends FigureAction {
-        public HighlightConflicts() {
-            super("Resolve Conflicts");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            NamedObj container = getContainer();
-            // Get the set of objects to highlight from the 
-            // DeltaConstraintSolver and highlight them
-            if (container instanceof DeltaConstraintSolver) {
-              DeltaConstraintSolver solver = (DeltaConstraintSolver) container;
-              
-              // Invoke the solver to identify conflicts.  
-              // Catch and ignore any exceptions regarding unacceptable
-              // concepts (finding these is the point of this solver)
-              try { solver.identifyConflicts(); }
-              catch(KernelException ex){};  
-              if (solver.hasIdentifiedConflicts()) {
-                  solver.getMoMLHandler().highlightConcepts(
-                                    solver.getIdentifiedConflicts().keySet());
-                  }
-              } 
-            }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                     private inner classes                 ////
     
+    /** The controller that adds commands to the context menu for the
+     *  DeltaConstraintSolver ontology solver.
+     */
     private static class DeltaConstraintSolverHighlighterController
         extends HighlighterController {
         
@@ -125,6 +101,47 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
         HighlightConflicts highlightConflicts = displayActions.new HighlightConflicts();
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 highlightConflicts));
+        }
+    }
+    
+    /** The action for the highlight conflicts command to be added
+     *  to the context menu.
+     */
+    private class HighlightConflicts extends FigureAction {
+
+        /** Create a new ResolveConflicts object to be added to the
+         *  OntologySolver's context menu.
+         */
+        public HighlightConflicts() {
+            super("Resolve Conflicts");
+        }
+
+        /** Called when the gui "Resolve Conflicts" menu action is
+         *  clicked. This method calls the OntologySolver's MoML
+         *  handler to highlight conflicting concepts identified by
+         *  the DeltaConstraintSolver.
+         *  @param e The action event that is passed in when the action
+         *   is triggered. 
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj container = getContainer();
+            
+            // Get the set of objects to highlight from the 
+            // DeltaConstraintSolver and highlight them
+            if (container instanceof DeltaConstraintSolver) {
+                DeltaConstraintSolver solver = (DeltaConstraintSolver) container;
+
+                // Invoke the solver to identify conflicts.  
+                // Catch and ignore any exceptions regarding unacceptable
+                // concepts (finding these is the point of this solver)
+                try { solver.identifyConflicts(); }
+                catch(KernelException ex){};  
+                if (solver.hasIdentifiedConflicts()) {
+                    solver.getMoMLHandler().highlightConcepts(
+                            solver.getIdentifiedConflicts().keySet());
+                }
+            } 
         }
     }
 }
