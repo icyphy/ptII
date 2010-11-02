@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
@@ -35,6 +36,7 @@ import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.ConceptToken;
 import ptolemy.data.ontologies.ExpressionConceptFunctionParseTreeEvaluator;
 import ptolemy.data.ontologies.Ontology;
+import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
 import ptolemy.graph.CPO;
@@ -81,16 +83,62 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  
      *  @param inputConceptValues The list of concept inputs to the function.
      *    (i.e. The monotonicity of each of the conditional's branches)
-     *  @return Either Constant, Monotonic, Antimonotonic, or
-     *    Nonmonotonic, depending on the result of the analysis.
+     *  @return The monotonicity of this if node.
      *  @exception IllegalActionException If there is an error evaluating the function.
      *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
      */
     protected Concept _evaluateFunction(List<Concept> inputConceptValues)
             throws IllegalActionException {
+
+        Concept c1 = inputConceptValues.get(0);
+        Concept c2 = inputConceptValues.get(1);
+        Concept c3 = inputConceptValues.get(2);
+        if (c1.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
+                || c2.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
+                || c3.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())) {
+            return (Concept)_monotonicityAnalysisOntology.getConceptGraph().bottom();
+        } else if (c1 instanceof MonotonicityConcept
+                && c2 instanceof MonotonicityConcept
+                && c3 instanceof MonotonicityConcept) {
+            MonotonicityConcept mc1 = (MonotonicityConcept) c1;
+            MonotonicityConcept mc2 = (MonotonicityConcept) c2;
+            MonotonicityConcept mc3 = (MonotonicityConcept) c3;
+
+            MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
+            TreeSet<String> variables = new TreeSet<String>(mc1.keySet());
+            variables.addAll(mc2.keySet());
+            variables.addAll(mc3.keySet());
+
+            for (String v : variables) {
+                List<FiniteConcept> args = new LinkedList<FiniteConcept>();
+                args.add(mc1.getMonotonicity(v));
+                args.add(mc2.getMonotonicity(v));
+                args.add(mc3.getMonotonicity(v));
+                FiniteConcept monotonicity = _finiteEvaluateFunction(args);
+                result.putMonotonicity(v, monotonicity);
+            }
+
+            return result;
+        } else {
+            return (Concept)_monotonicityAnalysisOntology.getConceptGraph().top();
+        }
+    }
+    
+    /** Return the monotonicity concept that results from analyzing the
+     *  conditional statement with respect to a single variable.  Note
+     *  that the analysis is sound but conservative, so it is possible
+     *  for a monotonic function to be reported as nonmonotonic, but
+     *  not the other way around.
+     *  
+     *  @param inputConceptValues The list of concept inputs to the function.
+     *    (i.e. The monotonicity of each of the conditional's branches)
+     *  @return Either Constant, Monotonic, Antimonotonic, or
+     *    Nonmonotonic, depending on the result of the analysis.
+     *  @exception IllegalActionException If there is an error evaluating the function.
+     */
+    protected FiniteConcept _finiteEvaluateFunction(List<FiniteConcept> inputConceptValues)
+            throws IllegalActionException {
         _nodeToCounterexamples.remove(_ifNode);
-        // FIXME: Reimplement monotonicity analysis!
-        /*
         FiniteConcept result = _standardIfAnalysis(inputConceptValues);
         if (result.isAboveOrEqualTo(_generalConcept)) {
             if (_checkConditionalStructure(inputConceptValues)) {
@@ -99,7 +147,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 result = _specialIfAnalysis(constant);
             }
         }
-        return result;*/ return null;
+        return result;
     }
 
     /** Check that an expression is of the form:
