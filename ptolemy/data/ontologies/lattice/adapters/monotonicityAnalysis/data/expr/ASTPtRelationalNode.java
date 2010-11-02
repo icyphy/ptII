@@ -82,7 +82,8 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
 
         ASTPtRelationalNodeFunction astRelationFunction = new ASTPtRelationalNodeFunction(
                 _relationalNode.getOperator(),
-                getSolver().getOntology());
+                getSolver().getOntology(),
+                getSolver().getAllContainedOntologies().get(0));
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms()));
@@ -109,9 +110,10 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
-                Ontology monotonicityOntology) throws IllegalActionException {
+                Ontology monotonicityOntology,
+                Ontology domainOntology) throws IllegalActionException {
             super("defaultASTPtRelationalNodeFunction", 2,
-                    monotonicityOntology);
+                    monotonicityOntology, domainOntology);
             _operator = operator.toString();
         }
 

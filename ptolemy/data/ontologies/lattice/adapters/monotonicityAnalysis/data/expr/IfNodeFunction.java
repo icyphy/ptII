@@ -66,9 +66,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
             Ontology monotonicityOntology, Ontology domainOntology)
             throws IllegalActionException {
-        super("defaultASTPtFunctionalIfNodeFunction", 3, monotonicityOntology);
+        super("defaultASTPtFunctionalIfNodeFunction", 3,
+                monotonicityOntology, domainOntology);
         _ifNode = ifNode;
-        _domainOntology = domainOntology;
     }
 
     /** Return the monotonicity concept that results from analyzing the
@@ -395,11 +395,6 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  function is defined over.
      */
     private ptolemy.data.expr.ASTPtFunctionalIfNode _ifNode;
-
-    /** The Ontology over which the expression under consideration's
-     *  variables and constants are drawn from.
-     */
-    private Ontology _domainOntology;
 
     /** A static Map that keeps track of the counterexamples at different
      *  nodes in the Ptolemy AST.  This doesn't seem like the right way

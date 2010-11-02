@@ -56,12 +56,14 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *   or numArgs is invalid.
      */
     public MonotonicityConceptFunction(String name, int numArgs,
-            Ontology monotonicityAnalysisOntology)
+            Ontology monotonicityAnalysisOntology,
+            Ontology domainOntology)
             throws IllegalActionException {
         super(name, numArgs, monotonicityAnalysisOntology);
 
         _monotonicityAnalysisOntology = monotonicityAnalysisOntology;
-        
+        _domainOntology = domainOntology;
+
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
         // Throw an exception if any of them are not found
@@ -97,6 +99,12 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
 
     /** The monotonicityAnalysis ontology referred to by all monotonicityAnalysis adapters. */
     protected Ontology _monotonicityAnalysisOntology;
+    
+    /** The domain-level ontology.
+     *  This ontology is the domain and range of the functions that we
+     *  check for monotonicity
+     */
+    protected Ontology _domainOntology;
 
     // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters   
 

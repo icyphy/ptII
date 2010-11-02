@@ -112,9 +112,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                 Ontology monotonicityOntology,
                 Ontology domainOntology) throws IllegalActionException {
             super("MonotonicityASTPtLeafNodeFunction", 0,
-                    monotonicityOntology);
+                    monotonicityOntology, domainOntology);
             _leafNode = leafNode;
-            _domainOntology = domainOntology;
         }
 
         /** Return the monotonicity concept that results from analyzing the
@@ -143,9 +142,6 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *  that this function is defined over. 
          */
         private ptolemy.data.expr.ASTPtLeafNode _leafNode;
-        
-        protected Ontology _domainOntology;
-
     }
 
 }
