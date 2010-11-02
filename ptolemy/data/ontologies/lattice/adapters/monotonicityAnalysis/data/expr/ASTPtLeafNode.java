@@ -30,6 +30,7 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
 import java.util.List;
 
+import ptolemy.data.expr.Constants;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
@@ -122,7 +123,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
             
             if (_leafNode.isIdentifier()) {
-                result.putMonotonicity(_leafNode.getName(), _monotonicConcept);
+                // Seems like a hackey way to check that a leaf is not
+                // actually a constant. I'm surprised that isConstant
+                // doesn't check this.
+                if (Constants.get(_leafNode.getName()) == null) {
+                    result.putMonotonicity(_leafNode.getName(), _monotonicConcept);
+                }
             }
             
             
