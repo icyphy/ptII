@@ -1482,7 +1482,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * structure will be written to a file on harddisk in order to review the
      * graph later on.
      */
-    private boolean _debug = true;
+    private boolean _debug = false;
 
     /**
      * Storage of actual sources of diva edges corresponding to data flow.
