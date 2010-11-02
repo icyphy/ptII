@@ -279,7 +279,9 @@ public class MonotonicityConcept extends InfiniteConcept {
             result.append(getMonotonicity(key));
             result.append(',');
         }
-        result.deleteCharAt(result.length()-1);
+        if (result.charAt(result.length() -1) == ',') {
+            result.deleteCharAt(result.length()-1);
+        }
         result.append(" }");
         return result.toString();
     }
