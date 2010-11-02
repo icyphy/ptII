@@ -81,7 +81,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
         ASTPtLeafNodeFunction astRelationFunction = new ASTPtLeafNodeFunction(
                 leafNode,
-                getSolver().getOntology());
+                getSolver().getOntology(),
+                getSolver().getAllContainedOntologies().get(0));
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms()));
@@ -108,10 +109,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
-                Ontology monotonicityOntology) throws IllegalActionException {
+                Ontology monotonicityOntology,
+                Ontology domainOntology) throws IllegalActionException {
             super("MonotonicityASTPtLeafNodeFunction", 0,
                     monotonicityOntology);
             _leafNode = leafNode;
+            _domainOntology = domainOntology;
         }
 
         /** Return the monotonicity concept that results from analyzing the
@@ -122,16 +125,17 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
             MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
             
-            if (_leafNode.isIdentifier()) {
-                // Seems like a hackey way to check that a leaf is not
-                // actually a constant. I'm surprised that isConstant
-                // doesn't check this.
-                if (Constants.get(_leafNode.getName()) == null) {
-                    result.putMonotonicity(_leafNode.getName(), _monotonicConcept);
-                }
+            // Check if the leaf is a constant.
+            if (_leafNode.isConstant()) {
+                return result;
+            }
+            String name = _leafNode.getName();
+            if (_domainOntology.getConceptByName(name) != null) {
+                return result;
             }
             
-            
+            // Otherwise, it is a free variable.
+            result.putMonotonicity(name, _monotonicConcept);
             return result;
         }
         
@@ -139,6 +143,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *  that this function is defined over. 
          */
         private ptolemy.data.expr.ASTPtLeafNode _leafNode;
+        
+        protected Ontology _domainOntology;
 
     }
 

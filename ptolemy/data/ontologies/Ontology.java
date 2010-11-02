@@ -82,6 +82,16 @@ public class Ontology extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the concept in the ontology with the given name, or null if
+     *  no such concept exists.
+     *  @param name The name of the concept to look for, as a String.
+     *  @return The concept with the given name, or null if no such concept
+     *    exists.
+     */
+    public Concept getConceptByName(String name) {
+        return (Concept)this.getEntity(name);
+    }
+
     /** Return the graph represented by this ontology.
      *  Graph is weighted by Concepts on the nodes and ConceptRelations on
      *  the edges. Currently we only have ontologies that are lattices, but
