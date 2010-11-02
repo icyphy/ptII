@@ -266,19 +266,21 @@ public class MonotonicityConcept extends InfiniteConcept {
     
     /** Return the string representation of this monotonicity concept.
      *  Note that the syntax here is similar to that used for records
-     *  (e.g. { x : Monotonic, y : Anitmonotonic }).
+     *  (e.g. { x:Monotonic, y:Anitmonotonic }).
      *  
      *  @return The string representation of this concept.
      */
     public String toString() {
-        StringBuffer result = new StringBuffer("{ ");
+        StringBuffer result = new StringBuffer("{");
         for (String key : _variableToMonotonicity.keySet()) {
-            result.append(key);
-            result.append(":");
-            result.append(getMonotonicity(key));
             result.append(' ');
+            result.append(key);
+            result.append(':');
+            result.append(getMonotonicity(key));
+            result.append(',');
         }
-        result.append('}');
+        result.deleteCharAt(result.length()-1);
+        result.append(" }");
         return result.toString();
     }
     
