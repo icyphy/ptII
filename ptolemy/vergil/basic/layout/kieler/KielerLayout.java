@@ -487,6 +487,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     .getBendPoints();
 
             String layoutHintsData = "";
+            System.out.println("");
             for (KPoint relativeKPoint : bendPoints) {
                 KPoint kpoint = KielerGraphUtil._getAbsoluteKPoint(
                         relativeKPoint, KielerGraphUtil._getParent(kEdge));
@@ -502,6 +503,8 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 layoutHintsData += "" + snapToGridBendPoint.getX() + ","
                         + snapToGridBendPoint.getY() + "";
+                
+                System.out.print(snapToGridBendPoint.getX() + "," + snapToGridBendPoint.getY());
             }
 
             _ptolemyModelUtil._layoutHints(relation.getName(), link,
@@ -547,17 +550,23 @@ public class KielerLayout extends AbstractGlobalLayout {
                 KShapeLayout absoluteLayout = KielerGraphUtil
                         ._getAbsoluteLayout(knode);
                 NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
-                // transform koordinate systems
+                // transform coordinate systems
                 _kNode2Ptolemy(absoluteLayout, knode);
+                
+                // calculate the snap-to-grid coordinates
+                Point2D bendPoint = new Point2D.Double(absoluteLayout.getXpos(),
+                        absoluteLayout.getYpos());
+                Point2D snapToGridBendPoint = SnapConstraint
+                        .constrainPoint(bendPoint);
+                
                 if (namedObj instanceof Relation) {
                     Vertex vertex = (Vertex) _kieler2ptolemyDivaNodes
                             .get(knode);
                     _ptolemyModelUtil._setLocation(vertex, (Relation) namedObj,
-                            absoluteLayout.getXpos(), absoluteLayout.getYpos());
+                            snapToGridBendPoint.getX(), snapToGridBendPoint.getY());
                 } else {
                     _ptolemyModelUtil._setLocation(namedObj,
-                            absoluteLayout.getXpos(), absoluteLayout.getYpos());
-                }
+                            snapToGridBendPoint.getX(), snapToGridBendPoint.getY());                }
             }
 
             // System.out.println("Nodes apply: "+(System.currentTimeMillis()-time));
@@ -1473,7 +1482,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * structure will be written to a file on harddisk in order to review the
      * graph later on.
      */
-    private boolean _debug = false;
+    private boolean _debug = true;
 
     /**
      * Storage of actual sources of diva edges corresponding to data flow.

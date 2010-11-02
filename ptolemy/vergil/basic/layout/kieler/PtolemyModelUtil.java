@@ -111,13 +111,22 @@ public class PtolemyModelUtil {
         Object object2 = link.getHead();
         String obj1Id = object1.hashCode() + "";
         String obj2Id = object2.hashCode() + "";
-        if (object1 instanceof NamedObj) {
+        if (object1 instanceof Port) {
+            Port port1 = (Port) object1;
+            obj1Id = port1.getName(port1.getContainer().getContainer());
+        }
+        else if (object1 instanceof NamedObj) {
             obj1Id = ((NamedObj) object1).getName();
         }
-        if (object2 instanceof NamedObj) {
+
+        if (object2 instanceof Port) {
+            Port port2 = (Port) object2;
+            obj2Id = port2.getName(port2.getContainer().getContainer());
+        }
+        else if (object2 instanceof NamedObj) {
             obj2Id = ((NamedObj) object2).getName();
         }
-        return (obj1Id + obj2Id);
+        return ""+(obj1Id + obj2Id).hashCode();
     }
 
     /**
