@@ -77,10 +77,6 @@ public class ConceptGraph implements CPO {
      */
     public Collection<Edge> addEdge(FiniteConcept weight1, FiniteConcept weight2,
             ConceptRelation newEdgeWeight) {
-        if (!(newEdgeWeight instanceof ConceptRelation)) {
-            throw new IllegalArgumentException(
-                    "Attempt to add a relation that is not a ConceptRelation to an Ontology graph.");
-        }
         return _dag.addEdge(weight1, weight2, newEdgeWeight);
     }
 
@@ -91,10 +87,6 @@ public class ConceptGraph implements CPO {
      *   an instance of {@link FiniteConcept}.
      */
     public Node addNodeWeight(FiniteConcept weight) {
-        if (!(weight instanceof FiniteConcept)) {
-            throw new IllegalArgumentException(
-                    "Attempt to add a non-Concept to an Ontology graph.");
-        }
         return _dag.addNodeWeight(weight);
     }
 
@@ -152,7 +144,14 @@ public class ConceptGraph implements CPO {
      *   an element in this CPO, or the resulting set is infinite.
      */
     public Concept[] downSet(Object e) {
-        throw new IllegalArgumentException("Method not implemented!");
+        Object[] set = _dag.downSet(e);
+        Concept[] downSet = new Concept[set.length];
+        
+        for (int i = 0; i < set.length; i++) {
+            downSet[i] = (Concept) set[i];
+        }
+        
+        return downSet;
     }
 
     /** Compute the greatest element of a subset.
@@ -302,11 +301,19 @@ public class ConceptGraph implements CPO {
      *  The up-set of an element is the subset consisting of
      *  all the elements higher than or the same as the specified element.
      *  @param e An Object representing an element in this CPO.
-     *  @return Nothing.
+     *  @return An array of Concepts of the up-set of the
+     *   specified element.
      *  @exception IllegalArgumentException Always thrown.
      */
     public Concept[] upSet(Object e) {
-        throw new IllegalArgumentException("Method not implemented!");
+        Object[] set = _dag.upSet(e);
+        Concept[] upSet = new Concept[set.length];
+        
+        for (int i = 0; i < set.length; i++) {
+            upSet[i] = (Concept) set[i];
+        }
+        
+        return upSet;
     }
 
     ///////////////////////////////////////////////////////////////////
