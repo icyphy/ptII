@@ -69,8 +69,9 @@ public class JUnitTclTestBase {
      *  is sourced and the doallTests Tcl proc that is defined
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
+     *  @exception Throwable If thrown by the code under test.
      */ 
-    public void run() throws Exception {
+    public void run() throws Throwable {
         String fileName = System.getProperty("fileName");
         Interp interp = new Interp();
         if (fileName != null) {
