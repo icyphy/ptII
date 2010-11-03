@@ -74,7 +74,7 @@ public class JUnitTclTest extends JUnitTclTestBase {
      *  any models in the auto/ directory are invoked.
      */ 
     @org.junit.Test 
-    public void run() throws Exception {
+    public void run() throws Throwable {
         super.run();
     }
 }
