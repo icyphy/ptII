@@ -75,8 +75,8 @@ public class ConceptGraph implements CPO {
      * @exception IllegalArgumentException If the newEdgeWeight argument is not an
      *  instance of {@link ConceptRelation}.
      */
-    public Collection addEdge(Object weight1, Object weight2,
-            Object newEdgeWeight) {
+    public Collection<Edge> addEdge(FiniteConcept weight1, FiniteConcept weight2,
+            ConceptRelation newEdgeWeight) {
         if (!(newEdgeWeight instanceof ConceptRelation)) {
             throw new IllegalArgumentException(
                     "Attempt to add a relation that is not a ConceptRelation to an Ontology graph.");
@@ -90,12 +90,19 @@ public class ConceptGraph implements CPO {
      *  @exception IllegalArgumentException If the argument is not
      *   an instance of {@link FiniteConcept}.
      */
-    public Node addNodeWeight(Object weight) {
+    public Node addNodeWeight(FiniteConcept weight) {
         if (!(weight instanceof FiniteConcept)) {
             throw new IllegalArgumentException(
                     "Attempt to add a non-Concept to an Ontology graph.");
         }
         return _dag.addNodeWeight(weight);
+    }
+
+    /** Return the least element of this concept graph.
+     *  @return The least element of this graph.
+     */
+    public Concept bottom() {
+        return (Concept)_dag.bottom();
     }
 
     /** Compare two concepts in the ontology. The arguments must be
@@ -210,6 +217,14 @@ public class ConceptGraph implements CPO {
         }
     }
 
+    /** Return weather this concept graph is a lattice.
+     *  Should be true for all existing concept graphs.
+     *  @return True, if the concept graph is a lattice.
+     */
+    public boolean isLattice() {
+        return _dag.isLattice();
+    }
+
     /** Compute the least element of a subset.
      *  The least element of a subset is an element in the
      *  subset that is lower than all the other element in the
@@ -276,6 +291,13 @@ public class ConceptGraph implements CPO {
         }
     }
 
+    /** Return the greatest element in this concept graph.
+     *  @return The greatest element in this concept graph.
+     */
+    public Concept top() {
+        return (Concept)_dag.top();
+    }
+
     /** Compute the up-set of an element in this CPO.
      *  The up-set of an element is the subset consisting of
      *  all the elements higher than or the same as the specified element.
@@ -286,24 +308,12 @@ public class ConceptGraph implements CPO {
     public Concept[] upSet(Object e) {
         throw new IllegalArgumentException("Method not implemented!");
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    /** A directed acyclic graph representing the connectivity of the
+     *  concepts in this concept graph.
+     */
     private DirectedAcyclicGraph _dag;
-
-    @Override
-    public Concept bottom() {
-        // TODO Auto-generated method stub
-        return (Concept)_dag.bottom();
-    }
-
-    @Override
-    public boolean isLattice() {
-        // TODO Auto-generated method stub
-        return _dag.isLattice();
-    }
-
-    @Override
-    public Concept top() {
-        // TODO Auto-generated method stub
-        return (Concept)_dag.top();
-    }
 }
