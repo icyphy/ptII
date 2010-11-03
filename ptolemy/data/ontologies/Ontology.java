@@ -238,7 +238,7 @@ public class Ontology extends CompositeEntity {
                     assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
                         _graph
-                                .addEdge(concept, remotePort.getContainer(),
+                                .addEdge(concept, (FiniteConcept)remotePort.getContainer(),
                                         link);
                     }
                 }
