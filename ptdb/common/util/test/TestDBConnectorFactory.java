@@ -510,7 +510,7 @@ public class TestDBConnectorFactory {
             Constructor xmlDBConstructor = PowerMock
                     .createMock(Constructor.class);
 
-            PowerMock.expectNew(DBConnectionParameters.class, dbParams.getUrl(), dbParams.getContainerName(), false);
+            PowerMock.expectNew(DBConnectionParameters.class, dbParams.getUrl(), dbParams.getContainerName(), false).andReturn(dbParams);
             mockStatic(Class.class);
             expect(Class.forName("ptdb.kernel.database.OracleXMLDBConnection"))
                     .andReturn(mockXmlDBClass);
@@ -521,6 +521,9 @@ public class TestDBConnectorFactory {
                     xmlDBConstructor);
             expect(xmlDBConstructor.newInstance(dbParams)).andThrow(
                     new IllegalAccessException());
+
+            //expect(xmlDBConstructor.newInstance(dbParams)).andReturn(
+            //							     mockXmlDBClass);
 
             PowerMock.replay(DBConnectionParameters.class,Class.class,
                     mockXmlDBClass, xmlDBConstructor);
@@ -552,10 +555,17 @@ public class TestDBConnectorFactory {
         } catch (InvocationTargetException e) {
             fail("Unexpected error - " + e.getMessage());
         }
+    }
+
+    @Test
+    public void testGetSyncConnection_WithException2() throws Exception { 
 //////////////////////////////////////////////////////////////////////////////////////////
+        DBConnectionParameters dbParams = DBConnectorFactory
+        .getDBConnectionParameters();
+
         //With wrong newInstance - InvocationTargetException
         try {
-            
+
             Class mockXmlDBClass = Class.class;
             Constructor xmlDBConstructor = PowerMock
                     .createMock(Constructor.class);
@@ -572,8 +582,8 @@ public class TestDBConnectorFactory {
             expect(mockXmlDBClass.getConstructor(parameterTypes)).andReturn(
                     xmlDBConstructor);
             expect(xmlDBConstructor.newInstance(dbParams)).andThrow(
-                    PowerMock.createMock(InvocationTargetException.class));
-
+		    new InvocationTargetException(new Exception("Test")));
+		    //PowerMock.createMock(InvocationTargetException.class));
             PowerMock.replay(DBConnectionParameters.class, Class.class,
                     mockXmlDBClass, xmlDBConstructor);
 
@@ -605,6 +615,7 @@ public class TestDBConnectorFactory {
             fail("Unexpected error - " + e.getMessage());
         }        
     }
+
     /**
      * Test getSyncConnection when setup is not done.
      * @throws Exception
