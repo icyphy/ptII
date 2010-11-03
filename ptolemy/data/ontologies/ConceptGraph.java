@@ -52,7 +52,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  * @see ptolemy.graph.CPO
  */
-public class ConceptGraph extends DirectedAcyclicGraph {
+public class ConceptGraph implements CPO {
+    
+    /** Create an empty concept graph with no concepts in it.
+     */
+    public ConceptGraph() {
+        _dag = new DirectedAcyclicGraph();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -75,7 +81,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
             throw new IllegalArgumentException(
                     "Attempt to add a relation that is not a ConceptRelation to an Ontology graph.");
         }
-        return super.addEdge(weight1, weight2, newEdgeWeight);
+        return _dag.addEdge(weight1, weight2, newEdgeWeight);
     }
 
     /** Add a concept to this concept graph.
@@ -89,7 +95,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
             throw new IllegalArgumentException(
                     "Attempt to add a non-Concept to an Ontology graph.");
         }
-        return super.addNodeWeight(weight);
+        return _dag.addNodeWeight(weight);
     }
 
     /** Compare two concepts in the ontology. The arguments must be
@@ -112,7 +118,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
         }
 
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            return super.compare(e1, e2);
+            return _dag.compare(e1, e2);
         } else if (e1 instanceof InfiniteConcept) {
             try {
                 return ((InfiniteConcept)e1).compare((Concept)e2);
@@ -122,7 +128,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
         } else { // (e2 instanceof InfiniteConcept)
             try {
                 int oppositeResult = ((InfiniteConcept)e2).compare((Concept)e1);
-                return reverseCompareCode(oppositeResult);
+                return DirectedAcyclicGraph.reverseCompareCode(oppositeResult);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
@@ -181,7 +187,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
                     + " Arguments are not instances of FiniteConcept: "
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
-        return (Concept)super.greatestLowerBound(e1, e2);
+        return (Concept)_dag.greatestLowerBound(e1, e2);
     }
 
     /** Compute the greatest lower bound (GLB) of a subset.
@@ -242,7 +248,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            return (Concept)super.leastUpperBound(e1, e2);
+            return (Concept)_dag.leastUpperBound(e1, e2);
         } else if (e1 instanceof InfiniteConcept) {
             return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
         } else { // (e2 instanceof InfiniteConcept)
@@ -279,5 +285,25 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      */
     public Concept[] upSet(Object e) {
         throw new IllegalArgumentException("Method not implemented!");
+    }
+    
+    private DirectedAcyclicGraph _dag;
+
+    @Override
+    public Concept bottom() {
+        // TODO Auto-generated method stub
+        return (Concept)_dag.bottom();
+    }
+
+    @Override
+    public boolean isLattice() {
+        // TODO Auto-generated method stub
+        return _dag.isLattice();
+    }
+
+    @Override
+    public Concept top() {
+        // TODO Auto-generated method stub
+        return (Concept)_dag.top();
     }
 }

@@ -226,7 +226,7 @@ public class Ontology extends CompositeEntity {
             // Construct the graph.
             _graph = new ConceptGraph();
             List<FiniteConcept> concepts = entityList(FiniteConcept.class);
-            for (Concept concept : concepts) {
+            for (FiniteConcept concept : concepts) {
                 _graph.addNodeWeight(concept);
             }
             for (FiniteConcept concept : concepts) {
