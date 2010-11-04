@@ -63,6 +63,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
@@ -110,7 +111,7 @@ import diva.gui.GUIUtilities;
  * ports. Use the concrete subclasses ActorInstanceController or
  * ClassDefinitionController instead.
  *
- * @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
+ * @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong, Contributor: Sven Koehler
  * @version $Id$
  * @since Ptolemy II 2.0
  * @Pt.ProposedRating Red (eal)
@@ -508,8 +509,26 @@ public abstract class ActorController extends AttributeController {
                 int direction) {
             Iterator ports = portList.iterator();
             int number = 0;
-            int count = portList.size();
-
+            // Don't count ports that are hidden and not connected. (Sven Koehler)
+            // "Make hidden, unconnected ports not be rendered on the
+            // canvas and therefore would not displace other ports on
+            // an actor."
+            // This is used by Kepler.
+            int count = 0;
+            for (Object p : portList){
+                Port port = (Port)p;
+                Attribute portHide = port.getAttribute("_hide");
+                try {
+                    if ( ! (portHide != null
+                                    && portHide instanceof Variable
+                                    && ((Variable)portHide).getToken().equals(BooleanToken.TRUE)
+                                    && port.linkedRelationList().isEmpty()) ) {
+                        count++;
+                    }
+                } catch (IllegalActionException ex) {
+                    count = portList.size();
+                }
+            }
             Figure background = figure.getBackgroundFigure();
 
             if (background == null) {
@@ -520,13 +539,25 @@ public abstract class ActorController extends AttributeController {
             while (ports.hasNext()) {
                 Port port = (Port) ports.next();
                 Figure portFigure = getController().getFigure(port);
-
                 // If there is no figure, then ignore this port. This may
                 // happen if the port hasn't been rendered yet.
                 if (portFigure == null) {
                     continue;
                 }
 
+                Attribute portHide = port.getAttribute("_hide");
+                // Skip ports that are hidden and not connected (Sven Koehler)
+                try {
+                    if (portHide != null
+                            && portHide instanceof Variable
+                            && ((Variable)portHide).getToken().equals(BooleanToken.TRUE)
+                            && port.linkedRelationList().isEmpty()) {
+                        continue;
+                    }
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex);
+                }
+ 
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
                 PortSite site = new PortSite(background, port, number, count,
                         direction);
