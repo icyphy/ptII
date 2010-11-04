@@ -72,6 +72,7 @@ public class JUnitTclTest extends JUnitTclTestBase {
      *  is sourced and the doallTests Tcl proc that is defined
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
+     *  @exception Throwable If thrown by the code under test.
      */ 
     @org.junit.Test 
     public void run() throws Throwable {
