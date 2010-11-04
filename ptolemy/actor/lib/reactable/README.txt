@@ -1,3 +1,11 @@
+$Id$
+
+Virtual Reality Peripheral Network (VRPN)
+
+Available from http://www.cs.unc.edu/Research/vrpn/index.html
+
+Windows
+------
 A quick start on how to build vrpn library and run the VRPN_Listener.cpp from the
 NaturalPoints website:
 
@@ -31,5 +39,4 @@ NaturalPoints website:
 				->VC++ Directories->Include Directories
 					##Edit and Add: C:\ReacTable\VRPN_Tracking-v3
 			
-			
-	
+
