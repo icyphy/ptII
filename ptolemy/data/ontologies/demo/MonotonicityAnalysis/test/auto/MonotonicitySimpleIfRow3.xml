@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MonotonicitySimpleIfRow5" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MonotonicitySimpleIfRow3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
@@ -14,7 +14,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 192, 958, 623}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={401, 78, 958, 623}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 513]">
     </property>
@@ -29,10 +29,8 @@
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(Monotonic &lt;= Constant) ? Antimonotonic :Constant">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ }">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ }">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Monotonic) ? Constant : x">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:Monotonic }">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -43,13 +41,11 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 160.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ }">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:Monotonic }">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
