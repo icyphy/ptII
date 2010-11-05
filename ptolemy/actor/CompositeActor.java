@@ -960,7 +960,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
     
     /** Return true if a port is in the published port list
-     * at this level.
+     *  at this level.
+     *  @param port The port to be checked against the list of published ports.
+     *  @return True if the port was added with 
+     *  {@link #registerPublisherPort(String, IOPort, boolean)}.
      */
     public boolean isPublishedPort(IOPort port) {
         if (_publishedPorts != null) {
