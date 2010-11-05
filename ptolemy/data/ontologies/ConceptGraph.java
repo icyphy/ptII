@@ -144,14 +144,22 @@ public class ConceptGraph implements CPO {
      *   an element in this CPO, or the resulting set is infinite.
      */
     public Concept[] downSet(Object e) {
-        Object[] set = _dag.downSet(e);
-        Concept[] downSet = new Concept[set.length];
-        
-        for (int i = 0; i < set.length; i++) {
-            downSet[i] = (Concept) set[i];
+        // FIXME: What happens if the downSet should contain some InfiniteConcepts
+        // that are lower in the lattice?
+        if (e instanceof FiniteConcept) {
+            Object[] set = _dag.downSet(e);
+            Concept[] downSet = new Concept[set.length];
+
+            for (int i = 0; i < set.length; i++) {
+                downSet[i] = (Concept) set[i];
+            }
+
+            return downSet;
+        } else {
+            // FIXME: Need to implement downSet for InfiniteConcepts.
+            throw new IllegalArgumentException("downSet method not implemented" +
+            		" for Concept subclass " + e.getClass().getName() + ".");
         }
-        
-        return downSet;
     }
 
     /** Compute the greatest element of a subset.
@@ -306,14 +314,22 @@ public class ConceptGraph implements CPO {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Concept[] upSet(Object e) {
-        Object[] set = _dag.upSet(e);
-        Concept[] upSet = new Concept[set.length];
-        
-        for (int i = 0; i < set.length; i++) {
-            upSet[i] = (Concept) set[i];
+        // FIXME: What happens if the upSet should contain some InfiniteConcepts
+        // that are higher in the lattice?
+        if (e instanceof FiniteConcept) {
+            Object[] set = _dag.upSet(e);
+            Concept[] upSet = new Concept[set.length];
+
+            for (int i = 0; i < set.length; i++) {
+                upSet[i] = (Concept) set[i];
+            }
+
+            return upSet;
+        } else {
+            // FIXME: Need to implement upSet for InfiniteConcepts.
+            throw new IllegalArgumentException("upSet method not implemented" +
+                    " for Concept subclass " + e.getClass().getName() + ".");
         }
-        
-        return upSet;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-/* A concept that represents the monotoncity of an expression.
+/* A concept that represents the concept values of entries in a record token.
  * 
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
@@ -19,70 +19,59 @@
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
+package ptolemy.data.ontologies;
 
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
-import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.FiniteConcept;
-import ptolemy.data.ontologies.InfiniteConcept;
-import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A concept that represents the monotoncity of an expression.
+/** A concept that represents the concept values of entries in a record token.
  *  
- *  Note that for an arbitrary expression, it will not have a
- *  monotonicity concept of simply Monotonic, Constant, etc.
- *  Rather, the expression will have a monotonicity that depends
- *  on it's free variables.  For example, an expression of the form
- *  <code>
- *    (x &lt;= Concept1) ? Bottom :
- *    (y &lt;= Concept2) ? Top :
- *    Concept1
- *  </code>
- *  may have a monotonicity that is monotonic with respect to the
- *  variable x, but antimonotonic with respect to y (and constant
- *  with respect to all other variables).
+ *  A conceptable model element such as a port or node in a Ptolemy expression
+ *  could contain a token value that is a record data type.  A record token
+ *  is a token that is a collection of multiple token values of different
+ *  types. For example, we might want to specify a record that indicates the
+ *  (x,y) pixel position on a black-and-white screen, and also true or false
+ *  for whether that pixel position is on or off.  We can use a record of the form:
+ *  {x = 34, y = 26, pixelOn = true}
+ *  <p>
+ *  This RecordConcept allows any record to be assigned concept values for its
+ *  individual elements from an arbitrary finite ontology. For example, if we
+ *  wanted to assign a concept to the token above from the constAbstractInterpretation
+ *  ontology, it would be:
+ *  {x = Positive, y = Positive, pixelOn = BooleanTrue}
  *  
- *  This class represents exactly such concepts, representing them as
- *  { x : Monotonic, y : Animonotonic }, in a manner and syntax
- *  similar to records of the Ptolemy II type system.  In records,
- *  however, accessing an undefined tag is an error, whereas in
- *  expressions, they are simply constant with respect to any
- *  variables that are not free.
+ *  This code is adapted from the
+ *  {@link ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept}
+ *  implementation.
  *  
- *  @author Ben Lickly
+ *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
- *
  */
-public class MonotonicityConcept extends InfiniteConcept {
+public class RecordConcept extends InfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
     
-    /** Create a new monotonicity concept, belonging to the given
+    /** Create a new record concept, belonging to the given
      *  ontology, with an automatically generated name.
      * 
-     *  @param ontology The finite ontology to which this belongs.
-     *    This should be the 4 element monotonicity lattice if we
-     *    are really going to be doing inference on monotonicity
-     *    of expressions.
-     *  @return The newly created MonotonicityConcept.
+     *  @param ontology The finite ontology to which this concept belongs.
+     *  @return The newly created RecordConcept.
      *  @throws IllegalActionException If the base class throws it.
      */
-    public static MonotonicityConcept createMonotonicityConcept(Ontology ontology)
+    public static RecordConcept createRecordConcept(Ontology ontology)
             throws IllegalActionException {
         try {
-            return new MonotonicityConcept(ontology);
+            return new RecordConcept(ontology);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(
                     "Name conflict with automatically generated infinite concept name.\n"
@@ -108,7 +97,11 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        if (!(concept.getOntology().equals(getOntology()))) {
+        if (concept == null) {
+            return CPO.INCOMPARABLE;
+        }
+        
+        if (concept.getOntology() == null || !(concept.getOntology().equals(getOntology()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }
@@ -118,25 +111,28 @@ public class MonotonicityConcept extends InfiniteConcept {
             return CPO.HIGHER;
         } else if (concept.equals(getOntology().getConceptGraph().top())) {
             return CPO.LOWER;
-        } else if (concept instanceof FiniteConcept) {
+        } else if (!(concept instanceof RecordConcept)) {
             return CPO.INCOMPARABLE;
         }
 
-        MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
+        RecordConcept righthandSide = (RecordConcept) concept;
         CPO graph = getOntology().getConceptGraph();
 
-        // For some reason Set.addAll throws an UnsupportedOperationException,
-        // so we use a TreeSet here purely to avoid that problem.
-        TreeSet<String> keys = new TreeSet<String>(_variableToMonotonicity.keySet());
-        Set<String> morekeys = righthandSide._variableToMonotonicity.keySet(); 
-        keys.addAll(morekeys);
+        Set<String> fieldLabels = _fieldToConcept.keySet();
+        Set<String> otherFieldLabels = righthandSide._fieldToConcept.keySet();
+        
+        // If the set of record labels are not the same, the two record concepts
+        // are incomparable.
+        if (!fieldLabels.equals(otherFieldLabels)) {
+            return CPO.INCOMPARABLE;
+        }
         
         boolean seenHigher = false;
         boolean seenLower = false;
         boolean seenIncomparable = false;
-        for (String key : keys) {
-            int result = graph.compare(getMonotonicity(key),
-                    righthandSide.getMonotonicity(key));
+        for (String field : fieldLabels) {
+            int result = graph.compare(getFieldConcept(field),
+                    righthandSide.getFieldConcept(field));
             switch (result) {
             case CPO.HIGHER:       seenHigher = true; break;
             case CPO.LOWER:        seenLower = true; break;
@@ -144,8 +140,8 @@ public class MonotonicityConcept extends InfiniteConcept {
             case CPO.SAME:         break;
             default:
                 throw new IllegalActionException(this, "ConceptGraph compare " +
-                                "did not return one of the defined CPO values. " +
-                                "Return value was " + result + ". This should " +
+                		"did not return one of the defined CPO values. " +
+                		"Return value was " + result + ". This should " +
                                 "never happen.");
             }
         }
@@ -160,37 +156,22 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
     }
     
-    /** Get the monotonicity of this concept with respect to a specific
-     *  variable.  While the overall monotonicity of an expression
-     *  cannot be represented so simply, the monotonicity with
-     *  respect to a single variable can be represented as one
-     *  of:
-     *  <ul>
-     *    <li>Constant</li>
-     *    <li>Monotonic</li>
-     *    <li>Antimonotonic</li>
-     *    <li>General</li>
-     *  </ul>
-     *  This method returns one these concepts.
-     *  @param variableName The variable whose monotonicity we are querying.
-     *  @return The monotonicity of this concept with respect to the given
-     *    variable; one of Constant, Monotonic, Antimonotonic, or General.
+    /** Get the concept contained by the given field of this record concept.
+     *  @param fieldName The field of the record concept whose concept value
+     *   we are querying.
+     *  @return The concept value held by this field in the record concept.
      */
-    public FiniteConcept getMonotonicity(String variableName) {
-        if (_variableToMonotonicity.containsKey(variableName)) {
-            return _variableToMonotonicity.get(variableName);
-        }
-        return (FiniteConcept)getOntology().getConceptGraph().bottom();
+    public Concept getFieldConcept(String fieldName) {
+        return _fieldToConcept.get(fieldName);
     }
 
-    /** Get the set of all variable names referred to by this monotonicity
+    /** Get the set of all record label names referred to by this record
      *  concept.
      *
-     *  @return A set of names of variables which are not set to Constant
-     *    in this monotonicity concept.
+     *  @return A set of label names of fields which are in this record concept.
      */
-    public Set<String> keySet() {
-        return _variableToMonotonicity.keySet();
+    public Set<String> fieldSet() {
+        return _fieldToConcept.keySet();
     }
 
     /** Compute the least upper bound (LUB) of this and another concept.
@@ -200,18 +181,16 @@ public class MonotonicityConcept extends InfiniteConcept {
      */
     public Concept leastUpperBound(Concept concept) {
         Concept top = (Concept)getOntology().getConceptGraph().top();
-        if (concept instanceof FiniteConcept) {
+
+        if (!(concept instanceof RecordConcept)) {
             if (concept.equals(getOntology().getConceptGraph().bottom())) {
                 return this;
             } else {
                 return top;
             }
         } else {
-            if (!(concept instanceof MonotonicityConcept)) {
-                return top;
-            }
-            // We have two MonotonicityConcepts
-            return leastUpperBound((MonotonicityConcept) concept);
+            // We have two RecordConcepts
+            return leastUpperBound((RecordConcept) concept);
         }
     }
     
@@ -220,72 +199,69 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @param concept The other monotonicity concept
      *  @return The concept that is the LUB of this and the given concept.
      */
-    public Concept leastUpperBound(MonotonicityConcept concept) {
-        MonotonicityConcept result;
+    public Concept leastUpperBound(RecordConcept concept) {
+        RecordConcept result;
         try {
-            result = createMonotonicityConcept(getOntology());
+            result = createRecordConcept(getOntology());
         } catch (IllegalActionException e) {
             throw new InternalErrorException(
                     "There was an error creating a new MonotonicityConcept" +
                     "in the " + getOntology() + "ontology");
         }
-        // For some reason Set.addAll throws an UnsupportedOperationException,
-        // so we use a TreeSet here purely to avoid that problem.
-        TreeSet<String> allKeys = new TreeSet<String>(
-                this._variableToMonotonicity.keySet());
-        allKeys.addAll(concept._variableToMonotonicity.keySet());
-        for (String variableName : allKeys) {
-            CPO graph = this.getOntology().getConceptGraph();
-            FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
-                    this.getMonotonicity(variableName),
-                    concept.getMonotonicity(variableName));
-            result.putMonotonicity(variableName, monotonicity);
+
+        Set<String> fieldLabels = this._fieldToConcept.keySet();
+        Set<String> otherFieldLabels = concept._fieldToConcept.keySet();
+        
+        // If the set of record labels are not the same, the two record concepts
+        // are incomparable, so their least upper bound is the top of the lattice.
+        if (!fieldLabels.equals(otherFieldLabels)) {
+            return getOntology().getConceptGraph().top();
+        }
+        
+        for (String field : fieldLabels) {
+            ConceptGraph graph = this.getOntology().getConceptGraph();
+            Concept fieldConcept = graph.leastUpperBound(
+                    this.getFieldConcept(field),
+                    concept.getFieldConcept(field));
+            result.putFieldConcept(field, fieldConcept);
         }
         return result;
     }
 
-    /** Return the hash code of this monotonicity concept, which is uniquely
-     *  determined by the ontology and the set of variable-monotonicity
+    /** Return the hash code of this record concept, which is uniquely
+     *  determined by the ontology and the set of record field-concept
      *  mappings.
      *  @return The hash code of this concept.
      */
     public int hashCode() {
-        return getOntology().hashCode() + _variableToMonotonicity.hashCode();
+        return getOntology().hashCode() + _fieldToConcept.hashCode();
     }
 
-    /** Set the monotonicity of this concept with respect to a specific
-     *  variable.
+    /** Set the specified field of this record concept with the given concept
+     *  value.
      *
-     *  @param variable The variable whose monotonicity we are querying.
-     *  @param monotonicity The monotonicity of this concept with respect
-     *    to the given variable.
-     *  @see MonotonicityConcept#getMonotonicity(String)
+     *  @param fieldLabel The record field whose concept value we are setting.
+     *  @param fieldConcept The concept value of the record field.
+     *  @see #getFieldConcept(String)
      */
-    public void putMonotonicity(String variable, FiniteConcept monotonicity) {
-        if (monotonicity.equals((FiniteConcept)getOntology().getConceptGraph().bottom())) {
-            _variableToMonotonicity.remove(variable);
-        } else {
-            _variableToMonotonicity.put(variable, monotonicity);
-        }
+    public void putFieldConcept(String fieldLabel, Concept fieldConcept) {
+        _fieldToConcept.put(fieldLabel, fieldConcept);
     }
     
-    /** Return the string representation of this monotonicity concept.
-     *  Note that the syntax here is similar to that used for records
-     *  (e.g. { x:Monotonic, y:Anitmonotonic }).
+    /** Return the string representation of this record concept.
+     *  Note that the syntax here is similar to that used for records tokens
+     *  (e.g. { x = Const, y = NonConst }).
      *  
      *  @return The string representation of this concept.
      */
     public String toString() {
         StringBuffer result = new StringBuffer("{");
-        for (String key : _variableToMonotonicity.keySet()) {
+        for (String key : _fieldToConcept.keySet()) {
             result.append(' ');
             result.append(key);
-            result.append(':');
-            result.append(getMonotonicity(key));
+            result.append(" = ");
+            result.append(getFieldConcept(key));
             result.append(',');
-        }
-        if (result.charAt(result.length() - 1) == ',') {
-            result.deleteCharAt(result.length() - 1);
         }
         result.append(" }");
         return result.toString();
@@ -294,7 +270,7 @@ public class MonotonicityConcept extends InfiniteConcept {
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
-    /** Create a new Monotonicity concept, belonging to the given
+    /** Create a new Record concept, belonging to the given
      *  ontology.
      * 
      *  @param ontology The finite ontology to which this belongs.
@@ -304,7 +280,7 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @throws NameDuplicationException Should never be thrown.
      *  @throws IllegalActionException If the base class throws it.
      */
-    protected MonotonicityConcept(Ontology ontology)
+    protected RecordConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
           super(ontology);
     }
@@ -312,10 +288,10 @@ public class MonotonicityConcept extends InfiniteConcept {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** Mapping of free variable names to monotonicity values.
+    /** Mapping of record field names to concept values.
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
      */
-    private SortedMap<String, FiniteConcept> _variableToMonotonicity =
-        new TreeMap<String, FiniteConcept>();
+    private SortedMap<String, Concept> _fieldToConcept =
+        new TreeMap<String, Concept>();
 }
