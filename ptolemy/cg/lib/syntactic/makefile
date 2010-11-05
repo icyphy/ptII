@@ -54,6 +54,7 @@ JSRCS = \
 	SyntacticName.java \
 	SyntacticNode.java \
 	SyntacticPort.java \
+	SyntacticRank.java \
 	SyntacticSeries.java \
 	SyntacticTerm.java \
 	SyntacticTermList.java
@@ -69,7 +70,10 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'SyntacticColumn$$1.class' \
+	'SyntacticNode$$NodeType.class' \
+	'SyntacticPort$$IOType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
