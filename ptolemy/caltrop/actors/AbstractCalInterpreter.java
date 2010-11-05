@@ -236,6 +236,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     /** Attach the actor icon.
      *  @param name The name of the actor.
+     *  @exception IllegalActionException If thrown while getting the 
+     *  _iconDescription attribute.
      */
     protected void _attachActorIcon(String name) throws IllegalActionException {
         String iconText = "<svg>\n"
