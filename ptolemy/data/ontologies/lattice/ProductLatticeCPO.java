@@ -30,8 +30,10 @@ import java.util.Map;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptGraph;
+import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
+import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -75,8 +77,8 @@ public class ProductLatticeCPO extends ConceptGraph {
         
         _findBottom();
         _findTop();
-        _cachedGLBs = new HashMap<List<ProductLatticeConcept>, ProductLatticeConcept>();
-        _cachedLUBs = new HashMap<List<ProductLatticeConcept>, ProductLatticeConcept>();
+        _cachedGLBs = new HashMap<List<Concept>, Concept>();
+        _cachedLUBs = new HashMap<List<Concept>, Concept>();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +110,21 @@ public class ProductLatticeCPO extends ConceptGraph {
     public int compare(Object e1, Object e2) {
         if (e1 == null || e2 == null) {
             return CPO.INCOMPARABLE;
+        }
+        
+        if (e1 instanceof InfiniteConcept) {
+            try {
+                return ((InfiniteConcept)e1).compare((Concept)e2);
+            } catch (IllegalActionException e) {
+                return CPO.INCOMPARABLE;
+            }
+        } else if (e2 instanceof InfiniteConcept) {
+            try {
+                int oppositeResult = ((InfiniteConcept)e2).compare((Concept)e1);
+                return DirectedAcyclicGraph.reverseCompareCode(oppositeResult);
+            } catch (IllegalActionException e) {
+                return CPO.INCOMPARABLE;
+            }
         }
         
         _validateInputArguments(e1, e2);            
@@ -165,11 +182,11 @@ public class ProductLatticeCPO extends ConceptGraph {
      *   specified Objects is not an element of this CPO.
      */
     public Concept greatestLowerBound(Object e1, Object e2) {
-        List<ProductLatticeConcept> inputs = new ArrayList<ProductLatticeConcept>();
-        inputs.add((ProductLatticeConcept) e1);
-        inputs.add((ProductLatticeConcept) e2);
+        List<Concept> inputs = new ArrayList<Concept>();
+        inputs.add((Concept) e1);
+        inputs.add((Concept) e2);
         
-        ProductLatticeConcept glb = _cachedGLBs.get(inputs);        
+        Concept glb = _cachedGLBs.get(inputs);        
         if (glb == null) {
             if (e1 == null || e2 == null) {
                 return null;
@@ -216,14 +233,20 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @exception IllegalArgumentException Always thrown.
      */
     public Concept leastUpperBound(Object e1, Object e2) {
-        List<ProductLatticeConcept> inputs = new ArrayList<ProductLatticeConcept>();
-        inputs.add((ProductLatticeConcept) e1);
-        inputs.add((ProductLatticeConcept) e2);
+        List<Concept> inputs = new ArrayList<Concept>();
+        inputs.add((Concept) e1);
+        inputs.add((Concept) e2);
         
-        ProductLatticeConcept lub = _cachedLUBs.get(inputs);        
+        Concept lub = _cachedLUBs.get(inputs);        
         if (lub == null) {
             if (e1 == null || e2 == null) {
                 return null;
+            }
+            
+            if (e1 instanceof InfiniteConcept) {
+                return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
+            } else if (e2 instanceof InfiniteConcept) {
+                return ((InfiniteConcept)e2).leastUpperBound((Concept)e1);
             }
             
             _validateInputArguments(e1, e2);            
@@ -329,10 +352,10 @@ public class ProductLatticeCPO extends ConceptGraph {
     private ProductLatticeConcept _bottomConcept;
     
     /** The map of cached greatest lower bounds that have already been calculated by the CPO. */
-    private Map<List<ProductLatticeConcept>, ProductLatticeConcept> _cachedGLBs;
+    private Map<List<Concept>, Concept> _cachedGLBs;
     
     /** The map of cached least upper bounds that have already been calculated by the CPO. */
-    private Map<List<ProductLatticeConcept>, ProductLatticeConcept> _cachedLUBs;
+    private Map<List<Concept>, Concept> _cachedLUBs;
     
     /** The list of Ontologies for each element in the concept tuple of
      *  each ProductLatticeConcept in the product lattice.

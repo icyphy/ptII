@@ -33,6 +33,7 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.OntologySolverBase;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -613,7 +614,7 @@ public class LatticeOntologySolver extends OntologySolver {
 
         if (adapter == null) {
             try {
-                adapter = super._getAdapter(component);
+                adapter = OntologySolverBase._getAdapter(component, this);
             } catch (IllegalActionException ex) {
             }
         }

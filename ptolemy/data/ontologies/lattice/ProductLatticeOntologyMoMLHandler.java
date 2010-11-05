@@ -88,22 +88,27 @@ public class ProductLatticeOntologyMoMLHandler extends OntologyMoMLHandler {
             
             for (Object object : objects) {
                 if (object instanceof NamedObj) {
-                    ProductLatticeConcept productLatticeConcept = (ProductLatticeConcept) solver.getConcept(object);
-                    Concept concept = _getTupleConcept(productLatticeConcept, _highlightColorsOntology);
-                    if (concept != null) {
-                        // Use the color in the concept instance.
-                        List<ColorAttribute> colors = concept
-                                .attributeList(ColorAttribute.class);
-                        if (colors != null && colors.size() > 0) {
-                            // ConceptIcon renders the first found ColorAttribute,
-                            // so we use that one here as well.
-                            ColorAttribute conceptColor = colors.get(0);
-                            String request = "<property name=\"_highlightColor\" "
+                    Concept productLatticeConcept = solver.getConcept(object);
+                    
+                    if (productLatticeConcept instanceof ProductLatticeConcept) {
+                        Concept concept = _getTupleConcept((ProductLatticeConcept)
+                                productLatticeConcept, _highlightColorsOntology);
+                        
+                        if (concept != null) {
+                            // Use the color in the concept instance.
+                            List<ColorAttribute> colors = concept
+                            .attributeList(ColorAttribute.class);
+                            if (colors != null && colors.size() > 0) {
+                                // ConceptIcon renders the first found ColorAttribute,
+                                // so we use that one here as well.
+                                ColorAttribute conceptColor = colors.get(0);
+                                String request = "<property name=\"_highlightColor\" "
                                     + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
                                     + conceptColor.getExpression() + "\"/>";
-                            MoMLChangeRequest change = new MoMLChangeRequest(this,
-                                    (NamedObj) object, request, false);
-                            ((NamedObj) object).requestChange(change);
+                                MoMLChangeRequest change = new MoMLChangeRequest(this,
+                                        (NamedObj) object, request, false);
+                                ((NamedObj) object).requestChange(change);
+                            }
                         }
                     }
                 }

@@ -30,6 +30,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologyAdapter;
+import ptolemy.data.ontologies.OntologySolverBase;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.data.ontologies.OntologySolverUtilities;
 import ptolemy.kernel.ComponentEntity;
@@ -213,6 +214,13 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                             .createAdapter((ComponentEntity) component, this);
                     break;
                 }
+            }
+        }
+        
+        if (adapter == null) {
+            try {
+                adapter = OntologySolverBase._getAdapter(component, this);
+            } catch (IllegalActionException ex) {
             }
         }
         

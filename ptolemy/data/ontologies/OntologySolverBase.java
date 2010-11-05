@@ -270,7 +270,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public OntologyAdapter getAdapter(Object object)
             throws IllegalActionException {
-        return _getAdapter(object);
+        return _getAdapter(object, this);
     }
 
     /** Return a list of all the ontologies contained in this solver.
@@ -449,24 +449,33 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /**
      * Return the PropertyHelper for the specified component. This
      * instantiates a new PropertyHelper if it does not already exist
-     * for the specified component.
+     * for the specified component. This method needs to be static so it can be'
+     * called in any subclass of OntologySolverBase regardless of how many classes
+     * are in between in the inheritance hierarchy.  For example,
+     * {@link ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver ProductLatticeOntology} is a subclass
+     * of {@link ptolemy.data.ontologies.lattice.LatticeOntologySolver LatticeOntology} which
+     * overrides the _getAdapter method.  So ProductLatticeOntologySolver needs to call the OntologySolverBase
+     * _getAdapter method directly in its own _getAdapter method.
+     * 
      * @param component The specified component.
+     * @param solver The solver for which to get the adapter.
      * @return The PropertyHelper for the specified component.
      * @exception IllegalActionException Thrown if the PropertyHelper
      * cannot be instantiated.
      */
-    protected OntologyAdapter _getAdapter(Object component)
-            throws IllegalActionException {
+    protected static OntologyAdapter _getAdapter(Object component,
+            OntologySolverBase solver)
+                throws IllegalActionException {
 
-        if (_adapterStore.containsKey(component)) {
-            return _adapterStore.get(component);
+        if (solver._adapterStore.containsKey(component)) {
+            return solver._adapterStore.get(component);
         }
 
         if ((component instanceof IOPort) || (component instanceof Attribute)) {
             if (((NamedObj) component).getContainer() == null) {
                 System.err.println("component container is null: " + component);
             }
-            return _getAdapter(((NamedObj) component).getContainer());
+            return _getAdapter(((NamedObj) component).getContainer(), solver);
         }
 
         /* FIXME
@@ -475,8 +484,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         }
         */
 
-        String packageName = _getPackageName();
-        String defaultAdaptersPackageName = getClass().getPackage().getName()
+        String packageName = _getPackageName(solver);
+        String defaultAdaptersPackageName = solver.getClass().getPackage().getName()
                 + ".adapters.defaultAdapters";
 
         Class componentClass = component.getClass();
@@ -511,7 +520,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         }
 
         Constructor constructor = null;
-        Class solverClass = getClass();
+        Class solverClass = solver.getClass();
         while (constructor == null && solverClass != null) {
             try {
                 constructor = adapterClass.getConstructor(new Class[] {
@@ -531,7 +540,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         Object adapterObject = null;
 
         try {
-            adapterObject = constructor.newInstance(new Object[] { this,
+            adapterObject = constructor.newInstance(new Object[] { solver,
                     component });
 
         } catch (Exception ex) {
@@ -545,23 +554,24 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                             + ". Its adapter class does not"
                             + " implement PropertyHelper.");
         }
-        _adapterStore.put(component, (OntologyAdapter) adapterObject);
+        solver._adapterStore.put(component, (OntologyAdapter) adapterObject);
 
         return (OntologyAdapter) adapterObject;
     }
 
     /** Return the package name that contains the class of this solver.
      *
+     *  @param solver The ontology solver for which we get the adapter package name.
      *  @return The package name.
      *  @exception IllegalActionException Thrown if there is a problem
      *   getting the ontology package name.
      */
-    protected String _getPackageName() throws IllegalActionException {
+    protected static String _getPackageName(OntologySolverBase solver) throws IllegalActionException {
         // FIXME: Is it a good idea to hard code the adapters string in the package name?
         // 12/17/09 Charles Shelton
         // This was missing adapters directory for the correct package name.
-        return getClass().getPackage().getName() + ".adapters."
-                + getOntology().getName();
+        return solver.getClass().getPackage().getName() + ".adapters."
+                + solver.getOntology().getName();
     }
 
     /**
