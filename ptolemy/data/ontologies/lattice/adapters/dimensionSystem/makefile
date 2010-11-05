@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies/lattice/adapters/dimensionSystem
 
-DIRS = 		actor domains
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
@@ -46,9 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	dimensionSystem
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	domains/domains.jar
+PTCLASSALLJARS = 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
