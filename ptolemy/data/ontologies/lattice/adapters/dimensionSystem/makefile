@@ -50,8 +50,8 @@ PTCLASSALLJARS =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	DimensionSystemAdapter.java
+JSRCS =
+
 
 OTHER_FILES_TO_BE_JARED = \
 	dimensionSystem.xml \
