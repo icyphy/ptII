@@ -47,7 +47,6 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
-import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -101,8 +100,16 @@ public class PtidesBasicDirector extends Director {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                        "initPIBlock"));
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (!(((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
+            code.append(_templateParser.getCodeStream().getCodeBlock(
+                            "initPIBlock"));
+        }
         code.append(super.generateInitializeCode());
 
         return code.toString();
@@ -560,10 +567,14 @@ public class PtidesBasicDirector extends Director {
      */
     private String _generateClearEventHeadCode(Actor actor)
             throws IllegalActionException {
+        // FIXME: There exists actors that are both sensor, and also
+        // receive input from the outside. For this reason, we allocate
+        // pointers to events for all actors with input ports. This
+        // means there exists declared pointers that are never used.
         // if the actor is an input device, the input is fake.
-        if (actor instanceof InputDevice) {
+        /*if (actor instanceof InputDevice) {
             return "";
-        }
+        }*/
         StringBuffer code = new StringBuffer();
         code.append("/* generate code for clearing Event Head buffer. */"
                 + _eol);
@@ -583,7 +594,11 @@ public class PtidesBasicDirector extends Director {
         StringBuffer code = new StringBuffer();
         for (Actor actor : (List<Actor>) (((CompositeActor) _director
                 .getContainer()).deepEntityList())) {
-            if (!(actor instanceof InputDevice)) {
+            // if (!(actor instanceof InputDevice)) {
+            // FIXME: There exists actors that are both sensor, and also
+            // receive input from the outside. For this reason, we allocate
+            // pointers to events for all actors with input ports. This
+            // means there exists declared pointers that are never used.
                 for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
                     if (inputPort.getWidth() > 0) {
                         code.append("Event* Event_Head_"
@@ -596,7 +611,7 @@ public class PtidesBasicDirector extends Director {
                         code.append("};" + _eol);
                     }
                 }
-            }
+            //}
         }
         return code.toString();
     }

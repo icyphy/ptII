@@ -77,12 +77,12 @@ volatile unsigned long actuatorTimerInterruptSecsLeft;
 volatile int actuatorRunning = -1;
 volatile Time lastActuateTime;
 
-volatile int numStackedDeadline = 0;
+volatile int stackedDeadlineIndex = -1;
 volatile Time executingDeadlines[MAX_EVENTS];
 volatile void (*executingActors[MAX_EVENTS])();
 
 volatile Tag executingModelTag[MAX_EVENTS];
-volatile int numStackedModelTag = 0;
+volatile int stackedModelTagIndex = -1;
 
 volatile Time lastTimerInterruptTime;
 volatile uint32 _secs = 0;
@@ -389,10 +389,10 @@ void processEvents() {
     }
 
     // restore the last executing stacked model tag.
-    if (numStackedModelTag > 0) {
-        numStackedModelTag--;
-        currentMicrostep = executingModelTag[numStackedModelTag].microstep;
-        currentModelTime = executingModelTag[numStackedModelTag].timestamp;
+    if (stackedModelTagIndex >= 0) {
+        currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
+        currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
+        stackedModelTagIndex--;
     } else {
     	die("cannot restore model tag");
     }
@@ -424,7 +424,7 @@ void fireActor(Event* currentEvent) {
     }
 
     freeEvent(currentEvent);
-    numStackedDeadline--;
+    stackedDeadlineIndex--;
 }
 
 /* determines whether the event to fire this current actor is of higher priority than
@@ -432,21 +432,21 @@ void fireActor(Event* currentEvent) {
 */                                                                    
 unsigned int higherPriority(const Event* const event) {
     int i;
-    if (numStackedDeadline == 0) {
+    if (stackedDeadlineIndex < 0) {
         // there are no events on the stack, so it's always true.
         return TRUE;
-    } else if (timeCompare(executingDeadlines[numStackedDeadline], event->deadline) == LESS) {
+    } else if (timeCompare(executingDeadlines[stackedDeadlineIndex], event->deadline) == LESS) {
 #ifdef LCD_DEBUG
         debugMessageNumber("exDe sec=",
-                executingDeadlines[numStackedDeadline].secs);
+                executingDeadlines[stackedDeadlineIndex].secs);
         debugMessageNumber("exDe nsec=",
-                executingDeadlines[numStackedDeadline].nsecs); 
+                executingDeadlines[stackedDeadlineIndex].nsecs); 
 #endif
         return FALSE;
     } else {
         // check for all actors that are currently firing, and make sure we
         // don't fire an actor that's already firing.
-        for (i = 0; i < numStackedDeadline; i++) {
+        for (i = 0; i <= stackedDeadlineIndex; i++) {
             if (executingActors[i] == event->fireMethod) {
                 return FALSE;
             }
@@ -460,12 +460,12 @@ unsigned int higherPriority(const Event* const event) {
 * Set the firing flag of the actor, indicate that the actor is currenting being fired.
 */
 void queuePriority(Event* event) {
-    numStackedDeadline++;
-    if (numStackedDeadline == MAX_EVENTS) {
-        die("numStackedDeadline exceeds MAX_EVENTS");
+    stackedDeadlineIndex++;
+    if (stackedDeadlineIndex == MAX_EVENTS) {
+        die("stackedDeadlineIndex exceeds MAX_EVENTS");
     }
-    executingDeadlines[numStackedDeadline] = event->deadline;
-    executingActors[numStackedDeadline] = event->fireMethod;
+    executingDeadlines[stackedDeadlineIndex] = event->deadline;
+    executingActors[stackedDeadlineIndex] = event->fireMethod;
 }
 
 /*

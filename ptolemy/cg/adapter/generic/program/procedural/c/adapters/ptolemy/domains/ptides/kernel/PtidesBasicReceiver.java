@@ -171,7 +171,7 @@ public class PtidesBasicReceiver
         }
 
         // Getting offsetTime.
-        Parameter offsetTime = (Parameter) sinkPort.getAttribute("minDelay");
+        Parameter offsetTime = (Parameter) sinkPort.getAttribute("delayOffset");
         String offsetSecsString = null;
         String offsetNsecsString = null;
         if (offsetTime != null) {
@@ -185,7 +185,7 @@ public class PtidesBasicReceiver
 //            offsetSecsString = "deleteMe";
 //            offsetNsecsString = "deleteMe";
             throw new IllegalActionException(sinkPort,
-                    "Cannot get the minDelay Parameter.");
+                    "Cannot get the delayOffset Parameter.");
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or

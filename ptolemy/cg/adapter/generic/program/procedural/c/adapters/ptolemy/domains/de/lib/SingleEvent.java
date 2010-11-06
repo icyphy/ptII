@@ -68,9 +68,9 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         Token valueToken= valuePar.getToken();
         if (valueToken instanceof BooleanToken) {
             if (((BooleanToken) valueToken).booleanValue() == true) {
-                value = 1.0;
+                value = 1;
             } else {
-                value = 0.0;
+                value = 0;
             }
         } else if (valueToken instanceof IntToken) {
             value = ((IntToken) valueToken).intValue();
