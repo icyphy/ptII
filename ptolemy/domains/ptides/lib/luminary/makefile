@@ -54,7 +54,8 @@ JSRCS = \
 	LuminarySensorInputDevice.java \
 	MotorOutputDevice.java \
 	SongWrapper.java \
-	SpeakerOutputDevice.java
+	SpeakerOutputDevice.java \
+	TimeTriggeredEncoderInputDevice.java
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
