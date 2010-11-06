@@ -64,6 +64,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.ptides.lib.NetworkInputDevice;
+import ptolemy.domains.ptides.lib.NetworkOutputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -837,7 +838,7 @@ public class PtidesBasicDirector extends DEDirector {
                 for (TypedIOPort sinkPort : (List<TypedIOPort>) port
                         .deepInsidePortList()) {
                     if (_isNetworkPort(port)) {
-                        if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
+                        if (sinkPort.isInput() && !(sinkPort.getContainer() instanceof NetworkInputDevice)) {
                             throw new IllegalActionException(
                                     port,
                                     sinkPort.getContainer(),
@@ -858,7 +859,7 @@ public class PtidesBasicDirector extends DEDirector {
                         }
                     } else {
                         // port is a sensor port.
-                        if (sinkPort.getContainer() instanceof NetworkInputDevice) {
+                        if (sinkPort.isInput() && sinkPort.getContainer() instanceof NetworkInputDevice) {
                             throw new IllegalActionException(
                                     port,
                                     sinkPort.getContainer(),
@@ -874,6 +875,56 @@ public class PtidesBasicDirector extends DEDirector {
                             throw new IllegalActionException(
                                     port,
                                     "A sensor input "
+                                            + "port must not have a networkDelay annotated "
+                                            + "on it. Either this port is a not a network port "
+                                            + "with realTimeDelay, or it should be a network"
+                                            + "port with networkDelay. ");
+                        }
+                    }
+                }
+            }
+            for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                    .outputPortList())) {
+                for (TypedIOPort sourcePort : (List<TypedIOPort>) port
+                        .deepInsidePortList()) {
+                    if (_isNetworkPort(port)) {
+                        if (sourcePort.isOutput() && !(sourcePort.getContainer() instanceof NetworkOutputDevice)) {
+                            throw new IllegalActionException(
+                                    port,
+                                    sourcePort.getContainer(),
+                                    "An output network "
+                                            + "port must have a NetworkOutputDevice as "
+                                            + "its source.");
+                        }
+                        Parameter parameter = (Parameter) ((NamedObj) port)
+                                .getAttribute("realTimeDelay");
+                        if (parameter != null) {
+                            throw new IllegalActionException(
+                                    port,
+                                    "A network output "
+                                            + "port must not have a realTimeDelay annotated "
+                                            + "on it. Either this port is a not a network port "
+                                            + "with realTimeDelay, or it should be a network"
+                                            + "port with networkDelay. ");
+                        }
+                    } else {
+                        // port is a actuator port.
+                        if (sourcePort.isOutput() && sourcePort.getContainer() instanceof NetworkOutputDevice) {
+                            throw new IllegalActionException(
+                                    port,
+                                    sourcePort.getContainer(),
+                                    "An output actuator "
+                                            + "port should not be connected to a "
+                                            + "NetworkOutputDevice. Either denote this port as "
+                                            + "a network port, or remove the NetworkOutputDevice "
+                                            + "connected to it.");
+                        }
+                        Parameter parameter = (Parameter) ((NamedObj) port)
+                                .getAttribute("networkDelay");
+                        if (parameter != null) {
+                            throw new IllegalActionException(
+                                    port,
+                                    "A actuator output "
                                             + "port must not have a networkDelay annotated "
                                             + "on it. Either this port is a not a network port "
                                             + "with realTimeDelay, or it should be a network"

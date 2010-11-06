@@ -50,15 +50,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 ////NetworkOutputDevice
 
-/**
- *  Note this actor (or some other subclass of this class) should
- *  be directly connected to a network output port in a PtidesBasicDirector.
- *
- *  Unlike ActuatorTransmitter for example, this actor is necessarily needed for
+/** This actor abstracts the network component that sends network packages
+ *  to other platforms.
+ *  This actor (and subclasses of this actor) should
+ *  be directly connected to a network output port in a Ptides director.
+ *  <p>
+ *  A network output port is an output port of a composite
+ *  actor with a <i>networkPort</i> parameter set to true. The composite actor
+ *  should be governed by a Ptides director, and
+ *  abstracts a computation platform in the Ptides domain.
+ *  </p><p>
+ *  This actor is expected to be used in pairs with the {@link NetworkInputDevice}.
+ *  This actor produces network packages from the source
+ *  platform, and the {@link NetworkInputDevice} consumes those packages 
+ *  in the sink platform.
+ *  Unlike SensorOutputDevice for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
- *
- *  This actor takes the input token, and creates a RecordToken, with two lables:
- *  timestamp, and payload. It then sends the output token to its output port.
+ *  </p><p>
+ *  This actor consumes the input token, and creates a RecordToken, with three
+ *  labels: timestamp, microstep and payload. It then sends the RecordToken to
+ *  its output port.
  *
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
@@ -121,7 +132,8 @@ public class NetworkOutputDevice extends OutputDevice {
         Director director = getDirector();
 
         if (director == null || !(director instanceof PtidesBasicDirector)) {
-            throw new IllegalActionException(this, "Director not recognizable!");
+            throw new IllegalActionException(this, "Director expected to" +
+            		"be a Ptides director, but it's not.");
         }
 
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;

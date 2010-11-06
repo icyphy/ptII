@@ -52,22 +52,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 ////NetworkInputDevice
 
-/**
+/** This actor abstracts the network component that receives network packages
+ *  to other platforms.
+ *  This actor (and subclasses of this actor) should
+ *  be directly connected to a network input port in a Ptides director.
  *  <p>
- *  Note this actor (or some other subclass of this class) should
- *  be directly connected to a network input port in a PtidesBasicDirector.
- *  <\p>
- *  <p>
- *  Unlike SensorReceiver for example, this actor is necessarily needed for
+ *  A network input port is an input port of a composite
+ *  actor with a <i>networkPort</i> parameter set to true. The composite actor
+ *  should be governed by a Ptides director, and
+ *  abstracts a computation platform in the Ptides domain.
+ *  </p><p>
+ *  This actor is expected to be used in pairs with the {@link NetworkOutputDevice}.
+ *  The {@link NetworkOutputDevice} produces network packages from the source
+ *  platform, and this actor consumes those packages in the sink platform.
+ *  Unlike SensorInputDevice for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
- *  <\p>
- *  <p>
+ *  </p><p>
  *  This actor assumes the incoming token is a RecordToken, and includes a
- *  token value as well as a timestamp associated with the token value. Thus
- *  this actor parses the RecordToken and sends the output token with the
- *  timestamp equal to the timestamp stored in the RecordToken.
- *  In other words, we assume the RecordToken has these three labels: timestamp,
- *  microstep, and payload.
+ *  token value as well as a timestamp and microstep associated with the token 
+ *  value. This actor parses the RecordToken and sends the output token with the
+ *  timestamp and microstep equal to those stored in the RecordToken.
+ *  To achieve this, the input RecordToken are expected to have these three 
+ *  labels: timestamp, microstep, and payload.
  *
  *  @author Jia Zou, Slobodan Matic
  *  @version $Id$
@@ -131,7 +137,8 @@ public class NetworkInputDevice extends InputDevice {
         Director director = getDirector();
 
         if (director == null || !(director instanceof PtidesBasicDirector)) {
-            throw new IllegalActionException(this, "Director not recognizable!");
+            throw new IllegalActionException(this, "Director expected to" +
+                    "be a Ptides director, but it's not.");
         }
 
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
@@ -142,7 +149,7 @@ public class NetworkInputDevice extends InputDevice {
 
             if (record.labelSet().size() != 3) {
                 throw new IllegalActionException(
-                        "the record has a size not equal to 3: "
+                        "the input record token has a size not equal to 3: "
                                 + "Here we assume the Record is of types: timestamp"
                                 + " + microstep + token");
             }
