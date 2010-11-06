@@ -57,7 +57,8 @@ JSRCS = \
 	GPOutputDevice.java \
 	MotorOutputDevice.java \
 	SongWrapper.java \
-	SpeakerOutputDevice.java
+	SpeakerOutputDevice.java \
+	TimeTriggeredEncoderInputDevice.java
 	
 OTHER_FILES_TO_BE_JARED = \
 	DropSensorInputDevice.c \
@@ -66,7 +67,8 @@ OTHER_FILES_TO_BE_JARED = \
 	GPOutputDevice.c \
 	MotorOutputDevice.c \
 	SongWrapper.c \
-	SpeakerOutputDevice.c
+	SpeakerOutputDevice.c \
+	TimeTriggeredEncoderInputDevice.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

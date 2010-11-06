@@ -317,12 +317,12 @@ void Timer0IntHandler(void) {
         }
 		saveState();
         // need to push the currentModelTag onto the stack.
-        executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-        executingModelTag[numStackedModelTag].timestamp = currentModelTime;
-        numStackedModelTag++;
-        if (numStackedModelTag > MAX_EVENTS) {
-                die("MAX_EVENTS too small for numStackedModelTag");
+        stackedModelTagIndex++;
+        if (stackedModelTagIndex > MAX_EVENTS) {
+                die("MAX_EVENTS too small for stackedModelTagIndex");
         }
+        executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
+        executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
 
         // disable interrupts, then add stack to execute processEvents().
         lastTimerInterruptTime = MAX_TIME;
@@ -599,12 +599,14 @@ void initializePDSystem() {
         IntPrioritySet(FAULT_SYSTICK, 0x00);  
         SysTickEnable();
         IntEnable(FAULT_SYSTICK);  //sys tick vector
-        // SVC should have the same priority as systick, so to ensure stack manipulation 
-        // is not preempted.
-		IntPrioritySet(FAULT_SVCALL, 0x00);
+        // SVC should have lower priority than systick, but SVC should have
+        // higher or the same priority than all other peripheral interrupts.
+        // It is ok for systick to preempt SVC, since the SVC does not
+        // leave the stack in an unknown state.
+	    IntPrioritySet(FAULT_SVCALL, 0x20);
         // Initialize LCD at 4 MHz
         RIT128x96x4Init(4000000);
-        RIT128x96x4StringDraw("PtidyOSv0.5", 36,  0, 15);
+        RIT128x96x4StringDraw("PtidyOSv1.0", 36,  0, 15);
 
 #ifndef LCD_DEBUG
         //RIT128x96x4Disable();

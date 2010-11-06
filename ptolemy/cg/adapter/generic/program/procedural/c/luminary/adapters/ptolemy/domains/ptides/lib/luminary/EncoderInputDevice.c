@@ -55,12 +55,12 @@ IntEnable(INT_GPIO$pad);
 
 saveState();
 // need to push the currentModelTag onto the stack.
-executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-executingModelTag[numStackedModelTag].timestamp = currentModelTime;
-numStackedModelTag++;
-if (numStackedModelTag > MAX_EVENTS) {
-    die("MAX_EVENTS too small for numStackedModelTag");
+stackedModelTagIndex++;
+if (stackedModelTagIndex > MAX_EVENTS) {
+    die("MAX_EVENTS too small for stackedModelTagIndex");
 }
+executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
+executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
 
 // for sensing purposes, set the current time to the physical time.
 getRealTime(&currentModelTime);

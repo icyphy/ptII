@@ -39,12 +39,12 @@ GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_
 #endif
 
 // need to push the currentModelTag onto the stack.
-executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-executingModelTag[numStackedModelTag].timestamp = currentModelTime;
-numStackedModelTag++;
-if (numStackedModelTag > MAX_EVENTS) {
-    die("MAX_EVENTS too small for numStackedModelTag");
+stackedModelTagIndex++;
+if (stackedModelTagIndex > MAX_EVENTS) {
+    die("MAX_EVENTS too small for stackedModelTagIndex");
 }
+executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
+executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
 
 // for sensing purposes, set the current time to the physical time.
 getRealTime(&currentModelTime);

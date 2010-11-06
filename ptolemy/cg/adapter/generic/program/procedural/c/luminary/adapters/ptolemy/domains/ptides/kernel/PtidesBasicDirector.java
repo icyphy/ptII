@@ -210,7 +210,7 @@ public class PtidesBasicDirector
     /**
      * Generate the initialize code.
      * This generates the hardware initialization code and creates
-     * the queues for all referable port channels.
+     * the queues for all referrable port channels.
      * @return The generated initialize code.
      * @exception IllegalActionException If the adapter associated with
      *  an actor throws it while generating initialize code for the actor.
@@ -230,10 +230,9 @@ public class PtidesBasicDirector
         }
         
         code.append(getCodeGenerator().comment(
-                "Initialization code of the PtidesDirector."));
+                "Platform dependent initializatoin code of the PtidesDirector."));
 
-        code
-                .append(_templateParser.getCodeStream().getCodeBlock(
+        code.append(_templateParser.getCodeStream().getCodeBlock(
                         "initPDBlock"));
 
         return code.toString();

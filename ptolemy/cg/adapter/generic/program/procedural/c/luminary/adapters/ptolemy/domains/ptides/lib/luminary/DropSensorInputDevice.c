@@ -2,19 +2,19 @@
 // values generated using z0=532mm, sensorDistance=30mm
 //FIXME: Increase the resolution of this table.
 const uint32 timeToDisc[timeToDisc_size] = {
-	181524, 184475, 187299, 190004, 192594, 195076, 197456, 199738, 201928, 204031, 
-	206049, 207989, 209853, 211644, 213368, 215026, 216622, 218159, 219639, 221065, 
-	222439, 223764, 225042, 226274, 227463, 228611, 229719, 230789, 231822, 232820, 
-	233785, 234717, 235618, 236489, 237332, 238147, 238935, 239698, 240436, 241150, 
-	241841, 242510, 243157, 243784, 244391, 244979, 245549, 246100, 246634, 247151, 
-	247652, 248137, 248607, 249062, 249503, 249930, 250343, 250744, 251131, 251507, 
-	251871, 252223, 252564, 252894, 253214, 253523, 253822, 254112, 254392, 254663, 
-	254925, 255178, 255423, 255660, 255889, 256109, 256323, 256529, 256727, 256919, 
-	257104, 257282, 257453, 257619, 257778, 257931, 258078, 258219, 258355, 258485, 
-	258610, 258730, 258844, 258954, 259058, 259158, 259254, 259344, 259431, 259512, 
-	259590, 259664, 259733, 259798, 259860, 259918, 259972, 260022, 260069, 260112, 
-	260152, 260188, 260222, 260252, 260278, 260302, 260323, 260341, 260355, 260367, 
-	260377, 260383, 260387, 260388};
+	181560390, 184578955, 187464966, 190225458, 192867063, 195396028, 197818236, 200139220, 202364186, 204498030, 
+	206545355, 208510491, 210397509, 212210239, 213952286, 215627044, 217237705, 218787281, 220278607, 221714356, 
+	223097052, 224429075, 225712673, 226949969, 228142971, 229293576, 230403582, 231474688, 232508506, 233506563, 
+	234470307, 235401110, 236300278, 237169050, 238008601, 238820052, 239604467, 240362859, 241096193, 241805389, 
+	242491323, 243154831, 243796709, 244417720, 245018589, 245600011, 246162651, 246707143, 247234093, 247744085, 
+	248237673, 248715392, 249177751, 249625242, 250058334, 250477477, 250883105, 251275633, 251655460, 252022969, 
+	252378529, 252722494, 253055207, 253376994, 253688171, 253989043, 254279903, 254561033, 254832704, 255095181, 
+	255348715, 255593550, 255829923, 256058060, 256278182, 256490500, 256695219, 256892538, 257082647, 257265733, 
+	257441973, 257611542, 257774607, 257931331, 258081870, 258226376, 258364998, 258497877, 258625153, 258746960, 
+	258863427, 258974681, 259080844, 259182036, 259278370, 259369960, 259456914, 259539337, 259617332, 259690998, 
+	259760432, 259825728, 259886978, 259944269, 259997690, 260047322, 260093250, 260135551, 260174303, 260209582, 
+	260241461, 260270012, 260295303, 260317402, 260336376, 260352289, 260365204, 260375181, 260382279, 260386558, 
+	260388074};
 
 //	Based on dropTime (time it took for the ball to pass through the sensors)
 //	return the time it will take for the ball to reach the disk
@@ -37,11 +37,10 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 #define DROP_INT				INT_GPIOG
 #define DROP_BASE				GPIO_PORTG_BASE
 #define DROP_PIN				GPIO_PIN_0			// Set G[0] (PG0) as drop sensor input
-//unlike max, offset is in us.
-#define timeToDisc_offset 	15000 	//minimum allowed drop time (in us) for this table; index zero offset
-#define timeToDisc_max 		78206000 	//maximum allowed drop time (in ns) for this table
-#define timeToDisc_shift 	9 	//amount by which to shift measured drop time to determine table index; log2(dt) (in us)
-#define timeToDisc_size 	124
+#define timeToDisc_offset 	15000000 	//minimum allowed drop time (in ns) for this table; index zero offset
+#define timeToDisc_max 		78206188 	//maximum allowed drop time (in ns) for this table
+#define timeToDisc_shift 	19 	//amount by which to shift measured drop time to determine table index; log2(dt) (in us)
+#define timeToDisc_size 	121
 /**/
 
 /*** initBlock ***/
@@ -63,9 +62,8 @@ previousEventTimestamp = ZERO_TIME;
 if (dropTime.secs == 0 && dropTime.nsecs < timeToDisc_max && dropTime.nsecs > timeToDisc_offset){			// dropTime is within the range of times that it could take a ball to drop
     uint32 timeToImpact;
 
-    // FIXME: don't do divisions or multiplications...
-    // dropTimeToImpactTime is in us.
-	timeToImpact = dropTimeToImpactTime(dropTime.nsecs / 1000);					// Time ball will be in the air
+    // dropTimeToImpactTime is in ns.
+	timeToImpact = dropTimeToImpactTime(dropTime.nsecs);					// Time ball will be in the air
 
 	//FIXME: If dropTime is out of range, dropCount may be erroneous and should be corrected	
     // send an dummy value out of its output port.
@@ -100,12 +98,12 @@ GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_
 #endif
 
 // need to push the currentModelTag onto the stack.
-executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-executingModelTag[numStackedModelTag].timestamp = currentModelTime;
-numStackedModelTag++;
-if (numStackedModelTag > MAX_EVENTS) {
-    die("MAX_EVENTS too small for numStackedModelTag");
+stackedModelTagIndex++;
+if (stackedModelTagIndex > MAX_EVENTS) {
+    die("MAX_EVENTS too small for stackedModelTagIndex");
 }
+executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
+executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
 
 // for sensing purposes, set the current time to the physical time.
 getRealTime(&currentModelTime);
