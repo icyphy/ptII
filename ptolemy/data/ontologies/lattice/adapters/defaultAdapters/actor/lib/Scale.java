@@ -31,10 +31,10 @@ import java.util.List;
 
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
-import ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition;
+import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.Attribute;
@@ -65,13 +65,10 @@ public class Scale extends LatticeOntologyAdapter {
         _multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
-        _divideDefinition = (DivideConceptFunctionDefinition) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         
-        // If neither definition for a multiplication or divison concept
-        // function can be found, just use the default constraints.
-        if (_multiplyDefinition == null && _divideDefinition == null) {
+        // If a definition for a multiplication concept function cannot be
+        // found, just use the default constraints.
+        if (_multiplyDefinition == null) {
             _useDefaultConstraints = true;
         }
     }
@@ -92,27 +89,23 @@ public class Scale extends LatticeOntologyAdapter {
             multiplyFunction = _multiplyDefinition.createConceptFunction();
         }
 
-        ConceptFunction divideFunction = null;
-        if (_divideDefinition != null) {
-            divideFunction = _divideDefinition.createConceptFunction();
-        }
-
         if (multiplyFunction != null) {
-            // The output of the Scale actor is the product of the input and the factor parameter
-            // So use the MultiplyConceptFunction for the output property.
-            setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                    multiplyFunction, new InequalityTerm[] {
-                            getPropertyTerm(actor.input),
-                            getPropertyTerm(actor.factor) }));
+            if (interconnectConstraintType == ConstraintType.EQUALS ||
+                    interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
+                // The output of the Scale actor is the product of the input and the factor parameter
+                // So use the MultiplyConceptFunction for the output property.
+                setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
+                        multiplyFunction, new InequalityTerm[] {
+                                getPropertyTerm(actor.input),
+                                getPropertyTerm(actor.factor) }));
+            }
         }
-
-        if (divideFunction != null) {
-            // The input of the Scale actor is the a factor of multiplication
-            // So use the DivideConceptFunction for the input property.
-            setAtLeast(actor.input, new ConceptFunctionInequalityTerm(
-                    divideFunction, new InequalityTerm[] {
-                            getPropertyTerm(actor.output),
-                            getPropertyTerm(actor.factor) }));
+        
+        // Add back in default constraints for the output to input relationship.
+        if (!_useDefaultConstraints && (interconnectConstraintType == ConstraintType.EQUALS ||
+                interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+            setAtLeast(actor.input, actor.output);
+            setAtLeast(actor.factor, actor.output);
         }
 
         return super.constraintList();
@@ -140,7 +133,4 @@ public class Scale extends LatticeOntologyAdapter {
     
     /** The multiplication concept function definition found in the solver model. */
     private MultiplyConceptFunctionDefinition _multiplyDefinition;
-    
-    /** The division concept function definition found in the solver model. */
-    private DivideConceptFunctionDefinition _divideDefinition;
 }

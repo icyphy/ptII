@@ -150,6 +150,11 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public static final String NEGATE_FUNCTION_NAME = "negateFunction";
     
+    /** The string name of the attribute that defines the arithmetic negation
+     *  concept function for this ontology solver.
+     */
+    public static final String RECIPROCAL_FUNCTION_NAME = "reciprocalFunction";
+    
     /** The string name of the attribute that defines the logical not
      *  concept function for this ontology solver.
      */

@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.data.expr.Variable;
 import ptolemy.graph.GraphStateException;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -89,7 +90,40 @@ public class Ontology extends CompositeEntity {
      *    exists.
      */
     public Concept getConceptByName(String name) {
-        return (Concept)this.getEntity(name);
+        // If the name string is wrapped by quotes, strip them off before
+        // trying to find the concept that matches the name.
+        if (name.startsWith("\"") && name.endsWith("\"")) {
+            name = name.substring(1, name.length() - 1);
+        }
+        
+        Concept result = (Concept)this.getEntity(name);
+        
+        // If the concept is not found, check to see if it is an infinite
+        // concept that is represented by concept in this ontology.
+        if (result == null) {
+            for (Object concept : entityList(FlatTokenRepresentativeConcept.class)) {
+                String repName = ((Concept) concept).getName();
+                if (name.startsWith(repName)) {
+                    String expression = name.substring(repName.length() + 1);
+                    try {
+                        // Use a temporary Variable object to parse the 
+                        // expression string that represents the token.
+                        Variable var = new Variable(this, "temp");
+                        var.setExpression(expression);
+                        var.setContainer(null);
+                        return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
+                                this, (FlatTokenRepresentativeConcept) concept, var.getToken());
+                        
+                    } catch (IllegalActionException ex) {
+                        throw new IllegalArgumentException("Could not instantiate a FlatTokenInfiniteConcept for " + name + ".", ex);
+                    } catch (NameDuplicationException nameDupEx) {
+                        throw new IllegalArgumentException("Could not instantiate a FlatTokenInfiniteConcept for " + name + ".", nameDupEx);
+                    }
+                }
+            }
+        }
+        
+        return result;
     }
 
     /** Return the graph represented by this ontology.

@@ -60,7 +60,8 @@ public class ConceptFromRecordField extends ConceptFunction {
      *  from the input RecordConcept.
      *  @param argValues The Concept input arguments which should be a single RecordConcept.
      *  @return The output concept that is the value of the RecordConcept at the specified field.
-     *   This will be null if the field is not contained in the RecordConcept.
+     *   The function will return the bottom of the lattice if the field is not
+     *   contained in the RecordConcept.
      *  @throws IllegalActionException Thrown if there is a problem creating
      *   the output Concept or if the input is not a RecordConcept.
      */
@@ -79,7 +80,12 @@ public class ConceptFromRecordField extends ConceptFunction {
             }
         }
         
-        return ((RecordConcept) inputRecord).getFieldConcept(_fieldLabel);     
+        Concept result = ((RecordConcept) inputRecord).getFieldConcept(_fieldLabel);
+        if (result == null) {
+            result = inputRecord.getOntology().getConceptGraph().bottom();
+        }
+        
+        return result;     
     }        
     
     /** The field label name for which this function should return a concept

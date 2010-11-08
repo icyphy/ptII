@@ -1,6 +1,6 @@
 /* The default adapter class for ptolemy.actor.lib.MultiplyDivide.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,10 +31,13 @@ import java.util.List;
 
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
+import ptolemy.data.ontologies.lattice.ApplyBinaryFunctionToMultipleArguments;
 import ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition;
+import ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition;
+import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,12 +71,16 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
         _divideDefinition = (DivideConceptFunctionDefinition) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+        _reciprocalDefinition = (UnaryOperationMonotonicFunctionDefinition) (_solver
+                .getContainedModel())
+                .getAttribute(LatticeOntologySolver.RECIPROCAL_FUNCTION_NAME);
         
-        // If neither definition for a multiplication or divison concept
-        // function can be found, just use the default constraints.
-        if (_multiplyDefinition == null && _divideDefinition == null) {
+        // If definitions for multiplication, division, and reciprocal concept
+        // functions cannot be found, just use the default constraints.
+        if (_multiplyDefinition == null || _divideDefinition == null ||
+                _reciprocalDefinition == null) {
             _useDefaultConstraints = true;
-        }        
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,42 +94,81 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
-        if (actor.multiply.getWidth() > 1 || actor.divide.getWidth() > 1) {
-            throw new IllegalActionException(actor, "The property analysis "
-                    + "currently supports only binary division (e.g. 1 "
-                    + "connection to the multiply port and 1 connection "
-                    + "to the divide port.");
-        }
-
         ConceptFunction multiplyFunction = null;
         if (_multiplyDefinition != null) {
             multiplyFunction = _multiplyDefinition.createConceptFunction();
         }
-
+        
         ConceptFunction divideFunction = null;
         if (_divideDefinition != null) {
             divideFunction = _divideDefinition.createConceptFunction();
         }
 
-        // If the multiplyFunction is not defined in the ontology solver model
-        // then by default do not set up any constraints for the multiply
-        // input.
-        if (multiplyFunction != null) {
-            setAtLeast(actor.multiply, new ConceptFunctionInequalityTerm(
-                    multiplyFunction, new InequalityTerm[] {
-                            getPropertyTerm(actor.output),
-                            getPropertyTerm(actor.divide) }));
+        ConceptFunction reciprocalFunction = null;
+        if (_reciprocalDefinition != null) {
+            reciprocalFunction = _reciprocalDefinition.createConceptFunction();
         }
 
-        if (divideFunction != null) {
-            setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                    divideFunction, new InequalityTerm[] {
-                            getPropertyTerm(actor.multiply),
-                            getPropertyTerm(actor.divide) }));
-            setAtLeast(actor.divide, new ConceptFunctionInequalityTerm(
-                    divideFunction, new InequalityTerm[] {
-                            getPropertyTerm(actor.multiply),
-                            getPropertyTerm(actor.output) }));
+        if (multiplyFunction != null && reciprocalFunction != null &&
+                divideFunction != null) {
+            if (interconnectConstraintType == ConstraintType.EQUALS ||
+                    interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
+                List multiplyInputs = _getSourcePortList(actor.multiply);
+                
+                // If the multiply input is a multiport with multiple input ports,
+                // set up the constraint to be the product of the inputs.
+                if (multiplyInputs.size() > 1) {
+                    InequalityTerm[] plusTerms = new InequalityTerm[multiplyInputs.size()];
+                    for (int i = 0; i < plusTerms.length; i++) {
+                        plusTerms[i] = getPropertyTerm(multiplyInputs.get(i));
+                    }
+                    setAtLeast(actor.multiply, new ConceptFunctionInequalityTerm(
+                            new ApplyBinaryFunctionToMultipleArguments("productMultiplyInputs",
+                                    _solver.getOntology(), multiplyFunction),
+                                    plusTerms));
+                }               
+                
+                // If the divide input is a multiport with multiple input ports,
+                // set up the constraint to be the product of the inputs.
+                List divideInputs = _getSourcePortList(actor.divide);
+                if (divideInputs.size() > 1) {
+                    InequalityTerm[] divideTerms = new InequalityTerm[divideInputs.size()];
+                    for (int i = 0; i < divideTerms.length; i++) {
+                        divideTerms[i] = getPropertyTerm(divideInputs.get(i));
+                    }
+                    setAtLeast(actor.divide, new ConceptFunctionInequalityTerm(
+                            new ApplyBinaryFunctionToMultipleArguments("productDivideInputs",
+                                    _solver.getOntology(), multiplyFunction),
+                                    divideTerms));
+                }
+                
+                // If the divide input port is unconnected, then the output
+                // is >= multiply input.
+                if (divideInputs.size() == 0) {
+                    setAtLeast(actor.output, actor.multiply);
+                
+                // If the multiply input port is unconnected, then the output
+                // is >= reciprocal of the divide input.
+                } else if (multiplyInputs.size() == 0) {
+                    setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
+                            reciprocalFunction,
+                            new InequalityTerm[]{ getPropertyTerm(actor.divide) })); 
+                    
+                // Otherwise the output is >= multiply input / divide input.
+                } else {
+                    setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
+                            divideFunction,
+                            new InequalityTerm[]{ getPropertyTerm(actor.multiply),
+                                                  getPropertyTerm(actor.divide) }));
+                }
+            }
+        }
+
+        // Add back in default constraints for the output to input relationship.
+        if (!_useDefaultConstraints && (interconnectConstraintType == ConstraintType.EQUALS ||
+                interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+            setAtLeast(actor.multiply, actor.output);
+            setAtLeast(actor.divide, actor.output);
         }
 
         return super.constraintList();
@@ -131,9 +177,12 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
     
+    /** The division concept function definition found in the solver model. */
+    private DivideConceptFunctionDefinition _divideDefinition;
+    
     /** The multiplication concept function definition found in the solver model. */
     private MultiplyConceptFunctionDefinition _multiplyDefinition;
     
-    /** The division concept function definition found in the solver model. */
-    private DivideConceptFunctionDefinition _divideDefinition;
+    /** The reciprocal concept function definition found in the solver model. */
+    private UnaryOperationMonotonicFunctionDefinition _reciprocalDefinition;
 }

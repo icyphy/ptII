@@ -231,6 +231,16 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             IOPort port = (IOPort) ports.next();
             _constrainObject(actorConstraintType, port, portList2);
         }
+        
+        for (TypedIOPort port : (List<TypedIOPort>) 
+                _getConstraintedPorts(constraintSource)) {
+            
+            // Add default constraints for multiports with more than one channel.
+            if (((TypedIOPort) port).isMultiport() && ((TypedIOPort) port).getWidth() > 1) {
+                _constrainObject(interconnectConstraintType, port,
+                        _getConstraintingPorts(constraintSource, port));
+            }
+        }
     }
 
     /**

@@ -270,7 +270,15 @@ public class ConceptGraph implements CPO {
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            return (Concept)_dag.leastUpperBound(e1, e2);
+            Concept lub = (Concept)_dag.leastUpperBound(e1, e2);
+            
+            // If the least upper bound is a representative for a set of flat
+            // infinite concepts but is not either of the two inputs, then the
+            // actual lub must be at least one level above it.
+            if (lub instanceof FlatTokenRepresentativeConcept && !lub.equals(e1) && !lub.equals(e2)) {
+                lub = leastUpperBound(((FiniteConcept) lub).getStrictDominators().toArray());
+            }
+            return lub;
         } else if (e1 instanceof InfiniteConcept) {
             return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
         } else { // (e2 instanceof InfiniteConcept)

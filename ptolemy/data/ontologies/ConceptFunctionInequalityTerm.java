@@ -68,7 +68,8 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
         if (_conceptFunction == null) {
             throw new IllegalActionException(
                     "The conceptFunction cannot be null.");
-        } else if (_conceptFunction.getNumberOfArguments() != inputTerms.length) {
+        } else if (_conceptFunction.isNumberOfArgumentsFixed() &&
+                _conceptFunction.getNumberOfArguments() != inputTerms.length) {
             throw new IllegalActionException(
                     "Wrong number of input arguments for the concept function "
                             + "contained by "

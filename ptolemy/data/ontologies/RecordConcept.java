@@ -64,7 +64,7 @@ public class RecordConcept extends InfiniteConcept {
     /** Create a new record concept, belonging to the given
      *  ontology, with an automatically generated name.
      * 
-     *  @param ontology The finite ontology to which this concept belongs.
+     *  @param ontology The ontology to which this concept belongs.
      *  @return The newly created RecordConcept.
      *  @throws IllegalActionException If the base class throws it.
      */
@@ -117,20 +117,26 @@ public class RecordConcept extends InfiniteConcept {
 
         RecordConcept righthandSide = (RecordConcept) concept;
         CPO graph = getOntology().getConceptGraph();
-
         Set<String> fieldLabels = _fieldToConcept.keySet();
-        Set<String> otherFieldLabels = righthandSide._fieldToConcept.keySet();
+        Set<String> otherFieldLabels = righthandSide._fieldToConcept.keySet();        
+        Boolean isSuperset = fieldLabels.containsAll(otherFieldLabels);
+        Boolean isSubset = otherFieldLabels.containsAll(fieldLabels);
         
-        // If the set of record labels are not the same, the two record concepts
-        // are incomparable.
-        if (!fieldLabels.equals(otherFieldLabels)) {
+        // If neither record concept is a subset of the other, then they are
+        // incomparable.
+        if (!isSuperset && !isSubset) {
             return CPO.INCOMPARABLE;
+        }
+        
+        Set<String> commonFields = fieldLabels;
+        if (isSuperset) {
+            commonFields = otherFieldLabels;
         }
         
         boolean seenHigher = false;
         boolean seenLower = false;
         boolean seenIncomparable = false;
-        for (String field : fieldLabels) {
+        for (String field : commonFields) {
             int result = graph.compare(getFieldConcept(field),
                     righthandSide.getFieldConcept(field));
             switch (result) {
@@ -145,11 +151,14 @@ public class RecordConcept extends InfiniteConcept {
                                 "never happen.");
             }
         }
-        if (!seenHigher && !seenLower && !seenIncomparable) {
+        // Following the Ptolemy type system conventions, a record that has a superset
+        // of fields is lower in the lattice, and a record that has a subset of fields
+        // is higher in the lattice.
+        if (!seenHigher && !seenLower && !seenIncomparable && isSubset && isSuperset) {
             return CPO.SAME;
-        } else if (seenHigher && !seenLower && !seenIncomparable) {
+        } else if (seenHigher && !seenLower && !seenIncomparable && isSubset) {
             return CPO.HIGHER;
-        } else if (seenLower && !seenHigher && !seenIncomparable) {
+        } else if (seenLower && !seenHigher && !seenIncomparable && isSuperset) {
             return CPO.LOWER;
         } else {
             return CPO.INCOMPARABLE;            
@@ -210,15 +219,25 @@ public class RecordConcept extends InfiniteConcept {
         }
 
         Set<String> fieldLabels = this._fieldToConcept.keySet();
-        Set<String> otherFieldLabels = concept._fieldToConcept.keySet();
+        Set<String> otherFieldLabels = concept._fieldToConcept.keySet();      
+        Boolean isSuperset = fieldLabels.containsAll(otherFieldLabels);
+        Boolean isSubset = otherFieldLabels.containsAll(fieldLabels);
         
-        // If the set of record labels are not the same, the two record concepts
-        // are incomparable, so their least upper bound is the top of the lattice.
-        if (!fieldLabels.equals(otherFieldLabels)) {
+        // If neither record concept is a subset of the other, then they are
+        // incomparable and the least upper bound is top.
+        if (!isSuperset && !isSubset) {
             return getOntology().getConceptGraph().top();
         }
         
-        for (String field : fieldLabels) {
+        Set<String> commonFields = fieldLabels;
+        if (isSuperset) {
+            commonFields = otherFieldLabels;
+        }
+        
+        // The least upper bound is the record concept that only contains
+        // the common fields and the least upper bound of each concept in that
+        // field.
+        for (String field : commonFields) {
             ConceptGraph graph = this.getOntology().getConceptGraph();
             Concept fieldConcept = graph.leastUpperBound(
                     this.getFieldConcept(field),
@@ -263,6 +282,9 @@ public class RecordConcept extends InfiniteConcept {
             result.append(getFieldConcept(key));
             result.append(',');
         }
+        if (result.charAt(result.length() - 1) == ',') {
+            result.deleteCharAt(result.length() - 1);
+        }
         result.append(" }");
         return result.toString();
     }
@@ -273,10 +295,7 @@ public class RecordConcept extends InfiniteConcept {
     /** Create a new Record concept, belonging to the given
      *  ontology.
      * 
-     *  @param ontology The finite ontology to which this belongs.
-     *    This should be the 4 element monotonicity lattice if we
-     *    are really going to be doing inference on monotonicity
-     *    of expressions.
+     *  @param ontology The ontology to which this RecordConcept belongs.
      *  @throws NameDuplicationException Should never be thrown.
      *  @throws IllegalActionException If the base class throws it.
      */

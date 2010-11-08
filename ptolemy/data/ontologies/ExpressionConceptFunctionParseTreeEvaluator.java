@@ -279,7 +279,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
 
         Concept outputConcept = null;
         for (Ontology domainOntology : _domainOntologies) {
-            outputConcept = (Concept) domainOntology.getEntity(conceptName);
+            outputConcept = (Concept) domainOntology.getConceptByName(conceptName);
             if (outputConcept != null) {
                 break;
             }
