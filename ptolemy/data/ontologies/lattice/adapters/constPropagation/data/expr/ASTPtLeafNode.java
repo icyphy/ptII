@@ -1,4 +1,4 @@
-/* The adapter class for ptolemy.data.expr.ASTPtLeafNode for constPropagation ontology.
+/* The adapter class for ptolemy.data.expr.ASTPtLeafNode for the constPropagation ontology.
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -30,11 +30,8 @@ package ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr;
 
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
-import ptolemy.data.ontologies.FlatScalarTokenInfiniteConcept;
-import ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept;
+import ptolemy.data.ontologies.FlatTokenInfiniteConcept;
 import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
@@ -45,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ASTPtLeafNode
 
 /**
- The adapter class for ptolemy.data.expr.ASTPtRootNode for constPropagation ontology.
+ The adapter class for ptolemy.data.expr.ASTPtLeafNode for the constPropagation ontology.
 
  @author Charles Shelton
  @version $Id$
@@ -84,7 +81,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                 FlatTokenRepresentativeConcept constantValueConcept =
                     (FlatTokenRepresentativeConcept) _solver.getOntology().
                         getConceptByName("ConstantValue");
-                setAtLeast(node, FlatScalarTokenInfiniteConcept.
+                setAtLeast(node, FlatTokenInfiniteConcept.
                         createFlatTokenInfiniteConcept(
                                 _solver.getOntology(), constantValueConcept,
                                 nodeToken));

@@ -40,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  {@link ptolemy.data.ontologies.Concept}
 
  @author Ben Lickly
+ @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Red (blickly)
  @Pt.AcceptedRating Red (blickly)

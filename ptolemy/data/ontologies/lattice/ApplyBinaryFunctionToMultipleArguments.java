@@ -61,7 +61,9 @@ public class ApplyBinaryFunctionToMultipleArguments extends ConceptFunction {
      *  @throws IllegalActionException Thrown if the given binary concept function
      *   is not specified to have exactly 2 arguments.
      */
-    public ApplyBinaryFunctionToMultipleArguments(String name, Ontology inputOutputOntology, ConceptFunction binaryFunction) throws IllegalActionException {
+    public ApplyBinaryFunctionToMultipleArguments(String name,
+            Ontology inputOutputOntology, ConceptFunction binaryFunction)
+        throws IllegalActionException {
         super(name, false, new LinkedList<Ontology>(), inputOutputOntology);
         
         if (!binaryFunction.isNumberOfArgumentsFixed() ||
