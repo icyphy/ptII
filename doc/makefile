@@ -386,13 +386,9 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice \
 	ptolemy.data.ontologies.lattice.adapters.constAbsIntObservable.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
-	ptolemy.data.ontologies.lattice.adapters.dimensionSystem \
-	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor \
-	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib \
-	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib.logic \
-	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.domains.continuous.lib \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr \
