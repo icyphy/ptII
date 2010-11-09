@@ -200,8 +200,12 @@ import ptolemy.util.RunnableExceptionCatcher;
  ... make changes here (e.g. setMarksStyle()) ...
  }
  };
- plot.deferIfNecessary(doAction);
+ synchronized (plot) {
+     plot.deferIfNecessary(doAction);
+ } 
  </pre>
+ Note that deferIfNecessary() is not synchronized, but the caller of
+ deferIfNecessary() should be synchronized on the Plot object.
  <p>
  This plotter has some <A NAME="ptplot limitations">limitations</a>:
  <ul>
