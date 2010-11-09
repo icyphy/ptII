@@ -25,6 +25,7 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.graph.Inequality;
@@ -33,10 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** A simple adapter for expressions that just connects the output port to the
  *  overall expression result.
- *  
- *  FIXME: Is there a way this functionality can be provided in the
- *  defaultAdapters?
- *  
+ *
  *  @author Ben Lickly
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -44,6 +42,30 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (blickly)
  */
 public class Expression extends LatticeOntologyAdapter {
+
+    /** Return the list of conceptables with the input ports omitted.
+     *  Since the new monotonicity analysis gives the output monotonicity
+     *  in terms of the free variables, there is no need to infer concepts
+     *  for the input variables, and in fact doing so may be confusing, since
+     *  those values are ignored by the expression actor.
+     *
+     *  @return A list of conceptable objects with the input ports removed.
+     *  @see ptolemy.data.ontologies.OntologyAdapter#getPropertyables()
+     */
+    public List<Object> getPropertyables() {
+        List<Object> originalConceptables = super.getPropertyables();
+        List<Object> newConceptables = new LinkedList<Object>();
+        for (Object conceptable : originalConceptables) {
+            if (conceptable instanceof IOPort &&
+                    ((IOPort) conceptable).isInput()) {
+                continue;
+            } else {
+                newConceptables.add(conceptable);
+            }
+            
+        }
+        return newConceptables;
+    }
 
     /** Construct a Expression adapter for the monotonicityAnalysis lattice.
      *  @param solver The given solver.
