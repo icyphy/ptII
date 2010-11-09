@@ -89,7 +89,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  * for each iteration of each actor. The random number generator can be seeded 
  * by the <i>seed</i> parameter. The default value of the seed
  * is 0L interpreted as not having a seed. The user also has the option to reset to 
- * the seed on each run by selecting the <i>resetOnEachRun<\i> parameter. 
+ * the seed on each run by selecting the <i>resetOnEachRun</i> parameter. 
  * A future modification could include adding a parameter to have
  * the user specify what probability distribution they wish to use.
  * 
@@ -161,6 +161,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
                 "probabilityDistribution");
         probabilityDistribution.setExpression("none");
         probabilityDistribution.addChoice("none");
+        
+        _overRunThusFar= 0.0;
 
     }
 
@@ -298,6 +300,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                     }
 
                     public boolean postfire() throws IllegalActionException {
+                        //System.out.println("After firing physical time is now "+_myPhysicalTime +" and model time is now "+((CompositeActor)container).getDirector().getModelTime().getDoubleValue());
                         if (_debugging) {
                             _debug("I should now check to see if there are cumulative overruns");
                         }
@@ -387,6 +390,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
                     // All other methods are empty.
                     public void fire() throws IllegalActionException {
+                       
                         if (_debugging) {
                             _debug("Fire method called in the quantity manager");
                         }
@@ -403,6 +407,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         List<Actor> entities = ((CompositeActor) container)
                                 .deepEntityList();
                         for (Actor actor : entities) {
+                            
+                            
+                                _myPhysicalTime = actor.getDirector().getModelTime().getDoubleValue()+_overRunThusFar;
+                            
                             if (_debugging) {
                                 _debug("checking for actor named "
                                         + actor.getName());
@@ -416,9 +424,16 @@ public class GiottoTimingManager extends SingletonAttribute implements
                             actorWCET = ((DoubleToken) ((Variable) WCET)
                                     .getToken()).doubleValue();
                             double t = _random.nextDouble() * 2 * actorWCET; // I multiply by actorWCET in an attempt to scale
-
+                            if(t>actorWCET){
+                                _overRunThusFar += (t - actorWCET);
+                           _myPhysicalTime+=t;//(_overRunThusFar;
+                            System.out.println("the actor WCET estimate was "+actorWCET+" and the actual execution time was "+ t);
+                            System.out.println("there was an error at model time "+(actor.getDirector().getModelTime().getDoubleValue()+actorWCET)+"physical time is actually "+_myPhysicalTime);
+                           
+                            }
                             Parameter dummyP = (Parameter) executionTime;
                             dummyP.setExpression(Double.toString(t));
+                            
                         }
 
                         if (_debugging) {
@@ -602,6 +617,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
     }
     /**
      * Generate the next random number.
+     * @exception IllegalActionException If a call to nextDouble() throws an 
+     * IllegalActionException
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         _current = _random.nextDouble();
@@ -702,5 +719,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /** The last container on which we piggybacked. */
     private CompositeActor _piggybackContainer;
+    
+    private double _myPhysicalTime;
+    private double _overRunThusFar;
 
 }
