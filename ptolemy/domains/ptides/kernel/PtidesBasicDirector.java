@@ -115,9 +115,9 @@ import ptolemy.moml.MoMLChangeRequest;
  *
  *  <p> This director does not simulate event preemption. That is, if
  *  an event <i>e</i> is processed at simulated physical time
- *  <i>t</t>, and the <i>executionTime</i> parameter of the
- *  destination actor is set to <i>d</t>, then from simulated physical
- *  time <i>t</t> to <i>t + d</t>, <i>e</i> will be the only event
+ *  <i>t</i>, and the <i>executionTime</i> parameter of the
+ *  destination actor is set to <i>d</i>, then from simulated physical
+ *  time <i>t</i> to <i>t + d</i>, <i>e</i> will be the only event
  *  that is processed. Subclasses of this director, however, could
  *  choose to enable preemption. </p>
  * 

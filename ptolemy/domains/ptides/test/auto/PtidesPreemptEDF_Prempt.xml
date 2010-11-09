@@ -12,18 +12,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 76, 979, 463}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 1003, 564}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 450]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3903544162374">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.1097098214287, 267.1328125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.0909090909091, 269.9019886363636}">
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 265.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={353, 145, 918, 655}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 117, 927, 656}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 542]">
         </property>
@@ -42,7 +42,7 @@
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 135.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 125.0]">
             </property>
             <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -52,8 +52,6 @@
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 50.0]">
-            </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -73,12 +71,16 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -111,6 +113,8 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
