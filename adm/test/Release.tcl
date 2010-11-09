@@ -78,6 +78,7 @@ ptolemy.actor.corba.CorbaIOUtil
 ptolemy.actor.corba.util
 ptolemy.actor.lib.javasound.test.pitchshift
 ptolemy.actor.lib.jxta
+ptolemy.actor.lib.reactable
 ptolemy.actor.lib.tutorial
 ptolemy.backtrack.automatic.ptolemy.math
 ptolemy.backtrack.eclipse.plugin.actions.codestyle
