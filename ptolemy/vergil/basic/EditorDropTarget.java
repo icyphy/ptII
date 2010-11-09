@@ -119,6 +119,10 @@ public class EditorDropTarget extends DropTarget {
         _dropIntoEnabled = enabled;
     }
 
+    /** Return the Vector of listeners that have been registered.
+     *  @return The listeners that have been registered with
+     *  {@link #registerAdditionalListener(DropTargetListener)}.
+     */
     public Vector<DropTargetListener> getAdditionalListeners() {
         return _additionalListeners;
     }

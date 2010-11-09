@@ -390,7 +390,7 @@ public class EditorDropTargetListener implements DropTargetListener {
     }
 
     /** Links this Listener back to the EditorDropTarget it belongs to.
-     *  @param droptarget The drop target.
+     *  @param dropTarget The drop target.
      */
     public void setDropTarget(EditorDropTarget dropTarget) {
         _dropTarget = dropTarget;
