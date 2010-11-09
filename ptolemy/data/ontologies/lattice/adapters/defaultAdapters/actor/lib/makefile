@@ -52,7 +52,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 JSRCS = \
+	AddSubtract.java \
 	MultiplyDivide.java \
+	RecordAssembler.java \
+	RecordDisassembler.java \
 	Scale.java
 
 EXTRA_SRCS =    $(JSRCS)

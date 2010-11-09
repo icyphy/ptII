@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation/data/expr
+ME =		ptolemy/data/ontologies/lattice/adapters/constPropagation/data/expr
 
 DIRS =
 
@@ -43,11 +43,11 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	expr
+PTPACKAGE = 	expr
+PTCLASSJAR =	$(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =
 PTCLASSALLJAR =
-PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	ASTPtLeafNode.java

@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id$
+# $Id: makefile 59717 2010-11-01 17:44:48Z bldmastr $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/constPropagation/data
+ME =		ptolemy/data/ontologies/lattice/adapters/constPropagation
 
-DIRS = 		expr
+DIRS = 		data
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,16 +43,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	data
+PTPACKAGE = 	constPropagation
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	expr/expr.jar
+	data/data.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	ConstPropagationSolverModel.xml \
+	constPropagation.xml	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -33,6 +33,7 @@ ME =		ptolemy/data/ontologies/lattice/adapters
 
 DIRS = 		constAbsIntObservable constAbstractInterpretation \
 		constLattice constObservableProductLattice \
+		constPropagation \
 		defaultAdapters dimensionSystem monotonicityAnalysis \
 		observableLattice \
 		reachableLattice
@@ -54,6 +55,7 @@ PTCLASSALLJARS = \
 	constAbstractInterpretation/constAbstractInterpretation.jar \
 	constLattice/constLattice.jar \
 	constObservableProductLattice/constObservableProductLattice.jar \
+	constPropagation/constPropagation.jar \
 	defaultAdapters/defaultAdapters.jar \
 	dimensionSystem/dimensionSystem.jar \
 	monotonicityAnalysis/monotonicityAnalysis.jar \
