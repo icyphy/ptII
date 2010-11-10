@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.5049715909092, 365.3001893939394}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{477.7805397727273, 368.0393781565656}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -36,7 +36,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
         </property>
     </property>
     <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
@@ -57,7 +57,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
         </property>
     </property>
     <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
@@ -78,7 +78,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
         </property>
     </property>
     <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
@@ -99,7 +99,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
         </property>
     </property>
     <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
@@ -120,7 +120,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
         </property>
     </property>
     <property name="ConstAbsIntObservableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
@@ -184,7 +184,7 @@
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -210,7 +210,7 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -257,7 +257,7 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -283,7 +283,7 @@
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -356,7 +356,7 @@
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -382,7 +382,7 @@
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -429,7 +429,7 @@
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -455,7 +455,7 @@
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -528,7 +528,7 @@
     </entity>
     <entity name="Const9" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -554,7 +554,7 @@
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -601,7 +601,7 @@
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -627,7 +627,7 @@
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -700,7 +700,7 @@
     </entity>
     <entity name="Const13" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -726,7 +726,7 @@
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -773,7 +773,7 @@
     </entity>
     <entity name="Const15" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -799,7 +799,7 @@
     </entity>
     <entity name="Const16" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -872,7 +872,7 @@
     </entity>
     <entity name="Const17" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -898,7 +898,7 @@
     </entity>
     <entity name="Const18" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -945,7 +945,7 @@
     </entity>
     <entity name="Const19" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -971,7 +971,7 @@
     </entity>
     <entity name="Const20" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1044,7 +1044,7 @@
     </entity>
     <entity name="Const21" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1070,7 +1070,7 @@
     </entity>
     <entity name="Const22" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1117,7 +1117,7 @@
     </entity>
     <entity name="Const23" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1143,7 +1143,7 @@
     </entity>
     <entity name="Const24" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1216,7 +1216,7 @@
     </entity>
     <entity name="Const25" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1242,7 +1242,7 @@
     </entity>
     <entity name="Const26" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1289,7 +1289,7 @@
     </entity>
     <entity name="Const27" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1315,7 +1315,7 @@
     </entity>
     <entity name="Const28" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>

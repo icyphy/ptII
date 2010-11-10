@@ -52,32 +52,6 @@
         <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
     </property>
-    <property name="AddSubtractActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
-        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.AddSubtract">
-        </property>
-        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.AddSubtract">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg>
-<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
-<text x="-13" y="-5" style="font-size:18">
-+ 
-</text>
-<text x="-13" y="7" style="font-size:18">
-_ 
-</text>
-</svg>
-</configure>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
-        </property>
-        <property name="plusPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-        </property>
-        <property name="minusPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-        </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= plus ; &gt;= minus">
-        </property>
-    </property>
     <property name="IntegratorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
         </property>
@@ -193,7 +167,7 @@ _
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 140.0]">
         </property>
         <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyFunction(output, divide)">
         </property>
@@ -213,7 +187,7 @@ _
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 210.0]">
         </property>
         <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(output, factor)">
         </property>

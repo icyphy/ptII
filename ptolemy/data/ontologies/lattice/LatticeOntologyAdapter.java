@@ -134,12 +134,15 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * Returns true if the interconnectConstraintType is for sources, false otherwise.
      * It will return only true if {@linkplain #interconnectConstraintType
      * interconnectConstraintType} is set to
-     * {@linkplain ConstraintType#SOURCE_GE_SINK SOURCE_GE_SINK}
+     * {@linkplain ConstraintType#SOURCE_GE_SINK SOURCE_GE_SINK} or
+     * {@linkplain ConstraintType#EQUALS EQUALS}.
      * 
      * @return true if the interconnectConstraintType is for sources, false otherwise
      */
     public boolean isConstraintSource() {
-        boolean constraintSource = interconnectConstraintType == ConstraintType.SOURCE_GE_SINK;
+        boolean constraintSource =
+            interconnectConstraintType == ConstraintType.SOURCE_GE_SINK ||
+            interconnectConstraintType == ConstraintType.EQUALS;
         return constraintSource;
     }
     
@@ -232,13 +235,14 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             _constrainObject(actorConstraintType, port, portList2);
         }
         
+        boolean constrainPortConnectionSources = isConstraintSource();
         for (TypedIOPort port : (List<TypedIOPort>) 
-                _getConstraintedPorts(constraintSource)) {
+                _getConstraintedPorts(constrainPortConnectionSources)) {
             
             // Add default constraints for multiports with more than one channel.
             if (((TypedIOPort) port).isMultiport() && ((TypedIOPort) port).getWidth() > 1) {
                 _constrainObject(interconnectConstraintType, port,
-                        _getConstraintingPorts(constraintSource, port));
+                        _getConstraintingPorts(constrainPortConnectionSources, port));
             }
         }
     }

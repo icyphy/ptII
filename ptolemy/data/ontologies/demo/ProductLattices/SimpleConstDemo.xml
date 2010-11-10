@@ -22,7 +22,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1514313919052">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.7547163529829, 178.8697468150746}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.7547163529829, 178.8697468150745}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -38,7 +38,7 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -64,7 +64,7 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="20">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -90,7 +90,7 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="30">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -116,7 +116,7 @@
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>

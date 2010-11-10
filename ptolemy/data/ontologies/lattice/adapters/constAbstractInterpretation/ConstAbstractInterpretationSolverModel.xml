@@ -100,7 +100,7 @@ _
         <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
     </property>
-    <property name="MultiplyDivideActorConstraints2" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+    <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
@@ -199,7 +199,7 @@ _
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 320.0]">
         </property>
     </property>
     <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition">
@@ -207,7 +207,7 @@ _
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 375.0]">
         </property>
     </property>
     <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
@@ -215,7 +215,7 @@ _
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 430.0]">
         </property>
     </property>
     <property name="notFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
@@ -256,7 +256,7 @@ _
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 470.0]">
         </property>
         <property name="trueInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
@@ -402,7 +402,7 @@ _
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 470.0]">
         </property>
         <property name="BooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
@@ -661,6 +661,14 @@ _
                 <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
                 </property>
             </property>
+        </property>
+    </property>
+    <property name="reciprocalFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Zero ? Unknown :&#10;  arg &lt;= Positive ? Positive :&#10;   arg &lt;= Negative ? Negative :&#10;    arg &lt;= ScalarConst ? ScalarConst :&#10;     arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;      Undefined">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbstractInterpretation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 270.0]">
         </property>
     </property>
     <entity name="constAbstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.constAbstractInterpretation">

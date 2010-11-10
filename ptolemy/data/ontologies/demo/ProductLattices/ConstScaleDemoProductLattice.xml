@@ -15,7 +15,7 @@
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 15.0}">
         </property>
     </property>
     <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
@@ -120,7 +120,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 80.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
         </property>
     </property>
     <property name="ConstAbsIntObservableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
@@ -349,7 +349,7 @@
     </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
@@ -483,7 +483,7 @@
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -671,7 +671,7 @@
     </entity>
     <entity name="Scale8" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
@@ -753,7 +753,7 @@
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -833,7 +833,7 @@
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -887,7 +887,7 @@
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>

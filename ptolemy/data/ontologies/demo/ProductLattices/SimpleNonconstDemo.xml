@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1514313919052">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.1705246913578, 239.4460733882021}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.1705246913578, 239.4460733882022}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates a simple product lattice that&#10;combines the constant-nonconstant and observable-unobservable&#10;analyses.">
@@ -38,7 +38,7 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -64,7 +64,7 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="20">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -90,7 +90,7 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="30">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -116,7 +116,7 @@
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -142,7 +142,7 @@
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="60">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -168,7 +168,7 @@
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="70">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -194,7 +194,7 @@
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="80">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnused">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnused">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>

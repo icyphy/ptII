@@ -217,12 +217,18 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             }
         }
         
+        /* FIXME: Charles Shelton - I added this code to enable the
+         * ProductLatticeOntologySolver to use the RecordAssembler and
+         * RecordDisassembler default adapters, but it breaks the normal
+         * ontology resolution for product lattices. Need to fix this, but
+         * for now I will comment it out.
         if (adapter == null) {
             try {
                 adapter = OntologySolverBase._getAdapter(component, this);
             } catch (IllegalActionException ex) {
             }
         }
+        */
         
         if (adapter == null) {
             if (component instanceof CompositeEntity) {
