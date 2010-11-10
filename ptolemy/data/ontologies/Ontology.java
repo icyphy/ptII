@@ -261,7 +261,7 @@ public class Ontology extends CompositeEntity {
             _graph = new DAGConceptGraph();
             List<FiniteConcept> concepts = entityList(FiniteConcept.class);
             for (FiniteConcept concept : concepts) {
-                _graph.addNodeWeight(concept);
+                _graph.addConcept(concept);
             }
             for (FiniteConcept concept : concepts) {
                 List<ConceptRelation> relationLinks = concept.abovePort
@@ -271,9 +271,8 @@ public class Ontology extends CompositeEntity {
                             .linkedPortList(concept.abovePort);
                     assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
-                        _graph
-                                .addEdge(concept, (FiniteConcept)remotePort.getContainer(),
-                                        link);
+                        _graph.addRelation(concept,
+                                (FiniteConcept) remotePort.getContainer(), link);
                     }
                 }
             }

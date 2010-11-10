@@ -23,12 +23,8 @@
  */
 package ptolemy.data.ontologies;
 
-import java.util.Collection;
-
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.graph.Edge;
-import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -57,30 +53,30 @@ public class DAGConceptGraph extends ConceptGraph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a relation between two Concepts as an edge to the graph.
-     *
-     *  @param weight1 The source concept
-     *  @param weight2 The sink concept
-     *  @param newEdgeWeight The ConceptRelation between the two concepts weight1
-     *   and weight2.
-     *  @return The set of edges that were added; each element
-     *   of this set is an instance of {@link Edge}.
-     *  @exception IllegalArgumentException If the newEdgeWeight argument is not an
-     *   instance of {@link ConceptRelation}.
+    /** Add a concept to this concept graph.
+     *  @param concept The concept.
+     *  @exception IllegalArgumentException If the concept we are trying to
+     *   add is already contained in this concept graph.
      */
-    public Collection<Edge> addEdge(FiniteConcept weight1, FiniteConcept weight2,
-            ConceptRelation newEdgeWeight) {
-        return _dag.addEdge(weight1, weight2, newEdgeWeight);
+    public void addConcept(FiniteConcept concept) {
+        if (!_dag.containsNodeWeight(concept)) {
+            _dag.addNodeWeight(concept);
+        } else {
+            throw new IllegalArgumentException("Cannot add concept " + concept
+                    + " as it is already contained in this concept graph.");
+        }
     }
 
-    /** Add a concept to this concept graph.
-     *  @param weight The concept.
-     *  @return The constructed node in the graph.
-     *  @exception IllegalArgumentException If the argument is not
-     *   an instance of {@link FiniteConcept}.
+    /** Add a relation between two Concepts as an edge to the graph.
+     *
+     *  @param concept1 The source concept
+     *  @param concept2 The sink concept
+     *  @param conceptRelation The ConceptRelation between the two concepts
+     *   concept1 and conceptt2.
      */
-    public Node addNodeWeight(FiniteConcept weight) {
-        return _dag.addNodeWeight(weight);
+    public void addRelation(FiniteConcept concept1, FiniteConcept concept2,
+            ConceptRelation conceptRelation) {
+        _dag.addEdge(concept1, concept2, conceptRelation);
     }
 
     /** Return the least element of this concept graph.
