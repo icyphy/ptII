@@ -1,26 +1,25 @@
-/*
- * The data structure for the graph of relations between concepts in an ontology.
- * 
+/* A data structure representing DAGs of concepts in an ontology.
+ *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
+ *
  */
 package ptolemy.data.ontologies;
 
@@ -33,27 +32,22 @@ import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-//// ConceptGraph
+//// DAGConceptGraph
 
-/** A data structure defining the relationships in an ontology. An ontology is a set of concepts
- *  and the relationships between them.  In a general ontology the graph describing the relationships
- *  between concepts need not be a directed acyclic graph (DAG).  But we restrict our implementation
- *  to a DAG because we currently deal only with ontologies than can be partially ordered. This is
- *  particularly important for an ontology whose graph is a lattice, where we can use the Reihof and
- *  Mogensen algorithm to do a scalable analysis
- *  and inference on a model to assign concepts from the ontology to each element in the model.
- *  This specialization is implemented as a {@linkplain ptolemy.data.ontologies.lattice.LatticeOntologySolver
- *  LatticeOntologySolver}, a subclass of {@linkplain OntologySolver}.
- * 
- * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
- * @see ptolemy.graph.CPO
+/** A data structure representing relationships of ontologies whose structure
+ *  can be represented as a directed acyclic graph of concepts.
+ *  This corresponds directly to the subset of ontologies that users can
+ *  costruct in the Ontology Editor.
+ *
+ *  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
+ *  @see ptolemy.data.ontologies.ConceptGraph
  */
 public class DAGConceptGraph extends ConceptGraph {
-    
+
     /** Create an empty concept graph with no concepts in it.
      */
     public DAGConceptGraph() {
@@ -63,17 +57,16 @@ public class DAGConceptGraph extends ConceptGraph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Add a relation between two Concepts as an edge to the graph.
-     * 
-     * @param weight1 The source concept
-     * @param weight2 The sink concept
-     * @param newEdgeWeight The ConceptRelation between the two concepts weight1
-     *  and weight2.
-     * @return The set of edges that were added; each element
-     *  of this set is an instance of {@link Edge}.
-     * @exception IllegalArgumentException If the newEdgeWeight argument is not an
-     *  instance of {@link ConceptRelation}.
+    /** Add a relation between two Concepts as an edge to the graph.
+     *
+     *  @param weight1 The source concept
+     *  @param weight2 The sink concept
+     *  @param newEdgeWeight The ConceptRelation between the two concepts weight1
+     *   and weight2.
+     *  @return The set of edges that were added; each element
+     *   of this set is an instance of {@link Edge}.
+     *  @exception IllegalArgumentException If the newEdgeWeight argument is not an
+     *   instance of {@link ConceptRelation}.
      */
     public Collection<Edge> addEdge(FiniteConcept weight1, FiniteConcept weight2,
             ConceptRelation newEdgeWeight) {
@@ -134,14 +127,14 @@ public class DAGConceptGraph extends ConceptGraph {
         }
     }
 
-    /** Compute the down-set of an element in this CPO.
+    /** Compute the down-set of an element in this concept graph.
      *  The down-set of an element is the subset consisting of
      *  all the elements lower than or the same as the specified element.
-     *  @param e An Object representing an element in this CPO.
+     *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the down-set of the
      *   specified element.
      *  @exception IllegalArgumentException If the specified Object is not
-     *   an element in this CPO, or the resulting set is infinite.
+     *   an element in this concept graph, or the resulting set is infinite.
      */
     public Concept[] downSet(Object e) {
         // FIXME: What happens if the downSet should contain some InfiniteConcepts
@@ -163,14 +156,14 @@ public class DAGConceptGraph extends ConceptGraph {
     }
 
     /** Compute the greatest lower bound (GLB) of two elements.
-     *  The GLB of two elements is the greatest element in the CPO
+     *  The GLB of two elements is the greatest element in the concept graph
      *  that is lower than or the same as both of the two elements.
-     *  @param e1 An Object representing an element in this CPO.
-     *  @param e2 An Object representing an element in this CPO.
-     *  @return An Object representing the GLB of the two specified
+     *  @param e1 An Object representing an element in this concept graph.
+     *  @param e2 An Object representing an element in this concept graph.
+     *  @return A Concept representing the GLB of the two specified
      *   elements, or <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException If at least one of the
-     *   specified Objects is not an element of this CPO.
+     *   specified Objects is not an element of this concept graph.
      */
     public Concept greatestLowerBound(Object e1, Object e2) {
         if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
@@ -190,14 +183,14 @@ public class DAGConceptGraph extends ConceptGraph {
     }
 
     /** Compute the least upper bound (LUB) of two elements.
-     *  The LUB of two elements is the least element in the CPO
+     *  The LUB of two elements is the least element in the concept graph
      *  that is greater than or the same as both of the two elements.
-     *  @param e1 An Object representing an element in this CPO.
-     *  @param e2 An Object representing an element in this CPO.
-     *  @return An Object representing the LUB of the two specified
+     *  @param e1 An Object representing an element in this concept graph.
+     *  @param e2 An Object representing an element in this concept graph.
+     *  @return A Concept representing the LUB of the two specified
      *   elements, or <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException If at least one of the
-     *   specified Objects is not an element of this CPO.
+     *   specified Objects is not an element of this concept graph.
      */
     public Concept leastUpperBound(Object e1, Object e2) {
         if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
@@ -207,7 +200,7 @@ public class DAGConceptGraph extends ConceptGraph {
         }
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
             Concept lub = (Concept)_dag.leastUpperBound(e1, e2);
-            
+
             // If the least upper bound is a representative for a set of flat
             // infinite concepts but is not either of the two inputs, then the
             // actual lub must be at least one level above it.
@@ -229,10 +222,10 @@ public class DAGConceptGraph extends ConceptGraph {
         return (Concept)_dag.top();
     }
 
-    /** Compute the up-set of an element in this CPO.
+    /** Compute the up-set of an element in this concept graph.
      *  The up-set of an element is the subset consisting of
      *  all the elements higher than or the same as the specified element.
-     *  @param e An Object representing an element in this CPO.
+     *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the up-set of the
      *   specified element.
      *  @exception IllegalArgumentException Always thrown.
