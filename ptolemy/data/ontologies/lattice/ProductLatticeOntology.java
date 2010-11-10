@@ -128,19 +128,6 @@ public class ProductLatticeOntology extends Ontology {
         }
     }
     
-    /** Get the concept graph for this product lattice ontology.
-     *  @return The concept graph which is a {@link ProductLatticeCPO}.
-     */
-    public ConceptGraph getConceptGraph() {
-        if (workspace().getVersion() != _cpoVersion) {            
-            _conceptGraph = new ProductLatticeCPO(this);
-            
-            // Set the CPO version after creating the new CPO
-            _cpoVersion = workspace().getVersion();
-        }        
-        return _conceptGraph;
-    }
-    
     /** Return the list of lattice ontologies that comprise the product
      *  lattice ontology.
      *  @return The list of lattice ontology objects.
@@ -201,6 +188,24 @@ public class ProductLatticeOntology extends Ontology {
         } else {
             return false;
         }        
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Return the graph represented by this ontology. For a product lattice
+     *  ontology this is a {@link ProductLatticeCPO}.
+     *  @return The concept graph as a ProductLatticeCPO.
+     */
+    protected ConceptGraph _buildConceptGraph() {
+        if (workspace().getVersion() != _graphVersion) {            
+            _graph = new ProductLatticeCPO(this);
+            
+            // Set the graph version after creating the new graph
+            _graphVersion = workspace().getVersion();
+        }
+        
+        return _graph;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -293,12 +298,6 @@ public class ProductLatticeOntology extends Ontology {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** The cached CPO. */
-    private ConceptGraph _conceptGraph;
-    
-    /** The workspace version at which the cached CPO was valid. */
-    private long _cpoVersion = -1L;
     
     /** The list of Ontologies that comprise the product lattice ontology. */
     private List<Ontology> _latticeOntologies;

@@ -93,14 +93,14 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
      *  @return The representative concept.
      */
     public FlatScalarTokenRepresentativeConcept getRepresentative() {
-        return _representative;
+        return (FlatScalarTokenRepresentativeConcept) _representative;
     }
 
     /** Get the token value contained by this concept.
      *  @return The token value contained by this concept.
      */
     public ScalarToken getTokenValue() {
-        return _tokenValue;
+        return (ScalarToken) _tokenValue;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -122,15 +122,4 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, value);
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    
-    /** The finite concept that represents where the infinite token concepts belong
-     *  in the ontology lattice.
-     */
-    protected FlatScalarTokenRepresentativeConcept _representative;
-    
-    /** The scalar token value for this FlatScalarTokenInfiniteConcept. */
-    protected ScalarToken _tokenValue;
 }

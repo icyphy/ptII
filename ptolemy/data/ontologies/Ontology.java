@@ -248,20 +248,20 @@ public class Ontology extends CompositeEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
     /** Return the graph represented by this ontology.
      *  Graph is weighted by Concepts on the nodes and ConceptRelations on
      *  the edges.
      *  @return The concept graph.
      */
-    private DAGConceptGraph _buildConceptGraph() {
+    protected ConceptGraph _buildConceptGraph() {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
             _graph = new DAGConceptGraph();
             List<FiniteConcept> concepts = entityList(FiniteConcept.class);
             for (FiniteConcept concept : concepts) {
-                _graph.addConcept(concept);
+                ((DAGConceptGraph) _graph).addConcept(concept);
             }
             for (FiniteConcept concept : concepts) {
                 List<ConceptRelation> relationLinks = concept.abovePort
@@ -271,7 +271,7 @@ public class Ontology extends CompositeEntity {
                             .linkedPortList(concept.abovePort);
                     assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
-                        _graph.addRelation(concept,
+                        ((DAGConceptGraph) _graph).addRelation(concept,
                                 (FiniteConcept) remotePort.getContainer(), link);
                     }
                 }
@@ -287,10 +287,10 @@ public class Ontology extends CompositeEntity {
     ////                         private variables                 ////
 
     /** The cached graph. */
-    private DAGConceptGraph _graph;
+    protected ConceptGraph _graph;
 
     /** The workspace version at which the cached graph was valid. */
-    private long _graphVersion = -1L;
+    protected long _graphVersion = -1L;
 
     /** The icon description used for rendering. */
     private static final String _ICON = "<svg>"

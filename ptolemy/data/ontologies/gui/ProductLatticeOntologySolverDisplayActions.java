@@ -109,8 +109,8 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 ProductLatticeOntology ontology = ((ProductLatticeOntologySolver) displayActions.
                         getContainer()).getOntology();
                 List<Ontology> subOntologies = ontology.getLatticeOntologies();
-                SetHighlightColorsAction[] highlightColorsActions = null;
-                highlightColorsActions = new SetHighlightColorsAction[subOntologies.size() + 1];
+                SetHighlightColorsAction[] highlightColorsActions =
+                    new SetHighlightColorsAction[subOntologies.size() + 1];
                 
                 for (int i = 0; i < subOntologies.size(); i++) {
                     highlightColorsActions[i] = displayActions.new SetHighlightColorsAction(subOntologies.get(i));
@@ -120,7 +120,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 highlightColorsActions[highlightColorsActions.length - 1] = displayActions.new SetHighlightColorsAction(null);
                 
                 // Create the set highlight colors sub menu and add it to the context menu.
-                SetHighlightColorsMenu highlightColorsMenu = displayActions.new SetHighlightColorsMenu(highlightColorsActions, "Set Highlight Colors");           
+                SetHighlightColorsMenu highlightColorsMenu = new SetHighlightColorsMenu(highlightColorsActions, "Set Highlight Colors");           
                 _menuFactory.addMenuItemFactory(highlightColorsMenu);
                 
             } catch (IllegalActionException ex) {
@@ -184,7 +184,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
      *  all the actions that allow the user to specify which of the product
      *  lattice ontology's component ontologies to use for highlighy colors.
      */    
-    private class SetHighlightColorsMenu extends MenuActionFactory {
+    private static class SetHighlightColorsMenu extends MenuActionFactory {
         
         /** Create a new SetHighlightColorsMenu object with the given name
          *  and SetHighlightColors actions.

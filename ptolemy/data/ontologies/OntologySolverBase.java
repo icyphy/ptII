@@ -360,7 +360,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /** Return the concept value associated with the specified object.
      *  @param object The specified object.
      *  @return The property of the specified object.
-     *  @see #setConcept(Object, Concept)}
+     *  @see #setConcept(Object, Concept)
      */
     public Concept getConcept(Object object) {
         return _resolvedProperties.get(object);
