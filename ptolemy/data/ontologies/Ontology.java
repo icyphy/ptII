@@ -255,10 +255,10 @@ public class Ontology extends CompositeEntity {
      *  the edges.
      *  @return The concept graph.
      */
-    private ConceptGraph _buildConceptGraph() {
+    private DAGConceptGraph _buildConceptGraph() {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
-            _graph = new ConceptGraph();
+            _graph = new DAGConceptGraph();
             List<FiniteConcept> concepts = entityList(FiniteConcept.class);
             for (FiniteConcept concept : concepts) {
                 _graph.addNodeWeight(concept);
@@ -288,7 +288,7 @@ public class Ontology extends CompositeEntity {
     ////                         private variables                 ////
 
     /** The cached graph. */
-    private ConceptGraph _graph;
+    private DAGConceptGraph _graph;
 
     /** The workspace version at which the cached graph was valid. */
     private long _graphVersion = -1L;
