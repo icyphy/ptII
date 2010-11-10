@@ -121,7 +121,9 @@ public class ExportPDFAction extends AbstractAction {
             // This exception will occur if the iText library is not installed.
             MessageHandler
                     .error(
-                            "iText library is not installed. See http://itextpdf.com/.",
+                            "iText library is not installed. See http://itextpdf.com/."
+                            + "  You must have iText.jar in your classpath.  Sometimes, "
+                            + "iText.jar may be found in $PTII/vendors/itext/iText.jar.",
                             ex);
             return;
         }
