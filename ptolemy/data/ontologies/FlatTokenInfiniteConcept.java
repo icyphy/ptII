@@ -179,14 +179,14 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             } else {
                 if (lub instanceof FlatTokenRepresentativeConcept) {
                     return getOntology().getConceptGraph().leastUpperBound((
-                            (FiniteConcept) lub).getStrictDominators().toArray());
+                            (FiniteConcept) lub).getCoverSetAbove().toArray());
                 } else {
                     return lub;
                 }
             }
         } else {
             return getOntology().getConceptGraph().leastUpperBound(
-                    _representative.getStrictDominators().toArray());
+                    _representative.getCoverSetAbove().toArray());
         }
     }
 

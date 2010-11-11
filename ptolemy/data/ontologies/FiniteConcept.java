@@ -78,6 +78,34 @@ public class FiniteConcept extends Concept implements Flowable {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    /** Return the finite concepts that cover this one.
+     *  If this concept if x, then we mean here the set of concepts y such
+     *  that x <= y and x <= z < y implies that z = x.
+     *  @return A set of concepts that cover this one.
+     */
+    public Set<FiniteConcept> getCoverSetAbove() {
+        Set<FiniteConcept> cover = new HashSet<FiniteConcept>();
+        List<ComponentPort> ports = abovePort.deepConnectedPortList();
+        for (ComponentPort port : ports) {
+            cover.add((FiniteConcept) port.getContainer());
+        }
+        return cover;
+    }
+
+    /** Return the finite concepts that are covered by this one.
+     *  If this concept if x, then we mean here the set of concepts y such
+     *  that y <= x and y < z <= x implies that z = x.
+     *  @return A set of concepts that are covered by this one.
+     */
+    public Set<FiniteConcept> getCoverSetBelow() {
+        Set<FiniteConcept> covered = new HashSet<FiniteConcept>();
+        List<ComponentPort> ports = belowPort.deepConnectedPortList();
+        for (ComponentPort port : ports) {
+            covered.add((FiniteConcept) port.getContainer());
+        }
+        return covered;
+    }
+
     /** Return the ontology that contains this concept.
      *
      *  @return The containing ontology.
@@ -102,30 +130,6 @@ public class FiniteConcept extends Concept implements Flowable {
      */
     public ComponentPort getOutgoingPort() {
         return abovePort;
-    }
-
-    /** Return the finite concepts that are directly above this one.
-     *  @return A set of concepts that strictly dominate this one.
-     */
-    public Set<FiniteConcept> getStrictDominators() {
-        Set<FiniteConcept> dominators = new HashSet<FiniteConcept>();
-        List<ComponentPort> ports = abovePort.deepConnectedPortList();
-        for (ComponentPort port : ports) {
-            dominators.add((FiniteConcept) port.getContainer());
-        }
-        return dominators;
-    }
-
-    /** Return the finite concepts that are directly below this one.
-     *  @return A set of concepts that are strictly dominated by this one.
-     */
-    public Set<FiniteConcept> getStrictPostdominators() {
-        Set<FiniteConcept> postdominators = new HashSet<FiniteConcept>();
-        List<ComponentPort> ports = belowPort.deepConnectedPortList();
-        for (ComponentPort port : ports) {
-            postdominators.add((FiniteConcept) port.getContainer());
-        }
-        return postdominators;
     }
 
     /**

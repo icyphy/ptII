@@ -299,7 +299,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         ConceptGraph inputLattice = _domainOntology.getConceptGraph();
         List<Concept> downset = Arrays.asList(inputLattice.downSet(constant));
         for (Concept b : downset) {
-            for (Concept d : ((FiniteConcept)b).getStrictDominators()) {
+            for (Concept d : ((FiniteConcept)b).getCoverSetAbove()) {
                 if (downset.contains(d)) {
                     continue;
                 }

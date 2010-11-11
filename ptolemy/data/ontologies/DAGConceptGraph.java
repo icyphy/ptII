@@ -201,7 +201,7 @@ public class DAGConceptGraph extends ConceptGraph {
             // infinite concepts but is not either of the two inputs, then the
             // actual lub must be at least one level above it.
             if (lub instanceof FlatTokenRepresentativeConcept && !lub.equals(e1) && !lub.equals(e2)) {
-                lub = leastUpperBound(((FiniteConcept) lub).getStrictDominators().toArray());
+                lub = leastUpperBound(((FiniteConcept) lub).getCoverSetAbove().toArray());
             }
             return lub;
         } else if (e1 instanceof InfiniteConcept) {
