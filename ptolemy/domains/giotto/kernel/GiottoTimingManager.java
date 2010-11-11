@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.giotto.kernel;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +38,8 @@ import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.Schedule;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -161,8 +164,21 @@ public class GiottoTimingManager extends SingletonAttribute implements
                 "probabilityDistribution");
         probabilityDistribution.setExpression("none");
         probabilityDistribution.addChoice("none");
-        
-        _overRunThusFar= 0.0;
+        _overRunThusFar = 0.0;
+        _totalExpectedExecutionTime = _getDirectorPeriod(container);
+        _totalObservedExecutionTime = 0;
+        // set the error handler
+        NamedObj parentContainer = getContainer().getContainer();
+
+        if (parentContainer != null) {
+            if (parentContainer.getFullName().contains("ModalModel")) {
+                if (_debugging) {
+                    _debug("I've set the model error handler to: "
+                            + parentContainer.getFullName());
+                }
+                setModelErrorHandler(parentContainer);
+            }
+        }
 
     }
 
@@ -300,62 +316,41 @@ public class GiottoTimingManager extends SingletonAttribute implements
                     }
 
                     public boolean postfire() throws IllegalActionException {
-                        //System.out.println("After firing physical time is now "+_myPhysicalTime +" and model time is now "+((CompositeActor)container).getDirector().getModelTime().getDoubleValue());
+
                         if (_debugging) {
                             _debug("I should now check to see if there are cumulative overruns");
                         }
                         _needNew = true;
 
                         // here check to see if there were cumulative timing overruns
-                        // cumulative execution times
-                        double actorExecutionTimes = 0;
-                        // cumulative worst case execution times
-                        double actorWorstCaseExecutionTimes = 0;
 
-                        List<Actor> entities = ((CompositeActor) container)
-                                .deepEntityList();
-                        for (Actor actor : entities) {
-
-                            Attribute executionTime = ((Entity) actor)
-                                    .getAttribute("executionTime");
-                            Attribute WCET = ((Entity) actor)
-                                    .getAttribute("WCET");
-                            try {
-                                actorWorstCaseExecutionTimes += ((DoubleToken) ((Variable) WCET)
-                                        .getToken()).doubleValue();
-
-                                actorExecutionTimes += ((DoubleToken) ((Variable) executionTime)
-                                        .getToken()).doubleValue();
-                            } catch (IllegalActionException ex) {
-                                ex.printStackTrace(); // replace later with more appropriate behavior
-                            }
-
-                        }
                         if (_debugging) {
                             _debug("execution times are: "
-                                    + actorExecutionTimes
-                                    + " actor wcet times are: "
-                                    + actorWorstCaseExecutionTimes);
+                                    + _totalObservedExecutionTime
+                                    + " period is: "
+                                    + _totalExpectedExecutionTime);
                         }
-                        if (actorExecutionTimes > actorWorstCaseExecutionTimes) {
+                        if (_totalObservedExecutionTime > _totalExpectedExecutionTime) {
                             if (_debugging) {
                                 _debug("There was a timing overrun");
                             }
-                            System.out.println("There was a timing overrun");
-
+                            if (_debugging) {
+                                _debug("There was a timing overrun");
+                            }
                             handleModelError(
                                     container,
                                     new IllegalActionException(
                                             container,
                                             "total ExecutionTime  of ("
-                                                    + actorExecutionTimes
-                                                    + ") is larger than WCET ("
-                                                    + actorWorstCaseExecutionTimes
+                                                    + _totalObservedExecutionTime
+                                                    + ") is larger than Period of ("
+                                                    + _totalExpectedExecutionTime
                                                     + ")  for actor "
                                                     + container
                                                             .getDisplayName()));
 
                         }
+                        _totalObservedExecutionTime = 0; // reset the observed time
 
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true /*Although this not a structural change in my point of view
@@ -388,9 +383,14 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         requestChange(request);
                     }
 
-                    // All other methods are empty.
                     public void fire() throws IllegalActionException {
-                       
+                        if (!_readyToFire) {
+                            return;
+                        }
+                        if (_debugging) {
+                            _debug("Inside the fire method and the container is "
+                                    + container);
+                        }
                         if (_debugging) {
                             _debug("Fire method called in the quantity manager");
                         }
@@ -403,43 +403,100 @@ public class GiottoTimingManager extends SingletonAttribute implements
                             _needNew = false;
                         }
 
-                        // assign an execution time to each actor
-                        List<Actor> entities = ((CompositeActor) container)
-                                .deepEntityList();
-                        for (Actor actor : entities) {
-                            
-                            
-                                _myPhysicalTime = actor.getDirector().getModelTime().getDoubleValue()+_overRunThusFar;
-                            
-                            if (_debugging) {
-                                _debug("checking for actor named "
-                                        + actor.getName());
-                            }
-                            double actorWCET;
-                            Attribute executionTime = ((Entity) actor)
-                                    .getAttribute("executionTime");
-
-                            Attribute WCET = ((Entity) actor)
-                                    .getAttribute("WCET");
-                            actorWCET = ((DoubleToken) ((Variable) WCET)
-                                    .getToken()).doubleValue();
-                            double t = _random.nextDouble() * 2 * actorWCET; // I multiply by actorWCET in an attempt to scale
-                            if(t>actorWCET){
-                                _overRunThusFar += (t - actorWCET);
-                           _myPhysicalTime+=t;//(_overRunThusFar;
-                            System.out.println("the actor WCET estimate was "+actorWCET+" and the actual execution time was "+ t);
-                            System.out.println("there was an error at model time "+(actor.getDirector().getModelTime().getDoubleValue()+actorWCET)+"physical time is actually "+_myPhysicalTime);
-                           
-                            }
-                            Parameter dummyP = (Parameter) executionTime;
-                            dummyP.setExpression(Double.toString(t));
-                            
+                        if (!_readyToFire) {
+                            return;
                         }
 
-                        if (_debugging) {
-                            _debug("At the end of the fire method in"
-                                    + " the timing manager");
+                        while ((_unitIndex < _schedule.size())) {
+
+                            // Grab the next minor cycle (unit) schedule to execute.
+                            Schedule unitSchedule = (Schedule) _schedule
+                                    .get(_unitIndex);
+
+                            Iterator scheduleIterator = unitSchedule.iterator();
+
+                            while (scheduleIterator.hasNext()) {
+                                Actor actor = ((Firing) scheduleIterator.next())
+                                        .getActor();
+                                if (_debugging) {
+                                    _debug("actor to be fired in this iteration has name "
+                                            + actor.getFullName());
+                                }
+
+                                _myPhysicalTime = actor.getDirector()
+                                        .getModelTime().getDoubleValue()
+                                        + _overRunThusFar;
+
+                                double actorWCET;
+                                Attribute executionTime = ((Entity) actor)
+                                        .getAttribute("executionTime");
+
+                                Attribute WCET = ((Entity) actor)
+                                        .getAttribute("WCET");
+                                actorWCET = ((DoubleToken) ((Variable) WCET)
+                                        .getToken()).doubleValue();
+                                double t = _random.nextDouble() * 2 * actorWCET; // I multiply by actorWCET in an attempt to scale
+                                if (_debugging) {
+                                    _debug("simulated execution time is " + t);
+                                }
+                                _totalObservedExecutionTime += t;
+                                if (t > actorWCET) {
+                                    _overRunThusFar += (t - actorWCET);
+                                    _myPhysicalTime += t;//(_overRunThusFar;
+                                    if (_debugging) {
+                                        _debug("the actor WCET estimate was "
+                                                + actorWCET
+                                                + " and the actual execution time was "
+                                                + t);
+                                        _debug("there was an error at model time "
+                                                + (actor.getDirector()
+                                                        .getModelTime()
+                                                        .getDoubleValue() + actorWCET)
+                                                + "physical time is actually "
+                                                + _myPhysicalTime);
+                                    }
+                                }
+                                Parameter dummyP = (Parameter) executionTime;
+                                dummyP.setExpression(Double.toString(t));
+
+                                if (_debugging) {
+                                    _debug("Done firing actor "
+                                            + actor
+                                            + " now going to check to see if it went over time.");
+                                }
+
+                            }
+
+                            scheduleIterator = unitSchedule.iterator();
+
+                            while (scheduleIterator.hasNext()) {
+                                Actor actor1 = ((Firing) scheduleIterator
+                                        .next()).getActor();
+
+                                if (_debugging) {
+                                    _debug("Iterating "
+                                            + ((NamedObj) actor1).getFullName());
+                                }
+
+                                if (actor1.iterate(1) == STOP_ITERATING) {
+                                    // FIXME: How to handle this?
+                                    // put the actor on a no-fire hashtable?
+                                    System.err
+                                            .println("Warning: Giotto iterate returned "
+                                                    + "STOP_ITERATING for actor \""
+                                                    + actor1.getFullName()
+                                                    + "\"");
+                                }
+                            }
+
+                            _unitIndex++;
+
                         }
+
+                        if (_unitIndex >= _schedule.size()) {
+                            _unitIndex = 0;
+                        }
+
                     }
 
                     public boolean isFireFunctional() {
@@ -477,6 +534,14 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
                         wcet = _getDirectorWCET(container);
                         _periodValue = _getDirectorPeriod(container);
+
+                        // Next, construct the schedule.
+                        // FIXME: Note that mutations will not be supported since the
+                        // schedule is constructed only once.
+                        GiottoScheduler scheduler = (GiottoScheduler) ((GiottoDirector) ((CompositeActor) container)
+                                .getDirector()).getScheduler();
+                        _schedule = scheduler.getSchedule();
+                        // _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
 
                         if (_debugging) {
                             _debug("the WCET time seen by the director is "
@@ -569,32 +634,6 @@ public class GiottoTimingManager extends SingletonAttribute implements
         return new GiottoDecoratedAttributesImplementation2(target, this);
     }
 
-    /** Handle a model error.
-     *  @param context The object in which the error occurred.
-     *  @param exception An exception that represents the error.
-     *  @return True if the error has been handled, or false if the
-     *   error is not handled.
-     *  @exception IllegalActionException If the handler handles the
-     *   error by throwing an exception.
-     */
-    public boolean handleModelError(NamedObj context,
-            IllegalActionException exception) throws IllegalActionException {
-
-        if (_debugging) {
-            _debug("Handle Model Error Called for Timing Manager");
-        }
-
-        NamedObj parentContainer = getContainer().getContainer();
-
-        if (parentContainer != null) {
-            return parentContainer.handleModelError(context, exception);
-        } else {
-            throw new IllegalActionException(this,
-                    "Unable to set error transition. This is the top most level ");
-        }
-
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                   ////
 
@@ -615,12 +654,13 @@ public class GiottoTimingManager extends SingletonAttribute implements
         _needNewGenerator = false;
         _needNew = true;
     }
+
     /**
      * Generate the next random number.
-     * @exception IllegalActionException If a call to nextDouble() throws an 
-     * IllegalActionException
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
+        //this method uses a design similar to that of ptolemy.actor.lib.RandomSourc
         _current = _random.nextDouble();
     }
 
@@ -653,6 +693,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     private double _getDirectorPeriod(NamedObj container)
             throws IllegalActionException {
         double thePeriod = 0.0;
+
         Director director = ((CompositeActor) container).getDirector();
         Parameter period = (Parameter) director.getAttribute("period");
         thePeriod = ((DoubleToken) period.getToken()).doubleValue();
@@ -719,8 +760,32 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /** The last container on which we piggybacked. */
     private CompositeActor _piggybackContainer;
-    
+
+    /** The timing manager's value of physical time */
     private double _myPhysicalTime;
+
+    /** The cumulative overrun of the actors simulated by the timing manager*/
     private double _overRunThusFar;
+
+    /**This variable stores the expected execution time of actors.
+     * If used in the Giotto domain the totalExpectedExecutionTime
+     * is equal to the period of the Giotto director. **/
+    private double _totalExpectedExecutionTime;
+
+    /** This variable stores the simulated execution time of actors
+    * thus far. It is reset to 0 after the number of firings reaches
+    * _numberofExpectedFirings and a comparison of observed and expected 
+    * times is done 
+    * */
+    private double _totalObservedExecutionTime;
+
+    /** Counter for minimum time steps.*/
+    private int _unitIndex = 0;
+
+    /** Flag to indicate whether the current director is ready to fire.*/
+    private boolean _readyToFire = true;
+
+    /** Schedule to be executed. */
+    private Schedule _schedule;
 
 }
