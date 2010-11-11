@@ -187,7 +187,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
 
             throw new IllegalActionException("Wrong number of indices "
-                    + "when referencing " + functionName);
+                    + "when referencing function \"" + functionName
+                    + "\".  The number of indices was " + argCount
+                    + ". For arrays, the number of indices should be "
+                    + "1. For matrices, the number of indices should be 2. "
+                    + " The type of the function was \"" + baseType + "\".");
         }
 
         // Psuedo-temporary hack for casts....
