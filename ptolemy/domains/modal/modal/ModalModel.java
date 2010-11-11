@@ -29,6 +29,7 @@ package ptolemy.domains.modal.modal;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
@@ -43,6 +44,7 @@ import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -51,6 +53,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
@@ -130,7 +133,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class ModalModel extends TypedCompositeActor implements ChangeListener {
+public class ModalModel extends TypedCompositeActor implements ChangeListener,
+        ModelErrorHandler {
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -375,8 +379,8 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                     }
                 }
                 _causalityInterfaces.put(currentState, causality);
-                _causalityInterfacesVersions.put(currentState, Long
-                        .valueOf(workspace().getVersion()));
+                _causalityInterfacesVersions.put(currentState,
+                        Long.valueOf(workspace().getVersion()));
             }
             return causality;
         } catch (IllegalActionException e) {
@@ -398,9 +402,42 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             _debug("handleModelError called for the ModalModelDirector "
                     + this.getDisplayName());
         }
-        //FSMActor theActor = this.getController();
-        this.setModelError();
 
+        // check to see if your current state has an errorTransition
+
+        List transitionList = getController().currentState()
+                .nonpreemptiveTransitionList();
+        boolean hasErrorTransition = false;
+        if (_debugging) {
+            _debug("the transitions from the current state are");
+        }
+        for (int i = 0; i < transitionList.size(); i++) {
+            if (_debugging) {
+                _debug(transitionList.get(i).toString());
+            }
+            String guardExpression = ((Transition) transitionList.get(i))
+                    .getGuardExpression();
+            if (guardExpression.contains("modelError == true")) {
+                hasErrorTransition = true;
+            }
+        }
+        if (hasErrorTransition) { // if it does have an error transition, then handle the error
+            this.setModelError();
+            if (_debugging) {
+                _debug("I've set the model error in ModalModel");
+            }
+        } else { // there is no error transition
+            // if not then pass the model error up the hierarchy
+            // need to figure out how to pass the error up to a modal model if you're contained in one..
+
+            NamedObj parentContainer = getContainer().getContainer();
+
+            if (parentContainer != null) {
+                return parentContainer.handleModelError(context, exception);
+            } else {
+                getContainer().handleModelError(context, exception);
+            }
+        }
         return true;
     }
 
