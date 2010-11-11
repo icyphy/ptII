@@ -139,20 +139,18 @@ public class Ontology extends CompositeEntity {
         return _buildConceptGraph();
     }
     
-    /** Return a set of all concepts which are unacceptable solutions in all situations.
+    /** Return a set of finite concepts which are unacceptable solutions in all situations.
      *  Here these concepts are undesirable for any user of this ontology, for example,
      *  "Top" may indicate a conflict for all models using this ontology.
      *  Ontologies may not contain duplicate concepts, so the collection of
-     *  unacceptable concepts is always a set 
-     * @return  The set of all unacceptable concepts in this ontology.  
+     *  unacceptable finite concepts is always a set. 
+     *  @return The set of unacceptable finite concepts in this ontology.  
      */
-    public Set getUnacceptableConcepts() {
+    public Set<FiniteConcept> getUnacceptableConcepts() {
         
-        HashSet unacceptableConcepts = new HashSet();
+        HashSet<FiniteConcept> unacceptableConcepts = new HashSet<FiniteConcept>();
         
-        List<FiniteConcept> concepts = entityList(FiniteConcept.class);
-        
-        for (Concept concept : concepts) {
+        for (FiniteConcept concept : _containedConcepts()) {
             if (!concept.isValueAcceptable()) {
                 unacceptableConcepts.add(concept);
             }
@@ -195,7 +193,7 @@ public class Ontology extends CompositeEntity {
             _debug("Bottom is: " + bottom.toString());
         }
 
-        List<FiniteConcept> ontologyConcepts = entityList(FiniteConcept.class);
+        List<FiniteConcept> ontologyConcepts = _containedConcepts();
 
         // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
         for (int i = 0; i < ontologyConcepts.size() - 1; i++) {
@@ -259,7 +257,7 @@ public class Ontology extends CompositeEntity {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
             _graph = new DAGConceptGraph();
-            List<FiniteConcept> concepts = entityList(FiniteConcept.class);
+            List<FiniteConcept> concepts = _containedConcepts();
             for (FiniteConcept concept : concepts) {
                 ((DAGConceptGraph) _graph).addConcept(concept);
             }
@@ -282,6 +280,15 @@ public class Ontology extends CompositeEntity {
         }
         return _graph;
     }
+
+    /** Return all the finite concepts contained in this ontology.
+     *  @return A list containing all finite concepts in this ontology.
+     */
+    @SuppressWarnings("unchecked")
+    private List<FiniteConcept> _containedConcepts() {
+        return (List<FiniteConcept>)entityList(FiniteConcept.class);
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
