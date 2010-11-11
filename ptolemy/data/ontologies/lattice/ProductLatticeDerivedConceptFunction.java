@@ -33,7 +33,7 @@ import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-////ProductLatticeDerivedConceptFunction
+//// ProductLatticeDerivedConceptFunction
 
 /** A concept function that returns a derived concept from a given input
  *  concept for a product lattice ontology to be used for constraints
@@ -79,18 +79,13 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
     throws IllegalActionException {
-        ProductLatticeConcept inputConcept = (ProductLatticeConcept) argValues.get(0);
+        Concept inputConcept = argValues.get(0);
         
         if (inputConcept != null) {
-            List<Concept> conceptTuple = inputConcept.getConceptTuple();
+            Concept originalOntologyInputConcept = ProductLatticeOntologyAdapter.
+                getComponentConceptFromProductLatticeConcept(
+                    inputConcept, _originalConceptOntology);
 
-            Concept originalOntologyInputConcept = null;
-            for (Concept concept : conceptTuple) {
-                if (concept.getOntology().getClassName().equals(_originalConceptOntology.getClassName())) {
-                    originalOntologyInputConcept = concept;
-                    break;
-                } 
-            }
             if (originalOntologyInputConcept != null) {
                 return ProductLatticeOntologyAdapter.
                     getDerivedConceptForProductLattice(originalOntologyInputConcept,

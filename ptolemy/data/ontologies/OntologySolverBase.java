@@ -447,22 +447,17 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     * Return the PropertyHelper for the specified component. This
-     * instantiates a new PropertyHelper if it does not already exist
-     * for the specified component. This method needs to be static so it can be'
-     * called in any subclass of OntologySolverBase regardless of how many classes
-     * are in between in the inheritance hierarchy.  For example,
-     * {@link ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver ProductLatticeOntology} is a subclass
-     * of {@link ptolemy.data.ontologies.lattice.LatticeOntologySolver LatticeOntology} which
-     * overrides the _getAdapter method.  So ProductLatticeOntologySolver needs to call the OntologySolverBase
-     * _getAdapter method directly in its own _getAdapter method.
+    /** Return the PropertyHelper for the specified component. This
+     *  instantiates a new PropertyHelper if it does not already exist
+     *  for the specified component. This method is static so it can be
+     *  called in any subclass of OntologySolverBase regardless of how many
+     *  classes are in between in the inheritance hierarchy.
      * 
-     * @param component The specified component.
-     * @param solver The solver for which to get the adapter.
-     * @return The PropertyHelper for the specified component.
-     * @exception IllegalActionException Thrown if the PropertyHelper
-     * cannot be instantiated.
+     *  @param component The specified component.
+     *  @param solver The solver for which to get the adapter.
+     *  @return The PropertyHelper for the specified component.
+     *  @exception IllegalActionException Thrown if the PropertyHelper
+     *   cannot be instantiated.
      */
     protected static OntologyAdapter _getAdapter(Object component,
             OntologySolverBase solver)
@@ -486,8 +481,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         */
 
         String packageName = _getPackageName(solver);
-        String defaultAdaptersPackageName = solver.getClass().getPackage().getName()
-                + ".adapters.defaultAdapters";
+        String defaultAdaptersPackageName = solver.getClass().getPackage().
+            getName() + ".adapters.defaultAdapters";
 
         Class componentClass = component.getClass();
 
@@ -498,7 +493,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                 // FIXME: Is this the right error message?
                 if (!componentClass.getName().contains("ptolemy")) {
                     throw new IllegalActionException("There is no "
-                            + "property adapter for " + component.getClass());
+                            + "ontology adapter for " + component.getClass());
                 }
 
                 adapterClass = Class.forName(componentClass.getName()
@@ -546,14 +541,14 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create the adapter class for property constraints.");
+                    "Failed to create the adapter class for the onology solver.");
         }
 
         if (!(adapterObject instanceof OntologyAdapter)) {
             throw new IllegalActionException(
-                    "Cannot resolve property for this component: " + component
+                    "Cannot resolve the concept for this component: " + component
                             + ". Its adapter class does not"
-                            + " implement PropertyHelper.");
+                            + " implement OntologyAdapter.");
         }
         solver._adapterStore.put(component, (OntologyAdapter) adapterObject);
 

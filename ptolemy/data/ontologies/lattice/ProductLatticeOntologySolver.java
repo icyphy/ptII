@@ -30,7 +30,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologyAdapter;
-import ptolemy.data.ontologies.OntologySolverBase;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.data.ontologies.OntologySolverUtilities;
 import ptolemy.kernel.ComponentEntity;
@@ -148,7 +147,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
      *  collecting the constraints.
      */
     public void initialize() throws IllegalActionException {
-        OntologySolverUtilities productLatticeSolverUtilities = getOntologySolverUtilities();
+        OntologySolverUtilities productLatticeSolverUtilities = getOntologySolverUtilities();        
         
         // Before calling initialize set all the sub ontology solvers to use the same shared utilities
         // object as the product lattice ontology solver.  This is necessary to keep track of
@@ -172,10 +171,25 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
     public void reset() {
         super.reset();
         
+        // After resetting the solver, reset each contained solver
+        // and reinitialize their lattice ontology adapters.
         List<LatticeOntologySolver> containedSolvers = getAllContainedOntologySolvers();
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {
                 innerSolver.reset();
+                NamedObj toplevel = _toplevel();
+                try {
+                    LatticeOntologyAdapter toplevelAdapter = 
+                        (LatticeOntologyAdapter) innerSolver.getAdapter(toplevel);
+                    toplevelAdapter.reinitialize();
+                    toplevelAdapter
+                    ._addDefaultConstraints(_getConstraintType());
+                    toplevelAdapter._setConnectionConstraintType(_getConstraintType());
+                } catch (IllegalActionException e) {
+                    throw new IllegalStateException("Could not reinitialize " +
+                    		"the adapters for the contained " +
+                    		"LatticeOntologySolvers.", e);
+                }
             }
         }
     }
@@ -216,19 +230,6 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                 }
             }
         }
-        
-        /* FIXME: Charles Shelton - I added this code to enable the
-         * ProductLatticeOntologySolver to use the RecordAssembler and
-         * RecordDisassembler default adapters, but it breaks the normal
-         * ontology resolution for product lattices. Need to fix this, but
-         * for now I will comment it out.
-        if (adapter == null) {
-            try {
-                adapter = OntologySolverBase._getAdapter(component, this);
-            } catch (IllegalActionException ex) {
-            }
-        }
-        */
         
         if (adapter == null) {
             if (component instanceof CompositeEntity) {

@@ -85,20 +85,16 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
             if (arg == null) {
                 return null;
             }
-            List<Concept> argTuple = ((ProductLatticeConcept) arg).getConceptTuple();
-            for (Concept innerArg : argTuple) {
-                if (innerArg.getOntology().getClassName().equals(_originalFunctionOntology.getClassName())) {
-                    originalArgs.add((Concept) _originalFunctionOntology.getEntity(innerArg.getName()));
-                    break;
-                }
-            }
+            originalArgs.add(ProductLatticeOntologyAdapter.
+                    getComponentConceptFromProductLatticeConcept(
+                    arg, _originalFunctionOntology));
         }
 
         Concept originalFunctionValue = _originalFunction.evaluateFunction(originalArgs);
         return ProductLatticeOntologyAdapter.
             getDerivedConceptForProductLattice(originalFunctionValue,
                         (ProductLatticeOntology) _outputRangeOntology);
-    }        
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

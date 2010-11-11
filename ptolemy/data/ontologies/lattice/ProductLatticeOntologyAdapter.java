@@ -32,6 +32,7 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
+import ptolemy.data.ontologies.RecordConcept;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -165,7 +166,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                         dependentTerms[i] = productLatticeOntologyAdapter.getSolver().getConceptTerm(termObject);
                     } else {
                         Concept concept = (Concept) dependentTerms[i].getValue();
-                        ProductLatticeConcept newTermConcept = getDerivedConceptForProductLattice(concept, productOntology);
+                        Concept newTermConcept = getDerivedConceptForProductLattice(concept, productOntology);
                         dependentTerms[i] = newTermConcept;
                     }
                 }
@@ -189,6 +190,47 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             }           
         }
     }
+ 
+    /** Return the component concept value for the specified ontology from the
+     *  given product lattice concept. The product latttice concept input
+     *  argument could be a {@link RecordConcept} of ProductLatticeConcepts,
+     *  which requires special handling beyond what is done in
+     *  {@link ProductLatticeConcept#getComponentConceptValue(Ontology)}.
+     * 
+     * @param productLatticeConcept The ProductLatticeConept or RecordConcept
+     *  of ProductLatticeConcepts from which to get 
+     * @param componentOntology The component ontology of the product lattice
+     *  ontology from which the return concept should be taken.
+     * @return The component concept value from the specified component
+     *  ontology contained in the product lattice concept.
+     * @throws IllegalActionException Thrown if there is a problem retrieving
+     *  the component concept, or if productLatticeConcept is not an
+     *  instance of ProductLatticeConcept or RecordConcept.
+     */
+    public static Concept getComponentConceptFromProductLatticeConcept(
+            Concept productLatticeConcept, Ontology componentOntology)
+        throws IllegalActionException {
+        
+        if (productLatticeConcept instanceof RecordConcept) {
+            RecordConcept originalOntologyRecordConcept =
+                RecordConcept.createRecordConcept(componentOntology);
+            for (String field : ((RecordConcept) productLatticeConcept).fieldSet()) {
+                ((RecordConcept) originalOntologyRecordConcept).putFieldConcept(field,
+                        ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept).
+                                getFieldConcept(field)).
+                                    getComponentConceptValue(
+                                            componentOntology));
+            }
+            return originalOntologyRecordConcept;
+        } else if (productLatticeConcept instanceof ProductLatticeConcept) {
+            return ((ProductLatticeConcept) productLatticeConcept).
+                    getComponentConceptValue(componentOntology);
+        } else {
+            throw new IllegalActionException("The productLatticeConcept input " +
+            		"must be an instance of either ProductLatticeConcept " +
+            		"or RecordConcept.");
+        }
+    }
     
     /** Get the derived concept for a product lattice ontology from the given
      *  concept that is an element in one of the ontologies that comprises
@@ -202,40 +244,49 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @throws IllegalActionException Thrown if the concept's ontology is not
      *   part of the given product lattice ontology.
      */
-    public static ProductLatticeConcept getDerivedConceptForProductLattice(Concept concept, ProductLatticeOntology productOntology)
-            throws IllegalActionException {
-        List<Ontology> tupleOntologies = productOntology.getLatticeOntologies();
-        Ontology sourceOntology = concept.getOntology();
-        boolean foundOntology = false;
-        
-        if (tupleOntologies != null) {
-            StringBuffer conceptNameBuffer = new StringBuffer();
-            for (Ontology ontology : tupleOntologies) {
-                if (sourceOntology.getClassName().equals(ontology.getClassName())) {
-                    conceptNameBuffer.append(concept.getName());
-                    foundOntology = true;
-                } else {
-                    conceptNameBuffer.append(((Concept) ontology.getConceptGraph().bottom()).getName());
-                }
+    public static Concept getDerivedConceptForProductLattice(Concept concept, ProductLatticeOntology productOntology)
+            throws IllegalActionException {        
+        if (concept instanceof RecordConcept) {
+            RecordConcept productLatticeRecordConcept = RecordConcept.createRecordConcept(productOntology);
+            for (String field : ((RecordConcept) concept).fieldSet()) {
+                productLatticeRecordConcept.putFieldConcept(field, getDerivedConceptForProductLattice(((RecordConcept) concept).getFieldConcept(field), productOntology));
             }
             
-            if (!foundOntology) {
-                throw new IllegalActionException("The concept " + concept.getName() +
-                        " belongs to an ontology " + sourceOntology.getName() +
-                        " that is not a component of the given product lattice ontology " + productOntology.getName() + ".");
-            }
-            
-            String productLatticeConceptName = conceptNameBuffer.toString();
-            ProductLatticeConcept value =
-                (ProductLatticeConcept) productOntology.getEntity(productLatticeConceptName);            
-            if (value == null) {
-                throw new IllegalActionException("Could not create the derived concept for the " +
-                        productOntology.getName() + " product lattice ontology for the concept " +
-                        concept.getName() + " from the " + sourceOntology.getName() + " ontology.");
-            }
-            return value;  
+            return productLatticeRecordConcept;            
         } else {
-            return null;
+            List<Ontology> tupleOntologies = productOntology.getLatticeOntologies();
+            Ontology sourceOntology = concept.getOntology();
+            boolean foundOntology = false;
+            
+            if (tupleOntologies != null) {
+                StringBuffer conceptNameBuffer = new StringBuffer();
+                for (Ontology ontology : tupleOntologies) {
+                    if (sourceOntology.getClassName().equals(ontology.getClassName())) {
+                        conceptNameBuffer.append(concept.getName());
+                        foundOntology = true;
+                    } else {
+                        conceptNameBuffer.append(((Concept) ontology.getConceptGraph().bottom()).getName());
+                    }
+                }
+                
+                if (!foundOntology) {
+                    throw new IllegalActionException("The concept " + concept.getName() +
+                            " belongs to an ontology " + sourceOntology.getName() +
+                            " that is not a component of the given product lattice ontology " + productOntology.getName() + ".");
+                }
+                
+                String productLatticeConceptName = conceptNameBuffer.toString();
+                ProductLatticeConcept value =
+                    (ProductLatticeConcept) productOntology.getEntity(productLatticeConceptName);            
+                if (value == null) {
+                    throw new IllegalActionException("Could not create the derived concept for the " +
+                            productOntology.getName() + " product lattice ontology for the concept " +
+                            concept.getName() + " from the " + sourceOntology.getName() + " ontology.");
+                }
+                return value;  
+            } else {
+                return null;
+            }
         }
     }
     
@@ -247,7 +298,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @throws IllegalActionException Thrown if there is an error in initializing
      *   the tuple ontology adapters.
      */
-    public static final List<LatticeOntologyAdapter> getTupleAdapters(ProductLatticeOntologySolver solver, Object component) throws IllegalActionException {
+    public static List<LatticeOntologyAdapter> getTupleAdapters(ProductLatticeOntologySolver solver, Object component) throws IllegalActionException {
         List<LatticeOntologyAdapter> tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
         List<Ontology> tupleOntologies = ((ProductLatticeOntology) solver.getOntology()).getLatticeOntologies();        
         List<LatticeOntologySolver> containedSolvers = solver.getAllContainedOntologySolvers();

@@ -77,12 +77,29 @@ public class ProductLatticeConcept extends Concept {
         _conceptTuple = new ArrayList<Concept>(conceptTuple);
     }
     
+    /** Return the concept that is a component of this product lattice ontology
+     *  concept tuple from the given ontology.
+     *  @param ontology The specified ontology from which to get the component
+     *   concept.  This should be one of the component ontologies from the
+     *   product lattice ontology for this concept.
+     *  @return The concept from the concept tuple, or null if it is not found
+     *   or the ontology is not part of the product lattice ontology.
+     */
+    public Concept getComponentConceptValue(Ontology ontology) {
+        for (Concept innerConcept : _conceptTuple) {
+            if (innerConcept.getOntology().getClassName().equals(ontology.getClassName())) {
+                return ontology.getConceptByName(innerConcept.getName());
+            }
+        }
+        return null;
+    }
+    
     /** Return the list of concepts that compose this product lattice concept.
      *  @return The list of concepts that compose this product lattice concept.
      */
     public List<Concept> getConceptTuple() {
         return new ArrayList<Concept>(_conceptTuple);
-    }    
+    }
     
     /** Return the product lattice ontology that contains this concept.
      *  @return The containing product lattice ontology.
