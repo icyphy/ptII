@@ -404,38 +404,40 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
         }
 
         // check to see if your current state has an errorTransition
+        State currentState = getController().currentState();
+        if (currentState != null) {
+            List transitionList = currentState.nonpreemptiveTransitionList();
 
-        List transitionList = getController().currentState()
-                .nonpreemptiveTransitionList();
-        boolean hasErrorTransition = false;
-        if (_debugging) {
-            _debug("the transitions from the current state are");
-        }
-        for (int i = 0; i < transitionList.size(); i++) {
+            boolean hasErrorTransition = false;
             if (_debugging) {
-                _debug(transitionList.get(i).toString());
+                _debug("the transitions from the current state are");
             }
-            String guardExpression = ((Transition) transitionList.get(i))
-                    .getGuardExpression();
-            if (guardExpression.contains("modelError == true")) {
-                hasErrorTransition = true;
+            for (int i = 0; i < transitionList.size(); i++) {
+                if (_debugging) {
+                    _debug(transitionList.get(i).toString());
+                }
+                String guardExpression = ((Transition) transitionList.get(i))
+                        .getGuardExpression();
+                if (guardExpression.contains("modelError == true")) {
+                    hasErrorTransition = true;
+                }
             }
-        }
-        if (hasErrorTransition) { // if it does have an error transition, then handle the error
-            this.setModelError();
-            if (_debugging) {
-                _debug("I've set the model error in ModalModel");
-            }
-        } else { // there is no error transition
-            // if not then pass the model error up the hierarchy
-            // need to figure out how to pass the error up to a modal model if you're contained in one..
+            if (hasErrorTransition) { // if it does have an error transition, then handle the error
+                this.setModelError();
+                if (_debugging) {
+                    _debug("I've set the model error in ModalModel");
+                }
+            } else { // there is no error transition
+                // if not then pass the model error up the hierarchy
+                // need to figure out how to pass the error up to a modal model if you're contained in one..
 
-            NamedObj parentContainer = getContainer().getContainer();
+                NamedObj parentContainer = getContainer().getContainer();
 
-            if (parentContainer != null) {
-                return parentContainer.handleModelError(context, exception);
-            } else {
-                getContainer().handleModelError(context, exception);
+                if (parentContainer != null) {
+                    return parentContainer.handleModelError(context, exception);
+                } else {
+                    getContainer().handleModelError(context, exception);
+                }
             }
         }
         return true;
