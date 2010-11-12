@@ -39,6 +39,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.LocationParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -449,8 +450,13 @@ public class PtolemyModelUtil {
     protected static double[] _getLocation(NamedObj namedObj) {
         Attribute locationAttribute = namedObj.getAttribute("_location");
         double[] location = { 0, 0 };
-        if (locationAttribute != null && locationAttribute instanceof Location) {
-            location = ((Location) locationAttribute).getLocation();
+        if (locationAttribute != null){
+            if (locationAttribute instanceof Location) {
+                location = ((Location) locationAttribute).getLocation();
+            }
+            else if(locationAttribute instanceof LocationParameter){
+                location = ((LocationParameter)locationAttribute).getLocation();
+            }
         }
         return location;
     }
