@@ -404,12 +404,14 @@ public class KielerLayout extends AbstractGlobalLayout {
         for (KPoint relativeKPoint : bendPoints) {
             KPoint kpoint = KielerGraphUtil._getAbsoluteKPoint(relativeKPoint,
                     KielerGraphUtil._getParent(kEdge));
-
+            // calculate the snap-to-grid coordinates
+            Point2D bendPoint = new Point2D.Double(kpoint.getX(),kpoint.getY());
+            Point2D snapToGridBendPoint = SnapConstraint.constrainPoint(bendPoint);
             // create new relation
             String relationName = _ptolemyModelUtil._getUniqueString(
                     _compositeActor, "relation");
             relationName = _ptolemyModelUtil._createRelationWithVertex(
-                    relationName, kpoint.getX(), kpoint.getY());
+                    relationName, snapToGridBendPoint.getX(), snapToGridBendPoint.getY());
 
             // we process the first bendpoint
             if (count == 0) {
@@ -455,14 +457,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     /**
-     * Apply precomputed routing of edges to the Ptolemy model by insertion of
-     * new relation vertices. Take a KIELER KEdge with layout information (bend
-     * point positions) and create a new relation with a vertex for each bend
-     * point and interconnect them. Then replace the original relation with the
-     * new relation set. Return the original relation if it is safe to delete
-     * it. This version of the method ({@link #_applyEdgeLayout(KEdge)} does not
-     * create new vertices but instead annotations the relations with the bend
-     * points of the links.
+     * FIXME: Here is some documentation missing
      * 
      * @param kEdge The Kieler KEdge that hold the precomupted layout
      *            information, i.e. bend point positions
