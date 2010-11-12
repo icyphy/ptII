@@ -45,6 +45,7 @@ import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
@@ -312,6 +313,24 @@ public class TransitionController extends BasicEdgeController {
         setEdgeRenderer(new LinkRenderer());
     }
 
+    /** Open the instance or the model.  In this base class, the default
+     *  look inside action is to open the model.  In derived classes such
+     *  as the Ptera editor, the default action is to open the instance.
+     *  @param configuration  The configuration with which to open the model or instance.
+     *  @param refinement The model or instance to open.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     *  @see ptolemy.actor.gui.Configration#openInstance(NamedObj)
+     *  @see ptolemy.actor.gui.Configration#openModel(NamedObj)
+     */  
+    protected void _openInstanceOrModel(Configuration configuration,
+            NamedObj refinement) throws IllegalActionException, NameDuplicationException {
+        configuration.openModel(refinement);
+    }
+
+
     /** Set up look inside actions, if appropriate.
      */
     protected void _setUpLookInsideAction() {
@@ -460,7 +479,8 @@ public class TransitionController extends BasicEdgeController {
                 if ((refinements != null) && (refinements.length > 0)) {
                     for (int i = 0; i < refinements.length; i++) {
                         // Open each refinement.
-                        _configuration.openModel((NamedObj) refinements[i]);
+                        // Derived classes may open the instance, this class opens the model.
+                        _openInstanceOrModel(_configuration, (NamedObj) refinements[i]);
                     }
                 } else {
                     MessageHandler.error("No refinement.");

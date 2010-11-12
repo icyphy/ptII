@@ -32,6 +32,9 @@ import java.awt.BasicStroke;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.ptera.kernel.SchedulingRelation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.modal.Arc;
 import ptolemy.vergil.modal.TransitionController;
 import diva.canvas.Site;
@@ -102,5 +105,22 @@ public class SchedulingRelationController extends TransitionController {
             }
             return connector;
         }
+    }
+
+    /** Open the instance or the model.  In this class, the default
+     *  look inside action is to open the instance.  In the parent class,
+     *  the default action is to open the model.
+     *  @param configuration  The configuration with which to open the model or instance.
+     *  @param refinement The model or instance to open.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     *  @see ptolemy.actor.gui.Configration#openInstance(NamedObj)
+     *  @see ptolemy.actor.gui.Configration#openModel(NamedObj)
+     */  
+    protected void _openInstanceOrModel(Configuration configuration,
+            NamedObj refinement) throws IllegalActionException, NameDuplicationException {
+        configuration.openInstance(refinement);
     }
 }
