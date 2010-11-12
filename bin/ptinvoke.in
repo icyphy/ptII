@@ -143,7 +143,9 @@ CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
 # Under Windows, look for jvm.dll for use with codegen Java
 if [ "$windows" = "yes" ]; then
     if [ -f "$PTJAVA_DIR/jre/bin/client/jvm.dll" ]; then
-	export PATH="$PTJAVA_DIR/jre/bin/client;${PATH}"
+        # Solaris: set PATH and then export. See
+        # http://serverfault.com/questions/103999/how-should-i-export-a-shell-variable-in-bash
+	PATH="$PTJAVA_DIR/jre/bin/client;${PATH}"; export PATH
     fi	
 fi
 ##################################################################
@@ -187,11 +189,13 @@ fi
 
 #### LBNL Simulator (ptII/lbnl)
 # Set BCVTB_HOME to run the LBNL Matlab Simulator
-export BCVTB_HOME="${PTII}/lbnl"
+# Solaris: set PATH and then export. See
+# http://serverfault.com/questions/103999/how-should-i-export-a-shell-variable-in-bash
+BCVTB_HOME="${PTII}/lbnl"; export BCVTB_HOME
 if [ "$MATLABPATH" != "" ]; then
-    export MATLABPATH="${MATLABPATH}:${BCVTB_HOME}/lib/matlab"
+    MATLABPATH="${MATLABPATH}:${BCVTB_HOME}/lib/matlab"; export MATLABPATH
 else
-    export MATLABPATH="${BCVTB_HOME}/lib/matlab"
+    MATLABPATH="${BCVTB_HOME}/lib/matlab"; export MATLABPATH
 fi
 
 #### Cal 
@@ -400,17 +404,17 @@ OPENCV_JAR=@OPENCV_JAR@
 if [ "$PTOPENCV_DIR" = "opencv" ]; then 
     OPENCV_JARS="${CLASSPATHSEPARATOR}${OPENCV_JAR}"
     if [ "$windows" = "yes" ]; then
-	export PATH="${PTII_CYGDRIVE}/bin;$PATH"
+	PATH="${PTII_CYGDRIVE}/bin;$PATH"; export PATH
     else
     if [ "$LD_LIBRARY_PATH" != "" ]; then
-        export LD_LIBRARY_PATH="${PTII}/lib:${LD_LIBRARY_PATH}"
+        LD_LIBRARY_PATH="${PTII}/lib:${LD_LIBRARY_PATH}"; export LD_LIBRARY_PATH
     else
-        export LD_LIBRARY_PATH="${PTII}/lib"
+        LD_LIBRARY_PATH="${PTII}/lib"; export LD_LIBRARY_PATH
     fi
     if [ "$DYLD_LIBRARY_PATH" != "" ]; then
-        export DYLD_LIBRARY_PATH="${PTII}/lib:${DYLD_LIBRARY_PATH}"
+        DYLD_LIBRARY_PATH="${PTII}/lib:${DYLD_LIBRARY_PATH}"; export DYLD_LIBRARY_PATH
     else
-        export DYLD_LIBRARY_PATH="${PTII}/lib"
+        DYLD_LIBRARY_PATH="${PTII}/lib"; export DYLD_LIBRARY_PATH
     fi
 fi
 fi
@@ -1289,17 +1293,17 @@ else
 fi
 
 if [ "$windows" = "yes" ]; then
-    export PATH="${PTII_CYGDRIVE}/bin;$PATH"
+    PATH="${PTII_CYGDRIVE}/bin;$PATH"; export PATH
 else
     if [ "$LD_LIBRARY_PATH" != "" ]; then
-        export LD_LIBRARY_PATH="${PTII}/lib:${LD_LIBRARY_PATH}"
+        LD_LIBRARY_PATH="${PTII}/lib:${LD_LIBRARY_PATH}"; export LD_LIBRARY_PATH
     else
-        export LD_LIBRARY_PATH="${PTII}/lib"
+        LD_LIBRARY_PATH="${PTII}/lib"; export LD_LIBRARY_PATH
     fi
     if [ "$DYLD_LIBRARY_PATH" != "" ]; then
-        export DYLD_LIBRARY_PATH="${PTII}/lib:${DYLD_LIBRARY_PATH}"
+        DYLD_LIBRARY_PATH="${PTII}/lib:${DYLD_LIBRARY_PATH}"; export DYLD_LIBRARY_PATH
     else
-        export DYLD_LIBRARY_PATH="${PTII}/lib"
+        DYLD_LIBRARY_PATH="${PTII}/lib"; export DYLD_LIBRARY_PATH
     fi
 fi
 
