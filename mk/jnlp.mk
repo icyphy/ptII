@@ -78,6 +78,22 @@ DOC_CODEDOC_JAR = \
 
 SIGNED_DIR =		signed
 
+# Linux Jars
+lib/bcvtbLinux.jar:
+	if [ -f lib/libbcvtb.so ]; then \
+		(cd lib; \
+	 	"$(JAR)" -cvf bcvtbLinux.jar libbcvtb.so); \
+	else \
+		echo "$$PTII/libbcvtb.so does not exist creating dummy jar"; \
+		echo "$$PTII/lib/libbcvtb.so not found, see PTII/mk/jnlp.mk" \
+			> lib/README_bcvtb.txt; \
+		(cd lib; \
+                "$(JAR)" -cvf bcvtbLinux.jar \
+			README_bcvtb.txt); \
+		rm -f lib/README_bcvtb.txt; \
+	fi
+
+# Mac OS X jars
 lib/bcvtbMacOSX.jar:
 	if [ -f lib/libbcvtb.jnilib ]; then \
 		(cd lib; \
@@ -108,14 +124,14 @@ lib/rxtxMacOSX.jar:
 
 # Jar file that contains win32com.dll for the Java Serial Communications API
 lib/rxtxWindows.jar: 
-	if [ -f vendors/sun/commapi/win32com.dll ]; then \
-		(cd vendors/sun/commapi; \
-	 	"$(JAR)" -cvf ../../../lib/rxtxWindows.jar win32com.dll); \
+	if [ -f vendors/misc/rxtx/Windows/i368-mingw32/rxtxParallel.dll ]; then \
+		(cd vendors/misc/rxtx/Windows/i368-mingw32/
+	 	"$(JAR)" -cvf $(PTII)/lib/rxtxWindows.jar rxtxParallel.dll rxtxSerial.dll); \
 	else \
-		echo "vendors/sun/commapi not found, creating dummy jar"; \
-		echo "vendors/sun/commapi not found, see PTII/mk/jnlp.mk" \
+		echo "vendors/misc/rxtx/Windows/i368-mingw32/ not found, creating dummy jar"; \
+		echo "vendors/misc/rxtx/Windows/i368-mingw32/ not found, see PTII/mk/jnlp.mk" \
 			> README_comm.txt; \
-		"$(JAR)" -cvf ../../../lib/rxtxindows.jar \
+		"$(JAR)" -cvf $(PTII)/lib/rxtxWindows.jar \
 			README_comm.txt; \
 		rm -f README_comm.txt; \
 	fi
@@ -140,6 +156,7 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/bcvtbMacOSX.jar \
 	lib/joystickWindows.jar \
 	lib/matlabMacOSX.jar \
+	lib/matlabLinux.jar \
 	lib/matlabSunOS.jar \
 	lib/matlabWindows.jar \
 	lib/rxtxMacOSX.jar \

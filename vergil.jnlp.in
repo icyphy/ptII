@@ -35,6 +35,18 @@
   	<nativelib href="signed/lib/rxtxMacOSX.jar"/>
   	<nativelib href="signed/lib/matlabMacOSX.jar"/>
   </resources>
+  <resources os="Linux" arch="i386">
+        <nativelib href="signed/lib/matlabLinux.jar"/>
+  </resources>
+  <resources os="Linux" arch="x86">
+        <nativelib href="signed/lib/matlabLinux.jar"/>
+  </resources>
+  <resources os="Linux" arch="amd64">
+        <nativelib href="signed/lib/matlabLinux.jar"/>
+  </resources>
+  <resources os="Linux" arch="x86_64">
+        <nativelib href="signed/lib/matlabLinux.jar"/>
+  </resources>
   <resources os="SunOS">
   	<nativelib href="signed/lib/matlabSunOS.jar"/>
   </resources>
