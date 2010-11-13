@@ -38,7 +38,7 @@ This FAQ can be found at:
 <li> <a href="#General Questions"><b>1. General</b></a>
 	<menu>
 	<li> <a href="#ptolemy II description"><b>1.1 What is Ptolemy II?</b></a>
-	<li> <a href="#ptolemy II copyright"><b>1.2 What is the copyright?</b></a>
+	<li> <a href="#ptolemy II copyright"><b>1.2 What is the copyright and license?</b></a>
 	<li> <a href="#mailing list"><b>1.3 Is there a mailing list?</b></a>
 	<li> <a href="#bug list"><b>1.4 Is there a bug list?</b></a>
 	</menu>
@@ -143,7 +143,7 @@ The project is named after
 the second century Greek astronomer, mathematician, and geographer.
 </p>
 
-<dt> <a name="ptolemy II copyright"><b>1.2 What is the copyright?</b></a>
+<dt> <a name="ptolemy II copyright"><b>1.2 What is the copyright and license?</b></a>
 <DD> Ptolemy II is released under the fairly liberal UC Berkeley copyright,
 see 
 <a href="http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm</code></a>
@@ -1255,6 +1255,12 @@ to it as the "codegen" code generator.
     generate C code for PN models and to generate VHDL code, but
     nothing has been completed.</p>
 
+    <p>For more information about codegen, see
+    <br>Gang Zhou, Man-Kit Leung, Edward A. Lee. <a href="http://chess.eecs.berkeley.edu/pubs/251.html@in_browser" target="_top">A Code Generation Framework for Actor-Oriented Models with Partial Evaluation</a>, Proceedings of International Conference on Embedded Software and Systems 2007, LNCS 4523, Y.-H. Lee et al. (ed.), 786-799, May, 2007.
+    <br>Gang Zhou. <a href="http://chess.eecs.berkeley.edu/pubs/774.html#in_browser" target="_top"><i>Partial Evaluation for Optimized Compilation of Actor-Oriented Models</i></a>, PhD thesis,  University of
+California, Berkeley, May, 2008.
+    <br>Jackie Man-Kit Leung, Terry Filiba, Vinayak Nagpal. <a href="http://chess.eecs.berkeley.edu/pubs/778.html#in_browser" target="_top"><i>VHDL Code Generation in the Ptolemy II Environment</i></a>, Technical report,  EECS Department, University of California, Berkeley, UCB/EECS-2008-140, October, 2010.
+
 <p><b>viptos</b>
  <br> We had a project to produce NesC/TinyOS code from
    Ptolemy II models. We created a tool based on Ptolemy
@@ -1267,7 +1273,7 @@ to it as the "codegen" code generator.
    to create models of the wireless
    networking environment for the motes.
 
- <p><b>cg</b> 
+<p><b>cg</b> 
  <br> Our currently active code generation effort may be found in the
     development tree in <code>ptolemy/cg</code>, we call it the "cg"
     code generator.  We took the lessons learned from codegen
@@ -1292,11 +1298,21 @@ to it as the "codegen" code generator.
 
     <p>The cg code generator also supports models that have actors
     that have method bodies written in C.  See the
-   EmbeddedCodeActor.</p>
+    <a href="http://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/ptolemy/actor/lib/jni/EmbeddedCActor.html#in_browser" target="_top">EmbeddedCodeActor.</p>
 
     <p>Generating C code is possible as well, it just requires
     porting the templates that we have for Java actors.</p>
 
+    <p>For information about the cg code generator, see
+    <br>Stavros Tripakis, Dai Nguyen Bui, Marc Geilen, Bert Rodiers,
+Edward A. Lee. <a href="http://chess.eecs.berkeley.edu/pubs/668.html#in_html" target="_top"><i>Compositionality in Synchronous Data Flow: Modular Code Generation from Hierarchical SDF Graphs</i></a>, Technical report,  UC Berkeley, UCB/EECS-2010-52, May, 2010.
+    <br>Martin Schoeberl, Christopher Brooks, Edward A. Lee. <a href="http://chess.eecs.berkeley.edu/pubs/671.html#in_browser" target="_top">Code Generation for Embedded Java with Ptolemy</a>,
+Proceedings of the 8th IFIP Workshop on Software
+Technologies for Future Embedded and Ubiquitous Systems
+(SEUS 2010), October, 2010.
+
+
+<p><b>cal</b> 
 <p> In addition, Xilinx research labs has an ongoing effort to synthesize FPGA
     configurations from Ptolemy II models. They use actor libraries
     defined in
