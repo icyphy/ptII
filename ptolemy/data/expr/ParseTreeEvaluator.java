@@ -355,15 +355,63 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
                 result = function.apply(argValues);
             } else {
-                // FIXME: It might be the a parameter is
-                // shadowing a built-in function, in which
-                // case, thrown an exception seems bogus.
+                // If the argument is a scalar that can be
+                // losslessly coverted to an array or matrix
+                // and the indexes have value 0 then the evaluation
+                // is just the value itself.
+                if (argCount == 2) {
+                    // Possible matrix promotion, where we allow
+                    // scalar(0,0) to simply have value scalar.
+                    if (argValues[0] instanceof IntToken
+                            && ((IntToken)argValues[0]).intValue() == 0
+                            && argValues[1] instanceof IntToken
+                            && ((IntToken)argValues[1]).intValue() == 0) {
+                        // If there is a corresponding matrix type,
+                        // then return the value. To find out whether there
+                        // is a corresponding matrix type, just try to create
+                        // one.
+                        try {
+                            ptolemy.data.Token[] tmp = new ptolemy.data.Token[1];
+                            tmp[0] = value;
+                            MatrixToken.arrayToMatrix(tmp, 1, 1);
+                        } catch (IllegalActionException ex) {
+                            // No such matrix.
+                            throw new IllegalActionException(
+                                    "Cannot apply array indexing to "
+                                            + value.toString());
+                        }
+                        result = value;
+                    } else {
+                        // Either the arguments are not ints or
+                        // they are not both zero.
+                        throw new IllegalActionException(
+                                "Invalid matrix indexing for "
+                                        + value.toString());
+                    }
+                } else if (argCount == 1) {
+                    // Possible array promotion, where we allow
+                    // scalar(0) to simply have value scalar.
+                    if (argValues[0] instanceof IntToken
+                            && ((IntToken)argValues[0]).intValue() == 0) {
+                        result = value;
+                    } else {
+                        // Either the argument is not an int or
+                        // it is not zero.
+                        throw new IllegalActionException(
+                                "Invalid array indexing for "
+                                        + value.toString());
+                    }
+                } else {
+                    // FIXME: It might be the a parameter is
+                    // shadowing a built-in function, in which
+                    // case, thrown an exception seems bogus.
 
-                // The value cannot be indexed or applied
-                // throw exception.
-                throw new IllegalActionException(
-                        "Cannot index or apply arguments to "
-                                + value.toString());
+                    // The value cannot be indexed or applied
+                    // throw exception.
+                    throw new IllegalActionException(
+                            "Cannot index or apply arguments to "
+                            + value.toString());
+                }
             }
 
             _evaluatedChildToken = (result);
