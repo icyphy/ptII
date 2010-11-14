@@ -104,6 +104,8 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         if (colors == null || colors.isEmpty()) {
             return null;
         } else {
+            // ConceptIcon renders the first found ColorAttribute,
+            // so we use that one here as well.
             return colors.get(0);
         }
     }

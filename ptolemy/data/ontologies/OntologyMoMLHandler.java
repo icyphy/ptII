@@ -48,7 +48,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  or a subclass of OntologySolver. It contains parameters that allow
  *  users to configure the display of the concept annotation results.
  *
- *  @author Man-Kit Leung
+ *  @author Ben Lickly, Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (mankit)
@@ -133,13 +133,8 @@ public class OntologyMoMLHandler extends Attribute {
                 if (object instanceof NamedObj) {
                     Concept concept = solver.getConcept(object);
                     if (concept != null) {
-                        // Use the color in the concept instance.
-                        List<ColorAttribute> colors = concept
-                            .attributeList(ColorAttribute.class);
-                        if (colors != null && colors.size() > 0) {
-                            // ConceptIcon renders the first found ColorAttribute,
-                            // so we use that one here as well.
-                            ColorAttribute conceptColor = colors.get(0);
+                        ColorAttribute conceptColor = concept.getColor();
+                        if (conceptColor != null) {
                             String request = "<property name=\"_highlightColor\" "
                                 + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
                                 + conceptColor.getExpression() + "\"/>";
