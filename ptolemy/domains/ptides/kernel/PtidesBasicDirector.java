@@ -217,6 +217,10 @@ public class PtidesBasicDirector extends DEDirector {
         platformSynchronizationError.setTypeEquals(BaseType.DOUBLE);
         platformSynchronizationError.setExpression("0.0");
         
+        schedulerExecutionTime = new Parameter(this, "schedulerExecutionTime");
+        schedulerExecutionTime.setTypeEquals(BaseType.DOUBLE);
+        schedulerExecutionTime.setExpression("0.0");
+        
         _zero = new Time(this);
     }
 
@@ -256,6 +260,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  within this parameter.
      */
     public Parameter platformSynchronizationError;
+    
+    /** Stores the scheduling overhead time. Indicates how much physical
+     *  time it takes for the scheduler to schedule an event processing.
+     */
+    public Parameter schedulerExecutionTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -411,6 +420,10 @@ public class PtidesBasicDirector extends DEDirector {
         _pureEventDelays = new HashMap<NamedObj, Time>();
         _pureEventSourcePorts = new HashMap<NamedObj, IOPort>();
         _physicalTimeExecutionStarted = null;
+        _schedulerFinishTime = new Time(this, Double.NEGATIVE_INFINITY);
+        _sensorInterruptOccurred = false;
+        _scheduleNewEvent = false;
+        _timedInterruptWakeUpTime = null;
 
         _lastExecutingActor = null;
 
@@ -1419,6 +1432,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  have the same actor as destination, and they have the same timestamp
      *  as the top event. Those that do are also taken out of the event queue
      *  and processed.
+     *  <p>
+     *  Finally, when either of the following situations: a sensor interrupt
+     *  has occurred, a timed interrupt has occurred, or an actor has finished
+     *  firing; the scheduler must run to decide whether the next event should
+     *  be processed. Since the Ptides simulator simulates the passage of physical
+     *  time, we also simulate the overhead for the scheduler to make its decision.
+     *  The director's parameter: {@link schedulerExecutionTime} indicates this time.
      *  @see #_preemptExecutingActor()
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
@@ -1429,6 +1449,28 @@ public class PtidesBasicDirector extends DEDirector {
         Tag physicalTag = getPhysicalTag();
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
+        
+        // If we have received a timed interrupt, a sensor interrupt, or if an event has
+        // finished processing, the scheduler must run to figure out what is the next event
+        // to process. We simulate the passage of physical time for the scheduler to make
+        // these decisions.
+        // If the scheduler is making a scheduling decision, that action cannot be preempted,
+        // and we wait until it finishes.
+        if (_schedulerStillRunning()) {
+            return null;
+        }
+        if (_sensorInterruptOccurred) {
+            _startScheduler();
+            _sensorInterruptOccurred = false;
+        }
+        if (_timedInterruptOccurred()) {
+            _startScheduler();
+            _timedInterruptWakeUpTime = null;
+        }
+        if (_scheduleNewEvent) {
+            _startScheduler();
+            _scheduleNewEvent = false;
+        }
 
         if (!_currentlyExecutingStack.isEmpty()) {
             // Case 2: We are currently executing an actor.
@@ -1475,6 +1517,10 @@ public class PtidesBasicDirector extends DEDirector {
                 executiveDirector.fireAtCurrentTime((Actor) container);
 
                 _lastActorFired = _getActorFromEventList((List<PtidesEvent>) currentEventList.contents);
+                
+                // An event has finished processing. In this case, the scheduler should run to figure
+                // out what is the next event to process.
+                _scheduleNewEvent = true;
 
                 return _lastActorFired;
             } else {
@@ -1564,6 +1610,10 @@ public class PtidesBasicDirector extends DEDirector {
             executiveDirector.fireAtCurrentTime((Actor) container);
 
             _lastActorFired = actorToFire;
+            
+            // An event has finished processing. In this case, the scheduler should run to figure
+            // out what is the next event to process.
+            _scheduleNewEvent = true;
 
             return actorToFire;
         } else {
@@ -2050,6 +2100,12 @@ public class PtidesBasicDirector extends DEDirector {
                     _debug(getName(), "transferring input from "
                             + realTimeEvent.port.getName());
                 }
+                
+                // Indicate that a sensor interrupt has occurred, and the scheduler should run
+                // to figure out whether to continue processing or preempt the current processing
+                // event.
+                _sensorInterruptOccurred = true;
+
                 result = true;
 
             } else {
@@ -2537,6 +2593,19 @@ public class PtidesBasicDirector extends DEDirector {
         _pureEventDeadlines.put(actorToFire, lastAbsoluteDeadline);
     }
 
+    /** Check if the scheduler has finished running.
+     *  @return true if the scheduler is still running.
+     *  @throws IllegalActionException If unable to get physical tag.
+     */
+    private boolean _schedulerStillRunning() throws IllegalActionException {
+        // If the overhead time has not finished, return true.
+        if (_schedulerFinishTime.compareTo(getPhysicalTag().timestamp) <= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /** Set the delayOffset of a port to an array of delayOffset values.
      *  @param inputPort The input port to be annotated.
      *  @param delayOffsets The delayOffset values to annotate.
@@ -2562,9 +2631,50 @@ public class PtidesBasicDirector extends DEDirector {
         parameter.setToken(arrayToken);
     }
 
+    /** Check if timed interrupt has just occurred.
+     *  @throws IllegalActionException If failed to get physical tag or if time
+     *  interrupt occurred in the past. 
+     */
+    private boolean _timedInterruptOccurred() throws IllegalActionException {
+        if (_timedInterruptWakeUpTime == null) {
+            return false;
+        }
+        int result = _timedInterruptWakeUpTime.compareTo(getPhysicalTag().timestamp);
+        if (result < 0) {
+            throw new IllegalActionException(this, "Timed interrupt should have " +
+            		"occurred at time: " + _timedInterruptWakeUpTime.toString() +
+            		", but the current simulated physical time is already: " +
+            		getPhysicalTag().timestamp + ".");
+        } else if (result == 0) {
+            _timedInterruptWakeUpTime = null;
+            return true;
+        }
+        return false;
+    }
+
+    /** Indicate the system is currently running scheduler. When this occurs, the
+     *  system cannot be preempted. Set the enclosing director to fire this actor
+     *  at the time when the scheduler finishes execution.
+     *  @throws IllegalActionException If failed to get physical time or failed to
+     *  get token from the schedulerExecutionTime parameter.
+     */
+    private void _startScheduler() throws IllegalActionException {
+        Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+        if (parameter != null) {
+            _schedulerFinishTime = getPhysicalTag().timestamp
+                .add(((DoubleToken) parameter.getToken()).doubleValue());
+        } else {
+            _schedulerFinishTime = getPhysicalTag().timestamp;
+        }
+        ((Actor) getContainer()).getExecutiveDirector()
+                .fireAt((Actor) getContainer(), _schedulerFinishTime);
+    }
+
     /** Check if we should output to the enclosing director immediately.
      *  this method is default to return false.
      *  @param port Output port to transmit output event immediately.
+     *  @return true if the token is to be transferred immediated
+     *  from the port.
      *  @exception IllegalActionException If token of this parameter
      *  cannot be evaluated.
      */
@@ -2769,9 +2879,25 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private PriorityQueue _realTimeOutputEventQueue;
 
+    /** The time at which the scheduler finishes processing.
+     */
+    private Time _schedulerFinishTime;
+
+    /** Indicate whether a sensor interrupt has just occurred.
+     */
+    private boolean _sensorInterruptOccurred;
+
+    /** Indicate whether an event has finished processing.
+     */
+    private boolean _scheduleNewEvent;
+
     /** Keeps track of whether time delay actors have been highlighted.
      */
     private boolean _timeDelayHighlighted = false;
+
+    /** Keeps track of when the next timed interrupt wake up time is.
+     */
+    private Time _timedInterruptWakeUpTime;
 
     /** A set that keeps track of visited actors during delayOffset calculation.
      */
