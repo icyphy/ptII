@@ -21,12 +21,15 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
@@ -308,10 +311,51 @@ public class MonotonicityConcept extends InfiniteConcept {
             throws IllegalActionException, NameDuplicationException {
           super(ontology);
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private ColorAttribute _getColor(Concept c) {
+        List<ColorAttribute> colors = (List<ColorAttribute>) c.attributeList(ColorAttribute.class);
+        if (colors == null || colors.isEmpty()) {
+            return null;
+        } else {
+            return colors.get(0);
+        }
+    }
+
+    private void _setColor() {
+        ColorAttribute newColor = _getColor(_toFiniteConcept());
+        if (newColor == null) return;
+
+        ColorAttribute myColor = (ColorAttribute) getAttribute("solutionColor");
+        try {
+            if (myColor == null) {
+                myColor = new ColorAttribute(this, "solutionColor");
+            }
+            myColor.setToken(newColor.getToken());
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NameDuplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private FiniteConcept _toFiniteConcept() {
+        ConceptGraph monotonicityLattice = getOntology().getConceptGraph();
+        FiniteConcept result = (FiniteConcept)monotonicityLattice.bottom();
+        for (FiniteConcept c : _variableToMonotonicity.values()) {
+            result =
+                (FiniteConcept)monotonicityLattice.leastUpperBound(result, c);
+        }
+        return result;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Mapping of free variable names to monotonicity values.
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
