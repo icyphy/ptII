@@ -23,6 +23,9 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.List;
+
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -88,6 +91,21 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      */
     public Object getAssociatedObject() {
         return null;
+    }
+
+    /** Return the color attribute associated with this Concept, if it exists.
+     *  @return The first ColorAttribute associated with this concept, if
+     *   there is one.  Null, otherwise.
+     */
+    public ColorAttribute getColor() {
+        @SuppressWarnings("unchecked")
+        List<ColorAttribute> colors =
+            (List<ColorAttribute>) attributeList(ColorAttribute.class);
+        if (colors == null || colors.isEmpty()) {
+            return null;
+        } else {
+            return colors.get(0);
+        }
     }
     
     /** Return the ontology to which this concept belongs.

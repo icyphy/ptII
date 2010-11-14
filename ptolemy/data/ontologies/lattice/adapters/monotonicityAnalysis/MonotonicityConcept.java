@@ -21,7 +21,6 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
-import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -318,17 +317,13 @@ public class MonotonicityConcept extends InfiniteConcept {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private ColorAttribute _getColor(Concept c) {
-        List<ColorAttribute> colors = (List<ColorAttribute>) c.attributeList(ColorAttribute.class);
-        if (colors == null || colors.isEmpty()) {
-            return null;
-        } else {
-            return colors.get(0);
-        }
-    }
-
+    /** Set the correct color for this monotonicity concept by looking at the
+     *  color of the finite monotonicity representative.  This should be
+     *  called whenever the state of the monotonicity concept changes in
+     *  order to make sure that the color remains correct.
+     */
     private void _setColor() {
-        ColorAttribute newColor = _getColor(_toFiniteConcept());
+        ColorAttribute newColor = _toFiniteMonotonicity().getColor();
         if (newColor == null) return;
 
         ColorAttribute myColor = (ColorAttribute) getAttribute("solutionColor");
@@ -346,7 +341,24 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
     }
 
-    private FiniteConcept _toFiniteConcept() {
+    /** Return the finite monotonicity concept that best represents the
+     *  overall monotonicity of this infinite concept.  Currently, this
+     *  simply takes the least upper bound of the monotonicity of all the
+     *  free variables referenced in this monotonicity concept, with the
+     *  empty monotonicity concept evaluating to constant.
+     *  
+     *  So, for example the finite monotonicity of
+     *   { x:Monotonic, y:Monotonic }
+     *  is Monotonic, of
+     *   { x:Monotonic, y:Antimonotonic }
+     *  is General, of
+     *   { }
+     *  is Constant, etc.
+     *
+     *  @return The finite monotonicity concept that represents the overall
+     *   behavior of this infinite monotonicity concept.
+     */
+    private FiniteConcept _toFiniteMonotonicity() {
         ConceptGraph monotonicityLattice = getOntology().getConceptGraph();
         FiniteConcept result = (FiniteConcept)monotonicityLattice.bottom();
         for (FiniteConcept c : _variableToMonotonicity.values()) {
