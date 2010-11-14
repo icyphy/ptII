@@ -244,6 +244,7 @@ public class MonotonicityConcept extends InfiniteConcept {
                     concept.getMonotonicity(variableName));
             result.putMonotonicity(variableName, monotonicity);
         }
+        result._setColor();
         return result;
     }
 
@@ -270,6 +271,7 @@ public class MonotonicityConcept extends InfiniteConcept {
         } else {
             _variableToMonotonicity.put(variable, monotonicity);
         }
+        _setColor();
     }
     
     /** Return the string representation of this monotonicity concept.
@@ -310,6 +312,7 @@ public class MonotonicityConcept extends InfiniteConcept {
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
           super(ontology);
+          _setColor();
     }
 
     ///////////////////////////////////////////////////////////////////
