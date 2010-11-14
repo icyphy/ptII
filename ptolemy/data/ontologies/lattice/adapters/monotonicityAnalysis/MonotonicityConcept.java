@@ -161,7 +161,17 @@ public class MonotonicityConcept extends InfiniteConcept {
             return CPO.INCOMPARABLE;            
         }
     }
-    
+
+    /** Return the correct color for this monotonicity concept by looking
+     *  at the color of the finite monotonicity representative.
+     *
+     *  @return A ColorAttribute corresponding to the highlight color of
+     *   this monotonicity concept.
+     */
+    public ColorAttribute getColor() {
+        return _toFiniteMonotonicity().getColor();
+    }
+
     /** Get the monotonicity of this concept with respect to a specific
      *  variable.  While the overall monotonicity of an expression
      *  cannot be represented so simply, the monotonicity with
@@ -243,7 +253,6 @@ public class MonotonicityConcept extends InfiniteConcept {
                     concept.getMonotonicity(variableName));
             result.putMonotonicity(variableName, monotonicity);
         }
-        result._setColor();
         return result;
     }
 
@@ -270,9 +279,8 @@ public class MonotonicityConcept extends InfiniteConcept {
         } else {
             _variableToMonotonicity.put(variable, monotonicity);
         }
-        _setColor();
     }
-    
+
     /** Return the string representation of this monotonicity concept.
      *  Note that the syntax here is similar to that used for records
      *  (e.g. { x:Monotonic, y:Anitmonotonic }).
@@ -311,35 +319,10 @@ public class MonotonicityConcept extends InfiniteConcept {
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
           super(ontology);
-          _setColor();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Set the correct color for this monotonicity concept by looking at the
-     *  color of the finite monotonicity representative.  This should be
-     *  called whenever the state of the monotonicity concept changes in
-     *  order to make sure that the color remains correct.
-     */
-    private void _setColor() {
-        ColorAttribute newColor = _toFiniteMonotonicity().getColor();
-        if (newColor == null) return;
-
-        ColorAttribute myColor = (ColorAttribute) getAttribute("solutionColor");
-        try {
-            if (myColor == null) {
-                myColor = new ColorAttribute(this, "solutionColor");
-            }
-            myColor.setToken(newColor.getToken());
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NameDuplicationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
     /** Return the finite monotonicity concept that best represents the
      *  overall monotonicity of this infinite concept.  Currently, this
