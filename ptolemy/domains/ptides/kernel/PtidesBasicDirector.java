@@ -261,8 +261,11 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter platformSynchronizationError;
     
-    /** Stores the scheduling overhead time. Indicates how much physical
-     *  time it takes for the scheduler to schedule an event processing.
+    /** A Parameter representing the simulated scheduling overhead time.
+     *  In real-time programs, it takes time for the scheduler to
+     *  schedule a particular event processing. While simulating the
+     *  passage of physical time, this Parameter
+     *  is used to capture that scheduling overhead.
      */
     public Parameter schedulerExecutionTime;
 
@@ -1433,12 +1436,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  as the top event. Those that do are also taken out of the event queue
      *  and processed.
      *  <p>
-     *  Finally, when either of the following situations: a sensor interrupt
+     *  Finally, in any of the following situations: a sensor interrupt
      *  has occurred, a timed interrupt has occurred, or an actor has finished
      *  firing; the scheduler must run to decide whether the next event should
      *  be processed. Since the Ptides simulator simulates the passage of physical
      *  time, we also simulate the overhead for the scheduler to make its decision.
-     *  The director's parameter: {@link schedulerExecutionTime} indicates this time.
+     *  The parameter: {@link #schedulerExecutionTime} indicates this time.
      *  @see #_preemptExecutingActor()
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
@@ -2652,11 +2655,12 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** Indicate the system is currently running scheduler. When this occurs, the
+    /** Indicate the director is currently running scheduler by updating private
+     *  variable {@link #_schedulerFinishTime}. When this occurs, the
      *  system cannot be preempted. Set the enclosing director to fire this actor
      *  at the time when the scheduler finishes execution.
-     *  @throws IllegalActionException If failed to get physical time or failed to
-     *  get token from the schedulerExecutionTime parameter.
+     *  @throws IllegalActionException If director fails to get physical time or 
+     *  failed to get a token from the schedulerExecutionTime parameter.
      */
     private void _startScheduler() throws IllegalActionException {
         Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
@@ -2671,9 +2675,9 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Check if we should output to the enclosing director immediately.
-     *  this method is default to return false.
+     *  This method returns false by default.
      *  @param port Output port to transmit output event immediately.
-     *  @return true if the token is to be transferred immediated
+     *  @return true If the token is to be transferred immediately
      *  from the port.
      *  @exception IllegalActionException If token of this parameter
      *  cannot be evaluated.
@@ -2853,7 +2857,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Map _portDelays;
     
-    /** Stores absolute deadline information for pure events that will be produced
+    /** Store absolute deadline information for pure events that will be produced
      *  in the future.
      */
     private Map _pureEventDeadlines;
@@ -2895,7 +2899,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private boolean _timeDelayHighlighted = false;
 
-    /** Keeps track of when the next timed interrupt wake up time is.
+    /** The time of the next interrupt wake up.
      */
     private Time _timedInterruptWakeUpTime;
 
@@ -2939,7 +2943,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** A structure that stores a PortChannel and a dependency
+    /** Store a PortChannel and a dependency
      *  associated with that port. This structure is comparable, and
      *  it compares using the dependency information.
      */
