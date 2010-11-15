@@ -30,11 +30,11 @@
  *     \c matlab/compile.m and 
  *     \c matlab/exchangeDoublesWithSocket.m
  */
-#define NDBLMAX 128
+#define NDBLMAX 1024
 
 /** \val The main version of the socket interface.
  */
-#define MAINVERSION 1
+#define MAINVERSION 2
 
 #endif /*__DEFINES_H__*/
 
@@ -44,7 +44,7 @@
 Copyright Notice
 ----------------
 
-Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008-2009, The
+Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008, The
 Regents of the University of California, through Lawrence Berkeley
 National Laboratory (subject to receipt of any required approvals from
 the U.S. Dept. of Energy). All rights reserved.
