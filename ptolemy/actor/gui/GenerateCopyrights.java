@@ -345,6 +345,7 @@ public class GenerateCopyrights {
         String applicationCopyrightURL = _findURL(applicationCopyright);
 
         String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
+        String graphCopyright = _findURL("ptolemy/graph/graph-license.htm");
 
         String defaultCSS = _findURL("doc/default.css");
         StringBuffer htmlBuffer = new StringBuffer();
@@ -374,8 +375,15 @@ public class GenerateCopyrights {
         htmlBuffer.append("<p>" + applicationName
                 + " uses AElfred as an XML Parser.\n"
                 + "AElfred is covered by the copyright in\n " + "<a href=\""
-                + aelfredCopyright + "\"><code>"
-                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
+                + aelfredCopyright + "\"><code>."
+                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n</p>"
+                + "<p>" + applicationName
+                + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
+                + "Significant portions of the ptolemy.graph package were developed by "
+                + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
+                + "and his group. and are covered by a BSD License in\n " + "<a href=\""
+                + graphCopyright + "\"><code>"
+                + _canonicalizeURLToPTII(graphCopyright) + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
     }
