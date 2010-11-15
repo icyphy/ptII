@@ -111,7 +111,9 @@ public class Server {
      * @exception IOException If the server socket cannot be opened.
      */
     public Server(int portNo, int timOut) throws IOException {
-        serSoc = new ServerSocket(portNo);
+        serSoc = new ServerSocket();
+	serSoc.bind(new java.net.InetSocketAddress(portNo));
+
         flaFroCli = 0;
         if (!serSoc.isBound()) {
             String em = "Server socket failed to bind to an address.";
@@ -152,8 +154,9 @@ public class Server {
             strBuf.append(String.valueOf(dblVal[i]));
             strBuf.append(" ");
         }
-        // add line termination for parsing in client
-        strBuf.append(System.getProperty("line.separator"));
+        // Add line termination for parsing in client.
+	// Don't use line.separator here as the client searches for \n
+        strBuf.append("\n"); 
         _write(strBuf);
     }
 
@@ -165,8 +168,19 @@ public class Server {
     private void _write(StringBuffer strBuf) throws IOException {
         BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(cliSoc
                 .getOutputStream()));
-        wr.write(new String(strBuf));
-        wr.flush();
+	final String str = new String(strBuf);
+	// We write 8192 characters at once since the client only 
+	// receives that many characters, even if setsockopt is called
+	// to increase the socket buffer.
+	// The number 8192 needs to be the same as in utilSocket.c
+	final int maxCha = 8192;
+	final int strLen = str.length();
+	final int nWri = strLen / maxCha + 1;
+	for(int i = 0; i < nWri; i++){
+	    wr.write(str.substring(i*maxCha, 
+				   java.lang.Math.min(strLen, (i+1)*maxCha)));
+	    wr.flush();
+	}
     }
 
     /** Returns the last communication flag read from the socket.
@@ -305,7 +319,7 @@ public class Server {
     protected double simTimWri;
 
     /** The version number of the socket implementation. */
-    protected int verNo = 1;
+    protected int verNo = 2;
 
     /** System dependent line separator */
     private final static String LS = System.getProperty("line.separator");
