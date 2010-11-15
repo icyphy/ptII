@@ -253,7 +253,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     }
 
-    @Override
+    
     protected boolean _close() {
         boolean closeResult = super._close();
 

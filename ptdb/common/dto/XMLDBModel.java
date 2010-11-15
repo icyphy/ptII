@@ -132,7 +132,7 @@ public class XMLDBModel implements Comparable {
      * returned value is less than 0, it means the otherModel is larger. If 0 
      * is returned, it means these two models are equal. 
      */
-    @Override
+    
     public int compareTo(Object otherModel) {
 
         return _modelName.compareToIgnoreCase(((XMLDBModel) otherModel)
@@ -286,7 +286,7 @@ public class XMLDBModel implements Comparable {
      * 
     * @return The String representation of this model. 
     */
-    @Override
+    
     public String toString() {
 
         return super.toString() + "@ModelName:" + _modelName;

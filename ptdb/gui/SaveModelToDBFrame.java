@@ -258,12 +258,12 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
 
-                    @Override
+                    
                     public void keyTyped(KeyEvent e) {
                         // Do nothing. 
                     }
 
-                    @Override
+                    
                     public void keyReleased(KeyEvent e) {
 
                         if (!_attributesListPanel.getNameTextField().getText()
@@ -278,7 +278,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                         }
                     }
 
-                    @Override
+                    
                     public void keyPressed(KeyEvent e) {
 
                         /* 
@@ -328,7 +328,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     /**
      * Close this window.
      */
-    @Override
+    
     public void closeFrame() {
         if (_parentValidateFrame != null) {
             _parentValidateFrame.dispose();
@@ -1274,7 +1274,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             _previousButton = new JButton("<< Previous");
             _previousButton.addActionListener(new ActionListener() {
 
-                @Override
+                
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
                     _firstFrameOfSave.setVisible(true);
@@ -1289,7 +1289,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _saveButton.addActionListener(new ActionListener() {
 
-                @Override
+                
                 public void actionPerformed(ActionEvent e) {
 
                     // Add the action listener to call the save button in the
@@ -1306,7 +1306,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _cancelButton.addActionListener(new ActionListener() {
 
-                @Override
+                
                 public void actionPerformed(ActionEvent e) {
                     // Add the action listener to call the cancel button in the
                     // previous frame, when this button is clicked.
@@ -1590,7 +1590,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _checkBox.addActionListener(new ActionListener() {
 
-                @Override
+                
                 public void actionPerformed(ActionEvent e) {
                     _parentFrame._unCheckParentModel();
 

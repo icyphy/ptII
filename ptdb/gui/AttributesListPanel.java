@@ -184,13 +184,13 @@ public class AttributesListPanel extends JPanel {
         
         _nameText.addFocusListener(new FocusListener() {
 
-            @Override
+            
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
                 
             }
 
-            @Override
+            
             public void focusLost(FocusEvent arg0) {
                 
                 if(!_nameText.getText().equals(_currentText)){

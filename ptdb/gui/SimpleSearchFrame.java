@@ -225,27 +225,27 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-            @Override
+            
             public void windowOpened(WindowEvent e) {
                 // Do nothing.    
             }
 
-            @Override
+            
             public void windowIconified(WindowEvent e) {
                 // Do nothing.    
             }
 
-            @Override
+            
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing.    
             }
 
-            @Override
+            
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing.    
             }
 
-            @Override
+            
             public void windowClosing(WindowEvent e) {
                 
                 closeFrame();
@@ -257,7 +257,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 //                dispose();
             }
 
-            @Override
+            
             public void windowClosed(WindowEvent e) {
                 
                 closeFrame();
@@ -269,7 +269,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 //                dispose();
             }
 
-            @Override
+            
             public void windowActivated(WindowEvent e) {
                 // Do nothing.    
             }
@@ -279,17 +279,17 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
 
-                    @Override
+                    
                     public void keyTyped(KeyEvent e) {
                         // Do nothing. 
                     }
 
-                    @Override
+                    
                     public void keyReleased(KeyEvent e) {
                         // Do nothing.
                     }
 
-                    @Override
+                    
                     public void keyPressed(KeyEvent e) {
 
                         /* 
@@ -331,7 +331,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     /**
      * Close this frame. 
      */
-    @Override
+    
     public void closeFrame() {
 
         _ptdbContainedFramesManager.closeContainedFrames();
@@ -1012,7 +1012,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
             new Thread(new Runnable() {
 
-                @Override
+                
                 public void run() {
                     // Call the Search Manager to trigger the search.
                     SearchManager searchManager = new SearchManager();

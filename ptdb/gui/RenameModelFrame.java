@@ -94,41 +94,41 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-            @Override
+            
             public void windowOpened(WindowEvent e) {
                 _sourceFrame.setEnabled(false);
 
             }
 
-            @Override
+            
             public void windowIconified(WindowEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+            
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+            
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+            
             public void windowClosing(WindowEvent e) {
                 // Do nothing.
 
             }
 
-            @Override
+            
             public void windowClosed(WindowEvent e) {
                 _sourceFrame.setEnabled(true);
                 _sourceFrame.toFront();
 
             }
 
-            @Override
+            
             public void windowActivated(WindowEvent e) {
                 // Do nothing. 
             }
@@ -209,7 +209,7 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
     /**
      * Close this window.
      */
-    @Override
+    
     public void closeFrame() {
         dispose();
         

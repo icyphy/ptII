@@ -60,41 +60,41 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
         addWindowListener(new WindowListener() {
 
-            @Override
+            
             public void windowOpened(WindowEvent e) {
                 // Do nothing. 
 
             }
 
-            @Override
+            
             public void windowIconified(WindowEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+            
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+            
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+            
             public void windowClosing(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
 
             }
 
-            @Override
+            
             public void windowClosed(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
             }
 
-            @Override
+            
             public void windowActivated(WindowEvent e) {
                 // Do nothing. 
             }

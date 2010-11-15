@@ -506,7 +506,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    @Override
+    
     protected void _addMenus() {
 
         super._addMenus();
@@ -562,7 +562,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     }
 
     //
-    //    @Override
+    //    
     //    protected RunnableGraphController _createActorGraphController() {
     //        return new DBSearchFrameController();
     //
@@ -577,7 +577,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
      * 
      * @return true to close the window. 
      */
-    @Override
+    
     protected boolean _close() {
 
         if (isModified()) {

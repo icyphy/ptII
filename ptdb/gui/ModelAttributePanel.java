@@ -130,13 +130,13 @@ public class ModelAttributePanel extends JPanel {
         
         _textValue.addFocusListener(new FocusListener() {
 
-            @Override
+            
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
                 
             }
 
-            @Override
+            
             public void focusLost(FocusEvent arg0) {
                 
                 if(!_textValue.getText().equals(_currentText)){

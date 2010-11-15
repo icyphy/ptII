@@ -101,7 +101,7 @@ public abstract class GraphSearcher extends AbstractSearcher {
      * @return true - if the search criteria has been set.<br>
      *         false - if the search criteria has not been set. 
      */
-    @Override
+    
     protected boolean _isSearchCriteriaSet() {
 
         if (_dbGraphSearchCriteria != null

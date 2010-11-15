@@ -137,7 +137,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      * @return true - if the search criteria has been set.<br>
      *         false - if the search criteria has not been set. 
      */
-    @Override
+    
     protected boolean _isSearchCriteriaSet() {
 
         if (_attributesCriteria == null || _attributesCriteria.size() == 0) {
@@ -154,7 +154,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      * @exception DBExecutionException Thrown by the DBConnection if
      * unexpected problem happens during the execution of DB query tasks.
      */
-    @Override
+    
     protected void _search() throws DBExecutionException {
 
         AttributeSearchTask attributeSearchTask = new AttributeSearchTask();

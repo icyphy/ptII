@@ -221,7 +221,7 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
     /**
      * Close this frame. 
      */
-    @Override
+    
     public void closeFrame() {
         dispose();
     }

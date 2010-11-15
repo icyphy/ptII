@@ -204,7 +204,7 @@ public class XMLDBAttribute {
      * 
      * @return String representation of the attribute information. 
      */
-    @Override
+    
     public String toString() {
 
         return super.toString() + "@Name:" + _attributeName + "@Type:"

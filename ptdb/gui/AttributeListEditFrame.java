@@ -93,7 +93,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
     /**
      * Close the window. 
      */
-    @Override
+    
     public void closeFrame() {
         dispose();
         
@@ -123,45 +123,45 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         addWindowListener(new WindowListener() {
 
-            @Override
+          
             public void windowOpened(WindowEvent e) {
                 // Do nothing special. 
 
             }
 
-            @Override
+           
             public void windowIconified(WindowEvent e) {
                 // Do nothing special. 
 
             }
 
-            @Override
+          
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing special. 
 
             }
 
-            @Override
+         
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing special. 
 
             }
 
-            @Override
+            
             public void windowClosing(WindowEvent e) {
                 _parentFrame.setEnabled(true);
                 AttributeListEditFrame.this.dispose();
 
             }
 
-            @Override
+          
             public void windowClosed(WindowEvent e) {
                 _parentFrame.setEnabled(true);
                 AttributeListEditFrame.this.dispose();
 
             }
 
-            @Override
+           
             public void windowActivated(WindowEvent e) {
                 // Do nothing special. 
 
@@ -172,7 +172,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _itemsJList.addListSelectionListener(new ListSelectionListener() {
 
-            @Override
+            
             public void valueChanged(ListSelectionEvent e) {
                 _deleteButton.setEnabled(true);
 
@@ -186,7 +186,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _addButton.addActionListener(new ActionListener() {
 
-            @Override
+           
             public void actionPerformed(ActionEvent e) {
 
                 try {
@@ -213,7 +213,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _deleteButton.addActionListener(new ActionListener() {
 
-            @Override
+          
             public void actionPerformed(ActionEvent e) {
                 ((ArrayModelList) _itemsJList.getModel())
                         .removeItem((String) _itemsJList.getSelectedValue());
@@ -299,12 +299,12 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _listItemTextField.addKeyListener(new KeyListener() {
 
-            @Override
+           
             public void keyTyped(KeyEvent e) {
                 // Do nothing. 
             }
 
-            @Override
+          
             public void keyReleased(KeyEvent e) {
                 if (_listItemTextField.getText().isEmpty()) {
                     _addButton.setEnabled(false);
@@ -314,7 +314,6 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
             }
 
-            @Override
             public void keyPressed(KeyEvent e) {
                 // Do nothing. 
             }
@@ -322,7 +321,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
         _saveButton.addActionListener(new ActionListener() {
 
-            @Override
+    
             public void actionPerformed(ActionEvent e) {
 
                 _parentFrame.setEnabled(true);

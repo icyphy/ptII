@@ -93,7 +93,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * @param resultHandler The result handler searcher that finds and passes
      * the intermediate results. 
      */
-    @Override
+    
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler) {
 
@@ -175,7 +175,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * 
      * @param errorModels The passed error models. 
      */
-    @Override
+    
     public void passErrorModels(List<XMLDBModel> errorModels) {
         if (_errorModels == null) {
             _errorModels = errorModels;

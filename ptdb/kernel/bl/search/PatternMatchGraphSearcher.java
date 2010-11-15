@@ -85,7 +85,7 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
      * @exception DBExecutionException Thrown from the database layer if error
      * occurs during some execution. 
      */
-    @Override
+    
     protected void _search() throws DBConnectionException, DBExecutionException {
 
         Pattern pattern = _dbGraphSearchCriteria.getPattern();

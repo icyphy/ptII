@@ -74,7 +74,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
     /**
      * 
      */
-    @Override
+    
     public void closeFrame() {
         dispose();
     }

@@ -81,7 +81,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
      * @return true - if the search criteria has been set.<br>
      *         false - if the search criteria has not been set. 
      */
-    @Override
+    
     protected boolean _isSearchCriteriaSet() {
 
         // There is no criteria need to be set in this searcher, so always
@@ -97,7 +97,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
      * @exception DBExecutionException Thrown by the DBConnection when
      * unexpected problem happens during the execution of DB query tasks.
      */
-    @Override
+    
     protected void _search() throws DBExecutionException {
 
         FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();

@@ -139,7 +139,7 @@ public class PTDBGenericAttribute {
      * 
      * @return The String representation of this attribute.
      */
-    @Override
+    
     public String toString() {
 
         return _attributeName + "@" + _className + "@" + _values.toString();
@@ -153,7 +153,7 @@ public class PTDBGenericAttribute {
      * @return true - if the given attribute equals to this attribute.<br>
      *          false - if the given attribute does not equal to this attribute.
      */
-    @Override
+    
     public boolean equals(Object attribute) {
 
         if (!(attribute instanceof PTDBGenericAttribute)) {
@@ -217,7 +217,7 @@ public class PTDBGenericAttribute {
      * 
      * @return Return the calculated hash code. 
      */
-    @Override
+    
     public int hashCode() {
         StringBuffer summaryStringBuffer = new StringBuffer("");
 

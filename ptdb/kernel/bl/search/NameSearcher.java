@@ -69,7 +69,7 @@ public class NameSearcher extends AbstractSearcher implements
      * @return true - if the search criteria has been set.<br>
      *         false - if the search criteria has not been set. 
      */
-    @Override
+    
     protected boolean _isSearchCriteriaSet() {
         if (_modelNameCriteria == null || _modelNameCriteria.length() == 0) {
             return false;
@@ -85,7 +85,7 @@ public class NameSearcher extends AbstractSearcher implements
      * @exception DBExecutionException Thrown by the DBConnection if
      * unexpected problem happens during the execution of DB query tasks.
      */
-    @Override
+    
     protected void _search() throws DBExecutionException {
 
         ModelNameSearchTask modelNameSearchTask = new ModelNameSearchTask(

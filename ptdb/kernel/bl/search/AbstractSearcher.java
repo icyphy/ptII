@@ -77,7 +77,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * @param resultHandler The result handler that found and pass these
      * results. 
      */
-    @Override
+    
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler) {
 
@@ -258,7 +258,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * 
      * @param errorModels The error models. 
      */
-    @Override
+    
     public void passErrorModels(List<XMLDBModel> errorModels) {
         if (_nextResultHandler != null) {
             _nextResultHandler.passErrorModels(errorModels);

@@ -73,7 +73,7 @@ public class XQueryGraphSearcher extends GraphSearcher implements
      * @exception DBExecutionException Thrown from the database if the error
      * occurs in the database execution. 
      */
-    @Override
+    
     protected void _search() throws DBExecutionException {
 
         GraphSearchTask graphSearchTask = new GraphSearchTask();

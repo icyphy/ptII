@@ -69,7 +69,7 @@ public class CommandSearcher extends AbstractSearcher implements
      * @return true - if the search criteria has been set.<br>
      *         false - if the search criteria has not been set. 
      */
-    @Override
+    
     protected boolean _isSearchCriteriaSet() {
         if (_commandSearchCriteria == null || _commandSearchCriteria.equals("")) {
             return false;
@@ -83,7 +83,7 @@ public class CommandSearcher extends AbstractSearcher implements
      * 
      * <p>This method has not been implemented yet.</p>
      */
-    @Override
+    
     protected void _search() {
         // to be implemented in the next requirement
 

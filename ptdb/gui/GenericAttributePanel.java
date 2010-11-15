@@ -48,7 +48,7 @@ import javax.swing.JTextField;
  *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
- * @version $Id:$
+ * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
  *
@@ -105,13 +105,13 @@ public class GenericAttributePanel extends JPanel {
      
         _attributeName.addFocusListener(new FocusListener() {
 
-            @Override
+            
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
                 
             }
 
-            @Override
+            
             public void focusLost(FocusEvent arg0) {
                 
                 if(!_attributeName.getText().equals(_currentNameText)){
@@ -125,13 +125,13 @@ public class GenericAttributePanel extends JPanel {
         
         _attributeValue.addFocusListener(new FocusListener() {
 
-            @Override
+            
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
                 
             }
 
-            @Override
+            
             public void focusLost(FocusEvent arg0) {
                 
                 if(!_attributeValue.getText().equals(_currentValueText)){
@@ -145,13 +145,13 @@ public class GenericAttributePanel extends JPanel {
         
         _attributeClass.addFocusListener(new FocusListener() {
 
-            @Override
+            
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
                 
             }
 
-            @Override
+            
             public void focusLost(FocusEvent arg0) {
                 
                 if(!_attributeClass.getText().equals(_currentClassText)){

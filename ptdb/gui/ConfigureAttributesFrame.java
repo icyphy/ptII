@@ -88,7 +88,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
     /**
      * Close this frame.
      */
-    @Override
+    
     public void closeFrame() {
         _containedFramesManager.closeContainedFrames();
 
@@ -241,37 +241,37 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-            @Override
+            
             public void windowOpened(WindowEvent e) {
                 // Do Nothing.  
             }
 
-            @Override
+            
             public void windowIconified(WindowEvent e) {
                 // Do Nothing. 
             }
 
-            @Override
+            
             public void windowDeiconified(WindowEvent e) {
                 // Do Nothing. 
             }
 
-            @Override
+            
             public void windowDeactivated(WindowEvent e) {
                 // Do Nothing. 
             }
 
-            @Override
+            
             public void windowClosing(WindowEvent e) {
                 _containedFramesManager.closeContainedFrames();
             }
 
-            @Override
+            
             public void windowClosed(WindowEvent e) {
                 _containedFramesManager.closeContainedFrames();
             }
 
-            @Override
+            
             public void windowActivated(WindowEvent e) {
                 if (_canEnableSaveButton()) {
                     _saveButton.setEnabled(true);
@@ -340,7 +340,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _attributeTypeField.addItemListener(new ItemListener() {
 
-            @Override
+            
             public void itemStateChanged(ItemEvent e) {
                 if (_attributeTypeField.getSelectedItem().equals(
                         XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
@@ -362,7 +362,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _addButton.addActionListener(new ActionListener() {
 
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
                 _addButtonActionPerformed(e);
 
@@ -502,19 +502,19 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _attributeNameField.addKeyListener(new KeyListener() {
 
-            @Override
+            
             public void keyTyped(KeyEvent e) {
                 // Do nothing here.                 
             }
 
-            @Override
+            
             public void keyReleased(KeyEvent e) {
 
                 _saveButton.setEnabled(_canEnableSaveButton());
 
             }
 
-            @Override
+            
             public void keyPressed(KeyEvent e) {
                 // Do nothing here.  
 
@@ -530,7 +530,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _saveButton.addActionListener(new ActionListener() {
 
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
                 try {
                     _saveButtonActionPerformed(e);
@@ -548,7 +548,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _listEditButton.addActionListener(new ActionListener() {
 
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
 
                 if (_listItems == null) {
@@ -597,31 +597,31 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _attributesList.addMouseListener(new MouseListener() {
 
-            @Override
+            
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            @Override
+            
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            @Override
+            
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            @Override
+            
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            @Override
+            
             public void mouseClicked(MouseEvent e) {
                 if (_currentEditedAttribute == null
                         || !_attributesList.getSelectedValue().equals(
@@ -687,7 +687,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         //        _attributesList.addListSelectionListener(new ListSelectionListener() {
         //
         //            
-        //            @Override
+        //            
         //            public void valueChanged(ListSelectionEvent e) {
         //
         //                if (_currentEditedAttribute == null
@@ -965,7 +965,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         _closeButton.addActionListener(new ActionListener() {
 
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
 
                 if (_checkChanged()) {
