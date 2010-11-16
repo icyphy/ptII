@@ -79,16 +79,20 @@ public class MonotonicityConcept extends InfiniteConcept {
      *    are really going to be doing inference on monotonicity
      *    of expressions.
      *  @return The newly created MonotonicityConcept.
-     *  @throws IllegalActionException If the base class throws it.
      */
-    public static MonotonicityConcept createMonotonicityConcept(Ontology ontology)
-            throws IllegalActionException {
+    public static MonotonicityConcept createMonotonicityConcept(
+            Ontology ontology) {
         try {
             return new MonotonicityConcept(ontology);
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(
-                    "Name conflict with automatically generated infinite concept name.\n"
-                  + "This should never happen."
+            throw new InternalErrorException(
+                    "Name conflict with automatically generated infinite"
+                  + " concept name. This should never happen.\n"
+                  + "Original exception:" + e.toString());
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(
+                    "There was an error creating a new MonotonicityConcept"
+                  + "in the " + ontology + "ontology.\n"
                   + "Original exception:" + e.toString());
         }
     }
@@ -233,14 +237,8 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(MonotonicityConcept concept) {
-        MonotonicityConcept result;
-        try {
-            result = createMonotonicityConcept(getOntology());
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(
-                    "There was an error creating a new MonotonicityConcept" +
-                    "in the " + getOntology() + "ontology");
-        }
+        MonotonicityConcept result = createMonotonicityConcept(getOntology());
+
         // For some reason Set.addAll throws an UnsupportedOperationException,
         // so we use a TreeSet here purely to avoid that problem.
         TreeSet<String> allKeys = new TreeSet<String>(

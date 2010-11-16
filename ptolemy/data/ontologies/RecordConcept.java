@@ -67,16 +67,20 @@ public class RecordConcept extends InfiniteConcept {
      * 
      *  @param ontology The ontology to which this concept belongs.
      *  @return The newly created RecordConcept.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @throws InternalErrorException If there .
      */
-    public static RecordConcept createRecordConcept(Ontology ontology)
-            throws IllegalActionException {
+    public static RecordConcept createRecordConcept(Ontology ontology) {
         try {
             return new RecordConcept(ontology);
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(
+            throw new InternalErrorException(
                     "Name conflict with automatically generated infinite concept name.\n"
-                  + "This should never happen."
+                  + "This should never happen.\n"
+                  + "Original exception:" + e.toString());
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(
+                    "There was an error creating a new RecordConcept"
+                  + "in the " + ontology + "ontology\n."
                   + "Original exception:" + e.toString());
         }
     }
@@ -205,14 +209,7 @@ public class RecordConcept extends InfiniteConcept {
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(RecordConcept concept) {
-        RecordConcept result;
-        try {
-            result = createRecordConcept(getOntology());
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(
-                    "There was an error creating a new MonotonicityConcept" +
-                    "in the " + getOntology() + "ontology");
-        }
+        RecordConcept result = createRecordConcept(getOntology());
         
         Set<String> commonFields = _commonFields(concept);
         

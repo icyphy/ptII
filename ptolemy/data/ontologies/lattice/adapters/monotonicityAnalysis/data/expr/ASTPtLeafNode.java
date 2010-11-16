@@ -122,13 +122,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param inputConceptValues Ignored in this leaf node (should be an empty list).
          *  @return The monotonicity concept that this leaf node evaluates to.
-         *  @throws IllegalActionException If there is an error creating a new
-         *    monotonicity concept.
          */
-        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
-                throws IllegalActionException {
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues) {
 
-            MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
+            MonotonicityConcept result =
+                MonotonicityConcept.createMonotonicityConcept(
+                        _monotonicityAnalysisOntology);
             
             // Check if the leaf is a constant.
             if (_leafNode.isConstant()) {
