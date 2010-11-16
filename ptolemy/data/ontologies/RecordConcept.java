@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  {@link ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept}
  *  implementation.
  *  
- *  @author Charles Shelton
+ *  @author Charles Shelton, Ben Lickly, Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (blickly)
@@ -122,11 +122,9 @@ public class RecordConcept extends InfiniteConcept {
 
         RecordConcept righthandSide = (RecordConcept) concept;
         CPO graph = getOntology().getConceptGraph();
-        Set<String> fieldLabels = _fieldToConcept.keySet();
-        Set<String> otherFieldLabels = righthandSide._fieldToConcept.keySet();        
-        Boolean isSuperset = fieldLabels.containsAll(otherFieldLabels);
-        Boolean isSubset = otherFieldLabels.containsAll(fieldLabels);
-        
+
+        boolean isSuperset = fieldSet().containsAll(righthandSide.fieldSet());
+        boolean isSubset = righthandSide.fieldSet().containsAll(fieldSet());
         if (!isSubset && !isSuperset) {
             return CPO.INCOMPARABLE;
         }
