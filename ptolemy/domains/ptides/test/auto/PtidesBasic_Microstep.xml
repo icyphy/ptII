@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 1255, 800}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 1264, 801}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1041, 687]">
     </property>
@@ -28,7 +28,7 @@
         <display name="Heartbeat Detector"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 270.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 99, 905, 602}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 99, 914, 603}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[691, 489]">
         </property>
@@ -65,19 +65,23 @@
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 200.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -89,6 +93,8 @@
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -103,6 +109,8 @@
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>

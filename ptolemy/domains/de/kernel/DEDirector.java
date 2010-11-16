@@ -1221,8 +1221,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     /** Placeholder for book keeping procedures after actor firing. This
      *  method does nothing in this class, instead it's a placeholder for
      *  subclasses to override.
+     *  @throws IllegalActionException If false.
      */
-    protected void _actorFired() {
+    protected void _actorFired() throws IllegalActionException {
     }
     
     /** Enforces a firing of a DE director only handles events with the
@@ -2027,9 +2028,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
 
     /** Place holder that gets the next actuation event. This method does nothing
      *  here. It's used for the Ptides subclass.
+     *  @throws IllegalActionException If false.
      */
-    protected void _getNextActuationEvent() {
+    protected void _getNextActuationEvent() throws IllegalActionException {
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

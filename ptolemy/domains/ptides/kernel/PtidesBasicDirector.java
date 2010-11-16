@@ -63,8 +63,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.modal.modal.RefinementPort;
+import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.domains.ptides.lib.NetworkInputDevice;
 import ptolemy.domains.ptides.lib.NetworkOutputDevice;
+import ptolemy.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -630,8 +632,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  <li> Bookkeeping structures that keeps track of which actor
      *  has just fired are cleared.</li>
      *  </ol>
+     *  @throws IllegalActionException If unable to get next actuation event.
      */
-    protected void _actorFired() {
+    protected void _actorFired() throws IllegalActionException {
 
         _getNextActuationEvent();
 
@@ -875,6 +878,23 @@ public class PtidesBasicDirector extends DEDirector {
                         }
                     } else {
                         // port is a sensor port.
+                        // If the schedulerExecutionTime is non-zero, then to simulate the correct
+                        // behavior, sensors must be connected to SensorInputDevices, and actuators
+                        // must be connected to ActuatorOutputDevices.
+                        Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+                        if ((parameter != null) &&
+                                (((DoubleToken) parameter.getToken()).doubleValue() != 0.0) &&
+                                sinkPort.isInput() &&
+                                !(sinkPort.getContainer() instanceof SensorInputDevice)) {
+                            throw new IllegalActionException(
+                                    port,
+                                    sinkPort.getContainer(),
+                                    "The schedulerExecutionTime parameter is not 0.0. " +
+                                    "In this case to get the correct simulated physical " +
+                                    "time behavior, an input sensor "
+                                            + "port must be connected to a "
+                                            + "SensorInputDevice.");
+                        }
                         if (sinkPort.isInput() && sinkPort.getContainer() instanceof NetworkInputDevice) {
                             throw new IllegalActionException(
                                     port,
@@ -885,7 +905,7 @@ public class PtidesBasicDirector extends DEDirector {
                                             + "a network port, or remove the NetworkInputDevice "
                                             + "connected to it.");
                         }
-                        Parameter parameter = (Parameter) ((NamedObj) port)
+                        parameter = (Parameter) ((NamedObj) port)
                                 .getAttribute("networkDelay");
                         if (parameter != null) {
                             throw new IllegalActionException(
@@ -925,6 +945,23 @@ public class PtidesBasicDirector extends DEDirector {
                         }
                     } else {
                         // port is a actuator port.
+                        // If the schedulerExecutionTime is non-zero, then to simulate the correct
+                        // behavior, sensors must be connected to SensorInputDevices, and actuators
+                        // must be connected to ActuatorOutputDevices.
+                        Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+                        if ((parameter != null) &&
+                                (((DoubleToken) parameter.getToken()).doubleValue() != 0.0) &&
+                                sourcePort.isInput() &&
+                                !(sourcePort.getContainer() instanceof ActuatorOutputDevice)) {
+                            throw new IllegalActionException(
+                                    port,
+                                    sourcePort.getContainer(),
+                                    "The schedulerExecutionTime parameter is not 0.0. " +
+                                    "In this case to get the correct simulated physical " +
+                                    "time behavior, an output actuator "
+                                            + "port must be connected to a "
+                                            + "ActuatorOutputDevice.");
+                        }
                         if (sourcePort.isOutput() && sourcePort.getContainer() instanceof NetworkOutputDevice) {
                             throw new IllegalActionException(
                                     port,
@@ -935,7 +972,7 @@ public class PtidesBasicDirector extends DEDirector {
                                             + "a network port, or remove the NetworkOutputDevice "
                                             + "connected to it.");
                         }
-                        Parameter parameter = (Parameter) ((NamedObj) port)
+                        parameter = (Parameter) ((NamedObj) port)
                                 .getAttribute("networkDelay");
                         if (parameter != null) {
                             throw new IllegalActionException(
@@ -1442,6 +1479,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  be processed. Since the Ptides simulator simulates the passage of physical
      *  time, we also simulate the overhead for the scheduler to make its decision.
      *  The parameter: {@link #schedulerExecutionTime} indicates this time.
+     *  Notice, when sensor and timed interrupts occurs, the currently executing
+     *  event will be preempted to perform the scheduling overhead.
+     *  <p>
+     *  If at some simulated physical time, a sensor interrupt occurred, at the
+     *  same time, a previous event finished execution, then we always assume
+     *  the sensor interruption occurred first, and the event should be put
+     *  into the event queue before the finished event is dealt with.
      *  @see #_preemptExecutingActor()
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
@@ -1462,21 +1506,43 @@ public class PtidesBasicDirector extends DEDirector {
         if (_schedulerStillRunning()) {
             return null;
         }
+        // When a sensor or timed interrupt occurs, the previously executing event
+        // should be preempted.
         if (_sensorInterruptOccurred) {
             _startScheduler();
+            _resetExecutionTimeForPreemptedEvent();
+            // Indicate that no other event is processing, only the scheduler is
+            // running.
+            _physicalTimeExecutionStarted = null;
             _sensorInterruptOccurred = false;
+            return null;
         }
         if (_timedInterruptOccurred()) {
             _startScheduler();
+            _resetExecutionTimeForPreemptedEvent();
+            // Indicate that no other event is processing, only the scheduler is
+            // running.
+            _physicalTimeExecutionStarted = null;
             _timedInterruptWakeUpTime = null;
+            return null;
         }
+        // At this point no other event should be running, since an actor has just
+        // finished firing. We run the scheduler again to decide what is the
+        // next event to be processed.
         if (_scheduleNewEvent) {
             _startScheduler();
             _scheduleNewEvent = false;
+            return null;
         }
 
         if (!_currentlyExecutingStack.isEmpty()) {
-            // Case 2: We are currently executing an actor.
+            // If we realize the previous execution was preempted by a system scheduling
+            // or sensor interruption, then restart the event execution at the current
+            // simulated physical time.
+            if (_physicalTimeExecutionStarted == null) {
+                _physicalTimeExecutionStarted = getPhysicalTag().timestamp;
+            }
+            // We are currently executing an actor.
             DoubleTimedEvent currentEventList = (DoubleTimedEvent) _currentlyExecutingStack
                     .peek();
             // First check whether its remaining execution time is zero.
@@ -1616,7 +1682,15 @@ public class PtidesBasicDirector extends DEDirector {
             
             // An event has finished processing. In this case, the scheduler should run to figure
             // out what is the next event to process.
-            _scheduleNewEvent = true;
+            // Unless the event is a sensor event, in which case the scheduling overhead
+            // was accounted for when the sensor interrupt occurred.
+            // FIXME: If this sensor input device also produces output events due to
+            // other input events (other than those created through sensor interrupts)
+            // then the following code is wrong. Instead, we simulate a scheduling
+            // overhead for the next run.
+            if (!(actorToFire instanceof SensorInputDevice)) {
+                _scheduleNewEvent = true;
+            }
 
             return actorToFire;
         } else {
@@ -1641,31 +1715,7 @@ public class PtidesBasicDirector extends DEDirector {
 
             // If we are preempting a current execution, then
             // update information of the preempted event.
-            if (!_currentlyExecutingStack.isEmpty()) {
-                // We are preempting a current execution.
-                DoubleTimedEvent currentEventList = _currentlyExecutingStack
-                        .peek();
-                Time elapsedTime = physicalTag.timestamp
-                        .subtract(_physicalTimeExecutionStarted);
-                currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
-                        .subtract(elapsedTime);
-                if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
-                    // This should not occur.
-                    throw new IllegalActionException(
-                            this,
-                            _getActorFromEventList((List<PtidesEvent>) currentEventList.contents),
-                            "Remaining execution is negative!");
-                }
-                if (_debugging) {
-                    _debug("Preempting actor "
-                            + _getActorFromEventList(
-                                    (List<PtidesEvent>) currentEventList.contents)
-                                    .getName((NamedObj) container)
-                            + " at physical time " + physicalTag.timestamp
-                            + ", which has remaining execution time "
-                            + currentEventList.remainingExecutionTime);
-                }
-            }
+            _resetExecutionTimeForPreemptedEvent();
             _currentlyExecutingStack.push(new DoubleTimedEvent(
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
@@ -1714,8 +1764,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  is destined to an output port of the containing composite actor.
      *  This event is taken from the event queue, and the token is sent
      *  to the actuator/network output port.
+     *  @throws IllegalActionException If cannot set the current tag of
+     *  the director.
      */
-    protected void _getNextActuationEvent() {
+    protected void _getNextActuationEvent() throws IllegalActionException {
         int eventIndex = 0;
         synchronized(_eventQueue) {
             while (eventIndex < _eventQueue.size()) {
@@ -1724,8 +1776,9 @@ public class PtidesBasicDirector extends DEDirector {
                 if (nextEvent.ioPort() != null &&
                     //(nextEvent.ioPort().getContainer() == getContainer()) &&
                     nextEvent.ioPort().isOutput()) {
-                        ((PtidesListEventQueue)_eventQueue).take(eventIndex);
-                        continue;
+                        PtidesEvent ptidesEvent = 
+                            ((PtidesListEventQueue)_eventQueue).take(eventIndex);
+                        setTag(ptidesEvent.timeStamp(), ptidesEvent.microstep());
                 }
                 eventIndex++;
             }
@@ -2025,7 +2078,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *  input port, if the super class throws it, if physical tag cannot be
-     *  evaulated, if token cannot be sent to the inside.
+     *  evaulated, if token cannot be sent to the inside, or if there exists no
+     *  token in the port, but hasToken() return true.
      */
     protected boolean _transferInputs(IOPort port)
             throws IllegalActionException {
@@ -2108,9 +2162,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // to figure out whether to continue processing or preempt the current processing
                 // event.
                 _sensorInterruptOccurred = true;
-
                 result = true;
-
             } else {
                 // FIXME: we should probably do something else here.
                 throw new IllegalActionException(realTimeEvent.port,
@@ -2127,13 +2179,14 @@ public class PtidesBasicDirector extends DEDirector {
         // If the input port is a network port, the data should be transmitted into
         // the platform immediately.
         if (_isNetworkPort(port)) {
-            // If we transferred once to the network output, then return true,
+            // If we transferred once from the network input, then return true,
             // and go through this once again.
             while (true) {
                 if (!super._transferInputs(port)) {
                     break;
                 } else {
                     result = true;
+                    _sensorInterruptOccurred = true;
                 }
             }
         }
@@ -2149,7 +2202,13 @@ public class PtidesBasicDirector extends DEDirector {
             Time lastModelTime = _currentTime;
             int lastMicrostep = _microstep;
             setTag(physicalTag.timestamp, physicalTag.microstep);
-            result = result || super._transferInputs(port);
+            if (super._transferInputs(port)) {
+                // Indicate that a sensor interrupt has occurred, and the scheduler should run
+                // to figure out whether to continue processing or preempt the current processing
+                // event.
+                _sensorInterruptOccurred = true;
+                result = true;
+            } 
             setTag(lastModelTime, lastMicrostep);
         } else {
             for (int i = 0; i < port.getWidth(); i++) {
@@ -2173,7 +2232,7 @@ public class PtidesBasicDirector extends DEDirector {
                     }
                 } catch (NoTokenException ex) {
                     // This shouldn't happen.
-                    throw new InternalErrorException(this, ex, null);
+                    throw new IllegalActionException(this, ex, null);
                 }
             }
         }
@@ -2536,6 +2595,42 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
+    /** The previously execution event has been preempted, either by another
+     *  event or by the scheduler. The remaining execution time of the previously
+     *  executing event is updated.
+     *  @throws IllegalActionException If director failed to get physical time, or if
+     *  the remaining execution is less than 0 for the preempted event.
+     */
+    private void _resetExecutionTimeForPreemptedEvent() throws IllegalActionException {
+        // If we are preempting a current execution, then
+        // update information of the preempted event.
+        if (!_currentlyExecutingStack.isEmpty()) {
+            // We are preempting a current execution.
+            DoubleTimedEvent currentEventList = _currentlyExecutingStack
+                    .peek();
+            Time elapsedTime = getPhysicalTag().timestamp
+                    .subtract(_physicalTimeExecutionStarted);
+            currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
+                    .subtract(elapsedTime);
+            if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
+                // This should not occur.
+                throw new IllegalActionException(
+                        this,
+                        _getActorFromEventList((List<PtidesEvent>) currentEventList.contents),
+                        "Remaining execution time is negative!");
+            }
+            if (_debugging) {
+                _debug("Preempting actor "
+                        + _getActorFromEventList(
+                                (List<PtidesEvent>) currentEventList.contents)
+                                .getName((NamedObj) getContainer())
+                        + " at physical time " + getPhysicalTag().timestamp
+                        + ", which has remaining execution time "
+                        + currentEventList.remainingExecutionTime);
+            }
+        }
+    }
+
     /** Save the information of the events ready to be processed. This includes
      *  the source port of the last firing event, the timestamp, absolute deadline,
      *  and the minimum model time delay of the last executing event. These information
@@ -2830,7 +2925,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Map _inputModelTimeDelays;
 
-    /** Save the last actor that was fired by this director. If null, the after
+    /** The last actor that was fired by this director. If null, then after
      *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
      *  _pureEventSourcePorts that are associated with this actor should be removed.
      */
@@ -2843,7 +2938,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private HashMap<NamedObj, Tag> _lastConsumedTag;
 
-    /** Keeps track of the last actor with non-zero executing time that was executing
+    /** Keeps track of the last actor with non-zero executing time that was executing.
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
@@ -2887,7 +2982,8 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Time _schedulerFinishTime;
 
-    /** Indicate whether a sensor interrupt has just occurred.
+    /** Indicate whether a sensor interrupt has just occurred. Notice for now,
+     *  a network input is assumed to trigger the same sensor interrupt.
      */
     private boolean _sensorInterruptOccurred;
 
