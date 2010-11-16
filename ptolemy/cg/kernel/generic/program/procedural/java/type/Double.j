@@ -37,7 +37,7 @@ static Token Double_isCloseTo(Token thisToken, Token... tokens) {
     Token otherToken;
     Token tolerance;
     otherToken = tokens[0];
-    tolerance = tokens[0];
+    tolerance = tokens[1];
 
     return Boolean_new(Math.abs((Double)thisToken.payload - (Double)otherToken.payload) < (Double)tolerance.payload);
 }

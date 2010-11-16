@@ -28,6 +28,17 @@ static boolean multiply_Boolean_Boolean(boolean a1, boolean a2) {
 }
 /**/
 
+/*** multiply_Complex_Complex() ***/
+static Token multiply_Complex_Complex(Token a1, Token a2) {
+    double a1Real = ((Complex)a1.payload).real;
+    double a1Imag = ((Complex)a1.payload).imag;
+    double a2Real = ((Complex)a2.payload).real;
+    double a2Imag = ((Complex)a2.payload).imag;
+    return Complex_new((a1Real * a2Real) - (a1Imag * a2Imag),
+            (a1Imag * a2Real) + (a1Real * a2Imag));
+}
+/**/
+
 /*** multiply_Double_Array() ***/
 static Token multiply_Double_Array(double a1, Token a2) {
     int i;

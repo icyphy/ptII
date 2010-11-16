@@ -37,6 +37,7 @@ import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
@@ -79,6 +80,7 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.math.Complex;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////
@@ -742,7 +744,12 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            if (_evaluatedChildToken instanceof StringToken) {
+            if (_evaluatedChildToken instanceof ComplexToken) {
+                Complex complex = ((ComplexToken) _evaluatedChildToken).complexValue();
+                _childCode = "$Complex_new("
+                    + complex.real + ", " + complex.imag
+                    + ")";
+            } else if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted.
                 // See Test 17.2
 
@@ -1766,6 +1773,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         //: ptType == PointerToken.POINTER ? "Pointer"
+                                                        : ptType == BaseType.COMPLEX ? "Complex"
                                                         : null;
 
         if (result == null) {
@@ -1780,7 +1788,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         //if (result.length() == 0) {
         //    throw new IllegalActionException(
-        //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
+        //            "Cannot resolve codegen type from Ptolemy type: " + ptType);
         //}
 
         // Java specific changes
@@ -1824,7 +1832,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** A static list of the primitive types supported by the code generator. */
     private static final List _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
+            "Pointer", "Complex" });
 
     /** Temporary storage for the result of evaluating a child node.
      *  This is protected so that derived classes can access it.

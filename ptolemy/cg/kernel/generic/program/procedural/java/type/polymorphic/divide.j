@@ -50,6 +50,21 @@ static boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
 }
 /**/
 
+/*** divide_Complex_Complex() ***/
+static Token divide_Complex_Complex(Token a1, Token a2) {
+    double a1Real = ((Complex)a1.payload).real;
+    double a1Imag = ((Complex)a1.payload).imag;
+    double a2Real = ((Complex)a2.payload).real;
+    double a2Imag = ((Complex)a2.payload).imag;
+
+    double denominator = (a1Real * a2Real) + (a1Imag * a2Imag);
+    return Complex_new(((a1Real * a2Real) + (a1Imag * a2Imag))
+           / denominator,
+	  ((a1Imag * a2Real) - (a1Real * a2Imag))
+	  / denominator);
+}
+/**/
+
 /*** divide_Double_Array() ***/
 static Token divide_Double_Array(double a1, Token a2) {
     int i;
@@ -246,6 +261,13 @@ static Token divide_one_Array(Token a1, Token... tokens) {
 double divide_one_Boolean(boolean b, Token... tokens) {
     // FIXME: is this right?
     return b;
+}
+/**/
+
+/*** divide_one_Complex ***/
+Token divide_one_Complex(Token a1, Token... tokens) {
+    Token oneToken = $tokenFunc(a1::one(a1));
+    return $divide_Complex_Complex(oneToken, a1);
 }
 /**/
 

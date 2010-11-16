@@ -227,6 +227,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         : ptType == PointerToken.POINTER ? "Pointer"
+                                                                 : ptType == BaseType.COMPLEX ? "Complex"
                                                                 : null;
 
         if (result == null) {
@@ -247,7 +248,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("Cannot resolved codegen type from Ptolemy type: "
+                    .println("Cannot resolve codegen type from Ptolemy type: "
                             + ptType);
         }
         return result;
@@ -1405,7 +1406,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
+            "Pointer"});
 
     /** A set that contains all token functions referenced in the model.
      *  When the codegen kernel processes a $tokenFunc() macro, it must add

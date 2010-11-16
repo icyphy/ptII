@@ -32,6 +32,10 @@ static Long StringtoLong(String string) {
      return Long.valueOf(string);
 }
 
+static String ComplextoString(Token complex) {
+       return (String)(Complex_toString(complex).payload);
+}
+
 static Integer DoubletoInteger(Double d) {
        return Integer.valueOf((int)Math.floor(d.doubleValue()));
 }

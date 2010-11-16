@@ -40,6 +40,13 @@ String add_Boolean_String(boolean a1, String a2) {
 }
 /**/
 
+/*** add_Complex_Complex() ***/
+static Token add_Complex_Complex(Token a1, Token a2) {
+    return Complex_new(((Complex)a1.payload).real + ((Complex)a2.payload).real,
+        ((Complex)a1.payload).imag + ((Complex)a2.payload).imag);
+}
+/**/
+
 /*** add_Double_Array() ***/
 static Token add_Double_Array(double a1, Token a2) {
     int i;
@@ -177,6 +184,20 @@ int add_Token_Integer(Token a1, int a2) {
 static Token add_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
+#ifdef PTCG_TYPE_Complex
+    case TYPE_Complex:
+        switch (a2.type) {
+            case TYPE_Complex:
+                    result = Complex_add(a1, a2);
+                break;
+            default:
+                System.out.println("add_Token_Token(): a1 is a Complex, "
+                        + "a2 is a " + a2.type);
+                result = null;
+
+        }
+        break;
+#endif
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
         switch (a2.type) {
@@ -238,9 +259,11 @@ static void print_Token2(Token token) {
     }
 
     switch (token.type) {
+#ifdef PTCG_TYPE_Integer
         case TYPE_Integer:
             System.out.println((Integer) token.payload);
             break;
+#endif
         case TYPE_Array:
             $Array_print(token);
             break;

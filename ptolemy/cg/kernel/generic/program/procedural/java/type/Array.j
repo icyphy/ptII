@@ -235,17 +235,24 @@ static Token Array_toString(Token thisToken, Token... ignored) {
                 result.append(", ");
             }
             // Arrays elements could have different types?
-            if (((Array)(thisToken.payload)).elements == null) {
-                result.append("elements == null");
-            } else if (((Array)(thisToken.payload)).elements[i] == null) {
-                result.append("elements[" + i + "] == null");
-                throw new RuntimeException("elements[] is null");
+            if (thisToken.payload instanceof Array
+	        && ((Array)(thisToken.payload)).elements == null) {
+                    result.append("elements == null");
+            } else if (thisToken.payload instanceof Array
+                && ((Array)(thisToken.payload)).elements[i] == null) {
+                    result.append("elements[" + i + "] == null");
+                    throw new RuntimeException("elements[] is null");
             } else {
                 short elementType = ((Array)(thisToken.payload)).elements[i].type;
                    switch(elementType) {
                     case TYPE_Array:
                           result.append(Array_toString(((Array)(thisToken.payload)).elements[i]).payload);
                         break;
+#ifdef PTCG_TYPE_Complex
+                    case TYPE_Complex:
+                          result.append(Complex_toString(((Array)(thisToken.payload)).elements[i]));
+                            break;
+#endif
                     case TYPE_String:
                         result.append("\"" + ((Array)(thisToken.payload)).elements[i].payload.toString() + "\"");
                         break;
@@ -455,7 +462,7 @@ static Token Array_zero(Token thisToken, Token... tokens) {
 
 // Array_one: Return an array like the specified
 // array but with ones of the same type.
-static Token Array_one(Token token, Token... tokens) {
+static Token Array_one(Token thisToken, Token... tokens) {
     Token result;
     Token element;
     int i;

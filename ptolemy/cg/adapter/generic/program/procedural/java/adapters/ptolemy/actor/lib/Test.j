@@ -18,6 +18,42 @@ static Token $actorSymbol(toleranceToken);
 $actorSymbol(toleranceToken) = $new(Double($param(tolerance)));
 /**/
 
+/***ComplexBlock($channel)***/
+$actorSymbol(inputToken) = $get(input#$channel);
+$actorSymbol(numberOfTokensSeen)++;
+
+/* Complex $actorSymbol(), ComplexBlock($channel) which has only one channel */
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
+   && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken))) {
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %g of %s.\n",
+            $actorSymbol(numberOfTokensSeen),
+            ComplextoString($actorSymbol(inputToken)),
+            $param(tolerance),
+	    ComplextoString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)))));
+
+}
+/**/
+
+/***ComplexBlockMultiChannel($channel)***/
+$actorSymbol(inputToken) = $get(input#$channel);
+if ($channel == 0) {
+        $actorSymbol(numberOfTokensSeen)++;
+}
+
+/* Complex $channel of $actorSymbol() */
+$actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
+        && Math.abs($actorSymbol(inputToken)
+                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+        > $param(tolerance)) {
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
+            $actorSymbol(numberOfTokensSeen),
+            $actorSymbol(inputToken),
+            $param(tolerance),
+            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
+}
+/**/
+
 /***IntegerBlock($channel)***/
 $actorSymbol(inputToken) = $get(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
@@ -188,7 +224,8 @@ if (($type(input) != TYPE_Array
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration "
                                  + $actorSymbol(numberOfTokensSeen)
                              + ".\n Value was:"
-                             + $Array_toString($actorSymbol(inputToken)).getPayload()
+                             + $actorSymbol(inputToken).getPayload()
+                             /* + $Array_toString($actorSymbol(inputToken)).getPayload()*/
                              + "Should have been within " + $param(tolerance) + " of: "
                              + $Array_toString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))).getPayload()
                              + ".\n"));

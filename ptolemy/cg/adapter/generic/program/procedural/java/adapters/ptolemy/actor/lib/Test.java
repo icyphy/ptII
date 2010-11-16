@@ -90,6 +90,9 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
             if (getCodeGenerator().isPrimitive(actor.input.getType())) {
                 inputType = getCodeGenerator().codeGenType(
                         actor.input.getType());
+            } else if (actor.input.getType().toString().equals("complex")) {
+                inputType = getCodeGenerator().codeGenType(
+                        actor.input.getType());
             } else {
                 inputType = "Token";
                 ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(

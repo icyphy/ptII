@@ -68,4 +68,16 @@ public interface ParseTreeCodeGenerator {
      *  @return The generated code.
      */
     public String generateFireCode();
+
+    /** Trace the evaluation of the parse tree with the specified root
+     *  node using the specified scope to resolve the values of
+     *  variables.
+     *  @param node The root of the parse tree.
+     *  @param scope The scope for evaluation.
+     *  @return The trace of the evaluation.
+     *  @exception IllegalActionException If an error occurs during
+     *   evaluation.
+     */
+    public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
+            throws IllegalActionException;
 }

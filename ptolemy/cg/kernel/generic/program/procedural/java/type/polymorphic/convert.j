@@ -28,6 +28,18 @@ static Token convert_Double_Array(double a) {
 }
 /**/
 
+/*** convert_Complex_Complex() ***/
+static Token convert_Complex_Complex(Token a) {
+    return $Complex_new(a);
+}
+/**/
+
+/*** convert_Double_Complex() ***/
+static Token convert_Double_Complex(double a) {
+    return Complex_new(a);
+}
+/**/
+
 /*** convert_Double_Double() ***/
 double convert_Double_Double(double a) {
     return a;
@@ -61,6 +73,12 @@ static Token convert_Integer_Array(int a) {
 /*** convert_Integer_Boolean() ***/
 static boolean convert_Integer_Boolean(int a) {
     return (a != 0) ? true : false;
+}
+/**/
+
+/*** convert_Integer_Complex() ***/
+static Token convert_Integer_Complex(int a) {
+    return Complex_new(a);
 }
 /**/
 
@@ -176,7 +194,7 @@ static Token convert_Token_Token2(Short type1, Token token, Short type2) {
         break;
 #endif
     default:
-        throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
+        throw new RuntimeException("convert_Token_Token2(): Conversion from an unsupported type: "
          + token.type);
     }
 

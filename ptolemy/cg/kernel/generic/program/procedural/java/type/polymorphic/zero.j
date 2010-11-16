@@ -22,6 +22,18 @@ static boolean zero_BooleanOneArg(boolean a) {
 }
 /**/
 
+/*** zero_Complex() ***/
+static Token zero_Complex() {
+        return $Complex_new(0.0);
+}
+/**/
+
+/*** zero_ComplexOneArg() ***/
+static Token zero_ComplexOneArg(Token a) {
+        return $Complex_new(0.0);
+}
+/**/
+
 /*** zero_Double() ***/
 static double zero_Double() {
         return 0.0;

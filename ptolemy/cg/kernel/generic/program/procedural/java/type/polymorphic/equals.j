@@ -188,6 +188,10 @@ static boolean equals_Token_Token(Token a1, Token a2) {
     } else if (a1.payload instanceof Matrix && a2.payload instanceof Matrix) {
         result = $Matrix_equals(a1, a2);
 #endif
+#ifdef PTCG_TYPE_Complex
+    } else if (a1.payload instanceof Complex && a2.payload instanceof Complex) {
+        result = ((Boolean)$Complex_equals(a1, a2).payload).booleanValue();
+#endif
     } else {
         throw new InternalError("equals_Token_Token_(): equals with an unsupported type. " + a1.type + " " + a2.type);
     }
@@ -206,6 +210,11 @@ static boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token to
     } else if (thisToken.type == TYPE_Array
                && otherToken.type == TYPE_Array) {
         return ((Boolean)(Array_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
+#ifdef PTCG_TYPE_Complex
+    } else if (thisToken.type == TYPE_Complex
+               && otherToken.type == TYPE_Complex) {
+        return ((Boolean)(Complex_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
+#endif
 #ifdef PTCG_TYPE_Matrix
     } else if (thisToken.type == TYPE_Matrix
                && otherToken.type == TYPE_Matrix) {

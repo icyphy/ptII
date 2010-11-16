@@ -19,6 +19,12 @@ $actorSymbol(state) = $val(($type)init);
 $actorSymbol(state) = $val((String)init);
 /**/
 
+/***ComplexFireBlock***/
+$put(output, $actorSymbol(state));
+$param(step) = $val(($cgType(step)) step);
+$actorSymbol(state) = $add_Token_Token($actorSymbol(state), $param(step));
+/**/
+
 /***IntegerFireBlock***/
 $put(output, $actorSymbol(state));
 $param(step) = $val(($cgType(step)) step);

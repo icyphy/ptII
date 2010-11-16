@@ -100,7 +100,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // FIXME: we should not have to set these each time, but
         // JavaCodeGenerator uses Integer, and CCodeGenerator uses Int
         _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
-                "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
+                                                       "String", "Long", "Boolean", "UnsignedByte",
+                                                       /*"Complex",*/ "Pointer"});
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +124,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                         : type == BaseType.BOOLEAN ? "Boolean"
                                                 : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         : type == PointerToken.POINTER ? "Pointer"
-                                                                : null;
+                                                                : type == BaseType.COMPLEX ? "Complex"
+                                                                        : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -135,7 +137,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("Cannot resolved codegen type from Ptolemy type: "
+                    .println("Cannot resolve codegen type from Ptolemy type: "
                             + type);
         }
         if (result == null) {
@@ -163,9 +165,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         : type == BaseType.STRING ? "String"
                                 : type == BaseType.DOUBLE ? "double"
                                         : type == BaseType.BOOLEAN ? "boolean"
-                                                : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
-                                                        : type == PointerToken.POINTER ? "Pointer"
-                                                                : null;
+                                                    : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
+                                                            : type == PointerToken.POINTER ? "Pointer"
+                                                                    : type == BaseType.COMPLEX ? "Complex"
+                                                                            : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -177,7 +180,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("Cannot resolved codegen type from Ptolemy type: "
+                    .println("Cannot resolve codegen type from Ptolemy type: "
                             + type);
         }
         if (result == null) {
@@ -219,6 +222,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             typeReturn = 7;
         } else if (type.equals("Matrix")) {
             typeReturn = 8;
+        } else if (type.equals("Complex")) {
+            typeReturn = 9;
         } else {
             throw new IllegalActionException("Unsuported type");
         }
@@ -263,6 +268,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         case 7:
             returnType = PointerToken.POINTER;
             break;
+            // FIXME: case 8 is Matrix
+        case 9:
+            returnType = BaseType.COMPLEX;
+            break;
         default:
             throw new IllegalActionException("Unsuported type");
         }
@@ -285,6 +294,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         : type == BaseType.BOOLEAN ? 5
                                 : type == BaseType.UNSIGNED_BYTE ? 6
                                         : type == PointerToken.POINTER ? 7
+                                            : type == BaseType.COMPLEX ? 9
                                                 : -10;
 
         if (result == -10) {
@@ -1354,6 +1364,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(functionDir + "one.j");
         _overloadedFunctions.parse(typeDir + "Array.j");
         _overloadedFunctions.parse(typeDir + "Boolean.j");
+        _overloadedFunctions.parse(typeDir + "Complex.j");
         _overloadedFunctions.parse(typeDir + "Double.j");
         _overloadedFunctions.parse(typeDir + "Integer.j");
         _overloadedFunctions.parse(typeDir + "Matrix.j");

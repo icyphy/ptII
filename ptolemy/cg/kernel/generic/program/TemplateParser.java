@@ -428,6 +428,10 @@ public class TemplateParser {
                 String fireCode = processCode(parseTreeCodeGenerator
                         .generateFireCode());
 
+                // Uncomment the next lines for debugging of parse trees.
+                //System.out.println(parseTreeCodeGenerator.traceParseTreeEvaluation(parseTree, 
+                //                new VariableScope(variable)));
+
                 //if (castType == null && codeGenType(variable.getType()).equals("Array")) {
                 // FIXME: this is a gross hack necessary for Case.
                 // The problem is that if the refinement is named "{0}", then
@@ -601,6 +605,20 @@ public class TemplateParser {
                         + "this a TemplateParser is being instantiated instead of a JavaTemplateParser "
                         + "or some other subclass of TemplateParser.");
             }
+            /** Trace the evaluation of the parse tree with the specified root
+             *  node using the specified scope to resolve the values of
+             *  variables.
+             *  @param node The root of the parse tree.
+             *  @param scope The scope for evaluation.
+             *  @return The trace of the evaluation.
+             *  @exception IllegalActionException If an error occurs during
+             *   evaluation.
+             */
+            public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
+                    throws IllegalActionException {
+                return "TemplateParser.traceParseTreeEvaluation() not implemented";
+            }
+
         };
     }
 
