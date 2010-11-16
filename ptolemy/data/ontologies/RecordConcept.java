@@ -21,6 +21,7 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -122,16 +123,11 @@ public class RecordConcept extends InfiniteConcept {
         Boolean isSuperset = fieldLabels.containsAll(otherFieldLabels);
         Boolean isSubset = otherFieldLabels.containsAll(fieldLabels);
         
-        // If neither record concept is a subset of the other, then they are
-        // incomparable.
-        if (!isSuperset && !isSubset) {
+        if (!isSubset && !isSuperset) {
             return CPO.INCOMPARABLE;
         }
         
-        Set<String> commonFields = fieldLabels;
-        if (isSuperset) {
-            commonFields = otherFieldLabels;
-        }
+        Set<String> commonFields = _commonFields(righthandSide);
         
         boolean seenHigher = false;
         boolean seenLower = false;
@@ -217,22 +213,8 @@ public class RecordConcept extends InfiniteConcept {
                     "There was an error creating a new MonotonicityConcept" +
                     "in the " + getOntology() + "ontology");
         }
-
-        Set<String> fieldLabels = this._fieldToConcept.keySet();
-        Set<String> otherFieldLabels = concept._fieldToConcept.keySet();      
-        Boolean isSuperset = fieldLabels.containsAll(otherFieldLabels);
-        Boolean isSubset = otherFieldLabels.containsAll(fieldLabels);
         
-        // If neither record concept is a subset of the other, then they are
-        // incomparable and the least upper bound is top.
-        if (!isSuperset && !isSubset) {
-            return getOntology().getConceptGraph().top();
-        }
-        
-        Set<String> commonFields = fieldLabels;
-        if (isSuperset) {
-            commonFields = otherFieldLabels;
-        }
+        Set<String> commonFields = _commonFields(concept);
         
         // The least upper bound is the record concept that only contains
         // the common fields and the least upper bound of each concept in that
@@ -288,7 +270,26 @@ public class RecordConcept extends InfiniteConcept {
         result.append(" }");
         return result.toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    private methods                        ////
     
+    /** Return the record fields common to this and the given record concept.
+     *  @param otherConcept The other record concept.
+     *  @return The common fields, as a set of Strings.
+     */
+    private Set<String> _commonFields(RecordConcept otherConcept) {
+        Set<String> fieldLabels = this._fieldToConcept.keySet();
+        Set<String> otherFieldLabels = otherConcept._fieldToConcept.keySet();
+
+        Set<String> commonFields = new HashSet<String>();
+        for (String label : fieldLabels) {
+            if (otherFieldLabels.contains(label)) {
+                commonFields.add(label);
+            }
+        }
+        return commonFields;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 

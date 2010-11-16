@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
   <entity name="Ontology Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-        <entity name="blank" class="ptolemy.data.ontologies.Ontology">
+        <class name="blank" extends="ptolemy.data.ontologies.Ontology">
         <!-- Annotate with instructions. -->
 	    <property name="annotation" class="ptolemy.kernel.util.Attribute">
 	      <property name="_hideName"
@@ -29,7 +29,7 @@ in this lattice.  Then delete this annotation.</text>
 		</entity>
 	      </configure>
 	    </property>
-        </entity>
+        </class>
   </entity>
 </group>
 
