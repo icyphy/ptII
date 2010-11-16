@@ -836,3 +836,17 @@ test ArrayToken-20.1 {elementMultiplyReturnType} {
     list [$t1 toString] [$t2 toString] [$t3 toString]
 } {arrayType(arrayType(int)) arrayType(int) arrayType(unknown)}
 
+######################################################################
+####
+# 
+test ArrayToken-21.0 {reverse} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{1, -1, 2, 0}"]
+    set t1 [$valToken reverse]
+    $t1 toString
+} {{0, 2, -1, 1}}
+
+test ArrayToken-21.1 {reverse, one element} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{0}"]
+    set t1 [$valToken reverse]
+    $t1 toString
+} {{0}}
