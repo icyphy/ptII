@@ -152,9 +152,9 @@ public class RecordConcept extends InfiniteConcept {
         // is higher in the lattice.
         if (!seenHigher && !seenLower && !seenIncomparable && isSubset && isSuperset) {
             return CPO.SAME;
-        } else if (seenHigher && !seenLower && !seenIncomparable && isSubset) {
+        } else if (!seenLower && !seenIncomparable && isSubset) {
             return CPO.HIGHER;
-        } else if (seenLower && !seenHigher && !seenIncomparable && isSuperset) {
+        } else if (!seenHigher && !seenIncomparable && isSuperset) {
             return CPO.LOWER;
         } else {
             return CPO.INCOMPARABLE;            
