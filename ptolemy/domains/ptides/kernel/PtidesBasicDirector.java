@@ -457,7 +457,23 @@ public class PtidesBasicDirector extends DEDirector {
     public boolean isEmbedded() {
         return false;
     }
-    
+
+    /** Return whether the port is a networkPort.
+     *  this method is default to return false, i.e., an output port to the outside of the
+     *  platform is by default an actuator port.
+     *  @exception IllegalActionException If token of networkPort cannot be
+     *  evaluated.
+     */
+    public static boolean isNetworkPort(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("networkPort");
+        if (parameter != null) {
+            return ((BooleanToken) parameter.getToken()).booleanValue();
+        }
+        return false;
+    }
+
     /** Return whether this director is at the top level.
      *  @return true if this director is at the top level.
      */
@@ -632,7 +648,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  <li> Bookkeeping structures that keeps track of which actor
      *  has just fired are cleared.</li>
      *  </ol>
-     *  @throws IllegalActionException If unable to get next actuation event.
+     *  @exception IllegalActionException If unable to get the next actuation event.
      */
     protected void _actorFired() throws IllegalActionException {
 
@@ -719,7 +735,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // if the start port is a network port, the delay we start with is the
                 // network delay, otherwise the port is a sensor port, and the delay
                 // we start with is the realTimeDelay.
-                if (_isNetworkPort(inputPort)) {
+                if (isNetworkPort(inputPort)) {
                     startDelay = SuperdenseDependency.valueOf(
                             -_getNetworkDelay(inputPort), 0);
                 } else {
@@ -856,7 +872,7 @@ public class PtidesBasicDirector extends DEDirector {
                     .inputPortList())) {
                 for (TypedIOPort sinkPort : (List<TypedIOPort>) port
                         .deepInsidePortList()) {
-                    if (_isNetworkPort(port)) {
+                    if (isNetworkPort(port)) {
                         if (sinkPort.isInput() && !(sinkPort.getContainer() instanceof NetworkInputDevice)) {
                             throw new IllegalActionException(
                                     port,
@@ -882,10 +898,10 @@ public class PtidesBasicDirector extends DEDirector {
                         // behavior, sensors must be connected to SensorInputDevices, and actuators
                         // must be connected to ActuatorOutputDevices.
                         Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
-                        if ((parameter != null) &&
-                                (((DoubleToken) parameter.getToken()).doubleValue() != 0.0) &&
-                                sinkPort.isInput() &&
-                                !(sinkPort.getContainer() instanceof SensorInputDevice)) {
+                        if ((parameter != null)
+                                && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
+                                && sinkPort.isInput()
+                                && !(sinkPort.getContainer() instanceof SensorInputDevice)) {
                             throw new IllegalActionException(
                                     port,
                                     sinkPort.getContainer(),
@@ -923,7 +939,7 @@ public class PtidesBasicDirector extends DEDirector {
                     .outputPortList())) {
                 for (TypedIOPort sourcePort : (List<TypedIOPort>) port
                         .deepInsidePortList()) {
-                    if (_isNetworkPort(port)) {
+                    if (isNetworkPort(port)) {
                         if (sourcePort.isOutput() && !(sourcePort.getContainer() instanceof NetworkOutputDevice)) {
                             throw new IllegalActionException(
                                     port,
@@ -949,10 +965,10 @@ public class PtidesBasicDirector extends DEDirector {
                         // behavior, sensors must be connected to SensorInputDevices, and actuators
                         // must be connected to ActuatorOutputDevices.
                         Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
-                        if ((parameter != null) &&
-                                (((DoubleToken) parameter.getToken()).doubleValue() != 0.0) &&
-                                sourcePort.isInput() &&
-                                !(sourcePort.getContainer() instanceof ActuatorOutputDevice)) {
+                        if ((parameter != null) 
+                                && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
+                                && sourcePort.isInput()
+                                && !(sourcePort.getContainer() instanceof ActuatorOutputDevice)) {
                             throw new IllegalActionException(
                                     port,
                                     sourcePort.getContainer(),
@@ -1479,7 +1495,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  be processed. Since the Ptides simulator simulates the passage of physical
      *  time, we also simulate the overhead for the scheduler to make its decision.
      *  The parameter: {@link #schedulerExecutionTime} indicates this time.
-     *  Notice, when sensor and timed interrupts occurs, the currently executing
+     *  Note, when sensor and timed interrupts occurs, the currently executing
      *  event will be preempted to perform the scheduling overhead.
      *  <p>
      *  If at some simulated physical time, a sensor interrupt occurred, at the
@@ -1764,8 +1780,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  is destined to an output port of the containing composite actor.
      *  This event is taken from the event queue, and the token is sent
      *  to the actuator/network output port.
-     *  @throws IllegalActionException If cannot set the current tag of
-     *  the director.
+     *  @exception IllegalActionException If the director cannot set the 
+     *  current tag of the director.
      */
     protected void _getNextActuationEvent() throws IllegalActionException {
         int eventIndex = 0;
@@ -1868,7 +1884,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  This base class returns false, indicating that the currently
      *  executing actor is never preempted.
      *  @return False.
-     *  @exception IllegalActionException If false
+     *  @exception IllegalActionException If false.
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
         return false;
@@ -1996,7 +2012,7 @@ public class PtidesBasicDirector extends DEDirector {
         return eventList;
     }
 
-    /** This method keeps track of the last event an actor decides to process. This method
+    /** Keep track of the last event an actor decides to process. This method
      *  is called immediately after _safeToProcess, thus it serves as a check to see if the
      *  processing of this event has violated DE semantics. If it has, then an exception is
      *  thrown, if it has not, then the current tag is saved for checks to see if future
@@ -2078,7 +2094,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *  input port, if the super class throws it, if physical tag cannot be
-     *  evaulated, if token cannot be sent to the inside, or if there exists no
+     *  evaluated, if token cannot be sent to the inside, or if there exists no
      *  token in the port, but hasToken() return true.
      */
     protected boolean _transferInputs(IOPort port)
@@ -2134,7 +2150,7 @@ public class PtidesBasicDirector extends DEDirector {
                 }
 
                 Time lastModelTime = _currentTime;
-                if (_isNetworkPort(realTimeEvent.port)) {
+                if (isNetworkPort(realTimeEvent.port)) {
                     // If the token is transferred from a network port, then there is no
                     // need to set the proper timestamp associated with the token. This
                     // is because we rely on the fact every network input port is directly
@@ -2178,7 +2194,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         // If the input port is a network port, the data should be transmitted into
         // the platform immediately.
-        if (_isNetworkPort(port)) {
+        if (isNetworkPort(port)) {
             // If we transferred once from the network input, then return true,
             // and go through this once again.
             while (true) {
@@ -2254,7 +2270,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, if the super class throws it, if physical tag cannot be
-     *   evaulated, if token cannot be sent to the inside.     */
+     *   evaluated, if the token cannot be sent to the inside.     */
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
@@ -2295,7 +2311,7 @@ public class PtidesBasicDirector extends DEDirector {
             if (compare > 0) {
                 break;
             } else if (compare == 0) {
-                if (_isNetworkPort(tokenEvent.port)) {
+                if (isNetworkPort(tokenEvent.port)) {
                     throw new IllegalActionException(
                             "transferring network event from the"
                                     + "actuator event queue");
@@ -2322,7 +2338,7 @@ public class PtidesBasicDirector extends DEDirector {
         // are not checked for deadline violations, do they still count
         // as actuation ports? i.e., when calculating deadline, should we
         // start at ports that are annotated with transferImmediately?
-        if (_isNetworkPort(port) || _transferImmediately(port)) {
+        if (isNetworkPort(port) || _transferImmediately(port)) {
             // If we transferred once to the network output, then return true,
             // and go through this once again.
             while (true) {
@@ -2579,27 +2595,11 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Return whether the port is a networkPort.
-     *  this method is default to return false, i.e., an output port to the outside of the
-     *  platform is by default an actuator port.
-     *  @exception IllegalActionException If token of networkPort cannot be
-     *  evaluated.
-     */
-    private static boolean _isNetworkPort(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("networkPort");
-        if (parameter != null) {
-            return ((BooleanToken) parameter.getToken()).booleanValue();
-        }
-        return false;
-    }
-
     /** The previously execution event has been preempted, either by another
      *  event or by the scheduler. The remaining execution time of the previously
      *  executing event is updated.
-     *  @throws IllegalActionException If director failed to get physical time, or if
-     *  the remaining execution is less than 0 for the preempted event.
+     *  @exception  IllegalActionException If the director failed to get physical
+     *  time, or if the remaining execution is less than 0 for the preempted event.
      */
     private void _resetExecutionTimeForPreemptedEvent() throws IllegalActionException {
         // If we are preempting a current execution, then
@@ -2693,7 +2693,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Check if the scheduler has finished running.
      *  @return true if the scheduler is still running.
-     *  @throws IllegalActionException If unable to get physical tag.
+     *  @exception IllegalActionException If unable to get the physical tag.
      */
     private boolean _schedulerStillRunning() throws IllegalActionException {
         // If the overhead time has not finished, return true.
@@ -2730,7 +2730,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Check if timed interrupt has just occurred.
-     *  @throws IllegalActionException If failed to get physical tag or if time
+     *  @exception IllegalActionException If failed to get physical tag or if time
      *  interrupt occurred in the past. 
      */
     private boolean _timedInterruptOccurred() throws IllegalActionException {
@@ -2754,7 +2754,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  variable {@link #_schedulerFinishTime}. When this occurs, the
      *  system cannot be preempted. Set the enclosing director to fire this actor
      *  at the time when the scheduler finishes execution.
-     *  @throws IllegalActionException If director fails to get physical time or 
+     *  @exception IllegalActionException If the director fails to get physical time or 
      *  failed to get a token from the schedulerExecutionTime parameter.
      */
     private void _startScheduler() throws IllegalActionException {
@@ -2938,7 +2938,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private HashMap<NamedObj, Tag> _lastConsumedTag;
 
-    /** Keeps track of the last actor with non-zero executing time that was executing.
+    /** Keep track of the last actor with non-zero executing time that was executing.
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
@@ -2982,8 +2982,10 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Time _schedulerFinishTime;
 
-    /** Indicate whether a sensor interrupt has just occurred. Notice for now,
-     *  a network input is assumed to trigger the same sensor interrupt.
+    /** Indicate whether a sensor interrupt has just occurred or a network
+     *  packet has been received.
+     *  We assume reception of a network packet takes the same amount of 
+     *  simulated physical time as a sensor interrupt.
      */
     private boolean _sensorInterruptOccurred;
 
@@ -2991,7 +2993,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private boolean _scheduleNewEvent;
 
-    /** Keeps track of whether time delay actors have been highlighted.
+    /** Keep track of whether time delay actors have been highlighted.
      */
     private boolean _timeDelayHighlighted = false;
 
@@ -2999,7 +3001,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Time _timedInterruptWakeUpTime;
 
-    /** A set that keeps track of visited actors during delayOffset calculation.
+    /** Keep track of visited actors during delayOffset calculation.
      */
     private Set _visitedActors;
 

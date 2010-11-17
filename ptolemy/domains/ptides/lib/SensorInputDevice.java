@@ -29,8 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
+import java.util.List;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -107,6 +113,50 @@ public class SensorInputDevice extends InputDevice {
         // produce output
         if (token != null) {
             output.send(0, token);
+        }
+    }
+
+    /** Perform a check to see if this device is connected to a network
+     *  port on the outside. If so, throw an exception. Also call
+     *  preinitialize of the super class.
+     *  @exception IllegalActionException If there are no outside source
+     *  ports, or if any of the outside source ports is a network
+     *  port.
+     */
+    public void preinitialize() throws IllegalActionException {
+
+        super.preinitialize();
+        
+        // Perform port consistency check if the schedulerExecutionTime
+        // parameter of the director is 0.0.
+        Parameter parameter = (Parameter) getDirector().getAttribute("schedulerExecutionTime");
+        if ((parameter != null)
+                && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
+            boolean flag = false;
+            for (IOPort input : (List<IOPort>)inputPortList()) {
+                for (IOPort sourcePort : (List<IOPort>)input.sourcePortList()) {
+                    if (sourcePort.getContainer() == getContainer()) {
+                        flag = true;
+                        if (PtidesBasicDirector.isNetworkPort(sourcePort)){
+                            throw new IllegalActionException(
+                                    this, sourcePort,
+                                    "A sensor input "
+                                            + "port must not have a networkDelay annotated "
+                                            + "on it. Either this port is a not a network port "
+                                            + "with realTimeDelay, or it should be a network"
+                                            + "port with networkDelay. ");
+                        }
+                    }
+                }
+            }
+            if (!flag) {
+                throw new IllegalActionException(
+                        this,
+                        "A SensorInputDevice must be connected to a port " +
+                        "on the outside, and that port should not be a network " +
+                        "port (should not have a port with the parameter " +
+                        "networkPort).");
+            }
         }
     }
 }

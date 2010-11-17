@@ -30,9 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -148,6 +150,41 @@ public class NetworkOutputDevice extends OutputDevice {
             RecordToken record = new RecordToken(labels, values);
 
             output.send(0, record);
+        }
+    }
+
+    /** Perform a check to see if this device is connected to a network
+     *  port on the outside. If not, throw an exception. Also call
+     *  preinitialize of the super class.
+     *  @exception IllegalActionException If there are no outside sink
+     *  ports, or if any of the outside sink ports is not a network
+     *  port.
+     */
+    public void preinitialize() throws IllegalActionException {
+
+        super.preinitialize();
+
+        boolean flag = false;
+        for (IOPort output : (List<IOPort>)outputPortList()) {
+            for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
+                if (sinkPort.getContainer() == getContainer()) {
+                    flag = true;
+                    if (!PtidesBasicDirector.isNetworkPort(sinkPort)){
+                        throw new IllegalActionException(
+                                this, sinkPort,
+                                "A NetworkOutputDevice must be directly connected " +
+                                "to a network port (a port with the parameter " +
+                                "networkPort).");
+                    }
+                }
+            }
+        }
+        if (!flag) {
+            throw new IllegalActionException(
+                    this,
+                    "A NetworkOutputDevice must be connected to a port " +
+                    "on the outside, and that port should be a network port " +
+                    "(a port with the parameter networkPort).");
         }
     }
 

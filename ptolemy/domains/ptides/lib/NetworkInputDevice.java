@@ -30,9 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -169,6 +171,41 @@ public class NetworkInputDevice extends InputDevice {
             ptidesDirector.setTag(recordTimeStamp, recordMicrostep);
             output.send(0, record.get(payload));
             ptidesDirector.setTag(lastModelTime, lastMicrostep);
+        }
+    }
+
+    /** Perform a check to see if this device is connected to a network
+     *  port on the outside. If not, throw an exception. Also call
+     *  preinitialize of the super class.
+     *  @exception IllegalActionException If there are no outside source
+     *  ports, or if any of the outside source ports is not a network
+     *  port.
+     */
+    public void preinitialize() throws IllegalActionException {
+        
+        super.preinitialize();
+
+        boolean flag = false;
+        for (IOPort input : (List<IOPort>)inputPortList()) {
+            for (IOPort sourcePort : (List<IOPort>)input.sourcePortList()) {
+                if (sourcePort.getContainer() == getContainer()) {
+                    flag = true;
+                    if (!PtidesBasicDirector.isNetworkPort(sourcePort)){
+                        throw new IllegalActionException(
+                                this, sourcePort,
+                                "A NetworkInputDevice must be directly connected " +
+                                "to a network port (a port with the parameter " +
+                                "networkPort).");
+                    }
+                }
+            }
+        }
+        if (!flag) {
+            throw new IllegalActionException(
+                    this,
+                    "A NetworkInputDevice must be connected to a port " +
+                    "on the outside, and that port should be a network port " +
+                    "(a port with the parameter networkPort).");
         }
     }
 

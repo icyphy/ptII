@@ -1218,10 +1218,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Placeholder for book keeping procedures after actor firing. This
-     *  method does nothing in this class, instead it's a placeholder for
-     *  subclasses to override.
-     *  @throws IllegalActionException If false.
+    /** Perform book keeping procedures after an actor firing. 
+     *  In this base class, do nothing.
+     *  @exception IllegalActionException If false.
      */
     protected void _actorFired() throws IllegalActionException {
     }
@@ -1232,7 +1231,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  @return true if the earliest event in the event queue is at the
      *  same model time as the event that was just processed. Else if
      *  that event's timestamp is in the future, return false.
-     *  @throws IllegalActionException if model time is set backwords.
+     *  @exception IllegalActionException if model time is set backwords.
      */
     protected boolean _checkForNextEvent() throws IllegalActionException {
       // The following code enforces that a firing of a
@@ -1423,7 +1422,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *   -1 if there's no actor to fire, and we should not keep firing;
      *   1 if there's no actor to fire, but the next event should be
      *   checked for processing.
-     *  @throws IllegalActionException If the firing actor throws it, or
+     *  @exception IllegalActionException If the firing actor throws it, or
      *   event queue is not ready, or an event is missed, or time is set
      *   backwards.
      */
@@ -2026,9 +2025,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return actorToFire;
     }
 
-    /** Place holder that gets the next actuation event. This method does nothing
-     *  here. It's used for the Ptides subclass.
-     *  @throws IllegalActionException If false.
+    /** Remove all actuation events from the event queue. 
+     *  In this base class, do nothing.
+     *  @exception IllegalActionException If false.
      */
     protected void _getNextActuationEvent() throws IllegalActionException {
     }
