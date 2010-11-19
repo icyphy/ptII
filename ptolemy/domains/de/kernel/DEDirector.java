@@ -1220,7 +1220,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     
     /** Perform book keeping procedures after an actor firing. 
      *  In this base class, do nothing.
-     *  @exception IllegalActionException If false.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes may throw it if book keeping procedures are not
+     *  successful.
      */
     protected void _actorFired() throws IllegalActionException {
     }
@@ -2027,7 +2029,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
 
     /** Remove all actuation events from the event queue. 
      *  In this base class, do nothing.
-     *  @exception IllegalActionException If false.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes may throw it if unable to get the next actuation
+     *  event.
      */
     protected void _getNextActuationEvent() throws IllegalActionException {
     }
