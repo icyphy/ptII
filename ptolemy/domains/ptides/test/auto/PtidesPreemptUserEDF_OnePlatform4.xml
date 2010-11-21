@@ -49,13 +49,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 160.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 95, 814, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 95, 852, 519}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 406]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.0, 203.0}">
         </property>
         <property name="PtidesPreemptiveUserEDFDirector" class="ptolemy.domains.ptides.kernel.PtidesPreemptiveUserEDFDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -88,21 +88,21 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 360.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port5" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 50.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port6" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 105.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">

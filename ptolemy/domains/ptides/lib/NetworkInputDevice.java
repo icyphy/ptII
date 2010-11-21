@@ -195,7 +195,7 @@ public class NetworkInputDevice extends InputDevice {
                                 this, sourcePort,
                                 "A NetworkInputDevice must be directly connected " +
                                 "to a network port (a port with the parameter " +
-                                "networkPort).");
+                                "networkDelay or networkDriverDelay).");
                     }
                 }
             }

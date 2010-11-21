@@ -81,7 +81,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 150.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="networkDriverDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="actuator" class="ptolemy.actor.TypedIOPort">
@@ -170,7 +170,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 105.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">

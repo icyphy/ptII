@@ -158,10 +158,14 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
             </property>
+            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
         </port>
         <port name="port_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+            </property>
+            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <entity name="MissDetector" class="ptolemy.domains.modal.modal.ModalModel">
@@ -199,7 +203,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={248, 219, 943, 461}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 168, 944, 464}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[730, 315]">
                 </property>
@@ -389,7 +393,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 15.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 742}, maximized=true}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 30, 1031, 739}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 625]">
                 </property>

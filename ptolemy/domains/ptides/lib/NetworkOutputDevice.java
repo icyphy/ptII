@@ -169,13 +169,7 @@ public class NetworkOutputDevice extends OutputDevice {
             for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
                 if (sinkPort.getContainer() == getContainer()) {
                     flag = true;
-                    if (!PtidesBasicDirector.isNetworkPort(sinkPort)){
-                        throw new IllegalActionException(
-                                this, sinkPort,
-                                "A NetworkOutputDevice must be directly connected " +
-                                "to a network port (a port with the parameter " +
-                                "networkPort).");
-                    }
+                    break;
                 }
             }
         }

@@ -136,25 +136,15 @@ public class ActuatorOutputDevice extends OutputDevice {
                 for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
                     if (sinkPort.getContainer() == getContainer()) {
                         flag = true;
-                        if (PtidesBasicDirector.isNetworkPort(sinkPort)){
-                            throw new IllegalActionException(
-                                    this, sinkPort,
-                                    "An actuator output "
-                                            + "port must not have a networkDelay annotated "
-                                            + "on it. Either this port is a not a network port "
-                                            + "with realTimeDelay, or it should be a network"
-                                            + "port with networkDelay. ");
-                        }
+                        break;
                     }
                 }
             }
             if (!flag) {
                 throw new IllegalActionException(
                         this,
-                        "A SensorOutputDevice must be connected to a port " +
-                        "on the outside, and that port should not be a network " +
-                        "port (should not have a port with the parameter " +
-                        "networkPort).");
+                        "A ActuatorOutputDevice must be connected to a port " +
+                        "on the outside.");
             }
         }
     }

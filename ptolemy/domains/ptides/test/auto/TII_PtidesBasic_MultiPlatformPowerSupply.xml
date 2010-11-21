@@ -27,8 +27,10 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The system consist of 3 independent power supplies. The output voltage, maximum current, and&#10;the delay between startup and actual turn-on and shutdown and actual shutdown can be adjusted &#10;via parameters. The supplies all monitor their output current and if the maximum current is &#10;exceeded they will send a fault indication to the network and will themselves initiate a local&#10;shutdown.&#10;&#10;The loads can be adjusted for resistance (default is 100 ohms) and for a time at which the load&#10;current doubles. This may be used to simulate a fault if the doubling of current exceeds the &#10;maximum supply current.&#10;&#10;The supervisor can issue 2 startup commands at parameterized times, and a single fault command&#10;at a parameterized time.&#10;&#10;The bridge models the multicast behavior of the network (but not network timing).&#10;&#10;The plot actors monitor the voltage of all power supplies and the current of supply #1. The event&#10;monitor displays the internal state of supply #1 and the startup, shutdown, fault command events&#10;from the supervisor and the fault indication input to supply #1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 520.0]">
         </property>
+    </property>
+    <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
     <entity name="CompositeActorPowerSupply" class="ptolemy.actor.TypedCompositeActor">
         <display name="Power Supply 1"/>
@@ -152,7 +154,7 @@
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9293529650142">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.015625, 373.4055959302326}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.015625, 373.4055959302327}">
             </property>
             <port name="voltageMonitorInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -174,7 +176,7 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="startupIndication" class="ptolemy.actor.TypedIOPort">
@@ -183,7 +185,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="shutdownIndication" class="ptolemy.actor.TypedIOPort">
@@ -192,7 +194,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 250.0]">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="overcurrent" class="ptolemy.actor.TypedIOPort">
@@ -215,7 +217,7 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </port>
             <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
@@ -224,6 +226,8 @@
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -241,6 +245,8 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="startupIndication" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -248,12 +254,16 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="shutdownIndication" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
                 <port name="powerOut" class="ptolemy.domains.modal.modal.ModalPort">
@@ -267,6 +277,8 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="portTrigger" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -274,12 +286,16 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="overcurrent" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
                 <port name="stateMonitor" class="ptolemy.domains.modal.modal.ModalPort">
@@ -858,6 +874,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
@@ -873,6 +891,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="SensorInputDevice5" class="ptolemy.domains.ptides.lib.SensorInputDevice">
@@ -881,6 +901,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -891,6 +913,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -899,6 +923,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -909,6 +935,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="NetworkInputDevice3" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -917,6 +945,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -1930,6 +1960,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            </property>
         </port>
         <port name="shutdown" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1942,6 +1974,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            </property>
         </port>
         <port name="faultCommand" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1953,6 +1987,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
             </property>
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
             </property>
         </port>
         <entity name="SingleEventStartup1" class="ptolemy.domains.de.lib.SingleEvent">
@@ -1989,6 +2025,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity, Infinity}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity, Infinity}">
+                </property>
             </port>
         </entity>
         <entity name="SingleEventStartup2" class="ptolemy.domains.de.lib.SingleEvent">
@@ -2006,6 +2044,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
             </port>
         </entity>
         <entity name="NetworkOutputDevice2" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
@@ -2015,6 +2055,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
             </port>
         </entity>
         <entity name="NetworkOutputDevice3" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
@@ -2023,6 +2065,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                 </property>
             </port>
         </entity>
@@ -2089,7 +2133,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="shutdown" class="ptolemy.actor.TypedIOPort">
@@ -2099,7 +2143,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="fault" class="ptolemy.actor.TypedIOPort">
@@ -2109,7 +2153,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -2118,6 +2162,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2130,6 +2176,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="BooleanToAnything3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -2141,6 +2189,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -2149,6 +2199,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2159,6 +2211,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="NetworkInputDevice3" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -2167,6 +2221,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2182,6 +2238,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -2194,6 +2252,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2209,6 +2269,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
@@ -2223,6 +2285,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
@@ -2236,6 +2300,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="Test4" class="ptolemy.actor.lib.Test">
@@ -2247,6 +2313,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2262,6 +2330,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
@@ -2275,6 +2345,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="Test6" class="ptolemy.actor.lib.Test">
@@ -2286,6 +2358,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2301,6 +2375,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
@@ -2314,6 +2390,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="Test8" class="ptolemy.actor.lib.Test">
@@ -2325,6 +2403,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -2779,7 +2859,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9293529650142">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.015625, 373.4055959302326}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.015625, 373.4055959302327}">
             </property>
             <port name="voltageMonitorInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2801,7 +2881,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="startupIndication" class="ptolemy.actor.TypedIOPort">
@@ -2810,7 +2890,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="shutdownIndication" class="ptolemy.actor.TypedIOPort">
@@ -2819,7 +2899,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 250.0]">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="overcurrent" class="ptolemy.actor.TypedIOPort">
@@ -2852,6 +2932,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="supplyStateModal" class="ptolemy.domains.modal.modal.ModalModel">
@@ -2868,6 +2950,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="startupIndication" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -2875,12 +2959,16 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="shutdownIndication" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
                 <port name="powerOut" class="ptolemy.domains.modal.modal.ModalPort">
@@ -2894,6 +2982,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="portTrigger" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -2901,12 +2991,16 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="overcurrent" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
                 <port name="stateMonitor" class="ptolemy.domains.modal.modal.ModalPort">
@@ -3481,6 +3575,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
@@ -3496,6 +3592,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="SensorInputDevice5" class="ptolemy.domains.ptides.lib.SensorInputDevice">
@@ -3504,6 +3602,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -3514,6 +3614,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -3522,6 +3624,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -3532,6 +3636,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="NetworkInputDevice3" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -3540,6 +3646,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -4338,13 +4446,13 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 112, 859, 640}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 144, 859, 640}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[645, 527]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9293529650142">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.015625, 373.4055959302326}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.015625, 373.4055959302327}">
             </property>
             <port name="voltageMonitorInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4366,7 +4474,9 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
                 </property>
             </port>
             <port name="startupIndication" class="ptolemy.actor.TypedIOPort">
@@ -4375,7 +4485,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="shutdownIndication" class="ptolemy.actor.TypedIOPort">
@@ -4384,7 +4494,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 250.0]">
                 </property>
-                <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="overcurrent" class="ptolemy.actor.TypedIOPort">
@@ -4417,6 +4527,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="supplyStateModal" class="ptolemy.domains.modal.modal.ModalModel">
@@ -4433,6 +4545,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="startupIndication" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -4440,12 +4554,16 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="shutdownIndication" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
                 <port name="powerOut" class="ptolemy.domains.modal.modal.ModalPort">
@@ -4459,6 +4577,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="portTrigger" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -4466,12 +4586,16 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
                 <port name="overcurrent" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
                 <port name="stateMonitor" class="ptolemy.domains.modal.modal.ModalPort">
@@ -5048,6 +5172,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
@@ -5063,6 +5189,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="SensorInputDevice5" class="ptolemy.domains.ptides.lib.SensorInputDevice">
@@ -5071,6 +5199,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -5081,6 +5211,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -5089,6 +5221,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>
@@ -5099,6 +5233,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
                 </port>
             </entity>
             <entity name="NetworkInputDevice3" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
@@ -5107,6 +5243,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                     </property>
                 </port>
             </entity>

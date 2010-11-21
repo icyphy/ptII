@@ -81,7 +81,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 150.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </port>
         <port name="actuator" class="ptolemy.actor.TypedIOPort">

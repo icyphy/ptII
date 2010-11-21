@@ -60,21 +60,21 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 410.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port5" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 50.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port6" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 105.0}">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port7" class="ptolemy.actor.TypedIOPort">
@@ -90,7 +90,7 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 505.0]">
             </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">

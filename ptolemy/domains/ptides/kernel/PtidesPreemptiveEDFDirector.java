@@ -85,7 +85,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clears what's stored in _eventToProcess, and call the super method
+    /** Clear what's stored in _eventToProcess, and call the super method
      *  of preinitialize.
      *  @exception IllegalActionException If the superclass throws
      *   it or if there is no executive director.
@@ -101,7 +101,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Calculates the deadline for each channel in each input port within the
+    /** Calculate the deadline for each channel in each input port within the
      *  composite actor governed by this Ptides director. Deadlines are calculated
      *  with only model time delays, not worst-case-execution-times (WCET).
      *  @exception IllegalActionException when ports that are both input/output ports exist.
@@ -260,7 +260,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         return false;
     }
 
-    /** Returns the event that was selected to preempt in _preemptExecutingActor.
+    /** Return the event that was selected to preempt in _preemptExecutingActor.
      *  If no event was selected, return the event of smallest deadline that is
      *  safe to process.
      *  This is when _eventToProcess is last used in this iteration, so it should be
@@ -285,7 +285,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         return tempEvent;
     }
 
-    /** This method finds the event in the queue that is of the smallest deadline
+    /** Find the event in the queue that is of the smallest deadline
      *  The event found is stored in _eventToProcess. It then stores the
      *  index of the event in _peekingIndex.
      *  @return false if no event is found. returns false, otherwise returns true.
@@ -411,10 +411,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
     }
 
-    /** Sets the relativeDeadline parameter for an input port.
-     * @param inputPort The port to set the parameter.
-     * @param dependency The value of the relativeDeadline to be set.
-     * @exception IllegalActionException If unsuccessful in getting the attribute.
+    /** Set the relativeDeadline parameter for an input port.
+     *  @param inputPort The port to set the parameter.
+     *  @param dependency The value of the relativeDeadline to be set.
+     *  @exception IllegalActionException If unsuccessful in getting the attribute.
      */
     protected void _setDeadline(IOPort inputPort,
             SuperdenseDependency dependency) throws IllegalActionException {

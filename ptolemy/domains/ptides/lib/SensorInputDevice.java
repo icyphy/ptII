@@ -140,11 +140,12 @@ public class SensorInputDevice extends InputDevice {
                         if (PtidesBasicDirector.isNetworkPort(sourcePort)){
                             throw new IllegalActionException(
                                     this, sourcePort,
-                                    "A sensor input "
-                                            + "port must not have a networkDelay annotated "
-                                            + "on it. Either this port is a not a network port "
-                                            + "with realTimeDelay, or it should be a network"
-                                            + "port with networkDelay. ");
+                                    "A sensor input " +
+                                    "port must not have a networkDelay or " + 
+                                    "networkDriverDelay annotated " +
+                                    "on it. Either this port is a not a network port " +
+                                    "with realTimeDelay, or it should be a network" +
+                                    "port with networkDelay.");
                         }
                     }
                 }
