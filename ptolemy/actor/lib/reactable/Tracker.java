@@ -39,6 +39,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//import vrpn.*;
+
 
 
 //////////////////////////////////////////////////////////////
@@ -79,13 +81,22 @@ public class Tracker extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
-        TrackerRemote tracker = new TrackerRemote("Tracker", null, null, null, null);
+        try {
+       /* TrackerRemote tracker = new TrackerRemote("Tracker", null, null, null, null);
         tracker.run();
-        double[] positions = tracker.pos;
-        double x = positions[0];
+        boolean connectionCheck = tracker.isConnected();
+        boolean doingOkay = tracker.doingOkay();
+        //output.send(0, new ObjectToken(connectionCheck));
+        output.send(0, new ObjectToken(doingOkay)); */
+        } catch(Exception e) {
+            System.out.print("Error: exception " + e.getMessage());
+            return;
+        }
+       
+       // double[] positions = tracker.pos;
+        //double x = positions[0];
         //double y = positions[1];
         //double z = positions[2];
-          output.send(0, new ObjectToken(x));
     }
    
 }
