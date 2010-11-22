@@ -150,12 +150,59 @@ import ptolemy.moml.MoMLChangeRequest;
  *  <p> Since sensors, actuators, and network devices are important
  *  in the context of Ptides, special actors such as {@link
  *  SensorInputDevice, ActuatorOutputDevice, NetworkInputDevice,
- *  NetworkOutputDevice} are used in Ptides models. Also, input
- *  and output ports to the Ptides director hold information about
- *  the delays at sensors and network inputs, thus they must be
- *  annotated correctly. If an input port is not annotated, it is
- *  assumed to be a sensor
- *  FIXME: do I need network port??
+ *  NetworkOutputDevice} are used in Ptides models. These actors
+ *  must only be connected to input and output ports of the composite
+ *  actor governed by the Ptides director. In addition, input
+ *  ports to the Ptides director hold information about
+ *  real time delays (see above paper reference for the definition
+ *  of real time delay) at sensors and network inputs, thus these ports
+ *  must be annotated correctly. If an input port is connected to a
+ *  SensorInputDevice, the port is considered a sensor port, and it
+ *  could be annotated with parameter realTimeDelay; If an input port is
+ *  connected to a NetworkInputDevice, the port is considered a network
+ *  port, and could be annotated with networkDelay and networkDriverDelay
+ *  parameters (the difference between these parameters are explained in
+ *  the following paragraph). However a port cannot be a sensor port and
+ *  a network port at the same time. If an input port is not annotated and
+ *  if it is not connected to either a SensorInputDevice or a
+ *  NetworkInputDevice, the port is assumed to be a sensor port. We make
+ *  this assumption because the SensorInputDevice is not necessarily
+ *  needed to simulate the functionality of the Ptides model, while
+ *  NetworkInputDevice is. However, if the {@link #schedulerExecutionTime}
+ *  parameter of the director is set to a non-zero value, SensorInputDevice
+ *  and ActuationOutputDevice must be included in the Ptides model in order
+ *  to correctly simulate the scheduling overhead after each interrupt
+ *  event.</p>
+ *  
+ *  <p> While a networkDelay and networkDriverDelay are both characterize the
+ *  physical time delay at the receiving end of a network interface, there
+ *  are subtle differences between these two parameters. The networkDelay
+ *  parameter is used to characterize the amount of simulated physical time
+ *  delay experience by a packet, between when the packet first leaves the
+ *  source platform, and when the packet arrives at the sink platform. This
+ *  delay should be modeled as a part of the Ptides model, in the enclosing
+ *  DE director, however the maximum bound of this delay needs to be annotated
+ *  as networkDelay at the input port of the receiving platform. If it is not
+ *  properly annotated, safe-to-process analysis of the Ptides platform could
+ *  produce false positive results. On the other hand, the networkDriverDelay
+ *  specifies the amount of execution time it takes for a packet to be
+ *  consumed and an event produced in the sink platform.</p>
+ *  
+ *  <p> Like input ports, output ports of the composite actor governed by the
+ *  Ptides director can also be annotated. By default, the director checks
+ *  whether an output event's timestamp is smaller or equal to the simulated
+ *  physical time of when this event is first produced. If the check fails,
+ *  a deadline miss is implied, and
+ *  the director throws an exception. If the check passes, the director
+ *  transfers this event to the outside of the platform at physical time equal
+ *  to the timestamp of the output event. However, if the output port is
+ *  annotated with an ignoreDeadline parameter, then the director does not
+ *  throw an exception. Instead, if the simulated physical time is smaller
+ *  than the timestamp of the output event, the output event is transferred
+ *  to the outside immediately. The output port could also be annotated with
+ *  a parameter transferImmediately. If the parameter exists, then all events
+ *  arriving at the output port will be transferred to the outside
+ *  immediately.</p>
  * 
  *  <p> The following paragraphs describe implementation details of this
  *  director. The implementation is based on the operation semantics
@@ -481,7 +528,7 @@ public class PtidesBasicDirector extends DEDirector {
         _pureEventSourcePorts = new HashMap<NamedObj, IOPort>();
         _physicalTimeExecutionStarted = null;
         _schedulerFinishTime = new Time(this, Double.NEGATIVE_INFINITY);
-        _sensorInterruptOccurred = false;
+        _inputEventInterruptOccurred = false;
         _scheduleNewEvent = false;
         _timedInterruptWakeUpTime = null;
 
@@ -1513,13 +1560,13 @@ public class PtidesBasicDirector extends DEDirector {
         }
         // When a sensor or timed interrupt occurs, the previously executing event
         // should be preempted.
-        if (_sensorInterruptOccurred) {
+        if (_inputEventInterruptOccurred) {
             _startScheduler();
             _resetExecutionTimeForPreemptedEvent();
             // Indicate that no other event is processing, only the scheduler is
             // running.
             _physicalTimeExecutionStarted = null;
-            _sensorInterruptOccurred = false;
+            _inputEventInterruptOccurred = false;
             return null;
         }
         if (_timedInterruptOccurred()) {
@@ -2129,7 +2176,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // Indicate that a sensor interrupt has occurred, and the scheduler should run
                 // to figure out whether to continue processing or preempt the current processing
                 // event.
-                _sensorInterruptOccurred = true;
+                _inputEventInterruptOccurred = true;
                 result = true;
             } else {
                 // FIXME: we should probably do something else here.
@@ -2164,10 +2211,11 @@ public class PtidesBasicDirector extends DEDirector {
                 setTag(physicalTag.timestamp, physicalTag.microstep);
             }
             if (super._transferInputs(port)) {
-                // Indicate that a sensor interrupt has occurred, and the
+                // Indicate that a sensor or network input
+                // interrupt has occurred, and the
                 // scheduler should run to figure out whether to continue
                 // processing or preempt the current processing event.
-                _sensorInterruptOccurred = true;
+                _inputEventInterruptOccurred = true;
                 result = true;
             }
             setTag(lastModelTime, lastMicrostep);
@@ -3095,7 +3143,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  We assume reception of a network packet takes the same amount of 
      *  simulated physical time as a sensor interrupt.
      */
-    private boolean _sensorInterruptOccurred;
+    private boolean _inputEventInterruptOccurred;
 
     /** Indicate whether an event has finished processing.
      */
