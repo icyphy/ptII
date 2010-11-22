@@ -50,6 +50,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
@@ -84,11 +85,12 @@ import ptolemy.moml.MoMLChangeRequest;
  *  timestamps. These timestamps are also referred to as model
  *  time. In particular, if an event of timestamp tau is being
  *  processed by the director, then we say the current model time of
- *  the director is tau. Unlike most other Ptolemy directors,
- *  where the local notion of
+ *  the director is tau. Unlike most other Ptolemy directors, the
+ *  Ptides directors are forced to be placed within a composite actor,
+ *  with an enclosing director on the outside. Also unlike most other
+ *  directors, where the local notion of
  *  model time is tightly coupled with with that of the enclosing
- *  director (an enclosing director is the director on the outside
- *  of this director), this director's notion of model time
+ *  director, this director's notion of model time
  *  is decoupled from that of the enclosing director. This design 
  *  allows the use of time in the enclosing
  *  director to simulate time in the physical world. Currently, only
@@ -98,42 +100,62 @@ import ptolemy.moml.MoMLChangeRequest;
  *  the fire method of this director changes the persistent state of
  *  actors, which means this director cannot be used inside of an
  *  actor that performs fix point iteration, which includes (currently),
- *  Continuous, CT and SR. For more detailed explanation, please refer
+ *  Continuous, CT and SR. For more details, please refer
  *  to Edward A. Lee, Haiyang Zheng. <a
  *  href="http://chess.eecs.berkeley.edu/pubs/430.html">Leveraging
  *  Synchronous Language Principles for Heterogeneous Modeling
  *  and Design of Embedded Systems</a>, Proceedings of the
  *  7th ACM & IEEE international conference on Embedded
- *  software, ACM, 114-123, 2007.
+ *  software, ACM, 114-123, 2007.</p>
  * 
  *  <p> This director provides a set of features to address both
  *  the distributed and the real-time aspects of system design.
- *  To address the real-time aspect, this director allows for the
- *  simulation of system timing behavior. This is achieved by allowing
- *  actors in the Ptides model to be annotated by parameters such as
- *  <i>WCET</i> and <i>executionTime</i>, while requiring a Ptides
- *  director placed inside a composite actor. The composite actor is
- *  then governed by an enclosing director, and the enclosing
- *  director's notion of time is used to simulate the passage of
- *  physical time based on the <i>WCET</i> and <i>executionTime</i>
- *  parameters of Ptides' actors.  </p>
- *
- *  <p> To address the distributed aspect, each composite actor that
+ *  To address the distributed aspect, each composite actor that
  *  has a Ptides director inside simulates a computation platform
  *  (e.g., a microprocessor), while the enclosing director simulates
  *  the physical world. Actors under Ptides director then communicate
- *  to the outside via sensors, actuators, or networks.  These
+ *  to the outside via sensors, actuators, or networks. These
  *  components are simulated by input/output ports of the composite
  *  actors, as well as special actors that simulate network devices.
  *  </p>
  *
- *  <p> This director does not simulate event preemption. That is, if
- *  an event <i>e</i> is processed at simulated physical time
- *  <i>t</i>, and the <i>executionTime</i> parameter of the
- *  destination actor is set to <i>d</i>, then from simulated physical
- *  time <i>t</i> to <i>t + d</i>, <i>e</i> will be the only event
- *  that is processed. Subclasses of this director, however, could
- *  choose to enable preemption. </p>
+ *  <p> To address the real-time aspect, this director allows for the
+ *  simulation of system timing behavior. This is achieved by allowing
+ *  actors in the Ptides model to be annotated by parameters such as
+ *  <i>WCET</i> and <i>executionTime</i>, (@see PtidesActorProperties),
+ *  while requiring a Ptides director to have an enclosing DE director
+ *  on the outside. The enclosing
+ *  director's notion of time is used to simulate the passage of
+ *  physical time based on the <i>WCET</i> and <i>executionTime</i>
+ *  parameters of Ptides' actors. Notice, this simulated physical
+ *  time is different from the actual time it takes to run the
+ *  simulation. The actual time it takes to run the simulation
+ *  (here on referred to as wall clock time) depends on the clock
+ *  frequency of the computer that runs the simulation, while
+ *  the simulated physical time depends on the clock frequency of
+ *  the microprocessor that runs the Ptides implementation.</p>
+ *  
+ *  <p> The simulation of physical time makes it possible
+ *  to simulate event preemption. However, in this basic version,
+ *  the director does not simulate event preemption. Instead it's left
+ *  for the subclass to implement preemptive scheduling behaviors.
+ *  On the other hand, this scheduler simulates scheduling overhead,
+ *  which is the amount of time for a scheduler to determine what is
+ *  the next event to be executed. The parameter 
+ *  {@link #schedulerExecutionTime} annotates the amount of physical
+ *  time it takes for the Ptides scheduler to make its scheduling
+ *  decision. This decision is made whenever a sensor or timed
+ *  interrupt occurs, or when an event has finished processing.</p>
+ *  
+ *  <p> Since sensors, actuators, and network devices are important
+ *  in the context of Ptides, special actors such as {@link
+ *  SensorInputDevice, ActuatorOutputDevice, NetworkInputDevice,
+ *  NetworkOutputDevice} are used in Ptides models. Also, input
+ *  and output ports to the Ptides director hold information about
+ *  the delays at sensors and network inputs, thus they must be
+ *  annotated correctly. If an input port is not annotated, it is
+ *  assumed to be a sensor
+ *  FIXME: do I need network port??
  * 
  *  <p> The following paragraphs describe implementation details of this
  *  director. The implementation is based on the operation semantics
@@ -145,13 +167,16 @@ import ptolemy.moml.MoMLChangeRequest;
  *  and Applications Symposium, 2009, IEEE Computer Society, 77-86,
  *  April, 2009.</p>
  *
- *  <p> The operational semantics implies at any point in time, all
- *  events in the event queue are considered for processing. This is
- *  contrary to DE, where only the earliest event in the event queue
- *  is processed. To ensure actor states are updated in timestamp
- *  order in a Ptides model, the operational semantics defines a
- *  safe-to-process analysis.  This analysis returns a boolean to
- *  indicate whether an event can be processed without violating DE
+ *  <p> The semantics of Ptides is based DE, which specifies
+ *  all actors must process events in timestamp order. DE enforces
+ *  this semantics by processing all events in the system in timestamp
+ *  order, and by coupling the model time of the DE director with that
+ *  of the enclosing director. The Ptides director however,
+ *  decouples its time with that of the enclosing director, and
+ *  instead enforces timestamp order processing by defining a
+ *  safe-to-process analysis in its operational semantics.
+ *  This analysis returns a boolean to indicate whether an event
+ *  can be processed without violating Ptides
  *  semantics, based on information such as events currently in the
  *  event queue, their model time relationship with each other, as
  *  well as the current physical time. In this particular version of
@@ -162,33 +187,38 @@ import ptolemy.moml.MoMLChangeRequest;
  *  is safe to process. Otherwise, we wait for physical time to pass
  *  until this event becomes safe, at which point it is processed. For
  *  more detailed information about how the delayOffset parameter is
- *  calculated, refer to the above paper reference.  This is the most
+ *  calculated, refer to the above paper reference. This is the most
  *  basic version of the Ptides scheduler (thus the name), however
- *  subclasses of this director may provide more sophisticated
- *  scheduling algorithms.</p>
- * 
- *  <p>
- *  In the preinitialize method, according to the model graph structure, the
- *  delayOffsets are calculated, using superdense dependency between
- *  connected components.</p>
- * 
+ *  subclasses of this director may provide more sophisticated and
+ *  concurrent scheduling algorithms.</p>
+ *
  *  <p> Like in the DE domain, directed loops of IO ports with no
  *  model time delay will trigger an exception. For detailed
- *  explanation, @see DEDirector. Unlike in DE however, Ptides uses
- *  {@link SuperdenseDependency} to not only indicate whether model
- *  time delay exists between input and output ports of an actor, but
- *  also what the delay value is.</p>
- *
+ *  explanation, @see DEDirector. The DE director uses {@link
+ *  BooleanDependency} to define whether there is a model time
+ *  delay between input and output ports of an actor. The Ptides
+ *  director however, uses {@link SuperdenseDependency} to not only
+ *  indicate whether model time delay exists, but also what the delay
+ *  value is. It then uses this information to perform the safe-to-
+ *  process analysis.</p>
+ * 
+ *  <p> In the preinitialize method, the director calculates 
+ *  delayOffsets according to the model graph structure. The director
+ *  uses superdense dependency between connected components to perform
+ *  this calculation.</p>
+ * 
  *  <p> An event in the Ptides programming model is similar to an
  *  event in DE. A {@link ptolemy.domains.ptides.kernel.PtidesEvent}
  *  also consists of a timestamp, a value token, as well as fields
  *  such as microstep and depth, which are used to define the
  *  scheduling semantics. Because of these similarities, PtidesEvent
- *  is a subclass of DEEvent. PtidesEvent is different from DE event,
- *  however, in that it holds the token value within the event
- *  structure. The director only transmits token to the destination
- *  receiver when it is ready to process the event.</p>
- *
+ *  is a subclass of DEEvent. While DEEvent only conceptually includes
+ *  the value token (the actual token is sent directly to the receiver
+ *  upon the creation of the new event),
+ *  PtidesEvent actually stores the token as a part of its data structure,
+ *  in order to enable out-of-order processing of events. The token is
+ *  transmitted to the destination receiver when the Ptides director
+ *  is ready to process the corresponding event.
  *  @see PtidesEvent
  *
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
@@ -245,15 +275,39 @@ public class PtidesBasicDirector extends DEDirector {
      *  timestamp order. Setting this parameter could potentially
      *  simplify the safe to process analysis. This parameter should
      *  not be set if the network model could potentially reorder
-     *  packets, or if an actor such a
+     *  packets, or if an actor such as
      *  {@link ptolemy.domains.de.lib.VariableDelay} is used.
      *  This is a boolean that defaults to false.
      */
     public Parameter actorsReceiveEventsInTimestampOrder;
 
-    /** If true, modify the icon for this director to indicate
-     *  the state of execution as the model is running. 
+    /** If true, force all actors to process events in timestamp
+     *  order, even though some actors (in particular those without
+     *  states) could process events out of timestamp order without
+     *  changing the deterministic behavior of the system. This
+     *  could make the safe-to-process analysis simpler, while
+     *  sacrificing concurrency of event execution in other parts
+     *  of the system.
+     *  
+     *  FIXME: I haven't thought this through, not sure what are
+     *  the actual trade offs, and not sure how to implement it...
+     */
+    public Parameter forceActorsToProcessEventsInTimestampOrder;
+
+    /** If true, modify the color icon for actors in this director
+     *  to indicate the state of execution as the model is running. 
      *  This is a boolean that defaults to false.
+     *  <p> Note this
+     *  parameter is specially used for the Ptides directors, and
+     *  is different from the animateExecution parameter in the
+     *  Ptolemy debug menu. While the animateExeuction parameter
+     *  in the debug menu animates for the duration of an actor
+     *  firing in wall clock time, this parameter causes the
+     *  director to animate for the during of simulated physical
+     *  time, which is the time of the enclosing DE director.</p>
+     *  <p> Also note this parameter must be set with conjunction
+     *  of the <i>synchronizedToRealTime</i> parameter of the
+     *  enclosing DE director.
      */
     public Parameter animateExecution;
 
@@ -449,26 +503,6 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** Return whether the port is a networkPort.
-     *  this method is default to return false, i.e., an output port to the outside of the
-     *  platform is by default an actuator port.
-     *  @exception IllegalActionException If token of networkPort cannot be
-     *  evaluated.
-     */
-    public static boolean isNetworkPort(IOPort port)
-            throws IllegalActionException {
-        if (port.isInput()) {
-            Double networkTotalDelay = _getNetworkTotalDelay(port);
-            return (networkTotalDelay != null);
-        }
-        IllegalActionException up = new IllegalActionException(port,
-                "The port is an output port, we do not distinguish " +
-                "whether output ports are network ports or not, it " +
-                "only matters whether they support transferImmediately " +
-                "or ignoreDeadline");
-        throw up;
-    }
-
     /** Return whether this director is at the top level.
      *  @return true if this director is at the top level.
      */
@@ -548,6 +582,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public void preinitialize() throws IllegalActionException {
 
+        // Make sure an enclosing DE director exists.
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
             throw new IllegalActionException(this,
@@ -558,6 +593,28 @@ public class PtidesBasicDirector extends DEDirector {
             throw new IllegalActionException(this,
                     "All Ptides Directors must be used " +
                     "within a DE Director.");
+        }
+        
+        // If animateExecution is set, make sure synchronizedToRealTime of the
+        // enclosing DE director is also set.
+        if (((BooleanToken) animateExecution.getToken()).booleanValue()) {
+            Parameter parameter = (Parameter) ((NamedObj) executiveDirector)
+                .getAttribute("synchronizeToRealTime");
+            if (parameter == null) {
+                throw new IllegalActionException(executiveDirector, "The " +
+                		"enclosing DE director is expected to have a" +
+                		"synchronizedToRealTime parameter, but it" +
+                		"could not be found.");
+            }
+            if (!((BooleanToken) parameter.getToken()).booleanValue()) {
+                throw new IllegalActionException(executiveDirector, "The " +
+                		"animateExecution parameter of the Ptides " +
+                		"director is set. To get a realistic view " +
+                		"of the actor execution, set the " +
+                		"enclosing DE director's " +
+                		"synchronizedToRealTime parameter " +
+                		"to true.");
+            }
         }
 
         super.preinitialize();
@@ -876,119 +933,62 @@ public class PtidesBasicDirector extends DEDirector {
      *  realTimeDelay attribute.
      */
     protected void _checkSensorActuatorNetworkConsistency()
-            throws IllegalActionException {
+    throws IllegalActionException {
 
-        if (getContainer() instanceof TypedCompositeActor) {
-            // If we are expanding the configuration, then the container might
-            // be an EntityLibrary.  See ptolemy/configs/test/
-            for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                    .inputPortList())) {
-                // for each input port of the composite actor, make sure it has
-                // either networkDelay/networkDriverDelay or realTimeDelay.
-                boolean sensorPort = false;
-                boolean networkPort = false;
-                if (_getNetworkTotalDelay(port) != null) {
-                    networkPort = true;
-                }
-                if (_getRealTimeDelay(port) != null) {
-                    sensorPort = true;
-                }
-                // If both are false, the port is assumed to be a sensor port with realTimeDelay = 0.0.
-                if (sensorPort && networkPort) {
-                    throw new IllegalActionException(port, "This port has been annotated with " +
-                                "both realTimeDelay parameter and " +
-                                "networkDelay/networkDriverDelay " +
-                                "parameter. This is disallowed because an input port is either " +
-                                "a network port or a sensor port.");
-                }
-                for (TypedIOPort sinkPort : (List<TypedIOPort>) port
-                        .deepInsidePortList()) {
-                    if (isNetworkPort(port)) {
-                        if (sinkPort.isInput() && !(sinkPort.getContainer() instanceof NetworkInputDevice)) {
-                            throw new IllegalActionException(
-                                    port,
-                                    sinkPort.getContainer(),
-                                    "An input network " +
-                                    "port must have a NetworkInputDevice " +
-                                    "as its sink.");
-                        }
-                        Parameter parameter = (Parameter) ((NamedObj) port)
-                                .getAttribute("realTimeDelay");
-                        if (parameter != null) {
-                            throw new IllegalActionException(
-                                    port,
-                                    "A network input " +
-                                    "port must not have a realTimeDelay annotated " +
-                                    "on it. Either this port is a not a network port " +
-                                    "with realTimeDelay, or it should be a network" +
-                                    "port with networkDelay. ");
-                        }
-                    } else {
-                        // port is a sensor port.
-                        // If the schedulerExecutionTime is non-zero, then to simulate the correct
-                        // behavior, sensors must be connected to SensorInputDevices, and actuators
-                        // must be connected to ActuatorOutputDevices.
-                        Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
-                        if ((parameter != null)
-                                && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
-                                && sinkPort.isInput()
-                                && !(sinkPort.getContainer() instanceof SensorInputDevice)) {
-                            throw new IllegalActionException(
-                                    port,
-                                    sinkPort.getContainer(),
-                                    "The schedulerExecutionTime parameter is not 0.0. " +
-                                    "In this case to get the correct simulated physical " +
-                                    "time behavior, an input sensor "
-                                            + "port must be connected to a "
-                                            + "SensorInputDevice.");
-                        }
-                        if (sinkPort.isInput() && sinkPort.getContainer() instanceof NetworkInputDevice) {
-                            throw new IllegalActionException(
-                                    port,
-                                    sinkPort.getContainer(),
-                                    "An input sensor "
-                                            + "port should not be connected to a "
-                                            + "NetworkInputDevice. Either denote this port as "
-                                            + "a network port, or remove the NetworkInputDevice "
-                                            + "connected to it.");
-                        }
-                        parameter = (Parameter) ((NamedObj) port)
-                                .getAttribute("networkDelay");
-                        if (parameter != null) {
-                            throw new IllegalActionException(
-                                    port,
-                                    "A sensor input "
-                                            + "port must not have a networkDelay annotated "
-                                            + "on it. Either this port is a not a network port "
-                                            + "with realTimeDelay, or it should be a network"
-                                            + "port with networkDelay. ");
-                        }
+        _networkInpuPorts = new HashSet<IOPort>();
+        // If we are expanding the configuration, then the container might
+        // be an EntityLibrary.  See ptolemy/configs/test/
+        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                .inputPortList())) {
+            // for each input port of the composite actor, make sure it's not
+            // both a sensor port and a network port.
+            _checkSensorNetworkInputConsistency(port);
+
+            for (TypedIOPort sinkPort : (List<TypedIOPort>) port
+                    .deepInsidePortList()) {
+                if (!_isNetworkPort(port)) {
+                    // port is a sensor port.
+                    // If the schedulerExecutionTime is non-zero, then to simulate the correct
+                    // behavior, sensors must be connected to SensorInputDevices, and actuators
+                    // must be connected to ActuatorOutputDevices.
+                    Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+                    if ((parameter != null)
+                            && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
+                            && sinkPort.isInput()
+                            && !(sinkPort.getContainer() instanceof SensorInputDevice)) {
+                        throw new IllegalActionException(
+                                port,
+                                sinkPort.getContainer(),
+                                "The schedulerExecutionTime parameter is not 0.0. " +
+                                "In this case to get the correct simulated physical " +
+                                "time behavior, an input sensor " +
+                                "port must be connected to a SensorInputDevice.");
                     }
                 }
             }
-            // Check consistency for all output ports of this director.
-            for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                    .outputPortList())) {
-                for (TypedIOPort sourcePort : (List<TypedIOPort>) port
-                        .deepInsidePortList()) {
-                    // If the schedulerExecutionTime is non-zero, then to simulate the correct
-                    // behavior, sensors must be connected to SensorInputDevices, and actuators
-                    // must be connected to ActuatorOutputDevices or a NetworkOutputDevice.
-                    Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
-                    if ((parameter != null) 
-                            && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
-                            && sourcePort.isInput()
-                            && !((sourcePort.getContainer() instanceof ActuatorOutputDevice) ||
-                                    (sourcePort.getContainer() instanceof NetworkOutputDevice))) {
-                        throw new IllegalActionException(
-                                port,
-                                sourcePort.getContainer(),
-                                "The schedulerExecutionTime parameter is not 0.0. " +
-                                "In this case to get the correct simulated physical " +
-                                "time behavior, an output actuator "
-                                + "port must be connected to a "
-                                + "ActuatorOutputDevice or a NetworkOutputDevice.");
-                    }
+        }
+        // Check consistency for all output ports of this director.
+        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                .outputPortList())) {
+            for (TypedIOPort sourcePort : (List<TypedIOPort>) port
+                    .deepInsidePortList()) {
+                // If the schedulerExecutionTime is non-zero, then to simulate the correct
+                // behavior, sensors must be connected to SensorInputDevices, and actuators
+                // must be connected to ActuatorOutputDevices or a NetworkOutputDevice.
+                Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+                if ((parameter != null) 
+                        && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
+                        && sourcePort.isOutput()
+                        && !((sourcePort.getContainer() instanceof ActuatorOutputDevice) ||
+                                (sourcePort.getContainer() instanceof NetworkOutputDevice))) {
+                    throw new IllegalActionException(
+                            port,
+                            sourcePort.getContainer(),
+                            "The schedulerExecutionTime parameter is not 0.0. " +
+                            "In this case to get the correct simulated physical " +
+                            "time behavior, an output actuator "
+                            + "port must be connected to a "
+                            + "ActuatorOutputDevice or a NetworkOutputDevice.");
                 }
             }
         }
@@ -1894,13 +1894,7 @@ public class PtidesBasicDirector extends DEDirector {
         // This should actually never happen, since _getNextActuationEvent() should
         // move all actuation events to the outputs.
         assert (!port.isOutput());
-        // The port is an output port, this could only happen if it is the output port
-        // of a composite actor. Thus transferOutput should take care of this, and
-        // we say it's always safe to process.
-        /*
-        if (port.isOutput()) {
-            return true;
-        }*/
+
         double delayOffset = _getMininumDelayOffset(port, ((PtidesEvent) event).channel(),
                 event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(delayOffset);
@@ -2112,7 +2106,7 @@ public class PtidesBasicDirector extends DEDirector {
             } else if (compare == 0) {
                 Time lastModelTime = _currentTime;
                 int lastMicrostep = _microstep;
-                if (isNetworkPort(realTimeEvent.port)) {
+                if (_isNetworkPort(realTimeEvent.port)) {
                     // If transferring a network input, make it always safe to process.
                     _realTimeInputEventQueue.poll();
                     setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
@@ -2161,7 +2155,7 @@ public class PtidesBasicDirector extends DEDirector {
             Time lastModelTime = _currentTime;
             int lastMicrostep = _microstep;
             // If transferring a network input, make it always safe to process.
-            if (isNetworkPort(port)) {
+            if (_isNetworkPort(port)) {
                 setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
             } else {
                 // By default we assume the input is a sensor input, and
@@ -2428,6 +2422,58 @@ public class PtidesBasicDirector extends DEDirector {
         return smallestDependency.timeValue();
     }
 
+    /** Check whether an input port is a network port or a sensor port by
+     *  checking what actor this input port is connected to. If it's connected
+     *  to a NetworkInputDevice actor, it's assumed to be a network port. If
+     *  it's not connected to a NetworkInputDevice actor, then it's assumed
+     *  to be a sensor port. However, this port cannot be connected to
+     *  NetworkInputDevice and SensorInputDevice actors at the same time.
+     *  Also, add all network ports into a set for future reference. Finally,
+     *  make sure all sensor ports are not annotated with either networkDelay
+     *  or networkDriverDelay parameters, while all network ports are not
+     *  annotated with realTimeDelay parameters. 
+     *  @exception IllegalActionException If port is connected to both a
+     *  SensorInputDevice and a NetworkInputDevice, a network port is annotated
+     *  with networkDelay or networkDriverDelay parameter, or a sensor port is
+     *  annotated with realTimeDelay paramter.
+     */
+    private void _checkSensorNetworkInputConsistency(IOPort port) throws IllegalActionException {
+
+        boolean sensorPort = false;
+        boolean networkPort = false;
+        for (IOPort sinkPort : (List<IOPort>)port.deepInsidePortList()) {
+            if (sinkPort.isInput()) {
+                if (sinkPort.getContainer() instanceof NetworkInputDevice) {
+                    networkPort = true;
+                    _networkInpuPorts.add(port);
+                } else {
+                    // If a port is not connected to a NetworkInputDevice, it is
+                    // assumed to be a sensorPort.
+                    sensorPort = true;
+                }
+            }
+        }
+        if (sensorPort && networkPort) {
+            throw new IllegalActionException(port, "This port has been connected to " +
+                    "both a SensorInputDevice and a NetworkInputDevice, which is  " +
+            "disallowed. A port must be either a sensor port or a network port.");
+        }
+        // If both sensorPort and networkPort are false, this port is assumed to be a
+        // sensor port with realTimeDelay = 0.0.
+        if (sensorPort && (_getNetworkDelay(port) != null ||
+                _getNetworkDriverDelay(port) != null)) {
+            throw new IllegalActionException(port, "A port that is not connected to a " +
+                    "NetworkInputDevice is considered to be a sensor port, " +
+                    "and a sensor port should not have networkDelay or " +
+            "networkDriverDelay parameters annotated on it.");
+        } else if (networkPort && _getRealTimeDelay(port) != null) {
+            throw new IllegalActionException(port, "A port that is connected to a " +
+                    "NetworkInputDevice is considered to be a network port, " +
+                    "and a network port should not have realTimeDelay " +
+            "parameter annotated on it.");
+        }
+    }
+
     /** Return the actor associated with the events in the list. All events
      *  within the list should be destined for the same actor.
      *  @param currentEventList A list of events.
@@ -2631,6 +2677,24 @@ public class PtidesBasicDirector extends DEDirector {
             return ((BooleanToken) parameter.getToken()).booleanValue();
         }
         return false;
+    }
+
+    /** Return whether the port is a networkPort. This method only checks
+     *  for whether input ports are network ports. If port is an output
+     *  port, then throw an exception.
+     *  @exception IllegalActionException If port is an output port.
+     */
+    private boolean _isNetworkPort(IOPort port)
+            throws IllegalActionException {
+        if (port.isInput()) {
+            return _networkInpuPorts.contains(port);
+        }
+        IllegalActionException up = new IllegalActionException(port,
+                "The port is an output port, we do not distinguish " +
+                "whether output ports are network ports or not, it " +
+                "only matters whether they support transferImmediately " +
+                "or ignoreDeadline");
+        throw up;
     }
 
     /** The previously execution event has been preempted, either by another
@@ -2980,6 +3044,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
+    
+    /** Keep track of a set of input ports to the composite actor governed by this director.
+     *  These input ports are network input ports, which are input ports that are directly
+     *  connected to NetworkInputDevice's.
+     */
+    private HashSet<IOPort> _networkInpuPorts;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.

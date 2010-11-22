@@ -137,16 +137,6 @@ public class SensorInputDevice extends InputDevice {
                 for (IOPort sourcePort : (List<IOPort>)input.sourcePortList()) {
                     if (sourcePort.getContainer() == getContainer()) {
                         flag = true;
-                        if (PtidesBasicDirector.isNetworkPort(sourcePort)){
-                            throw new IllegalActionException(
-                                    this, sourcePort,
-                                    "A sensor input " +
-                                    "port must not have a networkDelay or " + 
-                                    "networkDriverDelay annotated " +
-                                    "on it. Either this port is a not a network port " +
-                                    "with realTimeDelay, or it should be a network" +
-                                    "port with networkDelay.");
-                        }
                     }
                 }
             }

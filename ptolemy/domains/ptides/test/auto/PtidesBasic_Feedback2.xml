@@ -34,7 +34,7 @@
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 65.0}">
             </property>

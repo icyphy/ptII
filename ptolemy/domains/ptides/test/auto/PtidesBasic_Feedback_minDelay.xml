@@ -34,7 +34,7 @@
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 65.0}">
             </property>
@@ -73,6 +73,8 @@
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
+                </property>
             </port>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -87,6 +89,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -105,6 +109,8 @@
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth">
@@ -113,6 +119,8 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -127,6 +135,8 @@
                 <property name="input"/>
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -144,6 +154,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>

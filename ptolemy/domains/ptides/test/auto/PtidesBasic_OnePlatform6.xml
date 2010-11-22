@@ -54,7 +54,7 @@
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="highlightModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
             </property>

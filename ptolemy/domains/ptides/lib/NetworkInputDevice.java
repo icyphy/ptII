@@ -190,13 +190,6 @@ public class NetworkInputDevice extends InputDevice {
             for (IOPort sourcePort : (List<IOPort>)input.sourcePortList()) {
                 if (sourcePort.getContainer() == getContainer()) {
                     flag = true;
-                    if (!PtidesBasicDirector.isNetworkPort(sourcePort)){
-                        throw new IllegalActionException(
-                                this, sourcePort,
-                                "A NetworkInputDevice must be directly connected " +
-                                "to a network port (a port with the parameter " +
-                                "networkDelay or networkDriverDelay).");
-                    }
                 }
             }
         }
