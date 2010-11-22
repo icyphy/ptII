@@ -259,13 +259,13 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             boolean foundOntology = false;
             
             if (tupleOntologies != null) {
-                StringBuffer conceptNameBuffer = new StringBuffer();
+                List<Concept> conceptTuple = new ArrayList<Concept>(tupleOntologies.size());
                 for (Ontology ontology : tupleOntologies) {
                     if (sourceOntology.getClassName().equals(ontology.getClassName())) {
-                        conceptNameBuffer.append(concept.getName());
+                        conceptTuple.add(ontology.getConceptByString(concept.toString()));
                         foundOntology = true;
                     } else {
-                        conceptNameBuffer.append(((Concept) ontology.getConceptGraph().bottom()).getName());
+                        conceptTuple.add((Concept) ontology.getConceptGraph().bottom());
                     }
                 }
                 
@@ -274,15 +274,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                             " belongs to an ontology " + sourceOntology.getName() +
                             " that is not a component of the given product lattice ontology " + productOntology.getName() + ".");
                 }
-                
-                String productLatticeConceptName = conceptNameBuffer.toString();
-                ProductLatticeConcept value =
-                    (ProductLatticeConcept) productOntology.getEntity(productLatticeConceptName);            
-                if (value == null) {
-                    throw new IllegalActionException("Could not create the derived concept for the " +
-                            productOntology.getName() + " product lattice ontology for the concept " +
-                            concept.getName() + " from the " + sourceOntology.getName() + " ontology.");
-                }
+                ProductLatticeConcept value = productOntology.getProductLatticeConceptFromTuple(conceptTuple);
                 return value;  
             } else {
                 return null;

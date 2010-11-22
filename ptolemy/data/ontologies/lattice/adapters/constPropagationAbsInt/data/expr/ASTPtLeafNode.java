@@ -1,4 +1,4 @@
-/* The adapter class for ptolemy.data.expr.ASTPtLeafNode for the constPropagation ontology.
+/* The adapter class for ptolemy.data.expr.ASTPtLeafNode for constPropagationAbsInt ontology.
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -26,13 +26,15 @@
 
  */
 
-package ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr;
+package ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.data.expr;
 
 import java.util.List;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
-import ptolemy.data.ontologies.FlatTokenInfiniteConcept;
-import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
+import ptolemy.data.ontologies.FlatScalarTokenInfiniteConcept;
+import ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.graph.Inequality;
@@ -42,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ASTPtLeafNode
 
 /**
- The adapter class for ptolemy.data.expr.ASTPtLeafNode for the constPropagation ontology.
+ The adapter class for ptolemy.data.expr.ASTPtRootNode for constPropagationAbsInt ontology.
 
  @author Charles Shelton
  @version $Id$
@@ -78,15 +80,31 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
         if (node.isConstant()) {
             if (nodeToken != null) {
-                FlatTokenRepresentativeConcept constantValueConcept =
-                    (FlatTokenRepresentativeConcept) _solver.getOntology().
-                        getConceptByString("ConstantValue");
-                setAtLeast(node, FlatTokenInfiniteConcept.
-                        createFlatTokenInfiniteConcept(
-                                _solver.getOntology(), constantValueConcept,
-                                nodeToken));
+                if (nodeToken instanceof BooleanToken) {
+                    if (((BooleanToken) nodeToken).booleanValue()) {
+                        setAtLeast(node, getSolver().getOntology().getConceptByString("BooleanTrue"));
+                    } else {
+                        setAtLeast(node, getSolver().getOntology().getConceptByString("BooleanFalse"));
+                    }
+                } else if (nodeToken instanceof ScalarToken) {
+                    if (((ScalarToken) nodeToken).isEqualTo(nodeToken.zero()).booleanValue()) {
+                        setAtLeast(node, getSolver().getOntology().getConceptByString("Zero"));
+                    } else if (((ScalarToken) nodeToken).isGreaterThan((ScalarToken) nodeToken.zero()).booleanValue()) {
+                        FlatScalarTokenRepresentativeConcept positiveRepresentative =
+                            (FlatScalarTokenRepresentativeConcept) getSolver().getOntology().getConceptByString("PositiveValue");
+                        setAtLeast(node, FlatScalarTokenInfiniteConcept.
+                                createFlatScalarTokenInfiniteConcept(getSolver().getOntology(), positiveRepresentative, (ScalarToken) nodeToken));
+                    } else {
+                        FlatScalarTokenRepresentativeConcept negativeRepresentative =
+                            (FlatScalarTokenRepresentativeConcept) getSolver().getOntology().getConceptByString("NegativeValue");
+                        setAtLeast(node, FlatScalarTokenInfiniteConcept.
+                                createFlatScalarTokenInfiniteConcept(getSolver().getOntology(), negativeRepresentative, (ScalarToken) nodeToken));
+                    }
+                } else {
+                    setAtLeast(node, getSolver().getOntology().getConceptByString("Undefined"));
+                }
             } else {
-                setAtLeast(node, _solver.getOntology().getConceptByString("Constant"));
+                setAtLeast(node, getSolver().getOntology().getConceptByString("Undefined"));
             }
         }
         

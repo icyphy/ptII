@@ -64,7 +64,6 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
     public ProductLatticeOntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _momlHandler = new ProductLatticeOntologyMoMLHandler(this, "ProductLatticeOntologyMoMLHandler");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -184,7 +183,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                     toplevelAdapter.reinitialize();
                     toplevelAdapter
                     ._addDefaultConstraints(_getConstraintType());
-                    toplevelAdapter._setConnectionConstraintType(_getConstraintType());
+                    toplevelAdapter._setConnectionConstraintType(innerSolver._getConstraintType());
                 } catch (IllegalActionException e) {
                     throw new IllegalStateException("Could not reinitialize " +
                     		"the adapters for the contained " +

@@ -63,7 +63,7 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
      *   cannot be created.
      */
     public ProductLatticeDerivedConceptFunction(String name, ProductLatticeOntology inputOutputOntology, Ontology originalConceptOntology)
-    throws IllegalActionException {
+        throws IllegalActionException {
         super(name, 1, inputOutputOntology);
         _originalConceptOntology = originalConceptOntology;
     }
@@ -78,7 +78,7 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
-    throws IllegalActionException {
+        throws IllegalActionException {
         Concept inputConcept = argValues.get(0);
         
         if (inputConcept != null) {
@@ -87,14 +87,25 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
                     inputConcept, _originalConceptOntology);
 
             if (originalOntologyInputConcept != null) {
-                return ProductLatticeOntologyAdapter.
+                Concept result = ProductLatticeOntologyAdapter.
                     getDerivedConceptForProductLattice(originalOntologyInputConcept,
                             (ProductLatticeOntology) _outputRangeOntology);
+                if (result == null) {
+                    throw new IllegalActionException("Could not derive product lattice " +
+                    		"concept for " + _outputRangeOntology.getName() +
+                    		" from original concept " + originalOntologyInputConcept +
+                    		" in the ontology " + _originalConceptOntology + ".");
+                } else {
+                    return result;
+                }
             } else {
-                return null;
+                throw new IllegalActionException("Could not get the original " +
+                		"ontology concept from the input concept " +
+                		inputConcept + " for the component ontology " +
+                		_originalConceptOntology.getName() + ".");
             }
         } else {
-            return null;
+            throw new IllegalActionException("Input concept argument cannot be null.");
         }
     }        
 

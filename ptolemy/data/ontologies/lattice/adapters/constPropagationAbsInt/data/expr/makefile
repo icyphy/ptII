@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters ConstAbstractInterpretation
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters ConstPropagationAbsInt Data Expr
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id: makefile 58592 2010-07-13 21:37:06Z bldmastr $
+# $Id$
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation
+ME =		ptolemy/data/ontologies/lattice/adapters/constPropagationAbsInt/data/expr
 
-DIRS = 		data
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,18 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	constAbstractInterpretation
+PTPACKAGE =	expr
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	data/data.jar
+PTCLASSALLJARS =
+PTCLASSALLJAR =
+PTCLASSJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+JSRCS = \
+	ASTPtLeafNode.java
 
-JSRCS =
-
-OTHER_FILES_TO_BE_JARED = \
-	ConstAbstractInterpretationSolverModel.xml \
-	constAbstractInterpretation.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

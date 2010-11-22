@@ -21,12 +21,14 @@
  */
 package ptolemy.data.ontologies;
 
-
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+///////////////////////////////////////////////////////////////////
+//// FlatTokenInfiniteConcept
 
 /** A concept that represents the concept values of entries in a record token.
  *  
@@ -127,6 +129,16 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
         }
     }
     
+    /** Return the color attribute associated with this FlatTokenInfiniteConcept.
+     *  This will be the color to be the color of the
+     *  FlatTokenRepresentativeConcept representative which is a finite concept
+     *  with a color given by its model color attribute.
+     *  @return The color attribute of the representative concept.
+     */
+    public ColorAttribute getColor() {
+        return _representative.getColor();
+    }
+    
     /** Get the concept that represents this set of infinite concepts in the
      *  ontology lattice.
      *  @return The representative concept.
@@ -185,8 +197,17 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
                 }
             }
         } else {
-            return getOntology().getConceptGraph().leastUpperBound(
+            // If the concepts have the same representative then they are
+            // either the exact same concept and the least upper bound is this,
+            // or two incomparable concepts from the same set where their least
+            // upper bound is the least upper bound of the concepts directly
+            // above the representative in the finite lattice.
+            if (this.equals(concept)) {
+                return this;
+            } else {
+                return getOntology().getConceptGraph().leastUpperBound(
                     _representative.getCoverSetAbove().toArray());
+            }
         }
     }
 
@@ -230,14 +251,6 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
         _representative = representative;
         _tokenValue = value;
         _representative.addInfiniteConcept(this);
-        ColorAttribute representativeSolutionColor = (ColorAttribute) _representative.getAttribute("solutionColor");
-        if (representativeSolutionColor != null) {
-            ColorAttribute solutionColor = (ColorAttribute) getAttribute("solutionColor");
-            if (solutionColor == null) {
-                solutionColor = new ColorAttribute(this, "solutionColor");
-            }              
-            solutionColor.setToken(representativeSolutionColor.getToken());
-        }
     }
     
     ///////////////////////////////////////////////////////////////////

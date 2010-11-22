@@ -267,25 +267,25 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
     }
 
-    /** Return the concept with the specified name. If it cannot be
-     *  found in any of the argument domain ontologies, throw an
+    /** Return the concept with the specified string representation. If it
+     *  cannot be found in any of the argument domain ontologies, throw an
      *  exception.
-     *  @param conceptName The specified name the concept should have.
-     *  @return The concept with the specified name if it is found.
+     *  @param conceptString The specified string the concept should have.
+     *  @return The concept with the specified string if it is found.
      *  @throws IllegalActionException If the concept cannot be found.
      */
-    protected Concept _getNamedConcept(String conceptName)
+    protected Concept _getNamedConcept(String conceptString)
         throws IllegalActionException {
 
         Concept outputConcept = null;
         for (Ontology domainOntology : _domainOntologies) {
-            outputConcept = (Concept) domainOntology.getConceptByName(conceptName);
+            outputConcept = (Concept) domainOntology.getConceptByString(conceptString);
             if (outputConcept != null) {
                 break;
             }
         }
         if (outputConcept == null) {
-            throw new IllegalActionException("Concept named " + conceptName +
+            throw new IllegalActionException("Concept named " + conceptString +
                     " was not found in any of the domain ontologies.");
         }
         

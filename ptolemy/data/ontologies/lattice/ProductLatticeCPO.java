@@ -178,34 +178,37 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @param e2 An Object representing an element in this CPO.
      *  @return An Object representing the GLB of the two specified
      *   elements, or <code>null</code> if the GLB does not exist.
-     *  @exception IllegalArgumentException If at least one of the
-     *   specified Objects is not an element of this CPO.
+     *  @exception IllegalArgumentException Thrown if the product lattice concept
+     *   greatest lower bound cannot be created from the component greatest lower
+     *   bound concepts.
      */
-    public Concept greatestLowerBound(Object e1, Object e2) {
+    public Concept greatestLowerBound(Object e1, Object e2) {      
         List<Concept> inputs = new ArrayList<Concept>();
         inputs.add((Concept) e1);
         inputs.add((Concept) e2);
         
         Concept glb = _cachedGLBs.get(inputs);        
-        if (glb == null) {
-            if (e1 == null || e2 == null) {
-                return null;
-            }
-            
+        if (glb == null) {          
             _validateInputArguments(e1, e2);            
             List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
             List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
             int tupleSize = leftArgTuple.size();
 
-            StringBuffer conceptNameBuffer = new StringBuffer();
+            List<Concept> glbTuple = new ArrayList<Concept>(tupleSize);
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                conceptNameBuffer.append(((Concept) (tupleOntology.getConceptGraph().
-                        greatestLowerBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName());
+                Concept ithGLB = (Concept) (tupleOntology.getConceptGraph().
+                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)));
+                glbTuple.add(ithGLB);
             }
-            String glbName = conceptNameBuffer.toString();
-            glb = (ProductLatticeConcept) _productOntology.getEntity(glbName);
-            _cachedGLBs.put(inputs, glb);
+            try {
+                glb = _productOntology.getProductLatticeConceptFromTuple(glbTuple);
+                _cachedGLBs.put(inputs, glb);
+            } catch (IllegalActionException ex) {
+                throw new IllegalArgumentException("Could not create the product " +
+                                "lattice concept greatest lower bound from the " +
+                                "component greates lower bound concepts.", ex);
+            }
         }        
         return glb;
     }
@@ -230,7 +233,9 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @param e1 An Object representing an element in this CPO.
      *  @param e2 An Object representing an element in this CPO.
      *  @return Nothing.
-     *  @exception IllegalArgumentException Always thrown.
+     *  @exception IllegalArgumentException Thrown if the product lattice concept
+     *   least upper bound cannot be created from the component least upper bound
+     *   concepts.
      */
     public Concept leastUpperBound(Object e1, Object e2) {
         List<Concept> inputs = new ArrayList<Concept>();
@@ -239,10 +244,6 @@ public class ProductLatticeCPO extends ConceptGraph {
         
         Concept lub = _cachedLUBs.get(inputs);        
         if (lub == null) {
-            if (e1 == null || e2 == null) {
-                return null;
-            }
-            
             if (e1 instanceof InfiniteConcept) {
                 return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
             } else if (e2 instanceof InfiniteConcept) {
@@ -254,15 +255,21 @@ public class ProductLatticeCPO extends ConceptGraph {
             List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
             int tupleSize = leftArgTuple.size();
 
-            StringBuffer conceptNameBuffer = new StringBuffer();
+            List<Concept> lubTuple = new ArrayList<Concept>(tupleSize);
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                conceptNameBuffer.append(((Concept) (tupleOntology.getConceptGraph().
-                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)))).getName());
-            }            
-            String lubName = conceptNameBuffer.toString();
-            lub = (ProductLatticeConcept) _productOntology.getEntity(lubName);
-            _cachedLUBs.put(inputs, lub);
+                Concept ithLUB = (Concept) (tupleOntology.getConceptGraph().
+                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)));
+                lubTuple.add(ithLUB);
+            }
+            try {
+                lub = _productOntology.getProductLatticeConceptFromTuple(lubTuple);
+                _cachedLUBs.put(inputs, lub);
+            } catch (IllegalActionException ex) {
+                throw new IllegalArgumentException("Could not create the product " +
+                		"lattice concept least upper bound from the " +
+                		"component least upper bound concepts.", ex);
+            }
         }        
         return lub;
     }
@@ -311,7 +318,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      */
     private void _validateInputArguments(Object e1, Object e2) {
         if (!(e1 instanceof ProductLatticeConcept) || !(e2 instanceof ProductLatticeConcept)) {
-            throw new IllegalArgumentException("ProductLatticeCPO.compare: "
+            throw new IllegalArgumentException("ProductLatticeCPO: "
                     + "Arguments are not instances of ProductLatticeConcept: "
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }

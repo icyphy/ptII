@@ -31,8 +31,8 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import ptolemy.data.ontologies.Ontology;
+import ptolemy.data.ontologies.OntologyMoMLHandler;
 import ptolemy.data.ontologies.lattice.ProductLatticeOntology;
-import ptolemy.data.ontologies.lattice.ProductLatticeOntologyMoMLHandler;
 import ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -161,13 +161,21 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
-
-            ProductLatticeOntologyMoMLHandler target = (ProductLatticeOntologyMoMLHandler)
+            
+            ProductLatticeOntologySolver solver =
                 ((ProductLatticeOntologySolver) ProductLatticeOntologySolverDisplayActions.this
-                    .getContainer()).getMoMLHandler();
+                        .getContainer());
+            OntologyMoMLHandler handler = solver.getMoMLHandler();
+            
             try {
-                target.setHighlightOntology(_highlightOntology);
-                target.highlightConcepts();
+                ProductLatticeOntology ontology = (ProductLatticeOntology) solver.getOntology();
+                ontology.setColorOntology(_highlightOntology);
+                if (_highlightOntology == null) {
+                    handler.clearDisplay(true, false);
+                } else {
+                    ontology.setColorOntology(_highlightOntology);
+                    handler.highlightConcepts();
+                }
             } catch (IllegalActionException ex) {
                 throw new IllegalStateException("Could not highlight " +
                 		"the concept colors for the ontology " +
@@ -175,7 +183,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
             }
         }
         
-        /** The ontology from which to get highlight colots for this menu action. */
+        /** The ontology from which to get highlight colors for this menu action. */
         Ontology _highlightOntology;
     }
     

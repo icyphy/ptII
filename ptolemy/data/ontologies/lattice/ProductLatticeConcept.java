@@ -26,6 +26,7 @@ package ptolemy.data.ontologies.lattice;
 import java.util.ArrayList;
 import java.util.List;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,21 +78,46 @@ public class ProductLatticeConcept extends Concept {
         _conceptTuple = new ArrayList<Concept>(conceptTuple);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return the color attribute associated with this ProductLatticeConcept.
+     *  This depends on the component color ontology that is set by the
+     *  container {@link ProductLatticeOntology#setColorOntology(Ontology)}.
+     *  The color of the concept will be derived from the color of the concept
+     *  in the tuple from the specified component color ontology.
+     *  @return The current color attribute for this product lattice concept.
+     */
+    public ColorAttribute getColor() {
+        Ontology colorOntology = ((ProductLatticeOntology) getOntology()).getColorOntology();
+        
+        if (colorOntology != null) {
+            Concept componentConcept = getComponentConceptValue(colorOntology);
+            if (componentConcept != null) {
+                return componentConcept.getColor();
+            }
+        }        
+        return null;        
+    }
+    
     /** Return the concept that is a component of this product lattice ontology
      *  concept tuple from the given ontology.
      *  @param ontology The specified ontology from which to get the component
      *   concept.  This should be one of the component ontologies from the
      *   product lattice ontology for this concept.
-     *  @return The concept from the concept tuple, or null if it is not found
-     *   or the ontology is not part of the product lattice ontology.
+     *  @return The concept from the concept.
+     *  @throws IllegalArgumentException If the specified ontology is not a component
+     *   of the product lattice ontology to which this concept belongs.
      */
     public Concept getComponentConceptValue(Ontology ontology) {
         for (Concept innerConcept : _conceptTuple) {
             if (innerConcept.getOntology().getClassName().equals(ontology.getClassName())) {
-                return ontology.getConceptByName(innerConcept.getName());
+                return ontology.getConceptByString(innerConcept.toString());
             }
         }
-        return null;
+        throw new IllegalArgumentException("The ontology " + ontology.getName() +
+                " is not a component of this concept's product lattice ontology " +
+                getOntology().getName() + ".");
     }
     
     /** Return the list of concepts that compose this product lattice concept.
@@ -112,8 +138,15 @@ public class ProductLatticeConcept extends Concept {
      *  @return The string name that represents this concept.
      */
     public String toString() {
-        return _name;
+        StringBuffer conceptStringBuffer = new StringBuffer();
+        for (Concept concept : _conceptTuple) {
+            conceptStringBuffer.append(concept.toString());
+        }
+        return conceptStringBuffer.toString();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     /** The list of concepts that comprise this product lattice concept. */
     private List<Concept> _conceptTuple;

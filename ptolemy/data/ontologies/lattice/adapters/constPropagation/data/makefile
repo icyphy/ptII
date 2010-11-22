@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters ConstPropagation Data
 #
 # @Authors: Christopher Brooks (makefile only)
 #

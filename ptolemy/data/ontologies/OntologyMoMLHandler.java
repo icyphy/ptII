@@ -28,7 +28,6 @@
  */
 package ptolemy.data.ontologies;
 
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.gui.ColorAttribute;

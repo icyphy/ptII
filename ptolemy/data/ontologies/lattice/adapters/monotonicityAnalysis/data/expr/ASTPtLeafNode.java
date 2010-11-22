@@ -133,13 +133,13 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             if (_leafNode.isConstant()) {
                 return result;
             }
-            String name = _leafNode.getName();
-            if (_domainOntology.getConceptByName(name) != null) {
+            String conceptString = _leafNode.getName();
+            if (_domainOntology.getConceptByString(conceptString) != null) {
                 return result;
             }
             
             // Otherwise, it is a free variable.
-            result.putMonotonicity(name, _monotonicConcept);
+            result.putMonotonicity(conceptString, _monotonicConcept);
             return result;
         }
         

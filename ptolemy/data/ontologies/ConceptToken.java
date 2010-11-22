@@ -69,24 +69,15 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      */
     public ConceptToken add(Token rightArgument) throws IllegalActionException {
         if (!(rightArgument instanceof ConceptToken)) {
-            return (ConceptToken) super.divide(rightArgument);
-        }
-        
+            throw new IllegalActionException("Both arguments must be instances " +
+            		"of ConceptToken.");
+        }        
         Concept addend1 = _concept;
         Concept addend2 = ((ConceptToken) rightArgument)._concept;
-        
-        if (addend1 instanceof FlatTokenInfiniteConcept && addend2 instanceof FlatTokenInfiniteConcept) {
-            if (addend1.getOntology().equals(addend2.getOntology())) {
-                FlatTokenInfiniteConcept result = FlatTokenInfiniteConcept.
-                    createFlatTokenInfiniteConcept(addend1.getOntology(),
-                            ((FlatTokenInfiniteConcept) addend1).getRepresentative(),
-                            ((FlatTokenInfiniteConcept) addend1).getTokenValue().
-                                add(((FlatTokenInfiniteConcept) addend2).getTokenValue()));
-                return new ConceptToken(result);
-            }
-        }
-        
-        return (ConceptToken) super.add(rightArgument);
+        ExpressionOperationsForInfiniteConcepts expressions = _concept.
+            getOntology().getExpressionOperations();
+        Concept result = expressions.add(addend1, addend2);        
+        return new ConceptToken(result);
     }
 
     /** Return the concept encapsulated by this token.
@@ -108,24 +99,15 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      */
     public ConceptToken divide(Token rightArgument) throws IllegalActionException {
         if (!(rightArgument instanceof ConceptToken)) {
-            return (ConceptToken) super.divide(rightArgument);
-        }
-        
+            throw new IllegalActionException("Both arguments must be instances " +
+                        "of ConceptToken.");
+        }        
         Concept dividend = _concept;
         Concept divisor = ((ConceptToken) rightArgument)._concept;
-        
-        if (dividend instanceof FlatTokenInfiniteConcept && divisor instanceof FlatTokenInfiniteConcept) {
-            if (dividend.getOntology().equals(divisor.getOntology())) {
-                FlatTokenInfiniteConcept result = FlatTokenInfiniteConcept.
-                    createFlatTokenInfiniteConcept(dividend.getOntology(),
-                            ((FlatTokenInfiniteConcept) dividend).getRepresentative(),
-                            ((FlatTokenInfiniteConcept) dividend).getTokenValue().
-                                divide(((FlatTokenInfiniteConcept) divisor).getTokenValue()));
-                return new ConceptToken(result);
-            }
-        }
-        
-        return (ConceptToken) super.divide(rightArgument);
+        ExpressionOperationsForInfiniteConcepts expressions = _concept.
+            getOntology().getExpressionOperations();
+        Concept result = expressions.divide(dividend, divisor);        
+        return new ConceptToken(result);
     }
 
     /** Compare this ConceptToken to the given argument, and return true if
@@ -170,10 +152,22 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         }
         Concept rightConcept = ((ConceptToken) rightArgument).conceptValue();
         Concept leftConcept = this.conceptValue();
-    
-        boolean lessThanOrEqual = rightConcept != null && rightConcept.isAboveOrEqualTo(leftConcept);
-        boolean equal = leftConcept != null && rightConcept != null && leftConcept.equals(rightConcept);
-        return new BooleanToken(lessThanOrEqual && !equal);
+        
+        // FIXME: This is a hack for tokenized infinite concepts. In certain
+        // situations you want to know if the token value of one infinite concept
+        // is less than the token value of the other.  This is different than
+        // the conventional "lower in the lattice" less than operation for 
+        // ontology concepts, and should only be used when both concepts are
+        // instances of FlatTokenInfiniteConcept, and their token values can be compared.
+        if (leftConcept instanceof FlatTokenInfiniteConcept && rightConcept instanceof FlatTokenInfiniteConcept) {
+            ExpressionOperationsForInfiniteConcepts expressions = _concept.
+                getOntology().getExpressionOperations();
+            return expressions.isLessThan(leftConcept, rightConcept);            
+        } else {
+            boolean lessThanOrEqual = rightConcept != null && rightConcept.isAboveOrEqualTo(leftConcept);
+            boolean equal = leftConcept != null && rightConcept != null && leftConcept.equals(rightConcept);
+            return new BooleanToken(lessThanOrEqual && !equal);
+        }
     }
 
     /** Perform the multiplication operation on two ConceptTokens.  This operation
@@ -188,24 +182,34 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      */
     public ConceptToken multiply(Token rightArgument) throws IllegalActionException {
         if (!(rightArgument instanceof ConceptToken)) {
-            return (ConceptToken) super.divide(rightArgument);
-        }
-        
+            throw new IllegalActionException("Both arguments must be instances " +
+                        "of ConceptToken.");
+        }        
         Concept factor1 = _concept;
         Concept factor2 = ((ConceptToken) rightArgument)._concept;
-        
-        if (factor1 instanceof FlatTokenInfiniteConcept && factor2 instanceof FlatTokenInfiniteConcept) {
-            if (factor1.getOntology().equals(factor2.getOntology())) {
-                FlatTokenInfiniteConcept result = FlatTokenInfiniteConcept.
-                    createFlatTokenInfiniteConcept(factor1.getOntology(),
-                            ((FlatTokenInfiniteConcept) factor1).getRepresentative(),
-                            ((FlatTokenInfiniteConcept) factor1).getTokenValue().
-                                multiply(((FlatTokenInfiniteConcept) factor2).getTokenValue()));
-                return new ConceptToken(result);
-            }
+        ExpressionOperationsForInfiniteConcepts expressions = _concept.
+            getOntology().getExpressionOperations();
+        Concept result = expressions.multiply(factor1, factor2);        
+        return new ConceptToken(result);
+    }
+    
+    /** Return the ConceptToken that has a concept that represents the
+     *  reciprocal for the flat token infinite concept in this concept token.
+     *  @return The ConceptToken that has a concept that represents the
+     *   reciprocal of the concept in this concept token.
+     *  @throws IllegalActionException If the ConceptToken's concept value is
+     *   not an instance of {@link FlatTokenInfiniteConcept}.
+     */
+    public ConceptToken reciprocal() throws IllegalActionException {
+        if (_concept instanceof FlatTokenInfiniteConcept) {
+            ExpressionOperationsForInfiniteConcepts expressions = _concept.
+                getOntology().getExpressionOperations();
+            Concept result = expressions.reciprocal(_concept);
+            return new ConceptToken(result);
+        } else {
+            throw new IllegalActionException("Concept value must be an " +
+                        "instance of FlatTokenInfiniteConcept.");
         }
-        
-        return (ConceptToken) super.multiply(rightArgument);
     }
     
     /** Perform the subtraction operation on two ConceptTokens.  This operation
@@ -220,24 +224,15 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      */
     public ConceptToken subtract(Token rightArgument) throws IllegalActionException {
         if (!(rightArgument instanceof ConceptToken)) {
-            return (ConceptToken) super.divide(rightArgument);
-        }
-        
-        Concept addend1 = _concept;
-        Concept addend2 = ((ConceptToken) rightArgument)._concept;
-        
-        if (addend1 instanceof FlatTokenInfiniteConcept && addend2 instanceof FlatTokenInfiniteConcept) {
-            if (addend1.getOntology().equals(addend2.getOntology())) {
-                FlatTokenInfiniteConcept result = FlatTokenInfiniteConcept.
-                    createFlatTokenInfiniteConcept(addend1.getOntology(),
-                            ((FlatTokenInfiniteConcept) addend1).getRepresentative(),
-                            ((FlatTokenInfiniteConcept) addend1).getTokenValue().
-                                subtract(((FlatTokenInfiniteConcept) addend2).getTokenValue()));
-                return new ConceptToken(result);
-            }
-        }
-        
-        return (ConceptToken) super.subtract(rightArgument);
+            throw new IllegalActionException("Both arguments must be instances " +
+                        "of ConceptToken.");
+        }        
+        Concept subtractor = _concept;
+        Concept subtractee = ((ConceptToken) rightArgument)._concept;
+        ExpressionOperationsForInfiniteConcepts expressions = _concept.
+            getOntology().getExpressionOperations();
+        Concept result = expressions.subtract(subtractor, subtractee);        
+        return new ConceptToken(result);
     }
 
     /** Return the value of this concept token as a string.
@@ -251,38 +246,27 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         }
     }
     
-    /* FIXME: What to do when we want slightly different results for
-     * different ontologies?
-    private FlatTokenInfiniteConcept _generateResultInfiniteConcept(Token value,
-            FlatTokenRepresentativeConcept otherConceptRep) throws IllegalActionException {
-        FlatTokenRepresentativeConcept thisConceptRep =
-            ((FlatTokenInfiniteConcept) _concept).getRepresentative();
-        if (thisConceptRep.equals(otherConceptRep) && !(thisConceptRep instanceof FlatScalarTokenRepresentativeConcept)) {
-            return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(_concept.getOntology(), thisConceptRep, value);
-        } else if (thisConceptRep instanceof FlatScalarTokenRepresentativeConcept && otherConceptRep instanceof FlatScalarTokenRepresentativeConcept && value instanceof ScalarToken) {
-            if (((FlatScalarTokenRepresentativeConcept) thisConceptRep).withinInterval((ScalarToken) value)) {
-                return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(_concept.getOntology(), (FlatScalarTokenRepresentativeConcept) thisConceptRep, (ScalarToken) value);
-            } else if (((FlatScalarTokenRepresentativeConcept) otherConceptRep).withinInterval((ScalarToken) value)) {
-                return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(_concept.getOntology(), (FlatScalarTokenRepresentativeConcept) otherConceptRep, (ScalarToken) value);
-            } else {
-                for (Object conceptRep : _concept.getOntology().entityList(FlatScalarTokenRepresentativeConcept.class)) {
-                    if (((FlatScalarTokenRepresentativeConcept) conceptRep).withinInterval((ScalarToken) value)) {
-                        return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(_concept.getOntology(), (FlatScalarTokenRepresentativeConcept) conceptRep, (ScalarToken) value);
-                    }
-                }                
-                return null;
-            }
+    /** Return the ConceptToken that has a concept that represents zero for
+     *  the flat token infinite concepts for that ontology.
+     *  @return The ConceptToken that has a concept that represents zero.
+     *  @throws IllegalActionException If the ConceptToken's concept value is
+     *   not an instance of {@link FlatTokenInfiniteConcept}.
+     */
+    public ConceptToken zero() throws IllegalActionException {
+        if (_concept instanceof FlatTokenInfiniteConcept) {
+            ExpressionOperationsForInfiniteConcepts expressions = _concept.
+                getOntology().getExpressionOperations();
+            Concept result = expressions.zero(_concept);
+            return new ConceptToken(result);
         } else {
-            return null;
+            throw new IllegalActionException("Concept value must be an " +
+                        "instance of FlatTokenInfiniteConcept.");
         }
     }
-    */
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    /** The concept encapsulated by this token
-     */
+    /** The concept encapsulated by this token. */
     private Concept _concept;
-
 }

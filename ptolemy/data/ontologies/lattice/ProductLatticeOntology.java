@@ -128,6 +128,54 @@ public class ProductLatticeOntology extends Ontology {
         }
     }
     
+    /** Return the current ontology from which concepts derive their highlight
+     *  color definitions. 
+     *  @return The current ontology from which concepts derive their highlight
+     *   color definitions.
+     *  @see #setColorOntology(Ontology)
+     */
+    public Ontology getColorOntology() {
+        return _colorOntology;
+    }
+    
+    /** Return the product lattice concept in this ontology derived from
+     *  the specified tuple of concepts.
+     *  @param conceptTuple The list of concepts from which to create a
+     *   product lattice concept in this ontology.
+     *  @return The result product lattice concept.
+     *  @throws IllegalActionException Thrown if the input list of concepts is
+     *   not composed of concepts from the component ontologies of this
+     *   product lattice ontology.
+     */
+    public ProductLatticeConcept getProductLatticeConceptFromTuple(List<Concept> conceptTuple)
+        throws IllegalActionException {
+        if (conceptTuple.size() != _latticeOntologies.size()) {
+            throw new IllegalActionException(this, "The input conceptTuple does not have the " +
+            		"correct number of entries for the number of ontologies that compose this " +
+            		"product lattice ontology.");
+        } else if (_conceptOntologiesDontMatch(conceptTuple)) {
+            throw new IllegalActionException(this, "The input conceptTuple does not " +
+            		"have concepts from the correct ontologies that compose this " +
+                        "product lattice ontology.");
+        } else {
+            // First try to find the concept with the given tuple in the ontology.
+            // If it is not there, then one or more of the component ontologies must
+            // have infinite concepts, and a new product lattice concept must be
+            // generated.
+            ProductLatticeConcept concept = _findProductLatticeConceptByTuple(conceptTuple);
+            if (concept == null) {
+                try {
+                    String conceptName = _getNameFromConceptTuple(conceptTuple);
+                    concept = new ProductLatticeConcept(this, conceptName, conceptTuple);
+                } catch (NameDuplicationException ex) {
+                    throw new IllegalActionException(this, ex, "Could not create the product lattice concept " +
+                    		"in the given product lattice ontology because one with that name already exists.");
+                }
+            }
+            return concept;
+        }
+    }
+    
     /** Return the list of lattice ontologies that comprise the product
      *  lattice ontology.
      *  @return The list of lattice ontology objects.
@@ -190,6 +238,28 @@ public class ProductLatticeOntology extends Ontology {
         }        
     }
     
+    /** Set the component ontology from which the colors will be derived
+     *  for the concepts in this product lattice ontology. If the specified
+     *  ontology is not a part of this product lattice ontology, the color
+     *  ontology will be set to null.
+     *  @param colorOntology The specified ontology to use for the color
+     *   definitions for each product lattice concept. Or null if the concepts
+     *   should have no color highlighting.
+     *  @see #getColorOntology()
+     *  @throws IllegalActionException Thrown if the specified ontology is not
+     *   part of the product lattice ontology.
+     */
+    public void setColorOntology(Ontology colorOntology)
+        throws IllegalActionException {
+        if (colorOntology != null && !_latticeOntologies.contains(colorOntology)) {
+            throw new IllegalActionException(this, "The ontology " +
+                    colorOntology.getName() + " is not a component " +
+            		"of the product lattice ontology " + this.getName());
+        } else {
+            _colorOntology = colorOntology;
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
@@ -210,6 +280,24 @@ public class ProductLatticeOntology extends Ontology {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Return true if the list of concepts in the concept tuple are not
+     *  from the ontologies that comprise this product lattice ontology, and
+     *  false if they do.
+     *  @param conceptTuple The input list of concepts.
+     *  @return true if the ontologies for the list of concepts do not match
+     *   the component ontologies of this product lattice ontology, and false
+     *   if they do.
+     */
+    private boolean _conceptOntologiesDontMatch(List<Concept> conceptTuple) {
+        for (int i = 0; i < _latticeOntologies.size(); i++) {
+            if (!conceptTuple.get(i).getOntology().getClassName().
+                    equals(_latticeOntologies.get(i).getClassName())) {
+                return true;
+            }
+        }        
+        return false;
+    }
     
     /** Create all combinations of concept tuples from the given list of
      *  ontologies. This list is used to generate the list of
@@ -249,6 +337,24 @@ public class ProductLatticeOntology extends Ontology {
         
         return conceptTupleList;
     }
+    
+    /** Find the product lattice concept in this ontology that has the given
+     *  list of concepts as its tuple.
+     *  @param conceptTuple The input list of concepts that should be contained
+     *   by the product lattice concept to be found.
+     *  @return The product lattice concept that contains the given list of
+     *   concept as its tuple, or null if it cannot be found in this ontology.
+     */
+    private ProductLatticeConcept _findProductLatticeConceptByTuple(List<Concept> conceptTuple) {
+        for(Object concept : entityList(ProductLatticeConcept.class)) {
+            List<Concept> productLatticeTuple = ((ProductLatticeConcept) concept).getConceptTuple();
+            if (productLatticeTuple.equals(conceptTuple)) {
+                return (ProductLatticeConcept) concept;
+            }
+        }
+        
+        return null;
+    }    
 
     /** Create the name of the ProductLatticeConcept by concatenating its given
      *  list of concepts from a tuple of concepts.
@@ -298,6 +404,11 @@ public class ProductLatticeOntology extends Ontology {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The component ontology of this product lattice ontology from which the
+     *  product lattice concepts should derive their highlight color attributes.
+     */
+    private Ontology _colorOntology = null;
     
     /** The list of Ontologies that comprise the product lattice ontology. */
     private List<Ontology> _latticeOntologies;

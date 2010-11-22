@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters ConstAbstractInterpretation
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters ConstPropagationAbsInt
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id: makefile 58592 2010-07-13 21:37:06Z bldmastr $
+# $Id$
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation
+ME =		ptolemy/data/ontologies/lattice/adapters/constPropagationAbsInt
 
 DIRS = 		data
 

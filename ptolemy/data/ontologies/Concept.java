@@ -35,6 +35,9 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+//// Concept
+
 /** A concept in an ontology.
  *  An instance of this class is always associated with
  *  a particular ontology, which is specified in the constructor.

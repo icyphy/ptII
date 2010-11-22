@@ -25,17 +25,22 @@
  */
 package ptolemy.data.ontologies;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.graph.GraphStateException;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -68,6 +73,8 @@ public class Ontology extends CompositeEntity {
     public Ontology(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        infiniteConceptExpressionOperationsClass = new StringAttribute(this,
+                "infiniteConceptExpressionOperationsClass");
         _attachText("_iconDescription", _ICON);
     }
 
@@ -77,47 +84,105 @@ public class Ontology extends CompositeEntity {
      */
     public Ontology(Workspace workspace) throws IllegalActionException {
         super(workspace);
+        try {
+            infiniteConceptExpressionOperationsClass = new StringAttribute(this,
+                "infiniteConceptExpressionOperationsClass");
+        } catch (NameDuplicationException nameDupEx) {
+            throw new IllegalActionException(this, nameDupEx, "");
+        }
         _attachText("_iconDescription", _ICON);
     }
+    
+    /** Name of the class that provides the expression operations for
+     *  any infinite concepts contained in this ontology.
+     */
+    public StringAttribute infiniteConceptExpressionOperationsClass;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the concept in the ontology with the given name, or null if
-     *  no such concept exists.
-     *  @param name The name of the concept to look for, as a String.
-     *  @return The concept with the given name, or null if no such concept
-     *    exists.
+    
+    /** React to a change in an attribute. If the
+     *  infiniteConceptExpressionOperationsClass attribute changes, update
+     *  the internal object reference for the expression operations for infinite
+     *  concepts by instantiating a new object from the specified class.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If the class specified for the
+     *   infiniteConceptExpressionOperationsClass is not valid or an object
+     *   for that class cannot be instantiated.
      */
-    public Concept getConceptByName(String name) {
-        // If the name string is wrapped by quotes, strip them off before
-        // trying to find the concept that matches the name.
-        if (name.startsWith("\"") && name.endsWith("\"")) {
-            name = name.substring(1, name.length() - 1);
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == infiniteConceptExpressionOperationsClass) {
+            String operationsClassName = infiniteConceptExpressionOperationsClass.getValueAsString();
+            if (operationsClassName != null && !operationsClassName.equals("")) {
+                Class operationsClass = null;
+                try {
+                    operationsClass = Class.forName(operationsClassName);
+                } catch (ClassNotFoundException ex) {
+                    try {
+                        operationsClassName = _addPackagePrefix(operationsClassName);
+                        operationsClass = Class.forName(operationsClassName);
+                    } catch (ClassNotFoundException ex2) {
+                        throw new IllegalActionException(this, ex2,
+                                "Expression operations for infinite concepts class " + 
+                                "named " + operationsClassName + " not found.");
+                    }
+                }
+                _createOperationsClassInstance(operationsClass);
+            }
+        } else {        
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Return the concept in the ontology represented by the given string, or
+     *  null if no such concept exists.
+     *  @param conceptString The string of the concept to look for, which would be what
+     *   is returned by the concept's toString() method.  This is not necessarily
+     *   the Ptolemy {@link ptolemy.kernel.util.NamedObj NamedObj} name of the
+     *   concept. For example, {@link InfiniteConcept InfininteConcepts}
+     *   have automatically generated unique names that are not the same as
+     *   what is returned by their toString() method.
+     *  @return The concept that is represented by the given string, or null
+     *   if no such concept exists.
+     */
+    public Concept getConceptByString(String conceptString) {
+        // If the conceptString is wrapped by quotes, strip them off before
+        // trying to find the concept that matches the conceptString.
+        if (conceptString.startsWith("\"") && conceptString.endsWith("\"")) {
+            conceptString = conceptString.substring(1, conceptString.length() - 1);
         }
         
-        Concept result = (Concept)this.getEntity(name);
+        Concept result = _findConceptByString(conceptString);
         
         // If the concept is not found, check to see if it is an infinite
-        // concept that is represented by concept in this ontology.
+        // concept that is represented by a concept in this ontology.
         if (result == null) {
             for (Object concept : entityList(FlatTokenRepresentativeConcept.class)) {
                 String repName = ((Concept) concept).getName();
-                if (name.startsWith(repName)) {
-                    String expression = name.substring(repName.length() + 1);
+                if (conceptString.startsWith(repName)) {
+                    String expression = conceptString.substring(repName.length() + 1);
                     try {
                         // Use a temporary Variable object to parse the 
                         // expression string that represents the token.
                         Variable var = new Variable(this, "temp");
                         var.setExpression(expression);
                         var.setContainer(null);
-                        return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
-                                this, (FlatTokenRepresentativeConcept) concept, var.getToken());
                         
+                        if (concept instanceof FlatScalarTokenRepresentativeConcept) {                        
+                            return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(
+                                this, (FlatScalarTokenRepresentativeConcept) concept, (ScalarToken) var.getToken());
+                        } else {
+                            return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
+                                    this, (FlatTokenRepresentativeConcept) concept, var.getToken());
+                        }
                     } catch (IllegalActionException ex) {
-                        throw new IllegalArgumentException("Could not instantiate a FlatTokenInfiniteConcept for " + name + ".", ex);
+                        throw new IllegalArgumentException("Could not instantiate " +
+                        		"a FlatTokenInfiniteConcept for " +
+                        		conceptString + ".", ex);
                     } catch (NameDuplicationException nameDupEx) {
-                        throw new IllegalArgumentException("Could not instantiate a FlatTokenInfiniteConcept for " + name + ".", nameDupEx);
+                        throw new IllegalArgumentException("Could not instantiate " +
+                        		"a FlatTokenInfiniteConcept for " +
+                        		conceptString + ".", nameDupEx);
                     }
                 }
             }
@@ -137,6 +202,14 @@ public class Ontology extends CompositeEntity {
      */
     public ConceptGraph getConceptGraph() {
         return _buildConceptGraph();
+    }
+    
+    /** Return the expression operations for infinite concepts object
+     *  contained in this ontology.
+     *  @return The expression operations object.
+     */
+    public ExpressionOperationsForInfiniteConcepts getExpressionOperations() {
+        return _operationsForInfiniteConcepts;
     }
     
     /** Return a set of finite concepts which are unacceptable solutions in all situations.
@@ -280,6 +353,32 @@ public class Ontology extends CompositeEntity {
         }
         return _graph;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The cached graph. */
+    protected ConceptGraph _graph;
+    
+    /** The workspace version at which the cached graph was valid. */
+    protected long _graphVersion = -1L;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Return a string composed of the ontology java package prefix and the
+     *  specified name of the class.
+     *  @param operationsClassName The name of the expression operations for
+     *   infinite concepts class provided by the user in a string attribute.
+     *  @return The composed string.
+     */
+    private String _addPackagePrefix(String operationsClassName) {
+        String ontologyClassName = getClassName();
+        int ontologyPrefixLength = ontologyClassName.lastIndexOf(getName());
+        String operationsClass = ontologyClassName.
+            substring(0, ontologyPrefixLength).concat(operationsClassName);
+        return operationsClass;
+    }
 
     /** Return all the finite concepts contained in this ontology.
      *  @return A list containing all finite concepts in this ontology.
@@ -288,16 +387,77 @@ public class Ontology extends CompositeEntity {
     private List<FiniteConcept> _containedConcepts() {
         return (List<FiniteConcept>)entityList(FiniteConcept.class);
     }
-
+    
+    /** Create an expression operations for infinite concepts object from
+     *  the given class.
+     * 
+     *  @param operationsClass The specified class for the expression operations
+     *   object. It must be a subclass of ExpressionOperationsForInfiniteConcepts.
+     *  @throws IllegalActionException Thrown if the class is not a subclass
+     *   of ExpressionOperationsForInfiniteConcepts, or an object cannot be
+     *   instantiated from the given class.
+     */
+    // FIXME: This code is very similar to the method _createTempActorInstance()
+    // in the class ActorConstraintsDefinitionAttribute.
+    // Maybe we should pull this method out into a generic utility class that
+    // can return an object instance when passed a class and an array of objects
+    // for inputs to the constructor.
+    private void _createOperationsClassInstance(Class operationsClass)
+        throws IllegalActionException {
+        
+        if (!ExpressionOperationsForInfiniteConcepts.class.
+                isAssignableFrom(operationsClass)) {
+            throw new IllegalActionException(this, "The class " +
+                    operationsClass.getName() + " is not a subclass of " +
+                    		"ExpressionOperationsForInfiniteConcepts.");
+        }
+        
+        Constructor operationsConstructor = null;        
+        try {
+            operationsConstructor = operationsClass
+                .getConstructor(new Class[] { Ontology.class });
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalActionException(this, ex, "Could not find the constructor" +
+                        " method for the expression operations class " + operationsClass + ".");
+        }
+        
+        try {
+            _operationsForInfiniteConcepts =
+                (ExpressionOperationsForInfiniteConcepts) operationsConstructor
+                    .newInstance(new Object[] { this });
+        } catch (InvocationTargetException ex) {
+            throw new IllegalActionException(this, ex, "Exception thrown when trying to call" +
+                        " the constructor for the operations class " + operationsClass + ".");
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalActionException(this, ex, "Invalid argument passed to" +
+                    " the constructor for the operations class " + operationsClass + ".");
+        } catch (InstantiationException ex) {
+            throw new IllegalActionException(this, ex, "Unable to instantiate" +
+                    " the operations class " + operationsClass + ".");
+        } catch (IllegalAccessException ex) {
+            throw new IllegalActionException(this, ex, "Do not have access " +
+                    " the constructor for the operations class " + operationsClass +
+                    " within this method.");
+        }        
+    }
+    
+    /** Find the concept in the ontology whose toString() method returns the
+     *  given string.
+     *  @param conceptString The string that represents the concept to be found.
+     *  @return The concept whose toString() method matches the input string,
+     *   or null if it is not found.
+     */
+    private Concept _findConceptByString(String conceptString) {
+        for (Object concept : entityList(Concept.class)) {
+            if (((Concept) concept).toString().equals(conceptString)) {
+                return (Concept) concept;
+            }
+        }
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The cached graph. */
-    protected ConceptGraph _graph;
-
-    /** The workspace version at which the cached graph was valid. */
-    protected long _graphVersion = -1L;
 
     /** The icon description used for rendering. */
     private static final String _ICON = "<svg>"
@@ -322,5 +482,9 @@ public class Ontology extends CompositeEntity {
             + "  style=\"stroke:#303030; stroke-width:2\"/>"
             + "<line x1=\"9\" y1=\"42\" x2=\"15\" y2=\"42\""
             + "  style=\"stroke:#303030; stroke-width:2\"/>" + "</svg>";
-
+    
+    /** The object that provides mathematical operations for infinite concepts
+     *  within this ontology for constructing concept functions.
+     */
+    private ExpressionOperationsForInfiniteConcepts _operationsForInfiniteConcepts = null;
 }

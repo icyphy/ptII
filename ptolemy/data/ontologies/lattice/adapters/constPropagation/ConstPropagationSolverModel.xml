@@ -4,7 +4,7 @@
 <entity name="ConstPropagationSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={395, 60, 1089, 667}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 53, 1089, 667}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[874, 550]">
     </property>
@@ -210,7 +210,7 @@
         </property>
     </property>
     <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? ConstantValue_0 - arg :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? -arg :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
         </property>
@@ -234,6 +234,8 @@
         </property>
     </property>
     <entity name="constPropagation" class="ptolemy.data.ontologies.lattice.adapters.constPropagation.constPropagation">
+        <property name="infiniteConceptExpressionOperationsClass" class="ptolemy.kernel.util.StringAttribute" value="ConstPropagationInfiniteConceptsOperations">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 40.0]">
         </property>
     </entity>
