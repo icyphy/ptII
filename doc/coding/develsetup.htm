@@ -245,6 +245,25 @@ CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(KVM_CLASSES)"
 If you need access to a binary in the external package tree, use
 the <CODE>KVM_DIR</CODE> makefile variable
 
+<li> Create a <code><i>package</i>-license.htm</code> file that
+	describes the copyright and license for the third party
+	package.  This file should be in the same directory as
+	the Java class that uses the third party package.
+<li> Ptolemy II includes a system to determine what third party
+	packages are used by a particular configuration.  To see
+	the list of packages, follow the copyright links on the
+        Help | About page.
+        When adding a third party package, update
+	<code>$PTII/ptolemy/actor/gui/GenerateCopyrights.java</code>
+	and add the class name of the primary class of the third
+	party package and the path to the 
+        <code><i>package</i>-license.htm</code> file.
+<li>  Since Kepler uses Ptolemy II, it is best to update the Kepler
+      files that exclude Ptolemy II third party directories.  See
+     <a
+	href="https://kepler-project.org/developers/reference/update-ptolemy-third-party-package-dependencies"
+	target="_top">https://kepler-project.org/developers/reference/update-ptolemy-third-party-package-dependencies</a>
+	  
 </ol>
 
 <h3>Run-time considerations</h3>
