@@ -3452,7 +3452,7 @@ echo "${ECHO_T}'$CLASSPATHSEPARATOR'" >&6; }; fi
 
 # These directories are always excluded from Eclipse
 # To add to this list, edit .classpath.in
-ECLIPSE_EXCLUDING_SRC=""
+ECLIPSE_EXCLUDING_SRC="ptolemy/actor/lib/reactable/"
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
