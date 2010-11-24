@@ -1300,7 +1300,16 @@ sign_jar_dist_update_remote: sign_jar_dist
 # We use Launch4j http://launch4j.sourceforge.net/ to create
 # .exe files that run Vergil etc. and then use
 # IzPack (http://www.izforge.com/izpack/) to set up the start menu.
-
+# To build vergil.exe:                                                                         
+# 1. Download Launch4j http://launch4j.sourceforge.net/                                        
+# 2. Expand Launch4j in $PTII/vendors:                                                         
+#      cd $PTII/vendors                                                                        
+#      tar -zxf ~/Downloads/launch4j-3.0.1-macosx.tgz                                          
+# 3. Create the jar files:                                                                     
+#      cd $PTII; make install                                                                  
+# 4. Create the .exe file:                                                                     
+#      make vergil.exe                                                                         
+# vergil.exe and the makefiles listed in vergil_l4j.xml      
 
 # mkl4j is a script that generates an xml file that is then read by Launch4j 
 MKL4J = $(ROOT)/bin/mkl4j
@@ -1423,6 +1432,17 @@ vergil_l4j.xml:
 		"" $(FULL_JNLP_JARS) > $@
 vergil.exe: vergil_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) vergil_l4j.xml`
+
+vergil.jar:
+	mkdir $(PTJAR_TMPDIR)
+	for jar in $(FULL_JNLP_JARS) ; do \
+		echo "Unjarring $$jar"; \
+		(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xf ../$$jar); \
+	done
+	rm -rf $(PTJAR_TMPDIR)/META-INF
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
 
 viptos_l4j.xml:
 	$(MKL4J) viptos ptolemy.vergil.VergilApplication \
