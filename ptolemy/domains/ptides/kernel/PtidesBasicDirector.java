@@ -160,7 +160,8 @@ import ptolemy.moml.MoMLChangeRequest;
  *  SensorInputDevice, the port is considered a sensor port, and it
  *  could be annotated with parameter realTimeDelay; If an input port is
  *  connected to a NetworkInputDevice, the port is considered a network
- *  port, and could be annotated with networkDelay and networkDriverDelay
+ *  port, and could be annotated with <i>networkDelay</i> and
+ *  <i>networkDriverDelay</i>
  *  parameters (the difference between these parameters are explained in
  *  the following paragraph). However a port cannot be a sensor port and
  *  a network port at the same time. If an input port is not annotated and
@@ -174,17 +175,20 @@ import ptolemy.moml.MoMLChangeRequest;
  *  to correctly simulate the scheduling overhead after each interrupt
  *  event.</p>
  *  
- *  <p> While a networkDelay and networkDriverDelay are both characterize the
+ *  <p> While the <i>networkDelay</i> and <i>networkDriverDelay</i> parameters
+ *  both characterize the
  *  physical time delay at the receiving end of a network interface, there
- *  are subtle differences between these two parameters. The networkDelay
- *  parameter is used to characterize the amount of simulated physical time
+ *  are subtle differences between these two parameters. The 
+ *  <i>networkDelay</i> parameter is used to characterize the amount of
+ *  simulated physical time
  *  delay experience by a packet, between when the packet first leaves the
  *  source platform, and when the packet arrives at the sink platform. This
  *  delay should be modeled as a part of the Ptides model, in the enclosing
  *  DE director, however the maximum bound of this delay needs to be annotated
- *  as networkDelay at the input port of the receiving platform. If it is not
- *  properly annotated, safe-to-process analysis of the Ptides platform could
- *  produce false positive results. On the other hand, the networkDriverDelay
+ *  as <i>networkDelay</i> at the input port of the receiving platform. If it
+ *  is not properly annotated, safe-to-process analysis of the Ptides platform
+ *  could produce false positive results. On the other hand, the 
+ *  <i>networkDriverDelay</i>
  *  specifies the amount of execution time it takes for a packet to be
  *  consumed and an event produced in the sink platform.</p>
  *  
@@ -196,13 +200,15 @@ import ptolemy.moml.MoMLChangeRequest;
  *  the director throws an exception. If the check passes, the director
  *  transfers this event to the outside of the platform at physical time equal
  *  to the timestamp of the output event. However, if the output port is
- *  annotated with an ignoreDeadline parameter, then the director does not
+ *  annotated with an <i>ignoreDeadline</i> parameter, then the director does
+ *  not
  *  throw an exception. Instead, if the simulated physical time is smaller
  *  than the timestamp of the output event, the output event is transferred
  *  to the outside immediately. The output port could also be annotated with
- *  a parameter transferImmediately. If the parameter exists, then all events
- *  arriving at the output port will be transferred to the outside
- *  immediately.</p>
+ *  a parameter <i>transferImmediately</i>. If the parameter is true, then all
+ *  events arriving at the output port will be transferred to the outside
+ *  immediately, otherwise, the director will transfer these events to the
+ *  outside when physical time equals the timestsamp of the event.</p>
  * 
  *  <p> The following paragraphs describe implementation details of this
  *  director. The implementation is based on the operation semantics
