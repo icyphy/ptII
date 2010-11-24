@@ -111,8 +111,25 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         String argumentList = functionString.substring(openFuncParenIndex + 1)
                 .trim();
 
-        if (isStatic) {
+        // addFunctionUsed dereferences the parent class _codeGenerator.
+        if (_getCodeGenerator() == null) {
+            throw new NullPointerException("Call TemplateParser.setCodeGenerator() "
+                    + "before calling getFunctionInvocation()");
+        }
+        if (functionName.indexOf("Complex") != -1
+                || functionName.indexOf("convert") != -1) {
+        }
+        // Record the referenced type function in _typeFuncUsed
+        addFunctionUsed(functionName);
+        int underbar = typeOrToken.indexOf("_");
+        if (underbar != -1) {
+            String type = typeOrToken.substring(underbar + 1, typeOrToken.length());
+            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex")) {
+                addNewTypesUsed(type);
+            }
+        }
 
+        if (isStatic) {
             if (argumentList.length() == 0) {
                 throw new IllegalActionException(
                         "Static type function requires at least one argument(s).");
@@ -126,7 +143,6 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             return methodType + "_" + functionName + "(" + argumentList;
 
         } else {
-
             // if it is more than just a closing paren
             if (argumentList.length() > 1) {
                 argumentList = ", " + argumentList;

@@ -1,6 +1,6 @@
-/* An adapter class for actor.lib.Uniform
+/* An adapter class for actor.lib.Gaussian
 
- @Copyright (c) 2005-2010 The Regents of the University of California.
+ @Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,23 +33,23 @@ import java.util.ArrayList;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Uniform
+//// Gaussian
 
 /**
- * An adapter class for ptolemy.actor.lib.Uniform.
+ * An adapter class for ptolemy.actor.lib.Gaussian.
  *
- * @author Man-Kit Leung
+ * @author Christopher Brooks, based on Uniform.java by Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 8.0
- * @Pt.ProposedRating Green (mankit)
+ * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class Uniform extends RandomSource {
+public class Gaussian extends RandomSource {
     /**
-     * Construct a Uniform helper.
+     * Construct a Gaussian helper.
      * @param actor the associated actor
      */
-    public Uniform(ptolemy.actor.lib.Uniform actor) {
+    public Gaussian(ptolemy.actor.lib.Gaussian actor) {
         super(actor);
     }
 

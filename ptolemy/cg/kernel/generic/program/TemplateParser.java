@@ -100,6 +100,13 @@ public class TemplateParser {
         _codeGenerator._typeFuncUsed.add(functionName);
     }
 
+    /** Add a type to the set of codegen types.
+     *  @param typeName A string naming the type.
+     */
+    public void addNewTypesUsed(String typeName) {
+        _codeGenerator._newTypesUsed.add(typeName);
+    }
+
     /** Escape a port name for use in the macro language.
      *  The issue is that port names can have certain
      *  characters in them that cause problems with 

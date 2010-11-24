@@ -45,6 +45,7 @@ import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -353,6 +354,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         files.add("ptolemy.data.type.ArrayType;");
         // Need IntToken etc.
         files.add("ptolemy.data.*;");
+        // FIXME: we should only import Complex if necessary.
+        files.add("ptolemy.math.Complex;");
         files.add("ptolemy.data.type.BaseType;");
         files.add("ptolemy.actor.TypedAtomicActor;");
         files.add("ptolemy.actor.TypedCompositeActor;");
@@ -618,6 +621,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
                 + targetElementType + "Value())));\n"
                 + "  }\n";
+        } else if (type == BaseType.COMPLEX) {
+            return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
+                + "Complex complex = (Complex)(((" + type.getTokenClass().getName() + ")"
+                + "($actorSymbol(" + codegenPortName + ").getInside(0"
+                + ")))." + type.toString().toLowerCase() + "Value());" + _eol
+                + "double real = complex.real;" + _eol
+                + "double imag = complex.imag;" + _eol
+                + "$actorSymbol(" + portData + ") = $typeFunc(TYPE_Complex::new(real, imag));" + _eol;
+
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                //+ (channel == 0 ? "" : ", " + channel)
         } else {
             return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
                 + "$actorSymbol(" + portData + ") = "
@@ -749,6 +763,27 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + " $actorSymbol(" + codegenPortName + ").sendInside(0, new ArrayToken("
                 + ptolemyData + "));\n"
                 + "}\n;";
+        } else if (type == BaseType.COMPLEX) {
+            return
+                // Set the type.
+                "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+                + _typeToBaseType(type) +");\n"
+                // Send data to the actor.
+                + "    $actorSymbol(" + codegenPortName + ").sendInside(0, new "
+                // Refer to the token by the full class name and obviate the
+                // need to manage imports.
+                + type.getTokenClass().getName()
+                // Get the real portion of the Complex number.
+                + "(new Complex(((ComplexCG)($get(" + actorPortName
+                // For non-multiports "". For multiports, #0, #1 etc.
+                + (channel == 0 ? "" : "#" + channel)
+                + ")).payload).real,"
+                // Get the imaginary portion of the Complex number.
+                + "((ComplexCG)($get(" + actorPortName
+                // For non-multiports "". For multiports, #0, #1 etc.
+                + (channel == 0 ? "" : "#" + channel)
+                + ")).payload).imag))"
+                + ");\n";
         } else {
             return
                 // Set the type.

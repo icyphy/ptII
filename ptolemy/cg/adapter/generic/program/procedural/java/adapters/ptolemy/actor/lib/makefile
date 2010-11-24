@@ -61,16 +61,19 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
+	AbsoluteValue.java \
 	Accumulator.java \
 	AddSubtract.java \
 	BooleanMultiplexor.java \
 	Commutator.java \
 	Const.java \
 	CurrentTime.java \
+	DB.java \
 	Discard.java \
 	Distributor.java \
 	ElementsToArray.java \
 	Expression.java \
+	Gaussian.java \
 	Limiter.java \
 	LimitedFiringSource.java \
 	Minimum.java \

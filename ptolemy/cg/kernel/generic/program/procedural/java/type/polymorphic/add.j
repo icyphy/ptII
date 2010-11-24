@@ -42,8 +42,8 @@ String add_Boolean_String(boolean a1, String a2) {
 
 /*** add_Complex_Complex() ***/
 static Token add_Complex_Complex(Token a1, Token a2) {
-    return Complex_new(((Complex)a1.payload).real + ((Complex)a2.payload).real,
-        ((Complex)a1.payload).imag + ((Complex)a2.payload).imag);
+    return Complex_new(((ComplexCG)a1.payload).real + ((ComplexCG)a2.payload).real,
+        ((ComplexCG)a1.payload).imag + ((ComplexCG)a2.payload).imag);
 }
 /**/
 

@@ -1,6 +1,7 @@
 /***declareBlock***/
 // ptolemy/cg/kernel/generic/program/procedural/java/type/Complex.j
-public class Complex {
+// Named ComplexCG because we also have ptolemy.math.Complex
+public class ComplexCG {
     public double real;
     public double imag;
 };
@@ -23,8 +24,8 @@ static Token Complex_new(Token thisToken) {
     switch (thisToken.type) {
 #ifdef PTCG_TYPE_Complex
     case TYPE_Complex:
-        return Complex_new(((Complex)thisToken.payload).real,
-	        ((Complex)thisToken.payload).imag);
+        return Complex_new(((ComplexCG)thisToken.payload).real,
+	        ((ComplexCG)thisToken.payload).imag);
 #endif
 
 #ifdef PTCG_TYPE_Double
@@ -41,10 +42,10 @@ static Token Complex_new(Token thisToken) {
 
 static Token Complex_new(double real, double imag) {
     Token result = new Token();
-    result.payload = new Complex();
+    result.payload = new ComplexCG();
     result.type = TYPE_Complex;
-    ((Complex)result.payload).real = real;
-    ((Complex)result.payload).imag = imag;
+    ((ComplexCG)result.payload).real = real;
+    ((ComplexCG)result.payload).imag = imag;
     return result;
 }
 /**/
@@ -53,8 +54,8 @@ static Token Complex_new(double real, double imag) {
 static Token Complex_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
-    return Boolean_new(((Complex)thisToken.payload).real == ((Complex)otherToken.payload).real
-    && ((Complex)thisToken.payload).imag == ((Complex)otherToken.payload).imag);
+    return Boolean_new(((ComplexCG)thisToken.payload).real == ((ComplexCG)otherToken.payload).real
+    && ((ComplexCG)thisToken.payload).imag == ((ComplexCG)otherToken.payload).imag);
 }
 /**/
 
@@ -65,9 +66,9 @@ static Token Complex_isCloseTo(Token thisToken, Token... tokens) {
     otherToken = tokens[0];
     tolerance = tokens[1];
     return Boolean_new(
-        Math.abs(((Complex)thisToken.payload).real - ((Complex)otherToken.payload).real) < (Double)tolerance.payload
+        Math.abs(((ComplexCG)thisToken.payload).real - ((ComplexCG)otherToken.payload).real) < (Double)tolerance.payload
 	&&
-        Math.abs(((Complex)thisToken.payload).imag - ((Complex)otherToken.payload).imag) < (Double)tolerance.payload);
+        Math.abs(((ComplexCG)thisToken.payload).imag - ((ComplexCG)otherToken.payload).imag) < (Double)tolerance.payload);
 }
 /**/
 
@@ -81,14 +82,27 @@ static Token Complex_print(Token thisToken, Token... tokens) {
 }
 /**/
 
+
+/***ComplextoString***/
+static String ComplextoString(Token thisToken) {
+    if (((ComplexCG)thisToken.payload).imag >= 0) {
+        return Double.toString(((ComplexCG)thisToken.payload).real)
+	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
+    } else {
+        return Double.toString(((ComplexCG)thisToken.payload).real)
+	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
+    }
+}
+/**/
+
 /***Complex_toString***/
 static Token Complex_toString(Token thisToken, Token... tokens) {
-    if (((Complex)thisToken.payload).imag >= 0) {
-        return String_new(Double.toString(((Complex)thisToken.payload).real)
-	       + " + " + Double.toString(((Complex)thisToken.payload).imag) + "i");
+    if (((ComplexCG)thisToken.payload).imag >= 0) {
+        return String_new(Double.toString(((ComplexCG)thisToken.payload).real)
+	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i");
     } else {
-        return String_new(Double.toString(((Complex)thisToken.payload).real)
-	       + " - " + Double.toString(-((Complex)thisToken.payload).imag) + "i");
+        return String_new(Double.toString(((ComplexCG)thisToken.payload).real)
+	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i");
 
     }
 }
@@ -97,33 +111,33 @@ static Token Complex_toString(Token thisToken, Token... tokens) {
 /***Complex_add***/
 static Token Complex_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
-    return Complex_new(((Complex)thisToken.payload).real + ((Complex)otherToken.payload).real,
-        ((Complex)thisToken.payload).imag + ((Complex)otherToken.payload).imag);
+    return Complex_new(((ComplexCG)thisToken.payload).real + ((ComplexCG)otherToken.payload).real,
+        ((ComplexCG)thisToken.payload).imag + ((ComplexCG)otherToken.payload).imag);
 }
 /**/
 
 /***Complex_subtract***/
 static Token Complex_subtract(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
-    return Complex_new(((Complex)thisToken.payload).real - ((Complex)otherToken.payload).real,
-        ((Complex)thisToken.payload).imag - ((Complex)otherToken.payload).imag);
+    return Complex_new(((ComplexCG)thisToken.payload).real - ((ComplexCG)otherToken.payload).real,
+        ((ComplexCG)thisToken.payload).imag - ((ComplexCG)otherToken.payload).imag);
 
 }
 /**/
 
 /***Complex_multiply***/
 static Token Complex_multiply(Token thisToken, Token... tokens) {
-    Token result;
+    Token result = null;
     Token otherToken = tokens[0];
 
     switch (otherToken.type) {
 #ifdef PTCG_TYPE_Complex
     case TYPE_Complex:
         result =  Complex_new(
-	       (((Complex)otherToken.payload).real * ((Complex)thisToken.payload).real)
-	        - (((Complex)otherToken.payload).real * ((Complex)thisToken.payload).real),
-	       (((Complex)otherToken.payload).real * ((Complex)thisToken.payload).imag)
-	        + (((Complex)otherToken.payload).imag * ((Complex)thisToken.payload).real));
+	       (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).real)
+	        - (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).real),
+	       (((ComplexCG)otherToken.payload).real * ((ComplexCG)thisToken.payload).imag)
+	        + (((ComplexCG)otherToken.payload).imag * ((ComplexCG)thisToken.payload).real));
         break;
         // FIXME: not finished
 #endif
@@ -139,20 +153,29 @@ static Token Complex_multiply(Token thisToken, Token... tokens) {
 
 /***Complex_divide***/
 static Token Complex_divide(Token thisToken, Token... tokens) {
-    Token otherToken = tokens[0];
-    return Complex_new(((Complex)thisToken.payload) / ((Complex)otherToken.payload));
+    Token divisor = tokens[0];
+    double thisTokenReal = ((ComplexCG)thisToken.payload).real;
+    double thisTokenImag = ((ComplexCG)thisToken.payload).imag;
+    double divisorReal = ((ComplexCG)divisor.payload).real;
+    double divisorImag = ((ComplexCG)divisor.payload).imag;
+    double denominator = (divisorReal * divisorReal) + (divisorImag * divisorImag);
+    return Complex_new(((thisTokenReal * divisorReal) + (thisTokenImag * divisorImag))
+            / denominator,
+            ((thisTokenImag * divisorReal) - (thisTokenReal * divisorImag))
+            / denominator);
 }
+
 /**/
 
 /***Complex_negate***/
 static Token Complex_negate(Token thisToken, Token... tokens) {
     double r = 0.0;
     double i = 0.0;
-    if (((Complex)thisToken.payload).real != 0.0) {
-        r = -((Complex)thisToken.payload).real;
+    if (((ComplexCG)thisToken.payload).real != 0.0) {
+        r = -((ComplexCG)thisToken.payload).real;
     }
-    if (((Complex)thisToken.payload).imag != 0.0) {
-        i = -((Complex)thisToken.payload).imag;
+    if (((ComplexCG)thisToken.payload).imag != 0.0) {
+        i = -((ComplexCG)thisToken.payload).imag;
     }
     return Complex_new(r, i);
 }
@@ -180,11 +203,14 @@ static Token Complex_clone(Token thisToken, Token... tokens) {
 
 /***Complex_convert***/
 static Token Complex_convert(Token token, Token... tokens) {
+    Token result = $Complex_new();
     switch (token.type) {
 
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
-        ((Complex)token.payload).real = (Double)token.payload;
+        if (token.payload != null) {
+	    ((ComplexCG)result.payload).real = ((Double)token.payload).doubleValue();
+        }
         break;
 #endif
 
@@ -195,8 +221,7 @@ static Token Complex_convert(Token token, Token... tokens) {
         System.exit(1);
         break;
     }
-    token.type = TYPE_Complex;
-    return token;
+    return result;
 }
 /**/
 

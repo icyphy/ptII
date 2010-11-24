@@ -54,14 +54,14 @@ int subtract_Boolean_Integer(boolean a1, int a2) {
 
 /*** subtract_Complex_Complex() ***/
 static Token subtract_Complex_Complex(Token a1, Token a2) {
-    return Complex_new(((Complex)a1.payload).real - ((Complex)a2.payload).real,
-        ((Complex)a1.payload).imag - ((Complex)a2.payload).imag);
+    return Complex_new(((ComplexCG)a1.payload).real - ((ComplexCG)a2.payload).real,
+        ((ComplexCG)a1.payload).imag - ((ComplexCG)a2.payload).imag);
 }
 /**/
 
 /*** subtract_Complex_Integer() ***/
 Token subtract_Complex_Integer(Token a1, int a2) {
-    return Complex_new(((Complex)a1.payload).real - a2);
+    return Complex_new(((ComplexCG)a1.payload).real - a2);
 }
 /**/
 /*** subtract_Double_Array() ***/

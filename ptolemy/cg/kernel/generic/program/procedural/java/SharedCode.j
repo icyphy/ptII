@@ -32,6 +32,16 @@ static Long StringtoLong(String string) {
      return Long.valueOf(string);
 }
 
+// static String ComplextoString(Token thisToken) {
+//     if (((ComplexCG)thisToken.payload).imag >= 0) {
+//         return Double.toString(((ComplexCG)thisToken.payload).real)
+// 	       + " + " + Double.toString(((ComplexCG)thisToken.payload).imag) + "i";
+//     } else {
+//         return Double.toString(((ComplexCG)thisToken.payload).real)
+// 	       + " - " + Double.toString(-((ComplexCG)thisToken.payload).imag) + "i";
+//     }
+// }
+
 //static String ComplextoString(Token complex) {
 //       return (String)(Complex_toString(complex).payload);
 //}

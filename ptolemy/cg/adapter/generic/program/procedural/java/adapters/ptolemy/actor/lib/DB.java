@@ -1,12 +1,12 @@
-/* An adapter class for actor.lib.Uniform
+/* A adapter class for ptolemy.actor.lib.DB
 
- @Copyright (c) 2005-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the
- above copyright notice and the following two paragraphs appear in all
- copies of this software.
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
@@ -24,40 +24,30 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
-import java.util.ArrayList;
-
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Uniform
+//// DB
 
 /**
- * An adapter class for ptolemy.actor.lib.Uniform.
- *
- * @author Man-Kit Leung
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Green (mankit)
- * @Pt.AcceptedRating Green (cxh)
- */
-public class Uniform extends RandomSource {
-    /**
-     * Construct a Uniform helper.
-     * @param actor the associated actor
-     */
-    public Uniform(ptolemy.actor.lib.Uniform actor) {
-        super(actor);
-    }
+ A adapter class for ptolemy.actor.lib.DB.
 
-    /** Generate code for producing a new random number.
-     *  @exception IllegalActionException Not thrown in this base class.
+ @author Bert Rodiers
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class DB extends NamedProgramCodeGeneratorAdapter {
+    /**
+     *  Construct a DB adapter.
+     *  @param actor The given ptolemy.actor.lib.DB actor.
      */
-    protected String _generateRandomNumber() throws IllegalActionException {
-        ArrayList<String> args = new ArrayList<String>();
-        return getTemplateParser().generateBlockCode("randomBlock", args);
+    public DB(ptolemy.actor.lib.DB actor) {
+        super(actor);
     }
 }

@@ -1,6 +1,6 @@
-/* An adapter class for actor.lib.Uniform
+/* An adapter class for actor.lib.conversions.ComplexToCartesian
 
- @Copyright (c) 2005-2010 The Regents of the University of California.
+ @Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,38 +26,33 @@
 
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions;
 
 import java.util.ArrayList;
 
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
-//// Uniform
-
 /**
- * An adapter class for ptolemy.actor.lib.Uniform.
+ * A helper class for ptolemy.actor.lib.conversions.ComplexToCartesian.
  *
- * @author Man-Kit Leung
+ * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Green (mankit)
- * @Pt.AcceptedRating Green (cxh)
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
-public class Uniform extends RandomSource {
+public class ComplexToCartesian extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct a Uniform helper.
-     * @param actor the associated actor
+     * Construct the ComplexToCartesian adapter.
+     * @param actor the associated actor.
      */
-    public Uniform(ptolemy.actor.lib.Uniform actor) {
+    public ComplexToCartesian(
+            ptolemy.actor.lib.conversions.ComplexToCartesian actor) {
         super(actor);
-    }
-
-    /** Generate code for producing a new random number.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected String _generateRandomNumber() throws IllegalActionException {
-        ArrayList<String> args = new ArrayList<String>();
-        return getTemplateParser().generateBlockCode("randomBlock", args);
     }
 }

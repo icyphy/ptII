@@ -27,9 +27,9 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
    && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken))) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %g of %s.\n",
             $actorSymbol(numberOfTokensSeen),
-            ComplextoString($actorSymbol(inputToken)),
+            $ComplextoString($actorSymbol(inputToken)),
             $param(tolerance),
-	    ComplextoString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)))));
+	    $ComplextoString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)))));
 
 }
 /**/

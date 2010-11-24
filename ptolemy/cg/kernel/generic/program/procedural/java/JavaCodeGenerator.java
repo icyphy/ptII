@@ -225,7 +225,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         } else if (type.equals("Complex")) {
             typeReturn = 9;
         } else {
-            throw new IllegalActionException("Unsuported type");
+            throw new IllegalActionException("Unsupported type: " + type);
         }
 
         return typeReturn;
@@ -597,7 +597,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         code.append("private static final short TYPE_Token = -1;" + _eol);
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .j file for each type.
-
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
                             + typesArray[i] + ".j", this);
@@ -645,7 +644,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
                     declareBlock.insert(0, generatePackageStatement());
                 }
-                _writeCodeFileName(declareBlock, typesArray[i] + ".java",
+                String typeName = typesArray[i].toString();
+                if (typeName.equals("Complex")) {
+                    typeName = "ComplexCG";
+                }
+                _writeCodeFileName(declareBlock, typeName + ".java",
                         false, true);
             }
         }
@@ -2010,9 +2013,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (declareTypeOrTokenBlock.length() > 0) {
                     declareTypeOrTokenBlock.insert(0,
                             "package " + directoryName + ";" + _eol);
+                    String typeName = typesAndTokenArray[i].toString();
+                    if (typeName.equals("Complex")) {
+                        typeName = "ComplexCG";
+                    }
                     _writeCodeFileName(declareTypeOrTokenBlock,
                             codeDirectoryFile.toString() + "/" + directoryName + "/"
-                            + typesAndTokenArray[i] + ".java",
+                            + typeName + ".java",
                             false, true);
                     // FIXME: we should not be deleting the .java and .class file
                     // in the top level, instead, we should be writing our code
