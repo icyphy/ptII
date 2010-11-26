@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList; 
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
@@ -211,7 +212,18 @@ public class IOPort extends ComponentPort {
         // threads from each creating a new _portEventListeners list.
         synchronized (this) {
             if (_portEventListeners == null) {
-                _portEventListeners = new LinkedList<IOPortEventListener>();
+                // Sean Riddle writes: "I am writing an
+                // IOPortEventListener that under certain
+                // circumstances removes itself, so it is not notified
+                // again. This triggers a
+                // ConcurrentModificationException, but this can be
+                // avoided with the attached patch. If one listener
+                // removes another listener that has not been called
+                // yet, then that listener will be called one last
+                // time in that iteration through the now-stale copy."
+                //
+                // See IOPortEventListener-1.1 in test/IOPortEventListener.tcl
+                _portEventListeners = new CopyOnWriteArrayList<IOPortEventListener>(); 
             }
         }
 
@@ -4195,7 +4207,7 @@ public class IOPort extends ComponentPort {
      *  NOTE: Because of the way we synchronize on this object, it should
      *  never be reset to null after the first list is created.
      */
-    protected LinkedList<IOPortEventListener> _portEventListeners = null;
+    protected List<IOPortEventListener> _portEventListeners = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	IdentityActor.java \
+	RemoveIOPortEventListener.java \
 	TestAbstractReceiver.java \
 	TestActor.java \
         TestGraphReader.java \
@@ -67,6 +68,7 @@ JSIMPLE_TESTS = \
 	NoRoomException.tcl \
 	NoTokenException.tcl \
 	IOPort.tcl \
+	IOPortEventListener.tcl \
 	IORelation.tcl \
 	QueueReceiver.tcl \
 	TypedAtomicActor.tcl \
