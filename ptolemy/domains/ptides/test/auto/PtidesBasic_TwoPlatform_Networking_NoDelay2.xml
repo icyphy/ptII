@@ -56,6 +56,8 @@
             </property>
             <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <property name="forceActorsToProcessEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="actorsReceiveEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">

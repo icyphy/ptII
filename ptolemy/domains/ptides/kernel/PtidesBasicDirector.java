@@ -299,21 +299,26 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution = new Parameter(this, "animateExecution");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
         animateExecution.setExpression("false");
+
+        forceActorsToProcessEventsInTimestampOrder = new Parameter(this,
+                "forceActorsToProcessEventsInTimestampOrder");
+        forceActorsToProcessEventsInTimestampOrder.setTypeEquals(BaseType.BOOLEAN);
+        forceActorsToProcessEventsInTimestampOrder.setExpression("false");
         
         highlightModelTimeDelays = new Parameter(this,
                 "highlightModelTimeDelay");
         highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
         highlightModelTimeDelays.setExpression("false");
+
+        assumedPlatformTimeSynchronizationErrorBound = new Parameter(this,
+                "AssumedSynchronizationErrorBound");
+        assumedPlatformTimeSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
+        assumedPlatformTimeSynchronizationErrorBound.setExpression("0.0");
         
-        actorsReceiveEventsInTimestampOrder = new Parameter(this,
-                "actorsReceiveEventsInTimestampOrder");
-        actorsReceiveEventsInTimestampOrder.setTypeEquals(BaseType.BOOLEAN);
-        actorsReceiveEventsInTimestampOrder.setExpression("false");
-        
-        platformSynchronizationError = new Parameter(this, "synchronizationError");
-        platformSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        platformSynchronizationError.setExpression("0.0");
-        
+        platformTimeSynchronizationError = new Parameter(this, "synchronizationError");
+        platformTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
+        platformTimeSynchronizationError.setExpression("0.0");
+
         schedulerExecutionTime = new Parameter(this, "schedulerExecutionTime");
         schedulerExecutionTime.setTypeEquals(BaseType.DOUBLE);
         schedulerExecutionTime.setExpression("0.0");
@@ -323,29 +328,6 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-
-    /** If true, then it can be assumed that actors receive events in
-     *  timestamp order. Setting this parameter could potentially
-     *  simplify the safe to process analysis. This parameter should
-     *  not be set if the network model could potentially reorder
-     *  packets, or if an actor such as
-     *  {@link ptolemy.domains.de.lib.VariableDelay} is used.
-     *  This is a boolean that defaults to false.
-     */
-    public Parameter actorsReceiveEventsInTimestampOrder;
-
-    /** If true, force all actors to process events in timestamp
-     *  order, even though some actors (in particular those without
-     *  states) could process events out of timestamp order without
-     *  changing the deterministic behavior of the system. This
-     *  could make the safe-to-process analysis simpler, while
-     *  sacrificing concurrency of event execution in other parts
-     *  of the system.
-     *  
-     *  FIXME: I haven't thought this through, not sure what are
-     *  the actual trade offs, and not sure how to implement it...
-     */
-    public Parameter forceActorsToProcessEventsInTimestampOrder;
 
     /** If true, modify the color icon for actors in this director
      *  to indicate the state of execution as the model is running. 
@@ -364,6 +346,19 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter animateExecution;
 
+    /** If true, force all actors to process events in timestamp
+     *  order, even though some actors (in particular those without
+     *  states) could process events out of timestamp order without
+     *  affecting the deterministic behavior of the system. This
+     *  could make the safe-to-process analysis simpler, while
+     *  sacrificing concurrency of event execution in other parts
+     *  of the system.
+     *  
+     *  FIXME: I haven't thought this through, not sure what are
+     *  the exact trade offs.
+     */
+    public Parameter forceActorsToProcessEventsInTimestampOrder;
+
     /** When set to true, highlight all deeply contained actors
      *  that have non-zero model time delays (including
      *  actors that only introduce microstep delays).
@@ -372,7 +367,8 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter highlightModelTimeDelays;
 
-    /** Store the synchronization error in the platform governed by
+    /** Store the estimated platform time synchronization error bound in the
+     *  platform governed by
      *  this Ptides director.  In a distributed Ptides environment,
      *  each distributed platform is modeled by a composite actor that
      *  is governed by a Ptides director (or its subclass). In
@@ -380,8 +376,18 @@ public class PtidesBasicDirector extends DEDirector {
      *  synchronization errors between them. This error is captured
      *  within this parameter.
      */
-    public Parameter platformSynchronizationError;
-    
+    public Parameter assumedPlatformTimeSynchronizationErrorBound;
+
+    /** Store the platform time synchronization error. This parameter is
+     *  different from the assumedPlatformTimeSynchronizationErrorBound
+     *  in that the other parameter parameter is the estimated bound, while
+     *  this parameter stores the current synchronization error. This error
+     *  could be greater than the assumed error bound. If this happens, the
+     *  safe-to-process analysis could result in the processing of an unsafe
+     *  event, in which case an exception is thrown.  
+     */
+    public Parameter platformTimeSynchronizationError;
+
     /** A Parameter representing the simulated scheduling overhead time.
      *  In real-time programs, it takes time for the scheduler to
      *  schedule a particular event processing. While simulating the
@@ -490,13 +496,24 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Return the platform synchronization error of this platform.
-     *  @see #platformSynchronizationError
+     *  @see #platformTimeSynchronizationError
      *  @return the synchronization error.
-     *  @exception IllegalActionException If platformSynchornizationError 
+     *  @exception IllegalActionException If platformTimeSynchronizationError 
      *   parameter does not contain a valid token.
      */
     public double getSynchronizationError() throws IllegalActionException {
-        return ((DoubleToken) platformSynchronizationError.getToken())
+        return ((DoubleToken) platformTimeSynchronizationError.getToken())
+        .doubleValue();
+    }
+
+    /** Return the assumed platform synchronization error bound of this platform.
+     *  @see #assumedPlatformTimeSynchronizationErrorBound
+     *  @return the assumed synchronization error bound.
+     *  @exception IllegalActionException If assumedPlatformTimeSynchronizationErrorBound 
+     *   parameter does not contain a valid token.
+     */
+    public double getAssumedSynchronizationErrorBound() throws IllegalActionException {
+        return ((DoubleToken) assumedPlatformTimeSynchronizationErrorBound.getToken())
             .doubleValue();
     }
 
@@ -853,11 +870,14 @@ public class PtidesBasicDirector extends DEDirector {
             for (TypedIOPort inputPort : (List<TypedIOPort>) (((Actor) getContainer())
                     .inputPortList())) {
                 SuperdenseDependency startDelay;
-                // if the start port is a network port, the delay we start with is the
-                // network delay, otherwise the port is a sensor port, and the delay
+                // If the start port is a network port, the delay we start with is the
+                // network delay + platform time synchronization error.
+                // Otherwise the port is a sensor port, and the delay
                 // we start with is the realTimeDelay.
                 Double start = _getNetworkTotalDelay(inputPort);
-                if (start == null) {
+                if (start != null) {
+                    start += getAssumedSynchronizationErrorBound();
+                } else {
                     start = _getRealTimeDelay(inputPort);
                 }
                 if (start == null) {
@@ -1418,20 +1438,22 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port where this delayOffset parameter is associated to.
      *  @param channel The channel where this delayOffset parameter is associated to.
      *  @return delayOffset parameter.
-     *  @param pureEvent  a boolean -- true if the event is a pure event.
+     *  @param pureEvent a boolean -- true if the event is a pure event.
      *  @exception IllegalActionException if delayOffset parameter cannot be evaluated.
      */
     protected double _getMininumDelayOffset(IOPort port, int channel, boolean pureEvent)
             throws IllegalActionException {
         // If the event is a pure event, and if actors receive events in timestamp
-        // order, then the delayOffset is actually the smallest min delay among all
+        // order, then the delayOffset is actually the smallest delay offset among all
         // the equivalence classes.
-        // FIXME: what if the event is a pure event, and actorsReceiveEventsInTimestampOrder
-        // is false??
-        if (pureEvent
-                && ((BooleanToken) actorsReceiveEventsInTimestampOrder
-                        .getToken()).booleanValue()) {
+        // Note checking of the parameter forceActorsToProcessEventsInTimestampOrder
+        // here is an optimization. If forceActorsToProcessEventsInTimestampOrder
+        // is false, we could simply just get the delay offset from the causally
+        // related port becasue all ports would have the same offsets.
+        if (pureEvent && ((BooleanToken) forceActorsToProcessEventsInTimestampOrder
+                .getToken()).booleanValue()) {
             double result = Double.POSITIVE_INFINITY;
+            assert(port != null);
             Collection<IOPort> equivalentPorts = _finiteEquivalentPorts(port);
             for (IOPort input : equivalentPorts) {
                 Parameter parameter = (Parameter) ((NamedObj) input)
@@ -1460,6 +1482,9 @@ public class PtidesBasicDirector extends DEDirector {
             return result;
         }
 
+        // If event is not a pure event, or if the event is a pure event, but
+        // forceActorsToProcessEventsInTimestampOrder is false, then we can
+        // sipmly get the delayOffset from the port.
         Parameter parameter = (Parameter) ((NamedObj) port)
                 .getAttribute("delayOffset");
         if (parameter != null) {
@@ -1869,6 +1894,14 @@ public class PtidesBasicDirector extends DEDirector {
         } else {
             return null;
         }
+    }
+
+    /** Get the simulated physical time of the environment, without the platform
+     *  synchronization error.
+     *  @return the oracle physical time.
+     */
+    protected Time getOraclePhysicalTime() {
+         return null;
     }
 
     /** Highlight the specified actor with the specified color.
@@ -2448,11 +2481,11 @@ public class PtidesBasicDirector extends DEDirector {
             Integer channel) throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
         for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
-            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
-                    .get(port);
+            Map<Integer, SuperdenseDependency> channelDependency =
+                (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays.get(port);
             if (channelDependency != null) {
                 for (Integer integer : channelDependency.keySet()) {
-                    if (((BooleanToken) actorsReceiveEventsInTimestampOrder
+                    if (((BooleanToken) forceActorsToProcessEventsInTimestampOrder
                             .getToken()).booleanValue()) {
                         if (!(port == inputPort && integer.equals(channel))) {
                             SuperdenseDependency candidate = channelDependency
@@ -2537,10 +2570,13 @@ public class PtidesBasicDirector extends DEDirector {
         return currentEventList.get(0).actor();
     }
 
-    /** This function is called when an pure event is produced. Given an actor, we need
-     *  to return whether the pure event is causally related to a set of input ports.
-     *  If it does, return one input port from that equivalence class, otherwise, return
-     *  null.
+    /** This function is called when an pure event is produced. Given an actor,
+     *  we need to return whether the pure event is causally related to a set
+     *  of input ports. If it does, return one input port from that equivalence
+     *  class, otherwise, return null. If causality marker does not exist, or
+     *  if the parameter forceActorsToProcessEventsInTimestampOrder is set,
+     *  then we take the conservative approach, and say all inputs causally
+     *  affect the pure event.
      *  @param actor The destination actor.
      *  @return whether the future pure event is causally related to any input port(s)
      *  @exception IllegalActionException If whether causality marker contains
@@ -2550,21 +2586,21 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         CausalityMarker causalityMarker = (CausalityMarker) ((NamedObj) actor)
                 .getAttribute("causalityMarker");
-        // Last last source port is gotten. However, we do not remove the last
+        // Get the last source port. However, we do not remove the last
         // source port from the hashmap, because more than one pure events can
         // be produced during one firing. In which case, the last source port
         // can be used again.
         IOPort lastSourcePort = (IOPort) _pureEventSourcePorts.get(actor);
-        // Causality marker does not exist, we take the conservative approach, and say all inputs
-        // causally affect the pure event.
-        if (causalityMarker == null) {
+        // If causality marker does not exist, or if the parameter 
+        // forceActorsToProcessEventsInTimestampOrder is set,
+        // we take the conservative approach, 
+        // and say all inputs causally affect the pure event.
+        if (causalityMarker == null || causalityMarker.containsPort(lastSourcePort)
+                || ((BooleanToken) forceActorsToProcessEventsInTimestampOrder
+                        .getToken()).booleanValue()) {
             return lastSourcePort;
         }
-        if (causalityMarker.containsPort(lastSourcePort)) {
-            return lastSourcePort;
-        } else {
-            return null;
-        }
+        return null;
     }
 
     /** Return the network delay of the port, if the parameter exists.

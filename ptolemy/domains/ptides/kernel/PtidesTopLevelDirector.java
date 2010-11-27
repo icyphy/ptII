@@ -103,7 +103,7 @@ public class PtidesTopLevelDirector extends DEDirector {
             if (director instanceof PtidesBasicDirector) {
                 _ptidesPlatformSyncError.put(actor, Double
                         .valueOf(((PtidesBasicDirector) director)
-                                .getSynchronizationError()));
+                                .getAssumedSynchronizationErrorBound()));
             }
         }
         super.preinitialize();
