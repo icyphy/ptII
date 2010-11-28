@@ -135,6 +135,38 @@ import ptolemy.moml.MoMLChangeRequest;
  *  the simulated physical time depends on the clock frequency of
  *  the microprocessor that runs the Ptides implementation.</p>
  *  
+ *  <p> There are also two versions of simulated physical time within the
+ *  Ptides environment: oracle time and platform time. These times help
+ *  to capture the time synchronizations in a distributed environment.
+ *  In such an environment, all platforms are assumed to be synchronized
+ *  within a bounded error. Thus we assume there is a oracle that holds
+ *  the "correct" time in the system, this oracle time is the model
+ *  time of the enclosing director. Each platform then has a local clock
+ *  that tracks this time within a bounded error. In other words, the
+ *  platform time is the sum of oracle time and the time synchronization
+ *  error.</p>
+ *  
+ *  <p> We assume all execution times are in terms of oracle time. That
+ *  is, if an actor is annotated with <i>executionTime</i> equal to <i>t</i>,
+ *  an event that triggers this actor will take exactly <i>t</i> amount of
+ *  oracle time to process. Notice, when the actor finishes firing, the
+ *  amount of platform time passed may or may not be <i>t</i>, since the
+ *  synchronization error could have changed within the execution time
+ *  of the actor. Notice the oracle time is also used to keep track of
+ *  real-time delays (d_o) for sensors.</p>
+ *  
+ *  <p> On the other hand, the platform time is used in the following
+ *  situations: generating timestamps for sensor events, enforcing deadlines
+ *  for actuation events, and setup the wake-up time for timed interrupts.
+ *  The time synchronization error is captured in the the parameter
+ *  {@link #platformTimeSynchronizationError}. Currently this error
+ *  is a fixed double, but in the future, it should be a function that
+ *  depends on oracle time. Also, the Ptides operational semantics assumes
+ *  a bound in the time synchronization error. This error is captured in the
+ *  parameter {@link #assumedPlatformTimeSynchronizationErrorBound}. If
+ *  the actual error exceeds this bound, the safe-to-process analysis could
+ *  produce an incorrect result.</p>
+ *  
  *  <p> The simulation of physical time makes it possible
  *  to simulate event preemption. However, in this basic version,
  *  the director does not simulate event preemption. Instead it's left
@@ -1503,6 +1535,10 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the actor to fire in this iteration, or null if no actor
      *  should be fired.
+     *  This method performs the simulation of execution time, as described
+     *  below. Execution times are assumed to be in oracle simulated physical
+     *  time, not platform simulated physical time. The difference between
+     *  these two times are described in the comment of this class.
      *  In this base class, this method first checks whether the top event from
      *  the event queue is destined for an actuator. If it is, then we check
      *  if physical time has reached the timestamp of the actuation event. If it
@@ -1568,8 +1604,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  the sensor interruption occurred first, and the event should be put
      *  into the event queue before the finished event is dealt with.
      *  @see #_preemptExecutingActor()
-     *  FIXME: add a paragraph about execution time is tracked in oracle time,
-     *  while sensor/actuator/safe-to-process times are tracked by platform time.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         // FIXME: This method changes persistent state, yet it is called in fire().
@@ -1925,7 +1959,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  the oracle tag, and vise versa. We also assume the platform tag to be
      *  continuous.
      *  FIXME: for now, we simply subtract the platformTimeSynchronizationError
-     *  parameter from the current physical time to get the pl
+     *  parameter from the current physical time to get the oracle time,
+     *  however a more sophisticated mechanism is needed to properly simulate
+     *  time synchronization errors in Precision-Time-Protocols (PTP).
      *  @param platformTag The platform timestamp and microstep.
      *  @return The oracle tag associated with the platform tag.
      *  @exception IllegalActionException If director cannot get token for the
@@ -1988,12 +2024,14 @@ public class PtidesBasicDirector extends DEDirector {
     /** If the event's destination port
      *  does not have a delayOffset parameter, or if there doesn't exist
      *  a destination port (in case of pure event) then the event is
-     *  always safe to process. Otherwise:
-     *  If the current physical time has passed the timestamp of the event minus delayOffset of
-     *  the port, then the event is safe to process. Otherwise the event is not safe to
-     *  process, and we calculate the physical time when the event is safe to process and
-     *  setup a timed interrupt.
-     *
+     *  always safe to process. Otherwise: If the current physical time has
+     *  passed the timestamp of the event minus delayOffset of the port, then
+     *  the event is safe to process. Otherwise the event is not safe to
+     *  process, and we calculate the physical time when the event is safe to
+     *  process and setup a timed interrupt. This method calls _setTimedInterrupt
+     *  at the oracle time of the corresponding safe-to-process time.
+     *  @see #_setTimedInterrupt(Time)
+     *  @see #_getOraclePhysicalTagForPlatformPhysicalTag(Tag)
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException If port is null and event is not a pure
@@ -2179,6 +2217,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  In either case, if the input port is a networkPort, we make sure the timestamp of
      *  the data token transmitted is set to the timestamp of the local event associated
      *  with this token.
+     *  <p> As described in the comment for this class, there are two versions
+     *  of simulated physical time: oracle simulated physical time, and
+     *  platform simulated physical time. Timestamping of input events uses
+     *  the platform simulated physical time, while the execution time delay
+     *  (d_o) for sensors are modeled using the platform simulated physical
+     *  time. </p>
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
@@ -2344,6 +2388,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  at the physical time, we put the token along with the destination 
      *  port and channel into the actuator event queue, and call fireAt of
      *  the executive director so we could send it at a later physical time.
+     *  <p> As described in the comment for this class, there are two versions
+     *  of simulated physical time: oracle simulated physical time, and
+     *  platform simulated physical time. The time at which an actuation event
+     *  is sent to the output port uses
+     *  the platform simulated physical time. </p>
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
