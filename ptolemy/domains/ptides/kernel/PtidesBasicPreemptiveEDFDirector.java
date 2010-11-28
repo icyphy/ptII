@@ -102,8 +102,8 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
                     + ((PtidesEvent) eventList.get(0)).actor()
                     + " with another event at actor: " + event.actor()
                     + ". This preemption happened at physical time "
-                    + getPhysicalTag().timestamp + "."
-                    + getPhysicalTag().microstep);
+                    + getOraclePhysicalTag().timestamp + "."
+                    + getOraclePhysicalTag().microstep);
         }
         return true;
     }

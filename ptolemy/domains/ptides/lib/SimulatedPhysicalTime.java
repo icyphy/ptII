@@ -77,7 +77,7 @@ public class SimulatedPhysicalTime extends TimedSource {
     public void fire() throws IllegalActionException {
         PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
 
-        output.send(0, new DoubleToken((director.getPhysicalTag().timestamp
+        output.send(0, new DoubleToken((director.getOraclePhysicalTag().timestamp
         .getDoubleValue())));
         
         super.fire();

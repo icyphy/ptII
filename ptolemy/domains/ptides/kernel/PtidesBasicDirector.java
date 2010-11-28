@@ -467,7 +467,9 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Return the model time of the enclosing director, which is our model
-     *  of time in the physical environment.
+     *  of time in the physical environment. Note this oracle physical time
+     *  is different from the platform physical time, which is offset by
+     *  the platformTimeSynchronizationError.
      *  @return the model time of the enclosing director, which is a model of
      *  time in the physical environment.
      *  @exception IllegalActionException If enclosing director is not
@@ -475,23 +477,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  synchronization error is non-zero and the enclosing director
      *  is not a PtidesTopLevelDirector.
      */
-    public Tag getPhysicalTag() throws IllegalActionException {
+    public Tag getOraclePhysicalTag() throws IllegalActionException {
         Tag tag = new Tag();
         Director executiveDrector = ((Actor) getContainer()).getExecutiveDirector();
-
-        if (executiveDrector instanceof PtidesTopLevelDirector) {
-            tag.timestamp = ((PtidesTopLevelDirector) executiveDrector)
-                    .getSimulatedPhysicalTime((Actor) getContainer());
-            tag.microstep = ((PtidesTopLevelDirector) executiveDrector).getMicrostep();
-        } else {
-            if (getSynchronizationError() != 0.0) {
-                throw new IllegalActionException(this,
-                        "The synchronization error is non-zero, the top level"
-                                + "needs to be a PtidesTopLevelDirector.");
-            }
-            tag.timestamp = executiveDrector.getModelTime();
-            tag.microstep = ((DEDirector) executiveDrector).getMicrostep();
-        }
+        tag.timestamp = executiveDrector.getModelTime();
+        tag.microstep = ((DEDirector) executiveDrector).getMicrostep();
         return tag;
     }
 
@@ -874,9 +864,17 @@ public class PtidesBasicDirector extends DEDirector {
                 // network delay + platform time synchronization error.
                 // Otherwise the port is a sensor port, and the delay
                 // we start with is the realTimeDelay.
-                Double start = _getNetworkTotalDelay(inputPort);
-                if (start != null) {
-                    start += getAssumedSynchronizationErrorBound();
+                Double start = null;
+                if (_isNetworkPort(inputPort)) {
+                    start = _getNetworkTotalDelay(inputPort);
+                    if (start != null) {
+                        // FIXME: this is wrong, need to get the max between all
+                        // differences in error bounds instead of just getting the
+                        // error bound.
+                        start += getAssumedSynchronizationErrorBound();
+                    } else {
+                        start = getAssumedSynchronizationErrorBound();
+                    }
                 } else {
                     start = _getRealTimeDelay(inputPort);
                 }
@@ -1570,13 +1568,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  the sensor interruption occurred first, and the event should be put
      *  into the event queue before the finished event is dealt with.
      *  @see #_preemptExecutingActor()
+     *  FIXME: add a paragraph about execution time is tracked in oracle time,
+     *  while sensor/actuator/safe-to-process times are tracked by platform time.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         // FIXME: This method changes persistent state, yet it is called in fire().
         // This means that this director cannot be used inside a director that
         // does a fixed point iteration, which includes (currently), Continuous
         // and CT and SR, but in the future may also include DE.
-        Tag physicalTag = getPhysicalTag();
+        Tag oraclePhysicalTag = getOraclePhysicalTag();
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         
@@ -1623,7 +1623,7 @@ public class PtidesBasicDirector extends DEDirector {
             // or sensor interruption, then restart the event execution at the current
             // simulated physical time.
             if (_physicalTimeExecutionStarted == null) {
-                _physicalTimeExecutionStarted = getPhysicalTag().timestamp;
+                _physicalTimeExecutionStarted = oraclePhysicalTag.timestamp;
             }
             // We are currently executing an actor.
             DoubleTimedEvent currentEventList = (DoubleTimedEvent) _currentlyExecutingStack
@@ -1632,11 +1632,10 @@ public class PtidesBasicDirector extends DEDirector {
             Time remainingExecutionTime = currentEventList.remainingExecutionTime;
             Time finishTime = _physicalTimeExecutionStarted
                     .add(remainingExecutionTime);
-            int comparison = finishTime.compareTo(physicalTag.timestamp);
+            int comparison = finishTime.compareTo(oraclePhysicalTag.timestamp);
             if (comparison < 0) {
                 // NOTE: This should not happen, so if it does, throw an exception.
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         _getActorFromEventList((List<PtidesEvent>) currentEventList.contents),
                         "Physical time passed the finish time of the currently executing actor");
             } else if (comparison == 0) {
@@ -1646,7 +1645,7 @@ public class PtidesBasicDirector extends DEDirector {
                 _currentlyExecutingStack.pop();
                 // If there is now something on _currentlyExecutingStack,
                 // then we are resuming its execution now.
-                _physicalTimeExecutionStarted = physicalTag.timestamp;
+                _physicalTimeExecutionStarted = oraclePhysicalTag.timestamp;
 
                 if (_debugging) {
                     _debug("Actor "
@@ -1654,7 +1653,7 @@ public class PtidesBasicDirector extends DEDirector {
                                     (List<PtidesEvent>) currentEventList.contents)
                                     .getName(getContainer())
                             + " finishes executing at physical time "
-                            + physicalTag.timestamp);
+                            + oraclePhysicalTag.timestamp);
                 }
 
                 // Animate, if appropriate.
@@ -1672,7 +1671,15 @@ public class PtidesBasicDirector extends DEDirector {
                 
                 // An event has finished processing. In this case, the scheduler should run to figure
                 // out what is the next event to process.
-                _scheduleNewEvent = true;
+                // Unless the event is a sensor event, in which case the scheduling overhead
+                // was accounted for when the sensor interrupt occurred.
+                // FIXME: If this sensor input device also produces output events due to
+                // other input events (other than those created through sensor interrupts)
+                // then the following code is wrong. Instead, we simulate a scheduling
+                // overhead for the next run.
+                if (!(_lastActorFired instanceof SensorInputDevice)) {
+                    _scheduleNewEvent = true;
+                }
 
                 return _lastActorFired;
             } else {
@@ -1771,7 +1778,7 @@ public class PtidesBasicDirector extends DEDirector {
             // other input events (other than those created through sensor interrupts)
             // then the following code is wrong. Instead, we simulate a scheduling
             // overhead for the next run.
-            if (!(actorToFire instanceof SensorInputDevice)) {
+            if (!(_lastActorFired instanceof SensorInputDevice)) {
                 _scheduleNewEvent = true;
             }
 
@@ -1781,7 +1788,7 @@ public class PtidesBasicDirector extends DEDirector {
             // the stack, call fireAt() on the enclosing director,
             // and return null.
 
-            Time expectedCompletionTime = physicalTag.timestamp
+            Time expectedCompletionTime = oraclePhysicalTag.timestamp
                     .add(executionTime);
             Time fireAtTime = executiveDirector.fireAt(container,
                     expectedCompletionTime);
@@ -1802,11 +1809,11 @@ public class PtidesBasicDirector extends DEDirector {
             _currentlyExecutingStack.push(new DoubleTimedEvent(
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
-            _physicalTimeExecutionStarted = physicalTag.timestamp;
+            _physicalTimeExecutionStarted = oraclePhysicalTag.timestamp;
             if (_debugging) {
                 _debug("Actor " + actorToFire.toString()
                         + " starts executing at physical time "
-                        + physicalTag.timestamp);
+                        + oraclePhysicalTag.timestamp);
             }
 
             // Animate if appropriate.
@@ -1862,8 +1869,11 @@ public class PtidesBasicDirector extends DEDirector {
                         PtidesEvent ptidesEvent = 
                             ((PtidesListEventQueue)_eventQueue).take(eventIndex);
                         setTag(ptidesEvent.timeStamp(), ptidesEvent.microstep());
+                } else {
+                    // This event index should point to the next event if no
+                    // event is taken from the event queue.
+                    eventIndex++;
                 }
-                eventIndex++;
             }
         }
     }
@@ -1899,9 +1909,35 @@ public class PtidesBasicDirector extends DEDirector {
     /** Get the simulated physical time of the environment, without the platform
      *  synchronization error.
      *  @return the oracle physical time.
+     *  @exception IllegalActionException If director cannot get token for the
+     *  parameter platformTimeSynchronizationError.
      */
-    protected Time getOraclePhysicalTime() {
-         return null;
+    protected Tag _getPlatformPhysicalTag() throws IllegalActionException {
+        Tag tag = getOraclePhysicalTag();
+        tag.timestamp = tag.timestamp.add(
+                    ((DoubleToken)platformTimeSynchronizationError.getToken())
+                    .doubleValue());
+        return tag;
+    }
+
+    /** Given a platform physical tag, get the corresonding oracle physical tag.
+     *  This assumes there's a one-to-one mapping from the platform's tag to
+     *  the oracle tag, and vise versa. We also assume the platform tag to be
+     *  continuous.
+     *  FIXME: for now, we simply subtract the platformTimeSynchronizationError
+     *  parameter from the current physical time to get the pl
+     *  @param platformTag The platform timestamp and microstep.
+     *  @return The oracle tag associated with the platform tag.
+     *  @exception IllegalActionException If director cannot get token for the
+     *  parameter platformTimeSynchronizationError.
+     */
+    protected Tag _getOraclePhysicalTagForPlatformPhysicalTag(Tag platformTag)
+            throws IllegalActionException {
+        Tag newTag = platformTag;
+        newTag.timestamp = platformTag.timestamp
+                .subtract(((DoubleToken)platformTimeSynchronizationError.getToken())
+                .doubleValue());
+        return newTag;
     }
 
     /** Highlight the specified actor with the specified color.
@@ -1968,10 +2004,7 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         IOPort port = event.ioPort();
         if (port == null) {
-            if (!event.isPureEvent()) {
-                throw new IllegalActionException(port, "Event is expected"
-                        + "to be a pure event, however it is not.");
-            }
+            assert(event.isPureEvent());
             // The event's port could be null only if the event is a pure event, and the pure
             // event is not causally related to any input port. thus the event
             // is always safe to process.
@@ -1984,12 +2017,15 @@ public class PtidesBasicDirector extends DEDirector {
         double delayOffset = _getMininumDelayOffset(port, ((PtidesEvent) event).channel(),
                 event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(delayOffset);
-        if (getPhysicalTag().timestamp.subtract(waitUntilPhysicalTime)
-                .compareTo(_zero) >= 0
-                && (getPhysicalTag().microstep - event.microstep() >= 0)) {
+        int compare = _getPlatformPhysicalTag().timestamp.subtract(waitUntilPhysicalTime)
+                .compareTo(_zero);
+        int microstep = _getPlatformPhysicalTag().microstep; 
+        if ((compare > 0) || compare == 0 
+                && (microstep >= event.microstep())) {
             return true;
         } else {
-            _setTimedInterrupt(waitUntilPhysicalTime);
+            _setTimedInterrupt(_getOraclePhysicalTagForPlatformPhysicalTag(new Tag(
+                    waitUntilPhysicalTime, microstep)).timestamp);
             return false;
         }
     }
@@ -2169,7 +2205,8 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         boolean result = false;
-        Tag physicalTag = getPhysicalTag();
+        Tag platformPhysicalTag = _getPlatformPhysicalTag();
+        Tag oraclePhysicalTag = getOraclePhysicalTag();
         // First transfer all tokens that are already in the event queue for the sensor.
         // Notice this is done NOT for the specific port
         // in question. Instead, we do it for ALL events that can be transferred out of
@@ -2185,7 +2222,7 @@ public class PtidesBasicDirector extends DEDirector {
 
             RealTimeEvent realTimeEvent = (RealTimeEvent) _realTimeInputEventQueue
                     .peek();
-            int compare = realTimeEvent.deliveryTag.compareTo(physicalTag);
+            int compare = realTimeEvent.deliveryTag.compareTo(oraclePhysicalTag);
 
             if (compare > 0) {
                 break;
@@ -2220,13 +2257,14 @@ public class PtidesBasicDirector extends DEDirector {
             } else {
                 // FIXME: we should probably do something else here.
                 throw new IllegalActionException(realTimeEvent.port,
-                        "missed transferring at the sensor. "
-                                + "Should transfer input at time = "
-                                + realTimeEvent.deliveryTag.timestamp + "."
-                                + realTimeEvent.deliveryTag.microstep
-                                + ", and current physical time = "
-                                + physicalTag.timestamp + "."
-                                + physicalTag.microstep);
+                        "missed transferring at the sensor. " +
+                        "Should transfer input at oracle physical" +
+        		"time = " +
+                        realTimeEvent.deliveryTag.timestamp + "." +
+                        realTimeEvent.deliveryTag.microstep +
+                        ", and current oracle physical time = " +
+                        oraclePhysicalTag.timestamp + "." +
+                        oraclePhysicalTag.microstep);
             }
         }
 
@@ -2245,9 +2283,9 @@ public class PtidesBasicDirector extends DEDirector {
                 setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
             } else {
                 // By default we assume the input is a sensor input, and
-                // a sensor event would have timestamp equal to the physical
-                // time.
-                setTag(physicalTag.timestamp, physicalTag.microstep);
+                // a sensor event would have timestamp equal to the platform's
+                // physical time.
+                setTag(platformPhysicalTag.timestamp, platformPhysicalTag.microstep);
             }
             if (super._transferInputs(port)) {
                 // Indicate that a sensor or network input
@@ -2264,13 +2302,17 @@ public class PtidesBasicDirector extends DEDirector {
                     if (i < port.getWidthInside()) {
                         if (port.hasToken(i)) {
                             Token t = port.get(i);
-                            Time waitUntilTime = physicalTag.timestamp
+                            Time waitUntilTime = oraclePhysicalTag.timestamp
                                     .add(inputDelay);
+                            // For the realTimeEvent, the delivery time to
+                            // the platform is based on oraclePhysicalTag,
+                            // while the timestamp of this event is based
+                            // on platformPhysicalTime.
                             RealTimeEvent realTimeEvent = new RealTimeEvent(
                                     port, i, t, new Tag(waitUntilTime,
-                                            physicalTag.microstep),
-                                            new Tag(physicalTag.timestamp,
-                                                    physicalTag.microstep));
+                                            oraclePhysicalTag.microstep),
+                                            new Tag(platformPhysicalTag.timestamp,
+                                                    platformPhysicalTag.microstep));
                             _realTimeInputEventQueue.add(realTimeEvent);
                             result = true;
 
@@ -2326,7 +2368,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         // First check for current time, and transfer any tokens that are already ready to output.
         boolean result = false;
-        Tag physicalTag = getPhysicalTag();
+        Tag platformPhysicalTag = _getPlatformPhysicalTag();
         int compare = 0;
         // The following code does not transfer output tokens specifically for "port", the
         // input of this method. Instead, for all events in _realTimeOutputEventQueue,
@@ -2342,7 +2384,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
             RealTimeEvent tokenEvent = (RealTimeEvent) _realTimeOutputEventQueue
                     .peek();
-            compare = tokenEvent.deliveryTag.compareTo(physicalTag);
+            compare = tokenEvent.deliveryTag.compareTo(platformPhysicalTag);
 
             if (compare > 0) {
                 break;
@@ -2360,12 +2402,14 @@ public class PtidesBasicDirector extends DEDirector {
                         "missed deadline at the actuator. Deadline = "
                                 + tokenEvent.deliveryTag.timestamp + "."
                                 + tokenEvent.deliveryTag.microstep
-                                + ", and current physical time = "
-                                + physicalTag.timestamp);
+                                + ", and current platform physical time = "
+                                + platformPhysicalTag.timestamp 
+                                + ", and microstep = "
+                                + platformPhysicalTag.microstep);
             }
         }
 
-        compare = _currentTime.compareTo(physicalTag.timestamp);
+        compare = _currentTime.compareTo(platformPhysicalTag.timestamp);
 
         // FIXME: since ports that are annotated with ignoreDeadline
         // are not checked for deadline violations, do they still count
@@ -2376,10 +2420,9 @@ public class PtidesBasicDirector extends DEDirector {
                 if (port.hasTokenInside(i)) {
                     // FIXME: we may want to do something else here.
                     throw new IllegalActionException(port,
-                            "missed deadline at the actuator. " + "Deadline = "
-                                    + _currentTime
-                                    + ", and current physical time = "
-                                    + physicalTag.timestamp);
+                            "missed deadline at the actuator. The deadline is " +
+                            _currentTime + ", and the platform physical time is " +
+                            platformPhysicalTag.timestamp);
                 }
             }
         } else if (compare == 0 || _transferImmediately(port) ||
@@ -2410,10 +2453,15 @@ public class PtidesBasicDirector extends DEDirector {
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i,
                                 t, new Tag(_currentTime, _microstep), null);
                         _realTimeOutputEventQueue.add(tokenEvent);
-                        // wait until physical time to transfer the output to the actuator
+                        // Wait until platform physical time to transfer the
+                        // output to the actuator
+                        Tag fireAtTag = new Tag();
+                        fireAtTag.timestamp = _currentTime;
+                        fireAtTag.microstep = _microstep;
                         Actor container = (Actor) getContainer();
-                        container.getExecutiveDirector().fireAt(
-                                (Actor) container, _currentTime);
+                        container.getExecutiveDirector().fireAt((Actor) container, 
+                                _getOraclePhysicalTagForPlatformPhysicalTag(fireAtTag)
+                                .timestamp);
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -2800,7 +2848,7 @@ public class PtidesBasicDirector extends DEDirector {
             // We are preempting a current execution.
             DoubleTimedEvent currentEventList = _currentlyExecutingStack
                     .peek();
-            Time elapsedTime = getPhysicalTag().timestamp
+            Time elapsedTime = getOraclePhysicalTag().timestamp
                     .subtract(_physicalTimeExecutionStarted);
             currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
                     .subtract(elapsedTime);
@@ -2816,7 +2864,7 @@ public class PtidesBasicDirector extends DEDirector {
                         + _getActorFromEventList(
                                 (List<PtidesEvent>) currentEventList.contents)
                                 .getName((NamedObj) getContainer())
-                        + " at physical time " + getPhysicalTag().timestamp
+                        + " at physical time " + getOraclePhysicalTag().timestamp
                         + ", which has remaining execution time "
                         + currentEventList.remainingExecutionTime);
             }
@@ -2889,7 +2937,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private boolean _schedulerStillRunning() throws IllegalActionException {
         // If the overhead time has not finished, return true.
-        if (_schedulerFinishTime.compareTo(getPhysicalTag().timestamp) <= 0) {
+        if (_schedulerFinishTime.compareTo(getOraclePhysicalTag().timestamp) <= 0) {
             return false;
         } else {
             return true;
@@ -2929,12 +2977,12 @@ public class PtidesBasicDirector extends DEDirector {
         if (_timedInterruptWakeUpTime == null) {
             return false;
         }
-        int result = _timedInterruptWakeUpTime.compareTo(getPhysicalTag().timestamp);
+        int result = _timedInterruptWakeUpTime.compareTo(getOraclePhysicalTag().timestamp);
         if (result < 0) {
             throw new IllegalActionException(this, "Timed interrupt should have " +
                         "occurred at time: " + _timedInterruptWakeUpTime.toString() +
                         ", but the current simulated physical time is already: " +
-                        getPhysicalTag().timestamp + ".");
+                        getOraclePhysicalTag().timestamp + ".");
         } else if (result == 0) {
             _timedInterruptWakeUpTime = null;
             return true;
@@ -2952,10 +3000,10 @@ public class PtidesBasicDirector extends DEDirector {
     private void _startScheduler() throws IllegalActionException {
         Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
         if (parameter != null) {
-            _schedulerFinishTime = getPhysicalTag().timestamp
+            _schedulerFinishTime = getOraclePhysicalTag().timestamp
                 .add(((DoubleToken) parameter.getToken()).doubleValue());
         } else {
-            _schedulerFinishTime = getPhysicalTag().timestamp;
+            _schedulerFinishTime = getOraclePhysicalTag().timestamp;
         }
         ((Actor) getContainer()).getExecutiveDirector()
                 .fireAt((Actor) getContainer(), _schedulerFinishTime);
