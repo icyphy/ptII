@@ -50,7 +50,8 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	ConstPropagationInfiniteConceptsOperations.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ConstPropagationSolverModel.xml \
