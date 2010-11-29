@@ -145,11 +145,9 @@ public class DatabaseManager extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** React to a change in an attribute.  This method is called by
-     *  a contained attribute when its value changes.  In this base class,
-     *  the method does nothing.  In derived classes, this method may
-     *  throw an exception, indicating that the new attribute value
-     *  is invalid.  It is up to the caller to restore the attribute
-     *  to a valid value if an exception is thrown.
+     *  a contained attribute when its value changes.  In this class,
+     *  if the database or userName is changed, this method closes the
+     *  connection with the database and forgets the password.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
