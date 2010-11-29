@@ -57,6 +57,7 @@ JSRCS = \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPreemptiveEDFDirector.java \
 	PtidesPreemptiveUserEDFDirector.java \
+	PtidesTopLevelDirector.java \
 	Tag.java
 
 EXTRA_SRCS =	$(JSRCS)
