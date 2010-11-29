@@ -36,7 +36,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
