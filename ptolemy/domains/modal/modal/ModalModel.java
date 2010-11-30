@@ -44,7 +44,6 @@ import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
-import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -53,7 +52,6 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
@@ -133,8 +131,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class ModalModel extends TypedCompositeActor implements ChangeListener,
-        ModelErrorHandler {
+public class ModalModel extends TypedCompositeActor implements ChangeListener {
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -188,9 +185,6 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
      *  forces causality analysis to be redone. Note that this can be expensive.
      */
     public Parameter stateDependentCausality;
-
-    /** Indicate whether or not a model error has occurred in this modal model. */
-    public Parameter modelError;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -271,23 +265,6 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
             }
         } else {
             super.attributeChanged(attribute);
-        }
-    }
-
-    /** Clear the model error parameter is this modal model.
-     * This method should be called when the user deselects a 
-     * previously selected transition as an error transition.
-     */
-
-    public void clearModelError() {
-        if (_modelError) {
-
-            modelError.setExpression("false");
-
-            if (_debugging) {
-                _debug("I've cleared the model error");
-            }
-            _modelError = false;
         }
     }
 
@@ -399,31 +376,18 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         if (_debugging) {
-            _debug("handleModelError called for the ModalModelDirector "
+            _debug("handleModelError called for the ModalModel "
                     + this.getDisplayName());
         }
 
         // check to see if your current state has an errorTransition
         State currentState = getController().currentState();
         if (currentState != null) {
-            List transitionList = currentState.nonpreemptiveTransitionList();
+            List errorTransitionList = currentState.errorTransitionList();
 
-            boolean hasErrorTransition = false;
-            if (_debugging) {
-                _debug("the transitions from the current state are");
-            }
-            for (int i = 0; i < transitionList.size(); i++) {
-                if (_debugging) {
-                    _debug(transitionList.get(i).toString());
-                }
-                String guardExpression = ((Transition) transitionList.get(i))
-                        .getGuardExpression();
-                if (guardExpression.contains("modelError == true")) {
-                    hasErrorTransition = true;
-                }
-            }
-            if (hasErrorTransition) { // if it does have an error transition, then handle the error
-                this.setModelError();
+            if (errorTransitionList.size() > 0) {
+                // if it does have an error transition, then handle the error
+                getController().setModelError();
                 if (_debugging) {
                     _debug("I've set the model error in ModalModel");
                 }
@@ -494,20 +458,6 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
                     "ModalModel.newPort: Internal error: " + ex.getMessage());
         } finally {
             _workspace.doneWriting();
-        }
-    }
-
-    /** Set the model error parameter is this modal model to true.
-     * This method is called when the user selects a transition as
-     * an error transition.
-     */
-    public void setModelError() {
-        if (_modelError == false) {
-            modelError.setExpression("true");
-            if (_debugging) {
-                _debug("I've set the model error");
-            }
-            _modelError = true;
         }
     }
 
@@ -594,17 +544,6 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
                 + "<circle cx=\"15\" cy=\"0\""
                 + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
 
-        try {
-            modelError = new Parameter(this, "modelError");
-            modelError.setTypeEquals(BaseType.BOOLEAN);
-            modelError.setExpression("false");
-            modelError.setVisibility(null);
-
-        } catch (IllegalActionException ex) {
-            throw ex;
-        } catch (NameDuplicationException ex) {
-            throw ex;
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -619,5 +558,5 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener,
      *  where the causality interface is state dependent.
      */
     private Map<State, Long> _causalityInterfacesVersions;
-    private boolean _modelError = false;
+
 }
