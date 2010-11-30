@@ -495,7 +495,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @return The list of outgoing error transitions from
      *   this state.
      */
-    public List errorTransitionList() {
+    public List<Transition> errorTransitionList() {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
@@ -702,7 +702,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                     _preemptiveTransitionList.add(transition);
                 } else if (transition.isErrorTransition()) {
                     _errorTransitionList.add(transition);
-                    _nonpreemptiveTransitionList.add(transition); // this line is a temporary addition
+                    _nonpreemptiveTransitionList.add(transition);
                 } else {
                     _nonpreemptiveTransitionList.add(transition);
                 }

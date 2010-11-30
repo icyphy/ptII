@@ -442,8 +442,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return result;
     }
 
-    /** Clear the model error flag  is this FSMActor.
-     * This method is called when the FSMActor handles the 
+    /** Clear the model error flag of this FSMActor.
+     * This method is called when the FSMActor handles a 
      * timing error.
      */
     public void clearModelError() {
@@ -1429,8 +1429,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _lastChosenTransition = transition;
     }
 
-    /** Set the model error parameter is this FSAActor to true.
-     * This method is called when the timing  manager makes the
+    /** Set the model error parameter of this FSMActor to true.
+     * This method is called when the timing manager makes the
      * FSMActor aware of a timing error.
      */
     public void setModelError() {
@@ -2650,89 +2650,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    //    
-    //    /** Clear the model error parameter is this modal model.
-    //     * This method should be called when the user deselects a 
-    //     * previously selected transition as an error transition.
-    //     */
-    //
-    //    public void clearModelError() {
-    //        if (_modelError) {
-    //
-    //            modelError.setExpression("false");
-    //
-    //            if (_debugging) {
-    //                _debug("I've cleared the model error");
-    //            }
-    //            _modelError = false;
-    //        }
-    //    }
-    //    
-    //    /** Set the model error parameter is this modal model to true.
-    //     * This method is called when the user selects a transition as
-    //     * an error transition.
-    //     */
-    //    public void setModelError() {
-    //        if (_modelError == false) {
-    //            modelError.setExpression("true");
-    //            if (_debugging) {
-    //                _debug("I've set the model error");
-    //            }
-    //            _modelError = true;
-    //        }
-    //    }
-    //    
-    //    
-    //    public boolean handleModelError(NamedObj context,
-    //            IllegalActionException exception) throws IllegalActionException {
-    //        if (_debugging) {
-    //            _debug("handleModelError called for the ModalModelDirector "
-    //                    + this.getDisplayName());
-    //        }
-    //
-    //        // check to see if your current state has an errorTransition
-    //        State currentState = currentState();
-    //        if (currentState != null) {
-    //            List transitionList = currentState.nonpreemptiveTransitionList();
-    //
-    //            boolean hasErrorTransition = false;
-    //            if (_debugging) {
-    //                _debug("the transitions from the current state are");
-    //            }
-    //            for (int i = 0; i < transitionList.size(); i++) {
-    //                if (_debugging) {
-    //                    _debug(transitionList.get(i).toString());
-    //                }
-    //                String guardExpression = ((Transition) transitionList.get(i))
-    //                        .getGuardExpression();
-    //                if (guardExpression.contains("modelError == true")) {
-    //                    hasErrorTransition = true;
-    //                }
-    //            }
-    //            if (hasErrorTransition) { // if it does have an error transition, then handle the error
-    //                this.setModelError();
-    //                if (_debugging) {
-    //                    _debug("I've set the model error in ModalModel");
-    //                }
-    //            } else { // there is no error transition
-    //                // if not then pass the model error up the hierarchy
-    //                // need to figure out how to pass the error up to a modal model if you're contained in one..
-    //
-    //                NamedObj parentContainer = getContainer().getContainer();
-    //
-    //                if (parentContainer != null) {
-    //                    return parentContainer.handleModelError(context, exception);
-    //                } else {
-    //                    getContainer().handleModelError(context, exception);
-    //                }
-    //            }
-    //        }
-    //        return true;
-    //    }
-    //    
-    //    /** Indicate whether or not a model error has occurred in this modal model. */
-    //    public Parameter modelError;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -2811,6 +2728,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _tokenListArrays;
-
+    //A flag indicating whether or not the actor needs to deal with a model error.
     private boolean _modelError = false;
 }

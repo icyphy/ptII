@@ -556,8 +556,8 @@ public class Transition extends ComponentRelation {
             return ((BooleanToken) errorTransition.getToken()).booleanValue();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(errorTransition.getFullName()
-                    + ": The parameter does not have a valid value, \""
-                    + errorTransition.getExpression() + "\".");
+                    + ": The parameter does not have a valid value. "
+                    + ex.toString());
         }
     }
 
