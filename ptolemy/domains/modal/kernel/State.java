@@ -490,6 +490,19 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         return _preemptiveTransitionList;
     }
 
+    /** Return the list of outgoing error transitions from
+     *  this state.
+     *  @return The list of outgoing error transitions from
+     *   this state.
+     */
+    public List errorTransitionList() {
+        if (_transitionListVersion != workspace().getVersion()) {
+            _updateTransitionLists();
+        }
+
+        return _errorTransitionList;
+    }
+
     /** The port linking incoming transitions.
      */
     public ComponentPort incomingPort = null;
@@ -585,8 +598,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                 configurePrinted = true;
             }
             if (actor instanceof FSMActor) {
-                ((FSMActor) actor).exportSubmodel(output, depth + 1, actor
-                        .getName());
+                ((FSMActor) actor).exportSubmodel(output, depth + 1,
+                        actor.getName());
             } else {
                 ((NamedObj) actor).exportMoML(output, depth + 1);
             }
@@ -614,8 +627,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                 try {
                     if (modalModel == null) {
                         modalModel = new ModalModel(workspace());
-                        new InvisibleModalModel(modalModel, modalModel
-                                .uniqueName("_invisibleModalModel"));
+                        new InvisibleModalModel(modalModel,
+                                modalModel.uniqueName("_invisibleModalModel"));
                         container.setContainer(modalModel);
                     }
                 } catch (NameDuplicationException e) {
@@ -678,6 +691,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             workspace().getReadAccess();
             _nonpreemptiveTransitionList.clear();
             _preemptiveTransitionList.clear();
+            _errorTransitionList.clear();
 
             Iterator transitions = outgoingPort.linkedRelationList().iterator();
 
@@ -686,6 +700,9 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
                 if (transition.isPreemptive()) {
                     _preemptiveTransitionList.add(transition);
+                } else if (transition.isErrorTransition()) {
+                    _errorTransitionList.add(transition);
+                    _nonpreemptiveTransitionList.add(transition); // this line is a temporary addition
                 } else {
                     _nonpreemptiveTransitionList.add(transition);
                 }
@@ -708,6 +725,9 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
     // Cached list of preemptive outgoing transitions from this state.
     private List _preemptiveTransitionList = new LinkedList();
+
+    // Cached list of error transitions from this state
+    private List _errorTransitionList = new LinkedList();
 
     // Cached reference to the refinement of this state.
     private TypedActor[] _refinement = null;

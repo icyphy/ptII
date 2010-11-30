@@ -166,8 +166,8 @@ public class NonStrictFSMDirector extends FSMDirector {
                 Transition enabledTransition = (Transition) transitions.next();
 
                 if (!enabledTransition.isNondeterministic()) {
-                    throw new MultipleEnabledTransitionsException(controller
-                            .currentState(),
+                    throw new MultipleEnabledTransitionsException(
+                            controller.currentState(),
                             "Multiple enabled transitions found but "
                                     + enabledTransition.getName()
                                     + " is deterministic.");
@@ -505,18 +505,20 @@ public class NonStrictFSMDirector extends FSMDirector {
             Transition transition = (Transition) transitions.next();
             String string = transition.getGuardExpression();
 
-            if (string.equals("")) {
+            if (string.equals("") && !(transition.isErrorTransition())) {
                 throw new IllegalActionException(this, "guard expression on "
                         + transition.getName() + "is null!");
             }
-
-            PtParser parser = new PtParser();
-            ASTPtRootNode parseTree = parser.generateParseTree(string);
-            ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
-            FSMActor controller = getController();
-            ParserScope scope = controller.getPortScope();
-            Set set = variableCollector.collectFreeVariables(parseTree, scope);
-            getReferredInputPorts(set, transitionsReferredInputPorts);
+            if (!transition.isErrorTransition()) {
+                PtParser parser = new PtParser();
+                ASTPtRootNode parseTree = parser.generateParseTree(string);
+                ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
+                FSMActor controller = getController();
+                ParserScope scope = controller.getPortScope();
+                Set set = variableCollector.collectFreeVariables(parseTree,
+                        scope);
+                getReferredInputPorts(set, transitionsReferredInputPorts);
+            }
         }
 
         return transitionsReferredInputPorts;

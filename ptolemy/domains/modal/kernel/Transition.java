@@ -228,10 +228,10 @@ public class Transition extends ComponentRelation {
             _errorTransition = ((BooleanToken) errorTransition.getToken())
                     .booleanValue();
             if (_errorTransition == true) {
-                guardExpression.setExpression("modelError == true");
+                guardExpression.setExpression("");
                 annotation.setExpression("");
                 outputActions.setExpression("");
-                setActions.setExpression("modelError=false");
+                setActions.setExpression("");
 
                 reset.setToken(BooleanToken.FALSE);
                 preemptive.setToken(BooleanToken.FALSE);
@@ -545,6 +545,20 @@ public class Transition extends ComponentRelation {
         }
         boolean result = ((BooleanToken) token).booleanValue();
         return result;
+    }
+
+    /** Return true if this transition is an error transition. Whether this
+     *  transition an errorTransition is specified by the <i>errorTransition</i> parameter.
+     *  @return True if this transition is an errorTransition.
+     */
+    public boolean isErrorTransition() {
+        try {
+            return ((BooleanToken) errorTransition.getToken()).booleanValue();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(errorTransition.getFullName()
+                    + ": The parameter does not have a valid value, \""
+                    + errorTransition.getExpression() + "\".");
+        }
     }
 
     /** Return true if this transition is nondeterministic. Return false
