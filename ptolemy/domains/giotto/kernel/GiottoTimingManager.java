@@ -164,7 +164,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                 "probabilityDistribution");
         probabilityDistribution.setExpression("none");
         probabilityDistribution.addChoice("none");
-        probabilityDistribution.addChoice("pessimentic");
+        probabilityDistribution.addChoice("pessimistic");
 
         _overRunThusFar = 0.0;
         _totalExpectedExecutionTime = _getDirectorPeriod(container);
@@ -647,7 +647,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /**
      * Generate the next random number.
-     * @exception IllegalActionException An IllegalActionException is not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class. 
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         // this method uses a design similar to that of ptolemy.actor.lib.RandomSource
@@ -754,7 +754,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /** The timing manager's value of physical time. */
     private double _myPhysicalTime;
 
-    /** The cumulative overrun of the actors simulated by the timing manager.*/
+    /** The cumulative overrun of the actors simulated by the timing manager. */
     private double _overRunThusFar;
 
     /**This variable stores the expected execution time of actors.
