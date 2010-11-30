@@ -550,14 +550,15 @@ public class Transition extends ComponentRelation {
     /** Return true if this transition is an error transition. Whether this
      *  transition an errorTransition is specified by the <i>errorTransition</i> parameter.
      *  @return True if this transition is an errorTransition.
+     *  @exception IllegalActionException if unable to retrieve a token from the 
+     *  error transition
      */
-    public boolean isErrorTransition() {
+    public boolean isErrorTransition() throws IllegalActionException {
         try {
             return ((BooleanToken) errorTransition.getToken()).booleanValue();
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(errorTransition.getFullName()
-                    + ": The parameter does not have a valid value. "
-                    + ex.toString());
+            throw new IllegalActionException(errorTransition,
+                    " Cannot retrieve a boolean token from this transition");
         }
     }
 
