@@ -164,21 +164,11 @@ public class GiottoTimingManager extends SingletonAttribute implements
                 "probabilityDistribution");
         probabilityDistribution.setExpression("none");
         probabilityDistribution.addChoice("none");
+        probabilityDistribution.addChoice("pessimentic");
+
         _overRunThusFar = 0.0;
         _totalExpectedExecutionTime = _getDirectorPeriod(container);
         _totalObservedExecutionTime = 0;
-        // set the error handler
-        NamedObj parentContainer = getContainer().getContainer();
-
-        if (parentContainer != null) {
-            if (parentContainer.getFullName().contains("ModalModel")) {
-                if (_debugging) {
-                    _debug("I've set the model error handler to: "
-                            + parentContainer.getFullName());
-                }
-                setModelErrorHandler(parentContainer);
-            }
-        }
 
     }
 
@@ -657,10 +647,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /**
      * Generate the next random number.
-     * @exception IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException An IllegalActionException is not thrown in this base class.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        //this method uses a design similar to that of ptolemy.actor.lib.RandomSourc
+        // this method uses a design similar to that of ptolemy.actor.lib.RandomSource
         _current = _random.nextDouble();
     }
 
@@ -761,10 +751,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /** The last container on which we piggybacked. */
     private CompositeActor _piggybackContainer;
 
-    /** The timing manager's value of physical time */
+    /** The timing manager's value of physical time. */
     private double _myPhysicalTime;
 
-    /** The cumulative overrun of the actors simulated by the timing manager*/
+    /** The cumulative overrun of the actors simulated by the timing manager.*/
     private double _overRunThusFar;
 
     /**This variable stores the expected execution time of actors.
