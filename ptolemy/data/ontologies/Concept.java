@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  Note that this is an abstract class.  Any concrete instance must be
  *  either a FiniteConcept or an InfiniteConcept.
  * 
+ *  @see Ontology
  *  @author Ben Lickly, Edward A. Lee, Dai Bui, Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -138,7 +139,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return _EMPTY_ARRAY;
     }
 
-    /** Throw an exception. This object is not a variable.
+    /** Throw an exception. A concept is not a variable.
      * 
      *  @param object The object used to initialize the InequalityTerm; not used
      *  since a Concept is a static value that cannot be initialized.
@@ -189,7 +190,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         }
     }
 
-    /** Throw an exception. This object is not a variable.
+    /** Throw an exception. A concept is not a variable.
      * 
      *  @param value The Object being passed in to set the value for the
      *  InequalityTerm; not used since a Concept is a static value that

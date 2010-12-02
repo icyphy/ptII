@@ -133,6 +133,11 @@ public abstract class InfiniteConcept extends Concept {
 
     /** Create a new Infinite concept, belonging to the given
      *  ontology, with an automatically generated name.
+     *  
+     *  Even though this method should never throw a NameDuplicationException,
+     *  it's signature cannot be changed.  It is recommended that subclasses
+     *  needing this functionality create a factory method that catches the
+     *  exception in order to avoid extraneous try-catch blocks.
      * 
      *  @param ontology The finite ontology to which this belongs.
      *  @throws NameDuplicationException Should never be thrown.

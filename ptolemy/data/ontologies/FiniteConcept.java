@@ -36,10 +36,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FiniteConcept
 
 /** A concept in a finite ontology.
- *  The fact that the concept is part of a finite ontology allows
- *  us to do things like draw every concept in a GUI, do graph
- *  traversal algorithms with an adjacency matrix that is finite,
- *  and similar useful conveniences.
+ *  The fact that this concept is part of a finite ontology allows
+ *  us to do things like draw it in a GUI, do graph traversal algorithms
+ *  with a (finite) adjacency matrix, and other similar useful conveniences.
  * 
  *  @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  *  @version $Id$
@@ -85,6 +84,7 @@ public class FiniteConcept extends Concept implements Flowable {
      */
     public Set<FiniteConcept> getCoverSetAbove() {
         Set<FiniteConcept> cover = new HashSet<FiniteConcept>();
+        @SuppressWarnings("unchecked")
         List<ComponentPort> ports = abovePort.deepConnectedPortList();
         for (ComponentPort port : ports) {
             cover.add((FiniteConcept) port.getContainer());
@@ -99,6 +99,7 @@ public class FiniteConcept extends Concept implements Flowable {
      */
     public Set<FiniteConcept> getCoverSetBelow() {
         Set<FiniteConcept> covered = new HashSet<FiniteConcept>();
+        @SuppressWarnings("unchecked")
         List<ComponentPort> ports = belowPort.deepConnectedPortList();
         for (ComponentPort port : ports) {
             covered.add((FiniteConcept) port.getContainer());
@@ -111,15 +112,11 @@ public class FiniteConcept extends Concept implements Flowable {
      *  @return The containing ontology.
      */
     public Ontology getOntology() {
-        /* if (!(getContainer() instanceof Ontology)) {
-            throw new IllegalActionException(this,
-                    "Concept is not contained by an Ontology.");
-        } */
         return (Ontology)getContainer();
     }
 
-    /** Return the outgoing port.
-     *  @return The outgoing port.
+    /** Return the incoming port.
+     *  @return The incoming port.
      */
     public ComponentPort getIncomingPort() {
         return belowPort;
@@ -132,10 +129,9 @@ public class FiniteConcept extends Concept implements Flowable {
         return abovePort;
     }
 
-    /**
-     * Return the string that represents this concept, its name.
+    /** Return the string representation of this concept, its name.
      * 
-     * @return The string name that represents this concept.
+     * @return The name of this concept.
      */
     public String toString() {
         return _name;

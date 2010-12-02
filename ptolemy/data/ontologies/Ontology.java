@@ -46,19 +46,18 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// Ontology
 
-/**
- * A specification of an ontology, which is a set of concepts and a
- * partial ordering relation.
- * The structure is represented by interconnections
- * between concepts contained by this ontology.
+/** A specification of an ontology, which is a set of concepts and a
+ *  partial ordering relation.
+ *  The structure is represented by interconnections
+ *  between concepts contained by this ontology.
  * 
- * @see ConceptGraph
- * @see Concept
- * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (blickly)
- * @Pt.AcceptedRating Red (blickly)
+ *  @see ConceptGraph
+ *  @see Concept
+ *  @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (blickly)
+ *  @Pt.AcceptedRating Red (blickly)
  */
 public class Ontology extends CompositeEntity {
 
@@ -335,9 +334,11 @@ public class Ontology extends CompositeEntity {
                 ((DAGConceptGraph) _graph).addConcept(concept);
             }
             for (FiniteConcept concept : concepts) {
+                @SuppressWarnings("unchecked")
                 List<ConceptRelation> relationLinks = concept.abovePort
                         .linkedRelationList();
                 for (ConceptRelation link : relationLinks) {
+                    @SuppressWarnings("unchecked")
                     List<ComponentPort> remotePorts = link
                             .linkedPortList(concept.abovePort);
                     assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";

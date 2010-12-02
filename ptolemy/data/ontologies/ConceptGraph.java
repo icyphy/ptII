@@ -41,12 +41,13 @@ import ptolemy.graph.CPO;
  *  {@linkplain ptolemy.data.ontologies.lattice.LatticeOntologySolver
  *  LatticeOntologySolver}, a subclass of {@linkplain OntologySolver}.
  *
- * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
- * @see ptolemy.graph.CPO
+ *  @see Ontology
+ *  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
+ *  @see ptolemy.graph.CPO
  */
 public abstract class ConceptGraph implements CPO {
 
@@ -230,7 +231,7 @@ public abstract class ConceptGraph implements CPO {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                     protected methods                     ////
 
     /** Return a string indicating that the calling method is unimplemented.
      *  @return The string with the unimplemented error message.
