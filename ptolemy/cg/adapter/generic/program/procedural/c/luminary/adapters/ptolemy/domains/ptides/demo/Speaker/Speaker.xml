@@ -29,10 +29,6 @@
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 150.0]">
         </property>
-        <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
-            </property>
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 198, 812, 497}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[589, 383]">
@@ -40,6 +36,10 @@
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.1325757575758, 198.264678030303}">
+        </property>
+        <property name="PtidesPreemptiveEDFDirector" class="ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 120.0]">
+            </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
