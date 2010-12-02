@@ -518,7 +518,7 @@ public class Transition extends ComponentRelation {
                 || _guardParseTreeVersion != _workspace.getVersion()) {
             String expr = getGuardExpression();
             // If the expression is empty, interpret this as true.
-            if (expr.trim().equals("")) {
+            if (expr.trim().equals("") && !isErrorTransition()) {
                 return true;
             }
             // Parse the guard expression.
@@ -553,12 +553,13 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException if unable to retrieve a token from the 
      *  error transition
      */
-    public boolean isErrorTransition() throws IllegalActionException {
+    public boolean isErrorTransition() { //throws IllegalActionException {
         try {
             return ((BooleanToken) errorTransition.getToken()).booleanValue();
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(errorTransition,
-                    " Cannot retrieve a boolean token from this transition");
+            throw new InternalErrorException(errorTransition.getFullName()
+                    + ": The parameter does not have a valid value, \""
+                    + errorTransition.getExpression() + "\".");
         }
     }
 
