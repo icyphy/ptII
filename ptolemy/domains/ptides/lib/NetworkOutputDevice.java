@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  its output port.
  *
  *  @author Jia Zou, Slobodan Matic
- *  @version $ld$
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating

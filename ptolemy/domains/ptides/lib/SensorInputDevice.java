@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  can handle.
  *
  *  @author Jia Zou, Slobodan Matic
- *  @version $ld$
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
