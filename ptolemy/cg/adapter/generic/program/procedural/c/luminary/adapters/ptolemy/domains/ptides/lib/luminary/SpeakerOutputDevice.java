@@ -28,7 +28,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolem
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
@@ -85,7 +85,7 @@ public class SpeakerOutputDevice extends OutputDevice {
         CodeStream _codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice) getComponent();
-        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
+        PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
                 .getDirector());
 
         args.add((adapter.actuators.get(actor)).toString());

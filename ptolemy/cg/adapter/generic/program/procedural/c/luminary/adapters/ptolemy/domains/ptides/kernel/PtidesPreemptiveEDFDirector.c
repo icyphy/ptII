@@ -259,10 +259,10 @@ void getRealTime(Time * const physicalTime){
     // since systick interrupt could take up to 5us to trigger, to make
 	// sure the tick2 value correspond to the correct _secs and _quarterSecs
 	// values, we do the following check:
-	if (tick2 > ADJUSTED_TRC) {
+	/*if (tick2 > ADJUSTED_TRC) {
 		continue;
-	}
-    //If the system tick rolls over (the tick counts down) between accessing
+	}*/
+    // If the system tick rolls over (the tick counts down) between accessing
     // the volatile variables _secs and _quartersecs, then we account for this here
     // by incrementing _quartersecs
     	if(tick2 < tick1) {

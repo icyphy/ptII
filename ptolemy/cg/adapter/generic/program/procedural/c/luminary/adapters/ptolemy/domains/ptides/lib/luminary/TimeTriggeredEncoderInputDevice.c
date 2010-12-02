@@ -1,5 +1,6 @@
 /***preinitBlock***/
 int32 encoderInputInterruptStatus;
+uint8 encoderInterruptOccurred = 0;
 static volatile Disc g_disc;
 /**/
 
@@ -18,20 +19,14 @@ static volatile Disc g_disc;
 
 /*** fireBlock ***/
 static int8 discAligned = 0;
-if ($hasToken(trigger#0) || $hasToken(trigger#1)) {
+if (!encoderInterruptOccurred) {
 	$put(output, g_disc.position);
 } else {
 	// Encoder pulse detected - record period (for rate)
 	// and increment encoder count
 	if (encoderInputInterruptStatus & ENCODER_PIN_A){
-		static Time timeGap;
 		const uint32 pinStatus = encoderInputInterruptStatus >> 8; //If encoder channel B is leading, then direction is negative
 		g_disc.position += pinStatus ? -1 : 1;
-		if (-1 == timeSub(currentModelTime, previousEncoderEventTime, &timeGap)) {
-			die("timestamps from encoder are backwards");
-		}
-		// g_disc.period = timeGap.nsecs;
-		previousEncoderEventTime = currentModelTime;
 	}
 	//Encoder alignment detected - occurs twice per rotation.
 	//when aligning, set position to zero
@@ -45,6 +40,8 @@ if ($hasToken(trigger#0) || $hasToken(trigger#1)) {
 		g_disc.position = g_disc.position & 0xfffffffc;
 		g_positionAtHole  = g_disc.position;
 	}
+	encoderInterruptOccurred = 0;
+	return;
 }
 /**/
 
@@ -81,19 +78,6 @@ IntEnable(INT_GPIO$pad);
     debugMessage("$pad$pin");
 #endif
 
-saveState();
-// need to push the currentModelTag onto the stack.
-stackedModelTagIndex++;
-if (stackedModelTagIndex > MAX_EVENTS) {
-    die("MAX_EVENTS too small for stackedModelTagIndex");
-}
-executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
-executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
-
-// for sensing purposes, set the current time to the physical time.
-getRealTime(&currentModelTime);
-currentMicrostep = 0;
-
 encoderInputInterruptStatus = GPIOPinIntStatus(ENCODER_BASE, 0);
 // Clear the interrupt
 GPIOPinIntClear(ENCODER_BASE, encoderInputInterruptStatus);
@@ -103,7 +87,6 @@ encoderInputInterruptStatus |= (GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B) << 8);
 
 // do not need to disable interrupts if all interrupts have the same priority
 //disableInterrupts();
+encoderInterruptOccurred = 1;
 $sensorFireMethod();
-// stack manipulation here instead of later.
-addStack();
 /**/

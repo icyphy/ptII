@@ -74,6 +74,9 @@ if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 } else {
 	die("dead miss");
 }
+if (Event_Head_TunnelingBallDevice2_Tunnelling_Ball_Device_Controller_MotorOutputDevice_input[0]->Val.int_Value != 0) {
+	debugSendPacket(&saved_discDesired, &saved_g_disc, saved_timeLeft, saved_controlSignal, saved_tempTime);
+}
 /**/
  
 /*** actuationBlock ***/

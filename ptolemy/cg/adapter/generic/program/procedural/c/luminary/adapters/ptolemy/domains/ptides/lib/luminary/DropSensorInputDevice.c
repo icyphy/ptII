@@ -23,7 +23,7 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 	uint32 tableIndex = (dropTime-timeToDisc_offset) >> timeToDisc_shift;
 	if(tableIndex > timeToDisc_size) {	//Error check, if index is larger than table
 		IntMasterDisable();
-		debugMessageNumber("index =", tableIndex);
+		debugMessageNumber("index = ", tableIndex);
 		while(1);
 	}
 		

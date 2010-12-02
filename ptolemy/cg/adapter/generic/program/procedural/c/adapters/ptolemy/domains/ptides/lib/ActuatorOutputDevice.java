@@ -30,7 +30,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -84,7 +84,7 @@ public class ActuatorOutputDevice extends OutputDevice {
 
         ptolemy.domains.ptides.lib.ActuatorOutputDevice actor = 
             (ptolemy.domains.ptides.lib.ActuatorOutputDevice) getComponent();
-        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
+        PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
                 .getDirector());
 
         args.add((adapter.actuators.get(actor)).toString());

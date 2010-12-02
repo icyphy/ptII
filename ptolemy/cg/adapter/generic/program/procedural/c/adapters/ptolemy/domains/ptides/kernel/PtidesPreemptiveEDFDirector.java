@@ -53,10 +53,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// PtidesBasicDirector
+//// PtidesPreemptiveEDFDirector
 
 /**
- Code generator adapter associated with the PtidesBasicDirector class. This class
+ Code generator adapter associated with the PtidesPreemptiveEDFDirector class. This class
  is also associated with a code generator.
  Also unlike the Ptolemy implementation, the execution does not depend on the WCET
  of actor.
@@ -66,16 +66,16 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating red (jiazou)
  */
-public class PtidesBasicDirector extends Director {
+public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
-     *  @param ptidesBasicDirector The associated director
+     *  @param ptidesPreemptiveEDFDirector The associated director
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
-    public PtidesBasicDirector(
-            ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
-        super(ptidesBasicDirector);
+    public PtidesPreemptiveEDFDirector(
+            ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector ptidesPreemptiveEDFDirector) {
+        super(ptidesPreemptiveEDFDirector);
     }
 
     ///////////////////////////////////////////////////////////////////

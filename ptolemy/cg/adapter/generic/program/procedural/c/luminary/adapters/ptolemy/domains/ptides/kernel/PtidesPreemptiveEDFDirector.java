@@ -44,10 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// PtidesBasicDirector
+//// PtidesPreemptiveEDFDirector
 
 /**
- Code generator adapter associated with the PtidesBasicDirector class.
+ Code generator adapter associated with the PtidesPreemptiveEDFDirector class.
  This adapter generates Luminary specific code.
 
  This director starts a task for each actor. Each task has a specified
@@ -66,18 +66,18 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating red (jiazou)
  */
-public class PtidesBasicDirector
+public class PtidesPreemptiveEDFDirector
         extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector {
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
-     *  @param ptidesBasicDirector The associated director
+     *  @param ptidesPreemptiveEDFDirector The associated director
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
-    public PtidesBasicDirector(
-            ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
-        super(ptidesBasicDirector);
+    public PtidesPreemptiveEDFDirector(
+            ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector ptidesPreemptiveEDFDirector) {
+        super(ptidesPreemptiveEDFDirector);
     }
 
     ///////////////////////////////////////////////////////////////////
