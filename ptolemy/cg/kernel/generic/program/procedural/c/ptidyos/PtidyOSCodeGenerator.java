@@ -133,7 +133,8 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      */
     protected boolean _isTopLevel() throws IllegalActionException {
         Director director = ((Actor) getContainer()).getDirector();
-        if (!(director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
+        if (!(director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)
+                || !(director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector)) {
             throw new IllegalActionException(director,
                     "PtidyOSCodeGenerator can only"
                             + "work with Ptides directors.");

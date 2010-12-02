@@ -53,8 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	OnePlatform/OnePlatform.jar \
-	Speaker/Speaker.jar
+	OnePlatform/OnePlatform.jar
 
 # Keep this list alphabetized.
 JSRCS = 

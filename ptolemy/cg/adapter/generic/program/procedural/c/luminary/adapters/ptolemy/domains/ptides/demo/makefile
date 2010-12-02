@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	Speaker/Speaker.jar \
+	TimeTriggeredTunnelingBallDevice/TimeTriggeredTunnelingBallDevice.jar \
 	TunnelingBallDevice/TunnelingBallDevice.jar
 
 # Keep this list alphabetized.
