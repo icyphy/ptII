@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  A adapter class for ptolemy.actor.lib.Ramp.
 
  @author Gang Zhou, Bert Rodiers
- @version $Id$
+ @version $Id: Ramp.java 57044 2010-01-27 22:41:05Z cxh $
  @since Ptolemy II 8.0
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)

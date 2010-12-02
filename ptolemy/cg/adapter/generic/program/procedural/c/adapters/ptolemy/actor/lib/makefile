@@ -68,6 +68,7 @@ JSRCS = \
 	Expression.java \
 	Maximum.java \
 	MultiplyDivide.java \
+	Ramp.java \
 	Remainder.java \
 	Scale.java \
 	Synchronizer.java \

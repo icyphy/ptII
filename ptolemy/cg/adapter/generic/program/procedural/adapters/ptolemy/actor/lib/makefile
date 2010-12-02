@@ -75,6 +75,7 @@ JSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	Pulse.java \
+	Ramp.java \
 	Recorder.java \
 	Sequence.java \
 	StringConst.java \
