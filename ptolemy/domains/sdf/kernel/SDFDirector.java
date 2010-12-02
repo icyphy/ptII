@@ -115,6 +115,13 @@ import ptolemy.kernel.util.Workspace;
  than zero, then no limit is set and postfire will always return true.
  The default value of the iterations parameter is an IntToken with value zero.
  </p><p>
+ If any actor's postfire() method returns false during an iteration,
+ then at the conclusion of the iteration, this director's postfire() method
+ will return false. This will normally result in termination of the execution.
+ The reasoning for this behavior is that the model cannot continue executing
+ without the participation of all actors, and if any actor returns false
+ in postfire(), then it is indicating that it wishes to not continue executing.
+ </p><p>
  The <i>vectorizationFactor</i> parameter of this director sets the number
  of times that the basic schedule is executed during each firing of this
  director.  This might allow the director to execute the model more efficiently,
