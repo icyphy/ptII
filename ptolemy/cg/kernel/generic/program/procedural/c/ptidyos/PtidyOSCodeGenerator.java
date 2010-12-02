@@ -32,7 +32,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -96,12 +96,12 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      * 
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
-        PtidesBasicDirector directorAdapter = null;
+        PtidesPreemptiveEDFDirector directorAdapter = null;
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
                 .deepEntityList()) {
             Director director = actor.getDirector();
             if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-                directorAdapter = (PtidesBasicDirector) getAdapter(director);
+                directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
             }
         }
 

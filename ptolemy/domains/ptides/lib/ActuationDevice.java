@@ -38,7 +38,7 @@ package ptolemy.domains.ptides.lib;
  *  use this interface to help identify if this actor is an actuator. 
  *   
  *  @author Jia Zou
- *  @version $ld$
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating 
