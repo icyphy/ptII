@@ -113,13 +113,16 @@ public class DAGConceptGraph extends ConceptGraph {
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
-        } else { // (e2 instanceof InfiniteConcept)
+        } else if (e2 instanceof InfiniteConcept) {
             try {
                 int oppositeResult = ((InfiniteConcept)e2).compare((Concept)e1);
                 return DirectedAcyclicGraph.reverseCompareCode(oppositeResult);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
+        } else { // This case should never happen.
+            throw new IllegalArgumentException("Invalid concepts '" + e1 +
+                    "' and '" + e2 + "' (neither finite nor infinite)");
         }
     }
 
@@ -206,8 +209,11 @@ public class DAGConceptGraph extends ConceptGraph {
             return lub;
         } else if (e1 instanceof InfiniteConcept) {
             return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
-        } else { // (e2 instanceof InfiniteConcept)
+        } else if (e2 instanceof InfiniteConcept) {
             return ((InfiniteConcept)e2).leastUpperBound((Concept)e1);
+        } else { // This case should never happen.
+            throw new IllegalArgumentException("Invalid concepts '" + e1 +
+                    "' and '" + e2 + "' (neither finite nor infinite)");
         }
     }
 
