@@ -700,8 +700,10 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
                 if (transition.isPreemptive()) {
                     _preemptiveTransitionList.add(transition);
-                } else if (transition.isErrorTransition()) {
-                    _errorTransitionList.add(transition);
+                    // This code does not compile because isErrorTransition()
+                    // throws an exception
+                    //                } else if (transition.isErrorTransition()) {
+                    //                    _errorTransitionList.add(transition);
                 } else {
                     _nonpreemptiveTransitionList.add(transition);
                 }
