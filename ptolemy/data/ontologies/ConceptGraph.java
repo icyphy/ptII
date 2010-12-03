@@ -237,8 +237,10 @@ public abstract class ConceptGraph implements CPO {
      *  @return The string with the unimplemented error message.
      */
     protected String _notImplementedMessage() {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String methodName = Thread.currentThread().getStackTrace()[1]
+                .getMethodName();
         String className = this.getClass().getSimpleName();
-        return methodName + " method not implemented in class " + className + "!";
+        return methodName + " method not implemented in class " + className
+                + "!";
     }
 }

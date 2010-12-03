@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  */
 public abstract class Concept extends ComponentEntity implements InequalityTerm {
-    
+
     /** Create a new concept with the specified name and the specified
      *  ontology.
      *  
@@ -73,15 +73,15 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         isAcceptable.setTypeEquals(BaseType.BOOLEAN);
         isAcceptable.setExpression("true");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                   parameters and ports                    ////
-    
+
     /** A parameter indicating whether this concept is an acceptable outcome
      *  during inference. This is a boolean that defaults to true.
      */
     public Parameter isAcceptable;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -103,8 +103,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      */
     public ColorAttribute getColor() {
         @SuppressWarnings("unchecked")
-        List<ColorAttribute> colors =
-            (List<ColorAttribute>) attributeList(ColorAttribute.class);
+        List<ColorAttribute> colors = (List<ColorAttribute>) attributeList(ColorAttribute.class);
         if (colors == null || colors.isEmpty()) {
             return null;
         } else {
@@ -113,7 +112,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
             return colors.get(0);
         }
     }
-    
+
     /** Return the ontology to which this concept belongs.
     *
     *   @return This concept's ontology.
@@ -202,25 +201,25 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         throw new IllegalActionException(this,
                 "Cannot set an ontology concept.");
     }
-    
+
     /** Return the (unique) string representation of this concept.
      * 
-     * @return The string representation of this concept.
+     *  @return The string representation of this concept.
      */
     public abstract String toString();
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
-    
+
     /**
-     * The name of this Concept.
+     *  The name of this Concept.
      */
     protected String _name;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Empty array. */
     private static InequalityTerm[] _EMPTY_ARRAY = new InequalityTerm[0];
-    
+
 }

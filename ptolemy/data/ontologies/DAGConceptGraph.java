@@ -83,7 +83,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @return The least element of this graph.
      */
     public Concept bottom() {
-        return (Concept)_dag.bottom();
+        return (Concept) _dag.bottom();
     }
 
     /** Compare two concepts in the ontology. The arguments must be
@@ -101,28 +101,29 @@ public class DAGConceptGraph extends ConceptGraph {
     public int compare(Object e1, Object e2) {
         if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
             throw new IllegalArgumentException("ConceptGraph.compare: "
-                    + "Arguments are not instances of Concept: "
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
+                    + "Arguments are not instances of Concept: " + " arg1 = "
+                    + e1 + ", arg2 = " + e2);
         }
 
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
             return _dag.compare(e1, e2);
         } else if (e1 instanceof InfiniteConcept) {
             try {
-                return ((InfiniteConcept)e1).compare((Concept)e2);
+                return ((InfiniteConcept) e1).compare((Concept) e2);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
         } else if (e2 instanceof InfiniteConcept) {
             try {
-                int oppositeResult = ((InfiniteConcept)e2).compare((Concept)e1);
+                int oppositeResult = ((InfiniteConcept) e2)
+                        .compare((Concept) e1);
                 return DirectedAcyclicGraph.reverseCompareCode(oppositeResult);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
         } else { // This case should never happen.
-            throw new IllegalArgumentException("Invalid concepts '" + e1 +
-                    "' and '" + e2 + "' (neither finite nor infinite)");
+            throw new IllegalArgumentException("Invalid concepts '" + e1
+                    + "' and '" + e2 + "' (neither finite nor infinite)");
         }
     }
 
@@ -136,8 +137,8 @@ public class DAGConceptGraph extends ConceptGraph {
      *   an element in this concept graph, or the resulting set is infinite.
      */
     public Concept[] downSet(Object e) {
-        // FIXME: What happens if the downSet should contain some InfiniteConcepts
-        // that are lower in the lattice?
+        // FIXME: What happens if the downSet should contain some
+        // InfiniteConcepts that are lower in the lattice?
         if (e instanceof FiniteConcept) {
             Object[] set = _dag.downSet(e);
             Concept[] downSet = new Concept[set.length];
@@ -149,8 +150,8 @@ public class DAGConceptGraph extends ConceptGraph {
             return downSet;
         } else {
             // TODO: Implement downSet for InfiniteConcepts.
-            throw new IllegalArgumentException("downSet method not implemented" +
-            		" for Concept subclass " + e.getClass().getName() + ".");
+            throw new IllegalArgumentException("downSet method not implemented"
+                    + " for Concept subclass " + e.getClass().getName() + ".");
         }
     }
 
@@ -166,11 +167,12 @@ public class DAGConceptGraph extends ConceptGraph {
      */
     public Concept greatestLowerBound(Object e1, Object e2) {
         if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
-            throw new IllegalArgumentException("ConceptGraph.greatestLowerBound:"
-                    + " Arguments are not instances of FiniteConcept: "
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
+            throw new IllegalArgumentException(
+                    "ConceptGraph.greatestLowerBound:"
+                            + " Arguments are not instances of FiniteConcept: "
+                            + " arg1 = " + e1 + ", arg2 = " + e2);
         }
-        return (Concept)_dag.greatestLowerBound(e1, e2);
+        return (Concept) _dag.greatestLowerBound(e1, e2);
     }
 
     /** Return weather this concept graph is a lattice.
@@ -194,26 +196,28 @@ public class DAGConceptGraph extends ConceptGraph {
     public Concept leastUpperBound(Object e1, Object e2) {
         if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
             throw new IllegalArgumentException("ConceptGraph.leastUpperBound:"
-                    + " Arguments are not instances of Concept: "
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
+                    + " Arguments are not instances of Concept: " + " arg1 = "
+                    + e1 + ", arg2 = " + e2);
         }
         if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            Concept lub = (Concept)_dag.leastUpperBound(e1, e2);
+            Concept lub = (Concept) _dag.leastUpperBound(e1, e2);
 
             // If the least upper bound is a representative for a set of flat
             // infinite concepts but is not either of the two inputs, then the
             // actual lub must be at least one level above it.
-            if (lub instanceof FlatTokenRepresentativeConcept && !lub.equals(e1) && !lub.equals(e2)) {
-                lub = leastUpperBound(((FiniteConcept) lub).getCoverSetAbove().toArray());
+            if (lub instanceof FlatTokenRepresentativeConcept
+                    && !lub.equals(e1) && !lub.equals(e2)) {
+                lub = leastUpperBound(((FiniteConcept) lub).getCoverSetAbove()
+                        .toArray());
             }
             return lub;
         } else if (e1 instanceof InfiniteConcept) {
-            return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
+            return ((InfiniteConcept) e1).leastUpperBound((Concept) e2);
         } else if (e2 instanceof InfiniteConcept) {
-            return ((InfiniteConcept)e2).leastUpperBound((Concept)e1);
+            return ((InfiniteConcept) e2).leastUpperBound((Concept) e1);
         } else { // This case should never happen.
-            throw new IllegalArgumentException("Invalid concepts '" + e1 +
-                    "' and '" + e2 + "' (neither finite nor infinite)");
+            throw new IllegalArgumentException("Invalid concepts '" + e1
+                    + "' and '" + e2 + "' (neither finite nor infinite)");
         }
     }
 
@@ -221,7 +225,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @return The greatest element in this concept graph.
      */
     public Concept top() {
-        return (Concept)_dag.top();
+        return (Concept) _dag.top();
     }
 
     /** Compute the up-set of an element in this concept graph.
@@ -246,8 +250,8 @@ public class DAGConceptGraph extends ConceptGraph {
             return upSet;
         } else {
             // TODO: Implement upSet for InfiniteConcepts.
-            throw new IllegalArgumentException("upSet method not implemented" +
-                    " for Concept subclass " + e.getClass().getName() + ".");
+            throw new IllegalArgumentException("upSet method not implemented"
+                    + " for Concept subclass " + e.getClass().getName() + ".");
         }
     }
 

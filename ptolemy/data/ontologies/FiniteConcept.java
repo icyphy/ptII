@@ -112,7 +112,7 @@ public class FiniteConcept extends Concept implements Flowable {
      *  @return The containing ontology.
      */
     public Ontology getOntology() {
-        return (Ontology)getContainer();
+        return (Ontology) getContainer();
     }
 
     /** Return the incoming port.

@@ -62,7 +62,7 @@ public abstract class InfiniteConcept extends Concept {
     public InfiniteConcept(Ontology ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-        
+
         _name = name;
         _ontology = ontology;
     }
@@ -82,8 +82,7 @@ public abstract class InfiniteConcept extends Concept {
      *  @exception IllegalActionException If the specified concept
      *          does not have the same ontology as this one.
      */
-    public abstract int compare(Concept concept)
-            throws IllegalActionException;
+    public abstract int compare(Concept concept) throws IllegalActionException;
 
     /** Return if this concept is equal to the given object,
      *  which is only the case if compare returns CPO.SAME.
@@ -92,11 +91,10 @@ public abstract class InfiniteConcept extends Concept {
      *  @return True, if both concepts are the same. False, otherwise.
      */
     public boolean equals(Object concept) {
-        if (concept instanceof Concept
-                && getOntology() != null
-                && ((Concept)concept).getOntology() != null) {
+        if (concept instanceof Concept && getOntology() != null
+                && ((Concept) concept).getOntology() != null) {
             try {
-                return compare((Concept)concept) == CPO.SAME;
+                return compare((Concept) concept) == CPO.SAME;
             } catch (IllegalActionException e) {
                 return false;
             }
@@ -126,7 +124,8 @@ public abstract class InfiniteConcept extends Concept {
      *  @exception IllegalArgumentException If concepts are not drawn from
      *      the same ontology.
      */
-    public abstract Concept leastUpperBound(Concept concept) throws IllegalArgumentException;
+    public abstract Concept leastUpperBound(Concept concept)
+            throws IllegalArgumentException;
 
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
@@ -143,14 +142,14 @@ public abstract class InfiniteConcept extends Concept {
      *  @throws NameDuplicationException Should never be thrown.
      *  @throws IllegalActionException If the base class throws it.
      */
-    protected InfiniteConcept(Ontology ontology)
-            throws IllegalActionException, NameDuplicationException {
-          super(ontology, "InfiniteConcept_" + ++_conceptNumber);
-          setName(getName() + " (of " + getClass().getSimpleName() + ")");
-          _ontology = ontology;          
+    protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
+            NameDuplicationException {
+        super(ontology, "InfiniteConcept_" + ++_conceptNumber);
+        setName(getName() + " (of " + getClass().getSimpleName() + ")");
+        _ontology = ontology;
 
-          // Don't store InfiniteConcept instances in the MoML model.
-          setPersistent(false);
+        // Don't store InfiniteConcept instances in the MoML model.
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
