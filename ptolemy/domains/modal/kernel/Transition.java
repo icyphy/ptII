@@ -553,7 +553,7 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException if unable to retrieve a token from the 
      *  error transition
      */
-    public boolean isErrorTransition() { //throws IllegalActionException {
+    public boolean isErrorTransition() {
         try {
             return ((BooleanToken) errorTransition.getToken()).booleanValue();
         } catch (IllegalActionException ex) {
