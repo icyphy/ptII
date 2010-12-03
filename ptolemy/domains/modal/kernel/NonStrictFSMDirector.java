@@ -153,7 +153,7 @@ public class NonStrictFSMDirector extends FSMDirector {
         List inputPortList = container.inputPortList();
         State currentState = controller.currentState();
 
-        // Choose a nonpreemptive transition.
+        // Choose a preemptive transition
         List enabledTransitions = controller.enabledTransitions(currentState
                 .preemptiveTransitionList());
 
@@ -247,9 +247,14 @@ public class NonStrictFSMDirector extends FSMDirector {
                 }
             }
 
-            // Choose a nonpreemptive transition.
+            // Choose an error transition
             enabledTransitions = controller.enabledTransitions(currentState
-                    .nonpreemptiveTransitionList());
+                    .errorTransitionList());
+            if (enabledTransitions.size() == 0) {
+                //choose a nonpremptive transition
+                enabledTransitions = controller.enabledTransitions(currentState
+                        .nonpreemptiveTransitionList());
+            }
 
             // Ensure that if there are multiple enabled transitions, all of them
             // must be nondeterministic.
