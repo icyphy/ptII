@@ -558,12 +558,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             } else {
                 _foundUnknown = _foundUnknown
                         || !_referencedInputPortsByGuardKnown(transition);
-                // Try to evaluate the guard whether the inputs are known
-                // or not. An unknown input might be in a part of the
-                // guard expression that is not evaluated, e.g. if the
-                // guard expression is "true || in == 1".
+                // Add a transition the the enabled transition list if 
+                // it is an error transition and the model error flag is 
+                // set.  Otherwise, try to evaluate the guard whether 
+                //the inputs are known or not. An unknown input might be 
+                //in a part of the guard expression that is not evaluated,
+                // e.g. if the guard expression is "true || in == 1".
+
                 try {
-                    if (transition.isEnabled()) {
+
+                    if (transition.isErrorTransition()) {
+                        if (_modelError) {
+                            enabledTransitions.add(transition);
+                            clearModelError();
+                        }
+                    } else if (transition.isEnabled()) {
                         enabledTransitions.add(transition);
                     }
                 } catch (RuntimeException ex) {
@@ -572,10 +581,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // (in == value), where in is an input port whose status is
                     // known to be absent. In that case, we want to interpret
                     // the guard as false.
-                    if (transition.isErrorTransition() && _modelError) {
-                        enabledTransitions.add(transition);
-                        clearModelError();
-                    } else if (!_foundUnknown) {
+                    if (!_foundUnknown) {
                         // All referenced inputs are known.
                         // Check whether some are absent.
                         if (_referencedInputPortValuesByGuardPresent(transition)) {
@@ -686,6 +692,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         readInputs();
         List<Transition> transitionList = _currentState.outgoingPort
                 .linkedRelationList();
+
         Transition chosenTransition = chooseTransition(transitionList);
 
         // If no transition was chosen, then it still might
@@ -1440,6 +1447,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("I've set the model error");
             }
             _modelError = true;
+
         }
     }
 
