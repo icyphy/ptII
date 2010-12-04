@@ -524,6 +524,118 @@ public class Time implements Comparable {
                 * Math.pow(2.0, maximumGain);
     }
 
+    /** Return a new time object whose time value is multiplied by the
+     *  given double value. The specified double value is quantized
+     *  to a multiple of the precision before it is multiplied.
+     *  @param timeValue The amount of the time multiplied.
+     *  @return A new time object with the multiplied time value.
+     *  @exception ArithmeticException If the result is not a valid
+     *  number (the argument is NaN or the sum would be), or the given time
+     *  value does not match the time resolution.
+     */
+    public Time multiply(double timeValue) {
+        // NOTE: a double time value can be either positive infinite,
+        // negative infinite, or a NaN.
+        if (Double.isNaN(timeValue)) {
+            throw new ArithmeticException("Time: Time value can not be NaN.");
+        }
+
+        if (Double.isInfinite(timeValue)) {
+            if (timeValue < 0) {
+                // time value is a negative infinity
+                if (_isPositiveInfinite) {
+                    throw new ArithmeticException(
+                            "Time: Multiplying a positive infinity to a negative "
+                                    + "infinity results in an invalid time.");
+                } else {
+                    return NEGATIVE_INFINITY;
+                }
+            } else {
+                // time value is a positive infinity
+                if (_isNegativeInfinite) {
+                    throw new ArithmeticException(
+                            "Time: Multiplying a negative infinity to a positive "
+                                    + "infinity results in an invalid time.");
+                } else {
+                    return POSITIVE_INFINITY;
+                }
+            }
+        } else if (isInfinite()) {
+            return this;
+        } else {
+            BigInteger quantizedValue;
+
+            try {
+                quantizedValue = _doubleToMultiple(timeValue);
+            } catch (IllegalActionException e) {
+                throw new ArithmeticException("Cannot guarantee the specified "
+                        + "time resolution " + _timeResolution()
+                        + " for the time value " + timeValue + ".\nTry "
+                        + "choosing a greater time resolution "
+                        + "by configuring the timeResolution parameter of the "
+                        + "director.\n"
+                        + "Check the stack trace to see which actor or "
+                        + "parameter caused this exception.");
+            }
+
+            return new Time(_director, _timeValue.multiply(quantizedValue));
+        }
+    }
+
+    /** Return a new time object whose time value is the multiple of that of
+     *  this time object and of the specified time object. The two time
+     *  objects are expected to have directors with the same time resolution.
+     *  If they do not, then the returned result is a new Time object
+     *  representing the sum of the double values of the two Time objects.
+     *  This would not be as accurate.
+     *  @param time The time object contains the amount of time increment.
+     *  @return A new time object with the quantized and multiplied time value.
+     *  @exception ArithmeticException If the result is not a valid number
+     *   (it is the multiple of positive and negative infinity).
+     */
+    public Time multiply(Time time) {
+        // Note: a time value of a time object can be either positive infinite
+        // or negative infinite.
+        if (time._isNegativeInfinite) {
+            // the time object has a negative infinity time value
+            if (_isPositiveInfinite) {
+                throw new ArithmeticException(
+                        "Time: Multiplying a positive infinity to a negative "
+                                + "infinity yields an invalid time.");
+            } else {
+                return NEGATIVE_INFINITY;
+            }
+        } else if (time._isPositiveInfinite) {
+            // the time object has a positive infinity time value
+            if (_isNegativeInfinite) {
+                throw new ArithmeticException(
+                        "Time: Multiplying a negative infinity to a positive "
+                                + "infinity yields an invalid time.");
+            } else {
+                return POSITIVE_INFINITY;
+            }
+        } else if (isInfinite()) {
+            return this;
+        }
+
+        // Ensure the resolutions are the same.
+        try {
+            double resolution = _timeResolution();
+
+            if (resolution != time._timeResolution()) {
+                double thisValue = getDoubleValue();
+                double thatValue = time.getDoubleValue();
+                return new Time(_director, thisValue + thatValue);
+            }
+        } catch (IllegalActionException e) {
+            // If the time resolution values are malformed this
+            // should have been caught before this.
+            throw new InternalErrorException(e);
+        }
+
+        return new Time(_director, _timeValue.multiply(time._timeValue));
+    }
+
     /** Return a new time object whose time value is decreased by the
      *  given double value. Quantization is performed on both the
      *  timeValue argument and the result.
