@@ -387,6 +387,141 @@ public class Time implements Comparable {
             }
         }
     }
+    /** Return a new time object whose time value is divided by the
+     *  given double value. The specified double value is quantized
+     *  to a multiple of the precision before it is divided.
+     *  @param timeValue The amount of the time divided.
+     *  @return A new time object with the divided time value.
+     *  @exception ArithmeticException If dividing by zero, or if
+     *  the result is not a valid
+     *  number (the argument is NaN or the divisor would be), or the given time
+     *  value does not match the time resolution.
+     */
+    public Time divide(double timeValue) {
+        // NOTE: a double time value can be either positive infinite,
+        // negative infinite, or a NaN.
+        if (Double.isNaN(timeValue)) {
+            throw new ArithmeticException("Time: Time value can not be NaN.");
+        }
+
+        if (timeValue == 0.0) {
+            throw new ArithmeticException("Time: Divide a zero by " +
+                "results in an invalid time.");
+        }
+
+        if (Double.isInfinite(timeValue)) {
+            if (isInfinite()) {
+                throw new ArithmeticException(
+                        "Time: Divide a positive/negative infinity by another" +
+                        "positive/negative infinity results in an invalid time.");
+            } else {
+                // Divide anything other than infinity by infinity results in zero.
+                _timeValue = BigInteger.ZERO;
+                return this;
+            }
+        } else if (isInfinite()) {
+            if (_isPositiveInfinite) {
+                if (timeValue > 0.0) {
+                    return POSITIVE_INFINITY;
+                } else {
+                    assert(timeValue < 0.0);
+                    return NEGATIVE_INFINITY;
+                }
+            } else {
+                assert (_isNegativeInfinite);
+                if (timeValue > 0.0) {
+                    return NEGATIVE_INFINITY;
+                } else {
+                    assert(timeValue < 0.0);
+                    return POSITIVE_INFINITY;
+                }
+            }
+        } else {
+            BigInteger quantizedValue;
+
+            try {
+                quantizedValue = _doubleToMultiple(timeValue);
+            } catch (IllegalActionException e) {
+                throw new ArithmeticException("Cannot guarantee the specified "
+                        + "time resolution " + _timeResolution()
+                        + " for the time value " + timeValue + ".\nTry "
+                        + "choosing a greater time resolution "
+                        + "by configuring the timeResolution parameter of the "
+                        + "director.\n"
+                        + "Check the stack trace to see which actor or "
+                        + "parameter caused this exception.");
+            }
+
+            return new Time(_director, _timeValue.divide(quantizedValue));
+        }
+    }
+
+    /** Return a new time object whose time value is the division of that of
+     *  this time object and of the specified time object. The two time
+     *  objects are expected to have directors with the same time resolution.
+     *  If they do not, then the returned result is a new Time object
+     *  representing the sum of the double values of the two Time objects.
+     *  This would not be as accurate.
+     *  @param time The time object contains the amount of time increment.
+     *  @return A new time object with the quantized and multiplied time value.
+     *  @exception ArithmeticException If divide by zero, or if
+     *  the result is not a valid number
+     *   (it is the divisor of positive/negative infinity by another positive/
+     *   negative infinity).
+     */
+    public Time divide(Time time) {
+        // Note: a time value of a time object can be either positive infinite
+        // or negative infinite.
+        if (time.isZero()) {
+            throw new ArithmeticException("Time: Divide a zero by " +
+            "results in an invalid time.");
+        }
+        if (time.isInfinite()) {
+            if (isInfinite()) {
+                throw new ArithmeticException(
+                        "Time: Divide a positive/negative infinity by another" +
+                        "positive/negative infinity results in an invalid time.");
+            } else {
+                // Divide anything other than infinity by infinity results in zero.
+                _timeValue = BigInteger.ZERO;
+                return this;
+            }
+        } else if (isInfinite()) {
+            if (_isPositiveInfinite) {
+                if (time.isPositive()) {
+                    return POSITIVE_INFINITY;
+                } else {
+                    assert(time.isNegative());
+                    return NEGATIVE_INFINITY;
+                }
+            } else {
+                assert (_isNegativeInfinite);
+                if (time.isPositive()) {
+                    return NEGATIVE_INFINITY;
+                } else {
+                    assert(time.isNegative());
+                    return POSITIVE_INFINITY;
+                }
+            }
+        }
+
+        // Ensure the resolutions are the same.
+        try {
+            double resolution = _timeResolution();
+
+            if (resolution != time._timeResolution()) {
+                double thisValue = getDoubleValue();
+                double thatValue = time.getDoubleValue();
+                return new Time(_director, thisValue / thatValue);
+            }
+        } catch (IllegalActionException e) {
+            // If the time resolution values are malformed this
+            // should have been caught before this.
+            throw new InternalErrorException(e);
+        }
+
+        return new Time(_director, _timeValue.divide(time._timeValue));
+    }
 
     /** Return true if this time object has the same time value as
      *  that of the given time object.
@@ -467,11 +602,35 @@ public class Time implements Comparable {
         return _isNegativeInfinite || _isPositiveInfinite;
     }
 
+    /** Return true if the current time value is a negative value
+     *  (including negative infinity).
+     *  @return true if the current time value is a negative value
+     *  (including negative infinity).
+     */
+    public final boolean isNegative() {
+        if (_timeValue != null) {
+            return (_timeValue.signum() == -1);
+        }
+        return _isNegativeInfinite;
+    }
+
     /** Return true if the current time value is a negative infinity.
      *  @return true if the current time value is a negative infinity.
      */
     public final boolean isNegativeInfinite() {
         return _isNegativeInfinite;
+    }
+    
+    /** Return true if the current time value is a positive value
+     *  (including positive infinity).
+     *  @return true if the current time value is a positive value
+     *  (including positive infinity).
+     */
+    public final boolean isPositive() {
+        if (_timeValue != null) {
+            return (_timeValue.signum() == 1);
+        }
+        return _isPositiveInfinite;
     }
 
     /** Return true if the current time value is a positive infinity.
@@ -479,6 +638,16 @@ public class Time implements Comparable {
      */
     public final boolean isPositiveInfinite() {
         return _isPositiveInfinite;
+    }
+
+    /** Return true if the current time value is zero.
+     *  @return true if the current time value is a zero.
+     */
+    public final boolean isZero() {
+        if (_timeValue != null) {
+            return (_timeValue.signum() == 0);
+        }
+        return false;
     }
 
     /** Return the maximum value of time whose representation as a double
@@ -530,7 +699,7 @@ public class Time implements Comparable {
      *  @param timeValue The amount of the time multiplied.
      *  @return A new time object with the multiplied time value.
      *  @exception ArithmeticException If the result is not a valid
-     *  number (the argument is NaN or the sum would be), or the given time
+     *  number (the argument is NaN or the multiple would be), or the given time
      *  value does not match the time resolution.
      */
     public Time multiply(double timeValue) {
@@ -541,27 +710,48 @@ public class Time implements Comparable {
         }
 
         if (Double.isInfinite(timeValue)) {
+            if (isZero()) {
+                throw new ArithmeticException("Time: multiply positive or negative " +
+                		"infinity to 0.0 results in an invalid time.");
+            }
             if (timeValue < 0) {
                 // time value is a negative infinity
-                if (_isPositiveInfinite) {
-                    throw new ArithmeticException(
-                            "Time: Multiplying a positive infinity to a negative "
-                                    + "infinity results in an invalid time.");
-                } else {
+                if (isPositive()) {
                     return NEGATIVE_INFINITY;
-                }
-            } else {
-                // time value is a positive infinity
-                if (_isNegativeInfinite) {
-                    throw new ArithmeticException(
-                            "Time: Multiplying a negative infinity to a positive "
-                                    + "infinity results in an invalid time.");
                 } else {
                     return POSITIVE_INFINITY;
                 }
+            } else {
+                // time value is a positive infinity
+                if (isPositive()) {
+                    return POSITIVE_INFINITY;
+                } else {
+                    return NEGATIVE_INFINITY;
+                }
             }
         } else if (isInfinite()) {
-            return this;
+            if (timeValue == 0.0) {
+                throw new ArithmeticException("Time: multiply positive or negative " +
+                                "infinity to 0.0 results in an invalid time.");
+            }
+            if (_isNegativeInfinite) {
+                // _timeValue is negative infinity
+                if (timeValue < 0.0) {
+                    return POSITIVE_INFINITY;
+                } else {
+                    assert(timeValue > 0.0);
+                    return NEGATIVE_INFINITY;
+                }
+            } else {
+                // _timeValue is positive infinity
+                assert(_isPositiveInfinite);
+                if (timeValue < 0.0) {
+                    return NEGATIVE_INFINITY;
+                } else {
+                    assert(timeValue > 0.0);
+                    return POSITIVE_INFINITY;
+                }
+            }
         } else {
             BigInteger quantizedValue;
 
@@ -591,31 +781,58 @@ public class Time implements Comparable {
      *  @param time The time object contains the amount of time increment.
      *  @return A new time object with the quantized and multiplied time value.
      *  @exception ArithmeticException If the result is not a valid number
-     *   (it is the multiple of positive and negative infinity).
+     *   (it is the multiple of positive/negative infinity and zero).
      */
     public Time multiply(Time time) {
         // Note: a time value of a time object can be either positive infinite
         // or negative infinite.
-        if (time._isNegativeInfinite) {
-            // the time object has a negative infinity time value
-            if (_isPositiveInfinite) {
-                throw new ArithmeticException(
-                        "Time: Multiplying a positive infinity to a negative "
-                                + "infinity yields an invalid time.");
-            } else {
-                return NEGATIVE_INFINITY;
-            }
-        } else if (time._isPositiveInfinite) {
-            // the time object has a positive infinity time value
-            if (_isNegativeInfinite) {
-                throw new ArithmeticException(
-                        "Time: Multiplying a negative infinity to a positive "
-                                + "infinity yields an invalid time.");
-            } else {
-                return POSITIVE_INFINITY;
+        if (time.isInfinite()) {
+            if (time.isNegativeInfinite()) {
+                // the time object has a negative infinity time value
+                if (isZero()) {
+                    throw new ArithmeticException("Time: multiply positive or negative " +
+                    "infinity to 0.0 results in an invalid time.");
+                }
+                if (isPositive()) {
+                    return NEGATIVE_INFINITY;
+                } else {
+                    assert(isNegative());
+                    return POSITIVE_INFINITY;
+                }
+            } else if (time.isPositiveInfinite()) {
+                // the time object has a positive infinity time value
+                if (isZero()) {
+                    throw new ArithmeticException("Time: multiply positive or negative " +
+                    "infinity to 0.0 results in an invalid time.");
+                }
+                if (isPositive()) {
+                    return POSITIVE_INFINITY;
+                } else {
+                    assert(isNegative());
+                    return NEGATIVE_INFINITY;
+                }
             }
         } else if (isInfinite()) {
-            return this;
+            if (time.isZero()) {
+                throw new ArithmeticException("Time: multiply positive or negative " +
+                "infinity to 0.0 results in an invalid time.");
+            }
+            if (_isNegativeInfinite) {
+                if (time.isNegative()) {
+                    return POSITIVE_INFINITY;
+                } else {
+                    assert (time.isPositive());
+                    return NEGATIVE_INFINITY;
+                }
+            } else {
+                assert(_isPositiveInfinite);
+                if (time.isNegative()) {
+                    return NEGATIVE_INFINITY;
+                } else {
+                    assert (time.isPositive());
+                    return POSITIVE_INFINITY;
+                }
+            }
         }
 
         // Ensure the resolutions are the same.
@@ -625,7 +842,7 @@ public class Time implements Comparable {
             if (resolution != time._timeResolution()) {
                 double thisValue = getDoubleValue();
                 double thatValue = time.getDoubleValue();
-                return new Time(_director, thisValue + thatValue);
+                return new Time(_director, thisValue * thatValue);
             }
         } catch (IllegalActionException e) {
             // If the time resolution values are malformed this
