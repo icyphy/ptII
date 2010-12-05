@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 //// ChoiceParameter
 
 /**
- This parameter constains a string value and has a list of acceptable choices.
+ This parameter contains a string value and has a list of acceptable choices.
 
  @author Thomas Huining Feng
  @version $Id$
