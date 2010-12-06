@@ -561,12 +561,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Add a transition the the enabled transition list if 
                 // it is an error transition and the model error flag is 
                 // set.  Otherwise, try to evaluate the guard whether 
-                //the inputs are known or not. An unknown input might be 
-                //in a part of the guard expression that is not evaluated,
+                // the inputs are known or not. An unknown input might be 
+                // in a part of the guard expression that is not evaluated,
                 // e.g. if the guard expression is "true || in == 1".
 
                 try {
-
                     if (transition.isErrorTransition()) {
                         if (_modelError) {
                             enabledTransitions.add(transition);
