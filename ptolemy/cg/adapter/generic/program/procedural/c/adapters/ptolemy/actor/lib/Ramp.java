@@ -1,6 +1,6 @@
-/* A adapter class for ptolemy.actor.lib.Ramp
+/* An adapter class for ptolemy.actor.lib.Ramp
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,13 +32,13 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 //// Ramp
 
 /**
- A adapter class for ptolemy.actor.lib.Ramp.
+ An adapter class for ptolemy.actor.lib.Ramp.
 
- @author Gang Zhou, Bert Rodiers
+ @author Jia Zou, based on Ramp.java by Gang Zhou, Bert Rodiers
  @version $Id: Ramp.java 57044 2010-01-27 22:41:05Z cxh $
  @since Ptolemy II 8.0
- @Pt.ProposedRating Green (zgang)
- @Pt.AcceptedRating Green (cxh)
+ @Pt.ProposedRating Red (jiazou)
+ @Pt.AcceptedRating Red (jiazou)
  */
 public class Ramp extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Ramp {
     /**
