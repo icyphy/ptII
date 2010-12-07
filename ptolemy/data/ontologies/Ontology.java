@@ -418,15 +418,8 @@ public class Ontology extends CompositeEntity {
     // Maybe we should pull this method out into a generic utility class that
     // can return an object instance when passed a class and an array of objects
     // for inputs to the constructor.
-    private void _createOperationsClassInstance(Class operationsClass)
+    private void _createOperationsClassInstance(Class<? extends ExpressionOperationsForInfiniteConcepts> operationsClass)
             throws IllegalActionException {
-
-        if (!ExpressionOperationsForInfiniteConcepts.class
-                .isAssignableFrom(operationsClass)) {
-            throw new IllegalActionException(this, "The class "
-                    + operationsClass.getName() + " is not a subclass of "
-                    + "ExpressionOperationsForInfiniteConcepts.");
-        }
 
         Constructor operationsConstructor = null;
         try {
