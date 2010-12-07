@@ -312,6 +312,7 @@ public class Ontology extends CompositeEntity {
      *  relation list, and return it.
      *  This method is write-synchronized on the workspace and increments
      *  its version number.
+     *  This overrides {@link CompositeEntity#newRelation} of CompositeEntity.
      *  @param name The name of the new relation.
      *  @return The new relation.
      *  @exception IllegalActionException If name argument is null.
@@ -334,7 +335,7 @@ public class Ontology extends CompositeEntity {
     ////                         protected methods                 ////
 
     /** Return the graph represented by this ontology.
-     *  Graph is weighted by Concepts on the nodes and ConceptRelations on
+     *  Graph is weighted by FiniteConcepts on the nodes and ConceptRelations on
      *  the edges.
      *  @return The concept graph.
      */
