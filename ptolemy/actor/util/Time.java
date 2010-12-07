@@ -438,7 +438,7 @@ public class Time implements Comparable {
             }
         } else {
             BigInteger quantizedValue;
-
+            BigInteger resolutionInverse;
             try {
                 quantizedValue = _doubleToMultiple(timeValue);
             } catch (IllegalActionException e) {
@@ -451,8 +451,24 @@ public class Time implements Comparable {
                         + "Check the stack trace to see which actor or "
                         + "parameter caused this exception.");
             }
-
-            return new Time(_director, _timeValue.divide(quantizedValue));
+            try {
+                resolutionInverse = _doubleToMultiple(1.0);
+            } catch (IllegalActionException e) {
+                throw new ArithmeticException("Cannot guarantee the specified "
+                        + "time resolution " + _timeResolution()
+                        + " for the time value 1.0. The value of 1.0 "
+                        + "is needed for time division.\nTry "
+                        + "choosing a greater time resolution "
+                        + "by configuring the timeResolution parameter of the "
+                        + "director.\n"
+                        + "Check the stack trace to see which actor, "
+                        + "parameter or director caused this exception.");
+            }
+            // Since the values are now quantized, when a division is performed,
+            // the resolutions are canceled out. Thus we need to multiply by
+            // 1/resolution.
+            return new Time(_director, _timeValue.multiply(resolutionInverse)
+                    .divide(quantizedValue));
         }
     }
 
@@ -519,8 +535,25 @@ public class Time implements Comparable {
             // should have been caught before this.
             throw new InternalErrorException(e);
         }
-
-        return new Time(_director, _timeValue.divide(time._timeValue));
+        BigInteger resolutionInverse;
+        try {
+            resolutionInverse = _doubleToMultiple(1.0);
+        } catch (IllegalActionException e) {
+            throw new ArithmeticException("Cannot guarantee the specified "
+                    + "time resolution " + _timeResolution()
+                    + " for the time value 1.0. The value of 1.0 "
+                    + "is needed for time division.\nTry "
+                    + "choosing a greater time resolution "
+                    + "by configuring the timeResolution parameter of the "
+                    + "director.\n"
+                    + "Check the stack trace to see which actor, "
+                    + "parameter or director caused this exception.");
+        }
+        // Since the values are now quantized, when a division is performed,
+        // the resolutions are canceled out. Thus we need to multiply by
+        // 1/resolution.
+        return new Time(_director, _timeValue.multiply(resolutionInverse)
+                .divide(time._timeValue));
     }
 
     /** Return true if this time object has the same time value as
@@ -754,6 +787,7 @@ public class Time implements Comparable {
             }
         } else {
             BigInteger quantizedValue;
+            BigInteger resolutionInverse;
 
             try {
                 quantizedValue = _doubleToMultiple(timeValue);
@@ -767,8 +801,24 @@ public class Time implements Comparable {
                         + "Check the stack trace to see which actor or "
                         + "parameter caused this exception.");
             }
-
-            return new Time(_director, _timeValue.multiply(quantizedValue));
+            try {
+                resolutionInverse = _doubleToMultiple(1.0);
+            } catch (IllegalActionException e) {
+                throw new ArithmeticException("Cannot guarantee the specified "
+                        + "time resolution " + _timeResolution()
+                        + " for the time value 1.0. The value of 1.0 "
+                        + "is needed for time multiplication.\nTry "
+                        + "choosing a greater time resolution "
+                        + "by configuring the timeResolution parameter of the "
+                        + "director.\n"
+                        + "Check the stack trace to see which actor, "
+                        + "parameter or director caused this exception.");
+            }
+            // Since the values are now quantized, when a multiplication is
+            // performed, the resolutions are canceled out. Thus we need to
+            // multiply by 1/resolution.
+            return new Time(_director, _timeValue.multiply(quantizedValue)
+                    .divide(resolutionInverse));
         }
     }
 
@@ -849,8 +899,25 @@ public class Time implements Comparable {
             // should have been caught before this.
             throw new InternalErrorException(e);
         }
-
-        return new Time(_director, _timeValue.multiply(time._timeValue));
+        BigInteger resolutionInverse;
+        try {
+            resolutionInverse = _doubleToMultiple(1.0);
+        } catch (IllegalActionException e) {
+            throw new ArithmeticException("Cannot guarantee the specified "
+                    + "time resolution " + _timeResolution()
+                    + " for the time value 1.0. The value of 1.0 "
+                    + "is needed for time multiplication.\nTry "
+                    + "choosing a greater time resolution "
+                    + "by configuring the timeResolution parameter of the "
+                    + "director.\n"
+                    + "Check the stack trace to see which actor, "
+                    + "parameter or director caused this exception.");
+        }
+        // Since the values are now quantized, when a multiplication is
+        // performed, the resolutions are canceled out. Thus we need to
+        // multiply by 1/resolution.
+        return new Time(_director, _timeValue.multiply(time._timeValue)
+                .divide(resolutionInverse));
     }
 
     /** Return a new time object whose time value is decreased by the
