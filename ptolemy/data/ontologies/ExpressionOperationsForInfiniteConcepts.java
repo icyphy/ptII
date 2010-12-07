@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public abstract class ExpressionOperationsForInfiniteConcepts {
     
-    /** Create a new ExpressionOperationsForInfiniteConcepts onject.
+    /** Create a new ExpressionOperationsForInfiniteConcepts object.
      *  @param ontology The ontology over which these operations are defined.
      */
     public ExpressionOperationsForInfiniteConcepts(Ontology ontology) {
