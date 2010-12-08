@@ -180,6 +180,7 @@
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
             <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
+            <input source="ptolemy/actor/lib/mail/mail.xml"/>
 
 	    <!-- jxta is not shipping in 4.0 -->
             <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"-->
