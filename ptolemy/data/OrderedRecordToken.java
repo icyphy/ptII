@@ -105,11 +105,12 @@ public class OrderedRecordToken extends RecordToken {
     }
 
     /** Return the value of this token as a string.
-     *  The syntax is similar to the ML record:
-     *  <code>{<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...}</code>
+     *  The syntax is similar to that of a record, but using square braces
+     *  instead of curly braces,
+     *  <code>[<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...]</code>
      *  The record fields are listed in the their original order
-     *  @return A String beginning with "{" that contains label and value
-     *  pairs separated by commas, ending with "}".
+     *  @return A String beginning with "[" that contains label and value
+     *  pairs separated by commas, ending with "]".
      */
     public String toString() {
         Object[] labelsObjects = _fields.keySet().toArray();
