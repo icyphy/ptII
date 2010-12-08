@@ -184,7 +184,7 @@ test Time-4.2.1 {multiply Infinite DoubleTokens for comparison with Time} {
     set DoubleInfinityMultiplyDoubleInfinity [$DoubleInfinity multiply $DoubleInfinity]
 
     set DoubleZeroMultiplyDoubleInfinity [$DoubleZero multiply $DoubleInfinity]
-    set DoubleInfinityMultiplyDoubleZero [$DoubleInfinity multiply $DoubleOne]
+    set DoubleInfinityMultiplyDoubleZero [$DoubleInfinity multiply $DoubleZero]
     set DoubleInfinityMultiplyDoubleInfinity [$DoubleInfinity multiply $DoubleInfinity]
 
 
@@ -195,7 +195,7 @@ test Time-4.2.1 {multiply Infinite DoubleTokens for comparison with Time} {
 	[$DoubleZeroMultiplyDoubleInfinity toString] \
 	[$DoubleInfinityMultiplyDoubleInfinity toString] \
 	[$DoubleInfinityMultiplyDoubleZero toString]
-} {Infinity Infinity Infinity NaN Infinity Infinity}
+} {Infinity Infinity Infinity NaN Infinity NaN}
 
 ######################################################################
 ####
