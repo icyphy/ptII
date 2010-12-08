@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
@@ -166,7 +167,7 @@ public class RecordType extends StructuredType implements Cloneable {
 
     /** Convert the argument token into a RecordToken having this
      *  type, if lossless conversion can be done.  The argument must
-     *  be an RecordToken, and its type must be a subtype of this
+     *  be a RecordToken, and its type must be a subtype of this
      *  record type.  The argument token must have at least the fields
      *  of this type.  Extra fields in the argument token that are not
      *  in this type are removed.
@@ -210,7 +211,18 @@ public class RecordType extends StructuredType implements Cloneable {
             labelStringArray[i] = label;
         }
 
-        return new RecordToken(labelStringArray, values);
+        // If the original token preserves ordering of the
+        // fields, then the new one will too.
+        // FIXME: This seems questionable. But if we don't
+        // do this, then the ordering will be mysteriously lost
+        // when, for example, an OrderedRecordToken is put
+        // into an ArrayToken. A better solution would be
+        // to include OrderedRecordToken in the type system.
+        if (recordToken instanceof OrderedRecordToken) {
+            return new OrderedRecordToken(labelStringArray, values);
+        } else {
+            return new RecordToken(labelStringArray, values);
+        }
     }
 
     /** Return the depth of a record type. The depth of a
