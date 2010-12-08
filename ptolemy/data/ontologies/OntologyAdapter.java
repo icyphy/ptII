@@ -462,19 +462,26 @@ public abstract class OntologyAdapter {
         return _getASTNodeAdapters();
     }
 
-    /**
-     * Return the ASTPtRootNode for the specified Attribute.
+    /** Return the ASTPtRootNode for the specified Attribute.
      *
-     * @param attribute The specified attribute.
-     *
-     * @return The ASTPtRootNode for the specified Attribute.
-     *
-     * @exception IllegalActionException Thrown if
-     * {#link ptolemy.data.properties.PropertySolver#getParseTree(Attribute)} throws it.
+     *  @param attribute The specified attribute.
+     *  @return The ASTPtRootNode for the specified Attribute.
+     *  @exception IllegalActionException Thrown if
+     *   {@link ptolemy.data.ontologies.OntologySolver#getParseTree(Attribute)} throws it.
      */
     protected ASTPtRootNode getParseTree(Attribute attribute)
             throws IllegalActionException {
         return _solver.getParseTree(attribute);
+    }
+    
+    /** Record the association between the specified ASTPtRootNode and the
+     *  specified Attribute.
+     *
+     *  @param node The specified ASTPtRootNode.
+     *  @param attribute The specified Attribute.
+     */
+    protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
+        _solver.getOntologySolverUtilities().putAttribute(node, attribute);
     }
 
     ///////////////////////////////////////////////////////////////////

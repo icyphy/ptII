@@ -36,7 +36,7 @@ import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.data.ontologies.OntologySolverBase;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
-import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -626,14 +626,8 @@ public class LatticeOntologySolver extends OntologySolver {
 
         if (adapter == null) {
             if (component instanceof FSMActor) {
-                /* Removed to make compile
-                 * --Ben on 12/04/2009
-                adapter = new PropertyConstraintFSMHelper(this,
+                adapter = new LatticeOntologyModalFSMAdapter(this,
                         (FSMActor) component);
-                } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
-                adapter = new PropertyConstraintModalFSMHelper(this,
-                        (ptolemy.domains.modal.kernel.FSMActor) component);
-                 */
             } else if (component instanceof CompositeEntity) {
                 adapter = new LatticeOntologyCompositeAdapter(this,
                         (CompositeEntity) component);
