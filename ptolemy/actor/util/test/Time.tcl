@@ -155,3 +155,32 @@ test Time-3.2 {equals a non-time} {
      # e.equals(null) returns false."
      list [$t1 equals [java::new java.util.Date]]
 } {0}
+
+######################################################################
+####
+#
+test Time-4.1 {multiply} {
+	catch {[$t1 multiply $tPositiveInfinity] } errMsg1
+	catch {[$t1 multiply $tNegativeInfinity] } errMsg2
+	catch {[$tPositiveInfinity multiply $t1] } errMsg3
+	catch {[$tNegativeInfinity multiply $t1] } errMsg4
+	list $errMsg1 "\n" $errMsg2 "\n" $errMsg3 "\n" $errMsg4
+} {{java.lang.ArithmeticException: Time: multiply positive or negative infinity to 0.0 results in an invalid time.} {
+} {java.lang.ArithmeticException: Time: multiply positive or negative infinity to 0.0 results in an invalid time.} {
+} {java.lang.ArithmeticException: Time: multiply positive or negative infinity to 0.0 results in an invalid time.} {
+} {java.lang.ArithmeticException: Time: multiply positive or negative infinity to 0.0 results in an invalid time.}}
+
+######################################################################
+####
+#
+test Time-4.1 {divide} {
+	set tNaNDouble [java::new java.lang.Double NaN]
+	catch {[$tPositiveInfinity divide $tPositiveInfinity] } errMsg1
+	catch {[$tPositiveInfinity divide $tNegativeInfinity] } errMsg2
+	catch {[$tNegativeInfinity divide $tPositiveInfinity] } errMsg3
+	catch {[$tNegativeInfinity divide $tNegativeInfinity] } errMsg4
+	list $errMsg1 "\n" $errMsg2 "\n" $errMsg3 "\n" $errMsg4
+} {{java.lang.ArithmeticException: Time: Divide a positive/negative infinity by another positive/negative infinity results in an invalid time.} {
+} {java.lang.ArithmeticException: Time: Divide a positive/negative infinity by another positive/negative infinity results in an invalid time.} {
+} {java.lang.ArithmeticException: Time: Divide a positive/negative infinity by another positive/negative infinity results in an invalid time.} {
+} {java.lang.ArithmeticException: Time: Divide a positive/negative infinity by another positive/negative infinity results in an invalid time.}}
