@@ -584,6 +584,17 @@ PTJAVACV_DIR =	@PTJAVACV_DIR@
 # PTJAVACV_PACKAGES is used in ptII/doc/makefile
 PTJAVACV_PACKAGES =	@PTJAVACV_PACKAGES@ 
 
+# Set to mail and used in
+# $PTII/ptolemy/actor/lib/makefile if JavaMail's mail.jar was found.
+PTJAVAMAIL_DIR =	@PTJAVAMAIL_DIR@
+
+# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+PTJAVAMAIL_JARS = 	@PTJAVAMAIL_JARS@
+
+# Ptolemy II packages that use JavaMail framework.
+# PTJMF_PACKAGES is used in ptII/doc/makefile.
+PTJAVAMAIL_PACKAGES =	@PTJAVAMAIL_PACKAGES@
+
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
 

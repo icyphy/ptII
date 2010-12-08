@@ -45,6 +45,9 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Java Advanced Imaging and sets PTJAI_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJAI_DIR is empty.
 #
+# $PTII/configure looks for JavaMail sets PTJAVAMAIL_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVAMAIL_DIR is empty.
+
 # $PTII/configure looks for Java Media Framework and sets PTJMF_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJMF_DIR is empty.
 #
@@ -67,7 +70,7 @@ DIRS = 		conversions embeddedJava gui logic hoc image \
 		javasound jni jopio net io xslt \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) \
-		$(PTEXCEL_DIR) $(PTJAI_DIR) \
+		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTOPENCV_DIR) \
 		$(PTX10_DIR)

@@ -2036,6 +2036,67 @@ if test -z "$PTJAI_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       JavaMail is a Java interface that sends email
+#	http://www.oracle.com/technetwork/java/index-138643.html
+#--------------------------------------------------------------------
+
+# PTJAVAMAIL_DIR is set to mail
+# $PTII/ptolemy/domains/makefile if JavaMail was found
+PTJAVAMAIL_DIR=
+
+# JavaMail Directory.  JavaMail is available from
+# http://www.oracle.com/technetwork/java/index-138643.html
+JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+
+# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+PTJAVAMAIL_JARS=
+
+JAVAMAIL_USER_DIR="$PTII/ptolemy/actor/lib/mail"
+# We only need to look for JavaMail if $JAVAMAIL_USER_DIR
+if test ! -d "$JAVAMAIL_USER_DIR"; then
+    PT_MSG_STATUS([$JAVAMAIL_USER_DIR is not present,
+    so we need not find the JavaMail interface.])
+else
+    AC_MSG_CHECKING([for JavaMail directory])
+    AC_ARG_WITH(jogl, [  --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
+                          defaults to \$PTII/vendors/oracle/javamail],
+	JAVAMAIL_DIR=$withval,
+	JAVAMAIL_DIR=$PTII/vendors/oracle/javamail)
+
+    if test -f "$JAVAMAIL_DIR/mail.jar"; then
+	# Set to mail and used in
+	# $PTII/ptolemy/actor/libmakefile if mail.jar was found.
+	PTJAVAMAIL_DIR=mail
+        # PTJAVAMAIL_PACKAGES is used in ptII/doc/makefile
+	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
+
+	PTJAVAMAIL_JARS="${CLASSPATHSEPARATOR}${JAVAMAIL_DIR}/mail.jar"
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$JAVAMAIL_DIR/mail.jar\"/>"
+	PT_MSG_RESULT([$JAVAMAIL_DIR])
+    fi
+
+    if test "$PTJAVAMAIL_DIR" = ""; then
+        AC_MSG_WARN([Failed to find mail.jar
+    in $JAVAMAIL_DIR
+    perhaps the JavaMail interface is not installed?
+    You need not download the JavaMail interface unless you
+    plan on using the Ptolemy actors that send email.
+    The JavaMail interface can be downloaded from
+    http://www.oracle.com/technetwork/java/index-138643.html
+    an untar'd into $PTII/vendors/oracle.  Note that configure looks
+    for $PTII/vendors/oracle/javamail, so either move the JavaMail distribution
+    or create a symbolic link and then rerun configure.] )
+	# Note that we don't substitute in the ${PTII} here
+	JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+    fi
+fi
+
+if test -z "$PTJAVAMAIL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/mail/"
+fi 
+
+#--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
 #       see http://java.sun.com/products/java-media/jmf
@@ -5320,6 +5381,17 @@ AC_SUBST(PTJAVA_HOME)
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 AC_SUBST(PTJAVA3D_DIR)
+
+# Set to mail and used in
+# $PTII/ptolemy/actor/lib/makefile if JavaMail's mail.jar was found.
+AC_SUBST(PTJAVAMAIL_DIR)
+
+# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+AC_SUBST(PTJAVAMAIL_JARS)
+
+# Ptolemy II packages that use JavaMail framework.
+# PTJMF_PACKAGES is used in ptII/doc/makefile.
+AC_SUBST(PTJAVAMAIL_PACKAGES)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)
