@@ -176,8 +176,6 @@ public class LineReader extends Source {
                 } else {
                     _reader = fileOrURL.openForReading();
                 }
-
-                _reachedEOF = false;
             }
         } else if (attribute == numberOfLinesToSkip) {
             int linesToSkip = ((IntToken) numberOfLinesToSkip.getToken())
@@ -201,7 +199,6 @@ public class LineReader extends Source {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LineReader newObject = (LineReader) super.clone(workspace);
         newObject._currentLine = null;
-        newObject._reachedEOF = false;
         newObject._reader = null;
         return newObject;
     }
@@ -215,6 +212,11 @@ public class LineReader extends Source {
 
         if (_currentLine != null) {
             output.broadcast(new StringToken(_currentLine));
+        }
+        if (_nextLine == null) {
+            endOfFile.broadcast(BooleanToken.TRUE);
+        } else {
+            endOfFile.broadcast(BooleanToken.FALSE);
         }
     }
 
@@ -241,32 +243,29 @@ public class LineReader extends Source {
         }
     }
 
-    /** Read the next line from the file. If there is no next line,
-     *  return false.  Otherwise, return whatever the superclass returns.
+    /** Read the next line from the file.
+     *  If the current line is the last line in the file,
+     *  then return false.
      *  @exception IllegalActionException If there is a problem reading
      *   the file.
      */
     public boolean postfire() throws IllegalActionException {
+        boolean returnValue = super.postfire();
         if (_reader == null) {
             return false;
         }
-
+        _currentLine = _nextLine;
+        // If the next line is null, then the current iteration
+        // is processing the last line. Request to not be refired.
+        if (_nextLine == null) {
+            returnValue = false;
+        }
         try {
-            _currentLine = _reader.readLine();
-
-            if (_currentLine == null) {
-                // In case the return value gets ignored by the domain:
-                _currentLine = "EOF";
-                _reachedEOF = true;
-                endOfFile.broadcast(BooleanToken.TRUE);
-                return false;
-            }
-
-            endOfFile.broadcast(BooleanToken.FALSE);
-            return super.postfire();
+            _nextLine = _reader.readLine();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Postfire failed");
         }
+        return returnValue;
     }
 
     /** Return false if there is no more data available in the file.
@@ -276,7 +275,8 @@ public class LineReader extends Source {
     public boolean prefire() throws IllegalActionException {
         _firedSinceWrapup = true;
 
-        if (_reachedEOF) {
+        // If there is no current line, refuse to fire.
+        if (_currentLine == null) {
             return false;
         } else {
             return super.prefire();
@@ -313,6 +313,9 @@ public class LineReader extends Source {
     /** Cache of most recently read data. */
     protected String _currentLine;
 
+    /** The next line after the current line. */
+    protected String _nextLine;
+
     /** The current reader for the input file. */
     protected BufferedReader _reader;
 
@@ -323,7 +326,6 @@ public class LineReader extends Source {
      */
     private void _openAndReadFirstLine() throws IllegalActionException {
         _reader = fileOrURL.openForReading();
-        _reachedEOF = false;
 
         try {
             // Read (numberOfLinesToSkip + 1) lines
@@ -336,11 +338,12 @@ public class LineReader extends Source {
                 if (_currentLine == null) {
                     throw new IllegalActionException(this, "The file '"
                             + fileOrURL.stringValue() + "' does not "
-                            + "have enough lines.");
+                            + "have any data.");
                 }
             }
+            _nextLine = _reader.readLine();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Preinitialize failed.");
+            throw new IllegalActionException(this, ex, "Failed to read file in preinitialize().");
         }
     }
 
@@ -351,10 +354,7 @@ public class LineReader extends Source {
      *  has not.  That is, we are in the middle of a run.
      */
     private boolean _firedSinceWrapup = false;
-
+    
     /** Previous value of fileOrURL parameter. */
     private String _previousFileOrURL;
-
-    /** Indicator that we have reached the end of file. */
-    private boolean _reachedEOF = false;
 }
