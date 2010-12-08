@@ -412,7 +412,7 @@ public class Time implements Comparable {
         if (Double.isInfinite(timeValue)) {
             if (isInfinite()) {
                 throw new ArithmeticException(
-                        "Time: Divide a positive/negative infinity by another" +
+                        "Time: Divide a positive/negative infinity by another " +
                         "positive/negative infinity results in an invalid time.");
             } else {
                 // Divide anything other than infinity by infinity results in zero.
@@ -495,7 +495,7 @@ public class Time implements Comparable {
         if (time.isInfinite()) {
             if (isInfinite()) {
                 throw new ArithmeticException(
-                        "Time: Divide a positive/negative infinity by another" +
+                        "Time: Divide a positive/negative infinity by another " +
                         "positive/negative infinity results in an invalid time.");
             } else {
                 // Divide anything other than infinity by infinity results in zero.
