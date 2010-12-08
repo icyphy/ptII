@@ -170,10 +170,70 @@ test Time-4.1 {multiply} {
 } {java.lang.ArithmeticException: Time: multiply positive or negative infinity to 0.0 results in an invalid time.} {
 } {java.lang.ArithmeticException: Time: multiply positive or negative infinity to 0.0 results in an invalid time.}}
 
+
 ######################################################################
 ####
 #
-test Time-4.1 {divide} {
+test Time-4.2.1 {multiply Infinite DoubleTokens for comparison with Time} {
+    set DoubleOne [java::new ptolemy.data.DoubleToken 1.0]
+    set DoubleZero [java::new ptolemy.data.DoubleToken 0.0]
+    set DoubleInfinity [java::cast ptolemy.data.DoubleToken [$DoubleOne divide $DoubleZero]]
+
+    set DoubleOneMultiplyDoubleInfinity [$DoubleOne multiply $DoubleInfinity]
+    set DoubleInfinityMultiplyDoubleOne [$DoubleInfinity multiply $DoubleOne]
+    set DoubleInfinityMultiplyDoubleInfinity [$DoubleInfinity multiply $DoubleInfinity]
+
+    set DoubleZeroMultiplyDoubleInfinity [$DoubleZero multiply $DoubleInfinity]
+    set DoubleInfinityMultiplyDoubleZero [$DoubleInfinity multiply $DoubleOne]
+    set DoubleInfinityMultiplyDoubleInfinity [$DoubleInfinity multiply $DoubleInfinity]
+
+
+    list \
+	[$DoubleOneMultiplyDoubleInfinity toString] \
+	[$DoubleInfinityMultiplyDoubleInfinity toString ]\
+	[$DoubleInfinityMultiplyDoubleOne toString] \
+	[$DoubleZeroMultiplyDoubleInfinity toString] \
+	[$DoubleInfinityMultiplyDoubleInfinity toString] \
+	[$DoubleInfinityMultiplyDoubleZero toString]
+} {Infinity Infinity Infinity NaN Infinity Infinity}
+
+######################################################################
+####
+#
+test Time-4.2.2 {multiply compared with DoubleTokens} {
+
+    set TimeOne [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d1 1.0]
+    set TimeZero [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d1 0.0]
+    set TimePositiveInfinity [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d1 [java::field java.lang.Double POSITIVE_INFINITY]]
+
+    set TimeOneMultiplyTimePositiveInfinity [$TimeOne multiply $TimePositiveInfinity]
+    set TimePositiveInfinityMultiplyTimePositiveInfinity [$TimePositiveInfinity multiply $TimePositiveInfinity]
+    set TimePositiveInfinityMultiplyTimeOne [$TimePositiveInfinity multiply $TimeOne]
+
+
+    set TimePositiveInfinityMultiplyTimePositiveInfinity [$TimePositiveInfinity multiply $TimePositiveInfinity]
+
+    # FIXME: this should not fail
+    set TimePositiveInfinityMultiplyTimeZero [$TimePositiveInfinity multiply $TimeZero]
+
+    # FIXME: this should not fail
+    set TimeZeroMultiplyTimePositiveInfinity [$TimeZero multiply $TimePositiveInfinity]
+
+    list \
+	[$TimeOneMultiplyTimePositiveInfinity toString] \
+	[$TimeOneMultiplyTimePositiveInfinity toString] \
+	[$TimePositiveInfinityMultiplyTimeOne toString] \
+	[$TimeOneMultiplyTimePositiveInfinity toString] \
+	[$TimeOneMultiplyTimePositiveInfinity toString] \
+	[$TimePositiveInfinityMultiplyTimeOne toString]
+} {Infinity Infinity Infinity NaN Infinity Infinity}
+
+# FIXME: do the same for Double.NEGATIVE_INFINITY
+
+######################################################################
+####
+#
+test Time-5.1 {divide} {
 	set tNaNDouble [java::new java.lang.Double NaN]
 	catch {[$tPositiveInfinity divide $tPositiveInfinity] } errMsg1
 	catch {[$tPositiveInfinity divide $tNegativeInfinity] } errMsg2
