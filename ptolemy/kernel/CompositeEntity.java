@@ -866,7 +866,7 @@ public class CompositeEntity extends ComponentEntity {
             // This might be called from within a superclass constructor,
             // in which case there are no contained entities yet.
             if (_containedEntities != null) {
-                Iterator<?> entities = _containedEntities.elementList().iterator();
+                Iterator entities = _containedEntities.elementList().iterator();
 
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();

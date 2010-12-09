@@ -360,9 +360,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  instances, then return an empty list.
      *  This method is read-synchronized on the workspace.
      *  @param filter The class of attribute of interest.
+     *  @param <T> The type of that class.
      *  @return A list of instances of specified class.
      */
-    public List attributeList(Class filter) {
+    public <T> List<T> attributeList(Class<T> filter) {
         try {
             _workspace.getReadAccess();
 
@@ -370,14 +371,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 _attributes = new NamedList();
             }
 
-            List<Object> result = new LinkedList<Object>();
+            List<T> result = new LinkedList<T>();
             Iterator<?> attributes = _attributes.elementList().iterator();
 
             while (attributes.hasNext()) {
                 Object attribute = attributes.next();
 
                 if (filter.isInstance(attribute)) {
-                    result.add(attribute);
+                    @SuppressWarnings("unchecked")
+                    T tAttribute = (T) attribute;
+                    result.add(tAttribute);
                 }
             }
 
@@ -2822,7 +2825,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
-        Iterator<Object> attributes = attributeList(Settable.class).iterator();
+        Iterator<Settable> attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
             if (attributesValidated.contains(attribute)) {

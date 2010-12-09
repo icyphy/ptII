@@ -123,8 +123,8 @@ public class GTTools {
 
         try {
             container.workspace().getReadAccess();
-            List<Attribute> attributeList = container.attributeList(attribute
-                    .getClass());
+            List<? extends Attribute> attributeList = container
+                    .attributeList(attribute.getClass());
             for (Attribute existingAttribute : attributeList) {
                 if (existingAttribute != attribute
                         && existingAttribute.isPersistent()) {
