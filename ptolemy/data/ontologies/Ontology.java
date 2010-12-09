@@ -115,7 +115,7 @@ public class Ontology extends CompositeEntity {
             String operationsClassName = infiniteConceptExpressionOperationsClass
                     .getValueAsString();
             if (operationsClassName != null && !operationsClassName.equals("")) {
-                Class operationsClass = null;
+                Class<?> operationsClass = null;
                 try {
                     operationsClass = Class.forName(operationsClassName);
                 } catch (ClassNotFoundException ex) {
@@ -129,7 +129,8 @@ public class Ontology extends CompositeEntity {
                                         + " not found.");
                     }
                 }
-                _createOperationsClassInstance(operationsClass);
+                _createOperationsClassInstance(operationsClass
+                        .asSubclass(ExpressionOperationsForInfiniteConcepts.class));
             }
         } else {
             super.attributeChanged(attribute);
@@ -422,7 +423,7 @@ public class Ontology extends CompositeEntity {
     private void _createOperationsClassInstance(Class<? extends ExpressionOperationsForInfiniteConcepts> operationsClass)
             throws IllegalActionException {
 
-        Constructor operationsConstructor = null;
+        Constructor<? extends ExpressionOperationsForInfiniteConcepts> operationsConstructor = null;
         try {
             operationsConstructor = operationsClass
                     .getConstructor(new Class[] { Ontology.class });
