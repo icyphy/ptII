@@ -790,6 +790,9 @@ PTJAVA_DIR
 PTJAVA_DIR_NO_CYGDRIVE
 PTJAVA_HOME
 PTJAVA3D_DIR
+PTJAVAMAIL_DIR
+PTJAVAMAIL_JARS
+PTJAVAMAIL_PACKAGES
 PTJMF_DIR
 PTJMF_PACKAGES
 PTJNI_ARCHITECTURE
@@ -1497,6 +1500,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/gc/gc/include
   --with-itextpdf=JARFILE       use iText from JARFILE,
                           defaults to \$PTII/vendors/misc/itext/iText.jar
+  --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
+                          defaults to \$PTII/vendors/oracle/javamail
   --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
                           defaults to \$PTII/vendors/sun/jogl
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
@@ -7651,6 +7656,86 @@ if test -z "$PTJAI_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       JavaMail is a Java interface that sends email
+#	http://www.oracle.com/technetwork/java/index-138643.html
+#--------------------------------------------------------------------
+
+# PTJAVAMAIL_DIR is set to mail
+# $PTII/ptolemy/domains/makefile if JavaMail was found
+PTJAVAMAIL_DIR=
+
+# JavaMail Directory.  JavaMail is available from
+# http://www.oracle.com/technetwork/java/index-138643.html
+JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+
+# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+PTJAVAMAIL_JARS=
+
+JAVAMAIL_USER_DIR="$PTII/ptolemy/actor/lib/mail"
+# We only need to look for JavaMail if $JAVAMAIL_USER_DIR
+if test ! -d "$JAVAMAIL_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $JAVAMAIL_USER_DIR is not present,
+    so we need not find the JavaMail interface." >&5
+echo "${ECHO_T}$JAVAMAIL_USER_DIR is not present,
+    so we need not find the JavaMail interface." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for JavaMail directory" >&5
+echo $ECHO_N "checking for JavaMail directory... $ECHO_C" >&6; }
+
+# Check whether --with-jogl was given.
+if test "${with_jogl+set}" = set; then
+  withval=$with_jogl; JAVAMAIL_DIR=$withval
+else
+  JAVAMAIL_DIR=$PTII/vendors/oracle/javamail
+fi
+
+
+    if test -f "$JAVAMAIL_DIR/mail.jar"; then
+	# Set to mail and used in
+	# $PTII/ptolemy/actor/libmakefile if mail.jar was found.
+	PTJAVAMAIL_DIR=mail
+        # PTJAVAMAIL_PACKAGES is used in ptII/doc/makefile
+	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
+
+	PTJAVAMAIL_JARS="${CLASSPATHSEPARATOR}${JAVAMAIL_DIR}/mail.jar"
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$JAVAMAIL_DIR/mail.jar\"/>"
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JAVAMAIL_DIR" >&5
+echo "${ECHO_T}$JAVAMAIL_DIR" >&6; }; fi
+    fi
+
+    if test "$PTJAVAMAIL_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find mail.jar
+    in $JAVAMAIL_DIR
+    perhaps the JavaMail interface is not installed?
+    You need not download the JavaMail interface unless you
+    plan on using the Ptolemy actors that send email.
+    The JavaMail interface can be downloaded from
+    http://www.oracle.com/technetwork/java/index-138643.html
+    an untar'd into $PTII/vendors/oracle.  Note that configure looks
+    for $PTII/vendors/oracle/javamail, so either move the JavaMail distribution
+    or create a symbolic link and then rerun configure. " >&5
+echo "$as_me: WARNING: Failed to find mail.jar
+    in $JAVAMAIL_DIR
+    perhaps the JavaMail interface is not installed?
+    You need not download the JavaMail interface unless you
+    plan on using the Ptolemy actors that send email.
+    The JavaMail interface can be downloaded from
+    http://www.oracle.com/technetwork/java/index-138643.html
+    an untar'd into $PTII/vendors/oracle.  Note that configure looks
+    for $PTII/vendors/oracle/javamail, so either move the JavaMail distribution
+    or create a symbolic link and then rerun configure. " >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+    fi
+fi
+
+if test -z "$PTJAVAMAIL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/mail/"
+fi
+
+#--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information,
 #       see http://java.sun.com/products/java-media/jmf
@@ -12535,6 +12620,17 @@ fi
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 
 
+# Set to mail and used in
+# $PTII/ptolemy/actor/lib/makefile if JavaMail's mail.jar was found.
+
+
+# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+
+
+# Ptolemy II packages that use JavaMail framework.
+# PTJMF_PACKAGES is used in ptII/doc/makefile.
+
+
 # Set to jmf if jmf.jar was found
 
 
@@ -13699,6 +13795,9 @@ PTJAVA_DIR!$PTJAVA_DIR$ac_delim
 PTJAVA_DIR_NO_CYGDRIVE!$PTJAVA_DIR_NO_CYGDRIVE$ac_delim
 PTJAVA_HOME!$PTJAVA_HOME$ac_delim
 PTJAVA3D_DIR!$PTJAVA3D_DIR$ac_delim
+PTJAVAMAIL_DIR!$PTJAVAMAIL_DIR$ac_delim
+PTJAVAMAIL_JARS!$PTJAVAMAIL_JARS$ac_delim
+PTJAVAMAIL_PACKAGES!$PTJAVAMAIL_PACKAGES$ac_delim
 PTJMF_DIR!$PTJMF_DIR$ac_delim
 PTJMF_PACKAGES!$PTJMF_PACKAGES$ac_delim
 PTJNI_ARCHITECTURE!$PTJNI_ARCHITECTURE$ac_delim
@@ -13714,9 +13813,6 @@ PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX2!$PTJNI_SHAREDLIBRARY_SUFFIX2$ac_delim
 PTJNI_LIBRARIES!$PTJNI_LIBRARIES$ac_delim
 PTJOGL_DIR!$PTJOGL_DIR$ac_delim
-PTJOGL_JARS!$PTJOGL_JARS$ac_delim
-PTJOGL_PACKAGES!$PTJOGL_PACKAGES$ac_delim
-PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -13758,6 +13854,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJOGL_JARS!$PTJOGL_JARS$ac_delim
+PTJOGL_PACKAGES!$PTJOGL_PACKAGES$ac_delim
+PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
 PTJOYSTICK_PACKAGES!$PTJOYSTICK_PACKAGES$ac_delim
 PTJSON_DIR!$PTJSON_DIR$ac_delim
 PTJSON_PACKAGES!$PTJSON_PACKAGES$ac_delim
@@ -13830,7 +13929,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 70; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 73; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
