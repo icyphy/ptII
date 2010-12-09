@@ -61,7 +61,8 @@ public class Bus extends AtomicWirelessChannel {
                 _transmitTo(token, port, (Receiver)((IOPort)receiverPort).getReceivers()[0][0], properties); 
                 
             } 
-           
+        } catch (Exception e) {
+        	System.out.println("error transmitting");
         } finally {
             workspace().doneReading();
         }
