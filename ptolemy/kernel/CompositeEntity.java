@@ -853,26 +853,27 @@ public class CompositeEntity extends ComponentEntity {
      *  include class definitions.
      *  This method is read-synchronized on the workspace.
      *  @param filter The class of ComponentEntity of interest.
+     *  @param <T> The type corresponding to the class of interest.
      *  @return A list of instances of specified class.
      *  @see #classDefinitionList()
      */
-    public List entityList(Class filter) {
+    public <T> List<T> entityList(Class<T> filter) {
         try {
             _workspace.getReadAccess();
 
-            List result = new LinkedList();
+            List<T> result = new LinkedList<T>();
 
             // This might be called from within a superclass constructor,
             // in which case there are no contained entities yet.
             if (_containedEntities != null) {
-                Iterator entities = _containedEntities.elementList().iterator();
+                Iterator<?> entities = _containedEntities.elementList().iterator();
 
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
 
                     if (filter.isInstance(entity)
                             && !entity.isClassDefinition()) {
-                        result.add(entity);
+                        result.add((T) entity);
                     }
                 }
             }
