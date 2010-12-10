@@ -277,7 +277,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  If it contains no ontologies, then return an empty list.
      *  @return A list containing all ontologies in this solver.
      */
-    @SuppressWarnings("unchecked")
     public List<Ontology> getAllContainedOntologies() {
         NamedObj containedModel = getContainedModel();
         if (containedModel instanceof CompositeEntity) {

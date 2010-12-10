@@ -102,8 +102,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *   there is one.  Null, otherwise.
      */
     public ColorAttribute getColor() {
-        @SuppressWarnings("unchecked")
-        List<ColorAttribute> colors = (List<ColorAttribute>) attributeList(ColorAttribute.class);
+        List<ColorAttribute> colors = attributeList(ColorAttribute.class);
         if (colors == null || colors.isEmpty()) {
             return null;
         } else {

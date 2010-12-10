@@ -249,15 +249,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     /** Return a list of the attributes for all concept functions
      *  that are defined in the local solver model.
      *  If the local solver model is set to null, this returns the empty list.
-     *  
-     *  Note, that we perform an unchecked cast from List to
-     *  List<ConceptFunctionDefinitionAttribute> here, which relies on
-     *  the correctness of the implementation of
-     *  {@link ptolemy.kernel.util.NamedObj#attributeList(Class)}
-     *  
      *  @return A list of the local concept function definition attributes. 
      */
-    @SuppressWarnings("unchecked")
     private List<ConceptFunctionDefinitionAttribute> _conceptFunctionDefinitions() {
         if (_solverModel == null) {
             return new LinkedList<ConceptFunctionDefinitionAttribute>();

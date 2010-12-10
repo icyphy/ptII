@@ -236,7 +236,7 @@ public class Ontology extends CompositeEntity {
 
         HashSet<FiniteConcept> unacceptableConcepts = new HashSet<FiniteConcept>();
 
-        for (FiniteConcept concept : _containedConcepts()) {
+        for (FiniteConcept concept : entityList(FiniteConcept.class)) {
             if (!concept.isValueAcceptable()) {
                 unacceptableConcepts.add(concept);
             }
@@ -279,7 +279,7 @@ public class Ontology extends CompositeEntity {
             _debug("Bottom is: " + bottom.toString());
         }
 
-        List<FiniteConcept> ontologyConcepts = _containedConcepts();
+        List<FiniteConcept> ontologyConcepts = entityList(FiniteConcept.class);
 
         // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
         for (int i = 0; i < ontologyConcepts.size() - 1; i++) {
@@ -344,7 +344,7 @@ public class Ontology extends CompositeEntity {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
             _graph = new DAGConceptGraph();
-            List<FiniteConcept> concepts = _containedConcepts();
+            List<FiniteConcept> concepts = entityList(FiniteConcept.class);
             for (FiniteConcept concept : concepts) {
                 ((DAGConceptGraph) _graph).addConcept(concept);
             }
@@ -398,14 +398,6 @@ public class Ontology extends CompositeEntity {
         return operationsClass;
     }
 
-    /** Return all the finite concepts contained in this ontology.
-     *  @return A list containing all finite concepts in this ontology.
-     */
-    @SuppressWarnings("unchecked")
-    private List<FiniteConcept> _containedConcepts() {
-        return (List<FiniteConcept>) entityList(FiniteConcept.class);
-    }
-
     /** Create an expression operations for infinite concepts object from
      *  the given class.
      * 
@@ -420,7 +412,8 @@ public class Ontology extends CompositeEntity {
     // Maybe we should pull this method out into a generic utility class that
     // can return an object instance when passed a class and an array of objects
     // for inputs to the constructor.
-    private void _createOperationsClassInstance(Class<? extends ExpressionOperationsForInfiniteConcepts> operationsClass)
+    private void _createOperationsClassInstance(
+            Class<? extends ExpressionOperationsForInfiniteConcepts> operationsClass)
             throws IllegalActionException {
 
         Constructor<? extends ExpressionOperationsForInfiniteConcepts> operationsConstructor = null;
