@@ -107,6 +107,8 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param operator Token for the operator at this node.
          *  @param monotonicityOntology The monotonicity ontology.
+         *  @param domainOntology The ontology over which the expression
+         *    containing this relational node is defined.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
