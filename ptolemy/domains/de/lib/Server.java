@@ -249,7 +249,7 @@ public class Server extends DETransformer {
     ////                         private variables                 ////
 
     /** Next time the server becomes free. */
-    private Time _nextTimeFree;
+    protected Time _nextTimeFree;
 
     /** The FIFOQueue. */
     protected FIFOQueue _queue;
