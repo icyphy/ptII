@@ -149,7 +149,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
             List<Inequality> constraintList) throws TypeConflictException, IllegalActionException {
 
         // Save original set _resolvedProperties
-        HashMap originalResolvedProperties = new HashMap<Object, Concept>(_resolvedProperties);
+        HashMap<Object, Concept> originalResolvedProperties = new HashMap<Object, Concept>(_resolvedProperties);
         
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;

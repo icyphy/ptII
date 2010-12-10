@@ -78,8 +78,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
     public List<LatticeOntologySolver> getAllContainedOntologySolvers() {
         OntologySolverModel solverModel = (OntologySolverModel) getContainedModel();
         if (solverModel != null) {
-            List containedSolvers = solverModel.attributeList(LatticeOntologySolver.class);
-            return (List<LatticeOntologySolver>) containedSolvers;
+            return solverModel.attributeList(LatticeOntologySolver.class);
         } else {
             return null;
         }
@@ -218,7 +217,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             return _adapterStore.get(component);
         } else {
             // Next look for the adapter in the LatticeOntologySolver model.
-            List modelDefinedAdapters = ((OntologySolverModel) _model)
+            List<ActorProductLatticeConstraintsDefinitionAttribute> modelDefinedAdapters = ((OntologySolverModel) _model)
                     .attributeList(ActorProductLatticeConstraintsDefinitionAttribute.class);
             for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) ((ActorProductLatticeConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
