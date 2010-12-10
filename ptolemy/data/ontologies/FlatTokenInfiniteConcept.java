@@ -134,8 +134,10 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  FlatTokenRepresentativeConcept representative which is a finite concept
      *  with a color given by its model color attribute.
      *  @return The color attribute of the representative concept.
+     *  @throws IllegalActionException Thrown if there is an error getting the
+     *   color from the representative concept.
      */
-    public ColorAttribute getColor() {
+    public ColorAttribute getColor() throws IllegalActionException {
         return _representative.getColor();
     }
     
@@ -250,7 +252,6 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
         super(ontology);
         _representative = representative;
         _tokenValue = value;
-        _representative.addInfiniteConcept(this);
     }
     
     ///////////////////////////////////////////////////////////////////

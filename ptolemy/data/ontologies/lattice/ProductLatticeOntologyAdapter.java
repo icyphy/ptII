@@ -261,6 +261,10 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             if (tupleOntologies != null) {
                 List<Concept> conceptTuple = new ArrayList<Concept>(tupleOntologies.size());
                 for (Ontology ontology : tupleOntologies) {
+                    
+                    // FIXME: A single ontology could have multiple instances but we don't
+                    // have a defined equals() method for ontologies, so this hack of
+                    // comparing their Ptolemy class names is used.
                     if (sourceOntology.getClassName().equals(ontology.getClassName())) {
                         conceptTuple.add(ontology.getConceptByString(concept.toString()));
                         foundOntology = true;
@@ -298,6 +302,10 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
         if (tupleOntologies != null && containedSolvers != null) {
             for (Ontology ontology : tupleOntologies) {
                 for (LatticeOntologySolver innerSolver : containedSolvers) {
+                    
+                    // FIXME: A single ontology could have multiple instances but we don't
+                    // have a defined equals() method for ontologies, so this hack of
+                    // comparing their Ptolemy class names is used.
                     if (innerSolver.getOntology().getClassName().equals(ontology.getClassName())) {
                         LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) innerSolver.getAdapter(component);
                         tupleAdapters.add(adapter);

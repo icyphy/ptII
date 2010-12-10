@@ -100,8 +100,9 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     /** Return the color attribute associated with this Concept, if it exists.
      *  @return The first ColorAttribute associated with this concept, if
      *   there is one.  Null, otherwise.
+     *  @throws IllegalActionException Not thrown in the base Concept class.
      */
-    public ColorAttribute getColor() {
+    public ColorAttribute getColor() throws IllegalActionException {
         List<ColorAttribute> colors = attributeList(ColorAttribute.class);
         if (colors == null || colors.isEmpty()) {
             return null;

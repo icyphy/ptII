@@ -1,4 +1,4 @@
-/* A concept in a finite ontology that represents a flat set of infinite
+/* A finite concept in an ontology that represents a flat set of infinite
  * concepts that map to a set of arbitrary Ptolemy tokens.
  * 
  * Copyright (c) 2007-2010 The Regents of the University of California. All
@@ -24,16 +24,15 @@
  */
 package ptolemy.data.ontologies;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
 //// FlatTokenRepresentativeConcept
 
-/** A concept in a finite ontology that represents a flat set of infinite
+/** A finite concept in an ontology that represents a flat set of infinite
  *  concepts that map to a set of arbitrary Ptolemy tokens.
  * 
  *  @author Charles Shelton
@@ -42,9 +41,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class FlatTokenRepresentativeConcept extends FiniteConcept {
+public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentative {
 
-    /** Create a new concept with the specified name and the specified
+    /** Create a new FlatTokenRepresentativeConcept with the specified name and
      *  ontology.
      *  
      *  @param ontology The specified ontology where this concept resides.
@@ -56,36 +55,85 @@ public class FlatTokenRepresentativeConcept extends FiniteConcept {
     public FlatTokenRepresentativeConcept(Ontology ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-        
-        _instantiatedInfiniteConcepts = new HashSet<FlatTokenInfiniteConcept>();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Add an instantiated infinite concept that is represented by this
-     *  concept to its set of instantiated infinite concepts.
-     *  @param concept The FlatTokenInfiniteConcept to be added.
+    /** Return true if the string can represent a FlatTokenInfiniteConcept for
+     *  this representative, false otherwise.
+     *  @param infiniteConceptString The string that represents the infinite
+     *   concept.
+     *  @return true if the string can represent an infinite concept for this
+     *   representative, false otherwise.
      */
-    public void addInfiniteConcept(FlatTokenInfiniteConcept concept) {
-        // Only add the concept if its representative matches.
-        if (concept.getRepresentative().equals(this)) {
-            _instantiatedInfiniteConcepts.add(concept);
+    public boolean containsThisInfiniteConceptString(
+            String infiniteConceptString) {
+        if (infiniteConceptString.startsWith(_name + "_")) {
+            return true;
+        } else {
+            return false;
         }
     }
     
-    /** Return the set of instantiated infinite concepts that are represented
-     *  by this concept.
-     *  @return The set of instantiated infinite concepts that are represented
-     *   by this concept.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /** Create a new FlatTokenInfiniteConcept for the given concept string.
+     *  @param infiniteConceptString The specified concept string that
+     *   represents the FlatTokenInfiniteConcept to be created.
+     *  @return The newly created FlatTokenInfiniteConcept object.
+     *  @throws IllegalActionException Thrown if a valid
+     *   FlatTokenInfiniteConcept cannot be created.
      */
-    public Set<FlatTokenInfiniteConcept> getInstantiatedInfiniteConcepts() {
-        return _instantiatedInfiniteConcepts;
+    protected FlatTokenInfiniteConcept _createInfiniteConceptInstance(
+            String infiniteConceptString) throws IllegalActionException {
+        if (containsThisInfiniteConceptString(infiniteConceptString)) {
+            String expression = infiniteConceptString.substring(_name
+                    .length() + 1);
+            Variable tempTokenVariable = null;
+            try {
+                // Use a temporary Variable object to parse the 
+                // expression string that represents the token.
+                tempTokenVariable = new Variable(this, "_tempTokenVariable");
+                tempTokenVariable.setExpression(expression);
+
+                return _instantiateFlatTokenInfiniteConcept(tempTokenVariable.getToken());
+            } catch (NameDuplicationException nameDupEx) {
+                throw new IllegalActionException(this, nameDupEx,
+                        "Could not instantiate "
+                                + "a FlatTokenInfiniteConcept for "
+                                + infiniteConceptString + ".");
+            } finally {
+                try {
+                    tempTokenVariable.setContainer(null);
+                } catch (NameDuplicationException nameDupExAfterSetContainerToNull) {
+                    throw new IllegalActionException(this,
+                            nameDupExAfterSetContainerToNull, "Could " +
+                    		"not remove tempTokenVariable object from this " +
+                    		"concept after it is no longer needed.");
+                }
+            }
+        } else {
+            throw new IllegalActionException(this, "The given string cannot " +
+            		"be used to derive a valid infinite concept contained " +
+            		"by this representative.");
+        }
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
-    
-    /** Indicates whether or not the interval is closed on its left endpoint. */
-    private Set<FlatTokenInfiniteConcept> _instantiatedInfiniteConcepts;
+    /** Return a new FlatTokenInfiniteConcept for this representative with
+     *  the given token value.
+     * 
+     *  @param tokenValue The token value for the FlatTokenInfiniteConcept
+     *          to be instantiated.
+     *  @return A new FlatTokenInfiniteConcept
+     *  @throws IllegalActionException Thrown if the FlatTokenInfiniteConcept
+     *   cannot be created.
+     */
+    protected FlatTokenInfiniteConcept _instantiateFlatTokenInfiniteConcept(
+            Token tokenValue) throws
+        IllegalActionException {
+        return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
+                    getOntology(), this, tokenValue);
+    }
 }

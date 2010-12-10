@@ -7,6 +7,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -135,12 +136,16 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
                 // Invoke the solver to identify conflicts.  
                 // Catch and ignore any exceptions regarding unacceptable
                 // concepts (finding these is the point of this solver)
-                try { solver.identifyConflicts(); }
-                catch(KernelException ex){};  
-                if (solver.hasIdentifiedConflicts()) {
-                    solver.getMoMLHandler().highlightConcepts(
-                            solver.getIdentifiedConflicts().keySet());
+                try {
+                    solver.identifyConflicts();
+                    if (solver.hasIdentifiedConflicts()) {
+                        solver.getMoMLHandler().highlightConcepts(
+                                solver.getIdentifiedConflicts().keySet());
+                    }
                 }
+                catch(KernelException ex) {
+                    MessageHandler.error("Identifying solver conflicts failed.", ex);
+                }  
             } 
         }
     }

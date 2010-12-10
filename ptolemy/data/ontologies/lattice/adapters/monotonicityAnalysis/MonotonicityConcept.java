@@ -171,8 +171,10 @@ public class MonotonicityConcept extends InfiniteConcept {
      *
      *  @return A ColorAttribute corresponding to the highlight color of
      *   this monotonicity concept.
+     *  @throws IllegalActionException Thrown if there is an error getting
+     *   the color for the finite monotonicity concept.
      */
-    public ColorAttribute getColor() {
+    public ColorAttribute getColor() throws IllegalActionException {
         return _toFiniteMonotonicity().getColor();
     }
 

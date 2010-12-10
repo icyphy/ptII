@@ -122,8 +122,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param inputConceptValues Ignored in this leaf node (should be an empty list).
          *  @return The monotonicity concept that this leaf node evaluates to.
+         *  @throws IllegalActionException Thrown if there is an error getting
+         *   the concept value from the original domain ontology with the
+         *   leaf node's name string.
          */
-        protected Concept _evaluateFunction(List<Concept> inputConceptValues) {
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
+            throws IllegalActionException {
 
             MonotonicityConcept result =
                 MonotonicityConcept.createMonotonicityConcept(
@@ -133,6 +137,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             if (_leafNode.isConstant()) {
                 return result;
             }
+            
             String conceptString = _leafNode.getName();
             if (_domainOntology.getConceptByString(conceptString) != null) {
                 return result;

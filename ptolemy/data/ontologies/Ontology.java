@@ -31,8 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.data.ScalarToken;
-import ptolemy.data.expr.Variable;
 import ptolemy.graph.GraphStateException;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -147,8 +145,11 @@ public class Ontology extends CompositeEntity {
      *   what is returned by their toString() method.
      *  @return The concept that is represented by the given string, or null
      *   if no such concept exists.
+     *  @throws IllegalActionException Thrown if there is an error getting the
+     *   concept.
      */
-    public Concept getConceptByString(String conceptString) {
+    public Concept getConceptByString(String conceptString) throws
+        IllegalActionException {
         // If the conceptString is wrapped by quotes, strip them off before
         // trying to find the concept that matches the conceptString.
         if (conceptString.startsWith("\"") && conceptString.endsWith("\"")) {
@@ -161,42 +162,12 @@ public class Ontology extends CompositeEntity {
         // If the concept is not found, check to see if it is an infinite
         // concept that is represented by a concept in this ontology.
         if (result == null) {
-            for (Object concept : entityList(FlatTokenRepresentativeConcept.class)) {
-                String repName = ((Concept) concept).getName();
-                if (conceptString.startsWith(repName)) {
-                    String expression = conceptString.substring(repName
-                            .length() + 1);
-                    try {
-                        // Use a temporary Variable object to parse the 
-                        // expression string that represents the token.
-                        Variable var = new Variable(this, "temp");
-                        var.setExpression(expression);
-                        var.setContainer(null);
-
-                        if (concept instanceof FlatScalarTokenRepresentativeConcept) {
-                            return FlatScalarTokenInfiniteConcept
-                                    .createFlatScalarTokenInfiniteConcept(
-                                            this,
-                                            (FlatScalarTokenRepresentativeConcept) concept,
-                                            (ScalarToken) var.getToken());
-                        } else {
-                            return FlatTokenInfiniteConcept
-                                    .createFlatTokenInfiniteConcept(
-                                            this,
-                                            (FlatTokenRepresentativeConcept) concept,
-                                            var.getToken());
-                        }
-                    } catch (IllegalActionException ex) {
-                        throw new IllegalArgumentException(
-                                "Could not instantiate "
-                                        + "a FlatTokenInfiniteConcept for "
-                                        + conceptString + ".", ex);
-                    } catch (NameDuplicationException nameDupEx) {
-                        throw new IllegalArgumentException(
-                                "Could not instantiate "
-                                        + "a FlatTokenInfiniteConcept for "
-                                        + conceptString + ".", nameDupEx);
-                    }
+            for (InfiniteConceptRepresentative infiniteRepresentative :
+                    entityList(InfiniteConceptRepresentative.class)) {
+                if (infiniteRepresentative.containsThisInfiniteConceptString(
+                        conceptString)) {
+                    return infiniteRepresentative.getInfiniteConceptByString(
+                            conceptString);
                 }
             }
         }

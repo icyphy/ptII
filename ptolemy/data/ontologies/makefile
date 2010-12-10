@@ -57,16 +57,25 @@ JSRCS = \
     ActorModelScope.java \
 	Concept.java \
 	ConceptAttribute.java \
+	ConceptFromRecordField.java \
 	ConceptFunction.java \
 	ConceptFunctionDefinitionAttribute.java \
 	ConceptFunctionInequalityTerm.java \
 	ConceptGraph.java \
 	ConceptRelation.java \
 	ConceptToken.java \
+	DAGConceptGraph.java \
 	ExpressionConceptFunction.java \
 	ExpressionConceptFunctionParseTreeEvaluator.java \
+	ExpressionConceptFunctionParseTreeTypeInference.java \
+	ExpressionOperationsForInfiniteConcepts.java \
 	FiniteConcept.java \
+	FlatScalarTokenInfiniteConcept.java \
+	FlatScalarTokenRepresentativeConcept.java \
+	FlatTokenInfiniteConcept.java \
+	FlatTokenRepresentativeConcept.java \
 	InfiniteConcept.java \
+	InfiniteConceptRepresentative.java \
 	Ontology.java \
 	OntologyAdapter.java \
 	OntologyAnnotationAttribute.java \
@@ -77,7 +86,9 @@ JSRCS = \
 	OntologySolverModel.java \
 	OntologySolverUtilities.java \
 	ParseTreeAnnotationEvaluator.java \
-	ParseTreeASTNodeAdapterCollector.java
+	ParseTreeASTNodeAdapterCollector.java \
+	RecordConcept.java \
+	RecordFromIndividualConcepts.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ontologyLibrary.xml

@@ -1,4 +1,4 @@
-/* A concept in a finite ontology that represents a flat set of infinite
+/* A finite concept in an ontology that represents a flat set of infinite
  * concepts that map to an interval of scalar numbers.
  * 
  * Copyright (c) 2007-2010 The Regents of the University of California. All
@@ -27,6 +27,7 @@ package ptolemy.data.ontologies;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -35,9 +36,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
-//// FiniteConcept
+//// FlatScalarTokenRepresentativeConcept
 
-/** A concept in a finite ontology that represents a flat set of infinite
+/** A finite concept in an ontology that represents a flat set of infinite
  *  concepts that map to an interval of scalar numbers.
  * 
  *  @author Charles Shelton
@@ -48,8 +49,8 @@ import ptolemy.kernel.util.Settable;
  */
 public class FlatScalarTokenRepresentativeConcept extends FlatTokenRepresentativeConcept {
 
-    /** Create a new concept with the specified name and the specified
-     *  ontology.
+    /** Create a new FlatScalarTokenRepresentativeConcept with the specified
+     *  name and ontology.
      *  
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
@@ -163,6 +164,44 @@ public class FlatScalarTokenRepresentativeConcept extends FlatTokenRepresentativ
             return true;
         } else {
             return false;
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /** Create a new FlatScalarTokenInfiniteConcept for the given concept string.
+     *  @param infiniteConceptString The specified concept string that
+     *   represents the FlatScalarTokenInfiniteConcept to be created.
+     *  @return The newly created FlatScalarTokenInfiniteConcept object.
+     *  @throws IllegalActionException Thrown if a valid
+     *   FlatScalarTokenInfiniteConcept cannot be created.
+     */
+    protected FlatScalarTokenInfiniteConcept _createInfiniteConceptInstance(
+            String infiniteConceptString) throws IllegalActionException {
+        return (FlatScalarTokenInfiniteConcept) super.
+            _createInfiniteConceptInstance(infiniteConceptString);
+    }
+    
+    /** Return a new FlatScalarTokenInfiniteConcept for this representative with
+     *  the given token value.
+     * 
+     *  @param tokenValue The token value for the FlatTokenInfiniteConcept
+     *          to be instantiated.
+     *  @return A new FlatTokenInfiniteConcept
+     *  @throws IllegalActionException Thrown if the FlatTokenInfiniteConcept
+     *   cannot be created.
+     */
+    protected FlatScalarTokenInfiniteConcept _instantiateFlatTokenInfiniteConcept(
+            Token tokenValue) throws
+        IllegalActionException {
+        if (tokenValue instanceof ScalarToken) {
+            return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(
+                    getOntology(), this, (ScalarToken) tokenValue);
+        } else {
+            throw new IllegalActionException(this, "Cannot create a new " +
+            		"FlatScalarTokenInfiniteConcept with a token value " +
+            		"that is not a scalar token: " + tokenValue);
         }
     }
     

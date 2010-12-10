@@ -122,8 +122,10 @@ public class OntologyMoMLHandler extends Attribute {
     /** Highlight concepts that have already been resolved, but do not run solver.
      *  Otherwise, do nothing.
      *  @param objects The set of objects to highlight.
+     *  @throws IllegalActionException Thrown if there is an error getting the
+     *   colors for the resolved concept values.
      */
-    public void highlightConcepts(Set<Object> objects) {
+    public void highlightConcepts(Set<Object> objects) throws IllegalActionException {
         if (objects != null) {
             // Get the PropertySolver.
             OntologySolver solver = (OntologySolver) getContainer();

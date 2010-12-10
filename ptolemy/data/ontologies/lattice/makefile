@@ -56,6 +56,7 @@ JSRCS = \
 	ActorProductLatticeConstraintsDefinitionAdapter.java \
 	ActorProductLatticeConstraintsDefinitionAttribute.java \
 	AddConceptFunctionDefinition.java \
+	ApplyBinaryFunctionToMultipleArguments.java \
 	BinaryOperationMonotonicFunctionDefinition.java \
 	CollectLatticeOntologySolverDetails.java \
 	ConceptTermFactory.java \
@@ -67,6 +68,7 @@ JSRCS = \
 	LatticeOntologyAdapter.java \
 	LatticeOntologyASTNodeAdapter.java \
 	LatticeOntologyCompositeAdapter.java \
+	LatticeOntologyModalFSMAdapter.java \
 	LatticeOntologySolver.java \
 	LogicOpConceptFunctionDefinition.java \
 	MultiplyConceptFunctionDefinition.java \

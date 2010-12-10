@@ -145,7 +145,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
                     ((OntologySolver) container).getMoMLHandler()
                     .clearDisplay(true, true);
                 } catch (IllegalActionException e1) {
-                 MessageHandler.error("Clearing concepts failed", e1);
+                    MessageHandler.error("Clearing concepts failed", e1);
                 }
             }
         }

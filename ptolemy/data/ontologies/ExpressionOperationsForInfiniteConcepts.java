@@ -52,12 +52,12 @@ public abstract class ExpressionOperationsForInfiniteConcepts {
     /** Add two token infinite concepts and return the resulting concept.
      * 
      *  @param addend1 The first addend concept.
-     *  @param added2 The second addend concept.
+     *  @param addend2 The second addend concept.
      *  @return The concept that represents the sum of the two input concepts.
      *  @throws IllegalActionException Thrown if the operation cannot be
      *   performed on the input concepts.
      */
-    public abstract Concept add(Concept addend1, Concept added2)
+    public abstract Concept add(Concept addend1, Concept addend2)
         throws IllegalActionException;
     
     /** Divide two token infinite concepts and return the resulting concept.

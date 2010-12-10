@@ -87,8 +87,10 @@ public class ProductLatticeConcept extends Concept {
      *  The color of the concept will be derived from the color of the concept
      *  in the tuple from the specified component color ontology.
      *  @return The current color attribute for this product lattice concept.
+     *  @throws IllegalActionException Thrown if there is an error getting the
+     *   color from the component concept value.
      */
-    public ColorAttribute getColor() {
+    public ColorAttribute getColor() throws IllegalActionException {
         Ontology colorOntology = ((ProductLatticeOntology) getOntology()).getColorOntology();
         
         if (colorOntology != null) {
@@ -106,16 +108,21 @@ public class ProductLatticeConcept extends Concept {
      *   concept.  This should be one of the component ontologies from the
      *   product lattice ontology for this concept.
      *  @return The concept from the concept.
-     *  @throws IllegalArgumentException If the specified ontology is not a component
+     *  @throws IllegalActionException If the specified ontology is not a component
      *   of the product lattice ontology to which this concept belongs.
      */
-    public Concept getComponentConceptValue(Ontology ontology) {
+    public Concept getComponentConceptValue(Ontology ontology)
+        throws IllegalActionException{
         for (Concept innerConcept : _conceptTuple) {
+            
+            // FIXME: A single ontology could have multiple instances but we don't
+            // have a defined equals() method for ontologies, so this hack of
+            // comparing their Ptolemy class names is used.
             if (innerConcept.getOntology().getClassName().equals(ontology.getClassName())) {
                 return ontology.getConceptByString(innerConcept.toString());
             }
         }
-        throw new IllegalArgumentException("The ontology " + ontology.getName() +
+        throw new IllegalActionException(this, "The ontology " + ontology.getName() +
                 " is not a component of this concept's product lattice ontology " +
                 getOntology().getName() + ".");
     }
