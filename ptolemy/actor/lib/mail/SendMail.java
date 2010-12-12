@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.JFrame;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -43,13 +44,17 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  with some hesitation, since it is easy with such an actor
  *  to create a flood of email that will have undesirable effects.
  *  To get the actor to actually send email, change the value
- *  of the <i>reallySendMail</i> parameter to true.
+ *  of the <i>reallySendMail</i> parameter to true. Upon completion
+ *  of an execution, <i>reallySendMail</i> will be set back to false
+ *  (in the wrapup() method) to help prevent accidental duplicate
+ *  mailings.
  *  <p>
  *  This actor requires that the javamail package be present, and that
  *  at least the mailapi.jar and smtp.jar files be in the CLASSPATH.
- *  In Eclipse, after installing javamail somewhere, you can select
- *  the Project Properties and Add External Jars. Failure to
- *  include smtp.jar can result in a NoSuchProviderException.
+ *  Install javamail in $PTII/vendors/oracle, then run configure in
+ *  $PTII. In Eclipse, you will then need to refresh the project.
+ *  If for some reason the smtp.jar is missing, then you will get
+ *  a cryptic NoSuchProviderException.
  * 
  *  @author Edward A. Lee
  */
@@ -85,23 +90,33 @@ public class SendMail extends TypedAtomicActor {
         SMTPUserName = new StringParameter(this, "SMTPUserName");
         SMTPUserName.setExpression("myusername");
         
-        debug = new Parameter(this, "debug");
-        debug.setTypeEquals(BaseType.BOOLEAN);
-        debug.setExpression("false");
+        reallySendMail = new Parameter(this, "reallySendMail");
+        reallySendMail.setTypeEquals(BaseType.BOOLEAN);
+        reallySendMail.setExpression("false");
+        reallySendMail.setPersistent(false);
+        
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.STRING);
     }
-    
-    /** If true, then write the email message to standard out
-     *  rather than sending email. It is highly recommended to
-     *  set this to true and check your email carefully before
-     *  sending it. This is a boolean that defaults to false.
-     */
-    public Parameter debug;
-    
+        
     /** Email address from which this is sent. */
     public PortParameter from;
 
     /** The message to send. This defaults to an empty string. */
     public PortParameter message;
+    
+    /** Output to which the formatted message is sent.
+     *  The type of this output is string.
+     */
+    public TypedIOPort output;
+
+    /** If true, then actually send the email.
+     *  This is a boolean that defaults to false,
+     *  meaning that the message is only sent to the output port.
+     *  This parameter will be set back to false in the
+     *  wrapup() method, to help prevent duplicate mailings.
+     */
+    public Parameter reallySendMail;
 
     /** Host name for the send mail server. */
     public StringParameter SMTPHostName;
@@ -166,21 +181,29 @@ public class SendMail extends TypedAtomicActor {
         // be ignored in the authenticator below.
         SMTPUserName.stringValue();
         
-        if (((BooleanToken)debug.getToken()).booleanValue()) {
-            // Running in debug mode. Print to standard out and return.
-            System.out.println("============ new message:");
-            
-            String toValue = ((StringToken)to.getToken()).stringValue();
-            StringTokenizer tokenizer = new StringTokenizer(toValue, ",");
-            while (tokenizer.hasMoreTokens()) {
-                System.out.println("To: " + tokenizer.nextToken().trim());
-            }
-            
-            System.out.println("From: " + ((StringToken)from.getToken()).stringValue());
-            System.out.println("Subject: " + ((StringToken)subject.getToken()).stringValue());
-            System.out.println(((StringToken)message.getToken()).stringValue());
+        // First construct the string to send to the output.
+        StringBuffer result = new StringBuffer();
+        
+        String toValue = ((StringToken)to.getToken()).stringValue();
+        String fromValue = ((StringToken)from.getToken()).stringValue();
+        String subjectValue = ((StringToken)subject.getToken()).stringValue();
+        String messageValue = ((StringToken)message.getToken()).stringValue();
+        
+        StringTokenizer tokenizer = new StringTokenizer(toValue, ",");
+        while (tokenizer.hasMoreTokens()) {
+            result.append("To: " + tokenizer.nextToken().trim() + "\n");
+        }
 
-            System.out.println("============ end.");
+        result.append("From: " + fromValue + "\n");
+        result.append("Subject: " + subjectValue + "\n");
+        result.append("----\n");
+        result.append(messageValue);
+        result.append("\n----\n");
+        
+        output.send(0, new StringToken(result.toString()));
+
+        if (!((BooleanToken)reallySendMail.getToken()).booleanValue()) {
+            // Don't want to actually send email, so we just return now.
             return true;
         }
 
@@ -191,28 +214,36 @@ public class SendMail extends TypedAtomicActor {
         try {
             Transport transport = mailSession.getTransport();
 
-            MimeMessage message = new MimeMessage(mailSession);
-            message.setContent("This is a test", "text/plain");
+            MimeMessage mimeMessage = new MimeMessage(mailSession);
+            mimeMessage.setContent(messageValue, "text/plain");
+            mimeMessage.setFrom(new InternetAddress(fromValue));
+            mimeMessage.setSubject(subjectValue);
             
-            String fromValue = ((StringToken)from.getToken()).stringValue();
-            message.setFrom(new InternetAddress(fromValue));
-            
-            String toValue = ((StringToken)to.getToken()).stringValue();
-            StringTokenizer tokenizer = new StringTokenizer(toValue, ",");
+            tokenizer = new StringTokenizer(toValue, ",");
             while (tokenizer.hasMoreTokens()) {
-                message.addRecipient(Message.RecipientType.TO,
+                mimeMessage.addRecipient(Message.RecipientType.TO,
                         new InternetAddress(tokenizer.nextToken().trim()));
             }
 
             transport.connect();
-            transport.sendMessage(message,
-                    message.getRecipients(Message.RecipientType.TO));
+            transport.sendMessage(mimeMessage,
+                    mimeMessage.getRecipients(Message.RecipientType.TO));
             transport.close();
         } catch (MessagingException e) {
             throw new IllegalActionException(this, e, "Send mail failed.");
         }
 
         return true;
+    }
+    
+    /** Override the base class to set <i>reallySendMail</i> back
+     *  to false if it is true.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        if (((BooleanToken)reallySendMail.getToken()).booleanValue()) {
+            reallySendMail.setToken(BooleanToken.FALSE);
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
