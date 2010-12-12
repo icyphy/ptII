@@ -43,15 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jai
+PTPACKAGE = 	mail
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = SendMail.java
 
 OTHER_FILES_TO_BE_JARED = \
-	jai.xml \
-	jai-copyright.htm
+	mail.xml \
+	JavaMail-license.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
