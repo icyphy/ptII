@@ -2,7 +2,7 @@ package ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl;
 
 import java.util.Iterator;
 
-import com.sun.jmx.mbeanserver.NamedObject;
+//import com.sun.jmx.mbeanserver.NamedObject;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
