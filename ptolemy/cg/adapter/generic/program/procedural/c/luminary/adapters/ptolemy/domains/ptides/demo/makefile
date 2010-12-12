@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo
 
-DIRS =		Speaker TunnelingBallDevice
+DIRS =		Speaker TunnelingBallDevice TimeTriggeredTunnelingBallDevice
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../..
