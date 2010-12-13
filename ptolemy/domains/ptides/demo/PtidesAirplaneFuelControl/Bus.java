@@ -52,8 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 8.0
- * @Pt.ProposedRating Yellow (pderler)
- * @Pt.AcceptedRating Red (pderler)
+ * @Pt.ProposedRating Yellow (derler)
+ * @Pt.AcceptedRating Red (derler)
  */
 public class Bus extends AtomicWirelessChannel {
 
