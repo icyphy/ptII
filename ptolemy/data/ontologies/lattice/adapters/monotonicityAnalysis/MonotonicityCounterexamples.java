@@ -21,14 +21,12 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.util.MultiHashMap;
 
 /** Representation of a set of counterexamples to monotonicity.
@@ -50,7 +48,7 @@ public class MonotonicityCounterexamples {
      *  until we add some counterexamples.
      */
     public MonotonicityCounterexamples() {
-        _counterexamples = new MultiHashMap();
+        _counterexamples = new MultiHashMap<Concept, Concept>();
     }
     
     /** Add a pair of concepts as a counterexample to this set.
@@ -84,8 +82,8 @@ public class MonotonicityCounterexamples {
      */
     public Set<ConceptPair> entrySet() {
         Set<ConceptPair> entrySet = new HashSet<ConceptPair>();
-        for (FiniteConcept lesser : (Set<FiniteConcept>)_counterexamples.keySet()) {
-            for (FiniteConcept greater : (Collection<FiniteConcept>)_counterexamples.get(lesser)) {
+        for (Concept lesser : _counterexamples.keySet()) {
+            for (Concept greater : _counterexamples.get(lesser)) {
                 entrySet.add(new ConceptPair(lesser, greater));
             }
         }
@@ -98,7 +96,7 @@ public class MonotonicityCounterexamples {
      */
     public String toString() {
         String result = "{";
-        for (Entry<FiniteConcept, FiniteConcept> pair : entrySet()) {
+        for (Entry<Concept, Concept> pair : entrySet()) {
             result += "(" + pair.getKey().toString() + "," + pair.getValue() + ")";
         }
         return result  + "}";
@@ -111,7 +109,7 @@ public class MonotonicityCounterexamples {
      *  If our MultiMap supported Java Generics, this would have a type of
      *    MultiMap<Concept, Concept>
      */
-    private MultiHashMap _counterexamples;
+    private MultiHashMap<Concept, Concept> _counterexamples;
     
     /** Encapsulate counterexample pairs.
      *  These are pairs of the form (x1, x2) where x1 <= x2, but
@@ -119,22 +117,22 @@ public class MonotonicityCounterexamples {
      *  Thus, these pairs prove as counterexamples to the
      *  monotonicity of f.
      */
-    public class ConceptPair implements Map.Entry<FiniteConcept,FiniteConcept> {
+    public class ConceptPair implements Map.Entry<Concept,Concept> {
         /** Create a counterexample pair given both of the concepts that  make
          *  up the counterexample.
          *
          *  @param l The lesser concept, i.e. x1
          *  @param g The greater concept, i.e. x2
          */
-        public ConceptPair(FiniteConcept l, FiniteConcept g) {
+        public ConceptPair(Concept l, Concept g) {
             lesser = l; greater = g;
         }
         /** The lesser of the concepts (i.e. x1)
          */
-        public FiniteConcept lesser;
+        public Concept lesser;
         /** The greater of the concepts (i.e. x2)
          */
-        public FiniteConcept greater;
+        public Concept greater;
         
         
         /** Return the lesser concept of the counterexample.
@@ -142,16 +140,16 @@ public class MonotonicityCounterexamples {
          *  @return The lesser concept.
          *  @see java.util.Map.Entry#getKey()
          */
-        public FiniteConcept getKey() {
+        public Concept getKey() {
             return lesser;
         }
         /** Return the greater concept of the counterexample.
          *  
          *  @return The greater concept
          *  @see java.util.Map.Entry#getValue()
-         *  @see #setValue(FiniteConcept)
+         *  @see #setValue(Concept)
          */
-        public FiniteConcept getValue() {
+        public Concept getValue() {
             return greater;
         }
         /** Do nothing.
@@ -162,7 +160,7 @@ public class MonotonicityCounterexamples {
          *  @see java.util.Map.Entry#setValue(java.lang.Object)
          *  @see #getValue()
          */
-        public FiniteConcept setValue(FiniteConcept value) {
+        public Concept setValue(Concept value) {
             return null;
         }  
     }
