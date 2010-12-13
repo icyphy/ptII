@@ -116,7 +116,7 @@ public class MultiHashMap<K,V> {
      *  @return The value removed, or null if nothing is removed.
      */
     public Object remove(K key, V value) {
-        Collection values = _map.get(key);
+        Collection<V> values = _map.get(key);
 
         if (values == null) {
             return null;
@@ -135,7 +135,7 @@ public class MultiHashMap<K,V> {
      *    not in the map.
      */
     public int size(Object key) {
-        Collection values = _map.get(key);
+        Collection<V> values = _map.get(key);
 
         if (values == null) {
             return 0;
@@ -149,10 +149,9 @@ public class MultiHashMap<K,V> {
      *  mapped to the keys.
      *  @return A view of all values contained in this map.
      */
-    public Collection values() {
-        Collection result = new ArrayList();
-        for (Object object : _map.values()) {
-            Collection values = (Collection) object;
+    public Collection<V> values() {
+        Collection<V> result = new ArrayList<V>();
+        for (Collection<V> values : _map.values()) {
             result.addAll(values);
         }
         return result;
