@@ -32,7 +32,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  structured datatypes like records, concepts parameterized over values,
  *  and other situations where enumerating all possible concepts beforehand
  *  is not feasible.
- *  
+ *  <p>
  *  Since this class aims to be a general superclass of any type of infinite
  *  concept, it does not provide any implementations that may be particular
  *  to a particular style of infinite concepts, and is abstract.
@@ -132,18 +132,19 @@ public abstract class InfiniteConcept extends Concept {
 
     /** Create a new Infinite concept, belonging to the given
      *  ontology, with an automatically generated name.
-     *  
+     *  <p>
      *  Even though this method should never throw a NameDuplicationException,
-     *  it's signature cannot be changed.  It is recommended that subclasses
+     *  its signature cannot be changed.  It is recommended that subclasses
      *  needing this functionality create a factory method that catches the
      *  exception in order to avoid extraneous try-catch blocks.
      * 
      *  @param ontology The finite ontology to which this belongs.
-     *  @throws NameDuplicationException Should never be thrown.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception IllegalActionException If the base class throws it.
      */
     protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
             NameDuplicationException {
+        
         super(ontology, "InfiniteConcept_" + ++_conceptNumber);
         setName(getName() + " (of " + getClass().getSimpleName() + ")");
         _ontology = ontology;
