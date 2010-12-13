@@ -72,13 +72,14 @@ public class ASTPtSumNode extends ASTPtRootNode {
      */
     public Object clone() throws CloneNotSupportedException {
         ASTPtSumNode newNode = (ASTPtSumNode) super.clone();
-        newNode._lexicalTokens = (ArrayList) _lexicalTokens.clone();
+        newNode._lexicalTokens = (ArrayList<Token>) _lexicalTokens.clone();
         return newNode;
     }
 
     /** Return the list of lexical tokens that were used to make this node.
+     *  @return The list of lexical tokens that were used to make this node.
      */
-    public List getLexicalTokenList() {
+    public List<Token> getLexicalTokenList() {
         return _lexicalTokens;
     }
 
@@ -97,11 +98,11 @@ public class ASTPtSumNode extends ASTPtRootNode {
         }
 
         // The operators must be the same.
-        Iterator nodeTokens = ((ASTPtSumNode) node)._lexicalTokens.iterator();
+        Iterator<Token> nodeTokens = ((ASTPtSumNode) node)._lexicalTokens.iterator();
 
-        for (Iterator tokens = _lexicalTokens.iterator(); tokens.hasNext();) {
-            Token token = (Token) tokens.next();
-            Token nodeToken = (Token) nodeTokens.next();
+        for (Iterator<Token> tokens = _lexicalTokens.iterator(); tokens.hasNext();) {
+            Token token = tokens.next();
+            Token nodeToken = nodeTokens.next();
 
             if (token.kind != nodeToken.kind) {
                 return false;
@@ -128,5 +129,5 @@ public class ASTPtSumNode extends ASTPtRootNode {
         visitor.visitSumNode(this);
     }
 
-    protected ArrayList _lexicalTokens = new ArrayList();
+    protected ArrayList<Token> _lexicalTokens = new ArrayList<Token>();
 }

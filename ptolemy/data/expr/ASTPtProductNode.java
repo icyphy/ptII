@@ -72,13 +72,14 @@ public class ASTPtProductNode extends ASTPtRootNode {
      */
     public Object clone() throws CloneNotSupportedException {
         ASTPtProductNode newNode = (ASTPtProductNode) super.clone();
-        newNode._lexicalTokens = (ArrayList) _lexicalTokens.clone();
+        newNode._lexicalTokens = (ArrayList<Token>) _lexicalTokens.clone();
         return newNode;
     }
 
     /** Return the list of lexical tokens that were used to make this node.
+     *  @return The list of lexical tokens that were used to make this node.
      */
-    public List getLexicalTokenList() {
+    public List<Token> getLexicalTokenList() {
         return _lexicalTokens;
     }
 
@@ -129,5 +130,5 @@ public class ASTPtProductNode extends ASTPtRootNode {
         visitor.visitProductNode(this);
     }
 
-    protected ArrayList _lexicalTokens = new ArrayList();
+    protected ArrayList<Token> _lexicalTokens = new ArrayList<Token>();
 }
