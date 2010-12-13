@@ -85,13 +85,13 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return null.
-     *  For variable InequaliyTerms, this method will return a reference to the
+    /** Return the associated object, which is always null for concepts.
+     *  For variable InequalityTerms, this method will return a reference to the
      *  model object associated with that InequalityTerm. For concepts,
      *  there is no associated model object, hence returning null is the
      *  right thing to do.
      *  
-     *  @return Null.
+     *  @return Null, since concepts have no associated objects.
      */
     public Object getAssociatedObject() {
         return null;
