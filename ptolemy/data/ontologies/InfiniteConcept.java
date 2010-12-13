@@ -27,9 +27,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept that is not part of a finite ontology.
  *  This class represents Concepts that, rather than being drawn from
- *  a fixed finite set of the elements in a ConceptGraph, is drawn
+ *  a fixed finite set of the elements in a ConceptGraph, are drawn
  *  from a potentially infinite set, such as those used to represent
- *  structured datatypes like records, concepts parametrized over values,
+ *  structured datatypes like records, concepts parameterized over values,
  *  and other situations where enumerating all possible concepts beforehand
  *  is not feasible.
  *  
