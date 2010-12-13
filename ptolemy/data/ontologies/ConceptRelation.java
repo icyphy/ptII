@@ -44,6 +44,11 @@ import ptolemy.kernel.util.Workspace;
 /**
  A relation between concepts in an ontology.
  
+ This class is really only used to connect the FiniteConcepts in the Ontology
+ class, which corresponds to the relations that a user draws in the Ontology
+ Editor in Vergil.  This information is also then used to generate the
+ ordering relations when a ConceptGraph is created.
+ 
  @author Edward A. Lee, Ben Lickly
  @version $Id$
  @since Ptolemy II 8.0
