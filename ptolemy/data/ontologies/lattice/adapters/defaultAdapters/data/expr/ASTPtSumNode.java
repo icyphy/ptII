@@ -105,7 +105,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
         
-        List operatorTokenList = ((ptolemy.data.expr.ASTPtSumNode) _getNode())
+        List<Token> operatorTokenList = ((ptolemy.data.expr.ASTPtSumNode) _getNode())
                 .getLexicalTokenList();
 
         ASTPtSumNodeFunction astSumFunction = new ASTPtSumNodeFunction(
@@ -155,7 +155,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtSumNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction addFunction,
-                ConceptFunction subtractFunction, List operatorTokenList)
+                ConceptFunction subtractFunction, List<Token> operatorTokenList)
                 throws IllegalActionException {
             super("defaultASTPtSumNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
@@ -186,7 +186,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
             Concept result = inputConceptValues.get(0);
 
             // Iterate through the operator tokens
-            Iterator lexicalTokenIterator = _operatorTokenList.iterator();
+            Iterator<Token> lexicalTokenIterator = _operatorTokenList.iterator();
 
             for (int i = 1; i < inputConceptValues.size(); i++) {
                 if (lexicalTokenIterator.hasNext()) {
@@ -246,7 +246,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         /** The list of operator tokens '+' and '-' that
          *  are contained in the Ptolemy AST sum node.
          */
-        private List _operatorTokenList;
+        private List<Token> _operatorTokenList;
     }
 
 }

@@ -105,7 +105,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
         
-        List operatorTokenList = ((ptolemy.data.expr.ASTPtProductNode) _getNode())
+        List<Token> operatorTokenList = ((ptolemy.data.expr.ASTPtProductNode) _getNode())
                 .getLexicalTokenList();
 
         ASTPtProductNodeFunction astProductFunction = new ASTPtProductNodeFunction(
@@ -156,7 +156,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtProductNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction multiplyFunction,
-                ConceptFunction divideFunction, List operatorTokenList)
+                ConceptFunction divideFunction, List<Token> operatorTokenList)
                 throws IllegalActionException {
             super("defaultASTPtProductNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
@@ -200,7 +200,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             Concept result = inputConceptValues.get(0);
 
             // Iterate through the operator tokens
-            Iterator lexicalTokenIterator = _operatorTokenList.iterator();
+            Iterator<Token> lexicalTokenIterator = _operatorTokenList.iterator();
 
             for (int i = 1; i < inputConceptValues.size(); i++) {
                 if (lexicalTokenIterator.hasNext()) {
@@ -261,7 +261,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  are contained in the Ptolemy AST product node. Modulo
          *  operators '%' are not supported by this concept function.
          */
-        private List _operatorTokenList;
+        private List<Token> _operatorTokenList;
     }
 
 }
