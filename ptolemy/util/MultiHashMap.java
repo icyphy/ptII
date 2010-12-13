@@ -1,6 +1,6 @@
 /** A map that associates a key with multiple values.
 
- Copyright (c) 2008-2010 The Regents of the University of California.
+ Copyright (c) 1997-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,6 +30,7 @@ package ptolemy.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 ///////////////////////////////////////////////////////////////////
 //// MultiHashMap
@@ -54,66 +55,85 @@ For example, given a key K and object O1, and O2:
 then, map.size(K) would return 3. Iterating through the map returns
 O1, O1, and O2 in order.
 
- @author Man-Kit Leung
+ @author Man-Kit Leung, Ben Lickly
  @version $Id$
+ @param <K> The type of the keys of the multimap.
+ @param <V> The type of the values of the multimap. 
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
 
-public class MultiHashMap extends HashMap implements MultiMap {
+public class MultiHashMap<K,V> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Add the value to the collection associated with the specified key.
-     * @param key The specified key.
-     * @param value The specified value to add to the collection.
-     * @return The value added.
+    /** Get the collection of values mapped to by a given key.
+     *  @param key The index into the multimap.
+     *  @return The collection of values at that index.
      */
-    public Object put(Object key, Object value) {
-        ArrayList values = (ArrayList) get(key);
+    public Collection<V> get(K key) {
+        return _map.get(key);
+    }
+    
+    /** Return a set of all key values represented by this multimap.
+     *  @return A set of values that are keys of this multimap.
+     */
+    public Set<K> keySet() {
+        return _map.keySet();
+    }
+    
+    /** Return whether or not this multimap is empty.
+     *  @return True, if the map is empty. False, otherwise.
+     */
+    public boolean isEmpty() {
+        return _map.isEmpty();
+    }
+ 
+    /** Add the value to the collection associated with the specified key.
+     *  @param key The specified key.
+     *  @param value The specified value to add to the collection.
+     */
+    public void put(K key, V value) {
+        Collection<V> values = _map.get(key);
         if (values == null) {
-            values = new ArrayList();
-            super.put(key, values);
+            values = new ArrayList<V>();
+            _map.put(key, values);
         }
         values.add(value);
-        return value;
     }
 
-    /**
-     * Remove a specified value from the map. The value is removed
-     * from the collection mapped to the specified key. If this is
-     * the last value removed from the given key, the specified key
-     * is also removed from the map. Subsequent call to get(key) will
-     * return null.
-     * @param key The specified key to remove the value from.
-     * @param value The specified value to remove.
-     * @return The value removed, or null if nothing is removed.
+    /** Remove a specified value from the map. The value is removed
+     *  from the collection mapped to the specified key. If this is
+     *  the last value removed from the given key, the specified key
+     *  is also removed from the map. Subsequent call to get(key) will
+     *  return false.
+     *  @param key The specified key to remove the value from.
+     *  @param value The specified value to remove.
+     *  @return True, if the value was removed. False, otherwise.
      */
-    public Object remove(Object key, Object value) {
-        Collection values = (Collection) get(key);
+    public boolean remove(K key, V value) {
+        Collection<V> values = _map.get(key);
 
         if (values == null) {
-            return null;
+            return false;
         } else {
-            Object object = values.remove(value);
+            boolean removed = values.remove(value);
             if (values.size() == 0) {
-                remove(key);
+                _map.remove(key);
             }
-            return object;
+            return removed;
         }
     }
 
-    /**
-     * Return the size of the collection mapped to the specified key.
-     * @param key The specified key.
-     * @return The size of the collection, or zero if key is
-     *  not in the map.
+    /** Return the size of the collection mapped to the specified key.
+     *  @param key The specified key.
+     *  @return The size of the collection, or zero if key is
+     *    not in the map.
      */
     public int size(Object key) {
-        Collection values = (Collection) get(key);
+        Collection<V> values = _map.get(key);
 
         if (values == null) {
             return 0;
@@ -122,18 +142,24 @@ public class MultiHashMap extends HashMap implements MultiMap {
         }
     }
 
-    /**
-     * Return a view of the collection containing all values in the map.
-     * This is a collection containing the union of each collection
-     * mapped to the keys.
-     * @return A view of all values contained in this map.
+    /** Return a view of the collection containing all values in the map.
+     *  This is a collection containing the union of each collection
+     *  mapped to the keys.
+     *  @return A view of all values contained in this map.
      */
-    public Collection values() {
-        Collection result = new ArrayList();
-        for (Object object : super.values()) {
-            Collection values = (Collection) object;
+    public Collection<V> values() {
+        Collection<V> result = new ArrayList<V>();
+        for (Collection<V> values : _map.values()) {
             result.addAll(values);
         }
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    /** The HashMap that stores the mappings of this MultiMap.  The multimap
+     *  is constructed by having the values of the HashMap be collections.
+     */
+    private HashMap<K,Collection<V>> _map = new HashMap<K,Collection<V>>(); 
 }

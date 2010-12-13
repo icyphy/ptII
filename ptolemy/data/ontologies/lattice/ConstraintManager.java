@@ -31,10 +31,10 @@ package ptolemy.data.ontologies.lattice;
 import java.util.List;
 
 import ptolemy.data.StringToken;
-import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.MultiHashMap;
 
 /**
  * A class that collects and manages all the inequality constraints for

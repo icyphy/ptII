@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.util.MultiHashMap;
+import ptolemy.util.MultiHashMap;
 
 /** Representation of a set of counterexamples to monotonicity.
  * 
