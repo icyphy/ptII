@@ -384,6 +384,9 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies \
 	ptolemy.data.ontologies.gui \
 	ptolemy.data.ontologies.lattice \
+	ptolemy.data.ontologies.lattice.adapters.constPropagation \
+	ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt \
+	ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constAbsIntObservable.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr \
@@ -686,6 +689,7 @@ ALLPACKAGES = \
 	$(PTINYPACKAGES) \
 	$(PTJAI_PACKAGES) \
 	$(PTJAVACV_PACKAGES) \
+	$(PTJAVAMAIL_PACKAGES) \
 	$(PTJMF_PACKAGES) \
 	$(PTJOGL_PACKAGES) \
 	$(PTJOYSTICK_PACKAGES) \
