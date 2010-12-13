@@ -1,6 +1,6 @@
 /* This actor implements a Network Bus.
 
-@Copyright (c) 2008-2010 The Regents of the University of California.
+@Copyright (c) 2010 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -46,10 +46,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * This actor implements a wireless channel which sends tokens to receivers
- * specified in the port that sends a token.
+ * A wireless channel which sends tokens to receivers specified in the port that
+ * sends a token.
  * 
- * @author: Patricia Derler
+ * @author Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Yellow (pderler)
+ * @Pt.AcceptedRating Red (pderler)
  */
 public class Bus extends AtomicWirelessChannel {
 
@@ -77,8 +81,8 @@ public class Bus extends AtomicWirelessChannel {
 	}
 
 	/**
-	 * Send token from source port to target. The target port is specified in
-	 * the attribute 'receiver' of the source port.
+	 * Send a token from source port to target. The target port is specified in
+	 * the attribute <i>receiver</i> of the source port.
 	 * 
 	 * @param token
 	 *            The token sent from the source port.
@@ -86,8 +90,8 @@ public class Bus extends AtomicWirelessChannel {
 	 *            The source port.
 	 * @param properties
 	 *            This actor does not use the properties parameter.
-	 * @throws IllegalActionException
-	 *             If a conflict occurs.
+	 * @exception IllegalActionException
+	 *                If a conflict occurs.
 	 */
 	public void transmit(Token token, WirelessIOPort port,
 			RecordToken properties) throws IllegalActionException {
@@ -100,31 +104,30 @@ public class Bus extends AtomicWirelessChannel {
 			}
 
 			Parameter parameter = (Parameter) port.getAttribute("receiver");
-			Object obj = getContainer().getAttribute(
+			Object receiverValue = getContainer().getAttribute(
 					parameter.getDefaultExpression());
 
-			// quick hack to deal with port parameters
-			if (obj instanceof PortParameter) {
-				((PortParameter) obj).setCurrentValue(token);
+			// Quick hack to deal with port parameters.
+			if (receiverValue instanceof PortParameter) {
+				((PortParameter) receiverValue).setCurrentValue(token);
 			} else {
 				Port receiverPort = (Port) ((ObjectToken) parameter.getToken())
 						.getValue();
-				_transmitTo(
-						token,
-						port,
-						(Receiver) ((IOPort) receiverPort).getReceivers()[0][0],
-						properties);
-
+				if (((IOPort) receiverPort).getReceivers().length > 0) {
+					_transmitTo(
+							token,
+							port,
+							(Receiver) ((IOPort) receiverPort).getReceivers()[0][0],
+							properties);
+				}
 			}
-		} catch (Exception e) {
-			System.out.println("error transmitting");
 		} finally {
 			workspace().doneReading();
 		}
 	}
 
 	/**
-	 * Send token to specified receiver and notify listeners after the
+	 * Send a token to specified receiver and notify listeners after the
 	 * transmission.
 	 * 
 	 * @param token
@@ -135,8 +138,10 @@ public class Bus extends AtomicWirelessChannel {
 	 *            The receiver of the token.
 	 * @param properties
 	 *            Properties of the transmission.
-	 * @throws IllegalActionException
-	 *             If a conflict occurs.
+	 * @exception IllegalActionException
+	 *                If the token cannot be converted or if the token argument
+	 *                is null and the destination receiver does not support
+	 *                clear.
 	 */
 	protected void _transmitTo(Token token, WirelessIOPort sender,
 			Receiver receiver, RecordToken properties)
