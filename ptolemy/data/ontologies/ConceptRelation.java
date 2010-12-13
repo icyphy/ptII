@@ -166,10 +166,6 @@ public class ConceptRelation extends ComponentRelation {
                     "ConceptRelation can only connect to instances of Concept.");
         }
 
-        if (numLinks() == 0) {
-            return;
-        }
-
         if (numLinks() >= 2) {
             throw new IllegalActionException(this,
                     "ConceptRelation can only connect two Concepts.");
