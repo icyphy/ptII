@@ -1,4 +1,4 @@
-/* An abstract class that defines the relationships in an ontology.
+/* An abstract class that defines the ordering relationships in an ontology.
  *
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -28,11 +28,11 @@ import ptolemy.graph.CPO;
 ///////////////////////////////////////////////////////////////////
 //// ConceptGraph
 
-/** An abstract class that defines the relationships in an ontology.
+/** An abstract class that defines the ordering relationships in an ontology.
  *  An ontology is a set of concepts and the relationships between them.  In a
  *  general ontology the graph describing the relationships between concepts
  *  need not be a complete partial order (CPO).  But we restrict our
- *  implementation to a CPO because we currently deal only with ontologies than
+ *  implementation to a CPO because we currently deal only with ontologies that
  *  can be partially ordered. This is particularly important for an ontology
  *  whose graph is a lattice, where we can use the Rehof and Mogensen algorithm
  *  to do a scalable analysis and inference on a model to assign concepts from
@@ -42,7 +42,8 @@ import ptolemy.graph.CPO;
  *  LatticeOntologySolver}, a subclass of {@linkplain OntologySolver}.
  *
  *  @see Ontology
- *  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
+ *  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui,
+ *    Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (mankit)
