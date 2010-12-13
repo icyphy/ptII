@@ -94,38 +94,36 @@ public class MultiHashMap<K,V> {
     /** Add the value to the collection associated with the specified key.
      *  @param key The specified key.
      *  @param value The specified value to add to the collection.
-     *  @return The value added.
      */
-    public Object put(K key, V value) {
-        Collection values = _map.get(key);
+    public void put(K key, V value) {
+        Collection<V> values = _map.get(key);
         if (values == null) {
-            values = new ArrayList();
+            values = new ArrayList<V>();
             _map.put(key, values);
         }
         values.add(value);
-        return value;
     }
 
     /** Remove a specified value from the map. The value is removed
      *  from the collection mapped to the specified key. If this is
      *  the last value removed from the given key, the specified key
      *  is also removed from the map. Subsequent call to get(key) will
-     *  return null.
+     *  return false.
      *  @param key The specified key to remove the value from.
      *  @param value The specified value to remove.
-     *  @return The value removed, or null if nothing is removed.
+     *  @return True, if the value was removed. False, otherwise.
      */
-    public Object remove(K key, V value) {
+    public boolean remove(K key, V value) {
         Collection<V> values = _map.get(key);
 
         if (values == null) {
-            return null;
+            return false;
         } else {
-            Object object = values.remove(value);
+            boolean removed = values.remove(value);
             if (values.size() == 0) {
                 _map.remove(key);
             }
-            return object;
+            return removed;
         }
     }
 
