@@ -78,7 +78,7 @@ public class FiniteConcept extends Concept implements Flowable {
     ////                     public methods                        ////
 
     /** Return the finite concepts that cover this one.
-     *  If this concept if x, then we mean here the set of concepts y such
+     *  If this concept is x, then we mean here the set of concepts y such
      *  that x <= y and x <= z < y implies that z = x.
      *  @return A set of concepts that cover this one.
      */
@@ -93,7 +93,7 @@ public class FiniteConcept extends Concept implements Flowable {
     }
 
     /** Return the finite concepts that are covered by this one.
-     *  If this concept if x, then we mean here the set of concepts y such
+     *  If this concept is x, then we mean here the set of concepts y such
      *  that y <= x and y < z <= x implies that z = x.
      *  @return A set of concepts that are covered by this one.
      */
@@ -115,15 +115,15 @@ public class FiniteConcept extends Concept implements Flowable {
         return (Ontology) getContainer();
     }
 
-    /** Return the incoming port.
-     *  @return The incoming port.
+    /** Return the below port specified in the constructor.
+     *  @return The below port specified in the constructor.
      */
     public ComponentPort getIncomingPort() {
         return belowPort;
     }
 
-    /** Return the outgoing port.
-     *  @return The outgoing port.
+    /** Return the above port specified in the constructor.
+     *  @return The above port specified in the constructor.
      */
     public ComponentPort getOutgoingPort() {
         return abovePort;
