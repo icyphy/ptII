@@ -29,6 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib;
 
 import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.lattice.ApplyBinaryFunctionToMultipleArguments;
@@ -113,7 +114,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 divideFunction != null) {
             if (interconnectConstraintType == ConstraintType.EQUALS ||
                     interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
-                List multiplyInputs = _getSourcePortList(actor.multiply);
+                List<IOPort> multiplyInputs = _getSourcePortList(actor.multiply);
                 
                 // If the multiply input is a multiport with multiple input ports,
                 // set up the constraint to be the product of the inputs.
@@ -130,7 +131,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 
                 // If the divide input is a multiport with multiple input ports,
                 // set up the constraint to be the product of the inputs.
-                List divideInputs = _getSourcePortList(actor.divide);
+                List<IOPort> divideInputs = _getSourcePortList(actor.divide);
                 if (divideInputs.size() > 1) {
                     InequalityTerm[] divideTerms = new InequalityTerm[divideInputs.size()];
                     for (int i = 0; i < divideTerms.length; i++) {

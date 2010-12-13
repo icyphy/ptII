@@ -29,6 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib;
 
 import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition;
@@ -116,7 +117,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 
                 // If the plus input is a multiport with multiple input ports,
                 // set up the constraint to be the sum of the inputs.
-                List plusInputs = _getSourcePortList(actor.plus);                 
+                List<IOPort> plusInputs = _getSourcePortList(actor.plus);                 
                 if (plusInputs.size() > 1) {
                     InequalityTerm[] plusTerms = new InequalityTerm[plusInputs.size()];
                     for (int i = 0; i < plusTerms.length; i++) {
@@ -130,7 +131,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 
                 // If the minus input is a multiport with multiple input ports,
                 // set up the constraint to be the sum of the inputs.
-                List minusInputs = _getSourcePortList(actor.minus);
+                List<IOPort> minusInputs = _getSourcePortList(actor.minus);
                 if (minusInputs.size() > 1) {
                     InequalityTerm[] minusTerms = new InequalityTerm[minusInputs.size()];
                     for (int i = 0; i < minusTerms.length; i++) {
