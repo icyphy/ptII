@@ -61,17 +61,17 @@ public abstract class ConceptGraph implements CPO {
     public abstract Concept bottom();
 
     /** Compare two concepts in the ontology. The arguments must be instances
-     *  of {@link FiniteConcept}, otherwise an exception will be thrown.  This
+     *  of {@link Concept}, otherwise an exception will be thrown.  This
      *  method returns one of ptolemy.graph.CPO.LOWER, ptolemy.graph.CPO.SAME,
      *  ptolemy.graph.CPO.HIGHER, ptolemy.graph.CPO.INCOMPARABLE, indicating
      *  the first argument is lower than, equal to, higher than, or
      *  incomparable with the second argument in the property hierarchy,
      *  respectively.
-     *  @param e1 An instance of {@link FiniteConcept}.
-     *  @param e2 An instance of {@link FiniteConcept}.
+     *  @param e1 An instance of {@link Concept}.
+     *  @param e2 An instance of {@link Concept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
      *  @exception IllegalArgumentException If one or both arguments are not
-     *   instances of {@link FiniteConcept}.
+     *   instances of {@link Concept}.
      */
     public abstract int compare(Object e1, Object e2);
 
