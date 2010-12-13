@@ -156,7 +156,7 @@ public abstract class ConceptGraph implements CPO {
 
     /** Compute the least element of a subset.
      *  The least element of a subset is an element in the
-     *  subset that is lower than all the other element in the
+     *  subset that is lower than all the other elements in the
      *  subset.
      *  @param subset An array of Objects representing the subset.
      *  @return The least element of the subset, if it exists, and null
@@ -179,7 +179,7 @@ public abstract class ConceptGraph implements CPO {
 
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the concept graph
-     *  that is greater than or the same as both of the two elements.
+     *  that is greater than or equal to both of the two elements.
      *
      *  Not implemented in this base class.
      *
@@ -194,7 +194,7 @@ public abstract class ConceptGraph implements CPO {
 
     /** Compute the least upper bound (LUB) of a subset.
      *  The LUB of a subset is the least element in the concept graph that
-     *  is greater than or the same as all the elements in the
+     *  is greater than or equal to all the elements in the
      *  subset.
      *  @param subset An array of Objects representing the subset.
      *  @return The least upper bound of the given subset, if it exists,
@@ -221,7 +221,7 @@ public abstract class ConceptGraph implements CPO {
 
     /** Compute the up-set of an element in this concept graph.
      *  The up-set of an element is the subset consisting of
-     *  all the elements higher than or the same as the specified element.
+     *  all the elements greater than or equal to the specified element.
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the up-set of the
      *   specified element.

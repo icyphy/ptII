@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /** A data structure representing relationships of ontologies whose structure
  *  can be represented as a directed acyclic graph of concepts.
  *  This corresponds directly to the subset of ontologies that users can
- *  costruct in the Ontology Editor.
+ *  construct in the Ontology Editor.
  *
  *  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  *  @version $Id$
@@ -72,7 +72,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @param concept1 The source concept
      *  @param concept2 The sink concept
      *  @param conceptRelation The ConceptRelation between the two concepts
-     *   concept1 and conceptt2.
+     *   concept1 and concept2.
      */
     public void addRelation(FiniteConcept concept1, FiniteConcept concept2,
             ConceptRelation conceptRelation) {
@@ -129,7 +129,7 @@ public class DAGConceptGraph extends ConceptGraph {
 
     /** Compute the down-set of an element in this concept graph.
      *  The down-set of an element is the subset consisting of
-     *  all the elements lower than or the same as the specified element.
+     *  all the elements less than or equal to the specified element.
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the down-set of the
      *   specified element.
@@ -157,7 +157,7 @@ public class DAGConceptGraph extends ConceptGraph {
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the concept graph
-     *  that is lower than or the same as both of the two elements.
+     *  that is less than or equal to both of the two elements.
      *  @param e1 An Object representing an element in this concept graph.
      *  @param e2 An Object representing an element in this concept graph.
      *  @return A Concept representing the GLB of the two specified
@@ -166,6 +166,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *   specified Objects is not an element of this concept graph.
      */
     public Concept greatestLowerBound(Object e1, Object e2) {
+        // FIXME: Cover the cases with one or more InfiniteConcepts
         if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
             throw new IllegalArgumentException(
                     "ConceptGraph.greatestLowerBound:"
@@ -175,7 +176,7 @@ public class DAGConceptGraph extends ConceptGraph {
         return (Concept) _dag.greatestLowerBound(e1, e2);
     }
 
-    /** Return weather this concept graph is a lattice.
+    /** Return whether this concept graph is a lattice.
      *  Should be true for all existing concept graphs.
      *  @return True, if the concept graph is a lattice.
      */
@@ -185,7 +186,7 @@ public class DAGConceptGraph extends ConceptGraph {
 
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the concept graph
-     *  that is greater than or the same as both of the two elements.
+     *  that is greater than or equal to both of the two elements.
      *  @param e1 An Object representing an element in this concept graph.
      *  @param e2 An Object representing an element in this concept graph.
      *  @return A Concept representing the LUB of the two specified
@@ -230,7 +231,7 @@ public class DAGConceptGraph extends ConceptGraph {
 
     /** Compute the up-set of an element in this concept graph.
      *  The up-set of an element is the subset consisting of
-     *  all the elements higher than or the same as the specified element.
+     *  all the elements greater than or equal to the specified element.
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the up-set of the
      *   specified element.
