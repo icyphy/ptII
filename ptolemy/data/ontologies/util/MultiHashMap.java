@@ -154,7 +154,10 @@ public class MultiHashMap<K,V> {
         }
         return result;
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
     /** The HashMap that stores the mappings of this MultiMap.  The multimap
      *  is constructed by having the values of the HashMap be collections.
      */
