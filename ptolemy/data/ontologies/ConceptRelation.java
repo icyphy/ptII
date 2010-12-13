@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
 /**
  A relation between concepts in an ontology.
  
- @author Edward A. Lee
+ @author Edward A. Lee, Ben Lickly
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (hyzheng)
