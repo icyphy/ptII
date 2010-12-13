@@ -30,6 +30,7 @@ package ptolemy.data.ontologies.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 ///////////////////////////////////////////////////////////////////
 //// MultiHashMap
@@ -54,29 +55,41 @@ For example, given a key K and object O1, and O2:
 then, map.size(K) would return 3. Iterating through the map returns
 O1, O1, and O2 in order.
 
- @author Man-Kit Leung
+ @author Man-Kit Leung, Ben Lickly
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
 
-public class MultiHashMap extends HashMap {
+public class MultiHashMap<K,V> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public Collection<V> get(K key) {
+        return _map.get(key);
+    }
+    
+    public Set<K> keySet() {
+        return _map.keySet();
+    }
+    
+    public boolean isEmpty() {
+        return _map.isEmpty();
+    }
+ 
     /**
      * Add the value to the collection associated with the specified key.
      * @param key The specified key.
      * @param value The specified value to add to the collection.
      * @return The value added.
      */
-    public Object put(Object key, Object value) {
-        ArrayList values = (ArrayList) get(key);
+    public Object put(K key, V value) {
+        Collection values = _map.get(key);
         if (values == null) {
             values = new ArrayList();
-            super.put(key, values);
+            _map.put(key, values);
         }
         values.add(value);
         return value;
@@ -92,15 +105,15 @@ public class MultiHashMap extends HashMap {
      * @param value The specified value to remove.
      * @return The value removed, or null if nothing is removed.
      */
-    public Object remove(Object key, Object value) {
-        Collection values = (Collection) get(key);
+    public Object remove(K key, V value) {
+        Collection values = _map.get(key);
 
         if (values == null) {
             return null;
         } else {
             Object object = values.remove(value);
             if (values.size() == 0) {
-                remove(key);
+                _map.remove(key);
             }
             return object;
         }
@@ -113,7 +126,7 @@ public class MultiHashMap extends HashMap {
      *  not in the map.
      */
     public int size(Object key) {
-        Collection values = (Collection) get(key);
+        Collection values = _map.get(key);
 
         if (values == null) {
             return 0;
@@ -130,10 +143,13 @@ public class MultiHashMap extends HashMap {
      */
     public Collection values() {
         Collection result = new ArrayList();
-        for (Object object : super.values()) {
+        for (Object object : _map.values()) {
             Collection values = (Collection) object;
             result.addAll(values);
         }
         return result;
     }
+    
+    private HashMap<K,Collection> _map = new HashMap<K,Collection>();
+    //private HashMap<K,Collection<V>> _map = new HashMap<K,Collection<V>>(); 
 }
