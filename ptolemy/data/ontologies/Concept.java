@@ -93,7 +93,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  
      *  @return Null, since concepts have no associated objects.
      */
-    public Object getAssociatedObject() {
+    final public Object getAssociatedObject() {
         return null;
     }
 
@@ -125,7 +125,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  @return This concept.
      *  @see #setValue
      */
-    public Object getValue() {
+    final public Object getValue() {
         return this;
     }
 
@@ -134,7 +134,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  it has no variables.
      *  @return An empty array.
      */
-    public InequalityTerm[] getVariables() {
+    final public InequalityTerm[] getVariables() {
         return _EMPTY_ARRAY;
     }
 
@@ -167,7 +167,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     /** Return false, because this inequality term is a constant.
      *  @return False.
      */
-    public boolean isSettable() {
+    final public boolean isSettable() {
         return false;
     }
 
@@ -197,7 +197,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue
      */
-    public void setValue(Object value) throws IllegalActionException {
+    final public void setValue(Object value) throws IllegalActionException {
         throw new IllegalActionException(this,
                 "Cannot set an ontology concept.");
     }
