@@ -171,11 +171,12 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return false;
     }
 
-    /** Return whether this concept is a valid inference result. This method is required
-     *  to implement the InequalityTerm interface, but we do not want to use this method
-     *  going forward for ontology inferences. Acceptability criteria should be of the form
-     *  variable <= Concept. Acceptability criteria prevent a variable from being promoted
-     *  in the ontology lattice.
+    /** Return whether this concept is a valid inference result. This method is
+     *  required to implement the InequalityTerm interface, but we do not want
+     *  to use this method going forward for ontology inferences. Acceptability
+     *  criteria should be of the form variable <= Concept. Acceptability
+     *  criteria prevent a variable from being promoted in the ontology
+     *  lattice.
      *  @return True, if this concept is a valid result of inference.
      *   False, otherwise.
      */
