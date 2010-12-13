@@ -106,7 +106,9 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
                                 + infiniteConceptString + ".");
             } finally {
                 try {
-                    tempTokenVariable.setContainer(null);
+                    if (tempTokenVariable != null) {
+                        tempTokenVariable.setContainer(null);
+                    }
                 } catch (NameDuplicationException nameDupExAfterSetContainerToNull) {
                     throw new IllegalActionException(this,
                             nameDupExAfterSetContainerToNull, "Could " +

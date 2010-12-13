@@ -219,11 +219,12 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             // Next look for the adapter in the LatticeOntologySolver model.
             List<ActorProductLatticeConstraintsDefinitionAttribute> modelDefinedAdapters = ((OntologySolverModel) _model)
                     .attributeList(ActorProductLatticeConstraintsDefinitionAttribute.class);
-            for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
-                if (((StringToken) ((ActorProductLatticeConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
+            for (ActorProductLatticeConstraintsDefinitionAttribute
+                    adapterDefinitionAttribute : modelDefinedAdapters) {
+                if (((StringToken) adapterDefinitionAttribute.actorClassName
                         .getToken()).stringValue().equals(component.getClass().getName())) {
-                    adapter = ((ActorProductLatticeConstraintsDefinitionAttribute) adapterDefinitionAttribute)
-                            .createAdapter((ComponentEntity) component, this);
+                    adapter = adapterDefinitionAttribute.createAdapter(
+                            (ComponentEntity) component, this);
                     break;
                 }
             }
