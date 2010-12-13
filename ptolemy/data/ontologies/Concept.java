@@ -1,4 +1,4 @@
-/** A concept in an ontology.
+/** A concept represents a single piece of information in an ontology.
  * 
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -38,10 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// Concept
 
-/** A concept in an ontology.
+/** A concept represents a single piece of information in an ontology.
  *  An instance of this class is always associated with
  *  a particular ontology, which is specified in the constructor.
- *  
+ *  <p>
  *  Note that this is an abstract class.  Any concrete instance must be
  *  either a FiniteConcept or an InfiniteConcept.
  * 
