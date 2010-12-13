@@ -61,7 +61,7 @@ O1, O1, and O2 in order.
  @Pt.AcceptedRating Red (mankit)
  */
 
-public class MultiHashMap extends HashMap implements MultiMap {
+public class MultiHashMap extends HashMap {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

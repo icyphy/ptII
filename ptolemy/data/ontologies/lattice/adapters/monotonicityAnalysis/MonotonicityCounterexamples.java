@@ -30,7 +30,6 @@ import java.util.Set;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.util.MultiHashMap;
-import ptolemy.data.ontologies.util.MultiMap;
 
 /** Representation of a set of counterexamples to monotonicity.
  * 
@@ -112,7 +111,7 @@ public class MonotonicityCounterexamples {
      *  If our MultiMap supported Java Generics, this would have a type of
      *    MultiMap<Concept, Concept>
      */
-    private MultiMap _counterexamples;
+    private MultiHashMap _counterexamples;
     
     /** Encapsulate counterexample pairs.
      *  These are pairs of the form (x1, x2) where x1 <= x2, but

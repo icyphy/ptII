@@ -32,7 +32,6 @@ import java.util.List;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.ontologies.util.MultiHashMap;
-import ptolemy.data.ontologies.util.MultiMap;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -99,8 +98,8 @@ public class ConstraintManager {
     private LatticeOntologySolver _solver;
 
     /** The multi-map of the greater terms (key) to the lesser terms (values). */
-    private MultiMap _greaterTermMap = new MultiHashMap();
+    private MultiHashMap _greaterTermMap = new MultiHashMap();
 
     /** The multi-map of the lesser terms (key) to the greater terms (values). */
-    private MultiMap _lesserTermMap = new MultiHashMap();
+    private MultiHashMap _lesserTermMap = new MultiHashMap();
 }
