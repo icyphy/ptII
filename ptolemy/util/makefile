@@ -55,7 +55,6 @@ JSRCS = \
 	JVMBitWidth.java \
 	MessageHandler.java \
 	MultiHashMap.java \
-	MultiMap.java \
 	OrderedResourceBundle.java \
 	StreamExec.java \
 	StringBufferExec.java \
