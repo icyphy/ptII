@@ -83,11 +83,12 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the associated object, which is always null for concepts.
-     *  For variable InequalityTerms, this method will return a reference to the
-     *  model object associated with that InequalityTerm. For concepts,
-     *  there is no associated model object, hence returning null is the
-     *  right thing to do.
+    /** Return the associated object of this InequalityTerm, which is always
+     *  null for concepts.
+     *  For variable InequalityTerms, this method will return a reference
+     *  to the model object associated with that InequalityTerm.
+     *  For concepts, there is no associated model object, hence returning
+     *  null is the right thing to do.
      *  
      *  @return Null, since concepts have no associated objects.
      */
@@ -117,7 +118,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     */
     public abstract Ontology getOntology();
 
-    /** Return the current value of the inequality term. Since a concept
+    /** Return the current value of the InequalityTerm. Since a concept
      *  is a constant, not a variable, its value is just itself.
      *  
      *  @return This concept.
@@ -127,22 +128,23 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return this;
     }
 
-    /** Return an array of variables contained in this term, or in this
-     *  case, an empty array. A concept is a single constant, so
+    /** Return an array of variables contained in this InqualityTerm, or in
+     *  this case, an empty array. A concept is a single constant, so
      *  it has no variables.
      *  @return An empty array.
      */
     final public InequalityTerm[] getVariables() {
-        return _EMPTY_ARRAY;
+        return new InequalityTerm[0];
     }
 
-    /** Throw an exception. A concept is not a variable.
+    /** Try to initialize the InequalityTerm, or in this case, throw an
+     *  exception. A concept is not a variable.
      * 
      *  @param object The object used to initialize the InequalityTerm; not used
      *  since a Concept is a static value that cannot be initialized.
      *  @exception IllegalActionException Always thrown.
      */
-    public void initialize(Object object) throws IllegalActionException {
+    final public void initialize(Object object) throws IllegalActionException {
         throw new IllegalActionException(this,
                 "Cannot initialize an ontology concept.");
     }
@@ -162,8 +164,9 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return comparisonResult == CPO.SAME || comparisonResult == CPO.HIGHER;
     }
 
-    /** Return false, because this inequality term is a constant.
-     *  @return False.
+    /** Return whether or not this InequalityTerm is settable.
+     *  In this case, it is not, since concepts are constants, not variables.
+     *  @return False, because this inequality term is a constant.
      */
     final public boolean isSettable() {
         return false;
@@ -188,7 +191,8 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         }
     }
 
-    /** Throw an exception. A concept is not a variable.
+    /** Try to set the value of this InequalityTerm, or in this case, just
+     *  throw an exception. A concept is not a variable.
      * 
      *  @param value The Object being passed in to set the value for the
      *  InequalityTerm; not used since a Concept is a static value that
@@ -206,11 +210,5 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  @return The string representation of this concept.
      */
     public abstract String toString();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Empty array. */
-    private static InequalityTerm[] _EMPTY_ARRAY = new InequalityTerm[0];
 
 }
