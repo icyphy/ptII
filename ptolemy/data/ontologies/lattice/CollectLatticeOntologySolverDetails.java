@@ -137,8 +137,8 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
      */
     public void test() throws IllegalActionException {
         _findSolver();
-        Hashtable initialSolverInfo = _solver.getInitialSolverInformation();
-        Hashtable resolvedSolverInfo = _solver.getResolvedSolverInformation();
+        Hashtable<String, String> initialSolverInfo = _solver.getInitialSolverInformation();
+        Hashtable<String, String> resolvedSolverInfo = _solver.getResolvedSolverInformation();
 
         String currentInitialSolverConstraintsString = (String) initialSolverInfo
                 .get("initialSolverConstraints");
@@ -185,8 +185,8 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
      */
     public void train() throws IllegalActionException {
         _findSolver();
-        Hashtable initialSolverInfo = _solver.getInitialSolverInformation();
-        Hashtable resolvedSolverInfo = _solver.getResolvedSolverInformation();
+        Hashtable<String, String> initialSolverInfo = _solver.getInitialSolverInformation();
+        Hashtable<String, String> resolvedSolverInfo = _solver.getResolvedSolverInformation();
 
         trainedInitialSolverConstraints
                 .setExpression((String) initialSolverInfo

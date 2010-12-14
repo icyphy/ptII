@@ -211,14 +211,14 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If an exception occurs when
      *  collecting the constraints.
      */
-    public Hashtable getInitialSolverInformation()
+    public Hashtable<String, String> getInitialSolverInformation()
             throws IllegalActionException {
         initialize();
 
         String initialSolverConstraints = 
             _getConstraintsAsString(_initialConstraintList);
 
-        Hashtable initialSolverInfo = new Hashtable();
+        Hashtable<String, String> initialSolverInfo = new Hashtable<String, String>();
         initialSolverInfo.put("initialSolverConstraints",
                 initialSolverConstraints);
 
@@ -236,7 +236,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If an exception occurs when
      *  collecting the constraints.
      */
-    public Hashtable getResolvedSolverInformation()
+    public Hashtable<String, String> getResolvedSolverInformation()
             throws IllegalActionException {
         if (_resolvedConstraintList == null) {
             invokeSolver(false);
@@ -244,7 +244,7 @@ public class LatticeOntologySolver extends OntologySolver {
 
         String resolvedSolverConstraints = _getConstraintsAsString(_resolvedConstraintList);
 
-        Hashtable resolvedSolverInfo = new Hashtable();
+        Hashtable<String, String> resolvedSolverInfo = new Hashtable<String, String>();
         resolvedSolverInfo.put("resolvedSolverConstraints",
                 resolvedSolverConstraints);
 
