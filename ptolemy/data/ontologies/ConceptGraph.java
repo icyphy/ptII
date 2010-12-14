@@ -89,6 +89,7 @@ public abstract class ConceptGraph implements CPO {
 
     /** Compute the greatest element of a subset.
      *
+     *  @see #leastElement(Object[])
      *  @param subset An array of Objects representing the subset.
      *  @return An Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
@@ -117,6 +118,7 @@ public abstract class ConceptGraph implements CPO {
 
     /** Compute the greatest lower bound (GLB) of a subset.
      *
+     *  @see #leastUpperBound(Object[])
      *  @param subset An array of Objects representing the subset.
      *  @return Nothing.
      *  @exception IllegalArgumentException If at least one Object is not
@@ -151,6 +153,7 @@ public abstract class ConceptGraph implements CPO {
      *  The least element of a subset is an element in the
      *  subset that is lower than all the other elements in the
      *  subset.
+     *  @see #greatestElement(Object[])
      *  @param subset An array of Objects representing the subset.
      *  @return The least element of the subset, if it exists, and null
      *   if there is no least element of the given subset.
@@ -180,6 +183,7 @@ public abstract class ConceptGraph implements CPO {
      *  The LUB of a subset is the least element in the concept graph that
      *  is greater than or equal to all the elements in the
      *  subset.
+     *  @see #greatestLowerBound(Object[])
      *  @param subset An array of Objects representing the subset.
      *  @return The least upper bound of the given subset, if it exists,
      *   and null if it does not.
