@@ -394,8 +394,8 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
-	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr \
-	ptolemy.data.ontologies.util
+	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr
+
 
 # Packages used by data/properties 
 # Use this command to update:
