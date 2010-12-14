@@ -96,17 +96,10 @@ public abstract class ConceptGraph implements CPO {
      *   specified array is not an element of this concept graph.
      */
     public Concept greatestElement(Object[] subset) {
-        if (subset != null && subset.length > 0) {
-            Concept greatest = (Concept) subset[0];
-            for (Object concept : subset) {
-                if (compare(concept, greatest) == CPO.HIGHER) {
-                    greatest = (Concept) concept;
-                }
-            }
-            return greatest;
-        }
-        return null;
+        return _superlativeElement(subset, CPO.HIGHER);
     }
+
+
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *
@@ -165,16 +158,7 @@ public abstract class ConceptGraph implements CPO {
      *   specified array is not an element of this concept graph.
      */
     public Concept leastElement(Object[] subset) {
-        if (subset != null && subset.length > 0) {
-            Concept least = (Concept) subset[0];
-            for (Object concept : subset) {
-                if (compare(concept, least) == CPO.LOWER) {
-                    least = (Concept) concept;
-                }
-            }
-            return least;
-        }
-        return null;
+        return _superlativeElement(subset, CPO.LOWER);
     }
 
     /** Compute the least upper bound (LUB) of two elements.
@@ -232,12 +216,34 @@ public abstract class ConceptGraph implements CPO {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                     private methods                       ////
+
+    /** Return the concept from the given subset of concepts that is the
+     *  least or greatest.
+     *
+     *  @param subset The set of concepts in question. 
+     *  @param direction The directionality of the extremity. CPO.HIGHER
+     *    for greatest, and CPO.LOWER for least.
+     *  @return The concept at the extremity, if it exists. Null, if no
+     *    such concept exists.
+     */
+    private Concept _superlativeElement(Object[] subset, int direction) {
+        if (subset != null && subset.length > 0) {
+            Concept greatest = (Concept) subset[0];
+            for (Object concept : subset) {
+                if (compare(concept, greatest) == direction) {
+                    greatest = (Concept) concept;
+                }
+            }
+            return greatest;
+        }
+        return null;
+    }
 
     /** Return a string indicating that the calling method is unimplemented.
      *  @return The string with the unimplemented error message.
      */
-    protected String _notImplementedMessage() {
+    private String _notImplementedMessage() {
         String methodName = Thread.currentThread().getStackTrace()[1]
                 .getMethodName();
         String className = this.getClass().getSimpleName();
