@@ -119,12 +119,10 @@ public class ConceptRelation extends ComponentRelation {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null) {
-            if (!(container instanceof Ontology)) {
-                throw new IllegalActionException(container, this,
-                        "Relation can only be contained by instances of "
-                                + "Ontology.");
-            }
+        if (container != null && !(container instanceof Ontology)) {
+            throw new IllegalActionException(container, this,
+                    "Relation can only be contained by instances of "
+                            + "Ontology.");
         }
         super.setContainer(container);
     }
@@ -187,9 +185,9 @@ public class ConceptRelation extends ComponentRelation {
         annotation = new StringParameter(this, "annotation");
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
-        Variable variable = new Variable(annotation, "_textHeightHint");
-        variable.setExpression("5");
-        variable.setPersistent(false);
+        Variable textHighlightHint = new Variable(annotation, "_textHeightHint");
+        textHighlightHint.setExpression("5");
+        textHighlightHint.setPersistent(false);
 
         exitAngle = new Parameter(this, "exitAngle");
         exitAngle.setVisibility(Settable.NONE);
