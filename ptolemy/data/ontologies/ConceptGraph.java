@@ -229,15 +229,15 @@ public abstract class ConceptGraph implements CPO {
      */
     private Concept _superlativeElement(Object[] subset, int direction) {
         if (subset != null && subset.length > 0) {
-            Concept greatest = (Concept) subset[0];
+            Concept superlative = (Concept) subset[0];
             for (Object concept : subset) {
-                if (compare(concept, greatest) == CPO.INCOMPARABLE) {
+                if (compare(concept, superlative) == CPO.INCOMPARABLE) {
                     return null;
-                } else if (compare(concept, greatest) == direction) {
-                    greatest = (Concept) concept;
+                } else if (compare(concept, superlative) == direction) {
+                    superlative = (Concept) concept;
                 }
             }
-            return greatest;
+            return superlative;
         }
         return null;
     }
