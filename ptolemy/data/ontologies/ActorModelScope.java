@@ -137,7 +137,7 @@ public class ActorModelScope extends ModelScope {
      *  @exception IllegalActionException If constructing the list causes
      *  it.
      */
-    public Set identifierSet() throws IllegalActionException {
+    public Set<String> identifierSet() throws IllegalActionException {
         return getAllScopedObjectNames(_modelObject);
     }
 

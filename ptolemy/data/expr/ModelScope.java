@@ -64,8 +64,8 @@ public abstract class ModelScope implements ParserScope {
      * given container.
      * @param container The container of this scope.
      */
-    public static Set getAllScopedObjectNames(NamedObj container) {
-        Set identifiers = new HashSet();
+    public static Set<String> getAllScopedObjectNames(NamedObj container) {
+        Set<String> identifiers = new HashSet<String>();
         identifiers.add("this");
         while (container != null) {
             for (Object attribute : container.attributeList()) {
