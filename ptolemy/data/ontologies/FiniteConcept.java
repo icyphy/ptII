@@ -95,14 +95,6 @@ public class FiniteConcept extends Concept implements Flowable {
         return _getConnectedConcepts(belowPort);
     }
 
-    /** Return the ontology that contains this concept.
-     *
-     *  @return The containing ontology.
-     */
-    public Ontology getOntology() {
-        return (Ontology) getContainer();
-    }
-
     /** Return the below port specified in the constructor.
      *  @return The below port specified in the constructor.
      */

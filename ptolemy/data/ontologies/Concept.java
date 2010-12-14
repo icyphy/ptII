@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  either a FiniteConcept or an InfiniteConcept.
  * 
  *  @see Ontology
+ *  @see ConceptGraph
  *  @author Ben Lickly, Edward A. Lee, Dai Bui, Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -113,11 +114,13 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         }
     }
 
-    /** Return the ontology to which this concept belongs.
+   /** Return the ontology that contains this concept.
     *
-    *   @return This concept's ontology.
+    *  @return The containing ontology.
     */
-    public abstract Ontology getOntology();
+   public Ontology getOntology() {
+       return (Ontology) getContainer();
+   }
 
     /** Return the current value of the InequalityTerm. Since a concept
      *  is a constant, not a variable, its value is just itself.

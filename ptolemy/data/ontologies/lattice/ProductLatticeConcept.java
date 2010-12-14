@@ -133,13 +133,6 @@ public class ProductLatticeConcept extends Concept {
     public List<Concept> getConceptTuple() {
         return new ArrayList<Concept>(_conceptTuple);
     }
-    
-    /** Return the product lattice ontology that contains this concept.
-     *  @return The containing product lattice ontology.
-     */
-    public Ontology getOntology() {
-        return (Ontology) getContainer();
-    }
 
     /** Return the string that represents this concept, its name.
      *  @return The string name that represents this concept.

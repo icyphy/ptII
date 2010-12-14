@@ -62,8 +62,6 @@ public abstract class InfiniteConcept extends Concept {
     public InfiniteConcept(Ontology ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-
-        _ontology = ontology;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,14 +100,6 @@ public abstract class InfiniteConcept extends Concept {
         }
     }
 
-    /** Return the ontology to which this concept belongs.
-     *
-     *  @return This concept's ontology.
-     */
-    public Ontology getOntology() {
-        return _ontology;
-    }
-
     /** Return a hash code for this Concept.
      *  @return A valid hash code.
      *  @see java.lang.Object#hashCode()
@@ -146,7 +136,6 @@ public abstract class InfiniteConcept extends Concept {
         
         super(ontology, "InfiniteConcept_" + ++_conceptNumber);
         setName(getName() + " (of " + getClass().getSimpleName() + ")");
-        _ontology = ontology;
 
         // Don't store InfiniteConcept instances in the MoML model.
         setPersistent(false);
@@ -154,10 +143,6 @@ public abstract class InfiniteConcept extends Concept {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-
-    /** The ontology to which this concept belongs.
-     */
-    private Ontology _ontology;
 
     /** Used for internal bookkeeping to make sure that generated
      *  concept names are unique.
