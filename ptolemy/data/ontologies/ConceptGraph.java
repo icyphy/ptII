@@ -231,7 +231,9 @@ public abstract class ConceptGraph implements CPO {
         if (subset != null && subset.length > 0) {
             Concept greatest = (Concept) subset[0];
             for (Object concept : subset) {
-                if (compare(concept, greatest) == direction) {
+                if (compare(concept, greatest) == CPO.INCOMPARABLE) {
+                    return null;
+                } else if (compare(concept, greatest) == direction) {
                     greatest = (Concept) concept;
                 }
             }
