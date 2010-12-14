@@ -63,7 +63,6 @@ public abstract class InfiniteConcept extends Concept {
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
 
-        _name = name;
         _ontology = ontology;
     }
 

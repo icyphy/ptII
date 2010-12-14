@@ -69,7 +69,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
      */
     public boolean containsThisInfiniteConceptString(
             String infiniteConceptString) {
-        if (infiniteConceptString.startsWith(_name + "_")) {
+        if (infiniteConceptString.startsWith(getName() + "_")) {
             return true;
         } else {
             return false;
@@ -89,7 +89,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
     protected FlatTokenInfiniteConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
         if (containsThisInfiniteConceptString(infiniteConceptString)) {
-            String expression = infiniteConceptString.substring(_name
+            String expression = infiniteConceptString.substring(getName()
                     .length() + 1);
             Variable tempTokenVariable = null;
             try {

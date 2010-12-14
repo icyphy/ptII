@@ -134,6 +134,6 @@ public class FiniteConcept extends Concept implements Flowable {
      * @return The name of this concept.
      */
     public String toString() {
-        return _name;
+        return getName();
     }
 }
