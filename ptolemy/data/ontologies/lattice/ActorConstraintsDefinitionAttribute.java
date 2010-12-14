@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.OntologySolverModel;
@@ -185,11 +186,12 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     && !actorClassNameString.equals(
                             foundActorClassNameString)) {
                 
-                Class actorClass = null;                
+                Class<? extends Actor> actorClass = null;                
                 try {
                     // Verify that the actorClassName correctly
-                    // specifies an existing class.
-                    actorClass = Class.forName(actorClassNameString);
+                    // specifies an existing actor class.
+                    actorClass = Class.forName(actorClassNameString)
+                            .asSubclass(Actor.class);
                 } catch (ClassNotFoundException classEx) {
                     throw new IllegalActionException(this, classEx,
                             "Actor class " + actorClassNameString
@@ -429,10 +431,10 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  @return A new instance of the specified actor class.
      *  @throws IllegalActionException If the actor class cannot be instantiated.
      */
-    protected Object _createTempActorInstance(Class actorClass)
+    protected Actor _createTempActorInstance(Class<? extends Actor> actorClass)
         throws IllegalActionException {
         
-        Constructor actorConstructor = null;        
+        Constructor<? extends Actor> actorConstructor = null;
         try {
             actorConstructor = actorClass
                 .getConstructor(new Class[] {
@@ -442,7 +444,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             		" method for the actor class " + actorClass + ".");
         }
         
-        Object actorInstance = null;
+        Actor actorInstance = null;
         try {
             actorInstance = actorConstructor
                 .newInstance(new Object[] {
