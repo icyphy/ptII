@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies
 
-DIRS = 		demo doc gui lattice util test
+DIRS = 		demo doc gui lattice test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -48,8 +48,7 @@ PTPACKAGE = 	ontologies
 PTCLASSALLJARS = \
 	doc/doc.jar \
 	gui/gui.jar \
-	lattice/lattice.jar \
-	util/util.jar
+	lattice/lattice.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -98,7 +97,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = doc gui lattice util
+MISC_FILES = doc gui lattice
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
