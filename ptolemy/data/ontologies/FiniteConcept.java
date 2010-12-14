@@ -83,13 +83,7 @@ public class FiniteConcept extends Concept implements Flowable {
      *  @return A set of concepts that cover this one.
      */
     public Set<FiniteConcept> getCoverSetAbove() {
-        Set<FiniteConcept> cover = new HashSet<FiniteConcept>();
-        @SuppressWarnings("unchecked")
-        List<ComponentPort> ports = abovePort.deepConnectedPortList();
-        for (ComponentPort port : ports) {
-            cover.add((FiniteConcept) port.getContainer());
-        }
-        return cover;
+        return _getConnectedConcepts(abovePort);
     }
 
     /** Return the finite concepts that are covered by this one.
@@ -98,13 +92,7 @@ public class FiniteConcept extends Concept implements Flowable {
      *  @return A set of concepts that are covered by this one.
      */
     public Set<FiniteConcept> getCoverSetBelow() {
-        Set<FiniteConcept> covered = new HashSet<FiniteConcept>();
-        @SuppressWarnings("unchecked")
-        List<ComponentPort> ports = belowPort.deepConnectedPortList();
-        for (ComponentPort port : ports) {
-            covered.add((FiniteConcept) port.getContainer());
-        }
-        return covered;
+        return _getConnectedConcepts(belowPort);
     }
 
     /** Return the ontology that contains this concept.
@@ -135,5 +123,23 @@ public class FiniteConcept extends Concept implements Flowable {
      */
     public String toString() {
         return getName();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Return the set of deeply connected concepts connected through
+     *  the given port.
+     *  @param direction The port in the direction of interest.
+     *  @return The set of concepts connected through the given port.
+     */
+    private Set<FiniteConcept> _getConnectedConcepts(ComponentPort direction) {
+        Set<FiniteConcept> cover = new HashSet<FiniteConcept>();
+        @SuppressWarnings("unchecked")
+        List<ComponentPort> ports = direction.deepConnectedPortList();
+        for (ComponentPort port : ports) {
+            cover.add((FiniteConcept) port.getContainer());
+        }
+        return cover;
     }
 }
