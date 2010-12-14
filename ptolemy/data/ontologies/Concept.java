@@ -151,6 +151,14 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
 
     /** Return true if this concept is greater than or equal to the
      *  specified concept in the partial ordering.
+     *  
+     *  FIXME: This interface seems awkward, and should probably be removed,
+     *  since it is obsoleted by {@link ConceptGraph#compare(Object, Object)},
+     *  which provides more functionality.
+     *  See our discussion in our
+     *  <a href="http://chess.eecs.berkeley.edu/ptolemy/reviews/ptolemy/data/ontologies/20101213-code.htm">
+     *  code review</a>.
+     *  
      *  @param concept The concept to compare.
      *  @return True if this concept is greater than or equal to the
      *   specified concept.
