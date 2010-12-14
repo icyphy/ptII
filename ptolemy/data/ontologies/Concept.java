@@ -32,6 +32,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -197,6 +198,23 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
             // assumption that value is acceptable.
             return true;
         }
+    }
+
+    /** Override the base class to ensure that the proposed container
+     *  is an instance of {@link Ontology} or null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the argument is not an Ontology
+     *   or null.
+     *  @exception NameDuplicationException If the container already has
+     *   a concept with the name of this concept.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && !(container instanceof Ontology)) {
+            throw new IllegalActionException(container, this,
+                    "Concept can only be contained by instances of Ontology.");
+        }
+        super.setContainer(container);
     }
 
     /** Try to set the value of this InequalityTerm, or in this case, just
