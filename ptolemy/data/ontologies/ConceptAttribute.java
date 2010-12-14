@@ -189,7 +189,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * method in the {@linkplain ptolemy.kernel.util.Settable Settable}
      * interface, but this is not ever thrown here.
      */
-    public Collection validate() throws IllegalActionException {
+    public Collection<?> validate() throws IllegalActionException {
         // not relevant
         return null;
     }
