@@ -48,22 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public abstract class InfiniteConcept extends Concept {
 
-    /** Construct a new concept in the given ontology.
-     *  Clearly, this individual concept is a finite object,
-     *  but the set of possible concepts from which it is
-     *  drawn may be infinite.
-     * 
-     *  @param ontology The ontology to which this concept belongs.
-     *  @param name The name of this concept (necessary?)
-     *  @exception NameDuplicationException If the ontology already contains a
-     *   concept with the specified name.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public InfiniteConcept(Ontology ontology, String name)
-            throws NameDuplicationException, IllegalActionException {
-        super(ontology, name);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -122,18 +106,24 @@ public abstract class InfiniteConcept extends Concept {
     /** Create a new Infinite concept, belonging to the given
      *  ontology, with an automatically generated name.
      *  <p>
+     *  This constructor is not thread safe!
      *  Even though this method should never throw a NameDuplicationException,
-     *  its signature cannot be changed.  It is recommended that subclasses
-     *  needing this functionality create a factory method that catches the
-     *  exception in order to avoid extraneous try-catch blocks.
+     *  it is possible in a mutithreaded environment, due to a race condition
+     *  that cannot be avoided.
+     *  It is recommended that subclasses create a factory method that
+     *  synchronizes access to this method to provide thread safety.
      * 
      *  @param ontology The finite ontology to which this belongs.
-     *  @exception NameDuplicationException Should never be thrown.
+     *  @exception NameDuplicationException If two threads happen to enter this
+     *   constructor concurrently and interleave to generate the same concept
+     *   twice.
      *  @exception IllegalActionException If the base class throws it.
      */
     protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
             NameDuplicationException {
-        
+        // There is a race condition here if the ++ operation is not atomic.
+        // Unfortunately, Java requirements on constructors make adding
+        // synchronization impossible.
         super(ontology, "InfiniteConcept_" + ++_conceptNumber);
         setName(getName() + " (of " + getClass().getSimpleName() + ")");
 
