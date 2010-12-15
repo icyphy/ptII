@@ -56,56 +56,6 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         super(container, name);
     }
 
-    /**
-     * Set the name of the attribute and error-check for name format. A proper
-     * name should contain an ontology identifier and an attribute label,
-     * separated by "::".
-     * 
-     * @param name The new name that the attribute should be set to.
-     * @exception NameDuplicationException If the name coincides with an
-     * attribute already in the container.
-     * @exception IllegalActionException If the name does not have the correct syntax
-     * or does not refer to a valid ontology.
-     */
-    public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
-        super.setName(name);
-        //_checkAttributeName(name);
-    }
-
-    //     /**
-    //      * Check the name of the annotation attribute. The given name contains
-    //      * an use case identifier and the annotation label. The two parts are
-    //      * separated by the symbol "::" (two consecutive semicolons). The use
-    //      * case identifier needs to be associated with a PropertySolver in
-    //      * the model. Bad
-    //      * @param name The given name of the annotation attribute.
-    //      * @exception IllegalActionException Thrown if no PropertySolver can
-    //      *  be found using the given name.
-    //      * @exception NameDuplicationException Not thrown in this method.
-    //      */
-    //    private void _checkAttributeName(String name)
-    //    throws IllegalActionException, NameDuplicationException {
-    //        /*String usecaseName =*/ getUseCaseIdentifier();
-    //
-    //        // FIXME: Cannot check if there is an associated solver
-    //        // because it may not be instantiated yet.
-    //
-    //        List solvers = toplevel().attributeList(PropertySolver.class);
-    //        if (solvers.isEmpty()) {
-    //            throw new IllegalActionException(
-    //                    "No use case found for annotation: " + usecaseName + ".");
-    //        } else {
-    //            try {
-    //                ((PropertySolver)solvers.get(0)).findSolver(usecaseName);
-    //
-    //            } catch (IllegalActionException ex) {
-    //                throw new IllegalActionException(
-    //                        "No use case found for annotation: " + usecaseName + ".");
-    //            }
-    //        }
-    //    }
-
     /** 
      * Returns the name of the ontology for which this annotation
      * attribute is a constraint.
