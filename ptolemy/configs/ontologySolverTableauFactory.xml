@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Factory for FSM editor.  -->
+<property name="factoryOntologySolverModel" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <!-- These will appear in the View menu of an ontology tableau. -->
+  <property name="Ontology Solver Editor"
+            class="ptolemy.vergil.ontologies.OntologySolverTableau$Factory">
+    <!-- Specify the default library to use if the model does not -->
+    <!-- contain a library attribute.  -->
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+  <configure>
+    <entity name="OntologyLibrary" class="ptolemy.data.ontologies.Ontology">
+      <input source="ptolemy/data/ontologies/ontologyLibrary.xml"/>
+    </entity>
+  </configure>
+    </property>
+   </property>
+  <property name="XML view"
+            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+</property>
