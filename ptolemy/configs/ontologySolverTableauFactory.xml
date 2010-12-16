@@ -10,8 +10,8 @@
     <!-- contain a library attribute.  -->
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
   <configure>
-    <entity name="OntologyLibrary" class="ptolemy.data.ontologies.Ontology">
-      <input source="ptolemy/data/ontologies/ontologyLibrary.xml"/>
+    <entity name="OntologyLibrary" class="ptolemy.data.ontologies.OntologySolverModel">
+      <input source="ptolemy/data/ontologies/ontologySolverLibrary.xml"/>
     </entity>
   </configure>
     </property>
