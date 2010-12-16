@@ -188,6 +188,7 @@ CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/kieler.jar \
+	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
@@ -241,6 +242,7 @@ BCVTB_JNLP_JARS =	\
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/kieler.jar \
+	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/continuous/continuous.jar \
@@ -317,6 +319,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/kieler.jar \
+	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
