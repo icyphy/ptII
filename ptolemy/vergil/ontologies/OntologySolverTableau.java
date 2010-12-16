@@ -48,8 +48,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 
 /** An editor tableau for finite state machines.
 
- @author  Ben Lickly (based on OntologySolverTableau, which is
-   supposedly by Steve Neuendorffer and Edward A. Lee)
+ @author  Ben Lickly (based on OntologySolverTableau, which is supposedly by Steve Neuendorffer and Edward A. Lee)
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (neuendor)
