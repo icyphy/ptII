@@ -186,7 +186,23 @@ public class EntityTreeModel implements TreeModel {
      *  @see #addTreeModelListener(TreeModelListener)
      */
     public void removeTreeModelListener(TreeModelListener listener) {
-        _listenerList.remove(new WeakReference(listener));
+    	int i = 0;
+    	int size = _listenerList.size();
+    	while (i < size){
+    		Object _listener = ((WeakReference)_listenerList.get(i)).get();
+    		if (_listener == null)
+    		{
+    			_listenerList.remove(i);
+    			size--;
+    		}
+    		else {
+    			if (_listener == listener){
+    				_listenerList.remove(i);
+    				size--;
+    			}
+    			i++;
+    		}
+    	}
     }
 
     /** Notify listeners that the object at the given path has changed.
@@ -200,8 +216,8 @@ public class EntityTreeModel implements TreeModel {
         while (listeners.hasNext()) {
         	Object listener = ((WeakReference)listeners.next()).get();
         	if (listener != null) {
-                    ((TreeModelListener)listener).treeStructureChanged(event);
-                }
+		    ((TreeModelListener)listener).treeStructureChanged(event);
+		}
         }
     }
 
@@ -280,3 +296,4 @@ public class EntityTreeModel implements TreeModel {
     /** The model listener. */
     private ChangeListener _rootListener = new TreeUpdateListener();
 }
+
