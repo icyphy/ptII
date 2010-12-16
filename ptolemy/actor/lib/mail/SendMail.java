@@ -1,8 +1,11 @@
 package ptolemy.actor.lib.mail;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -10,7 +13,9 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.JFrame;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -22,6 +27,7 @@ import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
@@ -69,10 +75,20 @@ public class SendMail extends TypedAtomicActor {
         to.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
         new SingletonParameter(to.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
+        cc = new PortParameter(this, "cc");
+        cc.setStringMode(true);
+        cc.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
+        new SingletonParameter(cc.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
         from = new PortParameter(this, "from");
         from.setStringMode(true);
         from.setExpression("noreply@noreply.com");
         new SingletonParameter(from.getPort(), "_showName").setToken(BooleanToken.TRUE);
+
+        replyTo = new PortParameter(this, "replyTo");
+        replyTo.setStringMode(true);
+        replyTo.setExpression("");
+        new SingletonParameter(replyTo.getPort(), "_showName").setToken(BooleanToken.TRUE);
 
         subject = new PortParameter(this, "subject");
         subject.setStringMode(true);
@@ -83,6 +99,8 @@ public class SendMail extends TypedAtomicActor {
         new SingletonParameter(message.getPort(), "_showName").setToken(BooleanToken.TRUE);
         TextStyle style = new TextStyle(message, "style");
         style.height.setExpression("30");
+        
+        attach = new FileParameter(this, "attach");
 
         SMTPHostName = new StringParameter(this, "SMTPHostName");
         SMTPHostName.setExpression("smtp.myserver.com");
@@ -98,7 +116,15 @@ public class SendMail extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
     }
+    
+    /** File to attach, if any. By default, this is empty,
+     *  which means to not attach any file.
+     */
+    public FileParameter attach;
         
+    /** Email address to copy on the message. */
+    public PortParameter cc;
+
     /** Email address from which this is sent. */
     public PortParameter from;
 
@@ -109,6 +135,13 @@ public class SendMail extends TypedAtomicActor {
      *  The type of this output is string.
      */
     public TypedIOPort output;
+    
+    /** The address to which replies should be directed.
+     *  This is a comma-separated list that defaults to
+     *  an empty string, which indicates that the reply
+     *  should go to the address specified by <i>from</i>.
+     */
+    public PortParameter replyTo;
 
     /** If true, then actually send the email.
      *  This is a boolean that defaults to false,
@@ -186,6 +219,8 @@ public class SendMail extends TypedAtomicActor {
         
         String toValue = ((StringToken)to.getToken()).stringValue();
         String fromValue = ((StringToken)from.getToken()).stringValue();
+        String replyToValue = ((StringToken)replyTo.getToken()).stringValue().trim();
+        String ccValue = ((StringToken)cc.getToken()).stringValue();
         String subjectValue = ((StringToken)subject.getToken()).stringValue();
         String messageValue = ((StringToken)message.getToken()).stringValue();
         
@@ -193,9 +228,22 @@ public class SendMail extends TypedAtomicActor {
         while (tokenizer.hasMoreTokens()) {
             result.append("To: " + tokenizer.nextToken().trim() + "\n");
         }
+        
+        tokenizer = new StringTokenizer(ccValue, ",");
+        while (tokenizer.hasMoreTokens()) {
+            result.append("Cc: " + tokenizer.nextToken().trim() + "\n");
+        }
 
         result.append("From: " + fromValue + "\n");
+        
+        if (!(replyToValue.equals(""))) {
+            result.append("Reply-To: " + replyToValue + "\n");
+        }
+
         result.append("Subject: " + subjectValue + "\n");
+        if (attach.asFile() != null) {
+            result.append("Attachment: " + attach.asFile().getAbsolutePath());
+        }
         result.append("----\n");
         result.append(messageValue);
         result.append("\n----\n");
@@ -215,13 +263,43 @@ public class SendMail extends TypedAtomicActor {
             Transport transport = mailSession.getTransport();
 
             MimeMessage mimeMessage = new MimeMessage(mailSession);
-            mimeMessage.setContent(messageValue, "text/plain");
-            mimeMessage.setFrom(new InternetAddress(fromValue));
-            mimeMessage.setSubject(subjectValue);
             
+            // If there is an attachment, then we need
+            // a multipart message to hold the attachment.
+            if (attach.asFile() != null) {
+                MimeBodyPart messagePart = new MimeBodyPart();
+                messagePart.setText(messageValue);
+                MimeBodyPart attachmentPart = new MimeBodyPart();
+                attachmentPart.attachFile(attach.asFile());
+                MimeMultipart multipart = new MimeMultipart();
+                multipart.addBodyPart(messagePart);
+                multipart.addBodyPart(attachmentPart);
+                mimeMessage.setContent(multipart);
+            } else {
+                mimeMessage.setContent(messageValue, "text/plain");
+            }
+            mimeMessage.setFrom(new InternetAddress(fromValue));
+            
+            if (!(replyToValue.equals(""))) {
+                ArrayList<Address> replyToAddresses = new ArrayList();
+                tokenizer = new StringTokenizer(replyToValue, ",");
+                while (tokenizer.hasMoreTokens()) {
+                    replyToAddresses.add(new InternetAddress(tokenizer.nextToken().trim()));
+                }
+                mimeMessage.setReplyTo(replyToAddresses.toArray(new Address[replyToAddresses.size()]));
+            }
+
+            mimeMessage.setSubject(subjectValue);
+                        
             tokenizer = new StringTokenizer(toValue, ",");
             while (tokenizer.hasMoreTokens()) {
                 mimeMessage.addRecipient(Message.RecipientType.TO,
+                        new InternetAddress(tokenizer.nextToken().trim()));
+            }
+            
+            tokenizer = new StringTokenizer(ccValue, ",");
+            while (tokenizer.hasMoreTokens()) {
+                mimeMessage.addRecipient(Message.RecipientType.CC,
                         new InternetAddress(tokenizer.nextToken().trim()));
             }
 
@@ -231,6 +309,8 @@ public class SendMail extends TypedAtomicActor {
             transport.close();
         } catch (MessagingException e) {
             throw new IllegalActionException(this, e, "Send mail failed.");
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e, "Failed to open attachment file.");
         }
 
         return true;
