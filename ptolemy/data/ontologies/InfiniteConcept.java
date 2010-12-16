@@ -105,23 +105,14 @@ public abstract class InfiniteConcept extends Concept {
 
     /** Create a new Infinite concept, belonging to the given
      *  ontology, with an automatically generated name.
-     *  <p>
-     *  This constructor is not thread safe!
-     *  Even though this method should never throw a NameDuplicationException,
-     *  it is possible in a mutithreaded environment, due to a race condition
-     *  that cannot be avoided.
-     *  It is recommended that subclasses create a factory method that
-     *  synchronizes access to this method to provide thread safety.
      * 
      *  @param ontology The finite ontology to which this belongs.
-     *  @exception NameDuplicationException If two threads happen to enter this
-     *   constructor concurrently and interleave to generate the same concept
-     *   twice.
+     *  @exception NameDuplicationException Not thrown.
      *  @exception IllegalActionException If the base class throws it.
      */
     protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
             NameDuplicationException {
-        super(ontology, "InfiniteConcept_" + _incrementAndReturnConceptNumber());
+        super(ontology, "__InfiniteConcept_" + _incrementAndReturnConceptNumber());
         setName(getName() + " (of " + getClass().getSimpleName() + ")");
 
         // Don't store InfiniteConcept instances in the MoML model.
