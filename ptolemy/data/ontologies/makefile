@@ -90,7 +90,8 @@ JSRCS = \
 	RecordFromIndividualConcepts.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
+	ontologyLibrary.xml \
+	ontologySolverLibrary.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

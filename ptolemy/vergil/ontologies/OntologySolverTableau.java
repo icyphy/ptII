@@ -40,6 +40,8 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.ExtendedGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologyGraphTableau
@@ -118,11 +120,12 @@ public class OntologySolverTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        // FIXME: Need to remove reference to OntologyGraphFrame
-        OntologyGraphFrame frame = new OntologyGraphFrame(model, this,
+        
+        // Not too sure which type of GraphFrame is best, so I'm just using
+        // ActorGraphFrame for now.
+        ExtendedGraphFrame frame = new ActorGraphFrame(model, this,
                 defaultLibrary);
 
-        // FIXME: This also looks like an ugly hack.
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {

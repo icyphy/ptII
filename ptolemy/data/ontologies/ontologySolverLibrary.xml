@@ -7,4 +7,15 @@
 
   <property name="ActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute"></property>
 
+  <!-- Default actor library. -->
+  <entity name="Lattices" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/data/ontologies/lattice/latticeLibrary.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+
 </group>
