@@ -1037,19 +1037,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Layout the automatically using the KIELER dataflow layout algorithm
-     *  with place and route.
-     *  _layoutGraphAction, the that parameter is assumed
-     *  to name a class that executes the automatic layout action.
-     *  If the parameter cannot be read, then the default Ptolemy layout mechanism
-     *  in {@link #layoutGraphWithPtolemyLayout()} is used.
+    /** Layout the automatically using the KIELER dataflow layout
+     *  algorithm with place and route.  The _layoutGraphAction
+     *  parameter is assumed to name a class that executes the
+     *  automatic layout action.  If the parameter cannot be read,
+     *  then the default Ptolemy layout mechanism in
+     *  {@link #layoutGraphWithPtolemyLayout()} is used.
      */
     public void layoutGraph() {
         boolean success = false;
         try {
             Configuration configuration = getConfiguration();
             StringParameter layoutGraphActionParameter = (StringParameter) configuration
-                    .getAttribute("_layoutGraphAction", Parameter.class);
+                    .getAttribute("_layoutGraphAction", StringParameter.class);
             if (layoutGraphActionParameter == null) {
                 layoutGraphWithPtolemyLayout();
                 success = true;
