@@ -121,14 +121,24 @@ public abstract class InfiniteConcept extends Concept {
      */
     protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
             NameDuplicationException {
-        // There is a race condition here if the ++ operation is not atomic.
-        // Unfortunately, Java requirements on constructors make adding
-        // synchronization impossible.
-        super(ontology, "InfiniteConcept_" + ++_conceptNumber);
+        super(ontology, "InfiniteConcept_" + _incrementAndReturnConceptNumber());
         setName(getName() + " (of " + getClass().getSimpleName() + ")");
 
         // Don't store InfiniteConcept instances in the MoML model.
         setPersistent(false);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+    
+    /** Increment the concept number and return its value in a single atomic
+     *  operation. This method is used in the InfiniteConcept constructor
+     *  to prevent a race condition when instantiating a new InfiniteConcept
+     *  and generating a new unique name string for the object.
+     *  @return The concept number value after it is incremented by one.
+     */
+    private static synchronized int _incrementAndReturnConceptNumber() {
+        return ++_conceptNumber;
     }
 
     ///////////////////////////////////////////////////////////////////

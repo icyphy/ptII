@@ -72,12 +72,6 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
             NameDuplicationException {
         super(container, name);
 
-        if (!(container instanceof OntologySolverModel)) {
-            throw new IllegalActionException(this, "Can only instantiate a "
-                    + " ConceptFunctionDefinitionAttribute inside of an "
-                    + " OntologySolverModel.");
-        }
-
         // By default the number of arguments for the concept function is fixed.
         numberOfArgumentsIsFixed = new Parameter(this, "numberOfArgumentsIsFixed");
         numberOfArgumentsIsFixed.setTypeEquals(BaseType.BOOLEAN);

@@ -77,13 +77,6 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             NameDuplicationException {
         super(container, name);
 
-        if (!(container instanceof OntologySolverModel)) {
-            throw new IllegalActionException(
-                    this,
-                    "An ActorConstraintsDefinitionAttribute "
-                            + "must be contained by an OntologySolverModel entity.");
-        }
-
         actorClassName = new StringParameter(this, "actorClassName");
 
         foundActorClassName = new StringParameter(this, "foundActorClassName");

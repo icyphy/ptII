@@ -63,7 +63,7 @@ public class OntologySolverModel extends CompositeEntity {
         super(workspace);
         _solverContainer = solver;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

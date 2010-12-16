@@ -5,10 +5,24 @@
 <group>
   <input source="ptolemy/configs/annotation.xml"/>
 
+  <entity name="Ontology" class="ptolemy.data.ontologies.Ontology"></entity>
   <property name="ActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute"></property>
+  <property name="ProductLatticeActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute"></property>
+  <property name="ConceptFunction" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute"></property>
+  
+  <!-- Concept Function Library -->
+  <entity name="Concept Functions" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+   	    <group>
+    	  <input source="ptolemy/data/ontologies/conceptFunctionLibrary.xml"/>
+        </group>
+	  ?>
+	</configure>
+  </entity>
 
-  <!-- Default actor library. -->
-  <entity name="Lattices" class="ptolemy.moml.EntityLibrary">
+  <!-- Default ontolgies library. -->
+  <entity name="Lattice Ontologies" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
@@ -17,5 +31,5 @@
       ?>
     </configure>
   </entity>
-
+  
 </group>

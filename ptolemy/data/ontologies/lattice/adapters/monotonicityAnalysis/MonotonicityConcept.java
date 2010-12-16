@@ -83,9 +83,7 @@ public class MonotonicityConcept extends InfiniteConcept {
     public static MonotonicityConcept createMonotonicityConcept(
             Ontology ontology) {
         try {
-            synchronized (InfiniteConcept.class) {
-                return new MonotonicityConcept(ontology);
-            }
+            return new MonotonicityConcept(ontology);
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(
                     "Name conflict with automatically generated infinite"
