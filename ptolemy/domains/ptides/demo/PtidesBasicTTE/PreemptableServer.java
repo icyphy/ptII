@@ -58,8 +58,7 @@ public class PreemptableServer extends Server {
      *   actor with this name.
      */
     public PreemptableServer(CompositeEntity container, String name)
-        throws NameDuplicationException,
-               IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -74,17 +73,16 @@ public class PreemptableServer extends Server {
     public boolean postfire() throws IllegalActionException {
         serviceTime.update();
         double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
-            .doubleValue();
+                .doubleValue();
         Time currentTime = getDirector().getModelTime();
 
-        if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY)
-            && _queue.size() > 0) {
+        if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
             _nextTimeFree = currentTime.add(serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
 
         if (_nextTimeFree.equals(Time.POSITIVE_INFINITY)
-            && !Double.isInfinite(serviceTimeValue)) {
+                && !Double.isInfinite(serviceTimeValue)) {
             _nextTimeFree = currentTime.add(serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
@@ -92,4 +90,3 @@ public class PreemptableServer extends Server {
         return !_stopRequested;
     }
 }
-

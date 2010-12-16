@@ -57,112 +57,112 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Bus extends AtomicWirelessChannel {
 
-	/**
-	 * Construct a relation with the given name contained by the specified
-	 * entity. The container argument must not be null, or a
-	 * NullPointerException will be thrown. This relation will use the workspace
-	 * of the container for synchronization and version counts. If the name
-	 * argument is null, then the name is set to the empty string. This
-	 * constructor write-synchronizes on the workspace.
-	 * 
-	 * @param container
-	 *            The container.
-	 * @param name
-	 *            The name of the relation.
-	 * @exception IllegalActionException
-	 *                If the container is incompatible with this relation.
-	 * @exception NameDuplicationException
-	 *                If the name coincides with a relation already in the
-	 *                container.
-	 */
-	public Bus(CompositeEntity container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-	}
+    /**
+     * Construct a relation with the given name contained by the specified
+     * entity. The container argument must not be null, or a
+     * NullPointerException will be thrown. This relation will use the workspace
+     * of the container for synchronization and version counts. If the name
+     * argument is null, then the name is set to the empty string. This
+     * constructor write-synchronizes on the workspace.
+     * 
+     * @param container
+     *            The container.
+     * @param name
+     *            The name of the relation.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this relation.
+     * @exception NameDuplicationException
+     *                If the name coincides with a relation already in the
+     *                container.
+     */
+    public Bus(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 
-	/**
-	 * Send a token from source port to target. The target port is specified in
-	 * the attribute <i>receiver</i> of the source port.
-	 * 
-	 * @param token
-	 *            The token sent from the source port.
-	 * @param port
-	 *            The source port.
-	 * @param properties
-	 *            This actor does not use the properties parameter.
-	 * @exception IllegalActionException
-	 *                If a conflict occurs.
-	 */
-	public void transmit(Token token, WirelessIOPort port,
-			RecordToken properties) throws IllegalActionException {
-		try {
-			workspace().getReadAccess();
-			if (!(getDirector() instanceof WirelessDirector)) {
-				throw new IllegalActionException(this,
-						"AtomicWirelessChannel can only work "
-								+ "with a WirelessDirector.");
-			}
+    /**
+     * Send a token from source port to target. The target port is specified in
+     * the attribute <i>receiver</i> of the source port.
+     * 
+     * @param token
+     *            The token sent from the source port.
+     * @param port
+     *            The source port.
+     * @param properties
+     *            This actor does not use the properties parameter.
+     * @exception IllegalActionException
+     *                If a conflict occurs.
+     */
+    public void transmit(Token token, WirelessIOPort port,
+            RecordToken properties) throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            if (!(getDirector() instanceof WirelessDirector)) {
+                throw new IllegalActionException(this,
+                        "AtomicWirelessChannel can only work "
+                                + "with a WirelessDirector.");
+            }
 
-			Parameter parameter = (Parameter) port.getAttribute("receiver");
-			Object receiverValue = getContainer().getAttribute(
-					parameter.getDefaultExpression());
+            Parameter parameter = (Parameter) port.getAttribute("receiver");
+            Object receiverValue = getContainer().getAttribute(
+                    parameter.getDefaultExpression());
 
-			// Quick hack to deal with port parameters.
-			if (receiverValue instanceof PortParameter) {
-				((PortParameter) receiverValue).setCurrentValue(token);
-			} else {
-				Port receiverPort = (Port) ((ObjectToken) parameter.getToken())
-						.getValue();
-				if (((IOPort) receiverPort).getReceivers().length > 0) {
-					_transmitTo(
-							token,
-							port,
-							(Receiver) ((IOPort) receiverPort).getReceivers()[0][0],
-							properties);
-				}
-			}
-		} finally {
-			workspace().doneReading();
-		}
-	}
+            // Quick hack to deal with port parameters.
+            if (receiverValue instanceof PortParameter) {
+                ((PortParameter) receiverValue).setCurrentValue(token);
+            } else {
+                Port receiverPort = (Port) ((ObjectToken) parameter.getToken())
+                        .getValue();
+                if (((IOPort) receiverPort).getReceivers().length > 0) {
+                    _transmitTo(
+                            token,
+                            port,
+                            (Receiver) ((IOPort) receiverPort).getReceivers()[0][0],
+                            properties);
+                }
+            }
+        } finally {
+            workspace().doneReading();
+        }
+    }
 
-	/**
-	 * Send a token to specified receiver and notify listeners after the
-	 * transmission.
-	 * 
-	 * @param token
-	 *            The token that is sent.
-	 * @param sender
-	 *            The sender of the token.
-	 * @param receiver
-	 *            The receiver of the token.
-	 * @param properties
-	 *            Properties of the transmission.
-	 * @exception IllegalActionException
-	 *                If the token cannot be converted or if the token argument
-	 *                is null and the destination receiver does not support
-	 *                clear.
-	 */
-	protected void _transmitTo(Token token, WirelessIOPort sender,
-			Receiver receiver, RecordToken properties)
-			throws IllegalActionException {
-		if (_debugging) {
-			_debug(" * transmitting to: "
-					+ receiver.getContainer().getFullName());
-		}
+    /**
+     * Send a token to specified receiver and notify listeners after the
+     * transmission.
+     * 
+     * @param token
+     *            The token that is sent.
+     * @param sender
+     *            The sender of the token.
+     * @param receiver
+     *            The receiver of the token.
+     * @param properties
+     *            Properties of the transmission.
+     * @exception IllegalActionException
+     *                If the token cannot be converted or if the token argument
+     *                is null and the destination receiver does not support
+     *                clear.
+     */
+    protected void _transmitTo(Token token, WirelessIOPort sender,
+            Receiver receiver, RecordToken properties)
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug(" * transmitting to: "
+                    + receiver.getContainer().getFullName());
+        }
 
-		if (token != null) {
-			if (receiver.hasRoom()) {
-				WirelessIOPort destination = (WirelessIOPort) receiver
-						.getContainer();
-				Token newToken = destination.convert(token);
-				receiver.put(newToken);
-				// Notify any channel listeners after the transmission occurs.
-				channelNotify(properties, token, sender, destination);
-			}
-		} else {
-			receiver.clear();
-		}
-	}
+        if (token != null) {
+            if (receiver.hasRoom()) {
+                WirelessIOPort destination = (WirelessIOPort) receiver
+                        .getContainer();
+                Token newToken = destination.convert(token);
+                receiver.put(newToken);
+                // Notify any channel listeners after the transmission occurs.
+                channelNotify(properties, token, sender, destination);
+            }
+        } else {
+            receiver.clear();
+        }
+    }
 
 }
