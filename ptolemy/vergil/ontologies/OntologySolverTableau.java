@@ -1,4 +1,4 @@
-/* An FSM graph view for Ptolemy models
+/* An OntologySolverModel view for Ptolemy models
 
  Copyright (c) 1998-2010 The Regents of the University of California.
  All rights reserved.
@@ -44,11 +44,12 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
-//// OntologyGraphTableau
+//// OntologySolverTableau
 
-/** An editor tableau for finite state machines.
+/** An editor tableau for OntologySolverModels.
 
- @author  Ben Lickly (based on OntologySolverTableau, which is supposedly by Steve Neuendorffer and Edward A. Lee)
+ @see ptolemy.data.ontologies.OntologySolverModel
+ @author  Ben Lickly (based on OntologyGraphTableau, which is supposedly by Steve Neuendorffer and Edward A. Lee)
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (neuendor)
@@ -56,12 +57,12 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  */
 public class OntologySolverTableau extends Tableau {
 
-    /** Create a new FSM editor tableau with the specified container
+    /** Create a new OntologySolver tableau with the specified container
      *  and name, with no default library.
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If the model associated with
-     *   the container effigy is not an FSMActor.
+     *   the container effigy is not an OntologySolverModel.
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
@@ -70,13 +71,13 @@ public class OntologySolverTableau extends Tableau {
         this(container, name, null);
     }
 
-    /** Create a new FSM editor tableau with the specified container,
+    /** Create a new OntologySolverModel tableau with the specified container,
      *  name, and default library.
      *  @param container The container.
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
      *  @exception IllegalActionException If the model associated with
-     *   the container effigy is not an FSMActor.
+     *   the container effigy is not an OntologySolverModel.
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
@@ -99,9 +100,7 @@ public class OntologySolverTableau extends Tableau {
     ////                         public methods                    ////
 
     /** Create the graph frame that displays the model associated with
-     *  this tableau. This method creates a FSMGraphFrame. If subclass
-     *  uses another frame, this method should be overridden to create
-     *  that frame.
+     *  this tableau.
      *  @param model The Ptolemy II model to display in the graph frame.
      */
     public void createGraphFrame(CompositeEntity model) {
@@ -110,9 +109,6 @@ public class OntologySolverTableau extends Tableau {
 
     /** Create the graph frame that displays the model associated with
      *  this tableau together with the specified library.
-     *  This method creates a FSMGraphFrame. If a subclass
-     *  uses another frame, this method should be overridden to create
-     *  that frame.
      *  @param model The Ptolemy II model to display in the graph frame.
      *  @param defaultLibrary The default library, or null to not specify
      *   one.
@@ -165,10 +161,10 @@ public class OntologySolverTableau extends Tableau {
         }
 
         /** Create an instance of OntologyGraphTableau for the specified effigy,
-         *  if it is an effigy for an instance of FSMActor.
-         *  @param effigy The effigy for an FSMActor.
-         *  @return A new OntologyGraphTableau, if the effigy is a PtolemyEffigy
-         *   that references an FSMActor, or null otherwise.
+         *  if it is an effigy for an instance of OntologySolverModel.
+         *  @param effigy The effigy for an OntologySolverModel.
+         *  @return A new OntologySolverTableau, if the effigy is a PtolemyEffigy
+         *   that references an OntologySolverModel, or null otherwise.
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */
