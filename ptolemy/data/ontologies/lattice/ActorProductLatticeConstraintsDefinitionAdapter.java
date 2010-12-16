@@ -30,7 +30,6 @@ package ptolemy.data.ontologies.lattice;
 import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getActorElementName;
 import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAPort;
 import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAnAttribute;
-import static ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute.areActorElementConstraintsInherited;
 import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementIgnored;
 import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementUnconstrained;
 
@@ -77,9 +76,37 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
         
         _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver, component);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                  public variables                         ////
+    
+    /** String representing that the actor port or attribute should inherit
+     *  its constraints from the tuple ontology solvers for the product
+     *  lattice ontology solver.
+     */
+    public static final String INHERIT = "INHERIT";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Return true if the actor element is set to inherit its constraints from
+     *  the tuple ontologies that comprise the product lattice ontology,
+     *  false otherwise.
+     *  @param actorElementConstraintExpression The constraint expression
+     *   for the actor element.
+     *  @return true if the actor element is set to inherit its constraints from
+     *   the tuple ontologies that comprise the product lattice ontology,
+     *   false otherwise.
+     *  @throws IllegalActionException If the constrain expression parameter is null.
+     */
+    public static boolean areActorElementConstraintsInherited(StringParameter actorElementConstraintExpression)
+        throws IllegalActionException {
+        if (actorElementConstraintExpression == null) {
+            throw new IllegalActionException("The constraint expression for the actor" +
+                        " element cannot be null.");
+        }
+        return actorElementConstraintExpression.getExpression().trim().equals(INHERIT);
+    }
 
     /** Return the constraints of this component. The constraints are
      *  generated from the expressions passed in from an

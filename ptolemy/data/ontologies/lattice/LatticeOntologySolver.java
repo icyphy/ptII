@@ -605,12 +605,13 @@ public class LatticeOntologySolver extends OntologySolver {
             return _adapterStore.get(component);
         } else {
             // Next look for the adapter in the LatticeOntologySolver model.
-            List modelDefinedAdapters = ((OntologySolverModel) _model)
+            List<ActorConstraintsDefinitionAttribute> modelDefinedAdapters =
+                ((OntologySolverModel) _model)
                     .attributeList(ActorConstraintsDefinitionAttribute.class);
-            for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
-                if (((StringToken) ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
+            for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
+                if (((StringToken)  adapterDefinitionAttribute.actorClassName
                         .getToken()).stringValue().equals(component.getClass().getName())) {
-                    adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute)
+                    adapter = adapterDefinitionAttribute
                             .createAdapter((ComponentEntity) component, this);
                     break;
                 }

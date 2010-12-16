@@ -36,7 +36,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
+    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
@@ -60,7 +60,7 @@
         <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
         </property>
     </property>
-    <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
+    <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
@@ -108,7 +108,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="BooleanSwitchActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
+    <property name="BooleanSwitchActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSwitch">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSwitch">
@@ -256,7 +256,7 @@
             </property>
         </property>
     </property>
-    <property name="BooleanSelectActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute">
+    <property name="BooleanSelectActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSelect">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.BooleanSelect">

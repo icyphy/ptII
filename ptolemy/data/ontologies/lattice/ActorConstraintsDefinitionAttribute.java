@@ -37,7 +37,6 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -274,10 +273,16 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     + " does not have an associated OntologySolver so no "
                     + " OntologyAdapter can be created.");
         }
-    
+        
         // Get the adapter for the actor.
-        return new ActorConstraintsDefinitionAdapter(solver, component,
-                _constraintTermExpressions);
+        if (solver instanceof ProductLatticeOntologySolver) {
+            return new ActorProductLatticeConstraintsDefinitionAdapter(
+                    (ProductLatticeOntologySolver) solver, component,
+                    _constraintTermExpressions);
+        } else {
+            return new ActorConstraintsDefinitionAdapter(solver, component,
+                    _constraintTermExpressions);
+        }
     }
 
     /** Return a constraint parameter name based on the name

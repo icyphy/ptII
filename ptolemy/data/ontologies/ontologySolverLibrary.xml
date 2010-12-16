@@ -7,7 +7,6 @@
 
   <entity name="Ontology" class="ptolemy.data.ontologies.Ontology"></entity>
   <property name="ActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute"></property>
-  <property name="ProductLatticeActorConstraints" class="ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAttribute"></property>
   <property name="ConceptFunction" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute"></property>
   
   <!-- Concept Function Library -->
@@ -21,7 +20,7 @@
 	</configure>
   </entity>
 
-  <!-- Default ontolgies library. -->
+  <!-- Default ontologies library. -->
   <entity name="Lattice Ontologies" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
