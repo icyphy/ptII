@@ -54,6 +54,7 @@ JSRCS = \
 	OntologyGraphController.java \
 	OntologyGraphModel.java \
 	OntologyGraphTableau.java \
+	OntologySolverTableau.java \
 	RelationController.java
 
 OTHER_FILES_TO_BE_JARED = 
