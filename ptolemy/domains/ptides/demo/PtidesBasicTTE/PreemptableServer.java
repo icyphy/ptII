@@ -1,6 +1,6 @@
 /* A server where the send time can be infinity.
 
-@Copyright (c) 2008-2010 The Regents of the University of California.
+@Copyright (c) 2010 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class PreemptableServer extends Server {
 
-	/** Construct an actor with the specified container and name.
+    /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -57,37 +57,39 @@ public class PreemptableServer extends Server {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-	public PreemptableServer(CompositeEntity container, String name)
-			throws NameDuplicationException, IllegalActionException {
-		super(container, name);
-	}
+    public PreemptableServer(CompositeEntity container, String name)
+        throws NameDuplicationException,
+               IllegalActionException {
+        super(container, name);
+    }
 
-	/**
-	 * Update service time and request a firing if the new service time is not
-	 * infinity.
-	 * 
-	 * @exception IllegalActionException
-	 *                Thrown by port associated with servicetime or in the
-	 *                fireAt method.
-	 */
-	public boolean postfire() throws IllegalActionException {
-		serviceTime.update();
-		double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
-				.doubleValue();
-		Time currentTime = getDirector().getModelTime();
+    /**
+     * Update service time and request a firing if the new service
+     * time is not infinity.
+     * 
+     * @exception IllegalActionException Thrown by the port
+     *                associated with servicetime or in the fireAt()
+     *                method.
+     */
+    public boolean postfire() throws IllegalActionException {
+        serviceTime.update();
+        double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
+            .doubleValue();
+        Time currentTime = getDirector().getModelTime();
 
-		if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
-			_nextTimeFree = currentTime.add(serviceTimeValue);
-			_fireAt(_nextTimeFree);
-		}
+        if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY)
+            && _queue.size() > 0) {
+            _nextTimeFree = currentTime.add(serviceTimeValue);
+            _fireAt(_nextTimeFree);
+        }
 
-		if (_nextTimeFree.equals(Time.POSITIVE_INFINITY)
-				&& !Double.isInfinite(serviceTimeValue)) {
-			_nextTimeFree = currentTime.add(serviceTimeValue);
-			_fireAt(_nextTimeFree);
-		}
+        if (_nextTimeFree.equals(Time.POSITIVE_INFINITY)
+            && !Double.isInfinite(serviceTimeValue)) {
+            _nextTimeFree = currentTime.add(serviceTimeValue);
+            _fireAt(_nextTimeFree);
+        }
 
-		return !_stopRequested;
-	}
-
+        return !_stopRequested;
+    }
 }
+
