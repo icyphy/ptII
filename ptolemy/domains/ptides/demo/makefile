@@ -37,7 +37,8 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesAirplaneFuelControl \
-		PtidesBasicTTE
+		PtidesBasicTTE \
+		PtidesBasicPMUSampling
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -61,7 +62,8 @@ PTCLASSALLJARS = \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PtidesAirplaneFuelControl/PtidesAirplaneFuelControl.jar \
-	PtidesBasicTTE/PtidesBasicTTE.jar
+	PtidesBasicTTE/PtidesBasicTTE.jar \
+	PtidesBasicPMUSampling/PtidesBasicPMUSampling.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
