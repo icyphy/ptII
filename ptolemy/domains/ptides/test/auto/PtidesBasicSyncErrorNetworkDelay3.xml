@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 70.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 924, 577}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 933, 578}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[710, 464]">
     </property>
@@ -21,7 +21,7 @@
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 182, 814, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 182, 823, 514}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -32,7 +32,9 @@
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.49">
             </property>
-            <property name="synchronizationError" class="ptolemy.data.expr.Parameter" value="10.4">
+            <property name="initializePlatformSynchronizationError" class="ptolemy.data.expr.Parameter" value="10.4">
+            </property>
+            <property name="synchronizationError" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 75.0]">
             </property>
