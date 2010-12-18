@@ -38,7 +38,7 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesAirplaneFuelControl \
 		PtidesBasicTTE \
-		PtidesBasicPMUSampling
+		PowerManagementUnitSamplingWithoutCurrentLocalTime
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -63,7 +63,7 @@ PTCLASSALLJARS = \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PtidesAirplaneFuelControl/PtidesAirplaneFuelControl.jar \
 	PtidesBasicTTE/PtidesBasicTTE.jar \
-	PtidesBasicPMUSampling/PtidesBasicPMUSampling.jar
+	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
