@@ -41,7 +41,10 @@ import ptolemy.math.ExtendedMath;
  * An object of the Time class represents model time, as distinct from
  * "wall-clock time," which is time in the physical world. An instance of Time
  * has a value that is immutable. It has no limit on the magnitude. There are
- * two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY.
+ * two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY. Notice in
+ * some directors, such as Ptides, an object of the Time class is also used
+ * to represent simulated physical time. e.g., to simulate execution time
+ * of actors.
  *
  * <p>
  * The time value is quantized to the time resolution specified by the
@@ -67,19 +70,26 @@ import ptolemy.math.ExtendedMath;
  * an integer multiple of the director resolution.
  *
  * <p>
- * Two operations, add and subtract, can be performed on a time object, where
+ * Four operations, add, subtract, multiply and divide can be performed on a
+ * time object, where
  * the argument can be a double or a time object. If the argument is not a time
  * object, the argument is quantized before the operations are performed. These
- * operations return a new time object with a quantized result.
+ * operations return a new time object with a quantized result. When a division
+ * is performed, if a remainder is resent, then this remainder is saved as a
+ * fraction in the Time object. This fraction is taken into account if further
+ * operations are performed in the Time object.
  *
  * <p>
- * The time value of a time object can be infinite. The add and subtract
+ * The time value of a time object can be infinite. The add, subtract, multiply,
+ * and divide
  * operations on infinite time values follow rules similar to the IEEE Standard
  * 754 for Floating Point Numbers. In particular, adding two positive/negative
  * infinities yield a positive/negative infinity; adding a positive infinity and
  * a negative infinity, however, triggers an ArithmeticException; the negation
- * of a positive/negative infinity is a negative/positive infinity. The
- * following link gives a list of operations,
+ * of a positive/negative infinity is a negative/positive infinity. Multiplying
+ * a positive/negative infinity with zero, dividing by zero, and dividing an
+ * infinity by another infinity also triggers an ArithmeticException.
+ * The following link gives a list of operations,
  * http://en.wikipedia.org/wiki/Infinity.
  *
  * <p>
@@ -171,11 +181,19 @@ public class Time implements Comparable {
      *  This constructor is private and can only be accessed by the methods
      *  defined inside this class.
      *  @param director The director with which this time object is associated.
-     *  @param timeValue The multiple of the precsision that is the time value.
+     *  @param timeValue The multiple of the precision that is the time value.
      */
-    private Time(Director director, BigInteger timeValue) {
+    private Time(Director director, BigInteger timeValue, BigInteger divisor,
+            BigInteger remainder) {
         _director = director;
         _timeValue = timeValue;
+        if (divisor == null) {
+            assert(remainder == null);
+            _divisorAndRemainder = null;
+        } else {
+            _divisorAndRemainder = new BigInteger[]{divisor, remainder};
+        }
+        _normalizeTime();
     }
 
     /** Construct a Time object with value that is one of _POSITIVE_INFINITY
@@ -270,7 +288,11 @@ public class Time implements Comparable {
                         + "parameter caused this exception.");
             }
 
-            return new Time(_director, _timeValue.add(quantizedValue));
+            // If remainder is not null, add the remainder values.
+            return new Time(_director, _timeValue.add(quantizedValue),
+                    (_divisorAndRemainder == null) ? null : _divisorAndRemainder[0],
+                            (_divisorAndRemainder == null) ? null :
+                                    _divisorAndRemainder[1]);
         }
     }
 
@@ -280,6 +302,10 @@ public class Time implements Comparable {
      *  If they do not, then the returned result is a new Time object
      *  representing the sum of the double values of the two Time objects.
      *  This would not be as accurate.
+     *  If either Time object has a non-null remainder term, then the resulting
+     *  Time would find the sum of the remainder terms. If the sum of two
+     *  fractions results in, for example 3/3, then the remainder term is
+     *  set to null, and the integer term is incremented by 1.
      *  @param time The time object contains the amount of time increment.
      *  @return A new time object with the quantized and incremented time value.
      *  @exception ArithmeticException If the result is not a valid number
@@ -325,7 +351,29 @@ public class Time implements Comparable {
             throw new InternalErrorException(e);
         }
 
-        return new Time(_director, _timeValue.add(time._timeValue));
+        // If remainder is not null, add the remainder values.
+        if (!hasRemainder() && !time.hasRemainder()) {
+            return new Time(_director, _timeValue.add(time._timeValue),
+                    null, null);
+        } else if (hasRemainder() && !time.hasRemainder()) {
+            return new Time(_director, _timeValue.add(time._timeValue),
+                    _divisorAndRemainder[0], _divisorAndRemainder[1]);
+        } else if (!hasRemainder() && time.hasRemainder()) {
+            return new Time(_director, _timeValue.add(time._timeValue),
+                    time._divisorAndRemainder[0], time._divisorAndRemainder[1]);
+        } else {// (hasRemainder() && time.hasRemainder())
+            BigInteger gcd = _divisorAndRemainder[0].gcd(
+                    time._divisorAndRemainder[0]);
+            BigInteger lcm = _divisorAndRemainder[0].multiply(
+                    time._divisorAndRemainder[0]).divide(gcd);
+            BigInteger factor1 = lcm.divide(_divisorAndRemainder[0]);
+            BigInteger factor2 = lcm.divide(time._divisorAndRemainder[0]);
+            _divisorAndRemainder[1] = _divisorAndRemainder[1].multiply(factor1);
+            time._divisorAndRemainder[1] = time._divisorAndRemainder[1].
+                multiply(factor2);
+            return new Time(_director, _timeValue.add(time._timeValue),
+                    lcm, _divisorAndRemainder[1].add(time._divisorAndRemainder[1]));
+        }
     }
 
     /** Return -1, 0, or 1 if this time object is less than, equal to, or
@@ -373,7 +421,34 @@ public class Time implements Comparable {
         double resolution = _timeResolution();
 
         if (resolution == castTime._timeResolution()) {
-            return _timeValue.compareTo(castTime._timeValue);
+            int result = _timeValue.compareTo(castTime._timeValue);
+            if (result != 0) {
+                return result;
+            } else {
+                if (_divisorAndRemainder == null && castTime.
+                        _divisorAndRemainder == null) {
+                    return 0;
+                } else if (_divisorAndRemainder != null && castTime.
+                        _divisorAndRemainder == null) {
+                    return 1;
+                } else if (_divisorAndRemainder == null && castTime.
+                        _divisorAndRemainder != null) {
+                    return -1;
+                } else {
+                    BigInteger gcd = _divisorAndRemainder[0].gcd(
+                            castTime._divisorAndRemainder[0]);
+                    BigInteger lcm = _divisorAndRemainder[0].multiply(
+                            castTime._divisorAndRemainder[0]).divide(gcd);
+                    BigInteger factor1 = lcm.divide(_divisorAndRemainder[0]);
+                    BigInteger factor2 = lcm.divide(castTime.
+                            _divisorAndRemainder[0]);
+                    BigInteger remainder1 = _divisorAndRemainder[1].
+                        multiply(factor1);
+                    BigInteger remainder2 = castTime
+                        ._divisorAndRemainder[1].multiply(factor2);
+                    return remainder1.compareTo(remainder2);
+                }
+            }
         } else {
             double thisValue = getDoubleValue();
             double thatValue = castTime.getDoubleValue();
@@ -389,7 +464,25 @@ public class Time implements Comparable {
     }
     /** Return a new time object whose time value is divided by the
      *  given double value. The specified double value is quantized
-     *  to a multiple of the precision before it is divided.
+     *  to a multiple of the precision before it is divided. Since both the
+     *  dividend and the divisor are both quantized, when a division is
+     *  performed, the resolutions are canceled out. Thus the dividend is
+     *  first multiplied by 1/resolution before the division is performed,
+     *  in order to preserve the original resolution.
+     *  <p> When dividing two BigInteger's, the final quotient is saved in
+     *  the _timeValue. However, if a remainder exists, then _timeValue does
+     *  not retain the arbitrary precision the Time class is set out to
+     *  capture. Thus if the remainder is non-zero, the divisor and remainder
+     *  are saved in {@link #_divisor} and {@link #_remainder} fields,
+     *  respectively. </p>
+     *  If the {@link #_divisor} and {@link #_remainder} fields are non-zero
+     *  to start with, then division is performed by dividing the original
+     *  {@link #_timeValue} by the given double value. This is followed by
+     *  updating the {@link #_divisor} parameter by
+     *  doing a BigInteger multiplication of the original divisor and the new
+     *  divisor. The original {@link #_remainder} is then divided by the new
+     *  {@link #_divisor}, with the quotient added to {@link #_timeValue}, and
+     *  the remainder saved in the {@link #_remainder}. 
      *  @param timeValue The amount of the time divided.
      *  @return A new time object with the divided time value.
      *  @exception ArithmeticException If dividing by zero, or if
@@ -464,11 +557,8 @@ public class Time implements Comparable {
                         + "Check the stack trace to see which actor, "
                         + "parameter or director caused this exception.");
             }
-            // Since the values are now quantized, when a division is performed,
-            // the resolutions are canceled out. Thus we need to multiply by
-            // 1/resolution.
-            return new Time(_director, _timeValue.multiply(resolutionInverse)
-                    .divide(quantizedValue));
+            return _divide(resolutionInverse, new Time(_director, 
+                    quantizedValue, null, null));
         }
     }
 
@@ -549,11 +639,7 @@ public class Time implements Comparable {
                     + "Check the stack trace to see which actor, "
                     + "parameter or director caused this exception.");
         }
-        // Since the values are now quantized, when a division is performed,
-        // the resolutions are canceled out. Thus we need to multiply by
-        // 1/resolution.
-        return new Time(_director, _timeValue.multiply(resolutionInverse)
-                .divide(time._timeValue));
+        return _divide(resolutionInverse, time);
     }
 
     /** Return true if this time object has the same time value as
@@ -573,9 +659,16 @@ public class Time implements Comparable {
      *  as accurate as the internal representation. In particular, if
      *  the internal representation is too large, then then the
      *  returned result may be infinite.  In addition, if the
-     *  magnitude of the retuned number is large relative to the time
+     *  magnitude of the returned number is large relative to the time
      *  resolution of the associated director, then the result may be
-     *  inaccurate by more than the time resolution.
+     *  inaccurate by more than the time resolution. In addition, if
+     *  the time structure has a remainder term, that is not reflected
+     *  in the double value. For example, 1/3, is represented as 0.333,
+     *  and -1/3 is represented as -0.334. In other words, this method
+     *  always rounds to -infinity.
+     *  FIXME: since the fraction part is not taken into account, the
+     *  rounding towards negative infinity is not properly implemented
+     *  yet. The unit tests that fails reflects this.
      *  @return The double representation of the time value.
      */
     public double getDoubleValue() {
@@ -596,6 +689,9 @@ public class Time implements Comparable {
      *  resolution of the associated director.  Note that a Time value
      *  of positive infinity will return Long.MAX_VALUE and a Time
      *  value of negative infinity will return Long.MIN_VALUE.
+     *  Note the return long representation may not be as accurate as
+     *  the representation in the Time structure. Specifically, the
+     *  remainder in this case is not represented in the long value.
      *  @return The long representation of the time value.
      */
     public long getLongValue() {
@@ -620,11 +716,24 @@ public class Time implements Comparable {
         } else if (_isPositiveInfinite) {
             return Integer.MAX_VALUE;
         } else {
-            return _timeValue.hashCode();
+            if (_divisorAndRemainder == null) {
+                return _timeValue.hashCode();
+            } else {
+                return _timeValue.hashCode() >>> _divisorAndRemainder.hashCode();
+            }
         }
     }
 
-    // FIXME: profiling shows that the following three methods are called
+    /** Return whether this time object has a remainder. A time object has a
+     *  remainder if it was the result of a earlier division, which has
+     *  resulted in a non-zero remainder.
+     *  @return whether this time object has a remainder.
+     */
+    public boolean hasRemainder() {
+        return (_divisorAndRemainder != null);
+    }
+
+    // FIXME: profiling shows that the following fix methods are called
     // enormous times and performance can be greatly improved if no infinities
     // are supported.
 
@@ -817,8 +926,8 @@ public class Time implements Comparable {
             // Since the values are now quantized, when a multiplication is
             // performed, the resolutions are canceled out. Thus we need to
             // multiply by 1/resolution.
-            return new Time(_director, _timeValue.multiply(quantizedValue)
-                    .divide(resolutionInverse));
+            return _multiply(resolutionInverse, new Time(_director, 
+                    quantizedValue, null, null));
         }
     }
 
@@ -913,11 +1022,7 @@ public class Time implements Comparable {
                     + "Check the stack trace to see which actor, "
                     + "parameter or director caused this exception.");
         }
-        // Since the values are now quantized, when a multiplication is
-        // performed, the resolutions are canceled out. Thus we need to
-        // multiply by 1/resolution.
-        return new Time(_director, _timeValue.multiply(time._timeValue)
-                .divide(resolutionInverse));
+        return _multiply(resolutionInverse, time);
     }
 
     /** Return a new time object whose time value is decreased by the
@@ -946,7 +1051,14 @@ public class Time implements Comparable {
         } else if (time.isPositiveInfinite()) {
             return add(NEGATIVE_INFINITY);
         } else {
-            return add(new Time(time._director, time._timeValue.negate()));
+            if (time._divisorAndRemainder != null) {
+                return add(new Time(time._director, time._timeValue.negate(),
+                        time._divisorAndRemainder[0],
+                        time._divisorAndRemainder[1].negate()));
+            } else {
+                return add(new Time(time._director, time._timeValue.negate(),
+                        null, null));
+            }
         }
     }
 
@@ -962,7 +1074,12 @@ public class Time implements Comparable {
         } else if (_isNegativeInfinite) {
             return "-Infinity";
         } else {
-            return "" + getDoubleValue();
+            if (_divisorAndRemainder == null) {
+                return "" + getDoubleValue();
+            } else {
+                return "" + getDoubleValue() + " + " + _divisorAndRemainder[1] +
+                    " / " + _divisorAndRemainder[0];
+            }
 
             // NOTE: Could use BigDecimal to get full resolution, as follows,
             // but the resulution is absurd.
@@ -991,6 +1108,25 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Divide a BigInteger by another BigInteger and produce a new Time
+     *  value. 
+     *  @param dividend The dividend of this division.
+     *  @param divisor The divisor of this divisor.
+     *  @param resolutionInverse The inverse of the time resolution
+     *  @return a new Time object of the division.
+
+     */
+    private Time _bigIntegerDivideByBigInteger(BigInteger dividend,
+            BigInteger divisor, BigInteger resolutionInverse) {
+        dividend = dividend.multiply(resolutionInverse);
+        BigInteger[] q_r = dividend.divideAndRemainder(divisor);
+        if (q_r[1].compareTo(BigInteger.ZERO) == 0) {
+            return new Time(_director, q_r[0], null, null);
+        } else {
+            return new Time(_director, q_r[0], divisor, q_r[1]);
+        }
+    }
 
     /** Given a double, return the BigInteger that represents its
      *  quantized value. The BigInteger is the rounded result of dividing
@@ -1043,6 +1179,167 @@ public class Time implements Comparable {
 
         return BigInteger.valueOf(multiple);
     }
+    
+    /** Divide this Time by the other Time object, and produce a new Time
+     *  object as a result. If the dividend (this Time structure) is a
+     *  perfect multiple of the time
+     *  resolution, then the divideAndRemainder method of BigInteger is used,
+     *  with the quotient as the new _timeValue. If the method returned a
+     *  non-zero remainder, the divisor and remainder values are saved in
+     *  the new Time structure.
+     *  <p> If the dividend already has a non-null divisor and remainder fields,
+     *  then we need to represent the final result of the division in a non-null
+     *  divisor and remainder. The final representation is as follows:
+     *  let q1 be the quotient, b be the divisor, and r1 be the remainder of
+     *  this time structure (the dividend time structure). Let c be the divisor,
+     *  let q2 be q1/c, let
+     *  r2 be q1%c, then the final result can be represented as:
+     *  q2 + (r1 + r2*b) / (b*c). In other words, the returned Time structure
+     *  would have _timeValue = q2 + (r1 + r2*b) / (b*c), while the divisor
+     *  would be b*c, and remainder would be (r1 + r2*b) % (b*c).
+     *  
+     *  @param dividend The dividend of this division.
+     *  @param resolutionInverse The inverse of the time resolution
+     *  @param divisor The divisor of this divisor.
+     *  @return a new Time structure of the division.
+     */
+    private Time _divide(BigInteger resolutionInverse, Time time) {
+        // Since the values are now quantized, when a division is performed,
+        // the resolutions are canceled out. Thus we need to multiply by
+        // 1/resolution.
+        if (_divisorAndRemainder == null && time._divisorAndRemainder == null) {
+            return _bigIntegerDivideByBigInteger(_timeValue, 
+                    time._timeValue, resolutionInverse);
+        } else if (_divisorAndRemainder != null && 
+                time._divisorAndRemainder == null) {
+            return _timeDivideByBigInteger(this, time._timeValue, resolutionInverse);
+        } else if (_divisorAndRemainder == null && 
+                time._divisorAndRemainder != null) {
+            // To divide by a Time that has a non-zero remainder,
+            // first find the full fraction for the divisor time,
+            // then 
+            BigInteger divisor = time._timeValue.multiply(
+                    time._divisorAndRemainder[0].divide(resolutionInverse)
+                    .add(time._divisorAndRemainder[1]));
+            return _bigIntegerDivideByBigInteger(_timeValue.multiply(
+                    time._divisorAndRemainder[0]), divisor, resolutionInverse);
+        } else {
+            BigInteger divisor = time._timeValue.multiply(
+                    time._divisorAndRemainder[0].divide(resolutionInverse)
+                    .add(time._divisorAndRemainder[1]));
+            Time dividend = this.multiply(new Time(_director,
+                    time._divisorAndRemainder[0], null, null));
+            return _timeDivideByBigInteger(dividend, divisor,
+                    resolutionInverse);
+        }
+    }
+
+    /** Divide a Time object by another BigInterger. Produces a new Time
+     *  object. The Time object (the
+     *  dividend, must not have a null _divisorAndRemainder term.
+     *  @param dividendTime The dividend.
+     *  @param divisor The divisor.
+     *  @param resolutionInverse The inverse of the resolution.
+     *  @return A new Time object.
+     */
+    private Time _timeDivideByBigInteger(Time dividendTime, BigInteger divisor,
+            BigInteger resolutionInverse) {
+        assert (dividendTime._divisorAndRemainder != null);
+        BigInteger dividend = dividendTime._timeValue.multiply(resolutionInverse);
+        // q2 and r2
+        BigInteger[] q_r = dividend.divideAndRemainder(divisor);
+        // r1 + r2*b
+        BigInteger dividend2 = q_r[1].multiply(dividendTime._divisorAndRemainder[0])
+            .add(dividendTime._divisorAndRemainder[1]);
+        // b*c
+        BigInteger divisor2 = dividendTime._divisorAndRemainder[0].multiply(divisor);
+        BigInteger[] q_r2 = dividend2.divideAndRemainder(_divisorAndRemainder[0]);
+        assert (q_r2[1].compareTo(BigInteger.ZERO) != 0);
+        return new Time(_director, q_r[0].add(q_r2[0]), divisor2, q_r2[1]);
+    }
+
+    /** Multiplies this object with another Time object. The formula for
+     *  multiplying two Times with fraction parts are described as follows:
+     *  To find X * Y, where X = q1 + r1/b, and Y = q2 + r2/d, X * Y can
+     *  be written as: q1*q2 + (r1*q2*d + r2*q1*b + r1*r2) / (b*d), where
+     *  all variables in this equation are BigIntegers, and the result
+     *  is a new Time object that retains the arbitrary precision.
+     *  By default, r1 and r2 are initialized to be zero, while b and d
+     *  are initialized to be one. These values are used if the fraction
+     *  part of either this object or the other Time object is null. However
+     *  if either of them are not null, then r1, r2, b, and d are overwritten.
+     *  The final Time is calculated according to the above equation.
+     *  @param resolutionInverse The inverse of the resolution.
+     *  @param time The other Time object
+     *  @return A new Time object that is the multple of this Time and
+     *  the other Time object.
+     */
+    private Time _multiply(BigInteger resolutionInverse, Time time) {
+        BigInteger d = BigInteger.ONE;
+        BigInteger b = BigInteger.ONE;
+        BigInteger r1 = BigInteger.ZERO;
+        BigInteger r2 = BigInteger.ZERO;
+        if (_divisorAndRemainder != null) {
+            b = _divisorAndRemainder[0];
+            r1 =_divisorAndRemainder[1];
+        }
+        if (time._divisorAndRemainder != null) {
+            d = time._divisorAndRemainder[0];
+            r2 = time._divisorAndRemainder[1];     
+        }
+        BigInteger temp1 = r1.multiply(time._timeValue).multiply(d)
+            .divide(resolutionInverse);
+        BigInteger temp2 = r2.multiply(_timeValue).multiply(b)
+            .divide(resolutionInverse);
+        BigInteger temp3 = r1.multiply(r2);
+        BigInteger newDivisor = b.multiply(d);
+        BigInteger temp4 = temp1.add(temp2).add(temp3);
+        BigInteger q_r[] = temp4.divideAndRemainder(newDivisor);
+        return new Time(_director, _timeValue.multiply(time._timeValue)
+                .divide(resolutionInverse).add(q_r[0]), newDivisor, q_r[1]);
+    }
+
+    /** If the remainder field is not null, normalize time such that the
+     *  remainder would be the smallest possible positive value without the
+     *  loss of precision. We also normalize the remainder such that the
+     *  divisor and the remainder are divided by the greatest common divisor.
+     */
+    private void _normalizeTime() {
+        if (_divisorAndRemainder != null) {
+            if (_divisorAndRemainder[0].compareTo(BigInteger.ZERO) == 0) {
+                assert(_divisorAndRemainder[1].compareTo(BigInteger.ZERO) != 0);
+                _divisorAndRemainder = null;
+                return;
+            }
+            if (_divisorAndRemainder[1].compareTo(BigInteger.ZERO) == 0) {
+                _divisorAndRemainder = null;
+                return;
+            }
+            BigInteger gcd = _divisorAndRemainder[0].gcd(_divisorAndRemainder[1]);
+            assert(gcd.compareTo(BigInteger.ZERO) != 0);
+            _divisorAndRemainder[0] = _divisorAndRemainder[0].divide(gcd);
+            _divisorAndRemainder[1] = _divisorAndRemainder[1].divide(gcd);
+            while (_divisorAndRemainder[1].compareTo(BigInteger.ZERO) < 0) {
+                _timeValue = _timeValue.subtract(BigInteger.ONE);
+                _divisorAndRemainder[1] = _divisorAndRemainder[1].add(
+                        _divisorAndRemainder[0]);
+            }
+            while (_divisorAndRemainder[1].compareTo(_divisorAndRemainder[0]) > 0) {
+                _timeValue = _timeValue.add(BigInteger.ONE);
+                _divisorAndRemainder[1] = _divisorAndRemainder[1].subtract(
+                        _divisorAndRemainder[0]);
+            }
+            if (_divisorAndRemainder[1].compareTo(_divisorAndRemainder[0]) == 0) {
+                _timeValue = _timeValue.add(BigInteger.ONE);
+                _divisorAndRemainder = null;
+                return;
+            }
+            if (_divisorAndRemainder[1].compareTo(BigInteger.ZERO) == 0) {
+                _divisorAndRemainder = null;
+                return;
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1062,4 +1359,12 @@ public class Time implements Comparable {
 
     /** The time value, as a multiple of the resolution. */
     private BigInteger _timeValue = null;
+
+    /** Two BigIntegers that saves the fraction part of the time value, in
+     *  order to prevent the loss of precision. The fraction is divided into
+     *  two parts, the denominator is called the divisor, and the numerator
+     *  is called the remainder. The first BigInteger in this array is the
+     *  divisor, and the second is the remainder. 
+     */
+    private BigInteger[] _divisorAndRemainder = null;
 }
