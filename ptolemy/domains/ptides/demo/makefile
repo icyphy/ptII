@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008-2010 The Regents of the University of California.
+# @Copyright (c) 2008-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -38,6 +38,8 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesAirplaneFuelControl \
 		PtidesBasicTTE \
+		PtidesPlatformSynchronizationError \
+		PtidesPreemptEDFOnePlatformThreePathsRealDelay
 		PowerManagementUnitSamplingWithoutCurrentLocalTime
 
 # Root of the Java directory
@@ -60,9 +62,9 @@ PTCLASSALLJARS = \
 	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
 	PtidesBasicPowerPlant/PtidesBasicPowerPlant.jar \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
-	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
-	PtidesAirplaneFuelControl/PtidesAirplaneFuelControl.jar \
 	PtidesBasicTTE/PtidesBasicTTE.jar \
+	PtidesPlatformSynchronizationError/PtidesPlatformSynchronizationError.jar \
+	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar

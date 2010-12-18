@@ -93,7 +93,7 @@ public class SensorInputDevice extends InputDevice {
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public  variables                 ////
+    ////                         public  methods                   ////
     /** Read one token from the input. Send out an identical token.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.

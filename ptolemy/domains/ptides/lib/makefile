@@ -58,11 +58,13 @@ JSRCS = \
 	ActuationDevice.java \
 	ActuatorOutputDevice.java \
 	InputDevice.java \
+	MasterClock.java \
 	NetworkInputDevice.java \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
 	SensorInputDevice.java \
-	SimulatedPhysicalTime.java \
+	SimulatedPlatformPhysicalTime.java \
+	SlaveClock.java \
 	VariableDelayCounter.java
 
 OTHER_FILES_TO_BE_JARED = \

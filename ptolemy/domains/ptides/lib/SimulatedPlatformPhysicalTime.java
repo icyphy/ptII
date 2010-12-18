@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// SimulatedPhysicalTime
+//// SimulatedPlatformPhysicalTime
 
 /**
 Produce an output token on each firing with a value that is
@@ -49,7 +49,7 @@ The output is of type double.
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating
 */
-public class SimulatedPhysicalTime extends TimedSource {
+public class SimulatedPlatformPhysicalTime extends TimedSource {
     /** Construct an actor with the given container and name.
     *
     *  @param container The container.
@@ -59,7 +59,7 @@ public class SimulatedPhysicalTime extends TimedSource {
     *  @exception NameDuplicationException If the container already has an
     *   actor with this name.
     */
-    public SimulatedPhysicalTime(CompositeEntity container, String name)
+    public SimulatedPlatformPhysicalTime(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -77,7 +77,8 @@ public class SimulatedPhysicalTime extends TimedSource {
     public void fire() throws IllegalActionException {
         PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
 
-        output.send(0, new DoubleToken((director.getOraclePhysicalTag().timestamp
+        output.send(0, new DoubleToken((director.getPlatformPhysicalTag(
+                PtidesBasicDirector.PLATFORM_TIMER).timestamp
         .getDoubleValue())));
         
         super.fire();
