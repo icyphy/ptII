@@ -137,18 +137,58 @@ import ptolemy.moml.MoMLChangeRequest;
  *  the simulated physical time depends on the clock frequency of
  *  the microprocessor that runs the Ptides implementation.</p>
  *  
- *  <p> There are also two versions of simulated physical time within the
- *  Ptides environment: oracle time and platform time. These times help
+ *  <p> There are also three versions of simulated physical time within the
+ *  Ptides environment: oracle time, platform time and execution time.
+ *  These times help
  *  to capture the time synchronizations in a distributed environment.
  *  In such an environment, all platforms are assumed to be synchronized
  *  within a bounded error. Thus we assume there is a oracle that holds
- *  the "correct" time in the system, this oracle time is the model
- *  time of the enclosing director. Each platform then has a local clock
- *  that tracks this time within a bounded error. In other words, the
- *  platform time is the sum of oracle time and the time synchronization
- *  error.</p>
+ *  the "correct" time in the system, and this oracle time is the model
+ *  time of the enclosing director. In many systems, the oracle time is
+ *  simply the time of the master clock. Each platform then has two local
+ *  clocks that tracks this time. One is a execution clock, which simulates
+ *  the main clock that triggers the CPU, and it is used to simulate how long
+ *  it takes for a particular actor to finish its execution. On the other hand,
+ *  the platform clock is the timer in the system. For example, when the sensor
+ *  produces a timestamped event, the timestamp is retrieved using the platform
+ *  clock. The execution clock and the platform clock produces execution time
+ *  and platform time, respectively. 
  *  
- *  <p> We assume all execution times are in terms of oracle time. That
+ *  <p> Each of the clocks is an instance of the
+ *  {@link RealTimeClock} inner class. The clock keeps track of its time by
+ *  saving a pair of timer values, the oracle time, and the execution/platform
+ *  time. These two times reflect the same point in time. A clock drift
+ *  parameter then tracks the drift of the execution/platform time with
+ *  respect to the oracle time. If the times are perfectly synchronized, then
+ *  the clock drift takes a value of 1.0. If the clock drift is bigger than
+ *  1.0, then it means the execution/platform time runs faster than the
+ *  oracle time. If the clock drift is 0.0, that means the execution/platform
+ *  time does not change as oracle time changes. The clock drift is not allowed
+ *  to take a negative value.  That is, As the oracle time increases, the
+ *  execution/platform time cannot decrease. Every time the clock drift
+ *  changes, the pair of saved execution/platform and oracle time needs to be
+ *  updated. Currently,the execution/platform clocks can only be updated by
+ *  changing the clock drift. 
+ *  FIXME: the above may not be what we want, since at the start of
+ *  simulation, the execution/platform time may be very different from oracle
+ *  time, and we don't want to wait forever for these times to catch up to
+ *  each other.
+ *  
+ *  <p> While in some hardware platforms the platform clock and the execution
+ *  clock are
+ *  closely related (e.g., they may be tied to the same oscillator, but
+ *  frequency divided by different factors), this is not true in general.
+ *  Moreover, in most Ptides systems that implements clock synchronization,
+ *  the above assumption does not hold. As there exists separate hardware
+ *  that performs clock synchronization by updating the clock drift as time
+ *  synchronization packets are received. In the case they are the same,
+ *  a single {@link RealTimeClock} object can be created, and can be set to
+ *  both the execution and platform clock.</p>
+ *  
+ *  <p> FIXME: Instead of execution times, maybe we should use execution clock
+ *  cycles coupled with clock frequency instead. And the clock drift of
+ *  the execution clock can be replaced by the frequency drift of the CPU.
+ *  We assume all execution times are in terms of oracle time. That
  *  is, if an actor is annotated with <i>executionTime</i> equal to <i>t</i>,
  *  an event that triggers this actor will take exactly <i>t</i> amount of
  *  oracle time to process. Notice, when the actor finishes firing, the
@@ -591,8 +631,8 @@ public class PtidesBasicDirector extends DEDirector {
         _schedulerFinishTime = new Time(this, Double.NEGATIVE_INFINITY);
         _inputEventInterruptOccurred = false;
         _scheduleNewEvent = false;
-        _timedInterruptWakeUpTimes = new LinkedList<Time>();
-        _eventTimedInterruptTimes = new HashMap<PtidesEvent, Time>();
+        _timedInterruptTimes = new LinkedList<TimedEvent>();
+        _eventsWithTimedInterrupt = new HashSet<PtidesEvent>();
         _futureExecutionFireAtTimes = new LinkedList<Time>();
         _ignoredExecutionFireAtTimes = new LinkedList<Time>();
         _futurePlatformFireAtTimes = new LinkedList<Time>();
@@ -851,7 +891,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public void updateFireAtTimes(RealTimeClock realTimeClock, Time newClockDrift)
             throws IllegalActionException {
-        if (realTimeClock._clockDrift != realTimeClock._previousClockDrift) {
+        if (realTimeClock._clockDrift.compareTo(newClockDrift) != 0) {
             // First update all the parameters in realTimeClock.
             Time newOracleTime = _getOraclePhysicalTag().timestamp;
             realTimeClock._lastPlatformTime = ((newOracleTime
@@ -859,22 +899,26 @@ public class PtidesBasicDirector extends DEDirector {
                     .multiply(realTimeClock._clockDrift))
                     .add(realTimeClock._lastPlatformTime);
             realTimeClock._lastOracleTime = newOracleTime;
-            realTimeClock._previousClockDrift = realTimeClock._clockDrift;
             realTimeClock._clockDrift = newClockDrift;
             
             // Based on the above information, update the future fireAt times.
             if (realTimeClock == _executionTimeClock) {
-                _futureExecutionFireAtTimes = _updateFireAtTimes(
+                _futureExecutionFireAtTimes = (List<Time>) _updateFireAtTimes(
                         _futureExecutionFireAtTimes, 
-                        _ignoredExecutionFireAtTimes, realTimeClock);
+                        _ignoredExecutionFireAtTimes, realTimeClock,
+                        newClockDrift);
             } else if (realTimeClock == _platformTimeClock) {
-                _futurePlatformFireAtTimes = _updateFireAtTimes(
+                _futurePlatformFireAtTimes = (List<Time>) _updateFireAtTimes(
                         _futurePlatformFireAtTimes,
-                        _ignoredPlatformFireAtTimes, realTimeClock);
+                        _ignoredPlatformFireAtTimes, realTimeClock,
+                        newClockDrift);
                 // If the clock is a platform clock, we also need to 
-                // update the timed interrupt times.
-                _timedInterruptWakeUpTimes = _updateFireAtTimes(
-                        _timedInterruptWakeUpTimes, null, realTimeClock);
+                // update the timed interrupt times. However,
+                // ignore fireAt time is not needed, since a timed
+                // interrupt time is part of a platform fireAt time.
+                _timedInterruptTimes = (List<TimedEvent>) _updateFireAtTimes(
+                        _timedInterruptTimes, null, realTimeClock,
+                        newClockDrift);
             } else {
                 // FIMXE: should we ignore this case, or should we throw
                 // an exception?
@@ -1730,8 +1774,13 @@ public class PtidesBasicDirector extends DEDirector {
         Tag executionPhysicalTag = getPlatformPhysicalTag(EXECUTION_TIMER);
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
-        
-        // FIXME: If the current time is to be ignored, 
+
+        // If this fireAt time should be ignored, return null, so no actor
+        // is fired at this time.
+        if (_ignoreThisFireAtTime(_ignoredExecutionFireAtTimes) ||
+                _ignoreThisFireAtTime(_ignoredPlatformFireAtTimes)) {
+            return null;
+        }
         
         // If we have received a timed interrupt, a sensor interrupt, or if an event has
         // finished processing, the scheduler must run to figure out what is the next event
@@ -2201,12 +2250,14 @@ public class PtidesBasicDirector extends DEDirector {
             return true;
         } else {
             // For each future timed interrupt, save when it is supposed to
-            // occur. This is used to simulate a scheduler run when the
-            // interrupt occurs.
-            if (!_eventTimedInterruptTimes.containsKey(event)) {
-                _eventTimedInterruptTimes.put(event, waitUntilPhysicalTime);
-                _timedInterruptWakeUpTimes.add(waitUntilPhysicalTime);
-                Collections.sort(_timedInterruptWakeUpTimes);
+            // occur. This is used to simulate the amount of physical time
+            // it takes for a scheduler to run when an interrupt occurs.
+            if (!_eventsWithTimedInterrupt.contains(event)) {
+                _eventsWithTimedInterrupt.add(event);
+                TimedEvent timedEvent = new TimedEvent(waitUntilPhysicalTime,
+                        event);
+                _timedInterruptTimes.add(timedEvent);
+                Collections.sort(_timedInterruptTimes);
                 _fireAtPlatformTime(waitUntilPhysicalTime, PLATFORM_TIMER);
             }
             return false;
@@ -2641,7 +2692,6 @@ public class PtidesBasicDirector extends DEDirector {
         if (compare < 0 && !_ignoreDeadline(port)) {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 if (port.hasTokenInside(i)) {
-                    // FIXME: we may want to do something else here.
                     throw new IllegalActionException(port,
                             "missed deadline at the actuator. The deadline is " +
                             _currentTime + ", and the platform physical time is " +
@@ -3053,6 +3103,43 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
+    /** If the list of time includes a time that is equal to the current oracle
+     *  time, then remove that time from the list, and return true. Otherwise
+     *  return false. 
+     *  @param ignoredFireAtTimeList The list of times to ignore
+     *  @return true if the list contains a time to be ignored.
+     *  @exception IllegalActionException If the director cannot get
+     *   the current physical tag, or if the fireAt time to be ignored is
+     *   in the past.
+     */
+    private boolean _ignoreThisFireAtTime(List<Time> ignoredFireAtTimeList)
+            throws IllegalActionException {
+        if (ignoredFireAtTimeList.size() > 0) {
+            Tag oraclePhysicalTag = _getOraclePhysicalTag();
+            int compare = oraclePhysicalTag.timestamp.compareTo(
+                    ignoredFireAtTimeList.get(0));
+            if (compare < 0) {
+                throw new IllegalActionException(this, "A fireAt time to ignore " +
+                        "happened in the past. The current oracle time is " +
+                        oraclePhysicalTag.toString() + ", and the fireAt " +
+                        "time to be ignored is " + 
+                        ignoredFireAtTimeList.get(0).toString() + ".");
+            } else if (compare == 0) {
+                if (_debugging) {
+                    _debug("The current oralce time is " +
+                            oraclePhysicalTag.timestamp + "." + 
+                            oraclePhysicalTag.microstep + ", and we " +
+                            "have skipped the current firing because " + 
+                            "there has been a change in clock drift in " +
+                            "one of the system clocks.");
+                }
+                ignoredFireAtTimeList.remove(0);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Return whether the port is a networkPort. This method only checks
      *  for whether input ports are network ports. If port is an output
      *  port, then throw an exception.
@@ -3212,10 +3299,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  interrupt occurred in the past. 
      */
     private boolean _timedInterruptOccurred() throws IllegalActionException {
-        if (_timedInterruptWakeUpTimes.isEmpty()) {
+        if (_timedInterruptTimes.isEmpty()) {
             return false;
         }
-        Time topTimedInterruptWakeUpTime = _timedInterruptWakeUpTimes.get(0);
+        TimedEvent timedEvent = _timedInterruptTimes.get(0);
+        Time topTimedInterruptWakeUpTime = timedEvent.timeStamp;
         int result = topTimedInterruptWakeUpTime.compareTo(
                 getPlatformPhysicalTag(PLATFORM_TIMER).timestamp);
         if (result < 0) {
@@ -3224,7 +3312,8 @@ public class PtidesBasicDirector extends DEDirector {
                         ", but the current simulated physical time is already: " +
                         getPlatformPhysicalTag(PLATFORM_TIMER).timestamp + ".");
         } else if (result == 0) {
-            _timedInterruptWakeUpTimes.remove(0);
+            _timedInterruptTimes.remove(0);
+            _eventsWithTimedInterrupt.remove(timedEvent.contents);
             return true;
         }
         return false;
@@ -3413,11 +3502,21 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If either the original or updated fireAt
      *  time is in the past.
      */
-    private List<Time> _updateFireAtTimes(List<Time> originalFireAtTimes,
-            List<Time> ignoreFireAtTimes, RealTimeClock realTimeClock)
-            throws IllegalActionException {
+    private List<?> _updateFireAtTimes(List<?> originalFireAtTimes,
+            List<Time> ignoreFireAtTimes, RealTimeClock realTimeClock,
+            Time newClockDrift) throws IllegalActionException {
         List<Time> newFireAtTimes = new LinkedList<Time>();
-        for (Time originalFireAtTime : originalFireAtTimes) {
+        for (Object originalFireAt : originalFireAtTimes) {
+            Time originalFireAtTime = null;
+            if (originalFireAt instanceof Time) {
+                originalFireAtTime = (Time)originalFireAt;
+            } else if (originalFireAt instanceof TimedEvent) {
+                originalFireAtTime = ((TimedEvent) originalFireAt).timeStamp;
+            } else {
+                throw new InternalErrorException("The input list originalFireAtTimes " +
+                		"is expected to be a list of Time or TimedEvent, " +
+                		"but it is neither.");
+            }
             if (originalFireAtTime.compareTo(realTimeClock._lastOracleTime) < 0) {
                 throw new IllegalActionException(this, "The original fireAt time: " +
                         originalFireAtTime.toString() + 
@@ -3443,13 +3542,13 @@ public class PtidesBasicDirector extends DEDirector {
             // FIXME: division is used here, which means there may be a
             // loss of precision.
             // FIXME: what do we do with divide by zero?
-            Time clockDriftDiff = realTimeClock._clockDrift.subtract(
-                    realTimeClock._previousClockDrift);
+            Time clockDriftDiff = newClockDrift.subtract(
+                    realTimeClock._clockDrift);
             Time temp1 = (realTimeClock._lastOracleTime.multiply(
-                    clockDriftDiff)).divide(realTimeClock._clockDrift);
+                    clockDriftDiff)).divide(newClockDrift);
             Time temp2 = (originalFireAtTime.multiply(
-                    realTimeClock._previousClockDrift)).divide(
-                            realTimeClock._clockDrift);
+                    realTimeClock._clockDrift)).divide(
+                            newClockDrift);
             Time newFireAtTime = temp1.add(temp2);
             if (newFireAtTime.compareTo(realTimeClock._lastOracleTime) < 0) {
                 throw new IllegalActionException(this, "The new fireAt time: " +
@@ -3611,14 +3710,16 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private boolean _timeDelayHighlighted = false;
 
-    /** The time of the next interrupt wake up.
+    /** A list of TimedEvents that saves Ptides events along with the times
+     *  at which an interrupt is supposed to occur for these events. The time
+     *  used is the platform time.
      */
-    private List<Time> _timedInterruptWakeUpTimes;
+    private List<TimedEvent> _timedInterruptTimes;
     
-    /** FIXME: what does this do?? THIS IS NOT CORRECT... 12/18/10 - jiazou
-     * 
+    /** Keep track of a set of Ptides events that already have its
+     *  timed interrupt set.
      */
-    private Map<PtidesEvent, Time> _eventTimedInterruptTimes;
+    private Set<PtidesEvent> _eventsWithTimedInterrupt;
 
     /** Keep track of visited actors during delayOffset calculation.
      */
@@ -3731,7 +3832,6 @@ public class PtidesBasicDirector extends DEDirector {
         public RealTimeClock() throws IllegalActionException {
             _lastPlatformTime = new Time(PtidesBasicDirector.this);
             _clockDrift = new Time(PtidesBasicDirector.this, 1.0);
-            _previousClockDrift = new Time(PtidesBasicDirector.this, 1.0);
             _lastOracleTime = new Time(PtidesBasicDirector.this);
         }
 
@@ -3744,7 +3844,6 @@ public class PtidesBasicDirector extends DEDirector {
                 throws IllegalActionException {
             _lastPlatformTime = new Time(PtidesBasicDirector.this, initialClockSynchronizationError);
             _clockDrift = new Time(PtidesBasicDirector.this, 1.0);
-            _previousClockDrift = new Time(PtidesBasicDirector.this, 1.0);
             _lastOracleTime = new Time(PtidesBasicDirector.this);
         }
 
@@ -3783,10 +3882,6 @@ public class PtidesBasicDirector extends DEDirector {
          *  time decreases. This is not allowed in this simulator.
          */
         public Time _clockDrift;
-
-        /** The previous clock drift before the last change in clock drift.
-         */
-        public Time _previousClockDrift;
     }
 
     /** A structure that holds a token with the port and channel it's
@@ -3803,7 +3898,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param port The destination port.
          *  @param channel The destination channel.
          *  @param token The token to be delivered.
-         *  @param deliveryTag The time of delivery of this token.
+         *  @param deliveryTag The platform time of delivery of this token.
          */
         public RealTimeEvent(IOPort port, int channel, Token token,
                 Tag deliveryTag, Tag timestampTag) {
