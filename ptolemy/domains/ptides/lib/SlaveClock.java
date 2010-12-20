@@ -56,9 +56,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  
  *  @author Jia Zou, Patricia Derler
  *  @version $Id$
- *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Yellow (jiazou)
- *  @Pt.AcceptedRating
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
  */
 public class SlaveClock extends TypedAtomicActor {
     
@@ -120,10 +120,11 @@ public class SlaveClock extends TypedAtomicActor {
         Tag platformTag = ((PtidesBasicDirector)getDirector())
             .getPlatformPhysicalTag(PtidesBasicDirector.PLATFORM_TIMER);
         if (token.doubleValue() > platformTag.timestamp.getDoubleValue()) {
-            platformClock.updateClockDrift(new Time(getDirector(), 1.2));
-            
+            platformClock.updateClockDrift(new Time(getDirector(), 1.3));
         } else if (token.doubleValue() < platformTag.timestamp.getDoubleValue()) {
-            platformClock.updateClockDrift(new Time(getDirector(), 0.8));
+            platformClock.updateClockDrift(new Time(getDirector(), 0.7));
+        } else {
+            platformClock.updateClockDrift(new Time(getDirector(), 1.0));
         }
         output.send(0, new DoubleToken(platformTag.timestamp.getDoubleValue()));
     }

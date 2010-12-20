@@ -460,7 +460,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Store the initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
-     *  in that the other parameter parameter is the estimated bound, while
+     *  in that the other parameter is the estimated bound, while
      *  this parameter stores the current synchronization error. This error
      *  could be greater than the assumed error bound. If this happens, the
      *  safe-to-process analysis could result in the processing of an unsafe

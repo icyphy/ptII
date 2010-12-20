@@ -227,7 +227,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.7, 1.5, 2.3, 3.5, 4.7, 5.5, 6.3, 7.5, 8.7, 9.5}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.7, 1.4, 2.7, 3.4, 4.7, 5.4, 6.7, 7.4, 8.7, 9.4}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

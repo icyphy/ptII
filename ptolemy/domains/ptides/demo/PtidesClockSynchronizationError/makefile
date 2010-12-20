@@ -1,10 +1,10 @@
 # Makefile for Ptolemy II Ptides Demo
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Jia Zou (makefile only)
 #
 # @Version: 
 #
-# @Copyright (c) 2000-2009 The Regents of the University of California.
+# @Copyright (c) 2000-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
