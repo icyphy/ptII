@@ -24,19 +24,18 @@
 
 package ptolemy.vergil.basic;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLModelAttribute;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -117,16 +116,22 @@ public class MoMLModelAttributeController extends AttributeController {
         public LookInsideAction() {
             super("Open Model");
 
+            /* NOTE: The key binding doesn't actually work.
+             * Not sure why, but leave it out to not confuse the user.
+             *
+            // Attach a key binding for look inside (also called
+            // open actor).
             // If we are in an applet, so Control-L or Command-L will
             // be caught by the browser as "Open Location", so we don't
             // supply Control-L or Command-L as a shortcut under applets.
             if (!StringUtilities.inApplet()) {
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_J, Toolkit.getDefaultToolkit()
+                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
                                 .getMenuShortcutKeyMask()));
                 putValue(GUIUtilities.MNEMONIC_KEY, Integer
-                        .valueOf(KeyEvent.VK_J));
+                        .valueOf(KeyEvent.VK_L));
             }
+            */
         }
 
         public void actionPerformed(ActionEvent event) {
@@ -142,7 +147,38 @@ public class MoMLModelAttributeController extends AttributeController {
             }
             try {
                 NamedObj model = attribute.getContainedModel();
-                configuration.openInstance(model);
+                Tableau tableau = configuration.openInstance(model);
+                tableau.setMaster(false);
+                Effigy effigy = (Effigy)tableau.getContainer();
+                
+                // The effigy returned above has three problems. First,
+                // it's container is the directory is the directory in the
+                // configuration. We want it to be contained by the following
+                // containerEffigy.
+                Effigy containerEffigy = configuration.getEffigy(attribute.getContainer());
+                
+                // Second, the effigy returned above returns the wrong value in its
+                // masterEffigy() method. That method returns the effigy associated
+                // with the toplevel, which is the same as effigy. We want it to
+                // return whatever the masterEffigy of containerEffigy is.
+                // We accomplish this by substituting a new effigy.
+                // This technique is borrowed from what is done in
+                // PtolemyFrame.getEffigy().
+                PtolemyEffigy newEffigy = new PtolemyEffigy(
+                        containerEffigy,
+                        containerEffigy.uniqueName(model.getName())) {
+                    public Effigy masterEffigy() {
+                        return topEffigy();
+                    }
+                };
+                newEffigy.setModel(model);
+                newEffigy.setModified(effigy.isModified());
+                tableau.setContainer(newEffigy);
+                effigy.setContainer(null);
+                
+                // Third, the uri attribute of the effigy is not set to
+                // refer to the file that will actually save the model.
+                newEffigy.uri.setURI(containerEffigy.uri.getURI());
             } catch (Exception e) {
                 throw new InternalErrorException(null, e, "Unable to create "
                         + "transformation editor for " + attribute.getName());
