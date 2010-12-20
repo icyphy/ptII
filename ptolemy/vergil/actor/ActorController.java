@@ -805,6 +805,8 @@ public abstract class ActorController extends AttributeController {
         public LookInsideAction() {
             super("Open Actor");
 
+            // Attach a key binding for look inside (also called
+            // open actor).
             // If we are in an applet, so Control-L or Command-L will
             // be caught by the browser as "Open Location", so we don't
             // supply Control-L or Command-L as a shortcut under applets.
