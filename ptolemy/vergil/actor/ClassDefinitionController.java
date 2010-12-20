@@ -40,6 +40,7 @@ import javax.swing.KeyStroke;
 
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -210,12 +211,17 @@ public class ClassDefinitionController extends ActorController {
     ////                         private methods                   ////
 
     /** Create a change request to create an instance or a subclass
-     *  of the object.
+     *  of the object. Do nothing if the specified object does not
+     *  implement Instantiable.
+     *  @see Instantiable
      *  @param object The class to subclass or instantiate.
      *  @param subclass True to create a subclass, false to create
      *   an instance.
      */
     private void _createChangeRequest(NamedObj object, boolean subclass) {
+        if (!(object instanceof Instantiable)) {
+            return;
+        }
         NamedObj container = object.getContainer();
         StringBuffer moml = new StringBuffer();
         moml.append("<group name=\"auto\">");
@@ -226,7 +232,7 @@ public class ClassDefinitionController extends ActorController {
         // of InstantiableNamedObj, so this cast should be safe.
         // However, the key bindings are active even if it's not
         // a class, so if it's not a class, we just do nothing here.
-        if (((InstantiableNamedObj) object).isClassDefinition()) {
+        if (((Instantiable) object).isClassDefinition()) {
             if (subclass) {
                 moml.append("<class name=\"" + "SubclassOf" + object.getName()
                         + "\" extends=\"" + object.getName() + "\"/>");
