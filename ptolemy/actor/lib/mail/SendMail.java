@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.MessageHandler;
 
 /** Upon firing, send email to the specified recipient.
  *  This actor uses the SMTP protocol and will prompt for a password
@@ -297,10 +298,25 @@ public class SendMail extends TypedAtomicActor {
                         new InternetAddress(tokenizer.nextToken().trim()));
             }
             
+            boolean atLeastOneToAddress = false;
             tokenizer = new StringTokenizer(ccValue, ",");
             while (tokenizer.hasMoreTokens()) {
+                String nextToken = tokenizer.nextToken().trim();
+                if (nextToken.equals("")) {
+                    continue;
+                }
                 mimeMessage.addRecipient(Message.RecipientType.CC,
-                        new InternetAddress(tokenizer.nextToken().trim()));
+                        new InternetAddress(nextToken));
+                atLeastOneToAddress = true;
+            }
+            if (!atLeastOneToAddress) {
+                if (MessageHandler.yesNoQuestion("Message has no destination address. "
+                        + " Skip this one?\n"
+                        + "Clicking NO will abort execution. Message:\n"
+                        + messageValue)) {
+                    return true;
+                }
+                throw new IllegalActionException(this, "Aborted send.");
             }
 
             transport.connect();
@@ -308,6 +324,13 @@ public class SendMail extends TypedAtomicActor {
                     mimeMessage.getRecipients(Message.RecipientType.TO));
             transport.close();
         } catch (MessagingException e) {
+            if (MessageHandler.yesNoQuestion("Message to "
+                    + toValue
+                    + " failed. Skip this one?\n"
+                    + "Clicking NO will abort execution. Exception:\n"
+                    + e)) {
+                return true;
+            }
             throw new IllegalActionException(this, e, "Send mail failed.");
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "Failed to open attachment file.");
