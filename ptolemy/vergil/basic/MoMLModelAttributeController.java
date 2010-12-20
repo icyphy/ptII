@@ -155,7 +155,7 @@ public class MoMLModelAttributeController extends AttributeController {
                 // it's container is the directory is the directory in the
                 // configuration. We want it to be contained by the following
                 // containerEffigy.
-                Effigy containerEffigy = configuration.getEffigy(attribute.getContainer());
+                final Effigy containerEffigy = configuration.getEffigy(attribute.getContainer());
                 
                 // Second, the effigy returned above returns the wrong value in its
                 // masterEffigy() method. That method returns the effigy associated
@@ -168,7 +168,7 @@ public class MoMLModelAttributeController extends AttributeController {
                         containerEffigy,
                         containerEffigy.uniqueName(model.getName())) {
                     public Effigy masterEffigy() {
-                        return topEffigy();
+                        return containerEffigy.masterEffigy();
                     }
                 };
                 newEffigy.setModel(model);
