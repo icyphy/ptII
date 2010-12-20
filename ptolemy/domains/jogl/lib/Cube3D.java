@@ -14,18 +14,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
-/**
- * An actor that is used for drawing 3D line. 
- *
- * @author Yasemin Demir
- * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
- */
-
-    
-    
-
-public class Line3D extends TypedAtomicActor implements GLActor3D{
+public class Cube3D extends TypedAtomicActor implements GLActor3D {
     
     /**
      *  Construct a Line3D object in the given container with the given name.
@@ -42,7 +31,7 @@ public class Line3D extends TypedAtomicActor implements GLActor3D{
      */
 
 
-    public Line3D(CompositeEntity container, String name)
+    public Cube3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
@@ -129,5 +118,5 @@ public class Line3D extends TypedAtomicActor implements GLActor3D{
         
     }
 
-}
 
+}

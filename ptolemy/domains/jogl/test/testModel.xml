@@ -1,8 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="demoO" class="ptolemy.actor.TypedCompositeActor">
+<entity name="testModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 45}">
+        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
     </property>
@@ -12,16 +16,18 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="GraphicsDirector" class="ptolemy.domains.jogl.kernel.GraphicsDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
-        </property>
-    </property>
-    <entity name="Display3D" class="ptolemy.domains.jogl.lib.Display3D">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 130.0]">
+    <entity name="Line3D" class="ptolemy.domains.jogl.lib.Line3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 145.0]">
         </property>
     </entity>
+    <entity name="Display3D" class="ptolemy.domains.jogl.lib.Display3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 145.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Line3D.glIn" relation="relation"/>
+    <link port="Display3D.glIn" relation="relation"/>
 </entity>

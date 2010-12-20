@@ -1,0 +1,237 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+# Multi/Sub LOTUCOWL (3) to come 
+#
+newmtl LOTUS
+Ka  0.0 0.0 0.0
+Kd  0.1 0.4 0.0
+Ks  1.0 1.0 1.0
+map_Kd metal.jpg
+d  1.0
+Ns  10.0
+illum 2
+
+#
+newmtl LEFT
+Ka  0.0 0.0 0.0
+Kd  0.1 0.4 0.0
+Ks  1.0 1.0 1.0
+map_Kd metal.jpg
+d  1.0
+Ns  10.0
+illum 2
+
+#
+newmtl FRONT
+Ka  0.0 0.0 0.0
+Kd  0.1 0.4 0.0
+Ks  1.0 1.0 1.0
+map_Kd metal.jpg
+d  1.0
+Ns  10.0
+illum 2
+
+#
+# Multi/Sub LOTUCOWL done 
+#
+newmtl LOTUFARI
+Ka  0.0 0.0 0.0
+Kd  0.2 0.2 0.2
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTUWING (2) to come 
+#
+newmtl FWING
+Ka  0.1 0.1 0.1
+Kd  0.1 0.1 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Material__80
+Ka  0.1 0.1 0.1
+Kd  0.1 0.1 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTUWING done 
+#
+newmtl LOTUENGI
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl LOTUCHAS
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  9.0
+illum 2
+#
+# Multi/Sub LOTUWHEE (2) to come 
+#
+newmtl LOTUWHEE
+Ka  0.0 0.0 0.0
+Kd  0.0 0.0 0.0
+Ks  0.8 0.7 0.7
+d  1.0
+Ns  5.5
+illum 2
+#
+newmtl Dark_metal
+Ka  0.0 0.0 0.0
+Kd  0.2 0.1 0.0
+Ks  0.8 0.8 0.8
+d  1.0
+Ns  8.8
+illum 2
+#
+# Multi/Sub LOTUWHEE done 
+#
+newmtl LOTUTAIL
+Ka  0.0 0.0 0.0
+Kd  0.9 0.0 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl LOTUSEAT
+Ka  0.0 0.0 0.0
+Kd  0.7 0.2 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  2.7
+illum 2
+#
+newmtl LOTUCOCK
+Ka  0.0 0.0 0.0
+Kd  0.0 0.4 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTURSPO (2) to come 
+#
+newmtl TOP
+Ka  0.0 0.0 0.0
+Kd  0.4 0.1 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl SIDE
+Ka  0.0 0.0 0.0
+Kd  0.4 0.1 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTURSPO done 
+#
+# Multi/Sub LOTULSPO (2) to come 
+#
+newmtl TOP
+Ka  0.4 0.1 0.0
+Kd  0.4 0.1 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl SIDE
+Ka  0.4 0.1 0.0
+Kd  0.4 0.1 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTULSPO done 
+#
+newmtl LOTUBLAC
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  3.6
+illum 2
+#
+# Multi/Sub LOTURRDR (2) to come 
+#
+newmtl LOTURRDR
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Material__82
+Ka  0.1 0.1 0.1
+Kd  0.1 0.1 0.1
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTURRDR done 
+#
+newmtl LOTUUND2
+Ka  0.0 0.0 0.0
+Kd  1.0 1.0 1.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTULRDR (2) to come 
+#
+newmtl LOTULRDR
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Material__81
+Ka  0.1 0.1 0.1
+Kd  0.1 0.1 0.1
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub LOTULRDR done 
+#
+newmtl LOTUBLAC
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  3.6
+illum 2
+#
+newmtl LOTULRDR
+Ka  0.0 0.0 0.0
+Kd  1.0 1.0 1.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# EOF
