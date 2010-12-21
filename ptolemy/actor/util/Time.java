@@ -1078,7 +1078,7 @@ public class Time implements Comparable {
                 return "" + getDoubleValue();
             } else {
                 return "" + getDoubleValue() + " + " + _divisorAndRemainder[1] +
-                    " / " + _divisorAndRemainder[0];
+                    "/" + _divisorAndRemainder[0];
             }
 
             // NOTE: Could use BigDecimal to get full resolution, as follows,

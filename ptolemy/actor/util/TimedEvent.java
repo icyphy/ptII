@@ -43,7 +43,7 @@ package ptolemy.actor.util;
  @see CQComparator
  @see Time
  */
-public class TimedEvent {
+public class TimedEvent implements Comparable<TimedEvent> {
     /** Construct an event with the specified time stamp and contents.
      *  @param time The time stamp.
      *  @param obj The contents.
@@ -68,6 +68,12 @@ public class TimedEvent {
     /** Display timeStamp and contents. */
     public String toString() {
         return "timeStamp: " + timeStamp + ", contents: " + contents;
+    }
+
+    /** Compare two TimedEvent's by comparing their timestamps.
+     */
+    public int compareTo(TimedEvent timedEvent) {
+        return timeStamp.compareTo(timedEvent.timeStamp);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,4 +229,5 @@ public class TimedEvent {
         // The zero reference.
         private double _zeroReference;
     }
+
 }
