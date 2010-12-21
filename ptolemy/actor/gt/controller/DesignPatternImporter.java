@@ -110,6 +110,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *  @exception IllegalActionException If thrown by the superclass.
      *  @exception NameDuplicationException If thrown by the superclass.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer = getContainer();
@@ -227,13 +228,16 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
             if (after instanceof TransformationAttribute) {
                 final TransformationAttribute attribute = (TransformationAttribute) after;
                 attribute.addExecutionListener(new ExecutionListener() {
+                    @Override
                     public void executionError(Manager manager,
                             Throwable throwable) {
                     }
 
+                    @Override
                     public void executionFinished(Manager manager) {
                     }
 
+                    @Override
                     public void managerStateChanged(Manager manager) {
                         if (manager.getState() == Manager.PREINITIALIZING) {
                             MoMLParser.addMoMLFilter(filter);
@@ -270,6 +274,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *
      *  @param settable The attribute changed.
      */
+    @Override
     public void valueChanged(Settable settable) {
         update();
     }
@@ -310,6 +315,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @return The value of the attribute.
          */
+        @Override
         public String filterAttributeValue(NamedObj container, String element,
                 String attributeName, String attributeValue, String xmlFile) {
             return attributeValue;
@@ -325,6 +331,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @exception Exception Not thrown in this class.
          */
+        @Override
         public void filterEndElement(NamedObj container, String elementName,
                 StringBuffer currentCharData, String xmlFile) throws Exception {
             if (container != null && !"group".equals(elementName)) {
@@ -334,7 +341,15 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
                     parent = parent.getContainer();
                 }
                 if (parent == context && container != context) {
-                    container.setPersistent(false);
+                    // tfeng: This does not work with actor classes in the
+                    //   pattern, because instances are not persistent either,
+                    //   and will be lost after saving.
+                    // container.setDerivedLevel(1);
+                    if (container.attributeList(PersistenceAttribute.class)
+                            .isEmpty()) {
+                      new PersistenceAttribute(container,
+                          container.uniqueName("persistenceAttribute"));
+                    }
                 }
             }
         }
