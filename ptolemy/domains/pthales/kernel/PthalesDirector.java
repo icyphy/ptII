@@ -29,24 +29,31 @@
 package ptolemy.domains.pthales.kernel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.pn.kernel.PNDirector;
+import ptolemy.domains.pthales.lib.PthalesDynamicCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** 
@@ -218,6 +225,77 @@ public class PthalesDirector extends SDFDirector {
         }
     }
 
+    /** Calculate the current schedule, if necessary, and iterate the
+     *  contained actors in the order given by the schedule.
+     *  Iterating an actor involves calling the actor's iterate() method,
+     *  which is equivalent to calling the actor's prefire(), fire() and
+     *  postfire() methods in succession.  If iterate() returns NOT_READY,
+     *  indicating that the actor is not ready to execute, then an
+     *  IllegalActionException will be thrown. The values returned from
+     *  iterate() are recorded and are used to determine the value that
+     *  postfire() will return at the end of the director's iteration.
+     *  NOTE: This method does not conform with the strict actor semantics
+     *  because it calls postfire() of actors. Thus, it should not be used
+     *  in domains that require a strict actor semantics, such as SR or
+     *  Continuous.
+     *  @exception IllegalActionException If any actor executed by this
+     *   actor return false in prefire.
+     *  @exception InvalidStateException If this director does not have a
+     *   container.
+     */
+    public void fire() throws IllegalActionException {
+        // Don't call "super.fire();" here because if you do then
+        // everything happens twice.
+
+        Scheduler scheduler = getScheduler();
+
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to fire "
+                    + "system with no scheduler");
+        }
+
+        // This will throw IllegalActionException if this director
+        // does not have a container.
+        Schedule schedule = scheduler.getSchedule();
+        Iterator firings = schedule.firingIterator();
+
+        while (firings.hasNext() && !_stopRequested) {
+            Firing firing = (Firing) firings.next();
+            Actor actor = firing.getActor();
+            int iterationCount = firing.getIterationCount();
+            
+            //check if we need to compute the iteration for this actor
+            //the actor will compute the iteration itself and return the value to the director.
+            if (iterationCount == 0 && actor instanceof PthalesDynamicCompositeActor) {
+                iterationCount = ((PthalesDynamicCompositeActor)actor).computeIterations();
+            }
+
+            if (_debugging) {
+                _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
+                        iterationCount));
+            }
+
+            int returnValue = actor.iterate(iterationCount);
+
+            if (returnValue == STOP_ITERATING) {
+                _postfireReturns = false;
+            } else if (returnValue == NOT_READY) {
+                // See de/test/auto/knownFailedTests/DESDFClockTest.xml
+                throw new IllegalActionException(this, actor, "Actor "
+                        + "is not ready to fire.  Perhaps " + actor.getName()
+                        + ".prefire() returned false? "
+                        + "Try debugging the actor by selecting "
+                        + "\"Listen to Actor\".  Also, for SDF check moml for "
+                        + "tokenConsumptionRate on input.");
+            }
+
+            if (_debugging) {
+                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
+                        iterationCount));
+            }
+        }
+    }
+    
     /** Get the name of the library to use.
      * @return the name of the library to use.
      * @exception IllegalActionException
