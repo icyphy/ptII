@@ -274,7 +274,7 @@ public class StringAttribute extends AbstractSettableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The value.
-    private String _value;
+    protected String _value;
 
     // Listeners for changes in value.
     private List _valueListeners;
