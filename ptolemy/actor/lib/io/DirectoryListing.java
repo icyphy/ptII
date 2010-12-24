@@ -141,6 +141,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
     /** The directory name or URL from which to read.  This is a string with
      *  any form accepted by {@link ptolemy.actor.parameters.FilePortParameter}.
+     *  By default, this is empty. An empty string is equivalent to specifying
+     *  "$CWD", the current working directory.
      */
     public FilePortParameter directoryOrURL;
 
@@ -230,8 +232,13 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         URL sourceURL = directoryOrURL.asURL();
 
         if (sourceURL == null) {
-            // Nothing to read
-            throw new IllegalActionException(this, "directoryOrURL is empty.");
+            // Nothing was specified. Default to the current working directory.
+            directoryOrURL.setExpression("$CWD");
+            sourceURL = directoryOrURL.asURL();
+            if (sourceURL == null) {
+                throw new IllegalActionException(this,
+                        "Cannot determine current working directory.");
+            }
         }
 
         boolean directoriesOnly = ((BooleanToken) listOnlyDirectories
