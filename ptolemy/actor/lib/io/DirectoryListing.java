@@ -65,8 +65,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  in that directory that match an (optional) pattern.  The file names that
  are returned are absolute. The pattern is
  a regular expression. For a reference on regular expression syntax see:
- <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
- http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
+ <a href="http://download.oracle.com/javase/tutorial/essential/regex/#in_browser">
+ http://download.oracle.com/javase/tutorial/essential/regex/</a>
  </p><p>
  If <i>directoryOrURL</i> is a local directory (not a URL), then you can
  optionally list only contained files or directories.
