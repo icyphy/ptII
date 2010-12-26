@@ -2131,8 +2131,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             Director director = getDirector();
+            Director executiveDirector = getExecutiveDirector();
 
-            if (director != null) {
+            // Call stopFire() on the director. Be sure the
+            // director is an internal director, or else an infinite
+            // loop will result!
+            if (director != null && director != executiveDirector) {
                 director.stopFire();
             }
         } finally {
