@@ -128,6 +128,7 @@ public class FileReader extends LimitedFiringSource {
                 // the string to refer to variables defined in the
                 // scope of this actor.
                 fileOrURL.setExpression(name);
+                fileOrURL.validate();
             }
         }
 

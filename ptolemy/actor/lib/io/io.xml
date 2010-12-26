@@ -11,6 +11,10 @@
         <doc>Create a JFrame for sensing up, left, right, and down arrow key presses and releases</doc>
       </entity>
 
+      <entity name="CSVReader"
+              class="ptolemy.actor.lib.io.CSVReader">
+      </entity>
+
       <entity name="DatagramReader"
               class="ptolemy.actor.lib.net.DatagramReader">
       </entity>
@@ -35,10 +39,14 @@
         <doc>Read an entire file and output as a string</doc>
       </entity>
       
+      <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <doc>Read an entire file and output as a string</doc>
+      </entity>
 
       <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
         <doc>Read one line at a time from a text file and output as a string</doc>
       </entity>
+
       <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
         <doc>Write the value of a string token, one per line, to a text file.</doc>
       </entity>

@@ -101,9 +101,9 @@ import ptolemy.kernel.util.Settable;
  @see FileParameter
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.2
- @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Yellow (cxh)
+ @since Ptolemy II 8.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class CSVReader extends LineReader {
     /** Construct an actor with the given container and name.
@@ -253,20 +253,19 @@ public class CSVReader extends LineReader {
      *   sent out in the fire() method cannot be read.
      */
     public void initialize() throws IllegalActionException {
+        // Close and re-open the file, and read the first two lines.
+        // They will be in _currentLine and _nextLine, respectively.
         super.initialize();
-        // The superclass has read the first two lines in preinitialize().
-        // They are in _currentLine and _nextLine, respectively. We
-        // need to move the _nextLine to _currentLine, and then read
-        // one more line.
         if (_reader == null) {
             throw new IllegalActionException(this, "No file to read.");
         }
 
+        // Skip the first line, which only has header information.
         _currentLine = _nextLine;
         try {
             _nextLine = _reader.readLine();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Postfire failed");
+            throw new IllegalActionException(this, ex, "initialize() failed");
         }
     }
 
@@ -281,11 +280,14 @@ public class CSVReader extends LineReader {
      *   sent out in the fire() method cannot be read.
      */
     public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+
         // The following call will read the first line and put
         // its value into the _currentLine variable.
         // It will also read the next line and put it into the
-        // _nextLine variable.
-        super.preinitialize();
+        // _nextLine variable. These two lines will be read again
+        // in initialize(), which will close and re-open the file.
+        _openAndReadFirstTwoLines();
         
         if (_currentLine == null) {
             throw new IllegalActionException("File has no data.");

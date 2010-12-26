@@ -232,15 +232,11 @@ public class LineReader extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-        if (_firedSinceWrapup) {
-            // It would be better if there were a way to reset the
-            // input stream, but apparently there is not, short of
-            // closing it and reopening it.
-            fileOrURL.close();
-            _reader = null;
-            _openAndReadFirstLine();
-        }
+        // In case the file has been previously opened, close
+        // it and the reopen it.
+        fileOrURL.close();
+        _reader = null;
+        _openAndReadFirstTwoLines();
     }
 
     /** Read the next line from the file.
@@ -283,21 +279,6 @@ public class LineReader extends Source {
         }
     }
 
-    /** Open the file or URL, skip the number of lines specified by the
-     *  <i>numberOfLinesToSkip</i> parameter, and read the first line to
-     *  be sent out in the fire() method.
-     *  This is done in preinitialize() so
-     *  that derived classes can extract information from the file
-     *  that affects information used in type resolution or scheduling.
-     *  @exception IllegalActionException If the file or URL cannot be
-     *   opened, or if the lines to be skipped and the first line to be
-     *   sent out in the fire() method cannot be read.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _openAndReadFirstLine();
-    }
-
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
@@ -320,12 +301,20 @@ public class LineReader extends Source {
     protected BufferedReader _reader;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                       protected methods                   ////
 
-    /** Open the file and read the first line.
+    /** Open the file and read the first line, putting its value into
+     *  the _currentLine variable. Also, read the second line, putting
+     *  its value in the _nextLine variable.
+     *  @throws IllegalActionException If the file cannot be read.
      */
-    private void _openAndReadFirstLine() throws IllegalActionException {
+    protected void _openAndReadFirstTwoLines() throws IllegalActionException {
         _reader = fileOrURL.openForReading();
+        
+        if (_reader == null) {
+            throw new IllegalActionException(this, "Failed to read file: " 
+                    + fileOrURL.getDisplayName());
+        }
 
         try {
             // Read (numberOfLinesToSkip + 1) lines
