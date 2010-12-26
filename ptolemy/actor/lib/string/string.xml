@@ -42,6 +42,11 @@
       <entity name="StringSimpleReplace" class="ptolemy.actor.lib.string.StringSimpleReplace">
        <doc>Replace the patterns that match a simple String</doc>
       </entity>
+
+      <entity name="StringSplit" class="ptolemy.actor.lib.string.StringSplit">
+       <doc>Split a string into an array of strings</doc>
+      </entity>
+
       <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
        <doc>Output a substring of an input string</doc>
       </entity>
