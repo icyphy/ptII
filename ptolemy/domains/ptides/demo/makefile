@@ -64,7 +64,7 @@ PTCLASSALLJARS = \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesBasicTTE/PtidesBasicTTE.jar \
 	PtidesPlatformSynchronizationError/PtidesPlatformSynchronizationError.jar \
-	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar
+	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
