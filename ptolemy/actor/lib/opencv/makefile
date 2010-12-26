@@ -64,6 +64,7 @@ JSRCS = \
 	HighContrast.java \
 	Invert.java \
 	LowContrast.java \
+	OpenCVImageObject.java \
 	OpenCVReader.java \
 	OpenCVToAWTImage.java \
 	Read.java

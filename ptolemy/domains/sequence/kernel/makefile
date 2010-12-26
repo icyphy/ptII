@@ -47,18 +47,21 @@ PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ControlActor.java \
+	DijkstraSequenceEstimator.java \
+	ListSchedulingSequenceEstimator.java \
+	MultipleFireMethodsInterface.java \
+	PartialSequenceScheduler.java \
 	ProcessAttribute.java \
 	ProcessDirector.java \
 	RegisterReceiver.java \
 	SequenceAttribute.java \
 	SequenceDirector.java \
-	SequencedModelDirector.java \
+	SequenceEstimator.java \
+	SequenceFiring.java \
 	SequenceSchedule.java \
 	SequenceScheduler.java \
-	DijkstraSequenceEstimator.java \
-	PartialSequenceScheduler.java \
-	SequenceEstimator.java \
-	ListSchedulingSequenceEstimator.java
+	SequencedModelDirector.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -70,8 +73,8 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'DijkstraSequenceEstimator$$_SequenceInfo.class' \
 	'SequenceSchedule$$FiringIterator.class'
-
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass

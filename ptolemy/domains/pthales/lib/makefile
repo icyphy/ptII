@@ -57,6 +57,7 @@ JSRCS = \
 	PthalesWrapperCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
+	applyMacro.vbs \
 	pthalesentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

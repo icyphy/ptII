@@ -71,10 +71,12 @@ OPTIONAL_FILES = \
 	'DeltaConstraintSolverDisplayActions$$HighlightConflicts.class' \
 	'OntologyDisplayActions$$ClearDisplay.class' \
 	'OntologyDisplayActions$$ClearProperty.class' \
+	'OntologyDisplayActions$$ClearResolution.class' \
 	'OntologyDisplayActions$$ConfigureHighlightAction.class' \
 	'OntologyDisplayActions$$EditHighlightDialog.class' \
 	'OntologyDisplayActions$$HighlighterController.class' \
 	'OntologyDisplayActions$$HighlightProperty.class' \
+	'OntologyDisplayActions$$ResolveConcepts.class' \
 	'OntologyDisplayActions$$ShowProperty.class' \
 	'ProductLatticeOntologySolverDisplayActions$$ProductLatticeHighlighterController.class' \
 	'ProductLatticeOntologySolverDisplayActions$$SetHighlightColorsAction.class' \

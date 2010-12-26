@@ -72,6 +72,19 @@ MISC_FILES =	lib test
 OPTIONAL_FILES = \
 	demo \
 	doc \
+	'OptimalScheduleFinder$$_Actor.class' \
+	'OptimalScheduleFinder$$_Channel.class' \
+	'OptimalScheduleFinder$$_ListOfActors.class' \
+	'OptimalScheduleFinder$$_ListOfChannels.class' \
+	'OptimalScheduleFinder$$_ListOfPorts.class' \
+	'OptimalScheduleFinder$$_Port.class' \
+	'OptimalScheduleFinder$$_SetOfStates.class' \
+	'OptimalScheduleFinder$$_SortedSetOfStates.class' \
+	'OptimalScheduleFinder$$_State.class' \
+	'OptimalScheduleFinder$$_StateComparator.class' \
+	'OptimalScheduleFinder$$_StateComparatorLowestValue.class' \
+	'OptimalScheduleFinder$$_StateComparatorMaximumProgress.class' \
+	'OptimalScheduleFinder$$_TwoWayHashMap.class' \
 	'OptimalScheduleFinder$$Actor.class' \
 	'OptimalScheduleFinder$$Channel.class' \
 	'OptimalScheduleFinder$$ListOfActors.class' \

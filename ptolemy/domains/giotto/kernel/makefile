@@ -50,6 +50,7 @@ JSRCS = \
 	GiottoCodeGenerator.java \
 	GiottoCodeGeneratorUtilities.java \
 	GiottoDecoratedAttributesImplementation.java \
+	GiottoDecoratedAttributesImplementation2.java \
 	GiottoDirector.java \
 	GiottoReceiver.java \
 	GiottoScheduler.java \
@@ -75,7 +76,10 @@ OPTIONAL_FILES = \
 	'GenerateVisitor$$MethodSignature.class' \
 	'GiottoCodeGenerator$$GiottoEditorFactory.class' \
 	'GiottoScheduler$$1.class' \
-	'GiottoScheduler$$GiottoActorComparator.class'
+	'GiottoScheduler$$GiottoActorComparator.class' \
+	'GiottoTimingManager$$1$$1.class' \
+	'GiottoTimingManager$$1$$2.class' \
+	'GiottoTimingManager$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

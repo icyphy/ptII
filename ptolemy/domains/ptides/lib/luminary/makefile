@@ -49,6 +49,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	DropSensorInputDevice.java \
+	EncoderInputDevice.java \
 	GPInputDevice.java \
 	GPOutputDevice.java \
 	LuminarySensorInputDevice.java \

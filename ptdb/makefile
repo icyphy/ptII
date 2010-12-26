@@ -70,7 +70,8 @@ MISC_FILES = \
 	makefile \
 	test
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'DBActorController$$OpenActorFromDB.class'
 
 all: jclass $(EXTRA_SRCS)
 install: subinstall jars

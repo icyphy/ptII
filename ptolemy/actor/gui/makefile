@@ -214,6 +214,7 @@ OPTIONAL_FILES = \
 	'JVMTableau$$JVMFrame$$1.class' \
 	'JVMTableau$$JVMFrame.class' \
 	'MatrixPane$$1.class' \
+	'MatrixPane$$2.class' \
 	'MatrixPane$$EmptyTableModel.class' \
 	'MatrixPane$$MatrixAsTable.class' \
 	'MatrixTokenTableau$$Factory.class' \

@@ -265,6 +265,7 @@ OTHER_FILES_TO_BE_JARED = \
         BernoulliIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
+	ChopMultirate.xml \
 	CommutatorIcon.xml \
 	ComputeHistogramIcon.xml \
 	ConfigurationSelectIcon.xml \
@@ -328,6 +329,7 @@ OPTIONAL_FILES = \
 	jni \
 	joystick \
 	opencv \
+	reactable \
 	x10 \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \

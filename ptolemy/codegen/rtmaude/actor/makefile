@@ -56,13 +56,15 @@ JSRCS = \
 	Director.java \
 	IOPort.java \
 	IORelation.java \
+	TypedAtomicActor.java \
 	TypedCompositeActor.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	IOPort.rtmaude \
 	IORelation.rtmaude \
+	TypedAtomicActor.rtmaude \
 	TypedCompositeActor.rtmaude
-	
+
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -72,11 +74,12 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc \
-    'IORelation$$1.class' \
-    'TypedCompositeActor$$1.class' \
-    'TypedCompositeActor$$2.class' \
-    $(PTCLASSJAR) 
+	doc \
+	'IOPort$$1.class' \
+	'IORelation$$1.class' \
+	'TypedCompositeActor$$1.class' \
+	'TypedCompositeActor$$2.class' \
+	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

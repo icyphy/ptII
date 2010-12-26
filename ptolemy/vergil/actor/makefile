@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2009 The Regents of the University of California.
+# @Copyright (c) 2001-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -61,6 +61,7 @@ JSRCS = \
 	ActorGraphModel.java \
 	ActorGraphTableau.java \
 	ActorInstanceController.java \
+	ActorInteractionAddon.java \
 	ActorViewerGraphController.java \
 	ClassDefinitionController.java \
 	DocApplicationSpecializer.java \
@@ -75,6 +76,7 @@ JSRCS = \
 	ExternalIOPortController.java \
 	FindPackages.java \
 	IOPortController.java \
+	KielerLayoutConnector.java \
 	LinkController.java \
 	LinkManhattanConnector.java \
 	PortConnectSite.java \
@@ -105,6 +107,7 @@ OPTIONAL_FILES = \
 	'ActorEditorGraphController$$NewRelationAction.class' \
 	'ActorEditorGraphController$$RelationCreator.class' \
 	'ActorGraphFrame$$ActorGraphPane.class' \
+	'ActorGraphFrame$$AdvancedLayoutDialogAction.class' \
 	'ActorGraphFrame$$CreateHierarchyAction.class' \
 	'ActorGraphFrame$$DebugMenuListener.class' \
 	'ActorGraphFrame$$ImportLibraryAction.class' \

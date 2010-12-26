@@ -47,16 +47,24 @@ PTPACKAGE = 	lib
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
+	BaseMultipleMethodsActor.java \
 	Break.java \
-	IfThenElse.java \
 	IfThen.java \
+	IfThenElse.java \
+	SequencedIntegrator.java \
+	SequencedSharedMemoryActor.java \
+	SequencedVariable.java \
 	While.java
 
 OTHER_FILES_TO_BE_JARED = \
 	break.gif \
 	BreakIcon.xml \
 	IfThenElseIcon.xml \
-	IfThenIcon.xml
+	IfThenIcon.xml \
+	SequencedIntegratorIcon.xml \
+	SequencedVariableIcon.xml \
+	WhileIcon.xml
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -67,13 +75,13 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'SequencedSharedMemoryActor$$Scope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -54,7 +54,6 @@ JSRCS = \
 	ActorConstraintsDefinitionAdapter.java \
 	ActorConstraintsDefinitionAttribute.java \
 	ActorProductLatticeConstraintsDefinitionAdapter.java \
-	ActorProductLatticeConstraintsDefinitionAttribute.java \
 	AddConceptFunctionDefinition.java \
 	ApplyBinaryFunctionToMultipleArguments.java \
 	BinaryOperationMonotonicFunctionDefinition.java \

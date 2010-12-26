@@ -107,7 +107,9 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	Exit.xml \
 	FileWriter.xml \
 	NoPublisher.xml \
+	NoPublisherSubAgg2.xml \
 	PublisherSubscriber2class.xml \
+	PublisherSubscriberChannelChange.xml \
 	PublisherSubscriberInClass.xml \
 	pubsubplot \
 	pubsubs \

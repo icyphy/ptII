@@ -82,6 +82,7 @@ JSRCS = \
 	Numerical.java \
 	ObjectToken.java \
 	OrderedRecordToken.java \
+	PartiallyOrderedToken.java \
 	PetiteToken.java \
 	RecordToken.java \
 	ScalarToken.java \

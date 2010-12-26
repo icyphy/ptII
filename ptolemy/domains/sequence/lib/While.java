@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  a model's execution.
  
  @author Charles Shelton
- @version $Id: While.java 58287 2010-06-18 21:25:51Z cshelton $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)

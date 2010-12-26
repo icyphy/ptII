@@ -1,6 +1,6 @@
 /* A StringParmeter that is not easily edited by the user.
 
- Copyright (c) 2003-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -70,5 +70,4 @@ public class StringConstantParameter extends StringParameter {
         super(container, name);
         setVisibility(Settable.NOT_EDITABLE);
     }
-
 }

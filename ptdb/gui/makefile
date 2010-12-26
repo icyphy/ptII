@@ -133,6 +133,7 @@ OPTIONAL_FILES = \
 	'ConfigureAttributesFrame$$7.class' \
 	'ConfigureAttributesFrame$$8.class' \
 	'ConfigureAttributesFrame$$9.class' \
+	'DBActorController$$OpenActorFromDB.class' \
 	'DatabaseSetupFrame$$1.class' \
 	'DatabaseSetupFrame$$2.class' \
 	'DatabaseSetupFrame$$3.class' \

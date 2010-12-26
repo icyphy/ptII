@@ -51,6 +51,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	PtidesAirplaneFuelControl.xml \
+	PtidesAirplaneFuelControlV2.xml \
 	PtidesAirplaneFuelControlOptimized.xml
 
 EXTRA_SRCS = \

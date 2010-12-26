@@ -81,6 +81,7 @@ OPTIONAL_FILES = \
 	'OntologyGraphController$$CheckIsLatticeAction.class' \
 	'OntologyGraphFrame$$DebugMenuListener.class' \
 	'OntologyGraphTableau$$Factory.class' \
+	'OntologySolverTableau$$Factory.class' \
 	'RelationController$$LinkRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -64,6 +64,8 @@ MISC_FILES =	test
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
+	'SendMail$$1.class' \
+	'SendMail$$SMTPAuthenticator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

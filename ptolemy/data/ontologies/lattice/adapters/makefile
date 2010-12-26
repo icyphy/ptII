@@ -33,7 +33,7 @@ ME =		ptolemy/data/ontologies/lattice/adapters
 
 DIRS = 		constAbsIntObservable constAbstractInterpretation \
 		constLattice constObservableProductLattice \
-		constPropagation \
+		constPropagation constPropagationAbsInt \
 		defaultAdapters dimensionSystem monotonicityAnalysis \
 		observableLattice \
 		reachableLattice

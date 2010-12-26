@@ -69,9 +69,11 @@ JSRCS = \
 	ExtendedGraphFrame.java \
 	GetDocumentationAction.java \
 	IconController.java \
+	IGuiAction.java \
 	KeplerDocumentationAttribute.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
+	MoMLModelAttributeController.java \
 	NamedObjController.java \
 	NamedObjNodeModel.java \
 	NodeControllerFactory.java \
@@ -135,6 +137,8 @@ OPTIONAL_FILES = \
 	'IconController$$IconRenderer$$1.class' \
 	'IconController$$IconRenderer.class' \
 	'LocatableNodeDragInteractor$$1.class' \
+	'MoMLModelAttributeController$$LookInsideAction$$1.class' \
+	'MoMLModelAttributeController$$LookInsideAction.class' \
 	'RunnableGraphController$$1.class' \
 	'RunnableGraphController$$2.class' \
 	'RunnableGraphController$$ButtonFigureAction.class' \

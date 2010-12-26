@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Ontologies ConstAbstractInterpretationObservable Demo
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -12,31 +12,29 @@
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
 #
-# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA  OR RESEARCH IN MOTION
-# LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL,
-# OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND
-# ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA OR
-# RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-# SUCH DAMAGE.
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+# PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
+# DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+# DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAVE BEEN
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-# CALIFORNIA  AND RESEARCH IN MOTION LIMITED
-# HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# CALIFORNIA HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/kernel/generic
+ME =		ptolemy/data/ontologies/demo/ConstAbstractInterpretationObservable
 
-DIRS =		html program syntactic test
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,43 +43,40 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	generic
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-  html/html.jar \
-	program/program.jar
+PTPACKAGE = 	ConstAbstractInterpretationObservable
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	CGException.java \
-	CodeGeneratorAdapter.java \
-	CodeGeneratorUtilities.java \
-	GenericCodeGenerator.java \
-	ParseTreeCodeGenerator.java \
-	PortCodeGenerator.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	ConstComparatorEqualToDemo.xml \
+	ConstComparatorGTEDemo.xml \
+	ConstComparatorGreaterThanDemo.xml \
+	ConstComparatorLTEDemo.xml \
+	ConstComparatorLessThanDemo.xml \
+	ConstMultiplyDivideDemo.xml \
+	ConstScaleDemo.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	html program syntactic test
+MISC_FILES =
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'GenericCodeGenerator$$GeneratorPackageListParser.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demo, run 'make run'"
+
+run:
+	"$(PTII)/bin/vergil" ConstAbstractInterpretationObservable.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

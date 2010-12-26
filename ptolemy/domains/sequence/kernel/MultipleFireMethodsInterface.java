@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  in the Sequence and Process Directors.
  *  
  *  @author Charles Shelton
- *  @version $Id: MultipleFireMethodsInterface.java 57040 2010-01-27 20:52:32Z cshelton $
+ *  @version $Id$
  *  @see SequencedModelDirector
  *  @see SequenceScheduler
  *  @see SequenceSchedule

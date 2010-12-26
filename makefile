@@ -113,6 +113,7 @@ EXTRA_SRCS = \
 	vergilDSP.jnlp.in \
 	vergilHyVisual.jnlp.in \
 	vergilPtiny.jnlp.in \
+	vergilPtinyKepler.jnlp.in \
 	vergilPtinySandbox.jnlp.in \
 	vergilSpace.jnlp.in \
 	vergilVisualSense.jnlp.in

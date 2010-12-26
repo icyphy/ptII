@@ -31,7 +31,9 @@
 
 ME =		ptolemy/data/ontologies
 
-DIRS = 		CarTracking MonotonicityAnalysis ConstNonconst
+DIRS = 	CarTracking ConstAbstractInterpretation ConstAbstractInterpretationObservable \
+	ConstNonconst ConstPropagation MonotonicityAnalysis \
+	Observable ProductLattices
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -47,7 +49,13 @@ PTPACKAGE = 	demo
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	CarTracking/CarTracking.jar \
-	MonotonicityAnalysis/MonotonicityAnalysis.jar
+	ConstAbstractInterpretation/ConstAbstractInterpretation.jar \
+	ConstAbstractInterpretationObservable/ConstAbstractInterpretationObservable.jar \
+	ConstNonconst/ConstNonconst.jar \
+	ConstPropagation/ConstPropagation.jar \
+	MonotonicityAnalysis/MonotonicityAnalysis.jar \
+	Observable/Observable.jar \
+	ProductLattices/ProductLattices.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

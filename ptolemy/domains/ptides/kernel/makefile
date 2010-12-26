@@ -70,6 +70,7 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'PtidesBasicDirector$$RealTimeClock.class' \
 	'PtidesBasicDirector$$RealTimeEvent.class' \
 	'PtidesBasicDirector$$Tag.class' \
 	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \

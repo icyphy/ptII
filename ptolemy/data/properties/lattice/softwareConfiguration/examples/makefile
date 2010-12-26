@@ -1,9 +1,10 @@
-# Makefile for Ptolemy II coding standards documentation
+# Makefile for Java Ptolemy Data Properties Lattice software Configuration
 #
-# Version: $Id$
-# Makefile Author: Christopher Hylands
+# @Authors:Christopher Brooks (makefile only)
 #
-# Copyright (c) 1997-2009 The Regents of the University of California.
+# $Id$
+#
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -25,71 +26,49 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
-##########################################################################
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		doc/coding
+ME =        ptolemy/data/properties/lattice/softwareConfiguration/examples
 
 DIRS =
 
-# Root of Ptolemy II directory
-ROOT =		../..
+# Root of the Ptolemy II directory
+ROOT =      ../../../../../..
+
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-OTHER_FILES_TO_BE_JARED = \
-	applets.htm \
-	debugging.htm
+# Used to build jar files
+PTPACKAGE =     examples
+PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSALLJAR = 
+PTCLASSALLJARS =
 
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	addinganactor.htm \
-	ant.htm \
-	body.htm \
-	buttons.htm \
-	debugging.htm \
-	develsetup.htm \
-	eclipse.htm \
-	eclipseSimple.awk \
-	eclipseSimple.htm \
-	eclipse_index.htm \
-	index.htm \
-	installers.htm \
-	javalinks.htm \
-	main.htm \
-	maven.htm \
-	packages.htm \
-	performance.htm \
-	releasemgt.htm \
-	reviews.htm \
-	style.css \
-	style.htm \
-	style_index.htm \
-	style.pdf \
-	sunlicense.htm \
-	svn-config-auto-props.txt \
-	tcljava.htm \
-	testing.htm \
-	toc.htm
+JSRCS =
 
-PTAUXALLJAR = codingConfig.jar
+OTHER_FILES_TO_BE_JARED = RecordPropertyIssues.xml
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) templates sftwareprac
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+    doc
 
-all: $(EXTRA_SRCS)
-install: all jars
+JCLASS = $(JSRCS:%.java=%.class)
 
-eclipseSimple.htm: eclipse.htm
-	awk -f $(ROOT)/doc/coding/eclipseSimple.awk $< > $@
 
-# We don't include common.mk since we don't use the compiler here
-include $(ROOT)/mk/ptno-compile.mk
+all: jclass
+install: jclass jars
+
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk

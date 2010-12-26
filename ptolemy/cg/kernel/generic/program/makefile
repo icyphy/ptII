@@ -79,6 +79,7 @@ OPTIONAL_FILES = \
 	'CodeStream$$1.class' \
 	'CodeStream$$CodeBlockTable.class' \
 	'CodeStream$$Signature.class'\
+	'NamedProgramCodeGeneratorAdapter$$VariableScope.class' \
 	'ProgramCodeGeneratorAdapter$$Channel.class' \
 	'TemplateParser$$1.class' \
 	'TemplateParser$$VariableScope.class'

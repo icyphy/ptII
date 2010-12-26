@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/softwareConfiguration
 
-DIRS =      actor data domains kernel
+DIRS =      actor data domains examples kernel
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	actor/actor.jar \
 	data/data.jar \
 	domains/domains.jar \
+	examples/examples.jar \
 	kernel/kernel.jar
 
 JSRCS = \

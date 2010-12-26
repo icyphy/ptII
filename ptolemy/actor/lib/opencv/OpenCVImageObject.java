@@ -33,10 +33,10 @@ import processing.core.PImage;
 
 
 ///////////////////////////////////////////////////////////////////
-//// Read
+//// OpenCVImageObject
 
 /**
- * Object to contain an OpenCV object combined with a PImage object
+ * An object that contains an OpenCV object combined with a PImage object.
  * @author Marc Geilen, Dorsa Sadigh, Steve Bako
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -44,14 +44,25 @@ import processing.core.PImage;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class OpenCVImageObject  {
-    
-    public OpenCV openCV;
-    public PImage img;
-    
-    public OpenCVImageObject(OpenCV i_openCV, PImage i_img)
-            {
-        openCV = i_openCV;
-        img = i_img;
+
+    // FIXME: rename this to OpenCVPImage.  
+    // 1) It should be PImage, not Image
+    // 2) It is obviously an Object.
+
+    /** Construct an object that contains an OpenCV object
+     *  and a PImage object.
+     *  @param openCVObject The OpenCV object.
+     *  @param pImageObject The PImage object.
+     */
+    public OpenCVImageObject(OpenCV openCVObject, PImage pImageObject) {
+        openCV = openCVObject;
+        img = imageObject;
     }  
    
+    /** The OpenCV object. */
+    public OpenCV openCV;
+
+    /** The PImage object. */
+    public PImage img;
+    // FIXME: Rename the above to pImage.  img does not match our naming conventions.
 }

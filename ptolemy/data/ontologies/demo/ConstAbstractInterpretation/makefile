@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Ontologies ConstAbstractInterpretation Demo
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/kernel/generic
+ME =		ptolemy/data/ontologies/demo/ConstAbstractInterpretation
 
-DIRS =		html program syntactic test
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,43 +45,41 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	generic
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-  html/html.jar \
-	program/program.jar
+PTPACKAGE = 	ConstAbstractInterpretation
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	CGException.java \
-	CodeGeneratorAdapter.java \
-	CodeGeneratorUtilities.java \
-	GenericCodeGenerator.java \
-	ParseTreeCodeGenerator.java \
-	PortCodeGenerator.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	ConstComparatorEqualToDemo.xml \
+	ConstComparatorGTEDemo.xml \
+	ConstComparatorGreaterThanDemo.xml \
+	ConstComparatorLTEDemo.xml \
+	ConstComparatorLessThanDemo.xml \
+	ConstMultiplyDivideDemo.xml \
+	ConstMultiplyDivideDemoProductLattice.xml \
+	ConstScaleDemo.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	html program syntactic test
+MISC_FILES =
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'GenericCodeGenerator$$GeneratorPackageListParser.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demo, run 'make run'"
+
+run:
+	"$(PTII)/bin/vergil"
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

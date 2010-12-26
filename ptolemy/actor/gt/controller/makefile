@@ -67,6 +67,7 @@ JSRCS = \
 	ModelIOPort.java \
 	ModelParameter.java \
 	OutputModel.java \
+	PersistenceAttribute.java \
 	ReadModel.java \
 	TestModel.java \
 	Transform.java \
@@ -91,6 +92,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ModelUpdaterIcon.xml \
 	OutputModelIcon.xml \
 	ReadModelIcon.xml \
+	TestModelIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \
 	TransformationControllerIcon.xml \
