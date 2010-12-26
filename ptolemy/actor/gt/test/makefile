@@ -44,73 +44,76 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-    testDefs.tcl
+	testDefs.tcl
 
 JSRCS = \
-    AllMatchingTestHelper.java
+	AllMatchingTestHelper.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-    DefaultModelAttribute.tcl \
-    GeneratedModel1.tcl \
-    GeneratedModel2.tcl \
-    Match3Actors.tcl \
-    MatchHierarchy2Actors.tcl \
-    MatchHierarchy2Actors2Composites.tcl \
-    Match4Actors.tcl \
-    Match4ActorsSubclasses.tcl \
-    Match2LevelHierarchyFlattening.tcl \
-    Match3ActorsRelationCollapsing.tcl
+	DefaultModelAttribute.tcl \
+	DesignPatternImporter.tcl \
+	GeneratedModel1.tcl \
+	GeneratedModel2.tcl \
+	Match3Actors.tcl \
+	MatchHierarchy2Actors.tcl \
+	MatchHierarchy2Actors2Composites.tcl \
+	Match4Actors.tcl \
+	Match4ActorsSubclasses.tcl \
+	Match2LevelHierarchyFlattening.tcl \
+	Match3ActorsRelationCollapsing.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
-    dummy.tcl
+	dummy.tcl
 
 EXTRA_SRCS = \
-    $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+	DesignPatternImporterPersistenceBugPattern.xml \
+	DesignPatternImporterPersistenceBug.xml \
+	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 PATTERNS = \
-    Match3Actors_succ1.xml \
-    Match3Actors_fail2.xml \
-    Match3Actors_succ3.xml \
-    Match3Actors_succ4.xml \
-    Match3Actors_succ5.xml \
-    Match3Actors_fail6.xml \
-    Match3Actors_succ7.xml \
-    Match3Actors_succ8.xml \
-    MatchHierarchy2Actors_fail1.xml \
-    MatchHierarchy2Actors_succ2.xml \
-    MatchHierarchy2Actors_fail3.xml \
-    MatchHierarchy2Actors_succ4.xml \
-    MatchHierarchy2Actors_succ5.xml \
-    MatchHierarchy2Actors_succ6.xml \
-    MatchHierarchy2Actors2Composites_fail1.xml \
-    MatchHierarchy2Actors2Composites_fail2.xml \
-    MatchHierarchy2Actors2Composites_succ3.xml \
-    MatchHierarchy2Actors2Composites_succ4.xml \
-    Match4Actors_1match1.xml \
-    Match4Actors_2matches2.xml \
-    Match4Actors_3matches3.xml \
-    Match4Actors_4matches4.xml \
-    Match4Actors_6matches5.xml \
-    Match4Actors_8matches6.xml \
-    Match4ActorsSubclasses_succ1.xml \
-    Match4ActorsSubclasses_fail2.xml \
-    Match4ActorsSubclasses_succ3.xml \
-    Match2LevelHierarchyFlattening_succ1.xml \
-    Match2LevelHierarchyFlattening_succ2.xml \
-    Match3ActorsRelationCollapsing_succ1.xml \
-    Match3ActorsRelationCollapsing_fail2.xml \
-    Match3Actors_rule.xml \
-    MatchHierarchy2Actors_rule.xml \
-    MatchHierarchy2Actors2Composites_rule.xml \
-    Match4Actors_rule.xml \
-    Match4ActorsSubclasses_rule.xml \
-    Match2LevelHierarchyFlattening_rule.xml \
-    Match3ActorsRelationCollapsing_rule.xml \
+	Match3Actors_succ1.xml \
+	Match3Actors_fail2.xml \
+	Match3Actors_succ3.xml \
+	Match3Actors_succ4.xml \
+	Match3Actors_succ5.xml \
+	Match3Actors_fail6.xml \
+	Match3Actors_succ7.xml \
+	Match3Actors_succ8.xml \
+	MatchHierarchy2Actors_fail1.xml \
+	MatchHierarchy2Actors_succ2.xml \
+	MatchHierarchy2Actors_fail3.xml \
+	MatchHierarchy2Actors_succ4.xml \
+	MatchHierarchy2Actors_succ5.xml \
+	MatchHierarchy2Actors_succ6.xml \
+	MatchHierarchy2Actors2Composites_fail1.xml \
+	MatchHierarchy2Actors2Composites_fail2.xml \
+	MatchHierarchy2Actors2Composites_succ3.xml \
+	MatchHierarchy2Actors2Composites_succ4.xml \
+	Match4Actors_1match1.xml \
+	Match4Actors_2matches2.xml \
+	Match4Actors_3matches3.xml \
+	Match4Actors_4matches4.xml \
+	Match4Actors_6matches5.xml \
+	Match4Actors_8matches6.xml \
+	Match4ActorsSubclasses_succ1.xml \
+	Match4ActorsSubclasses_fail2.xml \
+	Match4ActorsSubclasses_succ3.xml \
+	Match2LevelHierarchyFlattening_succ1.xml \
+	Match2LevelHierarchyFlattening_succ2.xml \
+	Match3ActorsRelationCollapsing_succ1.xml \
+	Match3ActorsRelationCollapsing_fail2.xml \
+	Match3Actors_rule.xml \
+	MatchHierarchy2Actors_rule.xml \
+	MatchHierarchy2Actors2Composites_rule.xml \
+	Match4Actors_rule.xml \
+	Match4ActorsSubclasses_rule.xml \
+	Match2LevelHierarchyFlattening_rule.xml \
+	Match3ActorsRelationCollapsing_rule.xml \
 
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -121,7 +124,7 @@ MISC_FILES =    alljtests.tcl \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    'AllMatchingTestHelper$$1.class'
+	'AllMatchingTestHelper$$1.class'
 
 JCLASS =    $(JSRCS:%.java=%.class)
 
