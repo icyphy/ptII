@@ -688,6 +688,9 @@ public class Director extends Attribute implements Executable {
         }
 
         _actorsFinishedExecution = new HashSet();
+        
+        // Reset the flag that causes postfire() to return false.
+        _finishRequested = false;
 
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
