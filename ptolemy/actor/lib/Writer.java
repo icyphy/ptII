@@ -30,7 +30,8 @@ package ptolemy.actor.lib;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import ptolemy.data.Token;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -46,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  by tab characters. If no writer is specified using setWriter(), then
  this actor writes to the standard output.
 
+ @deprecated FileWriter actor replaces this.
  @author  Yuhong Xiong, Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.4
@@ -70,6 +72,8 @@ public class Writer extends Sink {
         }
 
         setWriter(_stdOut);
+        
+        input.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,6 +87,7 @@ public class Writer extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         try {
+            String last = "";
             int width = input.getWidth();
 
             for (int i = 0; i < width; i++) {
@@ -91,12 +96,16 @@ public class Writer extends Sink {
                 }
 
                 if (input.hasToken(i)) {
-                    Token inputToken = input.get(i);
-                    _writer.write(inputToken.toString());
+                    StringToken inputToken = (StringToken)input.get(i);
+                    last = inputToken.stringValue();
+                    _writer.write(last);
                 }
             }
-
-            _writer.write("\n");
+            // Write a newline character only if the last
+            // string does not already have one.
+            if (!last.endsWith("\n")) {
+                _writer.write("\n");
+            }
             _writer.flush();
             return super.postfire();
         } catch (IOException ex) {
