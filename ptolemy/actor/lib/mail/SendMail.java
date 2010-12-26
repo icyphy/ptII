@@ -292,13 +292,14 @@ public class SendMail extends TypedAtomicActor {
 
             mimeMessage.setSubject(subjectValue);
                         
+            boolean atLeastOneToAddress = false;
             tokenizer = new StringTokenizer(toValue, ",");
             while (tokenizer.hasMoreTokens()) {
                 mimeMessage.addRecipient(Message.RecipientType.TO,
                         new InternetAddress(tokenizer.nextToken().trim()));
+                atLeastOneToAddress = true;
             }
             
-            boolean atLeastOneToAddress = false;
             tokenizer = new StringTokenizer(ccValue, ",");
             while (tokenizer.hasMoreTokens()) {
                 String nextToken = tokenizer.nextToken().trim();
@@ -307,7 +308,6 @@ public class SendMail extends TypedAtomicActor {
                 }
                 mimeMessage.addRecipient(Message.RecipientType.CC,
                         new InternetAddress(nextToken));
-                atLeastOneToAddress = true;
             }
             if (!atLeastOneToAddress) {
                 if (MessageHandler.yesNoQuestion("Message has no destination address. "
