@@ -2,44 +2,39 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FileWriter2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 60, 815, 559}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 60, 813, 560}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$TMPDIR/FileWriter1Output.txt">
@@ -49,18 +44,10 @@
         <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 165.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="endOfFile" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Test.input" relation="relation"/>
     <link port="ExpressionReader.output" relation="relation"/>
