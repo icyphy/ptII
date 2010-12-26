@@ -153,6 +153,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
                 "ptolemy/actor/lib/joystick/copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.mail.SendMail",
+                "ptolemy/actor/lib/mail/JavaMail-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/copyright.htm");
 
