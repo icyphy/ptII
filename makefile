@@ -35,7 +35,7 @@ ME =		.
 # Go into util first so we get the latest version of the testsuite
 # Go into com before compiling ptolemy so we get JLex
 # PTLBNL_DIR is set to lbnl by configure in $PTII/mk/ptII.mk
-#   if libxml2 was found.
+#   if libexpat was found.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
