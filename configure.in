@@ -3364,7 +3364,24 @@ else
 
             AC_MSG_CHECKING([for the proper JNI architecture include directory])
        	    if test $PTJNI_ARCHITECTURE = "darwin"; then
-		PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
+	        if test -f "$PTJAVA_HOME/../Headers/jni.h"; then
+		    PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
+                else
+	            if test -f "/System/Library/Frameworks/JavaVM.framework/Headers/jni.h"; then
+		        PTJNI_INCLUDE="/System/Library/Frameworks/JavaVM.framework/Headers"
+                    else
+		        APPLE_JNI_PROBLEM="$PTJAVA_HOME/jni.h not found.
+    Apple made a poor decision when shipping Java 1.6 
+    and decided to *not* to include jni.h in the 1.6 installation, even though they
+    include javah, which generates a .h that includes jni.h.  
+    http://developer.apple.com/library/mac/#releasenotes/Java/JavaSnowLeopardUpdate3LeopardUpdate8RN/Introduction/Introduction.html says:
+       If you do JNI development, you must install the Java Developer
+       package, since it contains updated headers for the native
+       JavaVM.framework and its sub-frameworks (8421130). The Java
+       Developer package is available from http://connect.apple.com."
+		         AC_MSG_WARN([$APPLE_JNI_PROBLEM])
+                     fi
+                fi
 	    else
 		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
 	    fi
@@ -3662,7 +3679,11 @@ PTMATLAB_LIBDIR=
 PTMATLAB_SUPPORTED=no
 case "`uname -s`" in
 Darwin)
-	PTMATLAB_SUPPORTED=yes
+	if test -f "$PTJNI_INCLUDE/jni.h"; then
+	    PTMATLAB_SUPPORTED=yes
+        else 
+	    AC_MSG_WARN([$APPLE_JNI_PROBLEM])
+        fi	    
 	;;
 Linux)
 	PTMATLAB_SUPPORTED=yes
