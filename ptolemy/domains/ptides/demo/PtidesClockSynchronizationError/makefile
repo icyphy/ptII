@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesPlatformSynchronizationError
+ME =		ptolemy/domains/ptides/demo/PtidesClockSynchronizationError
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesPlatformSynchronizationError
+PTPACKAGE = 	PtidesClockSynchronizationError
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =

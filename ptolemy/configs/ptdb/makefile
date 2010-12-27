@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy Ptiny (common domains) runtime configuration 
+# Makefile for the Ptolemy Ptdb (common domains) runtime configuration 
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs/ptiny
+ME =		ptolemy/configs/ptdb
 
 # There is no demo directory, put demos in the corresponding domain
 # directory so that we can find them if we are looking at domains.
@@ -47,7 +47,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptiny
+PTPACKAGE = 	ptdb
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
