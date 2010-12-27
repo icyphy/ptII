@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Read a frame
  * @author Dorsa Sadigh, Steve Bako, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version $Id: OpenCVToAWTImage.java 57204 2010-02-12 00:56:07Z eal $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

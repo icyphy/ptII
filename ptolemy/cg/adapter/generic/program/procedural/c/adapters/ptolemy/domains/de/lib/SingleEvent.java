@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A adapter class for ptolemy.domains.de.lib.SingleEvent.
 
  @author Jia Zou
- @version $Id: SingleEvent.java 57046 2010-01-27 23:35:53Z cxh $
+ @version $Id$
  @since Ptolemy II 8.0
  */
 public class SingleEvent extends NamedProgramCodeGeneratorAdapter {

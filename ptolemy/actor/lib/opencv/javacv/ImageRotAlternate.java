@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  image to the output port as an ObjectToken that is a java.awt.Image.
 
  @author  Christopher Hylands
- @version $Id: ImageRotate.java 57040 2010-01-27 20:52:32Z cxh $
+ @version $Id$
  @since Ptolemy II 3.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

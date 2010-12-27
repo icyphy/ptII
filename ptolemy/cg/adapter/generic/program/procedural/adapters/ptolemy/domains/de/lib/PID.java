@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A adapter class for ptolemy.domains.de.lib.PID.
 
  @author Jeff C. Jensen
-@version $Id: Register.java 57046 2010-01-27 23:35:53Z cxh $
+@version $Id$
 @since Ptolemy II 8.0
  */
 public class PID extends NamedProgramCodeGeneratorAdapter {
