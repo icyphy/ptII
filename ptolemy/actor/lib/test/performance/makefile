@@ -44,14 +44,27 @@ include $(CONFIG)
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	ModularCodeGen.tcl \
+	ModularCodeGen2.tcl \
+	ModularCodeGenLarge.tcl \
+	pubSubAggModel.tcl \
 	PubSubAgg.tcl \
 	PubSubLazy.tcl \
 	Publisher2.tcl \
 	PublisherCommon.tcl \
+	run.tcl \
 	testDefs.tcl
+
 JSRCS =
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	MCGBuildAndRun \
+	MCGBuildAndRunLarge \
+	MCGLargeBuildAndRun \
+	MCGLargeStats \
+	buildAndRun \
+	pubSubAggModelAll \
+	runAll
+
 all: AddSubtractVsExpression
 
 STATSFILE=statsfile
