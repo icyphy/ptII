@@ -329,6 +329,47 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         _mirrorDisable = disable != 0;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to check that the container contains
+     *  a mirror port. If it does not,
+     *  then this port is being added by copy and
+     *  paste or some other mechanism that has bypassed the newPort()
+     *  method. Such mechanisms do not properly mirror the port in the
+     *  containing ModalModel.
+     *  @param port The port to add to this entity.
+     *  @exception IllegalActionException If the port is not being added
+     *   by the enclosing ModalModel.
+     *  @exception NameDuplicationException If the port name collides with a
+     *   name already in the entity.
+     */
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
+        // If mirroring is disabled, then the port is being added by the
+        // container, which is surely OK.
+        if (!_mirrorDisable) {
+            // If mirroring is disabled, then we might be in the initial
+            // parsing of a file to construct a model. This is OK if the
+            // container has a mirroring port.
+            NamedObj container = getContainer();
+            // If there is no container or the container is not a ModalModel,
+            // then we allow creation of the port.
+            // NOTE: Relying only on name matching here is questionable.
+            // What if there is already a port but its input and output properties
+            // don't match? Could get very subtle bugs.
+            if (container instanceof ModalModel) {
+                if (((ModalModel)container).getPort(port.getName()) == null) {
+                    throw new IllegalActionException(this,
+                            "Ports must be added to a ModalController via the newPort()"
+                            + " method, which in Vergil is accessed by clicking on one of"
+                            + " the port buttons at the top of the window.");                    
+                }
+            }
+        }
+        super._addPort(port);
+    }
+
     /** Override the base class to ensure that the proposed container
      *  is a ModalModel or null.
      *  @param container The proposed container.
@@ -343,9 +384,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                             + "ModalModel objects.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /** Return a map from the classes of the entities to be dropped into a state
      *  and the class names of the refinements that can be used to contain those
