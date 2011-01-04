@@ -166,7 +166,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has two Sink actors: StaticSink is static in that it always consumes data&#10;according to pattern consumePattern. ModalSink is dynamic in that it is a  modal model&#10;with two modes: in the first one, it consumes data according to consumePattern; in the&#10;second, according to consumePattern2. The Source produces 3 2D arrays of size [x=3,y=2]&#10;each, in 3 consecutive iterations. The StaticSink fires once per iteration and outputs&#10;the entire array as a single pattern. The ModalSink also fires once per iteration, using&#10;different patterns. It switches patterns when it reads an array element with value 10.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has two Sink actors: StaticSink is static in that it always consumes data&#10;according to pattern consumePattern. ModalSink is dynamic in that it is a  modal model&#10;with two modes: in the first one, it consumes data according to consumePattern1; in the&#10;second, according to consumePattern2. The Source produces 3 2D arrays of size [x=3,y=2]&#10;each, in 3 consecutive iterations. The StaticSink fires once per iteration and outputs&#10;the entire array as a single pattern. The ModalSink also fires once per iteration, using&#10;different patterns. It switches patterns when it reads an array element with value 10.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 75.0]">
         </property>
