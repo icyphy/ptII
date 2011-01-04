@@ -2,6 +2,25 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Illustrative2" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
+    <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2,3}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 35.0]">
+        </property>
+    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
@@ -10,19 +29,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1412, 1062}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 26, 943, 918}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1197, 929]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[728, 785]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{434.0675675675675, 296.6440033783784}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select Debug-&gt;Listen to Director to get messages&#10;when you run.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -145.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{199.5675675675675, 224.6440033783784}">
     </property>
     <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {8,1}, y = {10,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 140.0]">
         </property>
     </property>
     <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = {2,2}, y = {2,1}]">
@@ -59,13 +72,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 95.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Play with the &quot;repetitions&quot; parameters of actors (double-click on Source, Sink, Sink2),&#10;and the &quot;base&quot;, &quot;pattern&quot; and &quot;tiling&quot; parameters of their ports, to see how results change.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 270.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -103,7 +116,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 155.0]">
         </property>
     </property>
     <property name="consumeTiling" class="ptolemy.data.expr.Parameter" value="[x = 4, y = 2]">
@@ -122,7 +135,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
         </property>
     </property>
     <property name="produceBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
@@ -141,7 +154,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 125.0]">
         </property>
     </property>
     <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
@@ -160,7 +173,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 80.0]">
         </property>
     </property>
     <property name="consumePattern2" class="ptolemy.data.expr.Parameter" value="[x = {2,2}, y = {2,1}]">
@@ -179,7 +192,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 190.0]">
         </property>
     </property>
     <property name="consumeTiling2" class="ptolemy.data.expr.Parameter" value="[x = 4, y = 2]">
@@ -198,7 +211,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 205.0]">
         </property>
     </property>
     <property name="consumeBase2" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 6]">
@@ -217,36 +230,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 175.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Parameters to set in Pthales domain:&#10;- &quot;size&quot; of produced array in each output port (currently optional, and not used)&#10;- &quot;pattern&quot; of producing/consuming array in each port&#10;- &quot;tiling&quot; in each port&#10;- &quot;repetitions&quot; of each Pthales composite actor&#10;- &quot;vectorizationFactor&quot; of SDF director of each composite actor&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a small variation of the Illustrative example.&#10;See documentation of that example for an introduction to the Pthales domain.&#10;&#10;In this variation, the repetitions parameter of actor Sink is explicit.&#10;Also, the order of the elements of the consumption patterns is reversed,&#10;resulting in different outputs.&#10;Finally, the iterations parameter of the Pthales director is set to 2,&#10;resulting in two global iterations (two 8x10 arrays produced by Source&#10;and consumed by the Sinks).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -100.0]">
-        </property>
-    </property>
-    <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2,3}">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -150.0]">
         </property>
     </property>
     <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 125.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="8*10">
@@ -262,8 +258,6 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
-        </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
@@ -273,6 +267,8 @@
             <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
             </property>
             <property name="tiling" class="ptolemy.data.expr.Parameter" value="produceTiling">
+            </property>
+            <property name="size" class="ptolemy.data.expr.Parameter" value="[x = 8, y = 10]">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -288,7 +284,9 @@
         <link port="Ramp.output" relation="relation"/>
     </entity>
     <entity name="Sink" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 85.0}">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="repetitions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 80.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="4">
@@ -304,8 +302,6 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="repetitions">
-        </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -319,9 +315,9 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={939, 290, 355, 776}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1037, 97, 182, 776}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 705]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[174, 705]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
             </property>
@@ -343,7 +339,9 @@
         <link port="Test.input" relation="relation"/>
     </entity>
     <entity name="Sink2" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 175.0]">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 170.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="4">
@@ -359,8 +357,6 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2, 2}">
-        </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -374,9 +370,9 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1045, 172, 355, 776}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 119, 185, 776}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 705]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[177, 705]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
             </property>
@@ -398,7 +394,7 @@
         <link port="Test.input" relation="relation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[200.0, 130.0]">
+        <vertex name="vertex1" value="[225.0, 145.0]">
         </vertex>
     </relation>
     <link port="Source.out" relation="relation2"/>
