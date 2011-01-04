@@ -65,46 +65,58 @@ import ptolemy.kernel.util.NameDuplicationException;
  * Signal Processing Specification," Technical Report 6113,
  * INRIA, Orsay, France.
  * </ol>
+ * 
+ * A more detailed documentation of the Pthales domain can be found in
+ * a technical report currently under preparation and accessible at:
+ * svn+ssh://source.eecs.berkeley.edu/chess/ealpapers/10/Pthales/TechReport
+ * [FIXME: the tech. report should eventually be made public].
+ * 
  * The notation used here is intended to follow the spirit of
- * Spear [FIXME: Reference?], from Thales, a software system
+ * SpearDE [FIXME: Reference?], from Thales, a software system
  * based on Array-OL. In this notation, unlike Boulet's,
- * domains are named, and patterns for reading and writing
+ * dimensions are named, and patterns for reading and writing
  * arrays are given using those names.
  * <p>
  * [FIXME: the description that follows needs update, the contents and syntax of parameter specs have changed]
+ * [FIXME: it seems mostly OK to me (Stavros): I made a mild pass. Please check]
  * The execution is governed by the following parameters
  * in the model. In all cases except for the "repetitions"
  * parameter, the parameters are OrderedRecords
  * of the form "[x = n, y = m, ...]", where x and y are arbitrary
  * dimension names and n and m are non-negative integers.
- * For those parameters that support strides, n and m
- * can be replaced by {n,s} or {m,s}, where s is the stride
+ * For parameters that supports strides (such as the "pattern" parameter),
+ * n and m can be replaced by {n,s} or {m,s}, where s is the stride
  * (a positive integer).
- * The stride defaults to 1 in such cases. Unless otherwise
+ * The stride defaults to 1 if not specified. Unless otherwise
  * stated, the parameters do not support strides.
  * Ports contain the following parameters:
  * <ol>
  * 
  * <li> <i>size</i>: This is a parameter of each output port
- * that specifies the size of the array written by that output
- * port. All dimensions must be specified, and every output
- * port must have such a parameter. [FIXME: true?] In addition, every input
+ * that specifies the size of the array written in that output
+ * port. All dimensions must be specified. This parameter
+ * is optional, as the size of an output array can be deduced
+ * from the other parameters. In addition, every input
  * port of a composite actor that contains a PthalesDirector
- * must also have such a parameter. 
+ * must also have such a parameter. [FIXME: true?]
  * 
  * <li> <i>base</i>: This mandatory parameter gives the base location
- * at which writing begins for each iteration of this director.
+ * (origin) of the output or input array at which an actor begins
+ * writing or reading at each iteration of this director.
  * All dimensions must be specified. The order in which they are
  * specified does not matter.
  * 
  * <li> <i>pattern</i>: This is a parameter of each port that
- * specifies the shape of the array produced or consumed on that
- * port. Moreover, if an actor reads from or writes to the port
+ * specifies the shape of the portion of the array produced or consumed
+ * on that port at each firing of the actor within an iteration.
+ * The number of firings of an actor within an iteration is specified 
+ * by the "repetitions" parameter of the actor (see below).
+ * Moreover, if an actor reads from or writes to the port
  * sequentially (using get() and send() methods), then the pattern
  * specifies the order in which the array is filled.
  * For example, if you send tokens with values 1, 2, 3, 4, 5, 6
  * using a pattern [x=3, y=2], then the array is filled as
- * follows:
+ * follows (assuming base=[x=0, y=0]):
  * <table>
  * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
  * <tr> <td> 0 </td> <td> 0 </td> <td> 1 </td></tr>
@@ -135,9 +147,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  * whereas zero for doubles is 0.0).
  *
  * <li> <i>tiling</i>: This parameter gives the increment of the
- * base location in each dimension for each successive iteration
- * of the actor. This is a property of an output or an input
- * port of an actor.
+ * base location in each dimension for each successive firing
+ * of the actor within an iteration. This is a property of an
+ * output or an input port of an actor.
  * 
  * </ol>
  * 
@@ -145,13 +157,24 @@ import ptolemy.kernel.util.NameDuplicationException;
  * <ol>
  * <li> <i>repetitions</i>: This is a required parameter 
  * for every actor in the Pthales domain. It is an array of
- * positive integers of the form "{ k, l, ... }". It specifies a set
- * of nested loops (equal to the length of the array) and the
- * number of iterations of each loop (from the inner to the outer loop).
+ * positive integers of the form "{ k, l, ... }". It specifies 
+ * the number of times an actor fires within an iteration. This
+ * number is equal to the product of all elements in the repetitions
+ * vector. So, "{2, 4}" specifies that the actor should fire a total
+ * of 2*4=8 times at each iteration. Moreover, this parameter defines
+ * a set of nested loops (of depth equal to the length of the array) and
+ * the number of iterations of each loop (from the inner to the outer loop).
  * So "{2, 4}" specifies an inner loop with 2 iterations and an outer loop
  * with 4 iterations. There is a one-to-one mapping between the elements
  * of the repetitions array and the fields of the tiling parameters of all
- * ports of the corresponding actor.
+ * ports of the corresponding actor. The body of the inner-most loop
+ * specifies the processing that the actor performs on a given pattern,
+ * during one firing of the actor within an iteration. A complete
+ * execution of the entire nested loop specifies the entire processing
+ * of the array by the actor. Thus, each firing of the actor produces
+ * or consumes only portions of the array and the complete processing
+ * is done by assembling these portions together according to the
+ * above parameters.
  * </ol>
  * <p>
  * In all cases, when indexes are incremented, they are incremented
