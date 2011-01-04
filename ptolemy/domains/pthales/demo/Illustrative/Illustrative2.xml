@@ -37,7 +37,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{199.5675675675675, 224.6440033783784}">
     </property>
-    <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {8,1}, y = {10,1}]">
+    <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = 8, y = {2*5,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -78,7 +78,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Play with the &quot;repetitions&quot; parameters of actors (double-click on Source, Sink, Sink2),&#10;and the &quot;base&quot;, &quot;pattern&quot; and &quot;tiling&quot; parameters of their ports, to see how results change.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 260.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
