@@ -390,7 +390,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0211804096138">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{143.6005495725561, 370.5057766879701}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{143.6005495725561, 370.50577668797}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Application parameters:">
@@ -437,9 +437,9 @@
         </property>
     </property>
     <property name="Rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 441.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 440.0]">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="608.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="593.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="219.0">
         </property>
@@ -447,7 +447,7 @@
         </property>
     </property>
     <property name="Rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-170.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 335.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="400.0">
         </property>
@@ -457,9 +457,9 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An Adaptive Beam Forming radar application in Pthales.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An Adaptive Beam Forming radar application in Pthales. The model doesn't output anything when executed.&#10;This is normal. The original model by Thales contains sink actors that store the outputs of the model into&#10;excel files. These actors are proprietary to Thales and not distributed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, -10.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -543,7 +543,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="CovAvCov">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 410.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
