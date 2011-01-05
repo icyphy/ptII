@@ -626,7 +626,7 @@ public class GRDirector extends StaticSchedulingDirector {
                     ex,
                     "The GR domain requires that Java 3D be installed.\n"
                             + "Java 3D can be downloaded from\n"
-                            + "http://java.sun.com/products/java-media/3D/\n"
+                            + "https://java3d.dev.java.net/"
                             + "For details see $PTII/ptolemy/domains/gr/main.htm");
         }
 

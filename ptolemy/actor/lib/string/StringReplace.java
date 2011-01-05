@@ -53,8 +53,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  output is the string provided by <i>stringToEdit</i>, unchanged.
  The <i>pattern</i> is given by a regular expression.
  For a reference on regular expression syntax see:
- <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
- http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
+ <a href="http://download.oracle.com/javase/tutorial/essential/regex/#in_browser">
+ http://download.oracle.com/javase/tutorial/essential/regex/</a>.
+
  <p>
  The <i>replacement</i> string, as usual with string-valued parameters
  in Ptolemy II, can include references to parameter values in scope.

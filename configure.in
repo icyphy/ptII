@@ -537,7 +537,7 @@ case "$JVERSION" in
 	*)      
 	        # -breakiterator is only present in jdk1.4 and later
 		JDOCBREAKITERATOR=-breakiterator
-                # Ptalon uses generics, assume 1.6 or greater here
+                # Ptalon uses generics, assume 1.5 or greater here
                 HAS_GENERICS=yes
 		JAVA1_6_OR_LATER=yes
 		PT_MSG_RESULT([ok, you are running $JVERSION])
@@ -1962,7 +1962,7 @@ fi
 #--------------------------------------------------------------------
 #       JAI is the Java Advanced Imaging Framework
 #	For more information, 
-#       see http://java.sun.com/products/java-media/jai/
+#       see https://jai.dev.java.net/
 #       See if there was a command-line option for where JAI is.
 #--------------------------------------------------------------------
 
@@ -2035,7 +2035,7 @@ else
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from 
-    http://java.sun.com/products/java-media/jai/])	
+    https://jai.dev.java.net/])
     fi
     cd "$startdir"
 fi
@@ -2108,7 +2108,7 @@ fi
 #--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
-#       see http://java.sun.com/products/java-media/jmf
+#       see http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html
 #       See if there was a command-line option for where JMF is.
 #--------------------------------------------------------------------
 
@@ -2181,7 +2181,7 @@ else
     You need not download the JMF unless you plan on using the video
     actors in $JMF_USER_DIR
     The JMF SDK can be downloaded from 
-    http://java.sun.com/products/java-media/jmf])
+    http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html])
     fi
     cd "$startdir"
 fi
@@ -3163,6 +3163,7 @@ fi
 
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
+#       https://java3d.dev.java.net/
 #--------------------------------------------------------------------
 # PTJAVA3D_DIR is set to gr and used in
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
@@ -3213,7 +3214,7 @@ else
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        AC_MSG_WARN(['"$JAVAC" -classpath "$Java3DClasspath" java3dTest.java' failed.
-    Java 3D may be found at http://java.sun.com/products/java-media/3D/download.html
+    Java 3D may be found at https://java3d.dev.java.net/
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.
@@ -5107,7 +5108,7 @@ AC_SUBST(JDOCTAG)
 # and use JDOCTAGLET in doc/makefile
 AC_SUBST(JDOCTAGLET)
 
-# Jini home directory, see http://www.sun.com/jini/
+# Jini home directory, see https://jini.dev.java.net/
 AC_SUBST(JINI_DIR)
 
 # If Jini is present, the set to yes, otherwise, set to no

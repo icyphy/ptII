@@ -284,7 +284,7 @@ public class XSLTransformer extends Transformer {
                    + "property or by\nreading in a jar file that "
                    + "has the appropriate\nService Provider set.\n"
                    + "(For details about Jar Service Providers,\nsee "
-                   + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
+                   + "http://download.oracle.com/javase/6/docs/technotes/guides/jar/jar.html\n"
                    + "The saxon7.jar file includes a\n"
                    + "META-INF/services/javax.xml.transform.TransformerFactory "
                    + "\nfile that sets the TransformerFactory "

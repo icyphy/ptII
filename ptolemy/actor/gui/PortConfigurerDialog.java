@@ -1215,7 +1215,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
      CellValidator class.
 
      <p>Based on IntegerEditor from
-     http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/IntegerEditor.java
+     http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
 
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
@@ -1410,7 +1410,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
      CellValidator class.
 
      <p>Based on IntegerEditor from
-     http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/IntegerEditor.java
+     http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
 
      @author Christopher Brooks, Sun Microsystems
      @version $Id$

@@ -100,7 +100,7 @@ public class PtExecuteApplication extends MoMLApplication {
         // FIXME: Under JDK1.3.1_06, the MoMLApplication constructor
         // calls setLookAndFeel() which invokes getDefaultToolkit()
         // which may cause PtExecuteApplication to not exit.  See
-        // http://developer.java.sun.com/developer/bugParade/bugs/4030718.html
+        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4030718
         // However, since we now run with JDK1.4.1, this should not
         // be a problem.
         super(args);

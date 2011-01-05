@@ -32,11 +32,12 @@ import java.util.List;
 /** Interface for classes execute commands in a subprocess.
 
  <p>Loosely based on Example1.java from
- http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
+ <a href="http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html">http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html</a>
  <p>See also
- http://developer.java.sun.com/developer/qow/archive/135/index.jsp
+ <a href="http://developer.java.sun.com/developer/qow/archive/135/index.jsp">http://developer.java.sun.com/developer/qow/archive/135/index.jsp</a> <i>(1/11: Broken)
  and
- http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
+ <a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>.</p>
+
 
  @see StreamExec
 

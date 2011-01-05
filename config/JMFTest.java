@@ -32,7 +32,7 @@ import javax.media.CaptureDeviceInfo;
     Framework is present.
     If this file will not compile because the import statement fails,
     then try installing Java Media Framework
-    http://java.sun.com/products/java-media/jmf/
+    http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.1

@@ -153,7 +153,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  the default setting for the algorithm should be used.
      *  <p>
      *  See the
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA" target="_top">Java Cryptography Extension (JCE) Reference Guide</a>
+     *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Cipher" target="_top">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
      *  for details.
      */
     public StringParameter mode;
@@ -199,10 +199,10 @@ abstract public class CipherActor extends CryptographyActor {
      * </dl>
      *
      *  The initial default is the empty string, which indicates that
-     *  the default setting for the algorithm should be used.
+     *  the no padding should be used.
      *  <p>
      *  See the
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA" target="_top">Java Cryptography Extension (JCE) Reference Guide</a>
+     *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Cipher" target="_top">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
      *  for details.
      */
     public StringParameter padding;

@@ -32,7 +32,7 @@ import javax.media.jai.*;
     is present.
     If this file will not compile because the import statement fails,
     then try installing Java Advanced Imaging from
-    http://java.sun.com/products/java-media/jai/
+    https://jai.dev.java.net/.
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.1

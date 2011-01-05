@@ -117,7 +117,7 @@ public class PlotApplet extends JApplet {
      *  Note that some Plot methods will automatically run in the
      *  Swing Event thread, some will not.
      *  For details about SwingUtilities.invokeAndWait(), see
-     *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
+     *  <a href="http://download.oracle.com/javase/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
      */
     public void init() {
         super.init();

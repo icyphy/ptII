@@ -138,7 +138,7 @@ public class InvalidStateException extends KernelRuntimeException {
     // that would be good to use.
     // For suggestions about converting from Enumerations to Lists,
     // see
-    // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
+    // http://download.oracle.com/javase/tutorial/collections/interoperability/compatibility.html
     private static List _list(Enumeration objects) {
         List list = new ArrayList();
 

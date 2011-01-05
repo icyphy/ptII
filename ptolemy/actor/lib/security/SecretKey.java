@@ -146,7 +146,7 @@ public class SecretKey extends Source {
      *  512 to 1024, and must be a multiple of 64. The default keysize
      *  is 1024."
      *  Refer to
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
+     *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#spectemp" target="_top"><code>http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#spectemp</code></a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.
      */

@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  outputs each frame as a JMFImageToken.
 
  <p>Note that not all formats are supported, for details, see the JMF faq at:
- <a href="http://java.sun.com/products/java-media/jmf/reference/faqs/index.html#in_browser" target="_top">http://java.sun.com/products/java-media/jmf/reference/faqs/index.html</a>
+ <a href="http://www.oracle.com/technetwork/java/javase/faq-jmf-137005.html#jmf2-support" target="_top">http://www.oracle.com/technetwork/java/javase/faq-jmf-137005.html#jmf2-support</a>.</p>
 
  @author James Yeh
  @version $Id$
@@ -226,7 +226,7 @@ public class MovieReader extends Source implements ControllerListener {
                             + "\nThe data source was: "
                             + _dataSource.getLocator().toExternalForm()
                             + "\nNote that not all formats are supported, see:\n"
-                            + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
+                            + "http://www.oracle.com/technetwork/java/javase/faq-jmf-137005.html#jmf2-support");
         }
 
         String framePositioningControlName = "javax.media.control.FramePositioningControl";

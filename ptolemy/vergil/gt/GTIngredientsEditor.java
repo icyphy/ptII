@@ -646,7 +646,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
     private static final Color _REGULAR_EXPRESSION_BACKGROUND = new Color(200,
             255, 255);
 
-    private static final String _REGULAR_EXPRESSION_HELP_FILE = "http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html";
+    private static final String _REGULAR_EXPRESSION_HELP_FILE = "http://download.oracle.com/javase/tutorial/essential/regex/";
 
     private static final int _ROW_HEIGHT = 45;
 

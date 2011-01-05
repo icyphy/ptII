@@ -117,18 +117,19 @@ public class ParentPanel extends JPanel {
 
     }
 
-    /** Based on code from
-     * http://java.sun.com/docs/books/tutorial/uiswing/components/icon.html.
+    /** Return an ImageIcon, or null if the path was invalid.
+     * <p>Based on code from
+     * http://download.oracle.com/javase/tutorial/uiswing/components/icon.html.
      *
      * Returns an ImageIcon, or null if the path was invalid.
-     *
      * @param path - The path to the image file.
      *
      * @param description - A description of the image.
      *
      * @return An ImageIcon object if the path could be converted
      *          into a URL.  Otherwise, returns null.
-     * */
+     *
+     */
     protected ImageIcon createImageIcon(String path, String description) {
 
         URL imgURL;

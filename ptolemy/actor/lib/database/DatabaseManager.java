@@ -82,8 +82,8 @@ import ptolemy.util.StringUtilities;
  </pre>
  The above lists two drivers, in order of preference, separated by
  a ":". More information can be found at
- <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/sql/DriverManager.html">
- http://java.sun.com/j2se/1.5.0/docs/api/java/sql/DriverManager.html</a>.
+ <a href="http://download.oracle.com/javase/6/docs/api/java/sql/DriverManager.html#in_browser">
+ http://download.oracle.com/javase/6/docs/api/java/sql/DriverManager.html</a>
 
  @author Edward A. Lee
  @version $Id$

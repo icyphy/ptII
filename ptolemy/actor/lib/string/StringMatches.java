@@ -52,10 +52,10 @@ import ptolemy.kernel.util.Workspace;
  Pattern match a string to a regular expression and output a true if it
  matches and a false if it does not. For a reference on regular
  expression syntax see:
- <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
- http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
+ <a href="http://download.oracle.com/javase/tutorial/essential/regex/#in_browser">
+ http://download.oracle.com/javase/tutorial/essential/regex/</a>.
 
- @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
+ @author Antonio Yordan-Nones, Colin Cochran, Contributor: Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (djstone)

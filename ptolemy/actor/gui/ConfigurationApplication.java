@@ -567,7 +567,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     //        "ptolemy.kernel.util.NamedObj");
                     //specURL = refClass.getClassLoader().getResource(spec);
                     // This works in Web Start, see
-                    // http://java.sun.com/products/javawebstart/faq.html#54
+                    // http://download.oracle.com/javase/1.5.0/docs/guide/javaws/developersguide/faq.html#211
                     specURL = Thread.currentThread().getContextClassLoader()
                             .getResource(spec);
 

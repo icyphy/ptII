@@ -76,15 +76,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  Cryptography Extension (JCE).
 
  <br>Information about JCA can be found at
- <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html</a>.
+ <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/crypto/CryptoSpec.html#in_browser" target="_top">http://download.oracle.com/javase/6/docs/technotes/guides/security/crypto/CryptoSpec.html</a>.
  <br>Information about JCE can be found at
- <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/</a>.
+ <a href="http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136007.html" target="_top">http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136007.html</a>.
 
- <br>The Java 1.2 security tutorial can be found at
- <a href="http://java.sun.com/docs/books/tutorial/security1.2/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/index.html</a>
-
- <br>Another Java security tutorial can be found at
- <a href="http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html" target="_top">http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html</a>
+ <br>The Java security tutorial can be found at
+ <a href="http://download.oracle.com/javase/tutorial/security/index.html" target="_top">http://download.oracle.com/javase/tutorial/security/index.html</a>
 
  @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
  @version $Id$
@@ -174,7 +171,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  512 to 1024, and must be a multiple of 64. The default keysize
      *  is 1024."
      *  Refer to
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</a>
+     *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#spectemp" target="_top"><code>http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#spectemp</code></a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.
      */

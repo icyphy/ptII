@@ -118,7 +118,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // Under Java 1.3.1_06, at least the font is right, but not
         // under 1.4.1_02
         //select.setFont(_editMenu.getFont());
-        // http://developer.java.sun.com/developer/bugParade/bugs/4736093.html
+        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4736093
         // suggests this, which does not seem to help
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ALT, Event.ALT_MASK, false),

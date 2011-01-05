@@ -233,7 +233,7 @@ public class RelationWidthInference {
 
                         //IORelation relation = workingSet2.pop();
                         // pop has been added to LinkedList in Java 1.6
-                        // (cfr. http://java.sun.com/javase/6/docs/api/java/util/LinkedList.html#pop() ).
+                        // (cfr. http://download.oracle.com/javase/6/docs/api/java/util/LinkedList.html#pop() ).
                         // Hence we use get an remove for the time being...
                         IORelation relation = workingRelationList.get(0);
                         workingRelationList.remove(0);

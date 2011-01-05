@@ -99,7 +99,7 @@ import ptolemy.util.StringUtilities;
  initialized before accessing _keyStore themselves.
 
  <h3>How to exchange data securely with a remote part</h3>
- <a href="http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html</a>
+ <a href="http://download.oracle.com/javase/tutorial/security/toolfilex/index.html" target="_top">http://download.oracle.com/javase/tutorial/security/toolfilex/index.html</a>
  discusses how to exchange files using signatures, keytool
  and jarsigner.  In Ptolemy II, we use actors derived from
  the KeyStoreActor.
@@ -171,9 +171,7 @@ import ptolemy.util.StringUtilities;
  </ol>
 
  <p>For more information about keystores, see
- <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html" target="_top">Security Tools Summary</a>
- and
- <br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html" target="_top">Keytool</a>.
+ <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/SecurityToolsSummary.html" target="_top">Security Tools Summary</a>.
 
  @author  Christopher Hylands Brooks
  @version $Id$
@@ -271,7 +269,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     public FileParameter fileOrURL;
 
     /** The type of the keystore.  See
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppA" target="_top">  Java Cryptography Architecture API Specification &amp; Reference</a>
+     *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#KeyStore" target="_top">  Java Cryptography Architecture API Specification &amp; Reference</a>
      *  for information about keystore types.
      *  The initial value is the string returned by
      *  java.security.KeyStore.getDefaultType().

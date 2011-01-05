@@ -2248,10 +2248,9 @@ public class Plot extends PlotBox {
                 //
                 // See:
                 // <pre>
-                // http://developer.java.sun.com/developer/bugParade/bugs/
-                //     4188795.html
-                //     4204551.html
-                //     4295712.htm
+                // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4219548
+                // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4204551
+                // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4295712
                 // </pre>
                 //
                 // Since we are assured of being in the event dispatch thread,

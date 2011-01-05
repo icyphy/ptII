@@ -32,7 +32,7 @@ import javax.media.j3d.*;
     is present.
     If this file will not compile because the import statement fails,
     then try installing Java 3D from
-    http://java.sun.com/products/java-media/3D/download.html
+    https://java3d.dev.java.net/.
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 1.0

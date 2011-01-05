@@ -42,7 +42,7 @@ import ptolemy.util.StringUtilities;
 /** This class contains utilities for use with JNLP, aka Web Start.
 
  <p>For more information about Web Start, see
- <a href="http://java.sun.com/products/javawebstart/" target="_top"><code>http://java.sun.com/products/javawebstart</code></a>
+ <a href="http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136112.html" target="_top"><code>http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136112.html</code></a>
  or <code>$PTII/doc/webStartHelp</code>
 
  @author Christopher Hylands

@@ -4437,7 +4437,7 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         public void mousePressed(MouseEvent event) {
-            // http://developer.java.sun.com/developer/bugParade/bugs/4072703.html
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4072703
             // BUTTON1_MASK still not set for MOUSE_PRESSED events
             // suggests:
             // Workaround

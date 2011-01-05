@@ -54,7 +54,7 @@ public class WatchDog {
     public WatchDog(final long timeToDie) {
         // Timers are new in JDK1.3
         // For information about Timers, see
-        // http://java.sun.com/docs/books/tutorial/essential/threads/timer.html
+        // http://download.oracle.com/javase/tutorial/uiswing/misc/timer.html
         if (timeToDie <= 0) {
             return;
         }

@@ -56,7 +56,7 @@ public class OpenCVImageObject  {
      */
     public OpenCVImageObject(OpenCV openCVObject, PImage pImageObject) {
         openCV = openCVObject;
-        img = imageObject;
+        img = pImageObject;
     }  
    
     /** The OpenCV object. */
