@@ -1,88 +1,32 @@
 <!-- $Id$-->
-<HTML>
-<HEAD>
+<html>
+<head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
-<TITLE>Query Widget</TITLE>
-</HEAD>
-<BODY>
+<title>Query Widget</TITLE>
+</head>
+<body>
 
-<H1>Query Widget</H1>
-<P>
+<h1>Query Widget</h1>
+<p>
 The Query class in the ptolemy.gui package provides a very simple interface
 for creating on-screen controls for parameter values.  The controls
 include entry boxes, check boxes, and sliders. Below is an example that
 includes one of each type of query that is supported.  Such
 a combination of queries is not particularly attractive, and
 is rarely needed, but it illustrates the features.
-<CENTER>
-<P>
+<center>
+<p>
 
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "400" height = "250"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.gui.demo.QueryApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "name" VALUE = "Query" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-            <BR><I>If you were able to run applets, you would have one here.</I> \
-<BR> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-             code = "ptolemy.gui.demo.QueryApplet" codebase = "../../.." archive = "ptolemy/ptsupport.jar" width = "400" height = "250" \
-            name = "Query" background = "#ffffff"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <BR><I>If you were able to run applets, you would have one here.</I> \
-<BR> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-             code = "ptolemy.gui.demo.QueryApplet" codebase = "../../.." archive = "ptolemy/ptsupport.jar" width = "400" height = "250" \
-            > \
-            <PARAM NAME = "name" VALUE = "Query" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-            <BR><I>If you were able to run applets, you would have one here.</I> \
-<BR> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</CENTER>
+        <applet 
+             code = "ptolemy.gui.demo.QueryApplet" codebase = "../../.." archive = "ptolemy/ptsupport.jar" width = "400" height = "250" 
+            > 
+            <param name="name" value="Query" > 
+	    <param name="background" value="#ffffff" > 
+            <BR><I>If you were able to run applets, you would have one here.</I> 
+<BR> 
+        </applet> 
+</center>
 Notice that if you change the values, the change is reported
 in the status bar of the browser.
 See the <a href="QueryApplet.java">source code</a> to
@@ -91,6 +35,6 @@ see how to create a widget like this.
 An instance of Query can be placed in a modal dialog using
 the <a href="../../../doc/codeDoc/ptolemy/gui/ComponentDialog.html">ComponentDialog</a>
 class.
-</BODY>
-</HTML>
+</body>
+</html>
 

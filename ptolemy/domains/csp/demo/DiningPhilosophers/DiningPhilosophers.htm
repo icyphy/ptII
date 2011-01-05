@@ -6,82 +6,23 @@
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Dining Philosophers</H1>
-<CENTER>
+<h1>Dining Philosophers</h1>
+<center>
 
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape
  -->
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "650" \
-            height = "250"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.domains.csp.demo.DiningPhilosophers.DiningApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/domains/csp/demo/DiningPhilosophers/DiningPhilosophers.jar,ptolemy/domains/csp/csp.jar,ptolemy/ptsupport.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "DiningPhilosophers" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-            If you were able to run applets, you would have a demo here. \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.domains.csp.demo.DiningPhilosophers.DiningApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/domains/csp/demo/DiningPhilosophers/DiningPhilosophers.jar,ptolemy/domains/csp/csp.jar,ptolemy/ptsupport.jar" \
-            width = "650" \
-            height = "250" \
-            NAME = "DiningPhilosophers" background = "#ffffff"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              If you were able to run applets, you would have a demo here. \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.domains.csp.demo.DiningPhilosophers.DiningApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/domains/csp/demo/DiningPhilosophers/DiningPhilosophers.jar,ptolemy/domains/csp/csp.jar,ptolemy/ptsupport.jar" \
-            width = "650" \
-            height = "250" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "DiningPhilosophers" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-            If you were able to run applets, you would have a demo here. \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
+        <applet 
+            code = "ptolemy.domains.csp.demo.DiningPhilosophers.DiningApplet" 
+            codebase = "../../../../.." 
+            archive = "ptolemy/domains/csp/demo/DiningPhilosophers/DiningPhilosophers.jar,ptolemy/domains/csp/csp.jar,ptolemy/ptsupport.jar" 
+            width = "650" 
+            height = "250" 
+            > 
+            <param name="NAME" value="DiningPhilosophers" > 
+	    <param name="background" value="#ffffff" > 
+            If you were able to run applets, you would have a demo here. 
+        </applet> 
  </center>
 The Dining Philosophers problem illustrates the following scenario:
  <p>
@@ -95,12 +36,12 @@ tries to grab a chopstick  but it is already being used by another
 philosopher, then the philosopher waits until that chopstick becomes
 available. This implies that no neighboring philosophers can eat at the
 same time and at most two philosophers can eat at a time.
-<P>
+<p>
 This model executes until deadlock occurs (or until you push the stop
 button).  Deadlock occurs when each of the philosophers acquires one
 chopstick.  No special measures are taken in this model to avoid
 deadlock, so it will eventually occur.
-<P>
+<p>
 The Dining Philosophers problem was first described by Edsger W. Dijkstra
 in 1965. It is a classic concurrent programming problem that illustrates
 the two basic properties of concurrent programming:
@@ -122,7 +63,7 @@ succeeding. However this algorithm does not guarantee the absence of
 deadlock, and if it is let run long enough this will eventually occur.
 The probability that deadlock occurs sooner increases as the thinking
 times are decreased relative to the eating times.
-<P>
+<p>
 The applet is implemented using the
 Communicating Sequential Processes (CSP) domain in Ptolemy II.
 The CSP domain models a system as a network of process
@@ -132,7 +73,7 @@ processes block until the other side is ready to communicate. The model of
 communication used in the CSP domain is different from the CSP model
 normally encountered in that a notion of time has been added to the model,
 although this model of time is not used in this applet.
-<P>
+<p>
 In the above applet, each chopstick and each philosopher is represented as a
 separate process. A chopstick must be ready to communicate with either
 philosopher beside it at any stage. The chopstick process uses a conditional
@@ -140,6 +81,6 @@ communication construct to be ready to rendezvous at any stage. Each
 philosopher uses the notion of time built into the CSP domain to allow
 itself to delay while it is eating or thinking. It should be noted that the
 applet has been slowed down to allow the progression of the problem to be seen.
-<P>
-</BODY>
-</HTML>
+<p>
+</body>
+</html>

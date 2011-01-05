@@ -1,17 +1,17 @@
 <!-- $Id$-->
-<HTML>
-<HEAD>
+<html>
+<head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
-<TITLE>A Synthetic Voice</TITLE>
-</HEAD>
-<BODY>
+<title>A Synthetic Voice</TITLE>
+</head>
+<body>
 
-<H1>A Synthetic Voice</H1>
+<h1>A Synthetic Voice</h1>
 
 This applet plays two different audio streams.  The first is a recording of a man's voice.  The second is a synthetic version of the same spoken sentence.  The synthetic version is created using an adaptive linear-prediction filter to create an autoregressive model of the speech signal.  This filter changes during the speech signal to approximate the spectral characteristics of the speech.  These analyzed characteristics are then used to create the synthesized speech.
 
-<P>
+<p>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <h3>Play Original Speech</h3>
@@ -34,85 +34,24 @@ deployJava.displayWebStartMessage("../../../../../"); </script>
 <!-- /PT DEPLOYJAVA CONVERTER -->
 
 <h3>Play Synthesized Speech</h3>
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
+        <applet 
+            code = "ptolemy.actor.gui.MoMLApplet" 
+            codebase = "../../../../.." 
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar" 
+            width = "650" 
+            height = "100" 
+            > 
+            <param name="NAME" value="MoML" > 
+	    <param name="background" value="#ffffff" > 
+	    <param name="controls" value="buttons" > 
+	    <param name="model" value="SynthesizedVoice.xml" > 
+            <a href="SynthesizedVoice.xml">MoML specification for this model.</a> 
+        </applet> 
 
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "650" \
-            height = "100"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "MoML" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "controls" VALUE = "buttons" > \
-	    <PARAM NAME = "model" VALUE = "SynthesizedVoice.xml" > \
-            <a href="SynthesizedVoice.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.actor.gui.MoMLApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "650" \
-            height = "100" \
-            NAME = "MoML" background = "#ffffff" controls = "buttons" model = "SynthesizedVoice.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="SynthesizedVoice.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.actor.gui.MoMLApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "650" \
-            height = "100" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "MoML" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "controls" VALUE = "buttons" > \
-	    <PARAM NAME = "model" VALUE = "SynthesizedVoice.xml" > \
-            <a href="SynthesizedVoice.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-
-<P>
+<p>
 The <a href="SynthesizedVoiceVergil.htm">block diagram</a>
 for the synthetic speech model.
 </p>
 <p></p>
-</BODY>
-</HTML>
+</body>
+</html>
