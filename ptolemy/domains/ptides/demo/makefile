@@ -39,7 +39,6 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesAirplaneFuelControl \
 		PtidesBasicTTE \
 		PtidesClockSynchronizationError \
-		PtidesPlatformSynchronizationError \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime
 
@@ -65,7 +64,6 @@ PTCLASSALLJARS = \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesBasicTTE/PtidesBasicTTE.jar \
 	PtidesClockSynchronizationError/PtidesClockSynchronizationError.jar \
-	PtidesPlatformSynchronizationError/PtidesPlatformSynchronizationError.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar
 
