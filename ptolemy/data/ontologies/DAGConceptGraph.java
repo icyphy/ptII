@@ -92,6 +92,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  ptolemy.graph.CPO.HIGHER, ptolemy.graph.CPO.INCOMPARABLE, indicating the
      *  first argument is lower than, equal to, higher than, or incomparable with
      *  the second argument in the property hierarchy, respectively.
+     *  
      *  @param e1 An instance of {@link Concept}.
      *  @param e2 An instance of {@link Concept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
@@ -99,24 +100,22 @@ public class DAGConceptGraph extends ConceptGraph {
      *   instances of {@link Concept}.
      */
     public int compare(Object e1, Object e2) {
-        if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
-            throw new IllegalArgumentException("ConceptGraph.compare: "
-                    + "Arguments are not instances of Concept: " + " arg1 = "
-                    + e1 + ", arg2 = " + e2);
-        }
+        Concept concept1 = _getInputObjectAsAConcept(e1);
+        Concept concept2 = _getInputObjectAsAConcept(e2);
 
-        if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            return _dag.compare(e1, e2);
-        } else if (e1 instanceof InfiniteConcept) {
+        if ((concept1 instanceof FiniteConcept) &&
+                (concept2 instanceof FiniteConcept)) {
+            return _dag.compare(concept1, concept2);
+        } else if (concept1 instanceof InfiniteConcept) {
             try {
-                return ((InfiniteConcept) e1).compare((Concept) e2);
+                return ((InfiniteConcept) concept1).compare(concept2);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
-        } else if (e2 instanceof InfiniteConcept) {
+        } else if (concept2 instanceof InfiniteConcept) {
             try {
-                int oppositeResult = ((InfiniteConcept) e2)
-                        .compare((Concept) e1);
+                int oppositeResult = ((InfiniteConcept) concept2)
+                        .compare(concept1);
                 return DirectedAcyclicGraph.reverseCompareCode(oppositeResult);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
@@ -130,6 +129,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the down-set of an element in this concept graph.
      *  The down-set of an element is the subset consisting of
      *  all the elements less than or equal to the specified element.
+     *  
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the down-set of the
      *   specified element.
@@ -158,6 +158,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the concept graph
      *  that is less than or equal to both of the two elements.
+     *  
      *  @param e1 An Object representing an element in this concept graph.
      *  @param e2 An Object representing an element in this concept graph.
      *  @return A Concept representing the GLB of the two specified
@@ -166,14 +167,10 @@ public class DAGConceptGraph extends ConceptGraph {
      *   specified Objects is not an element of this concept graph.
      */
     public Concept greatestLowerBound(Object e1, Object e2) {
-        // FIXME: Cover the cases with one or more InfiniteConcepts
-        if (!(e1 instanceof FiniteConcept) || !(e2 instanceof FiniteConcept)) {
-            throw new IllegalArgumentException(
-                    "ConceptGraph.greatestLowerBound:"
-                            + " Arguments are not instances of FiniteConcept: "
-                            + " arg1 = " + e1 + ", arg2 = " + e2);
-        }
-        return (Concept) _dag.greatestLowerBound(e1, e2);
+        Concept concept1 = _getInputObjectAsAConcept(e1);
+        Concept concept2 = _getInputObjectAsAConcept(e2);
+        
+        return _getBoundForConcepts(concept1, concept2, BoundType.GREATESTLOWER);
     }
 
     /** Return whether this concept graph is a lattice.
@@ -187,6 +184,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the concept graph
      *  that is greater than or equal to both of the two elements.
+     *  
      *  @param e1 An Object representing an element in this concept graph.
      *  @param e2 An Object representing an element in this concept graph.
      *  @return A Concept representing the LUB of the two specified
@@ -195,31 +193,10 @@ public class DAGConceptGraph extends ConceptGraph {
      *   specified Objects is not an element of this concept graph.
      */
     public Concept leastUpperBound(Object e1, Object e2) {
-        if (!(e1 instanceof Concept) || !(e2 instanceof Concept)) {
-            throw new IllegalArgumentException("ConceptGraph.leastUpperBound:"
-                    + " Arguments are not instances of Concept: " + " arg1 = "
-                    + e1 + ", arg2 = " + e2);
-        }
-        if ((e1 instanceof FiniteConcept) && (e2 instanceof FiniteConcept)) {
-            Concept lub = (Concept) _dag.leastUpperBound(e1, e2);
-
-            // If the least upper bound is a representative for a set of flat
-            // infinite concepts but is not either of the two inputs, then the
-            // actual lub must be at least one level above it.
-            if (lub instanceof InfiniteConceptRepresentative
-                    && !lub.equals(e1) && !lub.equals(e2)) {
-                lub = leastUpperBound(((FiniteConcept) lub).getCoverSetAbove()
-                        .toArray());
-            }
-            return lub;
-        } else if (e1 instanceof InfiniteConcept) {
-            return ((InfiniteConcept) e1).leastUpperBound((Concept) e2);
-        } else if (e2 instanceof InfiniteConcept) {
-            return ((InfiniteConcept) e2).leastUpperBound((Concept) e1);
-        } else { // This case should never happen.
-            throw new IllegalArgumentException("Invalid concepts '" + e1
-                    + "' and '" + e2 + "' (neither finite nor infinite)");
-        }
+        Concept concept1 = _getInputObjectAsAConcept(e1);
+        Concept concept2 = _getInputObjectAsAConcept(e2);
+        
+        return _getBoundForConcepts(concept1, concept2, BoundType.LEASTUPPER);
     }
 
     /** Return the greatest element in this concept graph.
@@ -232,6 +209,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Compute the up-set of an element in this concept graph.
      *  The up-set of an element is the subset consisting of
      *  all the elements greater than or equal to the specified element.
+     *  
      *  @param e An Object representing an element in this concept graph.
      *  @return An array of Concepts of the up-set of the
      *   specified element.
@@ -253,6 +231,87 @@ public class DAGConceptGraph extends ConceptGraph {
             // TODO: Implement upSet for InfiniteConcepts.
             throw new IllegalArgumentException("upSet method not implemented"
                     + " for Concept subclass " + e.getClass().getName() + ".");
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+    
+    /** Return the concept that is either the greatest lower or least upper
+     *  bound for the two given concepts.
+     *  
+     *  @param concept1 The first concept.
+     *  @param concept2 The second concept.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is the correct bound for the two concepts.
+     */
+    private Concept _getBoundForConcepts(Concept concept1,
+                        Concept concept2, BoundType boundType) {
+        if ((concept1 instanceof FiniteConcept) &&
+                (concept2 instanceof FiniteConcept)) {
+            switch(boundType) {
+            case GREATESTLOWER:
+                return (Concept) _dag.greatestLowerBound(concept1, concept2);
+            case LEASTUPPER:
+                return (Concept) _dag.leastUpperBound(concept1, concept2);
+            default:
+                throw new IllegalArgumentException("Unrecognized bound type: "
+                        + boundType + ". Expected either GREATESTLOWER or " +
+                        		"LEASTUPPER");
+            }
+        } else if (concept1 instanceof InfiniteConcept) {
+            return _getBoundForInfiniteConcept((InfiniteConcept) concept1,
+                                concept2, boundType);
+        } else if (concept2 instanceof InfiniteConcept) {
+            return _getBoundForInfiniteConcept((InfiniteConcept) concept2,
+                                concept1, boundType);
+        } else { // This case should never happen.
+            throw new IllegalArgumentException("Invalid concepts '" + concept1
+                    + "' and '" + concept2 + "' (neither finite nor infinite)");
+        }
+    }
+    
+    /** Return the concept that is the correct bound for the specified infinite
+     *  concept and another concept.
+     *  
+     *  @param infiniteConcept The infinite concept.
+     *  @param otherConcept The other concept.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is the correct bound for the two concepts.
+     */
+    private Concept _getBoundForInfiniteConcept(InfiniteConcept infiniteConcept,
+                Concept otherConcept, BoundType boundType) {
+        switch(boundType) {
+        case GREATESTLOWER:
+            return infiniteConcept.greatestLowerBound(otherConcept);
+        case LEASTUPPER:
+            return infiniteConcept.leastUpperBound(otherConcept);
+        default:
+            throw new IllegalArgumentException("Unrecognized bound type: "
+                    + boundType + ". Expected either GREATESTLOWER or " +
+                                    "LEASTUPPER");
+        }
+    }
+    
+    /** Return the input object as a Concept, or throw an exception if the
+     *  input object cannot be cast to a Concept.
+     *  @param input The specified input object.
+     *  @return The input object cast to a Concept.
+     *  @exception IllegalArgumentException Thrown if the input object cannot
+     *   be cast to a Concept.
+     */
+    private Concept _getInputObjectAsAConcept(Object input) {
+        if (input instanceof Concept) {
+            return (Concept) input;
+        } else {
+            String methodName = Thread.currentThread().getStackTrace()[1]
+                                     .getMethodName();
+            throw new IllegalArgumentException("ConceptGraph." +
+                    methodName + ": an argument is not an instance of " +
+                    "Concept: " + input + " is an instance of " +
+                    input.getClass());
         }
     }
 

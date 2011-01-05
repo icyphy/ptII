@@ -23,6 +23,7 @@ package ptolemy.data.ontologies;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.Token;
+import ptolemy.data.ontologies.ConceptGraph.BoundType;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -101,10 +102,6 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        if (concept == null) {
-            return CPO.INCOMPARABLE;
-        }
-        
         if (concept.getOntology() == null || !(concept.getOntology().equals(getOntology()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
@@ -155,6 +152,15 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
     public Token getTokenValue() {
         return _tokenValue;
     }
+    
+    /** Compute the greatest lower bound (GLB) of this and another concept.
+     *  
+     *  @param concept The other concept
+     *  @return The concept that is the GLB of this and the given concept.
+     */
+    public Concept greatestLowerBound(Concept concept) {
+        return _getBoundWithOtherConcept(concept, BoundType.GREATESTLOWER);
+    }
 
     /** Compute the least upper bound (LUB) of this and another concept.
      *  
@@ -162,55 +168,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(Concept concept) {
-        if (!(concept instanceof FlatTokenInfiniteConcept)) {
-            Concept lub = getOntology().getConceptGraph().leastUpperBound(
-                    _representative, concept);
-            if (lub.equals(_representative)) {
-                return this;
-            } else {
-                return lub;
-            }
-        } else {
-            // We have two FlatTokenInfiniteConcepts
-            return leastUpperBound((FlatTokenInfiniteConcept) concept);
-        }
-    }
-    
-    /** Compute the least upper bound (LUB) of this and another flat token
-     *  infinite concept.
-     *  
-     *  @param concept The other flat token infinite concept
-     *  @return The concept that is the LUB of this and the given concept.
-     */
-    public Concept leastUpperBound(FlatTokenInfiniteConcept concept) {
-        if (!_representative.equals(concept._representative)) {
-            Concept lub = getOntology().getConceptGraph().leastUpperBound(
-                    _representative, concept._representative);
-            if (lub.equals(_representative)) {
-                return this;
-            } else if (lub.equals(concept._representative)) {
-                return concept;
-            } else {
-                if (lub instanceof FlatTokenRepresentativeConcept) {
-                    return getOntology().getConceptGraph().leastUpperBound((
-                            (FiniteConcept) lub).getCoverSetAbove().toArray());
-                } else {
-                    return lub;
-                }
-            }
-        } else {
-            // If the concepts have the same representative then they are
-            // either the exact same concept and the least upper bound is this,
-            // or two incomparable concepts from the same set where their least
-            // upper bound is the least upper bound of the concepts directly
-            // above the representative in the finite lattice.
-            if (this.equals(concept)) {
-                return this;
-            } else {
-                return getOntology().getConceptGraph().leastUpperBound(
-                    _representative.getCoverSetAbove().toArray());
-            }
-        }
+        return _getBoundWithOtherConcept(concept, BoundType.LEASTUPPER);
     }
 
     /** Return the hash code of this record concept, which is uniquely
@@ -246,7 +204,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @throws NameDuplicationException Should never be thrown.
      *  @throws IllegalActionException If the base class throws it.
      */
-    protected FlatTokenInfiniteConcept(Ontology ontology, FlatTokenRepresentativeConcept representative,
+    protected FlatTokenInfiniteConcept(Ontology ontology,
+            FlatTokenRepresentativeConcept representative,
             Token value)
                 throws IllegalActionException, NameDuplicationException {
         super(ontology);
@@ -255,8 +214,120 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
     
+    /** Return the concept that is the correct bound for the given two
+     *  concepts.
+     *  @param concept1 The first concept.
+     *  @param concept2 The second concept.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *    GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is either the least upper bound or greatest
+     *   lower bound of the array of concepts.
+     */
+    private Concept _getBoundFromConceptGraph(Concept concept1, Concept concept2,
+            BoundType boundType) {
+        ConceptGraph conceptGraph = getOntology().getConceptGraph();
+        switch (boundType) {
+        case GREATESTLOWER:
+            return conceptGraph.greatestLowerBound(concept1, concept2);
+        case LEASTUPPER:
+            return conceptGraph.leastUpperBound(concept1, concept2);
+        default:
+            throw new IllegalArgumentException("Unrecognized bound type: "
+                    + boundType + ". Expected either GREATESTLOWER or " +
+                                    "LEASTUPPER");
+        }
+    }
+    
+    /** Compute either the least upper bound or the greatest lower bound of
+     *  this and another concept.
+     *  
+     *  @param concept The other concept.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is the bound of this and the given concept.
+     */
+    private Concept _getBoundWithOtherConcept(Concept concept,
+                        BoundType boundType) {
+        if (concept instanceof FlatTokenInfiniteConcept &&
+                _representative.equals(((FlatTokenInfiniteConcept) concept).
+                        getRepresentative())) {
+            if (this.equals(concept)) {
+                return this;
+            } else {
+                return _getConceptAboveOrBelowRepresentative(boundType);
+            }
+        } else {
+            Concept otherConcept = concept;
+            Concept otherConceptRepresentative = null;
+            if (concept instanceof InfiniteConcept) {
+                otherConceptRepresentative = ((InfiniteConcept) concept).
+                    getRepresentative();
+                if (otherConceptRepresentative != null) {
+                    otherConcept = otherConceptRepresentative;
+                }
+            }
+            Concept bound = _getBoundFromConceptGraph(_representative,
+                                otherConcept, boundType);
+            if (bound.equals(_representative)) {
+                return this;
+            } else if (bound.equals(otherConceptRepresentative) &&
+                    otherConceptRepresentative != null) {
+                return concept;
+            } else if (bound instanceof InfiniteConceptRepresentative) {
+                return null;
+            } else {
+                return bound;
+            }
+        }
+    }
+    
+    /** Return the concept directly above or below the representative concept
+     *  in the ontology lattice.  If there is more than one or zero concepts
+     *  directly above or below, or the concept is an InfiniteConceptRepresentative,
+     *  then return null.
+     * 
+     *  @param boundType Specifies the type of bound; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept directly above if boundType is LEASTUPPER or
+     *   the concept directly below if boundType is GREATESTLOWER.
+     */
+    private FiniteConcept _getConceptAboveOrBelowRepresentative(BoundType boundType) {
+        FiniteConcept[] conceptsAboveOrBelow = new FiniteConcept[0];
+        
+        switch(boundType) {
+        case GREATESTLOWER:
+            conceptsAboveOrBelow = _representative.getCoverSetBelow().
+                toArray(conceptsAboveOrBelow);
+            break;
+        case LEASTUPPER:
+            conceptsAboveOrBelow = _representative.getCoverSetAbove().
+                toArray(conceptsAboveOrBelow);
+            break;
+        default:
+            throw new IllegalArgumentException("Unrecognized bound type: "
+                    + boundType + ". Expected either GREATESTLOWER or " +
+                                    "LEASTUPPER");
+        }
+        
+        // If there is more than one concept above or below, or the one
+        // concept is an InfiniteConceptRepresentative, then there is no
+        // least upper bound and the ontology is not a lattice.
+        if (conceptsAboveOrBelow.length != 1) {
+            return null;
+        } else {
+            FiniteConcept result = conceptsAboveOrBelow[0];
+            if (result instanceof InfiniteConceptRepresentative) {
+                return null;
+            } else {
+                return result;
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////    
 
     /** The finite concept that represents where the infinite token concepts belong
      *  in the ontology lattice.

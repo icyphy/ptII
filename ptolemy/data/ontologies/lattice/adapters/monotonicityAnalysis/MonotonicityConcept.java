@@ -200,6 +200,17 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
         return (FiniteConcept)getOntology().getConceptGraph().bottom();
     }
+    
+    /** Compute the greatest lower bound (GLB) of this and another concept.
+     *  
+     *  @param concept The other concept.
+     *  @return The concept that is the GLB of this and the given concept.
+     */
+    // FIXME: GLB method needs to be implemented.
+    public Concept greatestLowerBound(Concept concept) {
+        throw new IllegalArgumentException("greatestLowerBound method not " +
+        		"implemented.");
+    }
 
     /** Get the set of all variable names referred to by this monotonicity
      *  concept.
@@ -213,7 +224,7 @@ public class MonotonicityConcept extends InfiniteConcept {
 
     /** Compute the least upper bound (LUB) of this and another concept.
      *  
-     *  @param concept The other concept
+     *  @param concept The other concept.
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(Concept concept) {
@@ -229,31 +240,8 @@ public class MonotonicityConcept extends InfiniteConcept {
                 return top;
             }
             // We have two MonotonicityConcepts
-            return leastUpperBound((MonotonicityConcept) concept);
+            return _leastUpperBound((MonotonicityConcept) concept);
         }
-    }
-    
-    /** Compute the least upper bound (LUB) of this and another monotonicity concept.
-     *  
-     *  @param concept The other monotonicity concept
-     *  @return The concept that is the LUB of this and the given concept.
-     */
-    public Concept leastUpperBound(MonotonicityConcept concept) {
-        MonotonicityConcept result = createMonotonicityConcept(getOntology());
-
-        // For some reason Set.addAll throws an UnsupportedOperationException,
-        // so we use a TreeSet here purely to avoid that problem.
-        TreeSet<String> allKeys = new TreeSet<String>(
-                this._variableToMonotonicity.keySet());
-        allKeys.addAll(concept._variableToMonotonicity.keySet());
-        for (String variableName : allKeys) {
-            CPO graph = this.getOntology().getConceptGraph();
-            FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
-                    this.getMonotonicity(variableName),
-                    concept.getMonotonicity(variableName));
-            result.putMonotonicity(variableName, monotonicity);
-        }
-        return result;
     }
 
     /** Return the hash code of this monotonicity concept, which is uniquely
@@ -324,6 +312,29 @@ public class MonotonicityConcept extends InfiniteConcept {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Compute the least upper bound (LUB) of this and another monotonicity concept.
+     *  
+     *  @param concept The other monotonicity concept
+     *  @return The concept that is the LUB of this and the given concept.
+     */
+    private Concept _leastUpperBound(MonotonicityConcept concept) {
+        MonotonicityConcept result = createMonotonicityConcept(getOntology());
+
+        // For some reason Set.addAll throws an UnsupportedOperationException,
+        // so we use a TreeSet here purely to avoid that problem.
+        TreeSet<String> allKeys = new TreeSet<String>(
+                this._variableToMonotonicity.keySet());
+        allKeys.addAll(concept._variableToMonotonicity.keySet());
+        for (String variableName : allKeys) {
+            CPO graph = this.getOntology().getConceptGraph();
+            FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
+                    this.getMonotonicity(variableName),
+                    concept.getMonotonicity(variableName));
+            result.putMonotonicity(variableName, monotonicity);
+        }
+        return result;
+    }
+    
     /** Return the finite monotonicity concept that best represents the
      *  overall monotonicity of this infinite concept.  Currently, this
      *  simply takes the least upper bound of the monotonicity of all the

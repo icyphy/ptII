@@ -83,12 +83,33 @@ public abstract class InfiniteConcept extends Concept {
             return false;
         }
     }
+    
+    /** Return the finite concept representative in the ontology if it exists,
+     *  or null if it does not. Derived classes only need to override this
+     *  method if they have a representative in the ontology. Some infinite
+     *  concepts like {@link RecordConcept} do not need a representative.
+     * 
+     *  @return Return null in the base class.
+     */
+    public InfiniteConceptRepresentative getRepresentative() {
+        return null;
+    }
 
     /** Return a hash code for this Concept.
      *  @return A valid hash code.
      *  @see java.lang.Object#hashCode()
      */
-    abstract public int hashCode();
+    public abstract int hashCode();
+    
+    /** Compute the greatest lower bound (GLB) of this and another concept.
+     *  
+     *  @param concept The other concept
+     *  @return The concept that is the GLB of this and the given concept.
+     *  @exception IllegalArgumentException If concepts are not drawn from
+     *      the same ontology.
+     */
+    public abstract Concept greatestLowerBound(Concept concept)
+            throws IllegalArgumentException;
 
     /** Compute the least upper bound (LUB) of this and another concept.
      *  

@@ -25,7 +25,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
+import ptolemy.data.ontologies.ConceptGraph.BoundType;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -102,10 +104,6 @@ public class RecordConcept extends InfiniteConcept {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        if (concept == null) {
-            return CPO.INCOMPARABLE;
-        }
-        
         if (concept.getOntology() == null || !(concept.getOntology().equals(getOntology()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
@@ -180,6 +178,15 @@ public class RecordConcept extends InfiniteConcept {
     public Set<String> fieldSet() {
         return _fieldToConcept.keySet();
     }
+    
+    /** Compute the greatest lower bound (GLB) of this and another concept.
+     *  
+     *  @param concept The other concept
+     *  @return The concept that is the GLB of this and the given concept.
+     */
+    public Concept greatestLowerBound(Concept concept) {
+        return _getBoundWithOtherConcept(concept, BoundType.GREATESTLOWER);
+    }    
 
     /** Compute the least upper bound (LUB) of this and another concept.
      *  
@@ -187,41 +194,7 @@ public class RecordConcept extends InfiniteConcept {
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(Concept concept) {
-        Concept top = (Concept)getOntology().getConceptGraph().top();
-
-        if (!(concept instanceof RecordConcept)) {
-            if (concept.equals(getOntology().getConceptGraph().bottom())) {
-                return this;
-            } else {
-                return top;
-            }
-        } else {
-            // We have two RecordConcepts
-            return leastUpperBound((RecordConcept) concept);
-        }
-    }
-    
-    /** Compute the least upper bound (LUB) of this and another monotonicity concept.
-     *  
-     *  @param concept The other monotonicity concept
-     *  @return The concept that is the LUB of this and the given concept.
-     */
-    public Concept leastUpperBound(RecordConcept concept) {
-        RecordConcept result = createRecordConcept(getOntology());
-        
-        Set<String> commonFields = _commonFields(concept);
-        
-        // The least upper bound is the record concept that only contains
-        // the common fields and the least upper bound of each concept in that
-        // field.
-        for (String field : commonFields) {
-            ConceptGraph graph = this.getOntology().getConceptGraph();
-            Concept fieldConcept = graph.leastUpperBound(
-                    this.getFieldConcept(field),
-                    concept.getFieldConcept(field));
-            result.putFieldConcept(field, fieldConcept);
-        }
-        return result;
+        return _getBoundWithOtherConcept(concept, BoundType.LEASTUPPER);
     }
 
     /** Return the hash code of this record concept, which is uniquely
@@ -285,6 +258,113 @@ public class RecordConcept extends InfiniteConcept {
         }
         return commonFields;
     }
+    
+    /** Return the concept that is the correct bound for the given two
+     *  concepts.
+     *  @param concept1 The first concept.
+     *  @param concept2 The second concept.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *    GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is either the least upper bound or greatest
+     *   lower bound of the two concepts.
+     */
+    private Concept _getBoundFromConceptGraph(Concept concept1, Concept concept2,
+            BoundType boundType) {
+        ConceptGraph conceptGraph = getOntology().getConceptGraph();
+        switch (boundType) {
+        case GREATESTLOWER:
+            return conceptGraph.greatestLowerBound(concept1, concept2);
+        case LEASTUPPER:
+            return conceptGraph.leastUpperBound(concept1, concept2);
+        default:
+            throw new IllegalArgumentException("Unrecognized bound type: "
+                    + boundType + ". Expected either GREATESTLOWER or " +
+                                    "LEASTUPPER");
+        }
+    }
+    
+    /** Compute either the least upper bound or the greatest lower bound of
+     *  this and another concept.
+     *  
+     *  @param concept The other concept.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is the bound of this and the given concept.
+     */
+    private Concept _getBoundWithOtherConcept(Concept concept, BoundType boundType) {
+        if (concept instanceof RecordConcept) {
+            return _getBoundWithOtherRecordConcept(
+                                (RecordConcept) concept, boundType);
+        } else {
+            Concept latticeEnd = null;
+            Concept otherLatticeEnd = null;
+            ConceptGraph conceptGraph = getOntology().getConceptGraph();
+            switch (boundType) {
+            case GREATESTLOWER:
+                latticeEnd = conceptGraph.bottom();
+                otherLatticeEnd = conceptGraph.top();
+                break;
+            case LEASTUPPER:
+                latticeEnd = conceptGraph.top();
+                otherLatticeEnd = conceptGraph.bottom();
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized bound type: "
+                        + boundType + ". Expected either GREATESTLOWER or " +
+                                        "LEASTUPPER");
+            }
+            
+            if (concept.equals(otherLatticeEnd)) {
+                return this;
+            } else {
+                return latticeEnd;
+            }
+        }
+    }
+    
+    /** Compute either the least upper bound or the greatest lower bound of
+     *  this and another record concept.
+     *  
+     *  @param concept The other flat token infinite concept
+     *  @param boundType Specifies the type of bound to be returned; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is the bound of this and the given concept.
+     */
+    private Concept _getBoundWithOtherRecordConcept(
+                RecordConcept concept, BoundType boundType) {
+        RecordConcept result = createRecordConcept(getOntology());        
+        Set<String> commonFields = _commonFields(concept);
+        
+        // The least upper bound is the record concept that only contains
+        // the common fields and the least upper bound of each concept in that
+        // field.
+        for (String field : commonFields) {
+            Concept fieldConcept = _getBoundFromConceptGraph(
+                    this.getFieldConcept(field), concept.getFieldConcept(field),
+                        boundType);       
+            result.putFieldConcept(field, fieldConcept);
+        }
+        
+        // The greatest lower bound is a record concept that includes all the
+        // disjoint fields from both records in addition to the greatest lower
+        // bounds of each common field.
+        if (boundType.equals(BoundType.GREATESTLOWER)) {
+            Set<String> disjointFields = new TreeSet<String>(this.fieldSet());
+            disjointFields.removeAll(commonFields);
+            for (String field : disjointFields) {
+                result.putFieldConcept(field, this.getFieldConcept(field));
+            }
+            
+            disjointFields = new TreeSet<String>(concept.fieldSet());
+            disjointFields.removeAll(commonFields);
+            for (String field : disjointFields) {
+                result.putFieldConcept(field, concept.getFieldConcept(field));
+            }
+        }
+        
+        return result;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 

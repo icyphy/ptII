@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 /** A class that creates a product lattice-based ontology adapter from
  *   a model-based actor constraints definition attribute.
  * 
- *  @see ActorProductLatticeConstraintsDefinitionAttribute
+ *  @see ActorConstraintsDefinitionAttribute
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1

@@ -100,8 +100,6 @@ public abstract class ConceptGraph implements CPO {
         return _superlativeElement(subset, CPO.HIGHER);
     }
 
-
-
     /** Compute the greatest lower bound (GLB) of two elements.
      *
      *  Not implemented in this base class.
@@ -126,15 +124,7 @@ public abstract class ConceptGraph implements CPO {
      *    implemented.
      */
     public Concept greatestLowerBound(Object[] subset) {
-        if (subset != null && subset.length > 0) {
-            Concept glb = (Concept) subset[0];
-            for (Object concept : subset) {
-                glb = greatestLowerBound(glb, concept);
-            }
-            return glb;
-        } else {
-            return null;
-        }
+        return _getBoundForConceptSubset(subset, BoundType.GREATESTLOWER);
     }
 
     /** Return whether this concept graph is a lattice.
@@ -191,15 +181,7 @@ public abstract class ConceptGraph implements CPO {
      *   specified array is not an element of this concept graph.
      */
     public Concept leastUpperBound(Object[] subset) {
-        if (subset != null && subset.length > 0) {
-            Concept lub = (Concept) subset[0];
-            for (Object concept : subset) {
-                lub = leastUpperBound(lub, concept);
-            }
-            return lub;
-        } else {
-            return null;
-        }
+        return _getBoundForConceptSubset(subset, BoundType.LEASTUPPER);
     }
 
     /** Return the greatest element in this concept graph.
@@ -218,9 +200,89 @@ public abstract class ConceptGraph implements CPO {
     public Concept[] upSet(Object e) {
         throw new IllegalArgumentException(_notImplementedMessage());
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public inner classes                  ////
+    
+    /** An enumeration type to represent the two different types of bounds
+     *  that can be calculated on two concepts in a lattice ontology; either
+     *  a greatest lower bound or least upper bound.
+     */
+    public static enum BoundType {
+        /** Represents the greatest lower bound. */
+        GREATESTLOWER,
+        
+        /** Represents the least upper bound. */
+        LEASTUPPER
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
+    
+    /** Return the concept that is either the greatest lower or least upper
+     *  bound for the given array of concepts.
+     *  
+     *  @param subset The array of concepts from which to calculate the bound.
+     *  @param boundType Specifies the type of bound to be returned; either
+     *   GREATESTLOWER or LEASTUPPER.
+     *  @return The concept that is the correct bound for the array of concepts.
+     *  @exception IllegalArgumentException Thrown if any of the objects in the
+     *   subset array is not a Concept or if the boundType is neither
+     *   GREATESTLOWER or LEASTUPPER.
+     */
+    private Concept _getBoundForConceptSubset(Object[] subset,
+            BoundType boundType) {
+        Concept[] conceptSubset = _getConceptArrayFromObjectArray(subset);
+        
+        if (conceptSubset != null && conceptSubset.length > 0) {
+            Concept bound = conceptSubset[0];
+            for (Concept concept : conceptSubset) {
+                switch(boundType) {
+                case GREATESTLOWER:
+                    bound = greatestLowerBound(bound, concept);
+                    break;
+                case LEASTUPPER:
+                    bound = leastUpperBound(bound, concept);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unrecognized bound type: "
+                            + boundType + ". Expected either GREATESTLOWER or " +
+                                            "LEASTUPPER");
+                }
+            }
+            return bound;
+        } else {
+            return null;
+        }
+    }
+    
+    /** Assuming the input array of objects is an array of concepts, return
+     *  a new concept array that contains all the elements of the input array.
+     *  
+     *  @param elementArray The input array of objects.
+     *  @return An array of concepts that contains all the elements of the
+     *   input array.
+     *  @exception IllegalArgumentException Thrown if any of the objects in
+     *   the elementArray is not a Concept.
+     */
+    private Concept[] _getConceptArrayFromObjectArray(Object[] elementArray) {
+        if (elementArray == null) {
+            return null;
+        }
+        
+        Concept[] conceptArray = new Concept[elementArray.length];
+        for (int i = 0; i < elementArray.length; i++) {
+            if (elementArray[i] instanceof Concept) {
+                conceptArray[i] = (Concept) elementArray[i];
+            } else {
+                throw new IllegalArgumentException("Array of element objects " +
+                		"are not all Concepts. Element " + i +
+                		"is " + elementArray[i] + " which is an instance " +
+                		"of " + elementArray[i].getClass() + ".");
+            }
+        }        
+        return conceptArray;
+    }
 
     /** Return the concept from the given subset of concepts that is the
      *  least or greatest.
@@ -232,9 +294,11 @@ public abstract class ConceptGraph implements CPO {
      *    such concept exists.
      */
     private Concept _superlativeElement(Object[] subset, int direction) {
-        if (subset != null && subset.length > 0) {
-            Concept superlative = (Concept) subset[0];
-            for (Object concept : subset) {
+        Concept[] conceptSubset = _getConceptArrayFromObjectArray(subset);
+        
+        if (conceptSubset != null && conceptSubset.length > 0) {
+            Concept superlative = conceptSubset[0];
+            for (Object concept : conceptSubset) {
                 if (compare(concept, superlative) == CPO.INCOMPARABLE) {
                     return null;
                 } else if (compare(concept, superlative) == direction) {
