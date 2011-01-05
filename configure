@@ -3038,7 +3038,7 @@ case "$JVERSION" in
 	*)
 	        # -breakiterator is only present in jdk1.4 and later
 		JDOCBREAKITERATOR=-breakiterator
-                # Ptalon uses generics, assume 1.6 or greater here
+                # Ptalon uses generics, assume 1.5 or greater here
                 HAS_GENERICS=yes
 		JAVA1_6_OR_LATER=yes
 		if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
@@ -7554,7 +7554,7 @@ fi
 #--------------------------------------------------------------------
 #       JAI is the Java Advanced Imaging Framework
 #	For more information,
-#       see http://java.sun.com/products/java-media/jai/
+#       see https://jai.dev.java.net/
 #       See if there was a command-line option for where JAI is.
 #--------------------------------------------------------------------
 
@@ -7650,13 +7650,13 @@ echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from
-    http://java.sun.com/products/java-media/jai/" >&5
+    https://jai.dev.java.net/" >&5
 echo "$as_me: WARNING: '\"$JAVAC\" JAITest.java' failed.
     perhaps the Java Advanced Imaging API is not installed?
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from
-    http://java.sun.com/products/java-media/jai/" >&2;}
+    https://jai.dev.java.net/" >&2;}
     fi
     cd "$startdir"
 fi
@@ -7748,7 +7748,7 @@ fi
 #--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information,
-#       see http://java.sun.com/products/java-media/jmf
+#       see http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html
 #       See if there was a command-line option for where JMF is.
 #--------------------------------------------------------------------
 
@@ -7841,13 +7841,13 @@ echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
     You need not download the JMF unless you plan on using the video
     actors in $JMF_USER_DIR
     The JMF SDK can be downloaded from
-    http://java.sun.com/products/java-media/jmf" >&5
+    http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html" >&5
 echo "$as_me: WARNING: '\"$JAVAC\" JMFTest.java' failed.
     perhaps the Java Media Framework (JMF) is not installed?
     You need not download the JMF unless you plan on using the video
     actors in $JMF_USER_DIR
     The JMF SDK can be downloaded from
-    http://java.sun.com/products/java-media/jmf" >&2;}
+    http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html" >&2;}
     fi
     cd "$startdir"
 fi
@@ -9331,6 +9331,7 @@ fi
 
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
+#       https://java3d.dev.java.net/
 #--------------------------------------------------------------------
 # PTJAVA3D_DIR is set to gr and used in
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
@@ -9389,7 +9390,7 @@ echo "${ECHO_T}ok" >&6; }; fi
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        { echo "$as_me:$LINENO: WARNING: '\"$JAVAC\" -classpath \"$Java3DClasspath\" java3dTest.java' failed.
-    Java 3D may be found at http://java.sun.com/products/java-media/3D/download.html
+    Java 3D may be found at https://java3d.dev.java.net/
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.
@@ -9397,7 +9398,7 @@ echo "${ECHO_T}ok" >&6; }; fi
     where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
     ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext" >&5
 echo "$as_me: WARNING: '\"$JAVAC\" -classpath \"$Java3DClasspath\" java3dTest.java' failed.
-    Java 3D may be found at http://java.sun.com/products/java-media/3D/download.html
+    Java 3D may be found at https://java3d.dev.java.net/
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.
@@ -12348,7 +12349,7 @@ fi
 # and use JDOCTAGLET in doc/makefile
 
 
-# Jini home directory, see http://www.sun.com/jini/
+# Jini home directory, see https://jini.dev.java.net/
 
 
 # If Jini is present, the set to yes, otherwise, set to no
