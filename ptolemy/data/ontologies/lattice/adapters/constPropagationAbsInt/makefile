@@ -54,8 +54,6 @@ JSRCS =  \
 	ConstPropagationAbsIntInfiniteConceptsOperations.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ConstAbstractInterpretationSolverModel.xml \
-	constAbstractInterpretation.xml \
 	ConstPropagationAbsIntSolverModel.xml \
 	constPropagationAbsInt.xml
 
