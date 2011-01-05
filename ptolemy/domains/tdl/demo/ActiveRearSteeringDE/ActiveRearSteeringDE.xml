@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ActiveRearSteeringDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={198, 22, 1178, 828}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 22, 1178, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[965, 722]">
     </property>
@@ -892,6 +892,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 95.0}">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1280, -400, 1600, 1200}, maximized=true}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1387, 1090]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{693.5, 545.0}">
+        </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 385.0}">
@@ -1366,6 +1374,8 @@
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="{585.0, 330.0}">
@@ -1374,6 +1384,8 @@
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1388,6 +1400,8 @@
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1413,8 +1427,6 @@
         </relation>
         <relation name="relation27" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation29" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="{606.6560897827148, 622.3393249511719}">
             </vertex>
@@ -1434,8 +1446,14 @@
         <relation name="relation35" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="port" relation="relation37"/>
         <link port="Const.output" relation="relation10"/>
@@ -1528,7 +1546,7 @@
         <link relation1="relation15" relation2="relation26"/>
     </entity>
     <entity name="sigGen" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 423, 550, 366}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 397, 550, 366}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[550, 322]">
         </property>
@@ -4706,7 +4724,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0010" max="25.0"/>
-<yRange min="-0.7999999049971668" max="8.35729393053522"/>
+<yRange min="-0.799999904766734" max="8.356179350644002"/>
 </plot>?>
         </configure>
     </entity>
@@ -4721,7 +4739,7 @@
         </property>
     </entity>
     <entity name="u" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={810, 275, 582, 330}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={698, 275, 582, 330}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 286]">
         </property>
@@ -4737,7 +4755,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0010" max="25.0"/>
-<yRange min="-0.0015741664874452943" max="0.001572975585139906"/>
+<yRange min="-0.0015565509572984526" max="0.0015553787089700177"/>
 </plot>?>
         </configure>
     </entity>
