@@ -67,62 +67,9 @@ and continue with the start up.
 	<li> Applets do not correctly display the TextAttribute,
 	DocumentationAttribute or the TM "Show schedule" icon.
 
-	<li> The Ptolemy II Applets require java 1.4.1_02 or later so
-	as to prevent problems with Windows XP and Radeon displays
-	that causes XP to hang when a Java application is exiting.
-	For details, see
-
-<a href="http://developer.java.sun.com/developer/bugParade/bugs/4713003.html#in_browser" target="_top"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4713003.html</CODE></a>
-	 <br>For non-applet situations, we can invoke the browser with
-	<CODE>-Dsun.java2d.d3d=false</CODE> or 
-	<CODE>-Dsun.java2d.noddraw=true</CODE>, but for applets we must
-	require Java 1.4.1_02 or later.  
-	 <br>As a result, the applet html code requires version 1.4.2 or later,
-
 	<li>Applets seem to run out of memory after about 82Mb.
 
 	<li>There are no Jython or Cal applets 
-
-	<li> Opera has problems viewing applets that are on the local
-	file system.  In particular, it seems to have problems with urls like
-	<CODE>file:///d|/ptII/ptolemy/plot/demo/FourierSeries.htm</CODE>
-	which work fine in Netscape 4.x, IE, Mozilla.
-
-	 <p>However, if I use the following style of URL, then some of the applets
-	work: 
-<CODE>file://localhost/d:/ptII/ptolemy/plot/demo/FourierSeries.htm</CODE>.
-	Unfortunately any applet that accesses a data file will
-	not work with the above URL style because the data file will
-	be outside the codebase.
-
-	 <p> The solution is to install a web server on the local
-	machine and view the applets using 
-	<CODE>http://localhost/</CODE>
-	
-        <li> Opera 6.03/Windows 2000/Java 1.4.0, may have
-        problems running applets that include diva.jar if diva.jar
-	is not downloaded in the first applet.  To reproduce this problem:
-	<ol>
-	<li> Run <a href="../ptolemy/domains/sdf/demo/Butterfly/Butterfly.htm">SDF Butterfly</a>, which does not use diva.jar
-
-	<li> <a href="../ptolemy/domains/sdf/demo/Expression/Expression.htm">SDF Expression</a>, which uses diva.jar
-
-	<li> In Opera, do <CODE>Window</CODE> -&gt; <CODE>Special</CODE>
-	-&gt; <CODE>Java Console</CODE>, and you will see the following
-        stack trace
-<pre>
-java.lang.NoClassDefFoundError: diva/graph/GraphController	
-at java.lang.Class.getDeclaredConstructors0(Native Method)  
-at java.lang.Class.privateGetDeclaredConstructors(Class.java:1576) 
-at java.lang.Class.getConstructor0(Class.java:1748) 
-at java.lang.Class.newInstance0(Class.java:266)  
-at java.lang.Class.newInstance(Class.java:249) 
-at opera.PluginPanel.run(opera/PluginPanel.java:343) 
-at java.lang.Thread.run(Thread.java:536)  
-</pre>
-
-	</ol>
-	The problem only occurs under Opera.
 
 	<li> Running the Networked demo via an applet on the local
 	file system results in an AccessControlException.
@@ -153,7 +100,7 @@ Attempted to find as a moml class, but got:
 	not on the local file system, so we get a SecurityException.
 	 <br>The workaround is to run the applet by downloading it
 	from the Ptolemy Website:
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII7.0/ptII8.1.devel/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII7.0/ptII8.1.devel/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
 
 
 	<li> If an icon file is not present, then a Vergil applet might
@@ -182,33 +129,6 @@ Attempted to find as a moml class, but got:
 	has been running for a while and then the Matlab interface is loaded.
 	<br><b>Workaround #1</b>: Run a model that uses the Matlab interface
 	as the first model by doing Quick Tour -&gt; Matlab CT.
-	<br><b>Workaround #2</b>:
-        We believe that the problem has to do with loading the Direct
-	Draw library.
-<a href="http://developer.java.sun.com/developer/bugParade/bugs/4838939.html#in_browser" target="_top"><code>http://developer.java.sun.com/developer/bugParade/bugs/4838939.html</code></a>
-        suggests invoking java with <code>-Dsun.java2d.noddraw=true</code>.
-	<br>The way to do this is to edit <code>vergil-full.<b>lax</b></code>
-	and add the line
-	<pre>
-lax.nl.java.option.additional=-Dsun.java2d.noddraw=true	
-</pre>
-        which we went ahead and did.  Note that because of problems
-	with Radeon displays, setting noddraw to true is not such
-	a bad idea.  See above for details.
-        <br>The way to check if this argument is being used is to
-	hold down the Control key and double click on the
-	<code>vergil-full.<b>exe</b></code> icon.
-	<br>You should see something like:
-	<pre>	
-c:\j2sdk1.4.2\bin\java.exe -Dsun.java2d.noddraw=true com.zerog.lax.LAX C:\\Ptol
-emy\\Ptolemy_II_7.0ptiny\\vergil-ptiny.lax C:\\DOCUME~1\\cxh\\LOCALS~1\\Temp
-\\env.prop
-executing java...
-        </pre>
-	Note that to debug the binary, you would use the following line:
-        <pre>
-lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n 
-        </pre>
 
 	<li> The Windows installer works best if you are in the 
 	Administrators Windows group.   Otherwise, the Windows installer
