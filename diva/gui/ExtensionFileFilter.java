@@ -32,6 +32,8 @@ package diva.gui;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -50,6 +52,10 @@ import javax.swing.filechooser.FileFilter;
  *                   new String{"gif", "jpg"}, "JPEG & GIF Images")
  *     chooser.addChoosableFileFilter(filter);
  *     chooser.showOpenDialog(this);
+ * 
+ * <p>Note that as of Java 1.6, there is a FileNameExtensionFilter which
+ * replaces this class.  See 
+ * http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
  *
  * @version 1.7 04/23/99
  * @author Jeff Dinkins
@@ -133,6 +139,19 @@ public class ExtensionFileFilter extends FileFilter {
         setDescription(description);
     }
 
+    /** Construct a file filter that filters out all files that do
+     *  not have one of the extensions in the given list.
+     *  @param extensions A list of extensions, each of which is
+     *   a String.
+     */
+    public ExtensionFileFilter(List extensions) {
+        Iterator extensionsIterator = extensions.iterator();
+        while (extensionsIterator.hasNext()) {
+            String matchExtension = (String) extensionsIterator.next();
+            addExtension(matchExtension);
+        }
+    }
+
     /**
      * Return true if this file should be shown in the directory pane,
      * false if it shouldn't.
@@ -153,8 +172,6 @@ public class ExtensionFileFilter extends FileFilter {
             if ((extension != null) && (filters.get(getExtension(f)) != null)) {
                 return true;
             }
-
-            ;
         }
 
         return false;
@@ -205,6 +222,10 @@ public class ExtensionFileFilter extends FileFilter {
      * Note that the "." before the extension is not needed and will be ignored.
      */
     public void addExtension(String extension) {
+        if (extension == null) {
+            return;
+        }
+
         if (filters == null) {
             filters = new Hashtable(5);
         }
@@ -227,23 +248,48 @@ public class ExtensionFileFilter extends FileFilter {
             if ((description == null) || isExtensionListInDescription()) {
                 if (description != null) {
                     fullDescription = description;
+                } else {
+                    fullDescription = "";
                 }
 
-                fullDescription += " (";
+                //fullDescription += " (";
 
-                // build the description from the extension list
+                StringBuffer result = new StringBuffer();
+                //Iterator extensions = filters.values().iterator();
                 Enumeration extensions = filters.keys();
+                int extensionNumber = 1;
+                int size = filters.size();
 
-                if (extensions != null) {
-                    fullDescription += ("." + (String) extensions.nextElement());
+                while (extensions.hasMoreElements()) {
+                    String extension = (String) extensions.nextElement();
+                    result.append(".");
+                    result.append(extension);
 
-                    while (extensions.hasMoreElements()) {
-                        fullDescription += (", " + (String) extensions
-                                .nextElement());
+                    if (extensionNumber < (size - 1)) {
+                        result.append(", ");
+                    } else if (extensionNumber < size) {
+                        result.append(" and ");
                     }
+
+                    extensionNumber++;
                 }
 
-                fullDescription += ")";
+                result.append(" files");
+                fullDescription += result;
+
+                // // build the description from the extension list
+                // Enumeration extensions = filters.keys();
+
+                // if (extensions != null) {
+                //     fullDescription += ("." + (String) extensions.nextElement());
+
+                //     while (extensions.hasMoreElements()) {
+                //         fullDescription += (", " + (String) extensions
+                //                 .nextElement());
+                //     }
+                // }
+
+                //fullDescription += ")";
             } else {
                 fullDescription = description;
             }

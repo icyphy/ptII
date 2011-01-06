@@ -133,12 +133,11 @@ public class ExportPDFAction extends AbstractAction {
         try {
             background = jFileChooserBugFix.saveBackground();
 
-            JFileChooser fileDialog = _saveAsFileDialog();
+            JFileChooser fileDialog = new JFileChooser();
             fileDialog.setDialogTitle("Specify a file to write to.");
             LinkedList extensions = new LinkedList();
             extensions.add("pdf");
-            extensions.add("PDF");
-            fileDialog.addChoosableFileFilter(new ExtensionFileFilter(
+            fileDialog.addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
                     extensions));
 
             // FIXME: _directory is protected in BasicGraphFrame
@@ -159,7 +158,10 @@ public class ExportPDFAction extends AbstractAction {
             }
             //}
 
-            int returnVal = fileDialog.showSaveDialog(_frame);
+            // Under Java 1.6 and Mac OS X, showSaveDialog ignores the filter.
+            //int returnVal = fileDialog.showSaveDialog(_frame);
+            int returnVal = fileDialog.showDialog(_frame, "Export PDF");
+
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 // FIXME: _directory is protected in BasicGraphFrame
                 //_directory = fileDialog.getCurrentDirectory();
@@ -205,126 +207,8 @@ public class ExportPDFAction extends AbstractAction {
         document.close();
     }
 
-    private JFileChooser _saveAsFileDialog() {
-        // FIXME: copied from Top.
-        JFileChooser fileDialog = new JFileChooser();
-
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
-
-        fileDialog.setDialogTitle("Save as...");
-        // FIXME:  _getCurrentDirectory is in Top
-        //fileDialog.setCurrentDirectory(_getCurrentDirectory());
-        return fileDialog;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                    private variables
 
     BasicGraphFrame _frame;
-
-    /** The FileFilter that determines what files are displayed by
-     *  the Open dialog and the Save As dialog
-     *  The initial default is null, which causes no FileFilter to be
-     *  applied, which results in all files being displayed.
-     *  // FIXME: copied from Top.
-     */
-    protected FileFilter _fileFilter = null;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** File filter that filters out files that do not have one of a
-     *  pre-specified list of extensions.
-     */
-    protected static class ExtensionFileFilter extends FileFilter {
-
-        // FIXME: copied from ptolemy.actor.gui.TableauFrame
-
-        // NetBeans wants this protected.  If it is package visibility,
-        // then there are problems accessing it from the same package
-        // but a different jar.
-
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Construct a file filter that filters out all files that do
-         *  not have one of the extensions in the given list.
-         *  @param extensions A list of extensions, each of which is
-         *   a String.
-         */
-        public ExtensionFileFilter(List extensions) {
-            _extensions = extensions;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                     public methods                    ////
-
-        /** Accept only files with one of the extensions given in the
-         *  constructor.
-         *  @param fileOrDirectory The file to be checked.
-         *  @return True if the file is a directory or has one of the
-         *   specified extensions.
-         */
-        public boolean accept(File fileOrDirectory) {
-            if (fileOrDirectory.isDirectory()) {
-                return true;
-            }
-
-            String fileOrDirectoryName = fileOrDirectory.getName();
-            int dotIndex = fileOrDirectoryName.lastIndexOf('.');
-
-            if (dotIndex == -1) {
-                return false;
-            }
-
-            String extension = fileOrDirectoryName.substring(dotIndex + 1);
-
-            if (extension != null) {
-                Iterator extensions = _extensions.iterator();
-
-                while (extensions.hasNext()) {
-                    String matchExtension = (String) extensions.next();
-
-                    if (extension.equalsIgnoreCase(matchExtension)) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /**  The description of this filter. */
-        public String getDescription() {
-            StringBuffer result = new StringBuffer();
-            Iterator extensions = _extensions.iterator();
-            int extensionNumber = 1;
-            int size = _extensions.size();
-
-            while (extensions.hasNext()) {
-                String extension = (String) extensions.next();
-                result.append(".");
-                result.append(extension);
-
-                if (extensionNumber < (size - 1)) {
-                    result.append(", ");
-                } else if (extensionNumber < size) {
-                    result.append(" and ");
-                }
-
-                extensionNumber++;
-            }
-
-            result.append(" files");
-            return result.toString();
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                     private variables                 ////
-        // The list of acceptable file extensions.
-        private List _extensions;
-    }
-
 }

@@ -118,10 +118,10 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         super(tableau, null, placeable);
         plot = plotBox;
 
-        // Create a file filter that accepts .xml and .moml files.
-        LinkedList extensions = new LinkedList();
-        extensions.add("plt");
-        _fileFilter = new ExtensionFileFilter(extensions);
+        // Note that as of Java 1.6, there is a FileNameExtensionFilter which
+        // replaces diva.gui.ExtensionFileFilter, see
+        //http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
+        _fileFilter = new diva.gui.ExtensionFileFilter("plt");
 
         // Background color is a light grey.
         plot.setBackground(new Color(0xe5e5e5));

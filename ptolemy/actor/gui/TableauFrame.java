@@ -1262,8 +1262,13 @@ public class TableauFrame extends Top {
 
     /** File filter that filters out files that do not have one of a
      *  pre-specified list of extensions.
+     *  Note that as of Java 1.6, there is a FileNameExtensionFilter which
+     *  replaces diva.gui.ExtensionFileFilter, see
+     *  http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
+     *
+     *  @deprecated Use diva.gui.ExtensionFileFilter or javax.swing.filechooser.FileNameExtensionFilter
      */
-    public static class ExtensionFileFilter extends FileFilter {
+    protected static class ExtensionFileFilter extends diva.gui.ExtensionFileFilter {
         // NetBeans wants this protected.  If it is package visibility,
         // then there are problems accessing it from the same package
         // but a different jar.
@@ -1275,78 +1280,11 @@ public class TableauFrame extends Top {
          *  not have one of the extensions in the given list.
          *  @param extensions A list of extensions, each of which is
          *   a String.
+         *  @deprecated Use diva.gui.ExtensionFileFilter.addExtension().
          */
         public ExtensionFileFilter(List extensions) {
-            _extensions = extensions;
+            super(extensions);
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////                     public methods                    ////
-
-        /** Accept only files with one of the extensions given in the
-         *  constructor.
-         *  @param fileOrDirectory The file to be checked.
-         *  @return True if the file is a directory or has one of the
-         *   specified extensions.
-         */
-        public boolean accept(File fileOrDirectory) {
-            if (fileOrDirectory.isDirectory()) {
-                return true;
-            }
-
-            String fileOrDirectoryName = fileOrDirectory.getName();
-            int dotIndex = fileOrDirectoryName.lastIndexOf('.');
-
-            if (dotIndex == -1) {
-                return false;
-            }
-
-            String extension = fileOrDirectoryName.substring(dotIndex + 1);
-
-            if (extension != null) {
-                Iterator extensions = _extensions.iterator();
-
-                while (extensions.hasNext()) {
-                    String matchExtension = (String) extensions.next();
-
-                    if (extension.equalsIgnoreCase(matchExtension)) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /**  The description of this filter. */
-        public String getDescription() {
-            StringBuffer result = new StringBuffer();
-            Iterator extensions = _extensions.iterator();
-            int extensionNumber = 1;
-            int size = _extensions.size();
-
-            while (extensions.hasNext()) {
-                String extension = (String) extensions.next();
-                result.append(".");
-                result.append(extension);
-
-                if (extensionNumber < (size - 1)) {
-                    result.append(", ");
-                } else if (extensionNumber < size) {
-                    result.append(" and ");
-                }
-
-                extensionNumber++;
-            }
-
-            result.append(" files");
-            return result.toString();
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                     private variables                 ////
-        // The list of acceptable file extensions.
-        private List _extensions;
     }
 
     /** Listener for view menu commands. */

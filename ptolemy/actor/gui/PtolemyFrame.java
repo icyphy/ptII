@@ -96,14 +96,19 @@ public abstract class PtolemyFrame extends TableauFrame {
     public PtolemyFrame(NamedObj model, Tableau tableau) {
         super(tableau);
 
-        // Create a file filter that accepts .xml and .moml files.
+        // Add .xml and .moml to the list of extensions.
+        // Note that extensions are matched in a case-insenstive
+        // manner, so this will also match .MoML and .XML.
         LinkedList extensions = new LinkedList();
         extensions.add("xml");
         extensions.add("moml");
-        extensions.add("XML");
-        extensions.add("MOML");
-        extensions.add("MoML");
-        _fileFilter = new ExtensionFileFilter(extensions);
+        // We use a constructor that takes a list because
+        // _fileFilter is declared in Top to be a javax.swing.filechooser.FileFilter.
+        // Thus, we can't call diva.gui.ExtensionFileFilter.addExtension();
+        // Note that as of Java 1.6, there is a FileNameExtensionFilter which
+        // replaces diva.gui.ExtensionFileFilter, see
+        //http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
+        _fileFilter = new diva.gui.ExtensionFileFilter(extensions);
 
         setModel(model);
 

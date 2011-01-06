@@ -603,6 +603,7 @@ public class PlotFrame extends JFrame {
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
                 "plot.xml"));
 
+        // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
         int returnVal = fileDialog.showSaveDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
