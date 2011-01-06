@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Petri net domain kernel directory.
+# Makefile for Ptolemy II Petri Net Simple demo.
 #
-# @Authors: Edward A. Lee
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,51 +29,55 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/petrinet/kernel
+ME =		ptolemy/domains/petrinet/demo/PetriNetSimple
 
-# Root of the ptII directory
-ROOT =		../../../..
+# Root of the Java directory
+ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test
-
-CLASSPATH =	../../../..
-
-# Used to build zip files
-PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	PetriNetDirector.java \
-	PetriNetDisplayer.java \
-	PetriNetActor.java \
-	Place.java \
-	Transition.java
+# Used to build jar files
+PTPACKAGE = 	PetriNetSimple
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	TransitionIcon.xml \
-	petrinetentities.xml
+	PetriNetSimple.xml \
+	PetriNet.jpg
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: all jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer PetriNetSimple.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" PetriNetSimple.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" PetriNetSimple.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

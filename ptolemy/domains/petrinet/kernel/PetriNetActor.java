@@ -57,8 +57,8 @@ import ptolemy.kernel.util.Workspace;
  @author  Yuke Wang
  @version $Id$
  @since Ptolemy II 2.0
- @Pt.ProposedRating Red (yukewang)
- @Pt.AcceptedRating Red (reviewmoderator)
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class PetriNetActor extends TypedCompositeActor {
     /** Construct a PetriNetActor in the default workspace with an empty string

@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Petri net domain kernel directory.
+# Makefile for the Ptolemy II Petri net domain lib gui directory.
 #
-# @Authors: Edward A. Lee
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,34 +29,31 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/petrinet/kernel
+ME =            ptolemy/domains/petrinet/lib/gui
 
 # Root of the ptII directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test
+DIRS =
 
-CLASSPATH =	../../../..
+CLASSPATH =	../../../../..
 
 # Used to build zip files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	gui
 PTCLASSJAR =	$(PTPACKAGE).jar
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =
+PTCLASSALLJAR =
 
 JSRCS = \
-	PetriNetDirector.java \
-	PetriNetDisplayer.java \
-	PetriNetActor.java \
-	Place.java \
-	Transition.java
+	PetriNetDisplay.java
 
-OTHER_FILES_TO_BE_JARED = \
-	TransitionIcon.xml \
-	petrinetentities.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

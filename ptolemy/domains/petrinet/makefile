@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Xiaojun Liu
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 1998-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/petrinet
 
-DIRS =		kernel
+DIRS =		kernel lib demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -46,14 +46,15 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar
+		kernel/kernel.jar \
+		lib/lib.jar 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel
+MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

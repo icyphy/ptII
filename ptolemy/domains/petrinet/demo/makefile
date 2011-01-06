@@ -1,10 +1,9 @@
-# Makefile for the Ptolemy II Petri net domain kernel directory.
-#
-# @Authors: Edward A. Lee
+# Makefile for PtolemyII Petri Net Domain Demos
 #
 # @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,51 +28,44 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/petrinet/kernel
+ME =		ptolemy/domains/sdf/demo
 
-# Root of the ptII directory
+# Keep these alphabetical please.
+DIRS =		PetriNetDiningPhilosophers PetriNetSimple
+
+# Root of Ptolemy II directory
 ROOT =		../../../..
-
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test
+# Used to build jar files
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-CLASSPATH =	../../../..
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar \
+	PetriNetSimple/PetriNetSimple.jar
 
-# Used to build zip files
-PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	PetriNetDirector.java \
-	PetriNetDisplayer.java \
-	PetriNetActor.java \
-	Place.java \
-	Transition.java
-
-OTHER_FILES_TO_BE_JARED = \
-	TransitionIcon.xml \
-	petrinetentities.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
-JCLASS = $(JSRCS:%.java=%.class)
-
 all: jclass
-install: all jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
