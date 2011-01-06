@@ -45,8 +45,7 @@ PTPACKAGE = 	PetriNetSimple
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	PetriNetSimple.xml \
-	PetriNet.jpg
+	PetriNetSimple.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
