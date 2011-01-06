@@ -1095,6 +1095,7 @@ public abstract class Top extends JFrame {
             // dialog so that subclasses can customize this dialog.
             JFileChooser fileDialog = _saveAsFileDialog();
 
+            // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
             if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 _file = fileDialog.getSelectedFile();
 
