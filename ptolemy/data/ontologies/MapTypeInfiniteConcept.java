@@ -37,12 +37,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  *  @author Ben Lickly
  *  @version $Id$
+ *  @param <C> The type of the concepts that form the range of the mapping.
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public abstract class MapTypeInfiniteConcept extends InfiniteConcept {
+public abstract class MapTypeInfiniteConcept<C extends Concept> extends InfiniteConcept {
 
     /** Create a new MapTypeInfiniteConcept contained in the given ontology.
      *  @param ontology The containing ontology.
@@ -62,7 +63,7 @@ public abstract class MapTypeInfiniteConcept extends InfiniteConcept {
      *   we are querying.
      *  @return The concept value held by this field in the record concept.
      */
-    public Concept getConcept(String fieldName) {
+    public C getConcept(String fieldName) {
         return _keyToConcept.get(fieldName);
     }
 
@@ -91,7 +92,7 @@ public abstract class MapTypeInfiniteConcept extends InfiniteConcept {
      *  @param fieldConcept The concept value of the record field.
      *  @see #getConcept(String)
      */
-    public void putConcept(String fieldLabel, Concept fieldConcept) {
+    public void putConcept(String fieldLabel, C fieldConcept) {
         _keyToConcept.put(fieldLabel, fieldConcept);
     }
     
@@ -124,7 +125,7 @@ public abstract class MapTypeInfiniteConcept extends InfiniteConcept {
      *  @param otherConcept The other map concept.
      *  @return The common fields, as a set of Strings.
      */
-    protected Set<String> _commonKeys(MapTypeInfiniteConcept otherConcept) {
+    protected Set<String> _commonKeys(MapTypeInfiniteConcept<C> otherConcept) {
         Set<String> fieldLabels = this._keyToConcept.keySet();
         Set<String> otherFieldLabels = otherConcept._keyToConcept.keySet();
 
@@ -144,7 +145,7 @@ public abstract class MapTypeInfiniteConcept extends InfiniteConcept {
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
      */
-    private SortedMap<String, Concept> _keyToConcept =
-        new TreeMap<String, Concept>();
+    private SortedMap<String, C> _keyToConcept =
+        new TreeMap<String, C>();
 
 }
