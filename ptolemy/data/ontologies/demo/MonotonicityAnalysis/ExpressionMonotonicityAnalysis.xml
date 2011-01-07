@@ -54,7 +54,7 @@
     </property>
     <entity name="IntegratorConstraintExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Unknown) ? Unknown :&#10;(x &lt;= Acceleration) ? Velocity :&#10;(x &lt;= Velocity) ? Position :&#10;(x &lt;= Dimensionless) ? Time :&#10;Conflict">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:Monotonic }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -62,7 +62,7 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ x:Monotonic }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -77,9 +77,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:Monotonic }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ x:Monotonic }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -88,7 +88,7 @@
     </entity>
     <entity name="NonmonotonicSubexpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Acceleration) ? Velocity :&#10;(x &lt;= Velocity) ? Position :&#10;Conflict">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:General }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -96,7 +96,7 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ x:General }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -111,9 +111,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:General }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ x:General }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -122,9 +122,9 @@
     </entity>
     <entity name="ConstantExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(Acceleration == Position) ? Conflict : Time">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -139,9 +139,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -150,9 +150,9 @@
     </entity>
     <entity name="AntimonotonicExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(Acceleration &lt; x) ? Unknown : Velocity">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:Antimonotonic }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ x:Antimonotonic }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -167,9 +167,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ x:Antimonotonic }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ x:Antimonotonic }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">

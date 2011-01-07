@@ -264,7 +264,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ acc = Acceleration, pos = Position, vel = Velocity }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
             </property>
         </port>
         <port name="pos" class="ptolemy.actor.TypedIOPort">
@@ -294,7 +294,7 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ acc = Acceleration, pos = Position, vel = Velocity }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
             </property>
         </port>
         <port name="pos" class="ptolemy.actor.TypedIOPort">

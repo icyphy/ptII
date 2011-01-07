@@ -30,9 +30,9 @@
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(y &lt;= Monotonic) ? Constant : y">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ y:Monotonic }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{y = Monotonic}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ y:Monotonic }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{y = Monotonic}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -47,9 +47,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ y:Monotonic }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{y = Monotonic}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ y:Monotonic }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{y = Monotonic}">
             </property>
         </port>
         <port name="y" class="ptolemy.actor.TypedIOPort">

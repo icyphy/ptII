@@ -30,9 +30,9 @@
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Time">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -47,9 +47,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{ }">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">

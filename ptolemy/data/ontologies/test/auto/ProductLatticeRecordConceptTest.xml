@@ -213,7 +213,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}">
             </property>
         </port>
         <port name="time" class="ptolemy.actor.TypedIOPort">
@@ -250,7 +250,7 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{ acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero }">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}">
             </property>
         </port>
         <port name="time" class="ptolemy.actor.TypedIOPort">
