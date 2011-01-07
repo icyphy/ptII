@@ -158,22 +158,22 @@ public class PthalesReceiver extends SDFReceiver {
         if (_buffer != null) {
             Token result = null;
             if (_dynamic) {
-                if (_currentCtrlPosOut < _headerSize) {
-                    result = _header.get(_currentCtrlPosOut);
-                    _currentCtrlPosOut++;
-                    if (_currentCtrlPosOut >= _headerSize) {
+                if (_currentCtrlPositionOut < _headerSize) {
+                    result = _header.get(_currentCtrlPositionOut);
+                    _currentCtrlPositionOut++;
+                    if (_currentCtrlPositionOut >= _headerSize) {
                         _header.clear();
                     }
                 } else {
-                    result = _buffer[_getAddress(_posIn++, true)];
+                    result = _buffer[_getAddress(_positionIn++, true)];
                 }
 
             } else {
-                result = _buffer[_getAddress(_posIn++, true)];
+                result = _buffer[_getAddress(_positionIn++, true)];
             }
             return result;
         } else {
-            throw new NoTokenException("Empty buffer in PthalesReceiver !");
+            throw new NoTokenException(getContainer(), "Empty buffer in PthalesReceiver !");
         }
     }
 
@@ -201,7 +201,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom() {
-        return (_getAddress(_posOut, true) < _buffer.length);
+        return (_getAddress(_positionOut, false) < _buffer.length);
     }
 
     /** Return true if the buffer can contain n more token.
@@ -209,14 +209,14 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom(int numberOfTokens) {
-        return (_getAddress(_posOut + (numberOfTokens - 1), true) < _buffer.length);
+        return (_getAddress(_positionOut + (numberOfTokens - 1), false) < _buffer.length);
     }
 
     /** Return if the buffer contains 1 more token to be read.
      *  @return True.
      */
     public boolean hasToken() {
-        return (_getAddress(_posIn, true) < _buffer.length);
+        return (_getAddress(_positionIn, true) < _buffer.length);
     }
 
     /** Return if the buffer contains n more token to be read.
@@ -224,7 +224,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
-        return (_getAddress(_posIn + (numberOfTokens - 1), true) < _buffer.length);
+        return (_getAddress(_positionIn + (numberOfTokens - 1), true) < _buffer.length);
     }
 
     /**
@@ -241,7 +241,8 @@ public class PthalesReceiver extends SDFReceiver {
         return true;
     }
 
-    /** Put the specified token into this receiver.
+    /** Put the specified token into the next appropriate array position,
+     *  given the FIXME.
      *  If the specified token is null, this method
      *  inserts a null into the array.
      *  @param token The token to put into the receiver.
@@ -251,12 +252,14 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void put(Token token) {
         if (_buffer != null) {
-            if (_dynamic) {
+            if (!_dynamic) {
+                _buffer[_getAddress(_positionOut++, false)] = token;
+            } else {
                 if (_header.size() == 0) {
                     //the first token of the header
                     _headerSize = ((IntToken) token).intValue() * 2 + 2;
                     _header.add(token);
-                    _currentCtrlPosOut = 0;
+                    _currentCtrlPositionOut = 0;
                 } else if (_header.size() < _headerSize) {
                     _header.add(token);
                     if (_header.size() == _headerSize) {
@@ -330,10 +333,8 @@ public class PthalesReceiver extends SDFReceiver {
                         _originIn = origin;
                     }
                 } else {
-                    _buffer[_getAddress(_posOut++, false)] = token;
+                    _buffer[_getAddress(_positionOut++, false)] = token;
                 }
-            } else {
-                _buffer[_getAddress(_posOut++, false)] = token;
             }
         }
     }
@@ -403,24 +404,25 @@ public class PthalesReceiver extends SDFReceiver {
      *   the domain.
      */
     public void reset() throws IllegalActionException {
-        _posIn = 0;
-        _posOut = 0;
+        _positionIn = 0;
+        _positionOut = 0;
     }
 
     public void setDynamic(boolean dynamic) {
         _dynamic = dynamic;
     }
 
-    /**
-     * Set the external buffer for a port and actor.
-     * @param actor The actor.
-     * @param port The port.
-     * @param buffer The external buffer.
+    /** Specify a buffer to use for storing the array.
+     *  This method is used by the PthalesDirector to provide a buffer
+     *  for an external port of a composite actor containing said PthalesDirector.
+     *  @param actor The composite actor containing the PthalesDirector.
+     *  @param port The external port.
+     *  @param buffer The external buffer.
      */
     public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
         if (_buffer == null) {
             _buffer = buffer;
-            _posOut = _buffer.length;
+            _positionOut = _buffer.length;
             try {
                 setOutputArray(port, actor);
             } catch (IllegalActionException e) {
@@ -431,7 +433,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** Specifies the input array that will read the buffer allocated
      * as output.  Here we only check that everything is correct, and
-     * computes addresses in output buffer.
+     * compute addresses in output buffer.
      * @param port the associated port
      * @param actor the associated actor
      * @exception IllegalActionException
@@ -443,10 +445,9 @@ public class PthalesReceiver extends SDFReceiver {
         if (!_dynamic && _buffer != null) {
             fillParameters(actor, port);
         }
-
     }
 
-    /** Specifies the output array that will be read by the receiver
+    /** Specifies the output array that will be read by the receiver.
      * It is the output array that determines the available size and
      * dimensions for the receivers.  This function allocates a buffer
      * that is used as a memory would be (linear)
@@ -513,11 +514,11 @@ public class PthalesReceiver extends SDFReceiver {
     ///////////////////////////////////////////////////////////////////
     ////               package friendly variables                  ////
 
-    int _posIn = 0;
+    int _positionIn = 0;
 
-    int _posOut = 0;
+    int _positionOut = 0;
 
-    int _currentCtrlPosOut = 0;
+    int _currentCtrlPositionOut = 0;
 
     int _headerSize = 0;
 
@@ -571,8 +572,21 @@ public class PthalesReceiver extends SDFReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Direct access method
-    private int _getAddress(int pos, boolean input) {
+    /** Return the index for the buffer storing the array that corresponds
+     *  to the specified position. If the second argument is true, then
+     *  we want the index for reading the next array value after the
+     *  previously read array value. If the second argument is false, then
+     *  we want the index for the next place to write a new token into the
+     *  array.
+     * 
+     *  Here, "position" means the following. After this receiver is reset(),
+     *  there will be a sequence of calls to get() to obtain tokens and/or
+     *  to put() to insert tokens into the array. Position <i>n</i> means
+     *  the <i>n</i>th read or the <i>n</i>th write. Whether it is a read
+     *  or a write is specified by the second argument, which is true if it
+     *  is a read and false if it is a write.
+     */
+    private int _getAddress(int position, boolean input) {
 
         int origin = 0;
 
@@ -605,9 +619,9 @@ public class PthalesReceiver extends SDFReceiver {
         tiling.keySet().toArray(tilingOrder);
 
         // Position computation
-        int rep = (int) Math.floor(pos / (patternSize * _nbTokens));
-        int dim = (int) Math.floor(pos % (patternSize * _nbTokens)) / _nbTokens;
-        int numToken = (int) Math.floor(pos % _nbTokens);
+        int rep = (int) Math.floor(position / (patternSize * _nbTokens));
+        int dim = (int) Math.floor(position % (patternSize * _nbTokens)) / _nbTokens;
+        int numToken = (int) Math.floor(position % _nbTokens);
 
         // address indexes
         int dims[] = new int[pattern.size() + 1];

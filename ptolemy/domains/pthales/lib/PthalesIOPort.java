@@ -109,48 +109,49 @@ public class PthalesIOPort {
     public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
 
         Actor actor = (Actor) port.getContainer();
-        Integer[] rep = { 1 };
+        Integer[] repetitions = { 1 };
 
-        rep = PthalesAtomicActor.getRepetitions((ComponentEntity) actor);
+        repetitions = PthalesAtomicActor.getRepetitions((ComponentEntity) actor);
 
-        return getArraySizes(port, rep);
+        return getArraySizes(port, repetitions);
     }
     
     /** Compute array sizes (for each dimension).
      *  @param port associated port
      *  @return array sizes
+     *  @param repetitions The repetitions values.
      */
-    public static LinkedHashMap<String, Integer> getArraySizes(IOPort port, Integer[] rep) {
+    public static LinkedHashMap<String, Integer> getArraySizes(IOPort port, Integer[] repetitions) {
         LinkedHashMap<String, Integer> sizes = new LinkedHashMap<String, Integer>();
         LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
 
         LinkedHashMap<String, Integer[]> pattern = getPattern(port);
         LinkedHashMap<String, Integer[]> tiling = getTiling(port);
 
-        Set dims = pattern.keySet();
-        Set tilingSet = tiling.keySet();
+        Set<String> patternDimensionNames = pattern.keySet();
+        Set<String> tilingDimensionNames = tiling.keySet();
         int i = 0;
 
-        for (Object dim : dims.toArray()) {
-            if (!tilingSet.contains(dim)) {
-                sizes.put((String) dim, pattern.get(dim)[0]);
-                sizesToMap.put((String) dim, new IntToken(pattern.get(dim)[0]));
+        for (String patternDimensionName : patternDimensionNames) {
+            if (!tilingDimensionNames.contains(patternDimensionName)) {
+                sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]);
+                sizesToMap.put(patternDimensionName, new IntToken(pattern.get(patternDimensionName)[0]));
             } else {
-                for (Object til : tilingSet) {
-                    if (til.equals(dim)) {
-                        if (i < rep.length) {
-                            sizes.put((String) dim, pattern.get(dim)[0]
-                                    + rep[i] * tiling.get(til)[0] - 1);
-                            sizesToMap.put((String) dim, new IntToken(pattern
-                                    .get(dim)[0]
-                                    + rep[i] * tiling.get(til)[0] - 1));
+                for (Object tilingDimensionName : tilingDimensionNames) {
+                    if (tilingDimensionName.equals(patternDimensionName)) {
+                        if (i < repetitions.length) {
+                            sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]
+                                    + repetitions[i] * tiling.get(tilingDimensionName)[0] - 1);
+                            sizesToMap.put(patternDimensionName, new IntToken(pattern
+                                    .get(patternDimensionName)[0]
+                                    + repetitions[i] * tiling.get(tilingDimensionName)[0] - 1));
                         } else {
                             // Not enough reps for tilings, rep = 1
-                            sizes.put((String) dim, pattern.get(dim)[0]
-                                    + tiling.get(til)[0] - 1);
-                            sizesToMap.put((String) dim, new IntToken(pattern
-                                    .get(dim)[0]
-                                    + tiling.get(til)[0] - 1));
+                            sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]
+                                    + tiling.get(tilingDimensionName)[0] - 1);
+                            sizesToMap.put(patternDimensionName, new IntToken(pattern
+                                    .get(patternDimensionName)[0]
+                                    + tiling.get(tilingDimensionName)[0] - 1));
                         }
                     }
                 }
@@ -158,13 +159,13 @@ public class PthalesIOPort {
             i++;
         }
 
-        if (rep != null) {
+        if (repetitions != null) {
             i = 0;
-            for (Object til : tilingSet) {
-                if (i < rep.length && !((String) til).startsWith("empty")
-                        && !dims.contains(til)) {
-                    sizes.put((String) til, rep[i] * tiling.get(til)[0]);
-                    sizesToMap.put((String) til, new IntToken(rep[i]
+            for (Object til : tilingDimensionNames) {
+                if (i < repetitions.length && !((String) til).startsWith("empty")
+                        && !patternDimensionNames.contains(til)) {
+                    sizes.put((String) til, repetitions[i] * tiling.get(til)[0]);
+                    sizesToMap.put((String) til, new IntToken(repetitions[i]
                             * tiling.get(til)[0]));
                 }
                 i++;
@@ -388,11 +389,13 @@ public class PthalesIOPort {
         return internalPattern;
     }
 
-    /** Check if data type is a structure.
-     * If yes, gives the number of tokens needed to store all the data
-     * By default, the return value is 1
-     * @param port associated port
-     * @return the number of token needed to store the values
+    /** Return the number of tokens that are logically treated
+     *  as a single token. By default, that number is 1, but if the
+     *  port has an attribute named "dataType" whose expression value
+     *  begins with "Cpl" then that number is 2.
+     *  FIXME: This is a hack. Why not use a token array with two tokens?
+     *  @param port associated port
+     *  @return the number of token needed to store the values
      */
     public static int getNbTokenPerData(IOPort port) {
         Parameter p = (Parameter) port.getAttribute("dataType");

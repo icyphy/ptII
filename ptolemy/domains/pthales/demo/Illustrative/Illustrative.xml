@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -100.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 24, 1036, 927}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 22, 1083, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 794]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[870, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.0675675675675, 229.1440033783784}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.5675675675675, 214.1440033783784}">
     </property>
     <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {8,1}, y = {10,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -34,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 380.0]">
         </property>
     </property>
     <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[y = {2,1},x = {2,2}]">
@@ -97,7 +97,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 395.0]">
         </property>
     </property>
     <property name="consumeTiling" class="ptolemy.data.expr.Parameter" value="[x = 4, y = 2]">
@@ -135,7 +135,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 365.0]">
         </property>
     </property>
     <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="produceBase">
@@ -247,7 +247,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the Pthales domain documentation under &#10;svn+ssh://source.eecs.berkeley.edu/chess/ealpapers/10/Pthales/TechReport/&#10;(FIXME: we should make this public) for mode details.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 545.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 525.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
