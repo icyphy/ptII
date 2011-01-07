@@ -57,12 +57,12 @@ import ptolemy.moml.MoMLParser;
 //// DesignPatternImporter
 
 /**
- An attribute that specifies the location of a design pattern and populates the
- container with that design pattern automatically. This attribute has the same
- effect of importing a design pattern into the current model with the menu item
- in the File menu of the Ptolemy environment, but it automatically imports the
- specified design pattern and does not require the model user to manually import
- it.
+ An attribute that specifies the location of a design pattern and
+ populates the container with that design pattern automatically. This
+ attribute has the same effect of importing a design pattern into the
+ current model with the menu item in the File menu of the Ptolemy
+ environment, but it automatically imports the specified design
+ pattern and does not require the model user to manually import it.
 
 
  @author Thomas Huining Feng
@@ -74,16 +74,18 @@ import ptolemy.moml.MoMLParser;
 public class DesignPatternImporter extends Attribute implements GTAttribute,
         ValueListener {
 
-    /** Construct an attribute with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
+    /** Construct an attribute with the given name contained by the
+     *  specified entity. The container argument must not be null, or
+     *  a NullPointerException will be thrown.  This attribute will
+     *  use the workspace of the container for synchronization and
+     *  version counts.  If the name argument is null, then the name
+     *  is set to the empty string.  Increment the version of the
+     *  workspace.
      *  @param container The container.
      *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
+     *  @exception IllegalActionException If the attribute is not of
+     *   an acceptable class for the container, or if the name
+     *   contains a period.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -103,16 +105,16 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         update();
     }
 
-    /** Set the container of this importer, and update the new container if it
-     *  is not null.
+    /** Set the container of this importer, and update the new
+     *  container if it is not null.
      *
      *  @param container The new container.
      *  @exception IllegalActionException If thrown by the superclass.
      *  @exception NameDuplicationException If thrown by the superclass.
      */
-    @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(NamedObj container)
+	throws IllegalActionException,
+	       NameDuplicationException {
         NamedObj oldContainer = getContainer();
         try {
             if (oldContainer != null && _lastUndoStack != null) {
@@ -130,9 +132,10 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         }
     }
 
-    /** Update the container of this importer with the design pattern. If a
-     *  design pattern is previously added to the container, the importer first
-     *  tries to undo the importation before importing the new design pattern.
+    /** Update the container of this importer with the design
+     *  pattern. If a design pattern is previously added to the
+     *  container, the importer first tries to undo the importation
+     *  before importing the new design pattern.
      */
     public void update() {
         List<Parameter> parameters = attributeList(Parameter.class);
@@ -228,16 +231,13 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
             if (after instanceof TransformationAttribute) {
                 final TransformationAttribute attribute = (TransformationAttribute) after;
                 attribute.addExecutionListener(new ExecutionListener() {
-                    @Override
                     public void executionError(Manager manager,
                             Throwable throwable) {
                     }
 
-                    @Override
                     public void executionFinished(Manager manager) {
                     }
 
-                    @Override
                     public void managerStateChanged(Manager manager) {
                         if (manager.getState() == Manager.PREINITIALIZING) {
                             MoMLParser.addMoMLFilter(filter);
@@ -274,7 +274,6 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *
      *  @param settable The attribute changed.
      */
-    @Override
     public void valueChanged(Settable settable) {
         update();
     }
@@ -287,8 +286,9 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      */
     private UndoStackAttribute _lastUndoStack;
 
-    /** The last values of the parameters to this importer, used to test whether
-     *  attributes are changed and whether the container needs to be updated.
+    /** The last values of the parameters to this importer, used to
+     *  test whether attributes are changed and whether the container
+     *  needs to be updated.
      */
     private HashMap<String, Token> _lastValues = new HashMap<String, Token>();
 
@@ -315,9 +315,10 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @return The value of the attribute.
          */
-        @Override
-        public String filterAttributeValue(NamedObj container, String element,
-                String attributeName, String attributeValue, String xmlFile) {
+        public String filterAttributeValue(NamedObj container,
+                String element,
+                String attributeName, String attributeValue,
+                String xmlFile) {
             return attributeValue;
         }
 
@@ -331,9 +332,9 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @exception Exception Not thrown in this class.
          */
-        @Override
         public void filterEndElement(NamedObj container, String elementName,
-                StringBuffer currentCharData, String xmlFile) throws Exception {
+                StringBuffer currentCharData, String xmlFile)
+                 throws Exception {
             if (container != null && !"group".equals(elementName)) {
                 NamedObj context = getContainer();
                 NamedObj parent = container;
@@ -341,10 +342,10 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
                     parent = parent.getContainer();
                 }
                 if (parent == context && container != context) {
-                    // tfeng: This does not work with actor classes in the
-                    //   pattern, because instances are not persistent either,
-                    //   and will be lost after saving.
-                    // container.setDerivedLevel(1);
+                    // tfeng: This does not work with actor classes in
+                    //   the pattern, because instances are not
+                    //   persistent either, and will be lost after
+                    //   saving.  container.setDerivedLevel(1);
                     if (container.attributeList(PersistenceAttribute.class)
                             .isEmpty()) {
                       new PersistenceAttribute(container,
