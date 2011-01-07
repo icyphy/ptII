@@ -21,6 +21,11 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -48,5 +53,98 @@ public abstract class MapTypeInfiniteConcept extends InfiniteConcept {
             throws IllegalActionException, NameDuplicationException {
         super(ontology);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
+
+    /** Get the concept contained by the given field of this record concept.
+     *  @param fieldName The field of the record concept whose concept value
+     *   we are querying.
+     *  @return The concept value held by this field in the record concept.
+     */
+    public Concept getConcept(String fieldName) {
+        return _keyToConcept.get(fieldName);
+    }
+
+    /** Get the set of all record label names referred to by this record
+     *  concept.
+     *
+     *  @return A set of label names of fields which are in this record concept.
+     */
+    public Set<String> keySet() {
+        return _keyToConcept.keySet();
+    }
+
+    /** Return the hash code of this record concept, which is uniquely
+     *  determined by the ontology and the set of record field-concept
+     *  mappings.
+     *  @return The hash code of this concept.
+     */
+    public int hashCode() {
+        return getOntology().hashCode() + _keyToConcept.hashCode();
+    }
+
+    /** Set the specified field of this map concept with the given concept
+     *  value.
+     *
+     *  @param fieldLabel The record field whose concept value we are setting.
+     *  @param fieldConcept The concept value of the record field.
+     *  @see #getConcept(String)
+     */
+    public void putConcept(String fieldLabel, Concept fieldConcept) {
+        _keyToConcept.put(fieldLabel, fieldConcept);
+    }
+    
+    /** Return the string representation of this map concept.
+     *  Note that the syntax here is similar to that used for records tokens
+     *  (e.g. { x = Const, y = NonConst }).
+     *  
+     *  @return The string representation of this concept.
+     */
+    public String toString() {
+        StringBuffer result = new StringBuffer("{");
+        for (String key : _keyToConcept.keySet()) {
+            result.append(' ');
+            result.append(key);
+            result.append(" = ");
+            result.append(getConcept(key));
+            result.append(',');
+        }
+        if (result.charAt(result.length() - 1) == ',') {
+            result.deleteCharAt(result.length() - 1);
+        }
+        result.append(" }");
+        return result.toString();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                   protected methods                       ////
+    
+    /** Return the string keys common to this and the given map concept.
+     *  @param otherConcept The other map concept.
+     *  @return The common fields, as a set of Strings.
+     */
+    protected Set<String> _commonKeys(MapTypeInfiniteConcept otherConcept) {
+        Set<String> fieldLabels = this._keyToConcept.keySet();
+        Set<String> otherFieldLabels = otherConcept._keyToConcept.keySet();
+
+        Set<String> commonFields = new HashSet<String>();
+        for (String label : fieldLabels) {
+            if (otherFieldLabels.contains(label)) {
+                commonFields.add(label);
+            }
+        }
+        return commonFields;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** Mapping of string keys to concept values.
+     *  The map must be sorted to ensure that the toString method
+     *  returns a unique representation of the concept.
+     */
+    private SortedMap<String, Concept> _keyToConcept =
+        new TreeMap<String, Concept>();
 
 }

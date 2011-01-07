@@ -80,7 +80,7 @@ public class ConceptFromRecordField extends ConceptFunction {
             }
         }
         
-        Concept result = ((RecordConcept) inputRecord).getFieldConcept(_fieldLabel);
+        Concept result = ((RecordConcept) inputRecord).getConcept(_fieldLabel);
         if (result == null) {
             result = inputRecord.getOntology().getConceptGraph().bottom();
         }

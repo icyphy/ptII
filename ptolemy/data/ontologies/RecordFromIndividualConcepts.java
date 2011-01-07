@@ -72,7 +72,7 @@ public class RecordFromIndividualConcepts extends ConceptFunction {
         
         Object[] fieldArray = _fieldLabels.toArray();
         for (int i = 0; i < fieldArray.length; i++) {
-            returnRecord.putFieldConcept((String) fieldArray[i], argValues.get(i));
+            returnRecord.putConcept((String) fieldArray[i], argValues.get(i));
         }            
         return returnRecord;
     }        

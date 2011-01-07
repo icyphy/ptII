@@ -75,6 +75,7 @@ JSRCS = \
 	FlatTokenRepresentativeConcept.java \
 	InfiniteConcept.java \
 	InfiniteConceptRepresentative.java \
+	MapTypeInfiniteConcept.java \
 	Ontology.java \
 	OntologyAdapter.java \
 	OntologyAnnotationAttribute.java \

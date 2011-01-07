@@ -214,10 +214,10 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
         if (productLatticeConcept instanceof RecordConcept) {
             RecordConcept originalOntologyRecordConcept =
                 RecordConcept.createRecordConcept(componentOntology);
-            for (String field : ((RecordConcept) productLatticeConcept).fieldSet()) {
-                ((RecordConcept) originalOntologyRecordConcept).putFieldConcept(field,
+            for (String field : ((RecordConcept) productLatticeConcept).keySet()) {
+                ((RecordConcept) originalOntologyRecordConcept).putConcept(field,
                         ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept).
-                                getFieldConcept(field)).
+                                getConcept(field)).
                                     getComponentConceptValue(
                                             componentOntology));
             }
@@ -248,8 +248,8 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             throws IllegalActionException {        
         if (concept instanceof RecordConcept) {
             RecordConcept productLatticeRecordConcept = RecordConcept.createRecordConcept(productOntology);
-            for (String field : ((RecordConcept) concept).fieldSet()) {
-                productLatticeRecordConcept.putFieldConcept(field, getDerivedConceptForProductLattice(((RecordConcept) concept).getFieldConcept(field), productOntology));
+            for (String field : ((RecordConcept) concept).keySet()) {
+                productLatticeRecordConcept.putConcept(field, getDerivedConceptForProductLattice(((RecordConcept) concept).getConcept(field), productOntology));
             }
             
             return productLatticeRecordConcept;            

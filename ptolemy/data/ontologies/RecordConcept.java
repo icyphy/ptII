@@ -21,10 +21,7 @@
  */
 package ptolemy.data.ontologies;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import ptolemy.data.ontologies.ConceptGraph.BoundType;
@@ -121,20 +118,20 @@ public class RecordConcept extends MapTypeInfiniteConcept {
         RecordConcept righthandSide = (RecordConcept) concept;
         CPO graph = getOntology().getConceptGraph();
 
-        boolean isSuperset = fieldSet().containsAll(righthandSide.fieldSet());
-        boolean isSubset = righthandSide.fieldSet().containsAll(fieldSet());
+        boolean isSuperset = keySet().containsAll(righthandSide.keySet());
+        boolean isSubset = righthandSide.keySet().containsAll(keySet());
         if (!isSubset && !isSuperset) {
             return CPO.INCOMPARABLE;
         }
         
-        Set<String> commonFields = _commonFields(righthandSide);
+        Set<String> commonFields = _commonKeys(righthandSide);
         
         boolean seenHigher = false;
         boolean seenLower = false;
         boolean seenIncomparable = false;
         for (String field : commonFields) {
-            int result = graph.compare(getFieldConcept(field),
-                    righthandSide.getFieldConcept(field));
+            int result = graph.compare(getConcept(field),
+                    righthandSide.getConcept(field));
             switch (result) {
             case CPO.HIGHER:       seenHigher = true; break;
             case CPO.LOWER:        seenLower = true; break;
@@ -160,25 +157,7 @@ public class RecordConcept extends MapTypeInfiniteConcept {
             return CPO.INCOMPARABLE;            
         }
     }
-    
-    /** Get the concept contained by the given field of this record concept.
-     *  @param fieldName The field of the record concept whose concept value
-     *   we are querying.
-     *  @return The concept value held by this field in the record concept.
-     */
-    public Concept getFieldConcept(String fieldName) {
-        return _fieldToConcept.get(fieldName);
-    }
 
-    /** Get the set of all record label names referred to by this record
-     *  concept.
-     *
-     *  @return A set of label names of fields which are in this record concept.
-     */
-    public Set<String> fieldSet() {
-        return _fieldToConcept.keySet();
-    }
-    
     /** Compute the greatest lower bound (GLB) of this and another concept.
      *  
      *  @param concept The other concept
@@ -197,67 +176,9 @@ public class RecordConcept extends MapTypeInfiniteConcept {
         return _getBoundWithOtherConcept(concept, BoundType.LEASTUPPER);
     }
 
-    /** Return the hash code of this record concept, which is uniquely
-     *  determined by the ontology and the set of record field-concept
-     *  mappings.
-     *  @return The hash code of this concept.
-     */
-    public int hashCode() {
-        return getOntology().hashCode() + _fieldToConcept.hashCode();
-    }
-
-    /** Set the specified field of this record concept with the given concept
-     *  value.
-     *
-     *  @param fieldLabel The record field whose concept value we are setting.
-     *  @param fieldConcept The concept value of the record field.
-     *  @see #getFieldConcept(String)
-     */
-    public void putFieldConcept(String fieldLabel, Concept fieldConcept) {
-        _fieldToConcept.put(fieldLabel, fieldConcept);
-    }
-    
-    /** Return the string representation of this record concept.
-     *  Note that the syntax here is similar to that used for records tokens
-     *  (e.g. { x = Const, y = NonConst }).
-     *  
-     *  @return The string representation of this concept.
-     */
-    public String toString() {
-        StringBuffer result = new StringBuffer("{");
-        for (String key : _fieldToConcept.keySet()) {
-            result.append(' ');
-            result.append(key);
-            result.append(" = ");
-            result.append(getFieldConcept(key));
-            result.append(',');
-        }
-        if (result.charAt(result.length() - 1) == ',') {
-            result.deleteCharAt(result.length() - 1);
-        }
-        result.append(" }");
-        return result.toString();
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                    private methods                        ////
-    
-    /** Return the record fields common to this and the given record concept.
-     *  @param otherConcept The other record concept.
-     *  @return The common fields, as a set of Strings.
-     */
-    private Set<String> _commonFields(RecordConcept otherConcept) {
-        Set<String> fieldLabels = this._fieldToConcept.keySet();
-        Set<String> otherFieldLabels = otherConcept._fieldToConcept.keySet();
-
-        Set<String> commonFields = new HashSet<String>();
-        for (String label : fieldLabels) {
-            if (otherFieldLabels.contains(label)) {
-                commonFields.add(label);
-            }
-        }
-        return commonFields;
-    }
     
     /** Return the concept that is the correct bound for the given two
      *  concepts.
@@ -333,32 +254,32 @@ public class RecordConcept extends MapTypeInfiniteConcept {
     private Concept _getBoundWithOtherRecordConcept(
                 RecordConcept concept, BoundType boundType) {
         RecordConcept result = createRecordConcept(getOntology());        
-        Set<String> commonFields = _commonFields(concept);
+        Set<String> commonFields = _commonKeys(concept);
         
         // The least upper bound is the record concept that only contains
         // the common fields and the least upper bound of each concept in that
         // field.
         for (String field : commonFields) {
             Concept fieldConcept = _getBoundFromConceptGraph(
-                    this.getFieldConcept(field), concept.getFieldConcept(field),
+                    this.getConcept(field), concept.getConcept(field),
                         boundType);       
-            result.putFieldConcept(field, fieldConcept);
+            result.putConcept(field, fieldConcept);
         }
         
         // The greatest lower bound is a record concept that includes all the
         // disjoint fields from both records in addition to the greatest lower
         // bounds of each common field.
         if (boundType.equals(BoundType.GREATESTLOWER)) {
-            Set<String> disjointFields = new TreeSet<String>(this.fieldSet());
+            Set<String> disjointFields = new TreeSet<String>(this.keySet());
             disjointFields.removeAll(commonFields);
             for (String field : disjointFields) {
-                result.putFieldConcept(field, this.getFieldConcept(field));
+                result.putConcept(field, this.getConcept(field));
             }
             
-            disjointFields = new TreeSet<String>(concept.fieldSet());
+            disjointFields = new TreeSet<String>(concept.keySet());
             disjointFields.removeAll(commonFields);
             for (String field : disjointFields) {
-                result.putFieldConcept(field, concept.getFieldConcept(field));
+                result.putConcept(field, concept.getConcept(field));
             }
         }
         
@@ -380,13 +301,5 @@ public class RecordConcept extends MapTypeInfiniteConcept {
           super(ontology);
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    
-    /** Mapping of record field names to concept values.
-     *  The map must be sorted to ensure that the toString method
-     *  returns a unique representation of the concept.
-     */
-    private SortedMap<String, Concept> _fieldToConcept =
-        new TreeMap<String, Concept>();
+
 }
