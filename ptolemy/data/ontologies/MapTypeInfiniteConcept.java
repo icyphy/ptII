@@ -43,7 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public abstract class MapTypeInfiniteConcept<C extends Concept> extends InfiniteConcept {
+public abstract class MapTypeInfiniteConcept<C extends Concept>
+        extends InfiniteConcept {
 
     /** Create a new MapTypeInfiniteConcept contained in the given ontology,
      *  with the given default concept.
@@ -119,24 +120,25 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends Infinite
     }
     
     /** Return the string representation of this map concept.
-     *  Note that the syntax here is similar to that used for records tokens
-     *  (e.g. { x = Const, y = NonConst }).
+     *  Note that the syntax here is the same as that used for the string
+     *  representation of record tokens
+     *  (e.g. {x = Const, y = NonConst}).
      *  
      *  @return The string representation of this concept.
      */
     public String toString() {
         StringBuffer result = new StringBuffer("{");
+        boolean firstIteration = true;
         for (String key : _keyToConcept.keySet()) {
-            result.append(' ');
+            if (!firstIteration) {
+                result.append(", ");
+            }
             result.append(key);
             result.append(" = ");
             result.append(getConcept(key));
-            result.append(',');
+            firstIteration = false;
         }
-        if (result.charAt(result.length() - 1) == ',') {
-            result.deleteCharAt(result.length() - 1);
-        }
-        result.append(" }");
+        result.append("}");
         return result.toString();
     }
     

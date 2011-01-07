@@ -208,16 +208,13 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      */
     public Concept leastUpperBound(Concept concept) {
         Concept top = (Concept)getOntology().getConceptGraph().top();
-        if (concept instanceof FiniteConcept) {
+        if (!(concept instanceof MonotonicityConcept)) {
             if (concept.equals(getOntology().getConceptGraph().bottom())) {
                 return this;
             } else {
                 return top;
             }
         } else {
-            if (!(concept instanceof MonotonicityConcept)) {
-                return top;
-            }
             // We have two MonotonicityConcepts
             return _leastUpperBound((MonotonicityConcept) concept);
         }
@@ -235,28 +232,6 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
         putConcept(variable, monotonicity);
     }
 
-    /** Return the string representation of this monotonicity concept.
-     *  Note that the syntax here is similar to that used for records
-     *  (e.g. { x:Monotonic, y:Anitmonotonic }).
-     *  
-     *  @return The string representation of this concept.
-     */
-    public String toString() {
-        StringBuffer result = new StringBuffer("{");
-        for (String key : this.keySet()) {
-            result.append(' ');
-            result.append(key);
-            result.append(':');
-            result.append(getMonotonicity(key));
-            result.append(',');
-        }
-        if (result.charAt(result.length() - 1) == ',') {
-            result.deleteCharAt(result.length() - 1);
-        }
-        result.append(" }");
-        return result.toString();
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 

@@ -285,7 +285,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
         
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
@@ -299,7 +299,6 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
     protected RecordConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
           super(ontology);
-    }
-    
+    } 
 
 }
