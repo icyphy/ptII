@@ -187,10 +187,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *    variable; one of Constant, Monotonic, Antimonotonic, or General.
      */
     public FiniteConcept getMonotonicity(String variableName) {
-        if (_keyToConcept.containsKey(variableName)) {
-            return _keyToConcept.get(variableName);
-        }
-        return (FiniteConcept)getOntology().getConceptGraph().bottom();
+        return getConcept(variableName);
     }
     
     /** Compute the greatest lower bound (GLB) of this and another concept.
@@ -235,11 +232,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *  @see MonotonicityConcept#getMonotonicity(String)
      */
     public void putMonotonicity(String variable, FiniteConcept monotonicity) {
-        if (monotonicity.equals((FiniteConcept)getOntology().getConceptGraph().bottom())) {
-            _keyToConcept.remove(variable);
-        } else {
-            _keyToConcept.put(variable, monotonicity);
-        }
+        putConcept(variable, monotonicity);
     }
 
     /** Return the string representation of this monotonicity concept.
@@ -279,7 +272,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      */
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
-          super(ontology);
+          super(ontology, (FiniteConcept) ontology.getConceptGraph().bottom());
     }
 
     ///////////////////////////////////////////////////////////////////

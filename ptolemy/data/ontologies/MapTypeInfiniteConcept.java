@@ -45,6 +45,20 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public abstract class MapTypeInfiniteConcept<C extends Concept> extends InfiniteConcept {
 
+    /** Create a new MapTypeInfiniteConcept contained in the given ontology,
+     *  with the given default concept.
+     *  @param ontology The containing ontology.
+     *  @param defaultConcept The concept value mapped to by all keys not
+     *    contained in this map.
+     *  @exception NameDuplicationException Not thrown.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    protected MapTypeInfiniteConcept(Ontology ontology, C defaultConcept)
+            throws IllegalActionException, NameDuplicationException {
+        super(ontology);
+        _defaultConcept = defaultConcept;
+    }
+    
     /** Create a new MapTypeInfiniteConcept contained in the given ontology.
      *  @param ontology The containing ontology.
      *  @exception NameDuplicationException Not thrown.
@@ -53,18 +67,23 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends Infinite
     protected MapTypeInfiniteConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
         super(ontology);
+        _defaultConcept = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
-    /** Get the concept contained by the given field of this record concept.
-     *  @param fieldName The field of the record concept whose concept value
-     *   we are querying.
-     *  @return The concept value held by this field in the record concept.
+    /** Get the concept contained by at the given key in this map concept,
+     *  or the default value if the key is not contained in this map concept.
+     *  @param key The key whose concept value we are querying.
+     *  @return The concept value held by this map concept at the key, or
+     *   the default value if there is no such concept.
      */
-    public C getConcept(String fieldName) {
-        return _keyToConcept.get(fieldName);
+    public C getConcept(String key) {
+        if (_keyToConcept.containsKey(key)) {
+            return _keyToConcept.get(key);
+        }
+        return _defaultConcept;
     }
 
     /** Get the set of all record label names referred to by this record
@@ -85,15 +104,18 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends Infinite
         return getOntology().hashCode() + _keyToConcept.hashCode();
     }
 
-    /** Set the specified field of this map concept with the given concept
-     *  value.
+    /** Set the specified ket of this map to the given concept value.
      *
-     *  @param fieldLabel The record field whose concept value we are setting.
-     *  @param fieldConcept The concept value of the record field.
+     *  @param key The key whose concept value we are setting.
+     *  @param concept The concept value of the given key.
      *  @see #getConcept(String)
      */
-    public void putConcept(String fieldLabel, C fieldConcept) {
-        _keyToConcept.put(fieldLabel, fieldConcept);
+    public void putConcept(String key, C concept) {
+        if (concept.equals(_defaultConcept)) {
+            _keyToConcept.remove(key);
+        } else {
+            _keyToConcept.put(key, concept);
+        }
     }
     
     /** Return the string representation of this map concept.
@@ -147,5 +169,10 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends Infinite
      */
     protected SortedMap<String, C> _keyToConcept =
         new TreeMap<String, C>();
+    
+    /** The value of the map concept to be returned when there is no explicit
+     *  concept mapped.  Defaults to null.
+     */
+    private C _defaultConcept;
 
 }
