@@ -22,9 +22,6 @@
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
@@ -66,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public class MonotonicityConcept extends MapTypeInfiniteConcept {
+public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
@@ -130,12 +127,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
 
         MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
         CPO graph = getOntology().getConceptGraph();
-
-        // For some reason Set.addAll throws an UnsupportedOperationException,
-        // so we use a TreeSet here purely to avoid that problem.
-        TreeSet<String> keys = new TreeSet<String>(_variableToMonotonicity.keySet());
-        Set<String> morekeys = righthandSide._variableToMonotonicity.keySet(); 
-        keys.addAll(morekeys);
+        Set<String> keys = this._commonKeys(righthandSide);
         
         boolean seenHigher = false;
         boolean seenLower = false;
@@ -195,8 +187,8 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
      *    variable; one of Constant, Monotonic, Antimonotonic, or General.
      */
     public FiniteConcept getMonotonicity(String variableName) {
-        if (_variableToMonotonicity.containsKey(variableName)) {
-            return _variableToMonotonicity.get(variableName);
+        if (_keyToConcept.containsKey(variableName)) {
+            return _keyToConcept.get(variableName);
         }
         return (FiniteConcept)getOntology().getConceptGraph().bottom();
     }
@@ -210,16 +202,6 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
     public Concept greatestLowerBound(Concept concept) {
         throw new IllegalArgumentException("greatestLowerBound method not " +
         		"implemented.");
-    }
-
-    /** Get the set of all variable names referred to by this monotonicity
-     *  concept.
-     *
-     *  @return A set of names of variables which are not set to Constant
-     *    in this monotonicity concept.
-     */
-    public Set<String> keySet() {
-        return _variableToMonotonicity.keySet();
     }
 
     /** Compute the least upper bound (LUB) of this and another concept.
@@ -244,15 +226,6 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
         }
     }
 
-    /** Return the hash code of this monotonicity concept, which is uniquely
-     *  determined by the ontology and the set of variable-monotonicity
-     *  mappings.
-     *  @return The hash code of this concept.
-     */
-    public int hashCode() {
-        return getOntology().hashCode() + _variableToMonotonicity.hashCode();
-    }
-
     /** Set the monotonicity of this concept with respect to a specific
      *  variable.
      *
@@ -263,9 +236,9 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
      */
     public void putMonotonicity(String variable, FiniteConcept monotonicity) {
         if (monotonicity.equals((FiniteConcept)getOntology().getConceptGraph().bottom())) {
-            _variableToMonotonicity.remove(variable);
+            _keyToConcept.remove(variable);
         } else {
-            _variableToMonotonicity.put(variable, monotonicity);
+            _keyToConcept.put(variable, monotonicity);
         }
     }
 
@@ -277,7 +250,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
      */
     public String toString() {
         StringBuffer result = new StringBuffer("{");
-        for (String key : _variableToMonotonicity.keySet()) {
+        for (String key : this.keySet()) {
             result.append(' ');
             result.append(key);
             result.append(':');
@@ -320,11 +293,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
     private Concept _leastUpperBound(MonotonicityConcept concept) {
         MonotonicityConcept result = createMonotonicityConcept(getOntology());
 
-        // For some reason Set.addAll throws an UnsupportedOperationException,
-        // so we use a TreeSet here purely to avoid that problem.
-        TreeSet<String> allKeys = new TreeSet<String>(
-                this._variableToMonotonicity.keySet());
-        allKeys.addAll(concept._variableToMonotonicity.keySet());
+        Set<String> allKeys = this._commonKeys(concept);
         for (String variableName : allKeys) {
             CPO graph = this.getOntology().getConceptGraph();
             FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
@@ -355,20 +324,11 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept {
     private FiniteConcept _toFiniteMonotonicity() {
         ConceptGraph monotonicityLattice = getOntology().getConceptGraph();
         FiniteConcept result = (FiniteConcept)monotonicityLattice.bottom();
-        for (FiniteConcept c : _variableToMonotonicity.values()) {
+        for (FiniteConcept c : _keyToConcept.values()) {
             result =
                 (FiniteConcept)monotonicityLattice.leastUpperBound(result, c);
         }
         return result;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Mapping of free variable names to monotonicity values.
-     *  The map must be sorted to ensure that the toString method
-     *  returns a unique representation of the concept.
-     */
-    private SortedMap<String, FiniteConcept> _variableToMonotonicity =
-        new TreeMap<String, FiniteConcept>();
 }

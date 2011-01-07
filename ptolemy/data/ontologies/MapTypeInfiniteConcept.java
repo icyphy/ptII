@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  *  @author Ben Lickly
  *  @version $Id$
- *  @param <C> The type of the concepts that form the range of the mapping.
+ *  @param <C> The type of the concepts that form the range of this mapping.
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
@@ -145,7 +145,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends Infinite
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
      */
-    private SortedMap<String, C> _keyToConcept =
+    protected SortedMap<String, C> _keyToConcept =
         new TreeMap<String, C>();
 
 }
