@@ -87,25 +87,23 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
         return _defaultConcept;
     }
 
-    /** Get the set of all record label names referred to by this record
-     *  concept.
+    /** Get the set of all keys referred to by this map concept.
      *
-     *  @return A set of label names of fields which are in this record concept.
+     *  @return A set of all the keys which map to a concept.
      */
     public Set<String> keySet() {
         return _keyToConcept.keySet();
     }
 
-    /** Return the hash code of this record concept, which is uniquely
-     *  determined by the ontology and the set of record field-concept
-     *  mappings.
+    /** Return the hash code of this map concept, which is uniquely
+     *  determined by the ontology and the set of key-concept mappings.
      *  @return The hash code of this concept.
      */
     public int hashCode() {
         return getOntology().hashCode() + _keyToConcept.hashCode();
     }
 
-    /** Set the specified ket of this map to the given concept value.
+    /** Set the specified key of this map to the given concept value.
      *
      *  @param key The key whose concept value we are setting.
      *  @param concept The concept value of the given key.
@@ -147,19 +145,19 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
     
     /** Return the string keys common to this and the given map concept.
      *  @param otherConcept The other map concept.
-     *  @return The common fields, as a set of Strings.
+     *  @return The common keys, as a set of Strings.
      */
     protected Set<String> _commonKeys(MapTypeInfiniteConcept<C> otherConcept) {
-        Set<String> fieldLabels = this._keyToConcept.keySet();
-        Set<String> otherFieldLabels = otherConcept._keyToConcept.keySet();
+        Set<String> theseKeys = this._keyToConcept.keySet();
+        Set<String> otherKeys = otherConcept._keyToConcept.keySet();
 
-        Set<String> commonFields = new HashSet<String>();
-        for (String label : fieldLabels) {
-            if (otherFieldLabels.contains(label)) {
-                commonFields.add(label);
+        Set<String> commonKeys = new HashSet<String>();
+        for (String key : theseKeys) {
+            if (otherKeys.contains(key)) {
+                commonKeys.add(key);
             }
         }
-        return commonFields;
+        return commonKeys;
     }
     
     ///////////////////////////////////////////////////////////////////

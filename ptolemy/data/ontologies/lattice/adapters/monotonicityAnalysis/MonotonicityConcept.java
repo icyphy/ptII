@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  with respect to all other variables).
  *  
  *  This class represents exactly such concepts, representing them as
- *  { x : Monotonic, y : Animonotonic }, in a manner and syntax
+ *  {x = Monotonic, y = Animonotonic}, in a manner and syntax
  *  similar to records of the Ptolemy II type system.  In records,
  *  however, accessing an undefined tag is an error, whereas in
  *  expressions, they are simply constant with respect to any
@@ -279,11 +279,11 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *  empty monotonicity concept evaluating to constant.
      *  
      *  So, for example the finite monotonicity of
-     *   { x:Monotonic, y:Monotonic }
+     *   {x = Monotonic, y = Monotonic}
      *  is Monotonic, of
-     *   { x:Monotonic, y:Antimonotonic }
+     *   {x = Monotonic, y = Antimonotonic}
      *  is General, of
-     *   { }
+     *   {}
      *  is Constant, etc.
      *
      *  @return The finite monotonicity concept that represents the overall
