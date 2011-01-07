@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class RecordConcept extends InfiniteConcept {
+public class RecordConcept extends MapTypeInfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////

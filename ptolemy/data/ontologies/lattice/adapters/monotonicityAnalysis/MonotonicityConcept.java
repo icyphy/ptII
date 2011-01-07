@@ -30,7 +30,7 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.FiniteConcept;
-import ptolemy.data.ontologies.InfiniteConcept;
+import ptolemy.data.ontologies.MapTypeInfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public class MonotonicityConcept extends InfiniteConcept {
+public class MonotonicityConcept extends MapTypeInfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
