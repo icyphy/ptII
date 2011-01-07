@@ -169,7 +169,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
      */
-    protected SortedMap<String, C> _keyToConcept =
+    private SortedMap<String, C> _keyToConcept =
         new TreeMap<String, C>();
     
     /** The value of the map concept to be returned when there is no explicit

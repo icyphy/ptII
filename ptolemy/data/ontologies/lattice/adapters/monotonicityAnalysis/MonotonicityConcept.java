@@ -292,7 +292,8 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
     private FiniteConcept _toFiniteMonotonicity() {
         ConceptGraph monotonicityLattice = getOntology().getConceptGraph();
         FiniteConcept result = (FiniteConcept)monotonicityLattice.bottom();
-        for (FiniteConcept c : _keyToConcept.values()) {
+        for (String var : keySet()) {
+            FiniteConcept c = getConcept(var);
             result =
                 (FiniteConcept)monotonicityLattice.leastUpperBound(result, c);
         }
