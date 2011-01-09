@@ -1215,20 +1215,21 @@ public class Time implements Comparable {
             return _timeDivideByBigInteger(this, time._timeValue, resolutionInverse);
         } else if (_divisorAndRemainder == null && 
                 time._divisorAndRemainder != null) {
-            // To divide by a Time that has a non-zero remainder,
-            // first find the full fraction for the divisor time,
-            // then 
             BigInteger divisor = time._timeValue.multiply(
-                    time._divisorAndRemainder[0].divide(resolutionInverse)
-                    .add(time._divisorAndRemainder[1]));
+                    time._divisorAndRemainder[0])
+                    .add(time._divisorAndRemainder[1]);
             return _bigIntegerDivideByBigInteger(_timeValue.multiply(
                     time._divisorAndRemainder[0]), divisor, resolutionInverse);
         } else {
             BigInteger divisor = time._timeValue.multiply(
-                    time._divisorAndRemainder[0].divide(resolutionInverse)
-                    .add(time._divisorAndRemainder[1]));
-            Time dividend = this.multiply(new Time(_director,
-                    time._divisorAndRemainder[0], null, null));
+                    time._divisorAndRemainder[0])
+                    .add(time._divisorAndRemainder[1]);
+            Time dividend = this.multiply(
+                    time._divisorAndRemainder[0].doubleValue());
+            if (dividend._divisorAndRemainder == null) {
+                return _bigIntegerDivideByBigInteger(dividend._timeValue,
+                        divisor, resolutionInverse);
+            }
             return _timeDivideByBigInteger(dividend, divisor,
                     resolutionInverse);
         }
@@ -1236,7 +1237,7 @@ public class Time implements Comparable {
 
     /** Divide a Time object by another BigInterger. Produces a new Time
      *  object. The Time object (the
-     *  dividend, must not have a null _divisorAndRemainder term.
+     *  dividend), must not have a null _divisorAndRemainder term.
      *  @param dividendTime The dividend.
      *  @param divisor The divisor.
      *  @param resolutionInverse The inverse of the resolution.
@@ -1250,10 +1251,10 @@ public class Time implements Comparable {
         BigInteger[] q_r = dividend.divideAndRemainder(divisor);
         // r1 + r2*b
         BigInteger dividend2 = q_r[1].multiply(dividendTime._divisorAndRemainder[0])
-            .add(dividendTime._divisorAndRemainder[1]);
+        .add(dividendTime._divisorAndRemainder[1].multiply(resolutionInverse));
         // b*c
         BigInteger divisor2 = dividendTime._divisorAndRemainder[0].multiply(divisor);
-        BigInteger[] q_r2 = dividend2.divideAndRemainder(_divisorAndRemainder[0]);
+        BigInteger[] q_r2 = dividend2.divideAndRemainder(divisor2);
         assert (q_r2[1].compareTo(BigInteger.ZERO) != 0);
         return new Time(_director, q_r[0].add(q_r2[0]), divisor2, q_r2[1]);
     }
@@ -1271,7 +1272,7 @@ public class Time implements Comparable {
      *  The final Time is calculated according to the above equation.
      *  @param resolutionInverse The inverse of the resolution.
      *  @param time The other Time object
-     *  @return A new Time object that is the multple of this Time and
+     *  @return A new Time object that is the multiple of this Time and
      *  the other Time object.
      */
     private Time _multiply(BigInteger resolutionInverse, Time time) {
@@ -1287,16 +1288,14 @@ public class Time implements Comparable {
             d = time._divisorAndRemainder[0];
             r2 = time._divisorAndRemainder[1];     
         }
-        BigInteger temp1 = r1.multiply(time._timeValue).multiply(d)
-            .divide(resolutionInverse);
-        BigInteger temp2 = r2.multiply(_timeValue).multiply(b)
-            .divide(resolutionInverse);
+        BigInteger temp1 = r1.multiply(time._timeValue).multiply(d);
+        BigInteger temp2 = r2.multiply(_timeValue).multiply(b);
         BigInteger temp3 = r1.multiply(r2);
         BigInteger newDivisor = b.multiply(d);
         BigInteger temp4 = temp1.add(temp2).add(temp3);
         BigInteger q_r[] = temp4.divideAndRemainder(newDivisor);
         return new Time(_director, _timeValue.multiply(time._timeValue)
-                .divide(resolutionInverse).add(q_r[0]), newDivisor, q_r[1]);
+                .add(q_r[0]).divide(resolutionInverse), newDivisor, q_r[1]);
     }
 
     /** If the remainder field is not null, normalize time such that the
