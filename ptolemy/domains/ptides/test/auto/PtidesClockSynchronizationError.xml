@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 190.0]">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -114,11 +114,11 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 190.0]">
         </property>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 190.0]">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -165,8 +165,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 240.0]">
             </property>
             <property name="ignoreDeadline" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
@@ -219,7 +217,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.5769230769, 2.5, 3.5769230769, 4.5, 5.5769230769, 6.5, 7.5769230769, 8.5, 9.5769230769}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -231,7 +229,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 190.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

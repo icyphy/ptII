@@ -892,15 +892,6 @@ public class PtidesBasicDirector extends DEDirector {
     public void updateFireAtTimes(RealTimeClock realTimeClock, Time newClockDrift)
             throws IllegalActionException {
         if (realTimeClock._clockDrift.compareTo(newClockDrift) != 0) {
-            // First update all the parameters in realTimeClock.
-            Time newOracleTime = _getOraclePhysicalTag().timestamp;
-            realTimeClock._lastPlatformTime = ((newOracleTime
-                    .subtract(realTimeClock._lastOracleTime))
-                    .multiply(realTimeClock._clockDrift))
-                    .add(realTimeClock._lastPlatformTime);
-            realTimeClock._lastOracleTime = newOracleTime;
-            realTimeClock._clockDrift = newClockDrift;
-            
             // Based on the above information, update the future fireAt times.
             if (realTimeClock == _executionTimeClock) {
                 _futureExecutionFireAtTimes = (List<Time>) _updateFireAtTimes(
@@ -928,6 +919,14 @@ public class PtidesBasicDirector extends DEDirector {
                         "platform time clock. The Ptides director " +
                         "doesn't know how to deal with it.");
             }
+            // Finally update all the parameters in realTimeClock.
+            Time newOracleTime = _getOraclePhysicalTag().timestamp;
+            realTimeClock._lastPlatformTime = 
+                _getPlatformPhysicalTimeForOraclePhysicalTime(newOracleTime,
+                        realTimeClock._lastOracleTime, realTimeClock._clockDrift,
+                        realTimeClock._lastPlatformTime);
+            realTimeClock._lastOracleTime = newOracleTime;
+            realTimeClock._clockDrift = newClockDrift;
         }
     }
 
@@ -1777,11 +1776,10 @@ public class PtidesBasicDirector extends DEDirector {
 
         // If this fireAt time should be ignored, return null, so no actor
         // is fired at this time.
-        if (_ignoreThisFireAtTime(_ignoredExecutionFireAtTimes) ||
-                _ignoreThisFireAtTime(_ignoredPlatformFireAtTimes)) {
+        if (_ignoreThisFireAtTime()) {
             return null;
         }
-        
+
         // If we have received a timed interrupt, a sensor interrupt, or if an event has
         // finished processing, the scheduler must run to figure out what is the next event
         // to process. We simulate the passage of physical time for the scheduler to make
@@ -2095,9 +2093,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  This assumes there's a one-to-one mapping from the platform's tag to
      *  the oracle tag, and vise versa. We also assume the platform tag to be
      *  continuous. If the platform time of interest is less than the last
-     *  saved platform time of the corresponding clock, return null;
-     *  FIXME: To calculate the oracle, a division is performed, which means
-     *  some precision is lost.
+     *  saved platform time of the corresponding clock, throw an exception.
      *  @param platformTag The platform timestamp and microstep.
      *  @param clockId The ID of the corresponding platform clock.
      *  @return The oracle tag associated with the platform tag. Returns null
@@ -2117,7 +2113,10 @@ public class PtidesBasicDirector extends DEDirector {
         }
         Time timeDifference = platformTime.subtract(realTimeClock._lastPlatformTime);
         if (timeDifference.compareTo(_zero) < 0) {
-            return null;
+            throw new IllegalActionException("While getting the oracle time " +
+            		"for a platform time, the last platfrom time saved " +
+            		"was in the past, which makes it impossible to get " +
+            		"the oracle time.");
         }
         if (realTimeClock._clockDrift.equals(_zero)) {
             // If clock drift is zero, then the oracle time is simply
@@ -2126,7 +2125,6 @@ public class PtidesBasicDirector extends DEDirector {
             return (realTimeClock._lastOracleTime.subtract(
                     realTimeClock._lastPlatformTime)).add(platformTime);
         }
-        // FIXME: the value is not exact, what do I do with the remainder?
         return (timeDifference.divide(realTimeClock._clockDrift)).add(
                         realTimeClock._lastOracleTime);
     }
@@ -2135,11 +2133,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  This assumes there's a one-to-one mapping from the platform's tag to
      *  the oracle tag, and vise versa. We also assume the platform tag to be
      *  continuous. If the oracle time of interest is less than the last
-     *  saved oracle time of the corresponding clock, return null.
+     *  saved oracle time of the corresponding clock, throw an exception.
      *  @param platformTag The platform timestamp and microstep.
      *  @param clockID The corresponding clock to get the platform time.
      *  @return The oracle tag associated with the platform tag. Return null
-     *  if the oracle time of interest is less than the last
+     *  if the oracle time of interes t is less than the last
      *  saved oracle time of the corresponding clock.
      *  @exception IllegalActionException If the input clock ID cannot be identified.
      */
@@ -2154,11 +2152,8 @@ public class PtidesBasicDirector extends DEDirector {
             throw new IllegalActionException(this, "Unrecognized clock " +
                         "ID.");
         }
-        Time timeDifference = oracleTime.subtract(realTimeClock._lastOracleTime);
-        if (timeDifference.compareTo(_zero) < 0) {
-            return null;
-        }
-        return (timeDifference.multiply(realTimeClock._clockDrift)).add(
+        return _getPlatformPhysicalTimeForOraclePhysicalTime(oracleTime,
+                realTimeClock._lastOracleTime, realTimeClock._clockDrift,
                 realTimeClock._lastPlatformTime);
     }
 
@@ -2310,21 +2305,32 @@ public class PtidesBasicDirector extends DEDirector {
             		"time of the correponding platform time. This should not " +
             		"happen because the oracle time should be in the future.");
         }
+        // Add this fireAt time to the list of future fireAt times to expect.
+        if (clockId == PLATFORM_TIMER) {
+            boolean fireAtTimeExists = false;
+            if (_futurePlatformFireAtTimes.contains(fireAtTime)) {
+                fireAtTimeExists = true;
+            }
+            if (!fireAtTimeExists) {
+                _futurePlatformFireAtTimes.add(fireAtTime);
+                Collections.sort(_futurePlatformFireAtTimes);
+            }
+        } else if (clockId == EXECUTION_TIMER) {
+            boolean fireAtTimeExists = false;
+            if (_futureExecutionFireAtTimes.contains(fireAtTime)) {
+                fireAtTimeExists = true;
+            }
+            if (!fireAtTimeExists) {
+                _futureExecutionFireAtTimes.add(fireAtTime);
+                Collections.sort(_futureExecutionFireAtTimes);
+            }
+        }
         Time temp = executiveDirector.fireAt((Actor) container, fireAtTime);
         if (temp.compareTo(fireAtTime) != 0) {
             throw new IllegalActionException(this, "The fireAt wanted to occur " +
             		"at time: " + fireAtTime.toString() +
                         ", however the actual time to fireAt is at: " +
                         temp.toString());
-        }
-        // Add this fireAt time to the list of future fireAt times to expect.
-        if (clockId == PLATFORM_TIMER) {
-            _futurePlatformFireAtTimes.add(fireAtTime);
-            Collections.sort(_futurePlatformFireAtTimes);
-        }
-        if (clockId == EXECUTION_TIMER) {
-            _futureExecutionFireAtTimes.add(fireAtTime);
-            Collections.sort(_futureExecutionFireAtTimes);
         }
     }
 
@@ -2521,7 +2527,6 @@ public class PtidesBasicDirector extends DEDirector {
                 _inputEventInterruptOccurred = true;
                 result = true;
             } else {
-                // FIXME: we should probably do something else here.
                 throw new IllegalActionException(realTimeEvent.port,
                         "missed transferring at the sensor. " +
                         "Should transfer input at oracle physical" +
@@ -2671,7 +2676,6 @@ public class PtidesBasicDirector extends DEDirector {
                 }
                 result = true;
             } else if (compare < 0) {
-                // FIXME: we should probably do something else here.
                 throw new IllegalActionException(tokenEvent.port,
                         "missed deadline at the actuator. Deadline = "
                                 + tokenEvent.deliveryTag.timestamp + "."
@@ -2995,6 +2999,29 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
+    /** Calculate the new platform time based on the old oracle time, new
+     *  oracle time, old platfrom time, and the clock drift.
+     *  @param newOralceTime The new oracle time.
+     *  @param lastOracleTime The last oracle time.
+     *  @param clockDrift the clock drift.
+     *  @param lastPlatformTime The last platform time.
+     *  @return the platform time associated with the current oracle time.
+     *  @throws IllegalActionException If the last oracle time is greater
+     *  than the current oracle time.
+     */
+    private Time _getPlatformPhysicalTimeForOraclePhysicalTime(Time newOralceTime,
+            Time lastOracleTime, Time clockDrift, Time lastPlatformTime) 
+            throws IllegalActionException {
+        Time timeDifference = newOralceTime.subtract(lastOracleTime);
+        if (timeDifference.compareTo(_zero) < 0) {
+            throw new IllegalActionException("While getting the platform time " +
+                    "for a oracle time, the last oracle time saved " +
+                    "was in the past, which makes it impossible to get " +
+                    "the oracle time.");
+        }
+        return (timeDifference.multiply(clockDrift)).add(lastPlatformTime);
+    }
+
     /** Return the value stored in realTimeDelay parameter.
      *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
@@ -3103,39 +3130,112 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** If the list of time includes a time that is equal to the current oracle
-     *  time, then remove that time from the list, and return true. Otherwise
-     *  return false. 
-     *  @param ignoredFireAtTimeList The list of times to ignore
-     *  @return true if the list contains a time to be ignored.
+    /** If the execution and platform ignore fireAt times contains the current
+     *  oracle time, and if the execution and platform fireAt times does not
+     *  contain the current oracle time, return true. Otherwise return false.
+     *  Also, from each of the four lists, remove the current oracle time from
+     *  that list, if it exists.
+     *  @return true if the ignore lists contain the current oracle time, while
+     *  the fireAt lists do not.
      *  @exception IllegalActionException If the director cannot get
      *   the current physical tag, or if the fireAt time to be ignored is
      *   in the past.
      */
-    private boolean _ignoreThisFireAtTime(List<Time> ignoredFireAtTimeList)
+    private boolean _ignoreThisFireAtTime()
             throws IllegalActionException {
-        if (ignoredFireAtTimeList.size() > 0) {
-            Tag oraclePhysicalTag = _getOraclePhysicalTag();
-            int compare = oraclePhysicalTag.timestamp.compareTo(
-                    ignoredFireAtTimeList.get(0));
-            if (compare < 0) {
+        Tag oraclePhysicalTag = _getOraclePhysicalTag();
+        Time executionFireAtTime = null;
+        if (!_futureExecutionFireAtTimes.isEmpty()) {
+            executionFireAtTime = _futureExecutionFireAtTimes.get(0);
+        }
+        Time platformFireAtTime = null;
+        if (!_futurePlatformFireAtTimes.isEmpty()) {
+            platformFireAtTime = _futurePlatformFireAtTimes.get(0);
+        }
+        Time executionIgnoreTime = null;
+        if (!_ignoredExecutionFireAtTimes.isEmpty()) {
+            executionIgnoreTime = _ignoredExecutionFireAtTimes.get(0);
+        }
+        Time platformIgnoreTime = null;
+        if (!_ignoredPlatformFireAtTimes.isEmpty()) {
+            platformIgnoreTime = _ignoredPlatformFireAtTimes.get(0);
+        }
+        int compareEF = -1;
+        if (executionFireAtTime != null) {
+            compareEF = oraclePhysicalTag.timestamp.compareTo(
+                    executionFireAtTime);
+            if (compareEF > 0) {
+                throw new IllegalActionException(this, "A fireAt time " +
+                        "that was to happen at: " +
+                        executionFireAtTime.toString() + " is " +
+                        "still in the list of fireAt times, while the " +
+                        "current oracle time is: " +
+                        oraclePhysicalTag.toString() + "."); 
+            } else if (compareEF == 0) {
+                _futureExecutionFireAtTimes.remove(0);
+            }
+        }
+        int comparePF = -1;
+        if (platformFireAtTime != null) {
+            comparePF = oraclePhysicalTag.timestamp.compareTo(
+                    platformFireAtTime);
+            if (comparePF > 0) {
+                throw new IllegalActionException(this, "A fireAt time " +
+                        "that was to happen at: " +
+                        platformFireAtTime.toString() + " is " +
+                        "still in the list of fireAt times, while the " +
+                        "current oracle time is: " +
+                        oraclePhysicalTag.toString() + "."); 
+            } else if (comparePF == 0) {
+                _futurePlatformFireAtTimes.remove(0);
+            }
+        }
+        int compareEI = -1;
+        if (executionIgnoreTime != null) {
+            oraclePhysicalTag.timestamp.compareTo(
+                    executionIgnoreTime);
+            if (compareEI > 0) {
                 throw new IllegalActionException(this, "A fireAt time to ignore " +
                         "happened in the past. The current oracle time is " +
                         oraclePhysicalTag.toString() + ", and the fireAt " +
-                        "time to be ignored is " + 
-                        ignoredFireAtTimeList.get(0).toString() + ".");
-            } else if (compare == 0) {
+                        "time to be ignored is due to execution clock" + 
+                        executionIgnoreTime.toString() + ".");
+            } else if (compareEI == 0) {
                 if (_debugging) {
                     _debug("The current oralce time is " +
                             oraclePhysicalTag.timestamp + "." + 
                             oraclePhysicalTag.microstep + ", and we " +
                             "have skipped the current firing because " + 
                             "there has been a change in clock drift in " +
-                            "one of the system clocks.");
+                    "one of the system clocks.");
                 }
-                ignoredFireAtTimeList.remove(0);
-                return true;
+                _ignoredExecutionFireAtTimes.remove(0);
             }
+        }
+        int comparePI = -1;
+        if (platformIgnoreTime != null) {
+            oraclePhysicalTag.timestamp.compareTo(
+                    platformIgnoreTime);
+            if (comparePI > 0) {
+                throw new IllegalActionException(this, "A fireAt time to ignore " +
+                        "happened in the past. The current oracle time is " +
+                        oraclePhysicalTag.toString() + ", and the fireAt " +
+                        "time to be ignored is due to platform clock" + 
+                        platformIgnoreTime.toString() + ".");
+            } else if (comparePI == 0) {
+                if (_debugging) {
+                    _debug("The current oralce time is " +
+                            oraclePhysicalTag.timestamp + "." + 
+                            oraclePhysicalTag.microstep + ", and we " +
+                            "have skipped the current firing because " + 
+                            "there has been a change in clock drift in " +
+                    "one of the system clocks.");
+                }
+                _ignoredPlatformFireAtTimes.remove(0);
+            }
+        }
+        if ((compareEI == 0 || comparePI == 0) && compareEF != 0 && comparePF != 0) {
+            return true;
         }
         return false;
     }
@@ -3539,9 +3639,6 @@ public class PtidesBasicDirector extends DEDirector {
             // the last platform time to be p1, 
             // the new clock drift be c', then the new current
             // time is: 
-            // FIXME: division is used here, which means there may be a
-            // loss of precision.
-            // FIXME: what do we do with divide by zero?
             Time clockDriftDiff = newClockDrift.subtract(
                     realTimeClock._clockDrift);
             Time temp1 = (realTimeClock._lastOracleTime.multiply(
@@ -3564,7 +3661,6 @@ public class PtidesBasicDirector extends DEDirector {
                         ", which is supposed to happen in the future, " +
                         "is actually in the past: " +
                         _getOraclePhysicalTag().timestamp.toString());
-
             }
             newFireAtTimes.add(newFireAtTime);
             if (ignoreFireAtTimes != null) {
