@@ -141,17 +141,14 @@ public class PthalesIOPort {
                     if (tilingDimensionName.equals(patternDimensionName)) {
                         if (i < repetitions.length) {
                             sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]
-                                    + repetitions[i] * tiling.get(tilingDimensionName)[0] - 1);
+                                    + (repetitions[i]-1) * tiling.get(tilingDimensionName)[0]);
                             sizesToMap.put(patternDimensionName, new IntToken(pattern
                                     .get(patternDimensionName)[0]
-                                    + repetitions[i] * tiling.get(tilingDimensionName)[0] - 1));
+                                    + (repetitions[i]-1) * tiling.get(tilingDimensionName)[0]));
                         } else {
                             // Not enough reps for tilings, rep = 1
-                            sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]
-                                    + tiling.get(tilingDimensionName)[0] - 1);
-                            sizesToMap.put(patternDimensionName, new IntToken(pattern
-                                    .get(patternDimensionName)[0]
-                                    + tiling.get(tilingDimensionName)[0] - 1));
+                            sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]);
+                            sizesToMap.put(patternDimensionName, new IntToken(pattern.get(patternDimensionName)[0]));
                         }
                     }
                 }
