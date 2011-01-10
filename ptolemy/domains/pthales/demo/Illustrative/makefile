@@ -48,6 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	HelloWorld0.xml \
+	HelloWorld1.xml \
+	HelloWorld2.xml \
+	HelloWorld3.xml \
+	HelloWorld4.xml \
 	Illustrative.xml \
 	Illustrative2.xml
 
