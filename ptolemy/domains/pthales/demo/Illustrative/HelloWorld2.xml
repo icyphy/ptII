@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
@@ -73,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 490.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1003, 730}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={89, 130, 1003, 730}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 597]">
     </property>
@@ -82,15 +82,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{230.9062499999996, 536.0222477791879}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the second in a series of examples&#10;illustrating the Pthales domain. This example&#10;illustrates that an MD array can be consumed&#10;in &quot;chunks&quot;.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Following up on HelloWorld1.xml,&#10;this example illustrates the &quot;base&quot;&#10;parameter.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Sink consumes (and displays) only&#10;one &quot;chunk&quot; of the array, as specified&#10;by the &quot;consumePattern&quot; parameter.&#10;The chunk is a 2x3 sub-array.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Sink consumes (and displays) only&#10;one &quot;chunk&quot; of the array, as specified&#10;by the &quot;consumePattern&quot; parameter.&#10;The origin of the chunk is specified&#10;by the &quot;consumeBase&quot; parameter, which is&#10;used as the value for the &quot;base&quot; parameter&#10;of the input port of Sink.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 490.0}">
         </property>
     </property>
     <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = 2, y = 3]">
@@ -110,6 +110,33 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 390.0]">
+        </property>
+    </property>
+    <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="[x = 2, y = 1]">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 375.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Play with different values of the &quot;consumeBase&quot;&#10;parameter to see how the output chunk is displaced.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 325.0]">
         </property>
     </property>
     <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
@@ -192,7 +219,7 @@
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 160.0]">
             </property>
-            <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
+            <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
             </property>
             <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
             </property>
@@ -208,7 +235,7 @@
             </property>
         </entity>
         <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={528, 439, 462, 475}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 396, 462, 475}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 404]">
             </property>

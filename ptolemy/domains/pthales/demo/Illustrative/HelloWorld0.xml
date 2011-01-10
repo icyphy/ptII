@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld0" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
@@ -82,34 +82,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{230.9062499999996, 536.0222477791879}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the second in a series of examples&#10;illustrating the Pthales domain. This example&#10;illustrates that an MD array can be consumed&#10;in &quot;chunks&quot;.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the first in a series of examples&#10;illustrating the Pthales domain. This example&#10;illustrates that tokens in Pthales are&#10;multidimensional arrays.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 280.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Sink consumes (and displays) only&#10;one &quot;chunk&quot; of the array, as specified&#10;by the &quot;consumePattern&quot; parameter.&#10;The chunk is a 2x3 sub-array.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Sink simply consumes the array&#10;and displays it.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 490.0]">
-        </property>
-    </property>
-    <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = 2, y = 3]">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 390.0]">
         </property>
     </property>
     <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
@@ -173,46 +154,46 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={280, 307, 815, 533}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 371, 815, 533}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.6761363636364, 165.3387784090909}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The parameters of the SequenceToMatrix&#10;actor depend on the pattern parameter&#10;of the input port.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 205.0}">
             </property>
         </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 160.0]">
             </property>
             <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
             </property>
-            <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
             </property>
             <property name="tiling" class="ptolemy.data.expr.Parameter" value="produceTiling">
             </property>
         </port>
         <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
-            <property name="rows" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="rows" class="ptolemy.data.expr.Parameter" value="6">
             </property>
-            <property name="columns" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="columns" class="ptolemy.data.expr.Parameter" value="4">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 160.0]">
             </property>
         </entity>
         <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={528, 439, 462, 475}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={532, 420, 462, 475}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 404]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 160.0]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
