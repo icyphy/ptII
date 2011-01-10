@@ -734,22 +734,8 @@ public class PthalesIOPort {
     public static void setDataType(IOPort port) {
         Parameter p = (Parameter) port.getAttribute("dataType");
         if (p != null && port instanceof TypedIOPort) {
-            if (p.getExpression().equals("Cplfloat")
-                    || p.getExpression().equals("Splfloat")
-                    || p.getExpression().equals("float")) {
-                ((TypedIOPort) port).setTypeEquals(BaseType.FLOAT);
-            }
-            if (p.getExpression().equals("Cpldouble")
-                    || p.getExpression().equals("Spldouble")
-                    || p.getExpression().equals("double")) {
-                ((TypedIOPort) port).setTypeEquals(BaseType.DOUBLE);
-            }
-            if (p.getExpression().equals("Cplint")
-                    || p.getExpression().equals("Splint")
-                    || p.getExpression().equals("int")) {
-                ((TypedIOPort) port).setTypeEquals(BaseType.INT);
-            }
-        }
+            ((TypedIOPort) port).setTypeEquals(BaseType.GENERAL);
+       	}
     }
 
     ///////////////////////////////////////////////////////////////////
