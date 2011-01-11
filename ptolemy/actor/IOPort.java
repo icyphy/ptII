@@ -46,10 +46,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList; 
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
@@ -223,7 +224,7 @@ public class IOPort extends ComponentPort {
                 // time in that iteration through the now-stale copy."
                 //
                 // See IOPortEventListener-1.1 in test/IOPortEventListener.tcl
-                _portEventListeners = new CopyOnWriteArrayList<IOPortEventListener>(); 
+                _portEventListeners = new CopyOnWriteArrayList<IOPortEventListener>();
             }
         }
 
@@ -4106,7 +4107,8 @@ public class IOPort extends ComponentPort {
             if (castContainer.isOpaque() && !castContainer.isAtomic()) {
                 Receiver receiver = castContainer.newInsideReceiver();
                 receiver.setContainer(this);
-                return receiver;
+                // return receiver;
+                return getIntermediateReceiver(receiver);
             }
         }
 
@@ -4137,10 +4139,26 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "Cannot create a receiver without a container.");
         }
-
         Receiver receiver = container.newReceiver();
         receiver.setContainer(this);
-        return receiver;
+        // return receiver;
+        return getIntermediateReceiver(receiver);
+    }
+
+    private Receiver getIntermediateReceiver(Receiver receiver)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) this.getAttribute("QuantityManager");
+        if (isInput() && parameter != null && parameter.getToken() != null) {
+            QuantityManager quantityManager = (QuantityManager) ((ObjectToken) parameter
+                    .getToken()).getValue();
+            if (quantityManager != null) {
+                return quantityManager.getReceiver(receiver);
+            } else {
+                return receiver;
+            }
+        } else {
+            return receiver;
+        }
     }
 
     /** Remove the receivers associated with the specified

@@ -40,7 +40,8 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesBasicTTE \
 		PtidesClockSynchronizationError \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
-		PowerManagementUnitSamplingWithoutCurrentLocalTime
+		PowerManagementUnitSamplingWithoutCurrentLocalTime \
+		PtidesNetwork
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -65,7 +66,8 @@ PTCLASSALLJARS = \
 	PtidesBasicTTE/PtidesBasicTTE.jar \
 	PtidesClockSynchronizationError/PtidesClockSynchronizationError.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
-	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar
+	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
+	PtidesNetwork.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
