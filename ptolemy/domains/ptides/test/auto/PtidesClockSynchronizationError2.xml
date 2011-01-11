@@ -1,25 +1,25 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PtidesClockSynchronizationError" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PtidesClockSynchronizationError2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1458, 107, 814, 515}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 60.0}">
         </property>
     </property>
-    <entity name="Platform1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 190.0]">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 236, 866, 515}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.0, 200.0}">
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 200.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -106,7 +106,7 @@
         <link port="MasterClock.output" relation="relation"/>
         <link port="MasterClock.input" relation="relation3"/>
     </entity>
-    <entity name="Source" class="ptolemy.actor.lib.Clock">
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5}">
@@ -114,11 +114,11 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 200.0}">
         </property>
     </entity>
-    <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 190.0]">
+    <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 200.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -165,6 +165,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 240.0]">
             </property>
             <property name="ignoreDeadline" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="transferImmediately" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
@@ -213,15 +215,15 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 285.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.5769230769, 2.5, 3.5769230769, 4.5, 5.5769230769, 6.5, 7.5769230769, 8.5, 9.5769230769}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 285.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -229,32 +231,32 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 200.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[375.0, 190.0]">
+        <vertex name="vertex1" value="{385.0, 200.0}">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <link port="Platform1.port" relation="relation"/>
-    <link port="Platform1.port2" relation="relation2"/>
-    <link port="Source.output" relation="relation"/>
-    <link port="Platform2.port2" relation="relation4"/>
-    <link port="Platform2.port3" relation="relation2"/>
-    <link port="CurrentTime.output" relation="relation5"/>
-    <link port="CurrentTime.trigger" relation="relation4"/>
-    <link port="Test.input" relation="relation5"/>
-    <link port="Test2.input" relation="relation4"/>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor.port2" relation="relation2"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="CompositeActor2.port2" relation="relation3"/>
+    <link port="CompositeActor2.port3" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test2.input" relation="relation3"/>
 </entity>

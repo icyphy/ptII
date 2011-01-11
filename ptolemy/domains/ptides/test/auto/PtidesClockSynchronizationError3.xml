@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PtidesClockSynchronizationError" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PtidesClockSynchronizationError3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1458, 107, 814, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={466, 107, 814, 515}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -152,7 +152,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 176, 823, 514}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 176, 814, 515}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -187,10 +187,10 @@
                 </property>
             </port>
         </entity>
-        <entity name="SlaveClock" class="ptolemy.domains.ptides.lib.SlaveClock">
+        <entity name="RealisticSlaveClock" class="ptolemy.domains.ptides.lib.RealisticSlaveClock">
             <property name="initializePlatformTimeSynchronizationError" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 240.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -200,16 +200,16 @@
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="port2" relation="relation3"/>
+        <link port="port2" relation="relation"/>
         <link port="port3" relation="relation2"/>
         <link port="NetworkInputDevice.input" relation="relation2"/>
-        <link port="NetworkInputDevice.output" relation="relation"/>
-        <link port="SlaveClock.input" relation="relation"/>
-        <link port="SlaveClock.output" relation="relation3"/>
+        <link port="NetworkInputDevice.output" relation="relation4"/>
+        <link port="RealisticSlaveClock.input" relation="relation4"/>
+        <link port="RealisticSlaveClock.output" relation="relation"/>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
@@ -217,7 +217,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.5769230769, 2.5, 3.5769230769, 4.5, 5.5769230769, 6.5, 7.5769230769, 8.5, 9.5769230769}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.6098901098, 2.6606086221, 3.5045516613, 4.5, 5.5, 6.5, 7.6625947698, 8.9775792166}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -225,7 +225,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.7, 1.4, 2.7, 3.4, 4.7, 5.4, 6.7, 7.4, 8.7, 9.4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.7, 1.4, 2.31, 3.493, 5.0309, 6.10743, 6.861001, 7.3885007, 8.07425031}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
