@@ -46,11 +46,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Bus.java \
-	IntermediateReceiver.java
+	IntermediateReceiver.java \
+	TTESwitch.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	PtidesNetwork.xml 
+	PtidesNetwork.xml \
+	TTE.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

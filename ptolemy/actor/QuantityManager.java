@@ -108,7 +108,8 @@ public abstract class QuantityManager extends TypedAtomicActor {
      * Create a wrapper for the given receiver and return the wrapper.
      * @param receiver Receiver to be wrapped
      * @return Wrapper for the receiver.
+     * @throws IllegalActionException 
      */
-    public abstract Receiver getReceiver(Receiver receiver);
+    public abstract Receiver getReceiver(Receiver receiver) throws IllegalActionException;
     
 }
