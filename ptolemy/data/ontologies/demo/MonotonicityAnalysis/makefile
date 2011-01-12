@@ -33,7 +33,7 @@
 
 ME =		ptolemy/data/ontologies/demo/MonotonicityAnalysis
 
-DIRS =
+DIRS = test
 
 # Root of the Java directory
 ROOT =		../../../../..
