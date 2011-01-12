@@ -50,7 +50,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	ontologies_class_diagram.zargo \
-	ontologies_class_diagram_extracted_Java.zargo
+	ontologies_class_diagram_extracted_Java.zargo \
+	LatticeComposition.ppt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

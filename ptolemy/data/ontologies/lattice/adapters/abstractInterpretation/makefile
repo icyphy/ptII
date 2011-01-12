@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/constAbsIntObservable/
+ME =		ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/
 
 DIRS = 		data
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	constAbsIntObservable
+PTPACKAGE = 	abstractInterpretation
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	data/data.jar
@@ -53,10 +53,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ConstAbsIntepretationObservableLatticesModel.xml \
-	ConstAbsIntObservableSolverModel.xml \
-	constAbsIntObservable.xml \
-	constAbsIntScalarObservable.xml
+	AbstractInterpretationSolverModel.xml \
+	abstractInterpretation.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
