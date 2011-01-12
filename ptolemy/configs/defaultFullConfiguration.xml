@@ -59,7 +59,6 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
-    <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/pteraEffigyFactory.xml"/>
     <input source="ptolemy/configs/gtEffigyFactory.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
