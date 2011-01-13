@@ -53,7 +53,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	constLattice.xml \
-	ConstNonconstSolverModel.xml
+	ConstNonconstSolverModel.xml \
+	constLatticeTwoConceptsOnly.xml \
+	ConstNonconstTwoConceptsOnlySolverModel.xml
+	
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

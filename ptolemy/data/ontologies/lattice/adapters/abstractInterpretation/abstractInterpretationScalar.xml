@@ -9,7 +9,7 @@
 		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 101, 608, 467}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 246, 608, 467}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[393, 350]">
     </property>
@@ -24,7 +24,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 275.0]">
         </property>
     </entity>
     <entity name="Negative" class="ptolemy.data.ontologies.FiniteConcept">
@@ -67,16 +67,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 350.0]">
         </property>
     </entity>
-    <entity name="Scalar" class="ptolemy.data.ontologies.FiniteConcept">
-        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.2,1.0}">
-        </property>
-        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 280.0]">
-        </property>
-    </entity>
     <relation name="relation26" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -97,31 +87,27 @@
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0950313238336018">
         </property>
     </relation>
-    <relation name="relation10" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
-        </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6034678175054584">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1835912461294875">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8615055619371319">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6759735202703439">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5698529088119386">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.497098318052295">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.278840372001155">
         </property>
     </relation>
-    <link port="Undefined.belowPort" relation="relation10"/>
+    <link port="Undefined.belowPort" relation="relation"/>
+    <link port="Undefined.belowPort" relation="relation2"/>
+    <link port="Undefined.belowPort" relation="relation3"/>
     <link port="Negative.belowPort" relation="relation28"/>
     <link port="Negative.abovePort" relation="relation3"/>
     <link port="Zero.belowPort" relation="relation27"/>
@@ -131,8 +117,4 @@
     <link port="Unknown.abovePort" relation="relation26"/>
     <link port="Unknown.abovePort" relation="relation27"/>
     <link port="Unknown.abovePort" relation="relation28"/>
-    <link port="Scalar.belowPort" relation="relation"/>
-    <link port="Scalar.belowPort" relation="relation2"/>
-    <link port="Scalar.belowPort" relation="relation3"/>
-    <link port="Scalar.abovePort" relation="relation10"/>
 </class>

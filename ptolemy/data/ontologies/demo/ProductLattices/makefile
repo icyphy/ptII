@@ -57,8 +57,9 @@ OTHER_FILES_TO_BE_JARED = \
 	ConstScaleZeroDemoProductLattice.xml \
 	SimpleConstDemo.xml \
 	SimpleNonconstDemo.xml \
-	ConstAbsIntObservableProductSolverModelforPoster.xml \
-	ConstScaleZeroDemoforPoster.xml
+	LatticeComposition.xml \
+	LatticeCompositionSolverModel.xml
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

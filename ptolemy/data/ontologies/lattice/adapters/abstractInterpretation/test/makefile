@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters AbstractInterpretation
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters AbstractInterpretation Test
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id: makefile 58592 2010-07-13 21:37:06Z bldmastr $
+# $Id$
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/
+ME =		ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/test
 
-DIRS = 		data test
+DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,18 +43,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	abstractInterpretation
+PTPACKAGE = 	test
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	data/data.jar test/test.jar
+	data/data.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AbstractInterpretationScalarSolverModel.xml \
-	abstractInterpretationScalar.xml
+	ConstScale.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

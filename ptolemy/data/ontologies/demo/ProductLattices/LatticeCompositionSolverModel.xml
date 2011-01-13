@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ConstAbsIntObservableProductSolverModelforPoster" class="ptolemy.data.ontologies.OntologySolverModel">
+<entity name="LatticeCompositionSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 278, 1146, 467}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 340, 1146, 520}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[931, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[931, 403]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.1458333333333, 85.484375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.1458333333333, 111.984375}">
     </property>
     <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/observableLattice/ObservableSolverModel.xml">
@@ -75,7 +75,7 @@
         </property>
         <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(input, factor, output)">
         </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="INHERIT">
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyByZero(input, factor, output)">
         </property>
         <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(factor, input, output)">
         </property>
@@ -91,21 +91,35 @@
         </property>
         <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;}">
         </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor &lt;= ObservableScalarNonconstant &amp;&amp; otherFactor &lt;= ObservableZeroNonconstant &amp;&amp;&#10;  (factor != ObservableZeroNonconstant &amp;&amp; factor != ObservableZeroNonconstant) &amp;&amp; (factor != UnobservableZeroConstant &amp;&amp; factor != UnobservableZeroNonconstant)  &amp;&amp;&#10;  (factor != UnobservableZeroConstant &amp;&amp; factor != UnobservableZeroNonconstant) &amp;&amp; (factor != ObservableZeroConstant &amp;&amp; factor != ObservableZeroNonconstant) ? UnobservableUnknown :&#10; product &gt;= ObservableUnknown ? ObservableUnknown :&#10;  UnobservableUnknown">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor &lt; ObservableNonconstantUndefined &amp;&amp;  otherFactor &lt;= ObservableNonconstantZero &amp;&amp;&#10;  (factor != ObservableConstantZero &amp;&amp; factor != ObservableNonconstantZero) &amp;&amp; &#10;   (factor != UnobservableConstantZero &amp;&amp; factor != UnobservableNonconstantZero) ? UnobservableConstantUnknown :&#10;    product &gt;= ObservableConstantUnknown ? ObservableConstantUnknown :&#10;     UnobservableConstantUnknown">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 215.0}">
         </property>
     </property>
     <property name="ConstSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constLattice/ConstNonConstSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constLattice/ConstNonconstTwoConceptsOnlySolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 85.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="multiplyByZero" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+        <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservableLattice">
+        </property>
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;factor1&quot;, &quot;factor2&quot;, &quot;product&quot;}">
+        </property>
+        <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;}">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == ObservableConstantZero || factor1 == UnobservableConstantZero || factor1 == ObservableNonconstantZero || factor1 == ObservableConstantZero ||&#10; factor1 == ObservableConstantZero || factor2 == UnobservableConstantZero || factor2 == UnobservableNonconstantZero || factor2 == ObservableNonconstantZero ? UnobservableConstantZero : &#10;  UnobservableConstantUnknown">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 265.0]">
         </property>
     </property>
     <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
@@ -113,161 +127,97 @@
         </property>
     </entity>
     <entity name="constAbsIntObservableLattice" class="ptolemy.data.ontologies.lattice.ProductLatticeOntology">
-        <property name="latticeOntologies" class="ptolemy.data.expr.Parameter" value="{observableLattice, abstractInterpretation, constLattice}">
+        <property name="latticeOntologies" class="ptolemy.data.expr.Parameter" value="{observableLattice, constLattice, abstractInterpretation}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, -15.0}">
         </property>
-        <entity name="UnobservableUndefinedUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableNonconstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndefinedNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableNonconstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUndefinedConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableNonconstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableNegativeUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableNonconstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableNegativeNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableNonconstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableNegativeConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableConstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableZeroUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableConstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableZeroNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableConstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableZeroConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableConstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservablePositiveUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="UnobservableConstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservablePositiveNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableNonconstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservablePositiveConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableNonconstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUnknownUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableNonconstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUnknownNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableNonconstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableUnknownConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableNonconstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableScalarUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableConstantUndefined" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableScalarNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableConstantNegative" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="UnobservableScalarConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableConstantZero" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="ObservableUndefinedUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableConstantPositive" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="ObservableUndefinedNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
+        <entity name="ObservableConstantUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
-        <entity name="ObservableUndefinedConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableNegativeUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableNegativeNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableNegativeConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableZeroUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableZeroNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableZeroConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservablePositiveUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservablePositiveNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservablePositiveConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUnknownUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUnknownNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableUnknownConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableScalarUnused" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableScalarNonconstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-        <entity name="ObservableScalarConstant" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
-            <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </entity>
-    </entity>
-    <entity name="constLattice" class="ptolemy.data.ontologies.lattice.adapters.constLattice.constLattice">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -20.0]">
-        </property>
     </entity>
     <entity name="abstractInterpretation" class="ptolemy.data.ontologies.lattice.adapters.abstractInterpretation.abstractInterpretationScalar">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -20.0]">
+        </property>
+    </entity>
+    <entity name="constLattice" class="ptolemy.data.ontologies.lattice.adapters.constLattice.constLatticeTwoConceptsOnly">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -25.0]">
         </property>
     </entity>
 </entity>
