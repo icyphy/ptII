@@ -166,12 +166,18 @@ public class StringReplace extends StringSimpleReplace {
                 .booleanValue();
 
         Matcher match = _pattern.matcher(stringToEditValue);
-        String outputString;
+        String outputString = "";
 
-        if (replaceAllTokens) {
-            outputString = match.replaceAll(replacementValue);
-        } else {
-            outputString = match.replaceFirst(replacementValue);
+        // Unfortunately, the String class throws runtime exceptions
+        // if something goes wrong, so we have to catch them.
+        try{
+            if (replaceAllTokens) {
+                outputString = match.replaceAll(replacementValue);
+            } else {
+                outputString = match.replaceFirst(replacementValue);
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "String replace failed.");
         }
 
         output.send(0, new StringToken(outputString));
