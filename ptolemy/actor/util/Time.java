@@ -1109,25 +1109,6 @@ public class Time implements Comparable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Divide a BigInteger by another BigInteger and produce a new Time
-     *  value. 
-     *  @param dividend The dividend of this division.
-     *  @param divisor The divisor of this divisor.
-     *  @param resolutionInverse The inverse of the time resolution
-     *  @return a new Time object of the division.
-
-     */
-    private Time _bigIntegerDivideByBigInteger(BigInteger dividend,
-            BigInteger divisor, BigInteger resolutionInverse) {
-        dividend = dividend.multiply(resolutionInverse);
-        BigInteger[] q_r = dividend.divideAndRemainder(divisor);
-        if (q_r[1].compareTo(BigInteger.ZERO) == 0) {
-            return new Time(_director, q_r[0], null, null);
-        } else {
-            return new Time(_director, q_r[0], divisor, q_r[1]);
-        }
-    }
-
     /** Given a double, return the BigInteger that represents its
      *  quantized value. The BigInteger is the rounded result of dividing
      *  the double by the time resolution.
@@ -1181,121 +1162,67 @@ public class Time implements Comparable {
     }
     
     /** Divide this Time by the other Time object, and produce a new Time
-     *  object as a result. If the dividend (this Time structure) is a
-     *  perfect multiple of the time
-     *  resolution, then the divideAndRemainder method of BigInteger is used,
-     *  with the quotient as the new _timeValue. If the method returned a
-     *  non-zero remainder, the divisor and remainder values are saved in
-     *  the new Time structure.
-     *  <p> If the dividend already has a non-null divisor and remainder fields,
-     *  then we need to represent the final result of the division in a non-null
-     *  divisor and remainder. The final representation is as follows:
-     *  let q1 be the quotient, b be the divisor, and r1 be the remainder of
-     *  this time structure (the dividend time structure). Let c be the divisor,
-     *  let q2 be q1/c, let
-     *  r2 be q1%c, then the final result can be represented as:
-     *  q2 + (r1 + r2*b) / (b*c). In other words, the returned Time structure
-     *  would have _timeValue = q2 + (r1 + r2*b) / (b*c), while the divisor
-     *  would be b*c, and remainder would be (r1 + r2*b) % (b*c).
-     *  
+     *  object as a result. Both Time objects are changed to fraction
+     *  representation, and the second time is inverted and multiplication
+     *  is performed. Since the values are quantized, when a division is
+     *  performed, the resolutions are canceled out. Thus we need to multiply by
+     *  1/resolution.
      *  @param dividend The dividend of this division.
      *  @param resolutionInverse The inverse of the time resolution
      *  @param divisor The divisor of this divisor.
      *  @return a new Time structure of the division.
      */
     private Time _divide(BigInteger resolutionInverse, Time time) {
-        // Since the values are now quantized, when a division is performed,
-        // the resolutions are canceled out. Thus we need to multiply by
-        // 1/resolution.
-        if (_divisorAndRemainder == null && time._divisorAndRemainder == null) {
-            return _bigIntegerDivideByBigInteger(_timeValue, 
-                    time._timeValue, resolutionInverse);
-        } else if (_divisorAndRemainder != null && 
-                time._divisorAndRemainder == null) {
-            return _timeDivideByBigInteger(this, time._timeValue, resolutionInverse);
-        } else if (_divisorAndRemainder == null && 
-                time._divisorAndRemainder != null) {
-            BigInteger divisor = time._timeValue.multiply(
-                    time._divisorAndRemainder[0])
-                    .add(time._divisorAndRemainder[1]);
-            return _bigIntegerDivideByBigInteger(_timeValue.multiply(
-                    time._divisorAndRemainder[0]), divisor, resolutionInverse);
-        } else {
-            BigInteger divisor = time._timeValue.multiply(
-                    time._divisorAndRemainder[0])
-                    .add(time._divisorAndRemainder[1]);
-            Time dividend = this.multiply(
-                    time._divisorAndRemainder[0].doubleValue());
-            if (dividend._divisorAndRemainder == null) {
-                return _bigIntegerDivideByBigInteger(dividend._timeValue,
-                        divisor, resolutionInverse);
-            }
-            return _timeDivideByBigInteger(dividend, divisor,
-                    resolutionInverse);
+
+        BigInteger numerator1 = _timeValue;
+        BigInteger numerator2 = BigInteger.ONE;
+        BigInteger denominator1 = BigInteger.ONE;
+        BigInteger denominator2 = time._timeValue;
+        if (_divisorAndRemainder != null) {
+            denominator1 = _divisorAndRemainder[0];
+            numerator1 = _timeValue.multiply(denominator1).add(_divisorAndRemainder[1]);
         }
+        if (time._divisorAndRemainder != null) {
+            numerator2 = time._divisorAndRemainder[0];
+            denominator2 = time._timeValue.multiply(numerator2).add(time._divisorAndRemainder[1]);
+        }
+        BigInteger top = numerator1.multiply(numerator2).multiply(resolutionInverse);
+        BigInteger bottom = denominator1.multiply(denominator2);
+        BigInteger result[] = top.divideAndRemainder(bottom);
+
+        return new Time(_director, result[0], bottom, result[1]);
     }
 
-    /** Divide a Time object by another BigInterger. Produces a new Time
-     *  object. The Time object (the
-     *  dividend), must not have a null _divisorAndRemainder term.
-     *  @param dividendTime The dividend.
-     *  @param divisor The divisor.
-     *  @param resolutionInverse The inverse of the resolution.
-     *  @return A new Time object.
-     */
-    private Time _timeDivideByBigInteger(Time dividendTime, BigInteger divisor,
-            BigInteger resolutionInverse) {
-        assert (dividendTime._divisorAndRemainder != null);
-        BigInteger dividend = dividendTime._timeValue.multiply(resolutionInverse);
-        // q2 and r2
-        BigInteger[] q_r = dividend.divideAndRemainder(divisor);
-        // r1 + r2*b
-        BigInteger dividend2 = q_r[1].multiply(dividendTime._divisorAndRemainder[0])
-        .add(dividendTime._divisorAndRemainder[1].multiply(resolutionInverse));
-        // b*c
-        BigInteger divisor2 = dividendTime._divisorAndRemainder[0].multiply(divisor);
-        BigInteger[] q_r2 = dividend2.divideAndRemainder(divisor2);
-        assert (q_r2[1].compareTo(BigInteger.ZERO) != 0);
-        return new Time(_director, q_r[0].add(q_r2[0]), divisor2, q_r2[1]);
-    }
-
-    /** Multiplies this object with another Time object. The formula for
-     *  multiplying two Times with fraction parts are described as follows:
-     *  To find X * Y, where X = q1 + r1/b, and Y = q2 + r2/d, X * Y can
-     *  be written as: q1*q2 + (r1*q2*d + r2*q1*b + r1*r2) / (b*d), where
-     *  all variables in this equation are BigIntegers, and the result
-     *  is a new Time object that retains the arbitrary precision.
-     *  By default, r1 and r2 are initialized to be zero, while b and d
-     *  are initialized to be one. These values are used if the fraction
-     *  part of either this object or the other Time object is null. However
-     *  if either of them are not null, then r1, r2, b, and d are overwritten.
-     *  The final Time is calculated according to the above equation.
+    /** Multiply this object with another Time object. Both Time objects
+     *  are changed to fraction representations, and their numerators and
+     *  denominators are multiplied to obtain the new Time value. Since
+     *  the values of each Time object are quantized, when a multiplication is
+     *  performed, the resolutions are also multiplied, Thus the resulting Time
+     *  object needs to be divided by 1/resolution.
      *  @param resolutionInverse The inverse of the resolution.
      *  @param time The other Time object
      *  @return A new Time object that is the multiple of this Time and
      *  the other Time object.
      */
     private Time _multiply(BigInteger resolutionInverse, Time time) {
-        BigInteger d = BigInteger.ONE;
-        BigInteger b = BigInteger.ONE;
-        BigInteger r1 = BigInteger.ZERO;
-        BigInteger r2 = BigInteger.ZERO;
+        
+        BigInteger numerator1 = _timeValue;
+        BigInteger numerator2 = time._timeValue;
+        BigInteger denominator1 = BigInteger.ONE;
+        BigInteger denominator2 = BigInteger.ONE;
         if (_divisorAndRemainder != null) {
-            b = _divisorAndRemainder[0];
-            r1 =_divisorAndRemainder[1];
+            denominator1 = _divisorAndRemainder[0];
+            numerator1 = _timeValue.multiply(denominator1).add(_divisorAndRemainder[1]);
         }
         if (time._divisorAndRemainder != null) {
-            d = time._divisorAndRemainder[0];
-            r2 = time._divisorAndRemainder[1];     
+            denominator2 = time._divisorAndRemainder[0];
+            numerator2 = time._timeValue.multiply(denominator2).add(time._divisorAndRemainder[1]);
         }
-        BigInteger temp1 = r1.multiply(time._timeValue).multiply(d);
-        BigInteger temp2 = r2.multiply(_timeValue).multiply(b);
-        BigInteger temp3 = r1.multiply(r2);
-        BigInteger newDivisor = b.multiply(d);
-        BigInteger temp4 = temp1.add(temp2).add(temp3);
-        BigInteger q_r[] = temp4.divideAndRemainder(newDivisor);
-        return new Time(_director, _timeValue.multiply(time._timeValue)
-                .add(q_r[0]).divide(resolutionInverse), newDivisor, q_r[1]);
+        BigInteger top = numerator1.multiply(numerator2);
+        BigInteger bottom = denominator1.multiply(denominator2).multiply(resolutionInverse);
+        BigInteger result[] = top.divideAndRemainder(bottom);
+
+        return new Time(_director, result[0], bottom, result[1]);
     }
 
     /** If the remainder field is not null, normalize time such that the
