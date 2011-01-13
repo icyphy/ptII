@@ -439,10 +439,6 @@ public class RefinementPort extends TypedIOPort {
                         // so do this directly.
                         super.setContainer(container);
                     }
-                } else {
-                    // This port did not previously have a container.
-                    // Hence we can't delegate up the hierarchy.
-                    super.setContainer(container);
                 }
             }
         } finally {
