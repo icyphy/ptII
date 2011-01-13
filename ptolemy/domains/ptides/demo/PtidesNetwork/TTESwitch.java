@@ -35,16 +35,12 @@ import java.util.Hashtable;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -60,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  * (@see Server) but without input and output ports.
  * @author Patricia Derler
  */
-public class TTESwitch extends QuantityManager {
+public class TTESwitch extends TypedAtomicActor implements QuantityManager {
     /** Construct a Bus in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or

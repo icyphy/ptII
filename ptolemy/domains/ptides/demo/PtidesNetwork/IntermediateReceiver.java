@@ -30,109 +30,95 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.demo.PtidesNetwork;
 
-import java.util.ArrayList;
-
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.Actor;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
-/**
- * Wraps a receiver when a QuantityManager ({@see QuantityManager}) is used 
- * on a relation. Tokens received by this intermediate receiver are forwarded to the QuantityManager 
- * together with the information of the target receiver. The QuantityManager then 
- * forwards the token to the target receiver.
- * 
- * @author Patricia Derler
+/** A receiver that delegates to another receiver all method calls except
+ *  {@link #put(Token)} (and its variants), for which it delegates to a
+ *  quantity manager. The delegated receiver and the quantity manager are
+ *  specified as constructor arguments.
+ *  <p>
+ *  This can be used, for example, when multiple communication links share
+ *  resources. The quantity manager can, for example, delay the delivery
+ *  of tokens to the delegated receiver to take into account resource
+ *  availability. It could also be used to make a centralized record
+ *  of various communications.
+ *  <p>
+ *  Subclasses of this receiver may also intervene on method calls other
+ *  than put().
+ *  @author Patricia Derler
  */
 public class IntermediateReceiver extends AbstractReceiver {
     
-    /** Construct an empty receiver with no container.
-     * 
-     * @param quantityManager The quantity manager that receives tokens received by this receiver.
-     * @param receiver The receiver wrapped by this intermediate receiver.
+    /** Construct an intermediate receiver with no container that wraps the
+     *  specified receiver using the specified quantity manager.
+     *  @param quantityManager The quantity manager that receives tokens received by this receiver.
+     *  @param receiver The receiver wrapped by this intermediate receiver.
      */
     public IntermediateReceiver(QuantityManager quantityManager, Receiver receiver) {
         _receiver = receiver;
         _quantityManager = quantityManager;
     }
     
-    /**
-     * Reset the quantity manager.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Reset the quantity manager and the receiver that we delegate to.
      */
     public void clear() throws IllegalActionException {
         _quantityManager.reset();
+        _receiver.reset();
     }
 
-    /**
-     * Return the token that was sent last.
+    /** Delegate to the internal receiver and return whatever it returns.
+     *  @throws NoTokenException If the delegated receiver throws it.
      */
     public Token get() throws NoTokenException {
-        Token token = _token;
-        _token = null;
-        return token;
+        return _receiver.get();
     }
 
-    /**
-     * Always return true.
-     * 
-     * FIXME: QuantityManager should manage buffer sizes.
+    /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasRoom() {
-        return true;
+        return _receiver.hasRoom();
     }
 
-    /**
-     * Always return true.
-     * 
-     * FIXME: QuantityManager should manage buffer sizes.
+    /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasRoom(int numberOfTokens) {
-        return true;
+        return _receiver.hasRoom(numberOfTokens);
     }
 
-    /**
-     * Return true if last received token has not been taken.
+    /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasToken() {
-        return _token != null;
+        return _receiver.hasToken();
     }
 
-    /**
-     * Return true if last received token has not been taken.
+    /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasToken(int numberOfTokens) {
-        return _token != null; 
+        return _receiver.hasToken(numberOfTokens);
     }
 
-    /**
-     * Forward token and target receiver to quantity manager and store the token.
+    /** Forward the specified token to quantity manager specified in
+     *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
         _quantityManager.sendToken(_receiver, token);
-        _token = token;
     }
-    
-    /**
-     * Last token that was sent to this receiver and has not been forwarded
-     * to the quantityManager.
-     */
-    private Token _token;
-    
-    /**
-     * Target receiver that is wrapped by this intermediate receiver.
-     */
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Target receiver that is wrapped by this intermediate receiver.  */
     private Receiver _receiver;
     
-    /**
-     * Quantity manager that receives tokens from this receiver.
-     */
+    /** Quantity manager that receives tokens from this receiver. */
     private QuantityManager _quantityManager;
-
 }

@@ -35,69 +35,43 @@ import java.util.Hashtable;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
-/**
- * Receives tokens and after a fixed delay forwards the tokens to specified 
- * receivers. Tokens are processed in FiFo order. 
- * 
- * The functionality is similar to the functionality of the Server 
- * (@see Server) but without input and output ports.
- * @author Patricia Derler
+/** This actor is an {@link QuantityManager} that, when its
+ *  {@link #sendToken(Receiver, Token)} method is called, delays
+ *  the delivery of the specified token to the specified receiver
+ *  according to a service rule. Specifically, if the actor is
+ *  not currently servicing a previous token, then it delivers
+ *  the token with a delay given by the <i>serviceTime</i> parameter.
+ *  If the actor is currently servicing a previous token, then it waits
+ *  until it has finished servicing that token (and any other pending
+ *  tokens), and then delays an additional amount given by <i>serviceTime</i>.
+ *  This is similar to the {@link Server} actor.
+ *  Tokens are processed in FIFO order.
+ *  <p>
+ *  This actor will be used on any communication where the receiving
+ *  port has a parameter named "QuantityManager" that refers by name
+ *  to the instance of this actor.
+ *  @author Patricia Derler
  */
-public class Bus extends QuantityManager {
-    /** Construct a Bus in the default workspace with no
-     *  container and an empty string as its name. Add the actor to the
-     *  workspace directory.  You should set the local director or
-     *  executive director before attempting to send data to the actor or
-     *  to execute it. Increment the version number of the workspace.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
-     */
-    public Bus() throws IllegalActionException, NameDuplicationException {
-        super();
-        _initialize();
-    }
-
-    /** Construct a Bus in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
-     */
-    public Bus(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
-        super(workspace);
-        _initialize();
-    }
+public class Bus extends TypedAtomicActor implements QuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  This actor will have no
-     *  local director initially, and its executive director will be simply
-     *  the director of the container.
-     *
+     *  Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
@@ -108,7 +82,12 @@ public class Bus extends QuantityManager {
     public Bus(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _initialize();
+        _receivers = new Hashtable();
+        _tokens = new FIFOQueue();
+
+        serviceTime = new Parameter(this, "serviceTime");
+        serviceTime.setExpression("0.1");
+        serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
 
     /**
@@ -123,21 +102,6 @@ public class Bus extends QuantityManager {
             _receivers.put(receiver, intermediateReceiver);
         }
         return intermediateReceiver;
-    }
-
-    /**
-     * Initialize local variables.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
-        _receivers = new Hashtable();
-        _tokens = new FIFOQueue();
-
-        serviceTime = new Parameter(this, "serviceTime");
-        serviceTime.setExpression("0.1");
-        serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
 
     /** The service time. This is a double with default 1.0.
