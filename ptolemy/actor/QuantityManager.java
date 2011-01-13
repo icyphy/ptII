@@ -29,88 +29,43 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
-import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.Token;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
-/**
- * An Actor that receives Tokens and assigns quantities to the tokens. 
- * @author Patricia Derler
+/** An interface for objects that can intervene in communication between actors.
+ *  A quantity manager creates receivers that wrap the receivers created by a
+ *  {@link Director}, delegating (or not) to those receivers as it sees fit.
+ *  If an {@link IOPort} references a quantity manager, then calls to any
+ *  receiver in that port will be handled instead by a receiver created by
+ *  the quantity manager.
+ *  <p>
+ *  For example, a quantity manager could intervene in communications to take
+ *  into account shared resources. For example, it could delay delivery of any
+ *  tokens to the original receiver (that created by the director) until the
+ *  resources become available for the transport to occur.
+ *  @author Patricia Derler
  */
-public abstract class QuantityManager extends TypedAtomicActor {
+public interface QuantityManager {
 
-    /** Construct a QuantityManager in the default workspace with no
-     *  container and an empty string as its name. Add the actor to the
-     *  workspace directory.  You should set the local director or
-     *  executive director before attempting to send data to the actor or
-     *  to execute it. Increment the version number of the workspace.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+    /** Reset the QuantityManager.
      */
-    public QuantityManager() throws IllegalActionException, NameDuplicationException {
-        super();
-    }
+    public void reset();
 
-    /** Construct a QuantityManager in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+    /** Take the specified token and mediate communication to the specified
+     *  receiver. An implementer could, for example, delay the communication
+     *  to account for resource contention. Or, it could make a record of the
+     *  energy consumed by the communication.
+     *  @param receiver The receiver for which this quantity manager is mediating
+     *   communication.
+     *  @param token The token for the communication to mediate.
+     *  @throws IllegalActionException If the token cannot be sent.
      */
-    public QuantityManager(Workspace workspace) throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-    }
+    public void sendToken(Receiver receiver, Token token) throws IllegalActionException;
     
-    /** Construct a QuantityManager with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  This actor will have no
-     *  local director initially, and its executive director will be simply
-     *  the director of the container.
-     *
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
-    public QuantityManager(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
-
-    /**
-     * Reset the QuantityManager.
-     */
-    public abstract void reset();
-
-    /**
-     * Take the token and assign quantities. The token is later sent to the receiver.
-     * @param receiver Final receiver of the token once quantities are assigned.
-     * @param token Token that is received.
-     * @throws IllegalActionException If token cannot be sent.
-     */
-    public abstract void sendToken(Receiver receiver, Token token) throws IllegalActionException;
-    
-    /**
-     * Create a wrapper for the given receiver and return the wrapper.
-     * @param receiver Receiver to be wrapped
-     * @return Wrapper for the receiver.
-     * @throws IllegalActionException If there is an exception with reading the parameters of 
-     * port for this receiver cannot be read.
+    /** Create a receiver to mediate a communication via the specified receiver.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @return A new receiver.
+     *  @throws IllegalActionException If something goes wrong.
      */
     public abstract Receiver getReceiver(Receiver receiver) throws IllegalActionException;
-    
 }
