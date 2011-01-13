@@ -50,7 +50,6 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Dynamic.xml \
 	ThalesDynamic.xml \
-	ThalesDynamic2.xml \
 	ThalesDynamicModalModel.xml \
 	ThalesDynamicModalModelPN.xml \
 	ModalModelPthales.xml

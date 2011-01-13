@@ -4,13 +4,13 @@
 <entity name="ThalesDynamic" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1002}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1286, 826}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 895]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 716]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 447.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 358.0}">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -21,7 +21,7 @@
     <entity name="producer" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 205.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 180, 1070, 696}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 149, 1068, 699}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[855, 589]">
         </property>
@@ -139,7 +139,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 65.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 258, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 258, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -179,7 +179,7 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={637, 339, 485, 307}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 424, 477, 303}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[477, 259]">
             </property>
@@ -194,20 +194,8 @@
         <link port="port" relation="relation"/>
         <link port="Display.input" relation="relation"/>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 479, 351, 241}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 205.0]">
-        </property>
-    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="producer.port" relation="relation2"/>
     <link port="PthalesDynamicCompositeActor.port_" relation="relation2"/>
-    <link port="PthalesDynamicCompositeActor.port" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
 </entity>

@@ -4,7 +4,7 @@
 <entity name="ThalesDynamicModalModelPN" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 994}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1286, 826}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 887]">
     </property>
@@ -33,13 +33,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 105.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1002}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1286, 826}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 895]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 716]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 447.5}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 358.0}">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -58,13 +58,13 @@
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 390.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 390.0]">
             </property>
         </port>
         <entity name="PthalesDynamicCompositeActor" class="ptolemy.domains.pthales.lib.PthalesDynamicCompositeActor">
             <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 125.0]">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
