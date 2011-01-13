@@ -167,13 +167,19 @@ public class LineReader extends Source {
 
             if ((_previousFileOrURL != null)
                     && !newFileOrURL.equals(_previousFileOrURL)) {
+                if (_debugging) {
+                    _debug("Closing file: " + _previousFileOrURL);
+                }
                 _previousFileOrURL = newFileOrURL;
                 fileOrURL.close();
 
                 // Ignore if the fileOrUL is blank.
-                if (fileOrURL.getExpression().trim().equals("")) {
+                if (newFileOrURL.trim().equals("")) {
                     _reader = null;
                 } else {
+                    if (_debugging) {
+                        _debug("Opening file: " + newFileOrURL);
+                    }
                     _reader = fileOrURL.openForReading();
                 }
             }
@@ -258,6 +264,9 @@ public class LineReader extends Source {
         }
         try {
             _nextLine = _reader.readLine();
+            if (_debugging) {
+                _debug("Read line: " + _nextLine);
+            }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Postfire failed");
         }
@@ -269,8 +278,6 @@ public class LineReader extends Source {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        _firedSinceWrapup = true;
-
         // If there is no current line, refuse to fire.
         if (_currentLine == null) {
             return false;
@@ -285,7 +292,6 @@ public class LineReader extends Source {
     public void wrapup() throws IllegalActionException {
         fileOrURL.close();
         _reader = null;
-        _firedSinceWrapup = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -309,6 +315,9 @@ public class LineReader extends Source {
      *  @throws IllegalActionException If the file cannot be read.
      */
     protected void _openAndReadFirstTwoLines() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Opening file: " + ((StringToken)fileOrURL.getToken()).stringValue());
+        }
         _reader = fileOrURL.openForReading();
         
         if (_reader == null) {
@@ -323,6 +332,10 @@ public class LineReader extends Source {
 
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
+                
+                if (_debugging) {
+                    _debug("Skipping line: " + _currentLine);
+                }
 
                 if (_currentLine == null) {
                     throw new IllegalActionException(this, "The file '"
@@ -331,6 +344,10 @@ public class LineReader extends Source {
                 }
             }
             _nextLine = _reader.readLine();
+            
+            if (_debugging) {
+                _debug("Read line: " + _nextLine);
+            }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Failed to read file in preinitialize().");
         }
@@ -339,11 +356,6 @@ public class LineReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** Indicator that the fire() method has been called, but wrapup
-     *  has not.  That is, we are in the middle of a run.
-     */
-    private boolean _firedSinceWrapup = false;
-    
     /** Previous value of fileOrURL parameter. */
     private String _previousFileOrURL;
 }
