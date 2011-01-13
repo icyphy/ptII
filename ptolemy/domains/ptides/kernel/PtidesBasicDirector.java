@@ -3606,6 +3606,8 @@ public class PtidesBasicDirector extends DEDirector {
             List<Time> ignoreFireAtTimes, RealTimeClock realTimeClock,
             Time newClockDrift) throws IllegalActionException {
         List<Time> newFireAtTimes = new LinkedList<Time>();
+        Actor container = (Actor) getContainer();
+        Director executiveDirector = ((Actor) container).getExecutiveDirector();
         for (Object originalFireAt : originalFireAtTimes) {
             Time originalFireAtTime = null;
             if (originalFireAt instanceof Time) {
@@ -3663,6 +3665,13 @@ public class PtidesBasicDirector extends DEDirector {
                         _getOraclePhysicalTag().timestamp.toString());
             }
             newFireAtTimes.add(newFireAtTime);
+            Time temp = executiveDirector.fireAt((Actor) container, newFireAtTime);
+            if (temp.compareTo(newFireAtTime) != 0) {
+                throw new IllegalActionException(this, "The fireAt wanted to occur " +
+                            "at time: " + newFireAtTime.toString() +
+                            ", however the actual time to fireAt is at: " +
+                            temp.toString());
+            }
             if (ignoreFireAtTimes != null) {
                 ignoreFireAtTimes.add(originalFireAtTime);
             }

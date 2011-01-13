@@ -368,11 +368,10 @@ public class Time implements Comparable {
                     time._divisorAndRemainder[0]).divide(gcd);
             BigInteger factor1 = lcm.divide(_divisorAndRemainder[0]);
             BigInteger factor2 = lcm.divide(time._divisorAndRemainder[0]);
-            _divisorAndRemainder[1] = _divisorAndRemainder[1].multiply(factor1);
-            time._divisorAndRemainder[1] = time._divisorAndRemainder[1].
-                multiply(factor2);
+            BigInteger temp1 = _divisorAndRemainder[1].multiply(factor1);
+            BigInteger temp2 = time._divisorAndRemainder[1].multiply(factor2);
             return new Time(_director, _timeValue.add(time._timeValue),
-                    lcm, _divisorAndRemainder[1].add(time._divisorAndRemainder[1]));
+                    lcm, temp1.add(temp2));
         }
     }
 
