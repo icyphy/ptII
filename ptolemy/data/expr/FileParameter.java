@@ -322,7 +322,9 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
     /** Open the file or URL for reading. If the name begins with
      *  "$CLASSPATH", then search for the file relative to the classpath.
      *  If the name is relative, then it is relative to the directory
-     *  returned by getBaseDirectory().
+     *  returned by getBaseDirectory(). This method will first close
+     *  any previously opened file, whether it was opened for reading
+     *  or writing.
      *  @return A buffered reader.
      *  @see #getBaseDirectory()
      *  @exception IllegalActionException If the file or URL cannot be
@@ -330,6 +332,8 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      */
     public BufferedReader openForReading() throws IllegalActionException {
         try {
+            // In case there is anything open, close it.
+            close();
             _reader = FileUtilities.openForReading(stringValue(),
                     getBaseDirectory(), getClass().getClassLoader());
             return _reader;
@@ -345,7 +349,9 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  If permitted, this method will return a Writer that will simply
      *  overwrite the contents of the file. It is up to the user of this
      *  method to check whether this is OK (by first calling asFile()
-     *  and calling exists() on the returned value).
+     *  and calling exists() on the returned value). This method will first close
+     *  any previously opened file, whether it was opened for reading
+     *  or writing.
      *  @see #getBaseDirectory()
      *  @see #asFile()
      *  @return A writer, or null if no file name has been specified.
@@ -364,6 +370,9 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  overwrite the contents of the file. It is up to the user of this
      *  method to check whether this is OK (by first calling asFile()
      *  and calling exists() on the returned value).
+     *  This method will first close
+     *  any previously opened file, whether it was opened for reading
+     *  or writing.
      *  @see #getBaseDirectory()
      *  @see #asFile()
      *  @param append If true, then append to the file rather than
@@ -374,6 +383,8 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
+            // In case there is anything open, close it.
+            close();
             _writer = FileUtilities.openForWriting(stringValue(),
                     getBaseDirectory(), append);
             return _writer;
