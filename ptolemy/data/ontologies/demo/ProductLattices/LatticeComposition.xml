@@ -4,13 +4,13 @@
 <entity name="LatticeComposition" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 59, 1292, 971}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 58, 1292, 971}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1077, 854]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.166821969697, 235.6534090909091}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.9976325757576, 327.0609217171717}">
     </property>
     <property name="ConstAbsIntObservableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../demo/ProductLattices/LatticeCompositionSolverModel.xml">
@@ -113,16 +113,16 @@
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unobservable">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 290.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -147,9 +147,9 @@
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unobservable">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -167,9 +167,9 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
             </property>
         </port>
     </entity>
@@ -241,9 +241,9 @@
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
             </property>
         </port>
     </entity>
@@ -255,9 +255,9 @@
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unobservable">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -347,9 +347,9 @@
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unobservable">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -367,9 +367,9 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantNegative">
             </property>
         </port>
     </entity>
@@ -407,9 +407,9 @@
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantNegative">
             </property>
         </port>
     </entity>
@@ -460,9 +460,9 @@
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unobservable">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -482,7 +482,7 @@
             <property name="output"/>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableConstantUnknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNonconstantUnknown">
             </property>
         </port>
     </entity>
@@ -516,7 +516,7 @@
             <property name="multiport"/>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableConstantUnknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNonconstantUnknown">
             </property>
         </port>
     </entity>

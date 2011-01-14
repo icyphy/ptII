@@ -4,13 +4,13 @@
 <entity name="LatticeCompositionSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 340, 1146, 520}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={471, 184, 984, 513}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[931, 403]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[769, 396]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.1458333333333, 111.984375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.1458333333333, 108.484375}">
     </property>
     <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/observableLattice/ObservableSolverModel.xml">
@@ -75,7 +75,7 @@
         </property>
         <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(input, factor, output)">
         </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyByZero(input, factor, output)">
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyFunction(input, factor)">
         </property>
         <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= otherFactorZero(factor, input, output)">
         </property>
@@ -108,18 +108,12 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="multiplyByZero" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
-        <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="(factor1 &lt;= ObservableNonconstantZero &amp;&amp; factor1 &gt;= UnobservableConstantZero &amp;&amp; factor2 &lt; ObservableNonconstantUndefined) || (factor2 &lt;= ObservableNonconstantZero &amp;&amp; factor2 &gt;= UnobservableConstantZero &amp;&amp; factor1 &lt; ObservableNonconstantUndefined) ? UnobservableConstantZero :&#10; factor1 &lt;= ObservableConstantUnknown || factor2 &lt;= ObservableConstantUnknown ? UnobservableConstantUnknown :&#10;  factor1 &lt;= ObservableNonconstantUnknown || factor2 &lt;= ObservableNonconstantUnknown ? UnobservableNonconstantUnknown :&#10;   (factor1 &lt;= ObservableConstantPositive &amp;&amp; factor2 &lt;= ObservableConstantPositive) || (factor1 &lt;= ObservableConstantNegative &amp;&amp; factor2 &lt;= ObservableConstantNegative) ? UnobservableConstantPositive :&#10;    (factor1 &lt;= ObservableNonconstantPositive &amp;&amp; factor2 &lt;= ObservableNonconstantPositive) || (factor1 &lt;= ObservableNonconstantNegative &amp;&amp; factor2 &lt;= ObservableNonconstantNegative) ? UnobservableNonconstantPositive :&#10;     (factor1 &lt;= ObservableConstantPositive &amp;&amp; factor2 &lt;= ObservableConstantNegative) || (factor2 &lt;= ObservableConstantPositive &amp;&amp; factor1 &lt;= ObservableConstantNegative) ? UnobservableConstantNegative :&#10;      (factor1 &lt;= ObservableNonconstantPositive &amp;&amp; factor2 &lt;= ObservableNonconstantNegative) || (factor2 &lt;= ObservableNonconstantPositive &amp;&amp; factor1 &lt;= ObservableNonconstantNegative) ? UnobservableNonconstantNegative :&#10;       factor1 &lt;= ObservableConstantUndefined &amp;&amp; factor2 &lt;= ObservableConstantUndefined ? UnobservableConstantUndefined :&#10;        UnobservableNonconstantUndefined">
         </property>
-        <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservableLattice">
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constAbsIntObservableLattice">
         </property>
-        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{&quot;factor1&quot;, &quot;factor2&quot;, &quot;product&quot;}">
-        </property>
-        <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{&quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;, &quot;constAbsIntObservableLattice&quot;}">
-        </property>
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == ObservableConstantZero || factor1 == UnobservableConstantZero || factor1 == ObservableNonconstantZero || factor1 == ObservableConstantZero ||&#10; factor1 == ObservableConstantZero || factor2 == UnobservableConstantZero || factor2 == UnobservableNonconstantZero || factor2 == ObservableNonconstantZero ? UnobservableConstantZero : &#10;  UnobservableConstantUnknown">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 270.0]">
         </property>
     </property>
     <entity name="observableLattice" class="ptolemy.data.ontologies.lattice.adapters.observableLattice.observableLattice">
