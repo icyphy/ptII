@@ -9,13 +9,13 @@
 		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 13, 1288, 934}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 200, 1608, 1174}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 817]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1393, 1057]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.718281455502">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3700184283934">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{639.621212121212, 340.1262626262567}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{605.1126779281523, 608.7612343359245}">
     </property>
     <entity name="UnobservableConstantUnknown" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,0.4}">
@@ -24,7 +24,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 590.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.22535585630476, 580.2776005254686]">
         </property>
     </entity>
     <entity name="UnobservableConstantPositive" class="ptolemy.data.ontologies.FiniteConcept">
@@ -34,7 +34,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.22535585630476, 495.27760052546864]">
         </property>
     </entity>
     <entity name="UnobservableConstantZero" class="ptolemy.data.ontologies.FiniteConcept">
@@ -44,7 +44,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.1503886285916, 494.0486789389029]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[596.2253558563048, 495.27760052546864]">
         </property>
     </entity>
     <entity name="UnobservableConstantNegative" class="ptolemy.data.ontologies.FiniteConcept">
@@ -54,7 +54,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.2831581655913, 494.0944599542643]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{800.0, 495.0}">
         </property>
     </entity>
     <entity name="ObservableNonconstantUndefined" class="ptolemy.data.ontologies.FiniteConcept">
@@ -64,7 +64,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 235.0]">
         </property>
     </entity>
     <entity name="ObservableConstantNegative" class="ptolemy.data.ontologies.FiniteConcept">
@@ -74,7 +74,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 360.0]">
         </property>
     </entity>
     <entity name="ObservableConstantZero" class="ptolemy.data.ontologies.FiniteConcept">
@@ -94,7 +94,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[284.8496113714084, 355.9513210610971]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 355.0]">
         </property>
     </entity>
     <entity name="UnobservableNonconstantUndefined" class="ptolemy.data.ontologies.FiniteConcept">
@@ -104,7 +104,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 360.0]">
         </property>
     </entity>
     <entity name="ObservableConstantUnknown" class="ptolemy.data.ontologies.FiniteConcept">
@@ -114,7 +114,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[191.22535585630476, 415.27760052546864]">
         </property>
     </entity>
     <entity name="ObservableConstantUndefined" class="ptolemy.data.ontologies.FiniteConcept">
@@ -124,7 +124,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1045.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1010.0, 310.0]">
         </property>
     </entity>
     <entity name="UnobservableNonconstantPositive" class="ptolemy.data.ontologies.FiniteConcept">
@@ -134,7 +134,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[379.8496113714084, 415.9513210610971]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.22535585630476, 415.27760052546864]">
         </property>
     </entity>
     <entity name="ObservableNonconstantPositive" class="ptolemy.data.ontologies.FiniteConcept">
@@ -144,7 +144,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[379.8496113714084, 290.9513210610971]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.5000000000024, 274.18250296561143}">
         </property>
     </entity>
     <entity name="ObservableNonconstantZero" class="ptolemy.data.ontologies.FiniteConcept">
@@ -154,7 +154,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{595.5000000000024, 274.18250296561143}">
         </property>
     </entity>
     <entity name="ObservableNonconstantNegative" class="ptolemy.data.ontologies.FiniteConcept">
@@ -164,7 +164,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 275.0]">
         </property>
     </entity>
     <entity name="UnobservableNonconstantZero" class="ptolemy.data.ontologies.FiniteConcept">
@@ -174,7 +174,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{585.0, 415.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[596.2253558563048, 415.27760052546864]">
         </property>
     </entity>
     <entity name="UnobservableNonconstantNegative" class="ptolemy.data.ontologies.FiniteConcept">
@@ -184,7 +184,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.1327695369997, 415.0457810153614]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{800.0, 415.0}">
         </property>
     </entity>
     <entity name="UnobservableConstantUndefined" class="ptolemy.data.ontologies.FiniteConcept">
@@ -194,7 +194,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1045.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1010.0, 415.0]">
         </property>
     </entity>
     <entity name="UnobservableNonconstantUnknown" class="ptolemy.data.ontologies.FiniteConcept">
@@ -204,7 +204,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 465.0]">
         </property>
     </entity>
     <entity name="ObservableNonconstantUnknown" class="ptolemy.data.ontologies.FiniteConcept">
@@ -214,7 +214,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 315.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.data.ontologies.ConceptRelation">
