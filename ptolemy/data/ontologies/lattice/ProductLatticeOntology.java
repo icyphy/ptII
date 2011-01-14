@@ -383,6 +383,8 @@ public class ProductLatticeOntology extends Ontology {
             		"the latticeOntologies Parameter in the ProductLatticeOntology.");
         }
         
+        _attachText("_iconDescription", _ICON);
+        
         latticeOntologies.setTypeEquals(new ArrayType(new ObjectType(Ontology.class)));
     }
     
@@ -415,4 +417,44 @@ public class ProductLatticeOntology extends Ontology {
     
     /** The workspace version at which the cached product lattice was valid. */
     private long _latticeVersion = -1L;
+    
+    /** The icon description used for rendering. */
+    private static final String _ICON = "<svg>"
+            + "<line x1=\"0\" y1=\"-20\" x2=\"10\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"0\" y1=\"-20\" x2=\"-10\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"0\" y1=\"-20\" x2=\"0\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"0\" y1=\"20\" x2=\"10\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"0\" y1=\"20\" x2=\"-10\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"0\" y1=\"20\" x2=\"0\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<circle cx=\"0\" cy=\"-20\" r=\"6\" style=\"fill:blue\"/>"
+            + "<circle cx=\"0\" cy=\"20\" r=\"6\" style=\"fill:red\"/>"
+            + "<circle cx=\"10\" cy=\"-1\" r=\"6\" style=\"fill:white\"/>"
+            + "<circle cx=\"-10\" cy=\"-1\" r=\"6\" style=\"fill:white\"/>"
+            + "<circle cx=\"0\" cy=\"0\" r=\"6\" style=\"fill:white\"/>"
+            + "<text x=\"17\" y=\"8\""
+            + "  style=\"font-size:28; font-family:SansSerif\">x</text>"
+            + "<line x1=\"50\" y1=\"-20\" x2=\"60\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"-20\" x2=\"40\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"-20\" x2=\"50\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"20\" x2=\"60\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"20\" x2=\"40\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"20\" x2=\"50\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<circle cx=\"50\" cy=\"-20\" r=\"6\" style=\"fill:blue\"/>"
+            + "<circle cx=\"50\" cy=\"20\" r=\"6\" style=\"fill:red\"/>"
+            + "<circle cx=\"60\" cy=\"-1\" r=\"6\" style=\"fill:white\"/>"
+            + "<circle cx=\"40\" cy=\"-1\" r=\"6\" style=\"fill:white\"/>"
+            + "<circle cx=\"50\" cy=\"0\" r=\"6\" style=\"fill:white\"/>"
+            + "</svg>";
 }
