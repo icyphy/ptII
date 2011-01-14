@@ -74,7 +74,6 @@
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/ontologyTableauFactory.xml"/>
-    <input source="ptolemy/configs/ontologySolverTableauFactory.xml"/>
     <input source="ptolemy/configs/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/pteraTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
