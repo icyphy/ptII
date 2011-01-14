@@ -82,32 +82,24 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public Bus(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _receivers = new Hashtable();
         _tokens = new FIFOQueue();
 
         serviceTime = new Parameter(this, "serviceTime");
         serviceTime.setExpression("0.1");
         serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    /**
-     * Create an intermediate receiver that wraps a given receiver.
-     * @param receiver The receiver that is being wrapped.
-     * @return A new intermediate receiver.
+    /** Create an intermediate receiver that wraps a given receiver.
+     *  @param receiver The receiver that is being wrapped.
+     *  @return A new intermediate receiver.
      */
     public IntermediateReceiver getReceiver(Receiver receiver) {
-        IntermediateReceiver intermediateReceiver = _receivers.get(receiver);
-        if (intermediateReceiver == null) {
-            intermediateReceiver = new IntermediateReceiver(this, receiver);
-            _receivers.put(receiver, intermediateReceiver);
-        }
+        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(this, receiver);
         return intermediateReceiver;
     }
-
-    /** The service time. This is a double with default 1.0.
-     *  It is required to be non-negative.
-     */
-    public Parameter serviceTime;
 
     /** If the attribute is <i>serviceTime</i>, then ensure that the value
      *  is non-negative
@@ -118,16 +110,15 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             throws IllegalActionException {
         if (attribute == serviceTime) {
             double value = ((DoubleToken) serviceTime.getToken()).doubleValue();
-            if (value < 0.0) {
+            if (value <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative serviceTime: " + value);
+                        "Cannot have negative or zero serviceTime: " + value);
             }
             _serviceTimeValue = value;
         }
     }
 
-    /**
-     * Send first token in the queue to the target receiver.
+    /** Send first token in the queue to the target receiver.
      */
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -139,20 +130,19 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
         }
     }
 
-    /**
-     * If there are still tokens in the queue schedule a refiring.
+    /** If there are still tokens in the queue and a token has been produced in the fire, 
+     *  schedule a refiring.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_tokens.size() > 0) {
-            Time currentTime = getDirector().getModelTime();
+        Time currentTime = getDirector().getModelTime();
+        if (_tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
         return super.postfire();
     }
 
-    /**
-     * Receive a token and store it in the queue. Schedule a refiring.
+    /** Receive a token and store it in the queue. Schedule a refiring.
      */
     public void sendToken(Receiver receiver, Token token)
             throws IllegalActionException {
@@ -171,16 +161,22 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public void reset() {
         _tokens.clear();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                    ////
+    
+    /** The service time. This is a double with default 0.1.
+     *  It is required to be positive.
+     */
+    public Parameter serviceTime;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * Delay imposed on every token.
      */
     private double _serviceTimeValue;
-
-    /**
-     * Map target receivers to intermediate receivers.
-     */
-    private Hashtable<Receiver, IntermediateReceiver> _receivers;
 
     /**
      * Tokens stored for processing.

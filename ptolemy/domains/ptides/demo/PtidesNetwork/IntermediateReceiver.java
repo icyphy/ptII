@@ -35,6 +35,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -97,7 +98,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasToken() {
-        return _receiver.hasToken();
+        return _receiver.hasToken(); 
     }
 
     /** Delegate to the internal receiver and return whatever it returns.

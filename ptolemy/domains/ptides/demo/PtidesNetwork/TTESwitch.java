@@ -42,52 +42,43 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
- * Receives tokens and after a fixed delay forwards the tokens to specified 
- * receivers. Tokens are processed in FiFo order. 
- * 
- * The functionality is similar to the functionality of the Server 
- * (@see Server) but without input and output ports.
- * @author Patricia Derler
+/** This actor is an {@link QuantityManager} that, when its
+ *  {@link #sendToken(Receiver, Token)} method is called, delays
+ *  the delivery of the specified token to the specified receiver
+ *  according to a service rule.
+ *  
+ *  The actor differentiates between two kinds of tokens: time-triggered
+ *  and event-triggered, which is defined by the parameter <i>type</i> in 
+ *  the port which is associated with this quantity manager. 
+ *  
+ *  When tokens are received they are delivered with a delay given by the 
+ *  <i>serviceTime</i> parameter. If the actor is currently servicing a previous 
+ *  event-triggered token when it receives a time-triggered token, the event-triggered
+ *  token is queued again and the time-triggered token is serviced. After the 
+ *  time-triggered token is sent, the event-triggered token in the queue is selected
+ *  and delivered after the full <i>serviceTime</i>. If an event-triggered token arrives
+ *  while another event-triggered token arrives, the new event-triggered token is queued.
+ *  If a time-triggered token is received while another time-triggered token is serviced
+ *  an exception is thrown. Time-triggered messages should have a fixed delay. In a 
+ *  time-triggered ethernet implementation an offline calculated schedule ensures that only
+ *  one time-triggered message is received by the TTESwitch at a time.  
+ *  Event-triggered tokens are processed in FIFO order.
+ *  <p>
+ *  This actor will be used on any communication where the receiving
+ *  port has a parameter named "QuantityManager" that refers by name
+ *  to the instance of this actor.
+ *  @author Patricia Derler
  */
 public class TTESwitch extends TypedAtomicActor implements QuantityManager {
-    /** Construct a Bus in the default workspace with no
-     *  container and an empty string as its name. Add the actor to the
-     *  workspace directory.  You should set the local director or
-     *  executive director before attempting to send data to the actor or
-     *  to execute it. Increment the version number of the workspace.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
-     */
-    public TTESwitch() throws IllegalActionException, NameDuplicationException {
-        super();
-        _initialize();
-    }
 
-    /** Construct a Bus in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
-     */
-    public TTESwitch(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
-        super(workspace);
-        _initialize();
-    }
-
-    /** Construct a Bus with a name and a container.
+    /** Construct a TTESwitch with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -106,131 +97,6 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
     public TTESwitch(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _initialize();
-    }
-    
-    /** The service time. This is a double with default 1.0.
-     *  It is required to be non-negative.
-     */
-    public Parameter serviceTime;
-
-    /**
-     * Create an intermediate receiver that wraps a given receiver.
-     * @param receiver The receiver that is being wrapped.
-     * @return A new intermediate receiver.
-     * @throws IllegalActionException 
-     */
-    public IntermediateReceiver getReceiver(Receiver receiver) throws IllegalActionException {
-        IntermediateReceiver intermediateReceiver = _receivers.get(receiver);
-        if (intermediateReceiver == null) {
-            intermediateReceiver = new IntermediateReceiver(this, receiver);
-            _receivers.put(receiver, intermediateReceiver);
-            Parameter timeTriggeredParameter = (Parameter) receiver.getContainer().getAttribute("type");
-            boolean timeTriggered = false;
-            if (timeTriggeredParameter != null) {
-                String timeTriggeredString = ((StringToken)timeTriggeredParameter.getToken()).stringValue();
-                if (!timeTriggeredString.equals("time-triggered") && !timeTriggeredString.equals("event-triggered")) {
-                    throw new IllegalActionException("Value of parameter 'type' must be either 'time-triggered' or" +
-                                "'event-triggered. Value of port " + receiver.getContainer() + " is '" + 
-                                timeTriggeredString +"'");
-                }
-                timeTriggered = timeTriggeredString.equals("time-triggered");
-            } else { 
-                throw new IllegalActionException("Type of port " + receiver.getContainer() +" must be specified");
-            }
-            _receiverType.put(receiver, timeTriggered);
-        }
-        return intermediateReceiver;
-    }
-    
-
-    /** If the attribute is <i>serviceTime</i>, then ensure that the value
-     *  is non-negative
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == serviceTime) {
-            double value = ((DoubleToken) serviceTime.getToken()).doubleValue();
-            if (value < 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative serviceTime: " + value);
-            }
-            _serviceTimeValue = value;
-        }
-    }
-
-    /**
-     * Send first token in the queue to the target receiver.
-     */
-    public void fire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        if (currentTime.compareTo(_nextTimeFree) == 0) {
-            Object[] output;
-            if (_ttTokens.size() > 0) {
-                output = (Object[]) _ttTokens.take(); 
-            } else {
-                output = (Object[]) _etTokens.take();
-            }
-            Receiver receiver = (Receiver) output[0];
-            Token token = (Token) output[1];
-            receiver.put(token);
-        }
-    }
-
-    /**
-     * If there are still tokens in the queue schedule a refiring.
-     */
-    public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        if (currentTime.compareTo(_nextTimeFree) == 0 && 
-                (_ttTokens.size() == 1 || 
-                (_ttTokens.size() == 0 && _etTokens.size() > 0))) {   
-            _nextTimeFree = currentTime.add(_serviceTimeValue);
-            _fireAt(_nextTimeFree);
-        } 
-        return super.postfire();
-    }
-
-    /**
-     * Receive a token and store it in the queue. Schedule a refiring.
-     */
-    public void sendToken(Receiver receiver, Token token)
-            throws IllegalActionException {
-        if (_receiverType.get(receiver)) { // time-triggered
-            _ttTokens.put(new Object[] { receiver, token });
-        } else { // event-triggered
-            _etTokens.put(new Object[] { receiver, token });
-        }
-        if (_ttTokens.size() > 1) {
-            throw new IllegalActionException("Schedule violation: A time-triggered message is " +
-                    "being sent at port " + ((Receiver)((Object[])_ttTokens.get(0))[0]).getContainer() +
-                    " while a new time-triggered message is received at port " + 
-                    receiver.getContainer() + " at time " + getDirector().getModelTime());
-        } else if (_ttTokens.size() == 1 || 
-                (_ttTokens.size() == 0 && _etTokens.size() > 0)) {  
-            Time currentTime = getDirector().getModelTime();
-            _nextTimeFree = currentTime.add(_serviceTimeValue);
-            _fireAt(_nextTimeFree);
-        } 
-    }
-
-    /**
-     * Reset the quantity manager and clear the tokens.
-     */
-    public void reset() {
-        _etTokens.clear();
-        _ttTokens.clear();
-    }
-    
-    /**
-     * Initialize local variables.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
         _receivers = new Hashtable<Receiver, IntermediateReceiver>();
         _receiverType = new Hashtable<Receiver, Boolean>();
         _etTokens = new FIFOQueue();
@@ -241,6 +107,132 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
         serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
 
+    /** The service time. This is a double with default 0.1.
+     *  It is required to be positive.
+     */
+    public Parameter serviceTime;
+
+    /** Create an intermediate receiver and determine type of tokens received on the
+     *  port associated with this receiver. The type is specified in a parameter of the port
+     *  (time-triggered or event-triggered).
+     *  @param receiver The receiver that is being wrapped.
+     *  @return A new intermediate receiver.
+     *  @throws IllegalActionException If parameter
+     */
+    public IntermediateReceiver getReceiver(Receiver receiver)
+            throws IllegalActionException {
+        IntermediateReceiver intermediateReceiver = _receivers.get(receiver);
+        if (intermediateReceiver == null) {
+            intermediateReceiver = new IntermediateReceiver(this, receiver);
+            _receivers.put(receiver, intermediateReceiver);
+            Parameter timeTriggeredParameter = (Parameter) receiver
+                    .getContainer().getAttribute("type");
+            boolean timeTriggered = false;
+            if (timeTriggeredParameter != null) {
+                String timeTriggeredString = ((StringToken) timeTriggeredParameter
+                        .getToken()).stringValue();
+                if (!timeTriggeredString.equals("time-triggered")
+                        && !timeTriggeredString.equals("event-triggered")) {
+                    throw new IllegalActionException(
+                            "Value of parameter 'type' must be either 'time-triggered' or"
+                                    + "'event-triggered. Value of port "
+                                    + receiver.getContainer() + " is '"
+                                    + timeTriggeredString + "'");
+                }
+                timeTriggered = timeTriggeredString.equals("time-triggered");
+            } else {
+                throw new IllegalActionException("Type of port "
+                        + receiver.getContainer() + " must be specified");
+            }
+            _receiverType.put(receiver, timeTriggered);
+        }
+        return intermediateReceiver;
+    }
+
+    /** If the attribute is <i>serviceTime</i>, then ensure that the value
+     *  is positive.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the service time is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == serviceTime) {
+            double value = ((DoubleToken) serviceTime.getToken()).doubleValue();
+            if (value <= 0.0) {
+                throw new IllegalActionException(this,
+                        "Cannot have negative or zero serviceTime: " + value);
+            }
+            _serviceTimeValue = value;
+        }
+    }
+
+    /** If there is a time-triggered token scheduled to be sent then deliver this
+     *  token, otherwise send first token in the queue of event-triggered tokens.
+     */
+    public void fire() throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        if (currentTime.compareTo(_nextTimeFree) == 0) {
+            Object[] output;
+            if (_ttTokens.size() > 0) {
+                output = (Object[]) _ttTokens.take();
+            } else {
+                output = (Object[]) _etTokens.take();
+            }
+            Receiver receiver = (Receiver) output[0];
+            Token token = (Token) output[1];
+            receiver.put(token);
+        }
+    }
+
+    /** If a token has been sent in the fire method then schedule the next firing. 
+     */
+    public boolean postfire() throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        if (currentTime.compareTo(_nextTimeFree) == 0
+                && (_ttTokens.size() == 1 || (_ttTokens.size() == 0 && _etTokens
+                        .size() > 0))) {
+            _nextTimeFree = currentTime.add(_serviceTimeValue);
+            _fireAt(_nextTimeFree);
+        }
+        return super.postfire();
+    }
+
+    /** Receive a token and store it in the queue. Schedule a refiring.
+     */
+    public void sendToken(Receiver receiver, Token token)
+            throws IllegalActionException {
+        if (_receiverType.get(receiver)) { // time-triggered
+            _ttTokens.put(new Object[] { receiver, token });
+        } else { // event-triggered
+            _etTokens.put(new Object[] { receiver, token });
+        }
+        if (_ttTokens.size() > 1) {
+            throw new IllegalActionException(
+                    "Schedule violation: A time-triggered message is "
+                            + "being sent at port "
+                            + ((Receiver) ((Object[]) _ttTokens.get(0))[0])
+                                    .getContainer()
+                            + " while a new time-triggered message is received at port "
+                            + receiver.getContainer() + " at time "
+                            + getDirector().getModelTime());
+        } else if (_ttTokens.size() == 1
+                || (_ttTokens.size() == 0 && _etTokens.size() > 0)) {
+            Time currentTime = getDirector().getModelTime();
+            _nextTimeFree = currentTime.add(_serviceTimeValue);
+            _fireAt(_nextTimeFree);
+        }
+    }
+
+    /** Reset the quantity manager and clear the tokens.
+     */
+    public void reset() {
+        _etTokens.clear();
+        _ttTokens.clear();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     /**
      * Delay imposed on every token.
      */
@@ -250,7 +242,7 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
      * Map target receivers to intermediate receivers.
      */
     private Hashtable<Receiver, IntermediateReceiver> _receivers;
-    
+
     /**
      * Store type of receiver: true if time-triggered, false if event-triggered.
      */
@@ -260,7 +252,7 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
      * Tokens for time-triggered traffic.
      */
     private FIFOQueue _ttTokens;
-    
+
     /**
      * Tokens for event-triggered traffic.
      */

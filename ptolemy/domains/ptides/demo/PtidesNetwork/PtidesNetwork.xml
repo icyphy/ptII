@@ -37,8 +37,6 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
             </property>
-            <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
-            </property>
         </port>
         <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
             <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -116,8 +114,6 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
-            </property>
-            <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
         </port>
         <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
