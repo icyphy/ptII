@@ -38,6 +38,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 /** A receiver that delegates to another receiver all method calls except
  *  {@link #put(Token)} (and its variants), for which it delegates to a
@@ -55,17 +56,18 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @author Patricia Derler
  */
 public class IntermediateReceiver extends AbstractReceiver {
-    
+
     /** Construct an intermediate receiver with no container that wraps the
      *  specified receiver using the specified quantity manager.
      *  @param quantityManager The quantity manager that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      */
-    public IntermediateReceiver(QuantityManager quantityManager, Receiver receiver) {
+    public IntermediateReceiver(QuantityManager quantityManager,
+            Receiver receiver) {
         _receiver = receiver;
         _quantityManager = quantityManager;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -98,7 +100,13 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasToken() {
-        return _receiver.hasToken(); 
+        // FIXME this is just a quick fix to support Continuous models.
+        try {
+            return _receiver.hasToken();
+        } catch (InvalidStateException ex) {
+            System.out.println("IntermediateReceiver.hasToken() " + ex);
+        }
+        return false;
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
@@ -113,13 +121,13 @@ public class IntermediateReceiver extends AbstractReceiver {
     public void put(Token token) throws NoRoomException, IllegalActionException {
         _quantityManager.sendToken(_receiver, token);
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Target receiver that is wrapped by this intermediate receiver.  */
     private Receiver _receiver;
-    
+
     /** Quantity manager that receives tokens from this receiver. */
     private QuantityManager _quantityManager;
 }

@@ -120,9 +120,11 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
 
     /** Send first token in the queue to the target receiver.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException { 
         Time currentTime = getDirector().getModelTime();
-        if (_tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
+        // in a continuous domain this actor could be fired before any token has
+        // been received; _nextTimeFree could be null
+        if (_nextTimeFree != null && _tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output = (Object[]) _tokens.take();
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
@@ -135,7 +137,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (_tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
+        if (_nextTimeFree != null && _tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
@@ -145,7 +147,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     /** Receive a token and store it in the queue. Schedule a refiring.
      */
     public void sendToken(Receiver receiver, Token token)
-            throws IllegalActionException {
+            throws IllegalActionException {System.out.println("put");
         _tokens.put(new Object[] { receiver, token });
         // if there was no token in the queue, schedule a refiring.
         if (_tokens.size() == 1) {

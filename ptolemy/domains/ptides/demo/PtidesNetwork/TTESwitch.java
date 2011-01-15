@@ -171,7 +171,7 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
      */
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (currentTime.compareTo(_nextTimeFree) == 0) {
+        if (_nextTimeFree != null && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output;
             if (_ttTokens.size() > 0) {
                 output = (Object[]) _ttTokens.take();
@@ -188,7 +188,7 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (currentTime.compareTo(_nextTimeFree) == 0
+        if (_nextTimeFree != null && currentTime.compareTo(_nextTimeFree) == 0
                 && (_ttTokens.size() == 1 || (_ttTokens.size() == 0 && _etTokens
                         .size() > 0))) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
