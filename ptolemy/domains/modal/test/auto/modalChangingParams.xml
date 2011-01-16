@@ -2,20 +2,18 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="modalChangingParams" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 33.0">
         </property>
@@ -37,7 +35,11 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 32, 819, 572}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 32, 817, 564}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -47,25 +49,11 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 115.0}">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.FSMDirector">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.HSDirector">
                 </property>
@@ -79,14 +67,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 115.0">
         </property>
-        <property name="_Director" class="ptolemy.domains.modal.kernel.FSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
@@ -94,10 +74,6 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state3">
-            </property>
-            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -120,7 +96,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="param" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="param" class="ptolemy.data.expr.Parameter" value="2">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -137,6 +113,14 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 100.0">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 251, 813, 511}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
@@ -149,46 +133,34 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="state2" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 250.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="state3" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 155.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -207,17 +179,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.modal.kernel.RelationList">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="param &gt;=7">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -229,17 +193,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.modal.kernel.RelationList">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output=input">
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -251,15 +209,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.modal.kernel.RelationList">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="param &lt; 7">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="param=param+2;state.foo=param">
                 </property>
@@ -273,10 +225,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.modal.kernel.RelationList">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <link port="state.incomingPort" relation="relation2"/>
             <link port="state.incomingPort" relation="relation3"/>
@@ -289,18 +237,16 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 55.0">
                 </property>
             </property>
-            <property name="foo" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="foo" class="ptolemy.data.expr.Parameter" value="2">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -321,22 +267,10 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 195.0">
                 </property>
-                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="0">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </port>
             <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 190.0">
-                </property>
-                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
                 </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -351,30 +285,21 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 180.0">
                 </property>
-                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
             <link port="output" relation="relation"/>
             <link port="Const.output" relation="relation"/>
         </entity>
         <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="input" relation="inputRelation"/>
         <link port="output" relation="outputRelation"/>
@@ -388,50 +313,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 115.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
-        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        <property name="filename" class="ptolemy.actor.parameters.FilePortParameter" value="">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 185.0]">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="255.0, 175.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="modal model.input" relation="relation"/>
