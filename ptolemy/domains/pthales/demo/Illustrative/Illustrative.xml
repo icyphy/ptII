@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -100.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 22, 1083, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 4, 1085, 744}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[870, 764]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[870, 637]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8686055182699">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.5675675675675, 214.1440033783784}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{195.6796875000001, 180.6796874999999}">
     </property>
     <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {8,1}, y = {10,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -34,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 335.0]">
         </property>
     </property>
     <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[y = {2,1},x = {2,2}]">
@@ -53,13 +53,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 305.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Play with the &quot;repetitions&quot; parameters of actors (double-click on Source, Sink, Sink2),&#10;and the &quot;base&quot;, &quot;pattern&quot; and &quot;tiling&quot; parameters of their ports, to see how results change.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 405.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -97,7 +97,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 350.0]">
         </property>
     </property>
     <property name="consumeTiling" class="ptolemy.data.expr.Parameter" value="[x = 4, y = 2]">
@@ -116,7 +116,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 320.0]">
         </property>
     </property>
     <property name="produceBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
@@ -135,7 +135,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 320.0]">
         </property>
     </property>
     <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="produceBase">
@@ -154,7 +154,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 290.0]">
         </property>
     </property>
     <property name="consumePattern2" class="ptolemy.data.expr.Parameter" value="consumePattern">
@@ -173,7 +173,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 375.0]">
         </property>
     </property>
     <property name="consumeTiling2" class="ptolemy.data.expr.Parameter" value="consumeTiling">
@@ -192,7 +192,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 390.0]">
         </property>
     </property>
     <property name="consumeBase2" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 6]">
@@ -211,19 +211,23 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 360.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A brief introduction to the Pthales domain:&#10;- The MoC is multidimensional dataflow: tokens are multidimensional (MD) arrays.&#10;- An up-stream actor produces an MD array in multiple firings, as defined by&#10;a set of parameters, explained below.&#10;- The director fires all actors conceptually in order of dependencies. Feedback loops&#10;are currently not supported, so graphs are acyclic and such an order is well-defined.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -160.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All actors under a PthalesDirector are PthalesAtomicActors or PthalesCompositeActors. They all use PthalesIOPorts.&#10;Each actor has a parameter called &quot;repetitions&quot; (double-click on an actor to see it): its value is a vector {k,m,n,...}&#10;of dimension equal to the dimensions of the arrays the actor consumes or produces. k,m,n,... are positive integers.&#10;Each port has the following parameters:&#10;- &quot;base&quot;: the origin with respect to which other coordinates are computed&#10;- &quot;pattern&quot;: the area of the array that is written to/read from at each firing&#10;- &quot;tiling&quot;: how the pattern &quot;moves&quot; or &quot;slides&quot; (think of a sliding window, but multidimensional) from one firing to the next&#10;- &quot;size&quot;: the size of a produced array at an output port (currently optional, can be computed from the other parameters)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, -45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, -60.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -231,7 +235,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Source has repetitions={1,1} meaning it fires 1*1=1 time in total.&#10;It produces an MD array of 2 dimensions, labeled &quot;x&quot; and &quot;y&quot;. The array&#10;is equal to the pattern, since the actor fires only once for each array.&#10;For the same reason, the tiling parameter is irrelevant in this case,&#10;since the patter never &quot;moves&quot; (there's only 1 firing per array).&#10;The pattern is [x={8,1},y={10,1}] meaning that the array has size 8 in&#10;the x-dimension and 10 in the y-dimension. The two 1s in {8,1} and {10,1}&#10;specify the separation from one element to the next in the pattern, as&#10;patterns can have &quot;holes&quot;. See comments on the Sinks.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 80.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -239,7 +243,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Sink has repetitions={2,3} meaning it fires in &#10;total 2*3=6 times in order to consume the entire array&#10;produced by the Source. In each of the 6 firings, the&#10;Sink consumes a pattern [y = {2,1},x = {2,2}], that is,&#10;a 2x2 sub-array, 2 elements in the y-dimension, separated&#10;by 1, and 2 in the x-dimension, separated by 2. This is&#10;an example of a pattern with a hole (in the x-dimension).&#10;The Sink's input port has tiling=[x=4,y=2], meaning that&#10;the starting points of the 6 successive patterns will be:&#10;[x=0,y=0] (the base), [x=4,y=0], [x=0,y=2], [x=4,y=2],&#10;[x=0,y=4], and [x=4,y=4]. The outputs of the Displays&#10;illustrate the contents of the patterns produced in this way.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 75.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -247,7 +251,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the Pthales domain documentation under &#10;svn+ssh://source.eecs.berkeley.edu/chess/ealpapers/10/Pthales/TechReport/&#10;(FIXME: we should make this public) for mode details.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 465.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -272,7 +276,7 @@
     <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 315.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="8*10">
@@ -322,15 +326,15 @@
     <entity name="Sink" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2, 3}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 285.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 35, 815, 533}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 35, 815, 507}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -338,10 +342,16 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The parameters of the SequenceToMatrix&#10;actor depend on the pattern parameter&#10;of the input port.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
+            </property>
+        </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
             </property>
             <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
             </property>
@@ -351,30 +361,42 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1123, 123, 153, 776}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1038, 476, 229, 249}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[145, 705]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[221, 201]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 155.0]">
             </property>
         </entity>
+        <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
+            <property name="rows" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="columns" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 155.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="port_0" relation="relation"/>
-        <link port="Display.input" relation="relation"/>
+        <link port="Display.input" relation="relation2"/>
+        <link port="SequenceToMatrix.input" relation="relation"/>
+        <link port="SequenceToMatrix.output" relation="relation2"/>
     </entity>
     <entity name="Sink2" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2,2}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 355.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 35, 815, 533}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={421, 129, 815, 507}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -395,20 +417,45 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 126, 153, 444}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={267, 246, 153, 421}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[145, 373]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 195.0]">
+            </property>
+        </entity>
+        <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
+            <property name="rows" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="columns" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 195.0]">
+            </property>
+        </entity>
+        <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 266, 153, 421}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[145, 373]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 285.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port_0" relation="relation"/>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{90.0, 195.0}">
+            </vertex>
+        </relation>
+        <link port="port_0" relation="relation3"/>
         <link port="Display.input" relation="relation"/>
+        <link port="SequenceToMatrix.input" relation="relation3"/>
+        <link port="SequenceToMatrix.output" relation="relation"/>
+        <link port="Display2.input" relation="relation3"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[250.0, 380.0]">
+        <vertex name="vertex1" value="[240.0, 335.0]">
         </vertex>
     </relation>
     <link port="Source.out" relation="relation2"/>
