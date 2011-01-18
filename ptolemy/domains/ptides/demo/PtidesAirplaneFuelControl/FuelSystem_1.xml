@@ -14,16 +14,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 22, 721, 463}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 22, 831, 507}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[508, 353]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[618, 397]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.0, 176.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 198.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Overly simplistic tank model.&#10;&#10;The model shown here has a design flaw that can cause it&#10;to chatter when the tank becomes full or empty. In this&#10;test case, it starts chattering at time 7.0, and time cannot&#10;advance.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Overly simplistic tank model.&#10;&#10;This model cuts off the input flow when the tank is full and&#10;the output flow when the tank is empty.&#10;&#10;This design has a flaw that can cause it to chatter when the&#10;tank becomes full or empty. In this test case, it starts&#10;chattering starts at time 7.0, and time cannot advance.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 240.0]">
         </property>
