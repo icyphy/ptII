@@ -65,6 +65,7 @@
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
     <input source="ptolemy/configs/ontologyEffigyFactory.xml"/>
+    <input source="ptolemy/configs/ontologySolverEffigyFactory.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
