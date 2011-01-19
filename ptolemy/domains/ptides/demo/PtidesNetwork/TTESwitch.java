@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  *  to the instance of this actor.
  *  
  *  @author Patricia Derler
- *  @version $$
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
