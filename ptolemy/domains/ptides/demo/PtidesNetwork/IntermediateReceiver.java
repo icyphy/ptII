@@ -30,15 +30,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.demo.PtidesNetwork;
 
+import java.util.List;
+
 import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InvalidStateException;
 
 /** A receiver that delegates to another receiver all method calls except
  *  {@link #put(Token)} (and its variants), for which it delegates to a
@@ -77,12 +78,27 @@ public class IntermediateReceiver extends AbstractReceiver {
         _quantityManager.reset();
         _receiver.reset();
     }
+    
+    /** Delegate to the internal receiver and return whatever it returns.
+     *  @return A list of instances of Token.
+     *  @exception IllegalActionException Always thrown in this base class.
+     */
+    public List<Token> elementList() throws IllegalActionException {
+        return _receiver.elementList();
+    }
 
     /** Delegate to the internal receiver and return whatever it returns.
      *  @throws NoTokenException If the delegated receiver throws it.
      */
     public Token get() throws NoTokenException {
         return _receiver.get();
+    }
+
+    /** Delegate to the internal receiver and return whatever it returns.
+     *  @return The port containing the internal receiver.
+     */
+    public IOPort getContainer() {
+        return _receiver.getContainer();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
@@ -100,13 +116,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Delegate to the internal receiver and return whatever it returns.
      */
     public boolean hasToken() {
-        // FIXME this is just a quick fix to support Continuous models.
-        try {
-            return _receiver.hasToken();
-        } catch (InvalidStateException ex) {
-            System.out.println("IntermediateReceiver.hasToken() " + ex);
-        }
-        return false;
+        return _receiver.hasToken();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
@@ -115,12 +125,30 @@ public class IntermediateReceiver extends AbstractReceiver {
         return _receiver.hasToken(numberOfTokens);
     }
 
+    /** Delegate to the internal receiver and return whatever it returns.
+     */
+    public boolean isKnown() {
+        return _receiver.isKnown();
+    }
+
     /** Forward the specified token to quantity manager specified in
      *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
         _quantityManager.sendToken(_receiver, token);
     }
+    
+    /** Set the container of the internal receiver.
+     *  @param port The container.
+     *  @exception IllegalActionException If the container is not of
+     *   an appropriate subclass of IOPort. Not thrown in this base class,
+     *   but may be thrown in derived classes.
+     *  @see #getContainer()
+     */
+    public void setContainer(IOPort port) throws IllegalActionException {
+        _receiver.setContainer(port);
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
