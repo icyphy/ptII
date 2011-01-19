@@ -52,14 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ConstComparatorEqualToDemo.xml \
-	ConstComparatorGTEDemo.xml \
-	ConstComparatorGreaterThanDemo.xml \
-	ConstComparatorLTEDemo.xml \
-	ConstComparatorLessThanDemo.xml \
-	ConstMultiplyDivideDemo.xml \
-	ConstMultiplyDivideDemoProductLattice.xml \
-	ConstScaleDemo.xml
+	ConstAbstractInterpreatation.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

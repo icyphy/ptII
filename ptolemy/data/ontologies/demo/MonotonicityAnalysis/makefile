@@ -53,7 +53,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	DimensionSystemMonotonicitySolverModel.xml \
-	ExpressionMonotonicityAnalysis.xml
+	MonotonicityAnalysis.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
