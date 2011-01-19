@@ -1,4 +1,4 @@
-/* This actor implements a Network Bus.
+/* This actor implements a time-triggered ethernet switch.
 
 @Copyright (c) 2010 The Regents of the University of California.
 All rights reserved.
@@ -74,7 +74,12 @@ import ptolemy.kernel.util.Workspace;
  *  This actor will be used on any communication where the receiving
  *  port has a parameter named "QuantityManager" that refers by name
  *  to the instance of this actor.
+ *  
  *  @author Patricia Derler
+ *  @version $$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
  */
 public class TTESwitch extends TypedAtomicActor implements QuantityManager {
 
@@ -106,11 +111,9 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
         serviceTime.setExpression("0.1");
         serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
-
-    /** The service time. This is a double with default 0.1.
-     *  It is required to be positive.
-     */
-    public Parameter serviceTime;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Create an intermediate receiver and determine type of tokens received on the
      *  port associated with this receiver. The type is specified in a parameter of the port
@@ -229,6 +232,14 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
         _etTokens.clear();
         _ttTokens.clear();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The service time. This is a double with default 0.1.
+     *  It is required to be positive.
+     */
+    public Parameter serviceTime;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
