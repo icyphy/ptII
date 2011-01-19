@@ -30,8 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.demo.PtidesNetwork;
 
-import java.util.Hashtable;
-
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
@@ -125,10 +123,15 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
         // in a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null
         if (_nextTimeFree != null && _tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
-            Object[] output = (Object[]) _tokens.take();
+            Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
             receiver.put(token);
+            if (_debugging) {
+                _debug("At time " + currentTime + ", completing send to " +
+                        receiver.getContainer().getFullName() +
+                        ": " + token);
+            }
         }
     }
 
@@ -138,22 +141,52 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         if (_nextTimeFree != null && _tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
+            // Discard the token that was sent to the output in fire().
+            Object[] output = (Object[]) _tokens.take();
+            // Determine the time of the next firing.
             _nextTimeFree = currentTime.add(_serviceTimeValue);
+            _nextReceiver = (Receiver) output[0];
             _fireAt(_nextTimeFree);
         }
         return super.postfire();
     }
 
-    /** Receive a token and store it in the queue. Schedule a refiring.
+    /** Initiate a send of the specified token to the specified
+     *  receiver. This method will schedule a refiring of this actor
+     *  if there is not one already scheduled.
+     *  @param receiver The receiver to send to.
+     *  @param token The token to send.
+     *  @throws IllegalActionException If the refiring request fails.
      */
     public void sendToken(Receiver receiver, Token token)
-            throws IllegalActionException {System.out.println("put");
+            throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        if (_nextTimeFree == null || _tokens.size() == 0 
+                || currentTime.compareTo(_nextTimeFree) != 0 || receiver != _nextReceiver) {
+            // At the current time, there is no token to send.
+            // At least in the Continuous domain, we need to make sure
+            // the delegated receiver knows this so that it becomes
+            // known and absent.
+            receiver.put(null);
+        }
+        
+        // If the token is null, then this means there is not actually
+        // something to send. Do not take up bus resources for this.
+        if (token == null) {
+            return;
+        }
+
         _tokens.put(new Object[] { receiver, token });
         // if there was no token in the queue, schedule a refiring.
         if (_tokens.size() == 1) {
-            Time currentTime = getDirector().getModelTime();
             _nextTimeFree = currentTime.add(_serviceTimeValue);
+            _nextReceiver = receiver;
             _fireAt(_nextTimeFree);
+        }
+        if (_debugging) {
+            _debug("At time " + getDirector().getModelTime() + ", initiating send to " +
+                    receiver.getContainer().getFullName() +
+                    ": " + token);
         }
     }
 
@@ -175,19 +208,15 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * Delay imposed on every token.
-     */
+    /** Delay imposed on every token. */
     private double _serviceTimeValue;
 
-    /**
-     * Tokens stored for processing.
-     */
+    /** Tokens stored for processing. */
     private FIFOQueue _tokens;
 
-    /**
-     * Next time a token is sent and the next token can be processed.
-     */
+    /** Next time a token is sent and the next token can be processed. */
     private Time _nextTimeFree;
 
+    /** Next receiver to which the next token to be sent is destined. */
+    private Receiver _nextReceiver;
 }
