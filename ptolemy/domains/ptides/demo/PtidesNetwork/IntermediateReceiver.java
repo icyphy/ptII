@@ -55,6 +55,10 @@ import ptolemy.kernel.util.IllegalActionException;
  *  Subclasses of this receiver may also intervene on method calls other
  *  than put().
  *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
  */
 public class IntermediateReceiver extends AbstractReceiver {
 

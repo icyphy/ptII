@@ -30,6 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.demo.PtidesNetwork;
 
+import java.util.Iterator;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
@@ -61,6 +66,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  port has a parameter named "QuantityManager" that refers by name
  *  to the instance of this actor.
  *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
  */
 public class Bus extends TypedAtomicActor implements QuantityManager {
 
@@ -127,6 +136,30 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
             receiver.put(token);
+            
+            // transfer tokens from nested composite actors to the outside and
+            // from the outside into composite actors
+            if (!(receiver instanceof IntermediateReceiver)) {
+                Actor container = (Actor) receiver.getContainer().getContainer();
+                if (receiver.getContainer().isOutput()) {
+                    while (container instanceof CompositeActor) {
+                        // just do it for all output ports
+                        // can be improved by just transfering outputs on ports that are 
+                        // connected with with the port serviced by the receiver above
+                        Iterator<?> outports = container.outputPortList().iterator();
+                        while (outports.hasNext()) {
+                            IOPort p = (IOPort) outports.next();
+                            container.getDirector().transferOutputs(p);
+                        }
+                        container = (Actor) container.getContainer();
+                    }
+                } 
+//                else {
+//                    if (receiver.getContainer().isInput()) {
+//                        container.getDirector().transferInputs(receiver.getContainer());
+//                    }
+//                }
+            }
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to " +
                         receiver.getContainer().getFullName() +
