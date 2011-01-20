@@ -11,4 +11,5 @@
   <input source="ptolemy/data/ontologies/lattice/adapters/monotonicityAnalysis/monotonicityAnalysis.xml"/>
   <input source="ptolemy/data/ontologies/lattice/adapters/observableLattice/observableLattice.xml"/>
   <input source="ptolemy/data/ontologies/lattice/adapters/reachableLattice/reachableLattice.xml"/>
+  <input source="ptolemy/data/ontologies/lattice/adapters/softwareConfiguration/softwareConfiguration.xml"/>
 </group>

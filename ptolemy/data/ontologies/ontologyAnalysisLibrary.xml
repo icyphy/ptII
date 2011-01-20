@@ -6,7 +6,9 @@
 <entity name="Ontologies" class="ptolemy.moml.EntityLibrary">
     <!-- Otology Solvers -->
     <group>
-      <property name="OntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+      <property name="LatticeOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+      </property>
+      <property name="ProductLatticeOntologyAnalysis" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
       </property>
     </group>
     <!-- Constraint Annotations -->
