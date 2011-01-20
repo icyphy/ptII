@@ -187,9 +187,8 @@
 
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
-        <!-- Properties library -->
-	    <!-- Use ontologies instead --/
-            <!-- input source="ptolemy/configs/properties/propertiesLibrary.xml"/ -->
+        <!-- Ontologies library -->
+            <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>
