@@ -51,8 +51,6 @@ OTHER_FILES_TO_BE_JARED = \
 	DOPCenter.gif \
 	DOPCenter.xml \
 	expand-group.vbs \
-	Placard.pdf \
-	Placard.tex \
 	Placard.xml
 
 EXTRA_SRCS = \
@@ -135,7 +133,7 @@ OTHER_SIGNED_JARS = \
 	$(PTII)/signed/ptolemy/vergil/vergilApplet.jar \
 	$(PTII)/ptolemy/actor/lib/database/ojdbc6.jar \
 	$(PTII)/ptolemy/actor/lib/database/database.jar \
- 	$(PTII)/ptolemy/domains/space/space.jar
+	$(PTII)/ptolemy/domains/space/space.jar
 
 remoteSignedApplet: $(PTII_USER_DIRECTORY) $(OTHER_SIGNED_JARS) 
 	cp DOPCenter.gif  "$(PTII_USER_DIRECTORY)/DOPCenter"
