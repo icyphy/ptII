@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
-    <property name="rooms" class="ptolemy.data.expr.Parameter" value="{&quot;545D&quot;, &quot;545F&quot;, &quot;545H&quot;, &quot;545J&quot;, &quot;545K&quot;, &quot;545M&quot;, &quot;545N&quot;, &quot;545P&quot;, &quot;545Q&quot;, &quot;545L&quot;, &quot;545S&quot;, &quot;545W&quot;}">
+    <property name="rooms" class="ptolemy.data.expr.Parameter" value="{&quot;545B&quot;, &quot;545D&quot;, &quot;545F&quot;, &quot;545H&quot;, &quot;545J&quot;, &quot;545K&quot;, &quot;545M&quot;, &quot;545N&quot;, &quot;545P&quot;, &quot;545Q&quot;, &quot;545L&quot;, &quot;545S&quot;, &quot;545W&quot;}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -75,7 +75,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="roomCount" class="ptolemy.data.expr.Parameter" value="11">
+            <property name="roomCount" class="ptolemy.data.expr.Parameter" value="12">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -376,7 +376,7 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
-                <property name="tableBody" class="ptolemy.data.expr.Parameter" value="&quot;1&amp; \\\\\n2&amp; \\\\\n3&amp;Donald Chai\\\\\n4&amp;Jiang Long\\\\\n5&amp;Kevin Weekly\\\\\n6&amp;Chung-Wei Lin\\\\\n7&amp; \\\\\n8&amp; \\\\\n9&amp;Tobias Welp\\\\\n10&amp;Kelvin Lwin\\\\\n11&amp; \\\\\n12&amp;Jiang Long\\\\\n13&amp;Mark Lee McKelvin Jr\\\\\n14&amp;Nathan Boyd Kitchen\\\\\n15&amp;Zile Wei\\\\\n16&amp; \\\\\n&quot;">
+                <property name="tableBody" class="ptolemy.data.expr.Parameter" value="&quot;1&amp; \\\\\n2&amp;Avital Steinitz Steinitz\\\\\n3&amp;Patrick Virtue\\\\\n4&amp;Jiang Long\\\\\n5&amp;Alessandro  Mignona\\\\\n6&amp;Mert Pilanci\\\\\n7&amp;Ankur Mukesh Mehta\\\\\n8&amp;anita flynn\\\\\n9&amp;Tobias Welp\\\\\n10&amp;Travis Massey\\\\\n11&amp;Fabien Chraim\\\\\n12&amp;Yang Yang\\\\\n13&amp; \\\\\n14&amp; \\\\\n15&amp;Michael Lorek\\\\\n16&amp;Richard Yu-Kuwan Su\\\\\n&quot;">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
