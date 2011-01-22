@@ -45,7 +45,7 @@ EXPERIMENTAL_DOMAINS =
 #   Jogl (Java bindings for OpenGL) was found.
 # PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
 #   ojdbc6.jar was found.
-DOMAINS =	ci continuous csp ct curriculum \
+DOMAINS =	ca ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
 	        giotto $(PTJOGL_DIR) petrinet rendezvous properties \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
@@ -73,6 +73,7 @@ PTCLASSJAR =
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR is set by configure.
 
 PTAUXALLJARS = \
+		ca/ca.jar \
 		ci/ci.jar \
 		csp/csp.jar \
 		curriculum/curriculum.jar \
@@ -142,6 +143,7 @@ OPTIONAL_FILES = \
 OTHER_JARS = demo.jar
 
 DEMOJARS = \
+	ca/demo/demo.jar \
 	ct/demo/demo.jar \
 	ct/doc/doc.jar \
 	de/demo/demo.jar \

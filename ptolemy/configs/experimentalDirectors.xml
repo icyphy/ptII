@@ -6,6 +6,8 @@
     <?moml
       <group>
       <doc>experimental director library</doc>
+
+      <property name="CA Director" class="ptolemy.domains.ca.kernel.CADirector"/>
       <property name="CI Director" class="ptolemy.domains.ci.kernel.CIDirector"/>
       <property name="Do Nothing Director" class="ptolemy.actor.DoNothingDirector"/>
       <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
