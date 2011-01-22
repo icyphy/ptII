@@ -5,21 +5,37 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 136, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 795, 445}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 335]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.0, 167.5}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Zach Ezzell (University of Florida), Contributor: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 275.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running the PetriNet Director&#10;sends messages to the PetriNetDisplay.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        </property>
     </property>
     <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 180}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 230.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -37,7 +53,7 @@
         </property>
     </entity>
     <entity name="Transition" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 230.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -55,7 +71,7 @@
         </property>
     </entity>
     <entity name="Place2" class="ptolemy.domains.petrinet.kernel.Place">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 230.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -73,11 +89,11 @@
         </property>
     </entity>
     <entity name="PetriNetDisplay" class="ptolemy.domains.petrinet.lib.gui.PetriNetDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={536, 488, 522, 216}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={615, 111, 522, 216}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 172]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 155.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

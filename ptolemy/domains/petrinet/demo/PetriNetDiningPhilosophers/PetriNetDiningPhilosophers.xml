@@ -7,21 +7,21 @@
     <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -175.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1234, 815}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1120, 736}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1021, 705]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[907, 626]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.64">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{538.7499999999993, 333.4999999999998}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.2537878787879, 170.9981060606061}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Dining philosophers.  &#10;iterations on director: 20&#10;&#10;chopsticks: p0,..,p4&#10;philosophers: p5,...,p9&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, -125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -140.0]">
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -29,83 +29,115 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="50">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Zach Ezzell (University of Florida), Contributor: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-220.0, 520.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A Petri Net model of the Dining Philosophers Problem">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -200.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running the PetriNet Director&#10;sends messages to the PetriNetDisplay.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-245.0, -25.0}">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Dining Philosophers Problem is a common concurrency problem.&#10;&#10;In this model, there are 5 chopsticks, represented by p0 through p4.&#10;There are 5 philosophers, represented by p5 through p9.&#10;For a philosopher to eat, they must use their left and right chopsticks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -160.0]">
         </property>
     </property>
     <entity name="p5" class="ptolemy.domains.petrinet.kernel.Place">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[123.25, 65.0]">
         </property>
     </entity>
     <entity name="p8" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[308.25, 365.0]">
         </property>
     </entity>
     <entity name="p7" class="ptolemy.domains.petrinet.kernel.Place">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[23.25, 435.0]">
         </property>
     </entity>
     <entity name="p6" class="ptolemy.domains.petrinet.kernel.Place">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-136.75, 230.0]">
         </property>
     </entity>
     <entity name="p3" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[138.25, 335.0]">
         </property>
     </entity>
     <entity name="p2" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[8.25, 290.0]">
         </property>
     </entity>
     <entity name="t0" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[48.25, 65.0]">
         </property>
     </entity>
     <entity name="t4" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[293.25, 205.0]">
         </property>
     </entity>
     <entity name="p9" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[358.25, 205.0]">
         </property>
     </entity>
     <entity name="t3" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[258.25, 365.0]">
         </property>
     </entity>
     <entity name="t2" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.75, 435.0]">
         </property>
     </entity>
     <entity name="t1" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.25, 230.0]">
         </property>
     </entity>
     <entity name="t5" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[203.25, 65.0]">
         </property>
     </entity>
     <entity name="t9" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[414.75, 205.0]">
         </property>
     </entity>
     <entity name="t7" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.25, 435.0]">
         </property>
     </entity>
     <entity name="t8" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[363.25, 365.0]">
         </property>
     </entity>
     <entity name="t6" class="ptolemy.domains.petrinet.kernel.Transition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-86.75, 230.0]">
         </property>
     </entity>
     <entity name="PetriNetDisplay" class="ptolemy.domains.petrinet.lib.gui.PetriNetDisplay">
@@ -113,25 +145,25 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 370]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 50.0]">
         </property>
     </entity>
     <entity name="p4" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[223.25, 270.0]">
         </property>
     </entity>
     <entity name="p0" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[183.25, 170.0]">
         </property>
     </entity>
     <entity name="p1" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[43.25, 175.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
