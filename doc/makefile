@@ -717,6 +717,9 @@ ALLPACKAGES = \
 	ptolemy.caltrop.actors \
 	ptolemy.caltrop.ddi \
 	ptolemy.caltrop.util \
+	ptolemy.domains.ca.kernel \
+	ptolemy.domains.ca.lib \
+	ptolemy.domains.ca.lib.gui \
 	ptolemy.domains.ci.kernel \
 	ptolemy.domains.ci.lib \
 	ptolemy.domains.curriculum \
@@ -731,6 +734,8 @@ ALLPACKAGES = \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
+	ptolemy.domains.petrinet.lib \
+	ptolemy.domains.petrinet.gui \
 	ptolemy.domains.psdf.kernel \
 	ptolemy.domains.properties.kernel \
 	ptolemy.domains.ptera.kernel \
