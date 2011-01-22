@@ -358,7 +358,7 @@ public class PetriNetDirector extends Director {
     }
 
     /**
-     * This method fires enabled components of the PetriNetActor, by calling the
+     * Fire enabled components of the PetriNetActor by calling the
      * method _fireHierarchicalPetriNetOnce(), one at a time until there is no
      * more enabled components to fire. The enabled component can be an enabled
      * Transition or an enabled PetriNetActor component. It is the job of the
@@ -366,15 +366,19 @@ public class PetriNetDirector extends Director {
      * there is any, to choose which enabled component to fire, and to update
      * markings of related Places when a component fires.
      * 
-     * @exception IllegalActionException
-     *                If the method _fireHierarchicalPetriNetOnce() throws
-     *                exceptions, which can happen if the method
-     *                isTransitionReady() or fireTransition() throws exceptions.
+     * <p>A description of the firing is sent to any actors that implement
+     * the {@link PetriNetDisplayer} interface.  If this director has a debug
+     * listener, then the description is also sent to those listeners.</p>
+     *
+     * @exception IllegalActionException If the method
+     * _fireHierarchicalPetriNetOnce() throws exceptions, which can
+     * happen if the method isTransitionReady() or fireTransition()
+     * throws exceptions.
      */
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
-            String outputString = "";
+            StringBuffer description = new StringBuffer();
             int time = 0;
             int placeCount = 0;
             Iterator actors;
@@ -405,19 +409,20 @@ public class PetriNetDirector extends Director {
                 }
                 i++;
             }
+
             for (int j = 0; j < names.length; j++) {
-                outputString += names[j] + " ";
+                description.append(names[j] + " ");
             }
-            outputString += "\n";
+            description.append("\n");
             cPlace = placeList.iterator();
             i = 0;
             while (cPlace.hasNext()) {
                 Place p = (Place) cPlace.next();
-                outputString = _addMarkingToOutputString(outputString, p
+                _addMarkingToDescription(description, p
                         .getMarking(), i, names);
                 i++;
             }
-            outputString += "\n";
+            description.append("\n");
             boolean test = _fireHierarchicalPetriNetOnce(petriContainer);
             time++;
             int iter = ((IntToken) iterations.getToken()).intValue();
@@ -430,11 +435,11 @@ public class PetriNetDirector extends Director {
                         while (cPlace.hasNext()) {
                             Place p = (Place) cPlace.next();
 
-                            outputString = _addMarkingToOutputString(
-                                    outputString, p.getMarking(), i, names);
+                            _addMarkingToDescription(
+                                    description, p.getMarking(), i, names);
                             i++;
                         }
-                        outputString += "\n";
+                        description.append("\n");
                         test = _fireHierarchicalPetriNetOnce(petriContainer);
                         time++;
                     } else {
@@ -442,11 +447,18 @@ public class PetriNetDirector extends Director {
                     }
                 }
             }
+
+
+            if (_debugging) {
+                _debug("fire(): " + description.toString());
+            }
+
+            // Notify PetriNetDisplayer actors
             actors = petriContainer.entityList().iterator();
             while (actors.hasNext()) {
                 Nameable component = (Nameable) actors.next();
                 if (component instanceof PetriNetDisplayer) {
-                    ((PetriNetDisplayer) component).setText(outputString);
+                    ((PetriNetDisplayer) component).setText(description.toString());
                     ((PetriNetDisplayer) component).openDisplay();
 
                 }
@@ -718,10 +730,10 @@ public class PetriNetDirector extends Director {
     
     /**
      * This method is a helper method that adds a marking count to the 
-     * output string.
+     * output StringBuffer.
      * 
      * @param original
-     *         The String to add the marking count to.    
+     *         The StringBuffer to add the marking count to.    
      * @param marking 
      *          The marking count to add to the String.
      * @param index
@@ -729,9 +741,8 @@ public class PetriNetDirector extends Director {
      *          to the marker count;
      * @param placeNames
      *          The array of place names.     
-     * @return Returns the original String with the marker counter added.
      */
-    private String _addMarkingToOutputString(String original, int marking,
+    private void _addMarkingToDescription(StringBuffer original, int marking,
             int index, String[] placeNames) {
         int mWidth = 1;
         if (marking > 9 && marking < 100) {
@@ -739,12 +750,11 @@ public class PetriNetDirector extends Director {
         } else if (marking > 99) {
             mWidth = 3;
         }
-        original += marking;
+        original.append(marking);
         int nameWidth = placeNames[index].length();
         for (int i = 0; i < (nameWidth - mWidth) + 1; i++) {
-            original += " ";
+            original.append(" ");
         }
-        return original;
     }
     
     /**

@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Petri net domain lib directory.
+# Load test bed definitions
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,51 +28,29 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =            ptolemy/domains/petrinet/lib
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-# Root of the ptII directory
-ROOT =		../../../..
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-DIRS = 		gui
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. .. ]
+}
 
-CLASSPATH =	../../../..
-
-# Used to build zip files
-PTPACKAGE = 	lib
-PTCLASSJAR =
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		gui/gui.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	PetriNetRecorder.java
-
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: jclass
-install: all jars
-
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}

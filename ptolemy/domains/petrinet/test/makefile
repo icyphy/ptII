@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy II Petri net domain lib directory.
+# Makefile for the Java classes used to test the Ptolemy actors
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -29,49 +29,63 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/petrinet/lib
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/domains/petrinet/test
 
-# Root of the ptII directory
+# Root of the Ptolemy II directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		gui
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
-CLASSPATH =	../../../..
+JSRCS =
 
-# Used to build zip files
-PTPACKAGE = 	lib
-PTCLASSJAR =
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		gui/gui.jar
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+	PetriNetDirector.tcl
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
 
-JSRCS = \
-	PetriNetRecorder.java
-
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = \
+	PetriNetDiningPhilosophersTest.xml \
+	PetriNetSimpleTest.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: all jars
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	$(JTCLSH) alljtests.tcl
+
 
 
 # Get the rest of the rules

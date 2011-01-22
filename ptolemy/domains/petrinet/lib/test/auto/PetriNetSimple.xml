@@ -5,7 +5,9 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 55.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={402, 150, 813, 510}, maximized=false}">
@@ -15,6 +17,12 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A test for the PetriNetSimple demo.&#10;&#10;This is just a smoke test, it would&#10;be nice to have a test that would listen&#10;to the director and compare the&#10;results against known good results.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 30.0]">
+        </property>
     </property>
     <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="6">
@@ -71,19 +79,6 @@
                 </property>
             </property>
         </property>
-    </entity>
-    <entity name="PetriNetTest" class="ptolemy.domains.petrinet.lib.PetriNetTest">
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={536, 488, 522, 216}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 245.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
