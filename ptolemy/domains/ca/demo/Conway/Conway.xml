@@ -94,7 +94,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 680.0]">
         </property>
     </property>
-    <entity name="CA2D" class="ptolemy.domains.ca.lib.CA2D">
+    <entity name="CA2DConvolution" class="ptolemy.domains.ca.lib.CA2DConvolution">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 480.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 780}, maximized=false}">
@@ -723,18 +723,18 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="CA2D.x location" relation="relation2"/>
-    <link port="CA2D.y location" relation="relation3"/>
-    <link port="CA2D.current value" relation="relation4"/>
-    <link port="CA2D.new value" relation="relation"/>
-    <link port="CA2D.neighbor 1" relation="relation5"/>
-    <link port="CA2D.neighbor 2" relation="relation6"/>
-    <link port="CA2D.neighbor 3" relation="relation7"/>
-    <link port="CA2D.neighbor 4" relation="relation8"/>
-    <link port="CA2D.neighbor 5" relation="relation9"/>
-    <link port="CA2D.neighbor 6" relation="relation10"/>
-    <link port="CA2D.neighbor 7" relation="relation11"/>
-    <link port="CA2D.neighbor 8" relation="relation12"/>
+    <link port="CA2DConvolution.x location" relation="relation2"/>
+    <link port="CA2DConvolution.y location" relation="relation3"/>
+    <link port="CA2DConvolution.current value" relation="relation4"/>
+    <link port="CA2DConvolution.new value" relation="relation"/>
+    <link port="CA2DConvolution.neighbor 1" relation="relation5"/>
+    <link port="CA2DConvolution.neighbor 2" relation="relation6"/>
+    <link port="CA2DConvolution.neighbor 3" relation="relation7"/>
+    <link port="CA2DConvolution.neighbor 4" relation="relation8"/>
+    <link port="CA2DConvolution.neighbor 5" relation="relation9"/>
+    <link port="CA2DConvolution.neighbor 6" relation="relation10"/>
+    <link port="CA2DConvolution.neighbor 7" relation="relation11"/>
+    <link port="CA2DConvolution.neighbor 8" relation="relation12"/>
     <link port="Const2.output" relation="relation2"/>
     <link port="Const.output" relation="relation3"/>
     <link port="Const3.output" relation="relation4"/>

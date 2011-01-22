@@ -50,7 +50,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ca.lib.CA2D;
+import ptolemy.domains.ca.lib.CA2DConvolution;
 import ptolemy.domains.ca.lib.gui.CAViewer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -62,33 +62,33 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A Cellular Automata director.
  * <p>
- * The CADirector is to be used in conjunction with the CA2D Actor. To use
+ * The CADirector is to be used in conjunction with the CA2DConvolution Actor. To use
  * this director, it is highly recommended to start with one of the examples.
  * The director contains a matrix. At each iteration, every entry in the matrix
- * is updated according to the CA2D actor. This functionality can be useful when
+ * is updated according to the CA2DConvolution actor. This functionality can be useful when
  * simulating cellular automata or other grid-based phenomena. 
  * </p> 
  * <p>
  * This director assumes the following parameters are added to the canvas:
  * </p>
  * <p>
- * <i>x_location</i>: the x location in the grid (the 2D matrix) that is
+ * <i>xLocation</i>: the x location in the grid (the 2D matrix) that is
  * currently being updated.
  * </p>
  * <p>
- * <i>y_location</i>: the y location in the grid (the 2D matrix) that is
+ * <i>yLocation</i>: the y location in the grid (the 2D matrix) that is
  * currently being updated.
  * </p>
  * <p>
- * <i>current_value</i>: the current value in the grid at location (x_current,
+ * <i>currentValue</i>: the current value in the grid at location (x_current,
  * y_current).
  * </p>
  * <p>
- * <i>new_value</i>: the updated value in the grid at location (x_current,
+ * <i>newValue</i>: the updated value in the grid at location (x_current,
  * y_current).
  * </p>
  * <p>
- * <i>neighbor_1</i>: the value of the top-left neighbor of grid location
+ * <i>neighbor1</i>: the value of the top-left neighbor of grid location
  * (current_x, current_y).
  * </p>
  * <p>
@@ -130,7 +130,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * </p>
  * 
  * <p>
- * See also the documentation on the {@link ptolemy.domains.ca.lib.CA2D} actor
+ * See also the documentation on the {@link ptolemy.domains.ca.lib.CA2DConvolution} actor
  * and the {@link ptolemy.domains.ca.lib.gui.CAViewer} actor.
  * </p>
  *
@@ -169,7 +169,7 @@ public class CADirector extends Director {
      * iteration (i.e., Matrix size x iteration count).</p>
      * 
      * <p>This method sets the appropriate values on the canvas and 
-     * iterates the appropriate actors (e.g., the CA2D actor) and 
+     * iterates the appropriate actors (e.g., the CA2DConvolution actor) and 
      * updates grid values accordingly.</p> 
      * 
      * @exception IllegalActionException If an actor is unable to iterate().
@@ -225,14 +225,14 @@ public class CADirector extends Director {
             vn7.setToken(new DoubleToken(cells[nextRow][j]));
             vn8.setToken(new DoubleToken(cells[nextRow][nextColumn]));
 
-            Actor actorCA2D = null;
+            Actor actorCA2DConvolution = null;
             Actor actorSetVariable = null;
 
             Iterator actorList = composite.entityList().iterator();
             while (actorList.hasNext()) {
                 Actor actor = (Actor) actorList.next();
-                if (actor instanceof CA2D) {
-                    actorCA2D = actor;
+                if (actor instanceof CA2DConvolution) {
+                    actorCA2DConvolution = actor;
                 } else if (actor instanceof SetVariable) {
                     actorSetVariable = actor;
                 } else if (actor instanceof MatrixViewer) {
@@ -244,7 +244,7 @@ public class CADirector extends Director {
                     }
                 }
             }
-            actorCA2D.iterate(1);
+            actorCA2DConvolution.iterate(1);
             actorSetVariable.iterate(1);
         }
     }

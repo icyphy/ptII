@@ -1,5 +1,4 @@
-/*
- CAViewer
+/* Cellular Automata Viewer
  
  Copyright (c) 2010 The University of Florida
 
@@ -54,12 +53,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * The CAViewer is a display actor to be used in conjunction with 
- * the CADirector.  The CAViewer can be placed on the canvas 
- * and will render the grid as defined by the Director's parameters
- * and possibly the output of the CA2D actor.  This actor is the 
- * currently the only way to visualize cellular automata or other 
- * 2D grid based phenomena employing the Space2DDirector.
+ * Cellular Automata Viewer.
+ * 
+ * <p>The CAViewer is a display actor to be used in conjunction with
+ * the CADirector.  The CAViewer can be placed on the canvas and will
+ * render the grid as defined by the Director's parameters and
+ * possibly the output of the CA2DConvolution actor.  This actor is
+ * the currently the only way to visualize cellular automata or other
+ * 2D grid based phenomena employing the CADirectory.</p>
  * 
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
  *  @version $Id$ 

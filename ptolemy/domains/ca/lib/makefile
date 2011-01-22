@@ -53,10 +53,10 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	CA2D.java
+	CA2DConvolution.java
 
 OTHER_FILES_TO_BE_JARED = \
-	CA2DIcon.xml \
+	CA2DConvolutionIcon.xml \
 	caentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

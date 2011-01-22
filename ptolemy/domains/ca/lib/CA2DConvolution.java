@@ -1,5 +1,4 @@
-/* 
- CA2D Actor
+/* Cellular Automata 2D Convolution Actor.
  
  Copyright (c) 2010 The University of Florida
 
@@ -38,17 +37,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * 
- * The CA2D actor should be used in conjunction with the CADirector. 
+ * Cellular Automata 2D Convolution Actor.
+ *
+ * <p>The CA2DConvolution actor should be used in conjunction with the CADirector. 
  * To use this actor, it is highly recommended to start with one of the 
  * examples.  The examples have the required variables (used by the 
  * director) added to the canvas and connected to the correct input and 
- * output ports of the CA2D actor.  The actor should be used to perform 
+ * output ports of the CA2DConvolution actor.  The actor should be used to perform 
  * convolution operations in discrete two-dimensional (2D) space.  The 
  * inputs are: i and j, the x and y location of the current space on the 
  * 2D grid; the current value of the space (i,j) on the grid; and the 
  * current values of all neighboring cells in the grid.  The output is 
- * the new value at 2D grid position (i,j).
+ * the new value at 2D grid position (i,j).</p>
  * 
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
  *  @version $Id$ 
@@ -56,18 +56,18 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class CA2D extends TypedCompositeActor {
+public class CA2DConvolution extends TypedCompositeActor {
 
     /**
-     * Construct a new CA2D.
+     * Construct a new CA2DConvolution.
      * 
      * @param entity The container.
-     * @param name The name of the CA2D actor.
+     * @param name The name of the CA2DConvolution actor.
      * @exception IllegalActionException If the name has a period in it.
      * @exception NameDuplicationException If the container already
      * contains an entity with the specified name.
      */
-    public CA2D(CompositeEntity entity, String name)
+    public CA2DConvolution(CompositeEntity entity, String name)
             throws IllegalActionException, NameDuplicationException {
         super(entity, name);
         iPort = new TypedIOPort(this, "x location", true, false);

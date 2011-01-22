@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * This class is used by the display CADisplay to render a 
+ * This class is used by the CAViewer to render a 
  * two-dimensional grid of cells that are either on or off.  
  * 
  *  @author  Zach Ezzell, Contributor: Christopher Brooks

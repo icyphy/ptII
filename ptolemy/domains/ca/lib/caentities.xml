@@ -7,7 +7,7 @@
       <group>
 <doc>cellular automata actors</doc>
 
-<entity name="2D Convolution" class="ptolemy.domains.ca.lib.CA2D"/>
+<entity name="2D Convolution" class="ptolemy.domains.ca.lib.CA2DConvolution"/>
 <entity name="CA Viewer" class="ptolemy.domains.ca.lib.gui.CAViewer"/>
       </group>
     ?>
