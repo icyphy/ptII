@@ -163,29 +163,34 @@ public class CADirector extends Director {
     ////                   protected variables                     ////
 
     /**
-     *  The delay parameter.
+     *  The delay time between iterations in seconds.  The initial default
+     *  value is a double with value 0.5, indicating a delay of half a second
+     *  between iterations.
      */
-    protected Parameter paramDelay;
+    protected Parameter delay;
     
     /**
      * The initial matrix parameter.
      */
-    protected Parameter paramInitialMatrix;
+    protected Parameter initialMatrix;
     
     /**
      * The iterations parameter.
      */
-    protected Parameter paramIterations;
+    protected Parameter iterations;
     
     /**
-     *  The random parameter.
+     *  True if the matrix will be populated with random data.  The default
+     *  value is false, indicating that all values in the matrix will be
+     *  initially set to 0.0.
      */
-    protected Parameter paramRandom;
+    protected Parameter random;
     
     /**
-     * The matrix size parameter.
+     * An integer representing the size of the square matrix.  The initial
+     * value is 10, indicating a 10 x 10 matrix.
      */
-    protected Parameter paramSize;
+    protected Parameter size;
 
     ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////
@@ -219,8 +224,8 @@ public class CADirector extends Director {
             Variable vn7 = (Variable) composite.getAttribute("neighbor7");
             Variable vn8 = (Variable) composite.getAttribute("neighbor8");
 
-            int i = currentY;
-            int j = currentX;
+            int i = _currentY;
+            int j = _currentX;
 
             vxl.setToken(new IntToken(i));
             vyl.setToken(new IntToken(j));
@@ -228,18 +233,18 @@ public class CADirector extends Director {
 
             int previousRow = i - 1;
             if (previousRow < 0)
-                previousRow = matrixSize - 1;
+                previousRow = _matrixSize - 1;
 
             int nextRow = i + 1;
-            if (nextRow >= matrixSize)
+            if (nextRow >= _matrixSize)
                 nextRow = 0;
 
             int previousColumn = j - 1;
             if (previousColumn < 0)
-                previousColumn = matrixSize - 1;
+                previousColumn = _matrixSize - 1;
 
             int nextColumn = j + 1;
-            if (nextColumn >= matrixSize)
+            if (nextColumn >= _matrixSize)
                 nextColumn = 0;
 
             vn1.setToken(new DoubleToken(_cells[previousRow][previousColumn]));
@@ -287,49 +292,49 @@ public class CADirector extends Director {
      */
     public void preinitialize() throws IllegalActionException {
 
-        matrixSize = ((IntToken) paramSize.getToken()).intValue();
-        double[][] initialMatrix = new double[matrixSize][matrixSize];
-        boolean isRandom = ((BooleanToken) paramRandom.getToken())
+        _matrixSize = ((IntToken) size.getToken()).intValue();
+        double[][] initial = new double[_matrixSize][_matrixSize];
+        boolean isRandom = ((BooleanToken) random.getToken())
                 .booleanValue();
 
         if (isRandom) {
             Random generator = new Random();
-            for (int i = 0; i < matrixSize; i++) {
-                for (int j = 0; j < matrixSize; j++) {
+            for (int i = 0; i < _matrixSize; i++) {
+                for (int j = 0; j < _matrixSize; j++) {
                     double d = generator.nextDouble();
                     if (d > 0.5) {
-                        initialMatrix[i][j] = 1.0;
+                        initial[i][j] = 1.0;
                     } else {
-                        initialMatrix[i][j] = 0.0;
+                        initial[i][j] = 0.0;
                     }
                 }
             }
         } else {
-            for (int i = 0; i < matrixSize; i++) {
-                for (int j = 0; j < matrixSize; j++) {
-                    initialMatrix[i][j] = 0.0;
+            for (int i = 0; i < _matrixSize; i++) {
+                for (int j = 0; j < _matrixSize; j++) {
+                    initial[i][j] = 0.0;
                 }
             }
 
-            double[][] valueMatrix = ((DoubleMatrixToken) paramInitialMatrix
+            double[][] valueMatrix = ((DoubleMatrixToken) initialMatrix
                     .getToken()).doubleMatrix();
 
             for (int i = 0; i < valueMatrix.length; i++) {
                 if (valueMatrix[i].length == 3) {
                     int xi = (int) valueMatrix[i][0];
                     int yi = (int) valueMatrix[i][1];
-                    initialMatrix[yi][xi] = valueMatrix[i][2];
+                    initial[yi][xi] = valueMatrix[i][2];
                 }
             }
         }
 
-        _cells = new double[matrixSize][matrixSize];
-        _newCells = new double[matrixSize][matrixSize];
+        _cells = new double[_matrixSize][_matrixSize];
+        _newCells = new double[_matrixSize][_matrixSize];
 
-        for (int i = 0; i < matrixSize; i++) {
-            for (int j = 0; j < matrixSize; j++) {
-                _cells[i][j] = initialMatrix[i][j];
-                _newCells[i][j] = initialMatrix[i][j];
+        for (int i = 0; i < _matrixSize; i++) {
+            for (int j = 0; j < _matrixSize; j++) {
+                _cells[i][j] = initial[i][j];
+                _newCells[i][j] = initial[i][j];
             }
         }
 
@@ -337,11 +342,11 @@ public class CADirector extends Director {
                 .getAttribute("matrix"));
         matrixVar.setToken(new DoubleMatrixToken(_cells));
 
-        iter = ((IntToken) paramIterations.getToken()).intValue();
+        _currentIteration = ((IntToken) iterations.getToken()).intValue();
 
-        firstFire = true;
-        currentX = 0;
-        currentY = 0;
+        _firstFire = true;
+        _currentX = 0;
+        _currentY = 0;
 
         _setInitMatrix();
         super.preinitialize();
@@ -364,11 +369,11 @@ public class CADirector extends Director {
 
         Variable vnv = (Variable) container.getAttribute("newValue");
         DoubleToken dt = (DoubleToken) vnv.getToken();
-        _newCells[currentY][currentX] = dt.doubleValue();
+        _newCells[_currentY][_currentX] = dt.doubleValue();
 
-        if (++currentX == matrixSize) {
-            currentX = 0;
-            if (++currentY == matrixSize) {
+        if (++_currentX == _matrixSize) {
+            _currentX = 0;
+            if (++_currentY == _matrixSize) {
                 return _iterate();
             }
         }
@@ -379,82 +384,89 @@ public class CADirector extends Director {
     ////                    protected methods                      ////
     
     /**
-     * This is a helper method called in the constructor to initialize
-     * the parameters.
+     * Initialize the parameters.
      * 
-     * @exception IllegalActionException
-     *                If the parameters names are invalid.
-     * @exception NameDuplicationException
-     *                If parameters already exist with a specified name.
+     * @exception IllegalActionException If the parameters names are
+     * invalid.
+     * @exception NameDuplicationException If parameters already exist
+     * with a specified name.
      */
     protected void _initParameters() throws IllegalActionException,
             NameDuplicationException {
 
-        paramIterations = new Parameter(this, "iterations");
-        paramIterations.setExpression("10");
-        paramIterations.setTypeEquals(BaseType.INT);
+        // FIXME: we need an attributeChanged() method.  What happens
+        // if one of these parameters changes while the model is running?
 
-        paramDelay = new Parameter(this, "delay (in sec)");
-        paramDelay.setExpression("0.5");
-        paramDelay.setTypeEquals(BaseType.DOUBLE);
+        // Note that the Java variable name and the name in the second
+        // parameter must match or this actor will not clone properly and
+        // will not be useful in actor oriented classes.  To have the
+        // names not match, see NamedObj.setDisplayName().
+        iterations = new Parameter(this, "iterations");
+        iterations.setExpression("10");
+        iterations.setTypeEquals(BaseType.INT);
 
-        paramRandom = new Parameter(this, "Randomize matrix");
-        paramRandom.setTypeEquals(BaseType.BOOLEAN);
-        paramRandom.setExpression("false");
+        delay = new Parameter(this, "delay");
+        delay.setExpression("0.5");
+        delay.setTypeEquals(BaseType.DOUBLE);
 
-        paramSize = new Parameter(this, "Matrix size");
-        paramSize.setTypeEquals(BaseType.INT);
-        paramSize.setExpression("10");
+        random = new Parameter(this, "random");
+        random.setTypeEquals(BaseType.BOOLEAN);
+        random.setExpression("false");
 
-        // sample matrix values
-        double[][] darray = new double[1][3];
-        darray[0][0] = 0;
-        darray[0][1] = 0;
-        darray[0][2] = 0.0;
+        size = new Parameter(this, "size");
+        size.setTypeEquals(BaseType.INT);
+        size.setExpression("10");
 
-        paramInitialMatrix = new Parameter(this,
-                "initial values ([x1,y1,value1;x2,y2,value2])",
-                new DoubleMatrixToken(darray));
+        // Sample matrix values
+        double[][] doubleArray = new double[1][3];
+        doubleArray[0][0] = 0;
+        doubleArray[0][1] = 0;
+        doubleArray[0][2] = 0.0;
+
+        initialMatrix = new Parameter(this,
+                "initialMatrix",
+                new DoubleMatrixToken(doubleArray));
     }
     
     /**
-     * This method is called every time the entire matrix has been updated.
-     * It enforces the user-defined delay, calls _showMatrix(), and checks
+     * Enforce the user-defined delay, call _showMatrix(), and check
      * if the iteration limit has been reached.
+     * This method is called every time the entire matrix has been updated.
      * 
      * @return boolean false is the iteration limit has been reached and 
      * execution should stop, true otherwise.
+     * @exception IllegalActionException If the matrix cannot be shown.
      */
-    protected boolean _iterate() {
+    protected boolean _iterate() throws IllegalActionException {
         try {
-            Thread.sleep((int) (1000.0 * ((DoubleToken) paramDelay.getToken())
+            Thread.sleep((int) (1000.0 * ((DoubleToken) delay.getToken())
                     .doubleValue()));
         } catch (Exception e) {
+            // Ignored.
         }
 
-        for (int i = 0; i < matrixSize; i++) {
-            for (int j = 0; j < matrixSize; j++) {
+        for (int i = 0; i < _matrixSize; i++) {
+            for (int j = 0; j < _matrixSize; j++) {
                 _cells[i][j] = _newCells[i][j];
             }
         }
         try {
             _showMatrix();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to show the matrix.");
         }
 
-        iter--;
-        currentX = currentY = 0;
-        if (iter <= 0) {
+        _currentIteration--;
+        _currentX = _currentY = 0;
+        if (_currentIteration <= 0) {
             return false;
         } else {
-
             return true;
         }
     }
 
     /**
-     * This is a helper method called in preinitialize() to set the initial
-     * matrix for the CAViewer (the actor that visualizes the grid).
+     * Set the initial matrix for the CAViewer (the actor that visualizes the grid).
      */
     protected void _setInitMatrix() {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
@@ -463,14 +475,14 @@ public class CADirector extends Director {
         Actor actorMatrixViewer = null;
         Actor actorConst = null;
 
+        // FIXME: iterating through the actors by type
+        // seems odd.  What if we add a new actor type?
         while (actorList.hasNext()) {
             Actor actor = (Actor) actorList.next();
-
             if (actor instanceof CAViewer) {
                 CAViewer caViewer = (CAViewer) actor;
                 caViewer.setMatrix(_cells);
             }
-
         }
     }
 
@@ -480,6 +492,9 @@ public class CADirector extends Director {
      * CAViewer actors.
      */
     protected void _showMatrix() throws IllegalActionException {
+        // FIXME: This is kind of an odd way to iterate.  It only
+        // iterates certain actors, which means that if we add actors
+        // to this model of computation, we need to edit this file.
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Iterator actorList = container.entityList().iterator();
         Actor actorMatrixViewer = null;
@@ -500,7 +515,6 @@ public class CADirector extends Director {
                 caViewer.iterate(1);
             }
         }
-
         if (actorConst != null) {
             actorConst.iterate(1);
         }
@@ -508,42 +522,43 @@ public class CADirector extends Director {
             actorMatrixViewer.iterate(1);
         }
     }
+
     ///////////////////////////////////////////////////////////////////
-    ////                   protected variables                     ////
+    ////                   private variables                     ////
 
     /**
      * The current matrix.
      */
-    protected double[][] _cells;
+    private double[][] _cells;
+
+    /**
+     * The current iteration of the director.
+     */
+    private int _currentIteration;
 
     /**
      * The xLocation of the current matrix cell being updated.
      */
-    protected int currentX;
+    private int _currentX;
     
     /**
      * The yLocation of the current matrix cell being updated.
      */
-    protected int currentY;
+    private int _currentY;
     
     /**
      * True if the director has not been fired for a given iteration,
      * false otherwise.
      */
-    protected boolean firstFire;
-    
-    /**
-     * The current iteration of the director.
-     */
-    protected int iter;
+    private boolean _firstFire;
     
     /**
      *  The size of one dimension of the square matrix.
      */
-    protected int matrixSize;
+    private int _matrixSize;
     
     /**
      *  A temporary matrix to hold the updated values.
      */
-    protected double[][] _newCells;
+    private double[][] _newCells;
 }

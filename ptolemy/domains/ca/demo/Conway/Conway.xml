@@ -60,13 +60,13 @@
     <property name="Cellular Automata Director" class="ptolemy.domains.ca.kernel.CADirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="delay (in sec)" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="Randomize matrix" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="randomize" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="Matrix size" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="size" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="initial values ([x1,y1,value1;x2,y2,value2])" class="ptolemy.data.expr.Parameter" value="[4,4,1.0;4,6,1.0;5,5,1.0;5,6,1.0;6,5,1.0]">
+        <property name="initialMatrix" class="ptolemy.data.expr.Parameter" value="[4,4,1.0;4,6,1.0;5,5,1.0;5,6,1.0;6,5,1.0]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
         </property>
