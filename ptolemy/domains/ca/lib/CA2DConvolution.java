@@ -45,10 +45,10 @@ import ptolemy.kernel.util.Workspace;
  * director) added to the canvas and connected to the correct input and 
  * output ports of the CA2DConvolution actor.  The actor should be used to perform 
  * convolution operations in discrete two-dimensional (2D) space.  The 
- * inputs are: i and j, the x and y location of the current space on the 
- * 2D grid; the current value of the space (i,j) on the grid; and the 
- * current values of all neighboring cells in the grid.  The output is 
- * the new value at 2D grid position (i,j).</p>
+ * inputs are: i and j, the x and yLocation of the current space on the 
+ * 2D grid; the currentValue of the space (i,j) on the grid; and the 
+ * currentValues of all neighboring cells in the grid.  The output is 
+ * the newValue at 2D grid position (i,j).</p>
  * 
  *  @author  Zach Ezzell, Contributor: Christopher Brooks
  *  @version $Id$ 
@@ -70,115 +70,115 @@ public class CA2DConvolution extends TypedCompositeActor {
     public CA2DConvolution(CompositeEntity entity, String name)
             throws IllegalActionException, NameDuplicationException {
         super(entity, name);
-        iPort = new TypedIOPort(this, "x location", true, false);
-        iPort.setTypeEquals(BaseType.INT);
-        iPort.setMultiport(false);
+        xLocation = new TypedIOPort(this, "xLocation", true, false);
+        xLocation.setTypeEquals(BaseType.INT);
+        xLocation.setMultiport(false);
 
-        jPort = new TypedIOPort(this, "y location", true, false);
-        jPort.setTypeEquals(BaseType.INT);
-        jPort.setMultiport(false);
+        yLocation = new TypedIOPort(this, "yLocation", true, false);
+        yLocation.setTypeEquals(BaseType.INT);
+        yLocation.setMultiport(false);
 
-        valuePort = new TypedIOPort(this, "current value", true, false);
-        valuePort.setTypeEquals(BaseType.DOUBLE);
-        valuePort.setMultiport(false);
+        currentValue = new TypedIOPort(this, "currentValue", true, false);
+        currentValue.setTypeEquals(BaseType.DOUBLE);
+        currentValue.setMultiport(false);
 
-        outputPort = new TypedIOPort(this, "new value", false, true);
-        outputPort.setTypeEquals(BaseType.DOUBLE);
-        outputPort.setMultiport(false);
+        newValue = new TypedIOPort(this, "newValue", false, true);
+        newValue.setTypeEquals(BaseType.DOUBLE);
+        newValue.setMultiport(false);
 
-        n1Port = new TypedIOPort(this, "neighbor 1", true, false);
-        n1Port.setTypeEquals(BaseType.DOUBLE);
-        n1Port.setMultiport(false);
+        neighbor1 = new TypedIOPort(this, "neighbor1", true, false);
+        neighbor1.setTypeEquals(BaseType.DOUBLE);
+        neighbor1.setMultiport(false);
 
-        n2Port = new TypedIOPort(this, "neighbor 2", true, false);
-        n2Port.setTypeEquals(BaseType.DOUBLE);
-        n2Port.setMultiport(false);
+        neighbor2 = new TypedIOPort(this, "neighbor2", true, false);
+        neighbor2.setTypeEquals(BaseType.DOUBLE);
+        neighbor2.setMultiport(false);
 
-        n3Port = new TypedIOPort(this, "neighbor 3", true, false);
-        n3Port.setTypeEquals(BaseType.DOUBLE);
-        n3Port.setMultiport(false);
+        neighbor3 = new TypedIOPort(this, "neighbor3", true, false);
+        neighbor3.setTypeEquals(BaseType.DOUBLE);
+        neighbor3.setMultiport(false);
 
-        n4Port = new TypedIOPort(this, "neighbor 4", true, false);
-        n4Port.setTypeEquals(BaseType.DOUBLE);
-        n4Port.setMultiport(false);
+        neighbor4 = new TypedIOPort(this, "neighbor4", true, false);
+        neighbor4.setTypeEquals(BaseType.DOUBLE);
+        neighbor4.setMultiport(false);
 
-        n5Port = new TypedIOPort(this, "neighbor 5", true, false);
-        n5Port.setTypeEquals(BaseType.DOUBLE);
-        n5Port.setMultiport(false);
+        neighbor5 = new TypedIOPort(this, "neighbor5", true, false);
+        neighbor5.setTypeEquals(BaseType.DOUBLE);
+        neighbor5.setMultiport(false);
 
-        n6Port = new TypedIOPort(this, "neighbor 6", true, false);
-        n6Port.setTypeEquals(BaseType.DOUBLE);
-        n6Port.setMultiport(false);
+        neighbor6 = new TypedIOPort(this, "neighbor6", true, false);
+        neighbor6.setTypeEquals(BaseType.DOUBLE);
+        neighbor6.setMultiport(false);
 
-        n7Port = new TypedIOPort(this, "neighbor 7", true, false);
-        n7Port.setTypeEquals(BaseType.DOUBLE);
-        n7Port.setMultiport(false);
+        neighbor7 = new TypedIOPort(this, "neighbor7", true, false);
+        neighbor7.setTypeEquals(BaseType.DOUBLE);
+        neighbor7.setMultiport(false);
 
-        n8Port = new TypedIOPort(this, "neighbor 8", true, false);
-        n8Port.setTypeEquals(BaseType.DOUBLE);
-        n8Port.setMultiport(false);
+        neighbor8 = new TypedIOPort(this, "neighbor8", true, false);
+        neighbor8.setTypeEquals(BaseType.DOUBLE);
+        neighbor8.setMultiport(false);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
     /**
-     *  This is the x location of the current grid space.
+     *  This is the xLocation of the current grid space.
      */
     
-    private TypedIOPort iPort;
+    private TypedIOPort xLocation;
     
     /**
-     *  This is the y location of the current grid space.
+     *  This is the yLocation of the current grid space.
      */
-    private TypedIOPort jPort;
+    private TypedIOPort yLocation;
     
     /**
      *  This is top-left neighbor (i-1,j-1) of the current grid space (i,j).
      */
-    private TypedIOPort n1Port;
+    private TypedIOPort neighbor1;
     
     /**
      *  This is top neighbor (i,j-1) of the current grid space (i,j).
      */
-    private TypedIOPort n2Port;
+    private TypedIOPort neighbor2;
     
     /**
      *  This is top-right neighbor (i+1,j-1) of the current grid space (i,j).
      */
-    private TypedIOPort n3Port;
+    private TypedIOPort neighbor3;
     
     /**
      *  This is left neighbor (i-1,j) of the current grid space (i,j).
      */
-    private TypedIOPort n4Port;
+    private TypedIOPort neighbor4;
     
     /**
      *  This is right neighbor (i+1,j) of the current grid space (i,j).
      */
-    private TypedIOPort n5Port;
+    private TypedIOPort neighbor5;
     
     /**
      *  This is bottom-left neighbor (i-1,j+1) of the current grid space (i,j).
      */
-    private TypedIOPort n6Port;
+    private TypedIOPort neighbor6;
     
     /**
      *  This is bottom neighbor (i,j+1) of the current grid space (i,j).
      */
-    private TypedIOPort n7Port;
+    private TypedIOPort neighbor7;
     
     /**
      *  This is bottom-right neighbor (i+1,j+1) of the current grid space (i,j).
      */
-    private TypedIOPort n8Port;
+    private TypedIOPort neighbor8;
     
     /**
-     *  This is the new value of the current grid space (i,j).
+     *  This is the newValue of the current grid space (i,j).
      */
-    private TypedIOPort outputPort;
+    private TypedIOPort newValue;
     
     /**
      *  This is the value of the current grid space (i,j).
      */
-    private TypedIOPort valuePort;
+    private TypedIOPort currentValue;
 }

@@ -72,52 +72,52 @@ import ptolemy.kernel.util.NameDuplicationException;
  * This director assumes the following parameters are added to the canvas:
  * </p>
  * <p>
- * <i>xLocation</i>: the x location in the grid (the 2D matrix) that is
+ * <i>xLocation</i>: the xLocation in the grid (the 2D matrix) that is
  * currently being updated.
  * </p>
  * <p>
- * <i>yLocation</i>: the y location in the grid (the 2D matrix) that is
+ * <i>yLocation</i>: the yLocation in the grid (the 2D matrix) that is
  * currently being updated.
  * </p>
  * <p>
- * <i>currentValue</i>: the current value in the grid at location (x_current,
- * y_current).
+ * <i>currentValue</i>: the currentValue in the grid at location (xLocation,
+ * yLocation).
  * </p>
  * <p>
- * <i>newValue</i>: the updated value in the grid at location (x_current,
- * y_current).
+ * <i>newValue</i>: the updated value in the grid at location (xLocation,
+ * yLocation).
  * </p>
  * <p>
  * <i>neighbor1</i>: the value of the top-left neighbor of grid location
- * (current_x, current_y).
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_2</i>: the value of the top neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor2</i>: the value of the top neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_3</i>: the value of the top-right neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor3</i>: the value of the top-right neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_4</i>: the value of the left neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor4</i>: the value of the left neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_5</i>: the value of the right neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor5</i>: the value of the right neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_6</i>: the value of the bottom-left neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor6</i>: the value of the bottom-left neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_7</i>: the value of the bottom neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor7</i>: the value of the bottom neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
- * <i>neighbor_8</i>: the value of the bottom-right neighbor of grid location
- * (current_x, current_y).
+ * <i>neighbor8</i>: the value of the bottom-right neighbor of grid location
+ * (xLocation, yLocation).
  * </p>
  * <p>
  * The director sets the variables for each entry in the matrix every iteration.
@@ -160,6 +160,34 @@ public class CADirector extends Director {
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                   protected variables                     ////
+
+    /**
+     *  The delay parameter.
+     */
+    protected Parameter paramDelay;
+    
+    /**
+     * The initial matrix parameter.
+     */
+    protected Parameter paramInitialMatrix;
+    
+    /**
+     * The iterations parameter.
+     */
+    protected Parameter paramIterations;
+    
+    /**
+     *  The random parameter.
+     */
+    protected Parameter paramRandom;
+    
+    /**
+     * The matrix size parameter.
+     */
+    protected Parameter paramSize;
+
+    ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////
 
     /**
@@ -179,24 +207,24 @@ public class CADirector extends Director {
         if (container instanceof TypedCompositeActor) {
             TypedCompositeActor composite = (TypedCompositeActor) container
 ;
-            Variable vxl = (Variable) composite.getAttribute("x_location");
-            Variable vyl = (Variable) composite.getAttribute("y_location");
-            Variable vcv = (Variable) composite.getAttribute("current_value");
-            Variable vn1 = (Variable) composite.getAttribute("neighbor_1");
-            Variable vn2 = (Variable) composite.getAttribute("neighbor_2");
-            Variable vn3 = (Variable) composite.getAttribute("neighbor_3");
-            Variable vn4 = (Variable) composite.getAttribute("neighbor_4");
-            Variable vn5 = (Variable) composite.getAttribute("neighbor_5");
-            Variable vn6 = (Variable) composite.getAttribute("neighbor_6");
-            Variable vn7 = (Variable) composite.getAttribute("neighbor_7");
-            Variable vn8 = (Variable) composite.getAttribute("neighbor_8");
+            Variable vxl = (Variable) composite.getAttribute("xLocation");
+            Variable vyl = (Variable) composite.getAttribute("yLocation");
+            Variable vcv = (Variable) composite.getAttribute("currentValue");
+            Variable vn1 = (Variable) composite.getAttribute("neighbor1");
+            Variable vn2 = (Variable) composite.getAttribute("neighbor2");
+            Variable vn3 = (Variable) composite.getAttribute("neighbor3");
+            Variable vn4 = (Variable) composite.getAttribute("neighbor4");
+            Variable vn5 = (Variable) composite.getAttribute("neighbor5");
+            Variable vn6 = (Variable) composite.getAttribute("neighbor6");
+            Variable vn7 = (Variable) composite.getAttribute("neighbor7");
+            Variable vn8 = (Variable) composite.getAttribute("neighbor8");
 
             int i = currentY;
             int j = currentX;
 
             vxl.setToken(new IntToken(i));
             vyl.setToken(new IntToken(j));
-            vcv.setToken(new DoubleToken(cells[i][j]));
+            vcv.setToken(new DoubleToken(_cells[i][j]));
 
             int previousRow = i - 1;
             if (previousRow < 0)
@@ -214,16 +242,16 @@ public class CADirector extends Director {
             if (nextColumn >= matrixSize)
                 nextColumn = 0;
 
-            vn1.setToken(new DoubleToken(cells[previousRow][previousColumn]));
-            vn2.setToken(new DoubleToken(cells[previousRow][j]));
-            vn3.setToken(new DoubleToken(cells[previousRow][nextColumn]));
+            vn1.setToken(new DoubleToken(_cells[previousRow][previousColumn]));
+            vn2.setToken(new DoubleToken(_cells[previousRow][j]));
+            vn3.setToken(new DoubleToken(_cells[previousRow][nextColumn]));
 
-            vn4.setToken(new DoubleToken(cells[i][previousColumn]));
-            vn5.setToken(new DoubleToken(cells[i][nextColumn]));
+            vn4.setToken(new DoubleToken(_cells[i][previousColumn]));
+            vn5.setToken(new DoubleToken(_cells[i][nextColumn]));
 
-            vn6.setToken(new DoubleToken(cells[nextRow][previousColumn]));
-            vn7.setToken(new DoubleToken(cells[nextRow][j]));
-            vn8.setToken(new DoubleToken(cells[nextRow][nextColumn]));
+            vn6.setToken(new DoubleToken(_cells[nextRow][previousColumn]));
+            vn7.setToken(new DoubleToken(_cells[nextRow][j]));
+            vn8.setToken(new DoubleToken(_cells[nextRow][nextColumn]));
 
             Actor actorCA2DConvolution = null;
             Actor actorSetVariable = null;
@@ -295,19 +323,19 @@ public class CADirector extends Director {
             }
         }
 
-        cells = new double[matrixSize][matrixSize];
-        newCells = new double[matrixSize][matrixSize];
+        _cells = new double[matrixSize][matrixSize];
+        _newCells = new double[matrixSize][matrixSize];
 
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                cells[i][j] = initialMatrix[i][j];
-                newCells[i][j] = initialMatrix[i][j];
+                _cells[i][j] = initialMatrix[i][j];
+                _newCells[i][j] = initialMatrix[i][j];
             }
         }
 
         Variable matrixVar = (Variable) (((TypedCompositeActor) getContainer())
                 .getAttribute("matrix"));
-        matrixVar.setToken(new DoubleMatrixToken(cells));
+        matrixVar.setToken(new DoubleMatrixToken(_cells));
 
         iter = ((IntToken) paramIterations.getToken()).intValue();
 
@@ -320,8 +348,8 @@ public class CADirector extends Director {
     }
 
     /**
-     * Update the current x and y locations of the grid.  It 
-     * also updates the iteration count when necessary.  If all matrix cells 
+     * Update the current x and yLocations of the grid.  It 
+     * also updates the iteration count when necessary.  If all matrix _cells 
      * have been updated for this iteration, then _iterate() is called.
      * 
      * @exception IllegalActionException If an exception occurs in the
@@ -332,11 +360,11 @@ public class CADirector extends Director {
 
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Variable matrixVar = (Variable) container.getAttribute("matrix");
-        matrixVar.setToken(new DoubleMatrixToken(cells));
+        matrixVar.setToken(new DoubleMatrixToken(_cells));
 
-        Variable vnv = (Variable) container.getAttribute("new_value");
+        Variable vnv = (Variable) container.getAttribute("newValue");
         DoubleToken dt = (DoubleToken) vnv.getToken();
-        newCells[currentY][currentX] = dt.doubleValue();
+        _newCells[currentY][currentX] = dt.doubleValue();
 
         if (++currentX == matrixSize) {
             currentX = 0;
@@ -406,7 +434,7 @@ public class CADirector extends Director {
 
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                cells[i][j] = newCells[i][j];
+                _cells[i][j] = _newCells[i][j];
             }
         }
         try {
@@ -440,7 +468,7 @@ public class CADirector extends Director {
 
             if (actor instanceof CAViewer) {
                 CAViewer caViewer = (CAViewer) actor;
-                caViewer.setMatrix(cells);
+                caViewer.setMatrix(_cells);
             }
 
         }
@@ -468,7 +496,7 @@ public class CADirector extends Director {
                 }
             } else if (actor instanceof CAViewer) {
                 CAViewer caViewer = (CAViewer) actor;
-                caViewer.setMatrix(cells);
+                caViewer.setMatrix(_cells);
                 caViewer.iterate(1);
             }
         }
@@ -480,21 +508,21 @@ public class CADirector extends Director {
             actorMatrixViewer.iterate(1);
         }
     }
-    
     ///////////////////////////////////////////////////////////////////
     ////                   protected variables                     ////
+
     /**
      * The current matrix.
      */
-    protected double[][] cells;
-    
+    protected double[][] _cells;
+
     /**
-     * The x location of the current matrix cell being updated.
+     * The xLocation of the current matrix cell being updated.
      */
     protected int currentX;
     
     /**
-     * The y location of the current matrix cell being updated.
+     * The yLocation of the current matrix cell being updated.
      */
     protected int currentY;
     
@@ -517,30 +545,5 @@ public class CADirector extends Director {
     /**
      *  A temporary matrix to hold the updated values.
      */
-    protected double[][] newCells;
-    
-    /**
-     *  The delay parameter.
-     */
-    protected Parameter paramDelay;
-    
-    /**
-     * The initial matrix parameter.
-     */
-    protected Parameter paramInitialMatrix;
-    
-    /**
-     * The iterations parameter.
-     */
-    protected Parameter paramIterations;
-    
-    /**
-     *  The random parameter.
-     */
-    protected Parameter paramRandom;
-    
-    /**
-     * The matrix size parameter.
-     */
-    protected Parameter paramSize;
+    protected double[][] _newCells;
 }

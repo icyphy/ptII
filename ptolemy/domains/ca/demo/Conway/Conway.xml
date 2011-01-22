@@ -12,29 +12,29 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.5, 356.0}">
     </property>
-    <property name="x_location" class="ptolemy.data.expr.Parameter" value="9">
+    <property name="xLocation" class="ptolemy.data.expr.Parameter" value="9">
     </property>
-    <property name="y_location" class="ptolemy.data.expr.Parameter" value="9">
+    <property name="yLocation" class="ptolemy.data.expr.Parameter" value="9">
     </property>
-    <property name="current_value" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="currentValue" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_1" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_2" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor2" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_3" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor3" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_4" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor4" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_5" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor5" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_6" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor6" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_7" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor7" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="neighbor_8" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="neighbor8" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="new_value" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="newValue" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
@@ -113,62 +113,62 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 10.0]">
             </property>
         </property>
-        <port name="x location" class="ptolemy.actor.TypedIOPort">
+        <port name="xLocation" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 165.0]">
             </property>
         </port>
-        <port name="y location" class="ptolemy.actor.TypedIOPort">
+        <port name="yLocation" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 205.0]">
             </property>
         </port>
-        <port name="current value" class="ptolemy.actor.TypedIOPort">
+        <port name="currentValue" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
             </property>
         </port>
-        <port name="new value" class="ptolemy.actor.TypedIOPort">
+        <port name="newValue" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1340.0, 370.0]">
             </property>
         </port>
-        <port name="neighbor 1" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 320.0}">
             </property>
         </port>
-        <port name="neighbor 2" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 380.0]">
             </property>
         </port>
-        <port name="neighbor 3" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 440.0]">
             </property>
         </port>
-        <port name="neighbor 4" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor4" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 510.0]">
             </property>
         </port>
-        <port name="neighbor 5" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 595.0]">
             </property>
         </port>
-        <port name="neighbor 6" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor6" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 700.0]">
             </property>
         </port>
-        <port name="neighbor 7" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor7" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 785.0]">
             </property>
         </port>
-        <port name="neighbor 8" class="ptolemy.actor.TypedIOPort">
+        <port name="neighbor8" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 900.0}">
             </property>
@@ -468,16 +468,16 @@
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="current value" relation="relation2"/>
-        <link port="new value" relation="relation15"/>
-        <link port="neighbor 1" relation="relation4"/>
-        <link port="neighbor 2" relation="relation5"/>
-        <link port="neighbor 3" relation="relation6"/>
-        <link port="neighbor 4" relation="relation7"/>
-        <link port="neighbor 5" relation="relation8"/>
-        <link port="neighbor 6" relation="relation9"/>
-        <link port="neighbor 7" relation="relation10"/>
-        <link port="neighbor 8" relation="relation11"/>
+        <link port="currentValue" relation="relation2"/>
+        <link port="newValue" relation="relation15"/>
+        <link port="neighbor1" relation="relation4"/>
+        <link port="neighbor2" relation="relation5"/>
+        <link port="neighbor3" relation="relation6"/>
+        <link port="neighbor4" relation="relation7"/>
+        <link port="neighbor5" relation="relation8"/>
+        <link port="neighbor6" relation="relation9"/>
+        <link port="neighbor7" relation="relation10"/>
+        <link port="neighbor8" relation="relation11"/>
         <link port="Comparator.left" relation="relation2"/>
         <link port="Comparator.right" relation="relation3"/>
         <link port="Comparator.output" relation="relation"/>
@@ -535,7 +535,7 @@
         <link port="AddSubtract.output" relation="relation14"/>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="x_location">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="xLocation">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -548,7 +548,7 @@
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="y_location">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="yLocation">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -561,7 +561,7 @@
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="current_value">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="currentValue">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -574,7 +574,7 @@
         </property>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_1">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor1">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -587,7 +587,7 @@
         </property>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_2">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor2">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -600,7 +600,7 @@
         </property>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_3">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor3">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -613,7 +613,7 @@
         </property>
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_4">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor4">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -626,7 +626,7 @@
         </property>
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_5">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor5">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -639,7 +639,7 @@
         </property>
     </entity>
     <entity name="Const9" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_6">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor6">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -652,7 +652,7 @@
         </property>
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_7">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor7">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -665,7 +665,7 @@
         </property>
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor_8">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="neighbor8">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -678,7 +678,7 @@
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="new_value">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="newValue">
         </property>
         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -723,18 +723,18 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="CA2DConvolution.x location" relation="relation2"/>
-    <link port="CA2DConvolution.y location" relation="relation3"/>
-    <link port="CA2DConvolution.current value" relation="relation4"/>
-    <link port="CA2DConvolution.new value" relation="relation"/>
-    <link port="CA2DConvolution.neighbor 1" relation="relation5"/>
-    <link port="CA2DConvolution.neighbor 2" relation="relation6"/>
-    <link port="CA2DConvolution.neighbor 3" relation="relation7"/>
-    <link port="CA2DConvolution.neighbor 4" relation="relation8"/>
-    <link port="CA2DConvolution.neighbor 5" relation="relation9"/>
-    <link port="CA2DConvolution.neighbor 6" relation="relation10"/>
-    <link port="CA2DConvolution.neighbor 7" relation="relation11"/>
-    <link port="CA2DConvolution.neighbor 8" relation="relation12"/>
+    <link port="CA2DConvolution.xLocation" relation="relation2"/>
+    <link port="CA2DConvolution.yLocation" relation="relation3"/>
+    <link port="CA2DConvolution.currentValue" relation="relation4"/>
+    <link port="CA2DConvolution.newValue" relation="relation"/>
+    <link port="CA2DConvolution.neighbor1" relation="relation5"/>
+    <link port="CA2DConvolution.neighbor2" relation="relation6"/>
+    <link port="CA2DConvolution.neighbor3" relation="relation7"/>
+    <link port="CA2DConvolution.neighbor4" relation="relation8"/>
+    <link port="CA2DConvolution.neighbor5" relation="relation9"/>
+    <link port="CA2DConvolution.neighbor6" relation="relation10"/>
+    <link port="CA2DConvolution.neighbor7" relation="relation11"/>
+    <link port="CA2DConvolution.neighbor8" relation="relation12"/>
     <link port="Const2.output" relation="relation2"/>
     <link port="Const.output" relation="relation3"/>
     <link port="Const3.output" relation="relation4"/>
