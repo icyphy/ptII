@@ -95,7 +95,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
         serviceTime.setExpression("0.1");
         serviceTime.setTypeEquals(BaseType.DOUBLE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -104,7 +104,8 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
      *  @return A new intermediate receiver.
      */
     public IntermediateReceiver getReceiver(Receiver receiver) {
-        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(this, receiver);
+        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
+                this, receiver);
         return intermediateReceiver;
     }
 
@@ -127,43 +128,43 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
 
     /** Send first token in the queue to the target receiver.
      */
-    public void fire() throws IllegalActionException { 
+    public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         // in a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null
-        if (_nextTimeFree != null && _tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
+        if (_nextTimeFree != null && _tokens.size() > 0
+                && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
-            receiver.put(token);
-            
+            if (receiver.isKnown() && !receiver.hasToken()) {
+                receiver.reset();
+            }
             // transfer tokens from nested composite actors to the outside and
             // from the outside into composite actors
             if (!(receiver instanceof IntermediateReceiver)) {
-                Actor container = (Actor) receiver.getContainer().getContainer();
+                Actor container = (Actor) receiver.getContainer()
+                        .getContainer();
                 if (receiver.getContainer().isOutput()) {
-                    while (container instanceof CompositeActor) {
-                        // just do it for all output ports
-                        // can be improved by just transfering outputs on ports that are 
-                        // connected with with the port serviced by the receiver above
-                        Iterator<?> outports = container.outputPortList().iterator();
-                        while (outports.hasNext()) {
-                            IOPort p = (IOPort) outports.next();
-                            container.getDirector().transferOutputs(p);
-                        }
-                        container = (Actor) container.getContainer();
+                    receiver.put(token);
+                    // transfer outputs outside
+                    ((Actor) container.getContainer()).getDirector().fireAt(container,
+                            currentTime);
+                } else {
+                    if (receiver.getContainer().isInput()) { 
+                        // the container must have the correct model time before putting the token
+                        ((Actor) container.getContainer()).getDirector().fireAt(container,
+                                currentTime);
+                        receiver.put(token); 
+                        // making sure the input is transferred inside.
+                        ((Actor) container.getContainer()).getDirector().fireAt(container,
+                                currentTime);
                     }
-                } 
-//                else {
-//                    if (receiver.getContainer().isInput()) {
-//                        container.getDirector().transferInputs(receiver.getContainer());
-//                    }
-//                }
+                }
             }
             if (_debugging) {
-                _debug("At time " + currentTime + ", completing send to " +
-                        receiver.getContainer().getFullName() +
-                        ": " + token);
+                _debug("At time " + currentTime + ", completing send to "
+                        + receiver.getContainer().getFullName() + ": " + token);
             }
         }
     }
@@ -173,7 +174,8 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (_nextTimeFree != null && _tokens.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
+        if (_nextTimeFree != null && _tokens.size() > 0
+                && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             Object[] output = (Object[]) _tokens.take();
             // Determine the time of the next firing.
@@ -194,15 +196,16 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public void sendToken(Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (_nextTimeFree == null || _tokens.size() == 0 
-                || currentTime.compareTo(_nextTimeFree) != 0 || receiver != _nextReceiver) {
+        if (_nextTimeFree == null || _tokens.size() == 0
+                || currentTime.compareTo(_nextTimeFree) != 0
+                || receiver != _nextReceiver) {
             // At the current time, there is no token to send.
             // At least in the Continuous domain, we need to make sure
             // the delegated receiver knows this so that it becomes
             // known and absent.
             receiver.put(null);
         }
-        
+
         // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
         if (token == null) {
@@ -217,9 +220,9 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             _fireAt(_nextTimeFree);
         }
         if (_debugging) {
-            _debug("At time " + getDirector().getModelTime() + ", initiating send to " +
-                    receiver.getContainer().getFullName() +
-                    ": " + token);
+            _debug("At time " + getDirector().getModelTime()
+                    + ", initiating send to "
+                    + receiver.getContainer().getFullName() + ": " + token);
         }
     }
 
@@ -229,15 +232,15 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public void reset() {
         _tokens.clear();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                    ////
-    
+
     /** The service time. This is a double with default 0.1.
      *  It is required to be positive.
      */
     public Parameter serviceTime;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
