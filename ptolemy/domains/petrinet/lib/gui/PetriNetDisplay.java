@@ -39,9 +39,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    Display the evolution of a Petri net after execution.
 
    <p>Place this actor on a canvas along with a Petri Net (containing
-   Places and Transitions) and the actor will display the evolution of the Net after
-   execution. Specifically, the token count of each place will be printed
-   for each iteration.</p>
+   Places and Transitions) and the actor will display the evolution of
+   the Net after execution. Specifically, the token count of each
+   place will be printed for each iteration.</p>
 
    <p>It should be noted that there are alignment issues within the display 
    on certain operating systems where the font used is not monospaced.</p>

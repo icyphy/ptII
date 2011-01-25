@@ -51,9 +51,9 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running the PetriNet Director&#10;sends messages to the PetriNetDisplay.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running, the PetriNet Director&#10;sends messages to the PetriNetDisplay.&#10;&#10;The messages contain the token count for each&#10;Place at each iteration.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-245.0, -25.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-245.0, -60.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -145,7 +145,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 370]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 75.0]">
         </property>
     </entity>
     <entity name="p4" class="ptolemy.domains.petrinet.kernel.Place">

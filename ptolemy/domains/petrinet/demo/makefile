@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo
+ME =		ptolemy/domains/petrinet/demo
 
 # Keep these alphabetical please.
 DIRS =		PetriNetDiningPhilosophers PetriNetSimple

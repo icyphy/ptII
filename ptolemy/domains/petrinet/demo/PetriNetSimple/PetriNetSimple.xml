@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 795, 445}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 795, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 335]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.0, 167.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.0, 175.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
@@ -27,9 +27,9 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running the PetriNet Director&#10;sends messages to the PetriNetDisplay.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="As the model is running, the PetriNet Director&#10;sends messages to the PetriNetDisplay.&#10;&#10;The messages contain the token count for each&#10;Place at each iteration.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 40.0]">
         </property>
     </property>
     <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">

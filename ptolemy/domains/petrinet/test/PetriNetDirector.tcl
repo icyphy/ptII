@@ -54,6 +54,15 @@ proc listenToDirector {model} {
     #set listener [java::new ptolemy.kernel.util.RecorderListener]    
     #$director addDebugListener $listener
 
+    # Set the seed of the director to 1L so that we get the same results.
+    set director [$toplevel getAttribute {PetriNet Director}]
+    set seed  [java::cast ptolemy.data.expr.Parameter \
+		   [$director getAttribute seed]]
+    $seed setExpression {1L}
+    set resetOnEachRun [java::cast ptolemy.data.expr.Parameter \
+			    [$director getAttribute resetOnEachRun]]
+    $resetOnEachRun setExpression {true}
+
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] myManager]
     $toplevel setManager $manager
 
@@ -87,23 +96,23 @@ test PetriNetDirector-2.0 {Read PetriNetDiningPhilosophers, listen to the direct
     listenToDirector "../demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml"
 } {p0  p1  p2  p3  p4  p5  p6  p7  p8  p9  
 1   1   1   1   1   0   0   0   0   0   
-0   0   1   0   0   1   0   0   1   0   
-1   1   1   1   1   0   0   0   0   0   
-0   0   0   0   1   1   0   1   0   0   
-1   1   1   1   1   0   0   0   0   0   
-0   0   1   0   0   1   0   0   1   0   
-1   1   1   1   1   0   0   0   0   0   
-0   0   0   0   1   1   0   1   0   0   
-1   1   1   1   1   0   0   0   0   0   
 0   1   0   0   0   0   0   1   0   1   
 1   1   1   1   1   0   0   0   0   0   
 0   1   0   0   0   0   0   1   0   1   
 1   1   1   1   1   0   0   0   0   0   
 1   0   0   0   0   0   1   0   1   0   
 1   1   1   1   1   0   0   0   0   0   
-0   0   1   0   0   1   0   0   1   0   
+0   0   0   1   0   0   1   0   0   1   
 1   1   1   1   1   0   0   0   0   0   
-0   0   1   0   0   1   0   0   1   0   
+0   0   0   0   1   1   0   1   0   0   
 1   1   1   1   1   0   0   0   0   0   
 0   0   0   1   0   0   1   0   0   1   
+1   1   1   1   1   0   0   0   0   0   
+0   0   0   1   0   0   1   0   0   1   
+1   1   1   1   1   0   0   0   0   0   
+0   0   0   0   1   1   0   1   0   0   
+1   1   1   1   1   0   0   0   0   0   
+0   1   0   0   0   0   0   1   0   1   
+1   1   1   1   1   0   0   0   0   0   
+0   0   1   0   0   1   0   0   1   0   
 }

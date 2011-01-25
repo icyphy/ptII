@@ -58,7 +58,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Random;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
@@ -66,7 +68,9 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -77,6 +81,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ////////////////////////////////////////////////////////////////////////
 //// PetriNetDirector
@@ -325,15 +330,93 @@ public class PetriNetDirector extends Director {
      */
     Parameter iterations;
 
+    /** If true, this parameter specifies that the random number
+     *  generator should be reset on each run of the model (in
+     *  the initialize() method). It is a boolean that defaults
+     *  to false. This is a shared parameter, meaning that changing
+     *  it somewhere in the model causes it to be changed everywhere
+     *  in the model.
+     */
+    public SharedParameter resetOnEachRun;
+
+    /** The seed that controls the random number generator that
+     *  determines which component is fired.    
+     * 
+     *  <p>This is a shared parameter, meaning that all instances of
+     *  PetriNetDirector or derived classes in the same model share the
+     *  same value.  This parameter is used for testing so that a
+     *  model has predictable results and can be compared against
+     *  known good results.</p>
+     *
+     *  <p>A seed of zero is interpreted to mean that no seed is
+     *  specified, which means that each execution of the model could
+     *  result in distinct data. For the value 0, the seed is set to
+     *  System.currentTimeMillis() + hashCode(), which means that with
+     *  extremely high probability, two distinct directors will have
+     *  distinct seeds.  However, current time may not have enough
+     *  resolution to ensure that two subsequent executions of the
+     *  same model have distinct seeds. For a value other than zero,
+     *  the seed is set to that value plus the hashCode() of the full
+     *  name of the director. This means that with high probability,
+     *  two distinct director will have distinct, but repeatable
+     *  seeds.</p>
+     *
+     *  <p>This parameter contains a LongToken, initially with value
+     *  0.</p>
+     */
+    public SharedParameter seed;
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                     ////
     
+    /** If the attribute is <i>seed</i>
+     *  then create the base random number generator.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        // Copied from actor.lib.RandomSource
+        if (attribute == seed) {
+            long seedValue = ((LongToken) (seed.getToken())).longValue();
+
+            if (seedValue != _generatorSeed) {
+                _needNewGenerator = true;
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param workspace The workspace for the new object.
+     *  @return A new director
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        // Based on ptolemy.actor.lib.RandomSource.
+        // We need a clone(Workspace) method so that Actor Oriented Classes
+        // work.
+        PetriNetDirector newObject = (PetriNetDirector) (super.clone(workspace));
+
+        // It is too soon to generate the new generator because
+        // all clones will have the same actor name, which results
+        // in the same seed.
+        newObject._needNewGenerator = true;
+
+        return newObject;
+    }
+
     /**
-     * This method finds all Transitions of the given container, i.e., the
-     * Transition set of the container, which is supposed to be a PetriNetActor.
-     * A Transition can be contained in the top level PetriNetActor, or its
-     * PetriNetActor components. This method searches for Transitions
-     * recursively for each PetriNetActor component.
+     * Find all Transitions of the given container, i.e., the
+     * Transition set of the container, which is supposed to be a
+     * PetriNetActor.  A Transition can be contained in the top level
+     * PetriNetActor, or its PetriNetActor components. This method
+     * searches for Transitions recursively for each PetriNetActor
+     * component.
      * 
      * @param container
      *            The container where the Transitions are contained.
@@ -359,12 +442,13 @@ public class PetriNetDirector extends Director {
 
     /**
      * Fire enabled components of the PetriNetActor by calling the
-     * method _fireHierarchicalPetriNetOnce(), one at a time until there is no
-     * more enabled components to fire. The enabled component can be an enabled
-     * Transition or an enabled PetriNetActor component. It is the job of the
-     * method _fireHierarchicalPetriNetOnce() to find all enabled components if
-     * there is any, to choose which enabled component to fire, and to update
-     * markings of related Places when a component fires.
+     * method _fireHierarchicalPetriNetOnce(), one at a time until
+     * there is no more enabled components to fire. The enabled
+     * component can be an enabled Transition or an enabled
+     * PetriNetActor component. It is the job of the method
+     * _fireHierarchicalPetriNetOnce() to find all enabled components
+     * if there is any, to choose which enabled component to fire, and
+     * to update markings of related Places when a component fires.
      * 
      * <p>A description of the firing is sent to any actors that implement
      * the {@link PetriNetDisplayer} interface.  If this director has a debug
@@ -467,14 +551,17 @@ public class PetriNetDirector extends Director {
     }
     
     /**
-     * This method fires an enabled Transition. The transition argument to this
-     * method must be an enabled Transition. If the given Transition is Opaque,
-     * then it fires the Transition first, otherwise no action is taken for the
-     * Transition; the method then updates the markings of the input Places and
-     * output Places of the Transition. The update of the marking is done one
-     * relation at a time. The input Places and output Places are found by the
-     * methods _findForwardConnectedPlaces() and _findBackwardConnectedPlaces()
-     * respectively.
+     * Fire an enabled Transition.
+
+     * <p>The transition argument to this method must be an enabled
+     * Transition. If the given Transition is Opaque, then it fires
+     * the Transition first, otherwise no action is taken for the
+     * Transition; the method then updates the markings of the input
+     * Places and output Places of the Transition. The update of the
+     * marking is done one relation at a time. The input Places and
+     * output Places are found by the methods
+     * _findForwardConnectedPlaces() and
+     * _findBackwardConnectedPlaces() respectively.</p>
      * 
      * @param transition
      *            The transition to be fired.
@@ -594,24 +681,28 @@ public class PetriNetDirector extends Director {
 
     
     /**
-     * This method tests whether a given Transition is enabled or not. A
-     * Transition is enabled if for each of the input Places, the marking of the
-     * Place is bigger than the sum of weights of edges connecting the Place to
-     * the Transition. The Transition itself is any TypedCompositeActor. The
-     * Transition can be a component of a PetriNetActor, or it is contained in
-     * some PetriNetActor component.
+     * Test whether a given Transition is enabled or not.
+
+     * <p>A Transition is enabled if for each of the input Places, the
+     * marking of the Place is bigger than the sum of weights of edges
+     * connecting the Place to the Transition. The Transition itself
+     * is any TypedCompositeActor. The Transition can be a component
+     * of a PetriNetActor, or it is contained in some PetriNetActor
+     * component.</p>
      * 
-     * This is one of the key methods for hierarchical Petri Nets. It is
-     * equivalent to the prefire() method for a Transition. The method first
-     * finds all the input Places of the Transition by calling the method
-     * _findBackwardConnectedPlaces(), and sets the temporary marking of the
-     * Places equal to the real marking; then it enumerates all the arcs
-     * connecting Places to the Transition and decreases the temporaryMarking of
-     * the Places reachable from the arc. If after all arcs have been enumerated
-     * and the temporaryMarking of all input Places are greater than 0, then the
-     * Transition is ready to fire, otherwise it is not ready to fire. The
-     * reason that we use a temporaryMarking here is to keep the initialMarking
-     * of the places unchanged when we test a Transition is ready or not.
+     * <p>This is one of the key methods for hierarchical Petri Nets. It
+     * is equivalent to the prefire() method for a Transition. The
+     * method first finds all the input Places of the Transition by
+     * calling the method _findBackwardConnectedPlaces(), and sets the
+     * temporary marking of the Places equal to the real marking; then
+     * it enumerates all the arcs connecting Places to the Transition
+     * and decreases the temporaryMarking of the Places reachable from
+     * the arc. If after all arcs have been enumerated and the
+     * temporaryMarking of all input Places are greater than 0, then
+     * the Transition is ready to fire, otherwise it is not ready to
+     * fire. The reason that we use a temporaryMarking here is to keep
+     * the initialMarking of the places unchanged when we test a
+     * Transition is ready or not.</p>
      * 
      * @param transition
      *            Transition to be tested to be enabled or not.
@@ -687,6 +778,11 @@ public class PetriNetDirector extends Director {
      *              Exception is thrown if superclass throws it.
     */
     public void preinitialize() throws IllegalActionException {
+        if (_random == null
+                || ((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
+            _createGenerator();
+        }
+
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
             Iterator rList = ((TypedCompositeActor) container).relationList().iterator();
@@ -773,6 +869,24 @@ public class PetriNetDirector extends Director {
         return output;
     }
     
+    /** Create the random number generator using current parameter values.
+     *  @exception IllegalActionException If thrown while reading the
+     *  seed Token.
+     */
+    private void _createGenerator() throws IllegalActionException {
+        // From actor.lib.RandomSource
+        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        _generatorSeed = seedValue;
+
+        if (seedValue == 0L) {
+            seedValue = System.currentTimeMillis() + hashCode();
+        } else {
+            seedValue = seedValue + getFullName().hashCode();
+        }
+        _random = new Random(seedValue);
+        _needNewGenerator = false;
+    }
+
     /**
      * This method gets the weight assigned to the given relation. The current
      * hierarchical Petri Net allows multiple arcs connecting Places,
@@ -930,13 +1044,14 @@ public class PetriNetDirector extends Director {
     }
     
     /**
-     * This method is to test a PetriNetActor can be fired or not, and fires the
-     * PetriNetActor once if it can be fired. The method first finds all the
-     * enabled components returned by _readyComponentList(); then it randomly
-     * chooses one component to fire. If the chosen component is a
-     * PetriNetActor, this method is called recursively to fire the chosen
-     * PetriNetActor component; otherwise the chosen component must be a
-     * Transition represented by any TypedCompositeActor, and this method calls
+     * Test whether a PetriNetActor can be fired or not, and
+     * fires the PetriNetActor once if it can be fired. The method
+     * first finds all the enabled components returned by
+     * _readyComponentList(); then it randomly chooses one component
+     * to fire. If the chosen component is a PetriNetActor, this
+     * method is called recursively to fire the chosen PetriNetActor
+     * component; otherwise the chosen component must be a Transition
+     * represented by any TypedCompositeActor, and this method calls
      * the method fireTransition() to fire the Transition.
      * 
      * @param container
@@ -956,7 +1071,10 @@ public class PetriNetDirector extends Director {
             if (_debugging) {
                 _debug(componentCount + " transitions ready");
             }
-            Collections.shuffle(components);
+            if (_needNewGenerator) {
+                _createGenerator();
+            }
+            Collections.shuffle(components, _random);
             for (int i = 0; i < components.size(); i++) {
                 if (components.get(i) instanceof TypedCompositeActor) {
                     TypedCompositeActor realTransition = (TypedCompositeActor) components
@@ -972,8 +1090,7 @@ public class PetriNetDirector extends Director {
     }
     
     /**
-     * This method is a helper method that initialized the parameters
-     * required by the Director.
+     * Initialize the Director parameters.
      * 
      * @exception IllegalActionException
      *              If setting the type or expression of the iterations
@@ -987,15 +1104,25 @@ public class PetriNetDirector extends Director {
         iterations = new Parameter(this, "iterations");
         iterations.setExpression("0");
         iterations.setTypeEquals(BaseType.INT);
+
+        seed = new SharedParameter(this, "seed", PetriNetDirector.class, "0L");
+        seed.setTypeEquals(BaseType.LONG);
+
+        resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
+                PetriNetDirector.class, "false");
+        resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
+
     }
     
     /**
-     * This method finds all the enabled components in a container and returns
-     * the list. The firing method will choose one component from this list
-     * randomly to fire. A Transition is enabled if isTransitionReady() returns
-     * true on testing the transition. A PetriNetActor is an enabled component
-     * if it contains an enabled Transition, which is tested by the method
-     * petriNetActor.prefire().
+     * Return all the enabled components in a container.
+     *
+     * <p>The firing method will choose one component from this list
+     * randomly to fire. A Transition is enabled if
+     * isTransitionReady() returns true on testing the transition. A
+     * PetriNetActor is an enabled component if it contains an enabled
+     * Transition, which is tested by the method
+     * petriNetActor.prefire().</p>
      * 
      * @param container
      *            Test how many components are ready to fire in the container.
@@ -1019,4 +1146,16 @@ public class PetriNetDirector extends Director {
         }
         return readyComponentList;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The current value of the seed parameter. */
+    private long _generatorSeed = 0L;
+
+    /** Indicator that a new generator is needed. */
+    private boolean _needNewGenerator = true;
+
+    /** The Random object, used to shuffle transitions. */
+    private Random _random;
 }
