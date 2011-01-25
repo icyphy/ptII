@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -100.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 4, 1085, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 22, 1083, 747}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[870, 637]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8686055182699">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{195.6796875000001, 180.6796874999999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{195.6796875000001, 180.6796874999998}">
     </property>
     <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {8,1}, y = {10,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -334,7 +334,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 35, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={236, 34, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -361,7 +361,7 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1038, 476, 229, 249}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1038, 476, 221, 245}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[221, 201]">
             </property>
@@ -376,14 +376,27 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 155.0]">
             </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1, 9; 3, 11], [5, 13; 7, 15], [17, 25; 19, 27], [21, 29; 23, 31], [33, 41; 35, 43], [37, 45; 39, 47]}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 215.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{255.0, 155.0}">
+            </vertex>
+        </relation>
         <link port="port_0" relation="relation"/>
-        <link port="Display.input" relation="relation2"/>
+        <link port="Display.input" relation="relation3"/>
         <link port="SequenceToMatrix.input" relation="relation"/>
-        <link port="SequenceToMatrix.output" relation="relation2"/>
+        <link port="SequenceToMatrix.output" relation="relation3"/>
+        <link port="Test.input" relation="relation3"/>
     </entity>
     <entity name="Sink2" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2,2}">
@@ -396,7 +409,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={421, 129, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={421, 129, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -417,7 +430,7 @@
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={267, 246, 153, 421}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={267, 246, 145, 417}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[145, 373]">
             </property>
@@ -433,26 +446,39 @@
             </property>
         </entity>
         <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 266, 153, 421}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 266, 145, 417}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[145, 373]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 285.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[50, 58; 52, 60], [54, 62; 56, 64], [66, 74; 68, 76], [70, 78; 72, 80]}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 265.0]">
+            </property>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
             <vertex name="vertex1" value="{90.0, 195.0}">
             </vertex>
         </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{240.0, 195.0}">
+            </vertex>
+        </relation>
         <link port="port_0" relation="relation3"/>
-        <link port="Display.input" relation="relation"/>
+        <link port="Display.input" relation="relation2"/>
         <link port="SequenceToMatrix.input" relation="relation3"/>
-        <link port="SequenceToMatrix.output" relation="relation"/>
+        <link port="SequenceToMatrix.output" relation="relation2"/>
         <link port="Display2.input" relation="relation3"/>
+        <link port="Test.input" relation="relation2"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[240.0, 335.0]">
