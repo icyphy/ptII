@@ -83,8 +83,24 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
      */
     public NamedObjController create(GraphController controller) {
         super.create(controller);
-        return new ProductLatticeHighlighterController(this, controller);
+        _highlighterController = new ProductLatticeHighlighterController(this,
+                controller);
+        return _highlighterController;
     }
+    
+    /** Update the highlight colors menu for the ProductLatticeOntologySolver
+     *  based on its ProductLatticeOntology.
+     *  @param solverOntology The ProductLatticeOntology for the solver.
+     *  @throws IllegalActionException Thrown if there is a problem creating
+     *   the new highlight colors menu.
+     */
+    public void updateHighlightColorsMenu(ProductLatticeOntology solverOntology)
+        throws IllegalActionException{
+        _highlighterController.setHighlightColorsMenu(solverOntology);
+    }
+    
+    /** The HighlighterController menu for the ProductLatticeOntologySolver. */
+    private ProductLatticeHighlighterController _highlighterController;
     
     ///////////////////////////////////////////////////////////////////
     ////                     protected inner classes               ////
@@ -94,41 +110,84 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
      *  a submenu to select which of the component ontologies in the product
      *  lattice ontology to use as a basis for highlighting the resolved concepts.
      */
-    protected static class ProductLatticeHighlighterController extends HighlighterController {
+    protected static class ProductLatticeHighlighterController extends
+        HighlighterController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The ProductLatticeOntologySolverDisplayActions object reference.
          *  @param controller The controller.
          */
-        public ProductLatticeHighlighterController(ProductLatticeOntologySolverDisplayActions displayActions, GraphController controller) {
-            super(displayActions, controller);
-
-            // Create a new SetHighlightColorsAction for each ontology contained
-            // in the product lattice ontology.
+        public ProductLatticeHighlighterController(
+                ProductLatticeOntologySolverDisplayActions displayActions,
+                GraphController controller) {
+            super(displayActions, controller);            
+            _displayActions = displayActions;
+            
             try {
-                ProductLatticeOntology ontology = ((ProductLatticeOntologySolver) displayActions.
+                ProductLatticeOntology ontology =
+                    ((ProductLatticeOntologySolver) _displayActions.
                         getContainer()).getOntology();
-                List<Ontology> subOntologies = ontology.getLatticeOntologies();
-                SetHighlightColorsAction[] highlightColorsActions =
-                    new SetHighlightColorsAction[subOntologies.size() + 1];
-                
-                for (int i = 0; i < subOntologies.size(); i++) {
-                    highlightColorsActions[i] = displayActions.new SetHighlightColorsAction(subOntologies.get(i));
-                }
-                
-                // Also create a "None" option for when we want to show no colors.
-                highlightColorsActions[highlightColorsActions.length - 1] = displayActions.new SetHighlightColorsAction(null);
-                
-                // Create the set highlight colors sub menu and add it to the context menu.
-                SetHighlightColorsMenu highlightColorsMenu = new SetHighlightColorsMenu(highlightColorsActions, "Set Highlight Colors");           
-                _menuFactory.addMenuItemFactory(highlightColorsMenu);
-                
+                setHighlightColorsMenu(ontology);
             } catch (IllegalActionException ex) {
                 throw new IllegalStateException("Could not create the highlight " +
-                		"colors menu actions for the ProductLatticeOntologySolver" + displayActions.
+                		"colors menu actions for the " +
+                		"ProductLatticeOntologySolver" + displayActions.
                                 getContainer().getName(), ex);
             }
         }
+        
+        /** Set the highlight colors menu for the ProductLatticeOntologySolver
+         *  based on its ProductLatticeOntology.
+         *  @param solverOntology The ProductLatticeOntology for the solver.
+         *  @throws IllegalActionException Thrown if there is a problem creating
+         *   the new highlight colors menu.
+         */
+        public void setHighlightColorsMenu(ProductLatticeOntology solverOntology)
+            throws IllegalActionException {
+            // Remove the old highlight colors menu if it has been created.
+            if (_highlightColorsMenu != null) {
+                _menuFactory.removeMenuItemFactory(_highlightColorsMenu);
+            }
+
+            int numSubOntologies = 0;
+            List<Ontology> subOntologies = null;                
+            if (solverOntology != null) {
+                subOntologies = solverOntology.getLatticeOntologies();
+                if (subOntologies != null) {
+                    numSubOntologies = subOntologies.size();
+                }
+            }
+
+            SetHighlightColorsAction[] highlightColorsActions =
+                new SetHighlightColorsAction[numSubOntologies + 1];
+
+            // Create a new SetHighlightColorsAction for each ontology contained
+            // in the product lattice ontology.
+            for (int i = 0; i < numSubOntologies; i++) {
+                highlightColorsActions[i] = _displayActions.new
+                    SetHighlightColorsAction(subOntologies.get(i));
+            }
+
+            // Also create a "None" option for when we want to show no colors.
+            highlightColorsActions[highlightColorsActions.length - 1] =
+                _displayActions.new SetHighlightColorsAction(null);
+
+            // Create the set highlight colors sub menu and add it to the
+            // context menu.
+            _highlightColorsMenu = new SetHighlightColorsMenu(
+                    highlightColorsActions, "Set Highlight Colors");           
+            _menuFactory.addMenuItemFactory(_highlightColorsMenu);
+        }        
+        
+        /** The ProductLatticeOntologySolverDisplayActions associated with this
+         *  HighlighterController.
+         */
+        private ProductLatticeOntologySolverDisplayActions _displayActions;
+        
+        /** The submenu for the highlight colors for the ProductLatticeOntologySolver
+         *  for this HighlighterController.
+         */
+        private SetHighlightColorsMenu _highlightColorsMenu;
     }
     
     ///////////////////////////////////////////////////////////////////

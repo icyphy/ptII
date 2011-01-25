@@ -6,6 +6,7 @@
   <input source="ptolemy/configs/annotation.xml"/>
 
   <entity name="Ontology" class="ptolemy.data.ontologies.Ontology"></entity>
+  <entity name="ProductLatticeOntology" class="ptolemy.data.ontologies.lattice.ProductLatticeOntology"></entity>
   <property name="ActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute"></property>
   <property name="ConceptFunction" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute"></property>
   

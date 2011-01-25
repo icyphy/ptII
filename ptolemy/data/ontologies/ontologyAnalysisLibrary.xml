@@ -7,8 +7,16 @@
     <!-- Otology Solvers -->
     <group>
       <property name="LatticeOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
       </property>
       <property name="ProductLatticeOntologyAnalysis" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
       </property>
     </group>
     <!-- Constraint Annotations -->
