@@ -87,7 +87,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
-    /** Return the list of constraints for the MultiplyDivide actor.
+    /** Return the list of constraints for the AddSubtract actor.
      *  @return The list of constraints for this adapter.
      *  @throws IllegalActionException If there is an error creating
      *   the constraint list.
