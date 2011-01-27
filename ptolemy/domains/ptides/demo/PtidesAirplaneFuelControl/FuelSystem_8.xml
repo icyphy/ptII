@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FuelSystem_7" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FuelSystem_8" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
@@ -14,18 +14,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1107, 600}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1006, 604}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 490]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[793, 494]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1730600183291">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0940978077572">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.3046715561225, 220.85546875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{365.6490443896425, 233.7567817509266}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model draws fuel at a constant rate from Tank1. When the level in Tank1&#10;gets below 1/4 of its capacity, the model begins transferring fuel from Tank2&#10;to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).&#10;&#10;This is complicated by the fact that the physics does not allow an empty tank&#10;to provide fuel nor a full tank to accept it. The actual rate of fuel flow, therefore,&#10;is a consensus among the two tanks.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[26.5, 313.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 310.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -104,7 +104,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 45.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 27, 1052, 635}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 241, 1052, 635}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 525]">
         </property>
@@ -207,7 +207,7 @@
         </port>
         <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.49964904785156, 84.315185546875]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 105.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -722,9 +722,13 @@
             <vertex name="vertex1" value="[395.0, 140.0]">
             </vertex>
         </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[270.0, 160.0]">
+            </vertex>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="desiredInFlow" relation="relation4"/>
         <link port="desiredOutFlow" relation="relation5"/>
@@ -752,7 +756,7 @@
         <link port="AddSubtract.output" relation="relation3"/>
     </class>
     <entity name="Tank1" class="Tank">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[426.5, 153.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 155.0}">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
         </property>
@@ -778,9 +782,9 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Tank1, Tank2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 522, 1041, 332}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 476, 936, 286}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1041, 288]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[936, 242]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[611.5, 293.0]">
         </property>
@@ -792,7 +796,7 @@
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-5.6250000002061595E-5" max="4.00005"/>
+<yRange min="-2.4147350785597155E-15" max="4.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -838,10 +842,18 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="foo" class="ptolemy.data.expr.Parameter" value="Const2">
+            </property>
+            <property name="arbitraryName" class="ptolemy.data.expr.Parameter" value="Bus">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
         </port>
         <port name="tank1Full" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="quantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
@@ -1042,7 +1054,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[201.5, 153.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 155.0}">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -1062,6 +1074,76 @@
             </property>
         </property>
     </entity>
+    <entity name="Bus" class="ptolemy.domains.ptides.demo.PtidesNetwork.Bus">
+        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 50.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-19.0, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="36.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+            </property>
+            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, -1.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 40.0, 10.0, 20.0}">
+                </property>
+            </property>
+            <property name="polygon2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-44.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 40.0, -10.0, 20.0}">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={297, 322, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="3.2">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="BUS">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-34.0, -9.0]">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{605.0, 145.0}">
+        </property>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[546.5, 273.0]">
         </vertex>
@@ -1079,6 +1161,8 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[21.5, 263.0]">
         </vertex>
+        <property name="quantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1094,15 +1178,21 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[555.0, 145.0]">
+        </vertex>
+    </relation>
     <link port="Tank1.desiredInFlow" relation="relation2"/>
     <link port="Tank1.desiredOutFlow" relation="relation8"/>
     <link port="Tank1.actualInFlow" relation="relation5"/>
-    <link port="Tank1.level" relation="relation6"/>
+    <link port="Tank1.level" relation="relation12"/>
     <link port="Tank1.availableOutFlow" relation="relation"/>
     <link port="Tank1.fullIndicator" relation="relation3"/>
     <link port="Tank1.actualOutFlow" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation6"/>
     <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation12"/>
     <link port="Tank2.desiredInFlow" relation="relation9"/>
     <link port="Tank2.desiredOutFlow" relation="relation10"/>
     <link port="Tank2.level" relation="relation4"/>
@@ -1113,5 +1203,7 @@
     <link port="FuelMover.tank1Full" relation="relation3"/>
     <link port="Const.output" relation="relation8"/>
     <link port="Const2.output" relation="relation9"/>
+    <link port="PeriodicSampler.input" relation="relation12"/>
+    <link port="PeriodicSampler.output" relation="relation6"/>
     <link relation1="relation6" relation2="relation7"/>
 </entity>

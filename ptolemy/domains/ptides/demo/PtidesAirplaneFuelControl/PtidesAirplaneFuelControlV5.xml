@@ -184,7 +184,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 741}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 79, 1280, 741}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 630]">
             </property>
@@ -234,7 +234,7 @@
                 </property>
             </port>
             <entity name="idle" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Tank, Tank">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Tank">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -736,7 +736,7 @@
             </property>
         </port>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={780, 363, 500, 344}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={854, 536, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
