@@ -139,6 +139,9 @@ public class ProductLatticeConcept extends FiniteConcept {
      *  @return The string name that represents this concept.
      */
     public String toString() {
+        if (_conceptTuple == null) {
+            return "Uninitialized Product Lattice Concept";
+        }
         StringBuffer conceptStringBuffer = new StringBuffer();
         for (Concept concept : _conceptTuple) {
             conceptStringBuffer.append(concept.toString());
