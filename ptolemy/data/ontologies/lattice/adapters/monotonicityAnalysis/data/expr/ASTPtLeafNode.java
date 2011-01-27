@@ -141,7 +141,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             }
             
             String conceptString = _leafNode.getName();
-            if (_domainOntology.getConceptByString(conceptString) != null) {
+            if (_domainOntology.getConceptByString(conceptString) != null
+                    || _rangeOntology.getConceptByString(conceptString) != null) {
                 return result;
             }
             
