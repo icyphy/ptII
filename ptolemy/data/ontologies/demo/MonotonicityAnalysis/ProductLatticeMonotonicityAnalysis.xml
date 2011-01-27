@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.0671198513418, 250.1475249916416}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, -20.0}">
         </property>
@@ -58,6 +58,38 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
+            </property>
+        </port>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="ConstantExpression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Unknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
+            </property>
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
