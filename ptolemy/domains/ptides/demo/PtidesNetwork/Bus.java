@@ -30,11 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.demo.PtidesNetwork;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
@@ -125,32 +120,67 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             _serviceTimeValue = value;
         }
     }
+    
+    /** Initialize the actor.
+     *  @throws IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _tokenToSend = null;
+        _receiverToSendTo = null;
+    }
 
     /** Send first token in the queue to the target receiver.
      */
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        // in a continuous domain this actor could be fired before any token has
-        // been received; _nextTimeFree could be null
+        // In a continuous domain this actor could be fired before any token has
+        // been received; _nextTimeFree could be null.
         if (_nextTimeFree != null && _tokens.size() > 0
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
-            if (receiver.isKnown() && !receiver.hasToken()) {
-                receiver.reset();
-            }
-            // transfer tokens from nested composite actors to the outside and
-            // from the outside into composite actors
+            receiver.put(token);
+
+            // FIXME: See the FIXME's below. The commented
+            // out code below is an attempt to address it, but a
+            // questionable one.
+            //
+            // What comes next is complicated. Hold onto your hat.
+            // The scope of a quantity manager includes everything
+            // below its container (actually, its global, if you
+            // use a fully qualified name), even across opaque composite
+            // boundaries. This is because shared resources are
+            // shared, and could be used anywhere in a model.
+            // There are major complications when a Bus is being
+            // used to send data to an output port from the inside,
+            // and when a Bus is being used to send data to an
+            // input port from the outside of an opaque composite
+            // actor. The following code deals with these two cases.
+            //
+            // If the receiver is contained by an output port,
+            // then sendToken() must have been called as a result
+            // of depositing a token into its _inside_ receiver.
+            // We can now deliver the token to director's receiver,
+            // but there is no assurance that the director's
+            // container will fire to handle that token.
+            // We handle this by requesting a firing of the composite.
+            /*
             if (!(receiver instanceof IntermediateReceiver)) {
                 Actor container = (Actor) receiver.getContainer()
                         .getContainer();
                 if (receiver.getContainer().isOutput()) {
                     receiver.put(token);
-                    // transfer outputs outside
-                    ((Actor) container.getContainer()).getDirector().fireAt(container,
-                            currentTime);
+                    // The fire that results from the following fireAt()
+                    // call, at a minimum, will result in a
+                    // transfer outputs to the outside of the composite.
+                    Actor containerOfComposite = (Actor) container.getContainer();
+                    if (containerOfComposite != null) {
+                        containerOfComposite.getDirector().fireAt(container, currentTime);
+                    }
                 } else {
+                    // If the recipient is an input, then 
                     if (receiver.getContainer().isInput()) { 
                         // the container must have the correct model time before putting the token
                         ((Actor) container.getContainer()).getDirector().fireAt(container,
@@ -162,6 +192,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                     }
                 }
             }
+            */
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to "
                         + receiver.getContainer().getFullName() + ": " + token);
@@ -174,14 +205,60 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
+        
+        // If a token was actually sent to a delegated receiver
+        // by the fire() method, then remove that token from
+        // the queue and, if there are still tokens in the queue,
+        // request another firing at the time those tokens should
+        // be delivered to the delegated receiver.
         if (_nextTimeFree != null && _tokens.size() > 0
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
-            Object[] output = (Object[]) _tokens.take();
-            // Determine the time of the next firing.
-            _nextTimeFree = currentTime.add(_serviceTimeValue);
-            _nextReceiver = (Receiver) output[0];
-            _fireAt(_nextTimeFree);
+            _tokens.take();
+            if (_tokens.size() > 0) {
+                // Determine the time of the next firing.
+                _nextTimeFree = currentTime.add(_serviceTimeValue);
+                _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
+                _fireAt(_nextTimeFree);
+                // FIXME:
+                // Not only does this bus need to be fired
+                // at the _nextTimeFree, but so does the destination
+                // actor. In particular, that actor may be under
+                // the control of a _different director_ than the
+                // bus, and the order in which that actor is fired
+                // vs. this Bus is important. How to control this?
+                // Maybe global scope of a QuantityManager is not
+                // a good idea, but we really do want to be able
+                // to share a QuantityManager across modes of a
+                // modal model. How to fix???
+            }
+        }
+        // If sendToken() was called in the current iteration,
+        // then append the token to the queue. If this is the
+        // only token on the queue, then request a firing at
+        // the time that token should be delivered to the
+        // delegated receiver.
+        if (_tokenToSend != null) {
+            _tokens.put(new Object[] { _receiverToSendTo, _tokenToSend });
+            _tokenToSend = null;
+            _receiverToSendTo = null;
+            // if there was no token in the queue, schedule a refiring.
+            if (_tokens.size() == 1) {
+                _nextTimeFree = currentTime.add(_serviceTimeValue);
+                _nextReceiver = _receiverToSendTo;
+                _fireAt(_nextTimeFree);
+                // FIXME:
+                // Not only does this bus need to be fired
+                // at the _nextTimeFree, but so does the destination
+                // actor. In particular, that actor may be under
+                // the control of a _different director_ than the
+                // bus, and the order in which that actor is fired
+                // vs. this Bus is important. How to control this?
+                // Maybe global scope of a QuantityManager is not
+                // a good idea, but we really do want to be able
+                // to share a QuantityManager across modes of a
+                // modal model. How to fix???
+            }
         }
         return super.postfire();
     }
@@ -196,6 +273,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public void sendToken(Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
+        // FIXME: Why is the following needed?
         if (_nextTimeFree == null || _tokens.size() == 0
                 || currentTime.compareTo(_nextTimeFree) != 0
                 || receiver != _nextReceiver) {
@@ -205,19 +283,30 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             // known and absent.
             receiver.put(null);
         }
+        
+        // If previously in the current iteration we have
+        // sent a token, then we require the token to have the
+        // same value. Thus, this Bus can be used only in domains
+        // that either call fire() at most once per iteration,
+        // or domains that have a fixed-point semantics.
+        if (_tokenToSend != null) {
+            if (!_tokenToSend.equals(token)) {
+                throw new IllegalActionException(this, receiver.getContainer(),
+                        "Previously initiated a transmission with value "
+                        + _tokenToSend
+                        + ", but now trying to send value "
+                        + token
+                        + " in the same iteration.");
+            }
+        }
+        
+        _tokenToSend = token;
+        _receiverToSendTo = receiver;
 
         // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
         if (token == null) {
             return;
-        }
-
-        _tokens.put(new Object[] { receiver, token });
-        // if there was no token in the queue, schedule a refiring.
-        if (_tokens.size() == 1) {
-            _nextTimeFree = currentTime.add(_serviceTimeValue);
-            _nextReceiver = receiver;
-            _fireAt(_nextTimeFree);
         }
         if (_debugging) {
             _debug("At time " + getDirector().getModelTime()
@@ -244,15 +333,23 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Next receiver to which the next token to be sent is destined. */
+    private Receiver _nextReceiver;
+
+    /** Next time a token is sent and the next token can be processed. */
+    private Time _nextTimeFree;
+    
+    /** The receiver to which the token provided via sendToken() should
+     *  be sent to.
+     */
+    private Receiver _receiverToSendTo;
+
     /** Delay imposed on every token. */
     private double _serviceTimeValue;
 
     /** Tokens stored for processing. */
     private FIFOQueue _tokens;
-
-    /** Next time a token is sent and the next token can be processed. */
-    private Time _nextTimeFree;
-
-    /** Next receiver to which the next token to be sent is destined. */
-    private Receiver _nextReceiver;
+    
+    /** Token provided by a fire() method via sendToken(). */
+    private Token _tokenToSend;
 }
