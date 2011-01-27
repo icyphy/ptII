@@ -4,7 +4,7 @@
 <entity name="DimensionSquaredMonotonicitySolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1808, 420, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={603, 355, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -18,14 +18,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 25.0]">
         </property>
     </property>
-    <entity name="dimensionLattice" class="ptolemy.data.ontologies.lattice.adapters.dimensionSystem.dimensionSystem">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 310.0]">
-        </property>
-    </entity>
-    <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 140.0]">
-        </property>
-    </entity>
     <entity name="ProductLatticeOntology" class="ptolemy.data.ontologies.lattice.ProductLatticeOntology">
         <property name="latticeOntologies" class="ptolemy.data.expr.Parameter" value="{dimensionLattice, dimensionLattice}">
         </property>
@@ -372,6 +364,8 @@
         <entity name="TimeTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -379,6 +373,8 @@
         </entity>
         <entity name="TimeDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -388,6 +384,8 @@
         <entity name="TimeAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -395,6 +393,8 @@
         </entity>
         <entity name="TimeVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -404,6 +404,8 @@
         <entity name="TimePosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -411,6 +413,8 @@
         </entity>
         <entity name="TimeConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -420,6 +424,8 @@
         <entity name="TimeUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -427,6 +433,8 @@
         </entity>
         <entity name="DimensionlessTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -436,6 +444,8 @@
         <entity name="DimensionlessDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -443,6 +453,8 @@
         </entity>
         <entity name="DimensionlessAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -452,6 +464,8 @@
         <entity name="DimensionlessVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -459,6 +473,8 @@
         </entity>
         <entity name="DimensionlessPosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -468,6 +484,8 @@
         <entity name="DimensionlessConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -475,6 +493,8 @@
         </entity>
         <entity name="DimensionlessUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -484,6 +504,8 @@
         <entity name="AccelerationTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -491,6 +513,8 @@
         </entity>
         <entity name="AccelerationDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -500,6 +524,8 @@
         <entity name="AccelerationAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -507,6 +533,8 @@
         </entity>
         <entity name="AccelerationVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -516,6 +544,8 @@
         <entity name="AccelerationPosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -523,6 +553,8 @@
         </entity>
         <entity name="AccelerationConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -532,6 +564,8 @@
         <entity name="AccelerationUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -539,6 +573,8 @@
         </entity>
         <entity name="VelocityTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -548,6 +584,8 @@
         <entity name="VelocityDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -555,6 +593,8 @@
         </entity>
         <entity name="VelocityAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -564,6 +604,8 @@
         <entity name="VelocityVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -571,6 +613,8 @@
         </entity>
         <entity name="VelocityPosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -580,6 +624,8 @@
         <entity name="VelocityConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -587,6 +633,8 @@
         </entity>
         <entity name="VelocityUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -596,6 +644,8 @@
         <entity name="PositionTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -603,6 +653,8 @@
         </entity>
         <entity name="PositionDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -612,6 +664,8 @@
         <entity name="PositionAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -619,6 +673,8 @@
         </entity>
         <entity name="PositionVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -628,6 +684,8 @@
         <entity name="PositionPosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -635,6 +693,8 @@
         </entity>
         <entity name="PositionConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -644,6 +704,8 @@
         <entity name="PositionUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -651,6 +713,8 @@
         </entity>
         <entity name="ConflictTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -660,6 +724,8 @@
         <entity name="ConflictDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -667,6 +733,8 @@
         </entity>
         <entity name="ConflictAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -676,6 +744,8 @@
         <entity name="ConflictVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -683,6 +753,8 @@
         </entity>
         <entity name="ConflictPosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -692,6 +764,8 @@
         <entity name="ConflictConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -699,6 +773,8 @@
         </entity>
         <entity name="ConflictUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -708,6 +784,8 @@
         <entity name="UnknownTime" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -715,6 +793,8 @@
         </entity>
         <entity name="UnknownDimensionless" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -724,6 +804,8 @@
         <entity name="UnknownAcceleration" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -731,6 +813,8 @@
         </entity>
         <entity name="UnknownVelocity" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -740,6 +824,8 @@
         <entity name="UnknownPosition" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
@@ -747,6 +833,8 @@
         </entity>
         <entity name="UnknownConflict" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -756,10 +844,20 @@
         <entity name="UnknownUnknown" class="ptolemy.data.ontologies.lattice.ProductLatticeConcept">
             <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
             <port name="belowPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="abovePort" class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
+    </entity>
+    <entity name="dimensionLattice" class="ptolemy.data.ontologies.lattice.adapters.dimensionSystem.dimensionSystem">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 140.0]">
+        </property>
     </entity>
 </entity>
