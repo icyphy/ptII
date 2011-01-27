@@ -30,6 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.demo.PtidesNetwork;
 
+import java.util.HashMap;
+
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
@@ -85,6 +87,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tokens = new FIFOQueue();
+        _receiversAndTokensToSendTo = new HashMap();
 
         serviceTime = new Parameter(this, "serviceTime");
         serviceTime.setExpression("0.1");
@@ -126,8 +129,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _tokenToSend = null;
-        _receiverToSendTo = null;
+        _receiversAndTokensToSendTo.clear();
     }
 
     /** Send first token in the queue to the target receiver.
@@ -238,14 +240,19 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if (_tokenToSend != null) {
-            _tokens.put(new Object[] { _receiverToSendTo, _tokenToSend });
-            _tokenToSend = null;
-            _receiverToSendTo = null;
+        if (_receiversAndTokensToSendTo != null) {
+            for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
+                Token token = _receiversAndTokensToSendTo.get(receiver);
+                if (token != null) {
+                    _tokens.put(new Object[] {receiver, token});
+                }
+            }
+            _receiversAndTokensToSendTo.clear();
+            
             // if there was no token in the queue, schedule a refiring.
             if (_tokens.size() == 1) {
                 _nextTimeFree = currentTime.add(_serviceTimeValue);
-                _nextReceiver = _receiverToSendTo;
+                _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
                 _fireAt(_nextTimeFree);
                 // FIXME:
                 // Not only does this bus need to be fired
@@ -289,19 +296,19 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
         // same value. Thus, this Bus can be used only in domains
         // that either call fire() at most once per iteration,
         // or domains that have a fixed-point semantics.
-        if (_tokenToSend != null) {
-            if (!_tokenToSend.equals(token)) {
+        Token tokenToSend = _receiversAndTokensToSendTo.get(receiver);
+        if (tokenToSend != null) {
+            if (!tokenToSend.equals(token)) {
                 throw new IllegalActionException(this, receiver.getContainer(),
                         "Previously initiated a transmission with value "
-                        + _tokenToSend
+                        + tokenToSend
                         + ", but now trying to send value "
                         + token
                         + " in the same iteration.");
             }
+        } else {
+            _receiversAndTokensToSendTo.put(receiver, token);
         }
-        
-        _tokenToSend = token;
-        _receiverToSendTo = receiver;
 
         // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
@@ -339,10 +346,10 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     /** Next time a token is sent and the next token can be processed. */
     private Time _nextTimeFree;
     
-    /** The receiver to which the token provided via sendToken() should
+    /** Map of receivers and tokens to which the token provided via sendToken() should
      *  be sent to.
      */
-    private Receiver _receiverToSendTo;
+    private HashMap<Receiver, Token> _receiversAndTokensToSendTo;
 
     /** Delay imposed on every token. */
     private double _serviceTimeValue;
@@ -350,6 +357,4 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     /** Tokens stored for processing. */
     private FIFOQueue _tokens;
     
-    /** Token provided by a fire() method via sendToken(). */
-    private Token _tokenToSend;
 }
