@@ -29,6 +29,8 @@ package ptolemy.moml;
 
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -63,7 +65,7 @@ public class MoMLVariableChecker {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Check for problems in the moml to be copied.  If there are
      *  missing variables references, search for the variables and
      *  return MoML definitions for any found variables.
@@ -75,7 +77,24 @@ public class MoMLVariableChecker {
      */
     public String checkCopy(String momlToBeChecked, NamedObj container)
             throws IllegalActionException {
+        
+        return checkCopy(momlToBeChecked, container, false);
+    }
 
+    /** Check for problems in the moml to be copied.  If there are
+     *  missing variables references, search for the variables and
+     *  return MoML definitions for any found variables.
+     *  @param momlToBeChecked The MoML string to be checked.
+     *  @param container The container in which the string is to be checked.
+     *  @param hideVariables If true, add MoML that will make all the found
+     *   variables hidden from the user interface when they are copied.
+     *  @return MoML to be inserted before the momlToBeChecked
+     *  @exception IllegalActionException If there is a problem parsing
+     *  the string, or validating a variable.
+     */
+    public String checkCopy(String momlToBeChecked, NamedObj container, boolean hideVariables)
+            throws IllegalActionException {
+        
         _variableBuffer = new StringWriter();
         Workspace workspace = new Workspace("copyWorkspace");
         MoMLParser parser = new MoMLParser(workspace);
@@ -105,7 +124,7 @@ public class MoMLVariableChecker {
             } catch (IllegalActionException ex2) {
                 try {
                     doParse = _findUndefinedConstantsOrIdentifiers(ex2,
-                            container, parsedContainer);
+                            container, parsedContainer, hideVariables);
 
                 } catch (Exception ex2a) {
                     return _variableBuffer.toString();
@@ -118,87 +137,126 @@ public class MoMLVariableChecker {
             }
         }
 
-        // Iterate through all the entities, find the attributes
+        // Iterate through all the entities and attributes, find the attributes
         // that are variables, validate the variables and look for
         // errors.
-
         if (parsedContainer != null) {
             // parsedContainer might be null if we failed to parse because
             // of a missing class
-            Iterator entities = parsedContainer.allAtomicEntityList()
+            Iterator entities = parsedContainer.deepEntityList()
                     .iterator();
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
-                Iterator attributes = entity.attributeList().iterator();
-                while (attributes.hasNext()) {
-                    Attribute attribute = (Attribute) attributes.next();
-                    if (attribute instanceof Variable) {
-                        Variable variable = (Variable) attribute;
-
-                        boolean doGetToken = true;
-                        while (doGetToken) {
-                            doGetToken = false;
-                            try {
-                                variable.getToken();
-                            } catch (IllegalActionException ex) {
-                                doGetToken = _findUndefinedConstantsOrIdentifiers(
-                                        ex, container, parsedContainer);
-                            }
-                        }
-                        ;
-                    }
+                List<Attribute> entityAttributes = new LinkedList<Attribute>(entity.attributeList());
+                for (Attribute attribute: entityAttributes) {
+                    _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(attribute, container,
+                            parsedContainer, hideVariables);
                 }
+            }
+            
+            List<Attribute> allAttributes = new LinkedList<Attribute>(parsedContainer.attributeList());
+            for(Attribute attribute : allAttributes) {
+                _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(attribute, container,
+                        parsedContainer, hideVariables);
+            }
+        }
+        
+        return _variableBuffer.toString();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Recursively search through an attribute and its contained attributes to
+     *  find any unresolved references to other attributes.
+     *  @param attribute The attribute to be traversed.
+     *  @param container The original container of the attribute.
+     *  @param parsedContainer The temporary container from which the new copied
+     *   unresolved attributes will be generated.
+     *  @param hideVariables If true, add MoML that will make all the found
+     *   variables hidden from the user interface when they are copied.
+     *  @exception IllegalActionException If there is a problem parsing
+     *   an attribute, or validating a variable.
+     */
+    private void _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(
+            Attribute attribute, NamedObj container,
+            TypedCompositeActor parsedContainer, boolean hideVariables)
+            throws IllegalActionException {
+        
+        if (attribute instanceof Variable) {
+            Variable variable = (Variable) attribute;
 
-                // Parse all the StringAttributes and Parameters and
-                // look for missing things.  Note that Expression.expression
-                // is a StringAttribute, so we pick that up here.
-                attributes = entity.attributeList().iterator();
-                while (attributes.hasNext()) {
-                    Attribute attribute = (Attribute) attributes.next();
-                    if (!(attribute instanceof AbstractSettableAttribute)) {
-                        continue;
-                    }
-                    AbstractSettableAttribute settable = (AbstractSettableAttribute) attribute;
-                    PtParser ptParser = new PtParser();
-                    ASTPtRootNode parseTree;
-                    try {
-                        parseTree = ptParser.generateParseTree(settable
-                                .getExpression());
-                    } catch (Exception ex) {
-                        // Skip things we can't parse, like StringAttributes
-                        // that are docs.
+            boolean doGetToken = true;
+            while (doGetToken) {
+                doGetToken = false;
+                try {
+                    variable.getToken();
+                } catch (IllegalActionException ex) {
+                    doGetToken = _findUndefinedConstantsOrIdentifiers(
+                            ex, container, parsedContainer, hideVariables);
+                }
+            }
+            ;
+        }
 
-                        // FIXME: we could be smarter here and look
-                        // for Expression.expression and only parse
-                        // it.  However, this would mean that this
-                        // class then dependend on
-                        // actor.lib.Expression.  A better design
-                        // would be to have a marker interface
-                        // implemented by Expression.expression and
-                        // search for that interface.
+        // Parse all the StringAttributes and Parameters and
+        // look for missing things.  Note that Expression.expression
+        // is a StringAttribute, so we pick that up here.
+        if (attribute instanceof AbstractSettableAttribute) {
+            AbstractSettableAttribute settable =
+                (AbstractSettableAttribute) attribute;
+            PtParser ptParser = new PtParser();
+            ASTPtRootNode parseTree = null;
+            try {
+                parseTree = ptParser.generateParseTree(settable
+                        .getExpression());
+            } catch (Exception ex) {
+                // Skip things we can't parse, like StringAttributes
+                // that are docs.
 
-                        continue;
-                    }
-                    ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
+                // FIXME: we could be smarter here and look
+                // for Expression.expression and only parse
+                // it.  However, this would mean that this
+                // class then dependend on
+                // actor.lib.Expression.  A better design
+                // would be to have a marker interface
+                // implemented by Expression.expression and
+                // search for that interface.
 
-                    Set set = variableCollector.collectFreeVariables(parseTree,
-                    /*scope*/null);
-                    for (Iterator elements = set.iterator(); elements.hasNext();) {
-                        String name = (String) elements.next();
+            }
 
-                        // Look for the variable in parsedContainer
-                        if (parsedContainer.getAttribute(name) == null) {
-                            _findUndefinedConstantsOrIdentifiers(name, name,
-                                    container, parsedContainer);
-                        }
+            if (parseTree != null) {
+                ParseTreeFreeVariableCollector variableCollector =
+                    new ParseTreeFreeVariableCollector();
+                Set set = variableCollector.collectFreeVariables(parseTree,
+                        /*scope*/null);
+                for (Iterator elements = set.iterator(); elements.hasNext();) {
+                    String name = (String) elements.next();
+
+                    // Look for the variable in parsedContainer
+                    if (parsedContainer.getAttribute(name) == null) {
+                        _findUndefinedConstantsOrIdentifiers(name, name,
+                                container, parsedContainer, hideVariables);
                     }
                 }
             }
         }
-        return _variableBuffer.toString();
-    }
+
+        List<Attribute> containedAttributes = attribute.attributeList();
+        for (Attribute containedAttribute : containedAttributes) {
+            _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(
+                    containedAttribute, container, parsedContainer,
+                    hideVariables);
+        }
+    }    
 
     /** Given a MissingClassException, find missing classes.
+     *  @param exception The MissingClassException that contains the class
+     *   that needs to be found.
+     *  @param container The original container of the elements being copied.
+     *  @param parsedContainer The temporary container from which the new copied
+     *   unresolved attributes will be generated.
+     *  @return true if the outer parse should be rerun, false otherwise.
      */
     private boolean _findMissingClass(MissingClassException exception,
             NamedObj container, TypedCompositeActor parsedContainer) {
@@ -244,10 +302,21 @@ public class MoMLVariableChecker {
 
     /** Given an UndefinedConstantOrIdentifierException, find
      *  missing variables.
+     *  @param exception The UndefinedConstantOrIdentifierException that
+     *   contains the identifier that needs to be found.
+     *  @param container The original container of the elements being copied.
+     *  @param parsedContainer The temporary container from which the new copied
+     *   unresolved attributes will be generated.
+     *  @param hideVariables If true, add MoML that will make all the found
+     *   variables hidden from the user interface when they are copied.
+     *  @return true if the outer parse should be rerun, false otherwise.
+     *  @exception IllegalActionException If there is a problem finding
+     *   the undefined constants or identifiers.
      */
     private boolean _findUndefinedConstantsOrIdentifiers(
             IllegalActionException exception, NamedObj container,
-            TypedCompositeActor parsedContainer) throws IllegalActionException {
+            TypedCompositeActor parsedContainer, boolean hideVariables)
+            throws IllegalActionException {
         // True if we should rerun the outer parse or getToken
 
         // Ok, we have a variable that might have an appropriate
@@ -286,12 +355,27 @@ public class MoMLVariableChecker {
                         .length() + 2);
 
         return _findUndefinedConstantsOrIdentifiers(variableName, idException
-                .nodeName(), container, parsedContainer);
+                .nodeName(), container, parsedContainer, hideVariables);
     }
 
+    /** Find the missing variables referred to by the given variable name and
+     *  add MoML code to generate them in the _variableBuffer.
+     *  @param variableName The name of the variable which is the root from
+     *   which any missing references should be found.
+     *  @param nodeName The name of the missing constant or identifier.
+     *  @param container The original container of the elements being copied.
+     *  @param parsedContainer The temporary container from which the new copied
+     *   unresolved attributes will be generated.
+     *  @param hideVariables If true, add MoML that will make all the found
+     *   variables hidden from the user interface when they are copied.
+     *  @return true if the outer parse should be rerun, false otherwise.
+     *  @throws IllegalActionException If there is a problem finding
+     *   the undefined constants or identifiers or generating the MoML code for
+     *   the _variableBuffer.
+     */
     private boolean _findUndefinedConstantsOrIdentifiers(String variableName,
             String nodeName, NamedObj container,
-            TypedCompositeActor parsedContainer) throws IllegalActionException {
+            TypedCompositeActor parsedContainer, boolean hideVariables) throws IllegalActionException {
         boolean doRerun = false;
 
         Attribute masterAttribute = container.getAttribute(variableName);
@@ -327,6 +411,10 @@ public class MoMLVariableChecker {
                         String moml = node.exportMoML().replaceFirst(
                                 "<property",
                                 "<property createIfNecessary=\"true\"");
+                        
+                        if (hideVariables) {
+                            moml = _insertHiddenMoMLTagIntoProperty(moml);
+                        }
 
                         // Insert the new variable so that other
                         // variables may use it.
@@ -353,14 +441,28 @@ public class MoMLVariableChecker {
         }
         return doRerun;
     }
+    
+    /** Given a MoML string that represents an attribute, insert a MoML tag
+     *  that will hide this attribute from the user interface.
+     *  @param moml The original MoML string that should represent a Ptolemy
+     *   attribute with the &lt;property&gt;&lt;/property&gt; tag.
+     *  @return A new MoML string with the hidden attribute tag inserted into
+     *   the original string.
+     */
+    private String _insertHiddenMoMLTagIntoProperty(String moml) {
+        String hiddenMoML =
+            "<property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"></property>";
+        return moml.replaceFirst("</property>", hiddenMoML + "</property>");
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
     /** The previous node for which we searched.  We keep track of
      *  this to avoid infinite loops.
      */
     private Variable _previousNode;
 
-    /** The moml of any missing variables we have found thus far.
-     */
+    /** The moml of any missing variables we have found thus far. */
     private StringWriter _variableBuffer;
-
 }

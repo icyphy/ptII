@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{203.8581123737374, 163.4157196969697}">
     </property>
-    <property name="ConfigurationSelect" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+    <property name="ConfigurationSelectActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.ConfigurationSelect">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.ConfigurationSelect">
@@ -22,7 +22,25 @@
 <rect x="-50" y="-40" width="75" height="40" style="fill:white"></rect><text x="-45" y="-25" style="font-size:12; font-family:SansSerif; fill:black">      Actor
 Constraints</text></svg></configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
+        </property>
+        <property name="trueInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="falseInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= selector.getToken().toString().equals(&quot;true&quot;) ? trueInput :&#10;    selector.getToken().toString().equals(&quot;false&quot;) ? falseInput :&#10;     NotSpecified">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="selectorAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="selector" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
         </property>
         <property name="ConfigurationSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -104,22 +122,8 @@ Constraints</text></svg></configure>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="trueInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-        </property>
-        <property name="falseInputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-        </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= selector.getToken().toString().equals(&quot;true&quot;) ? trueInput :&#10;    selector.getToken().toString().equals(&quot;false&quot;) ? falseInput :&#10;     NotSpecified">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
-        </property>
-        <property name="selectorAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
-        </property>
     </property>
-    <property name="ConfigurationSwitch" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+    <property name="ConfigurationSwitchActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.ConfigurationSwitch">
         </property>
         <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.ConfigurationSwitch">
@@ -129,7 +133,31 @@ Constraints</text></svg></configure>
 <rect x="-50" y="-40" width="75" height="40" style="fill:white"></rect><text x="-45" y="-25" style="font-size:12; font-family:SansSerif; fill:black">      Actor
 Constraints</text></svg></configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= selector.getToken().toString().equals(&quot;true&quot;) ? input :&#10;    NotConfigured">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= selector.getToken().toString().equals(&quot;false&quot;) ? input :&#10;    NotConfigured">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="selectorAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="selector" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
         </property>
         <property name="ConfigurationSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -212,26 +240,6 @@ Constraints</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
-        </property>
-        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-        </property>
-        <property name="trueOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= selector.getToken().toString().equals(&quot;true&quot;) ? input :&#10;    NotConfigured">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
-        </property>
-        <property name="falseOutputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= selector.getToken().toString().equals(&quot;false&quot;) ? input :&#10;    NotConfigured">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
-        </property>
-        <property name="selectorAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
     <entity name="softwareConfiguration" class="ptolemy.data.ontologies.lattice.adapters.softwareConfiguration.softwareConfiguration">

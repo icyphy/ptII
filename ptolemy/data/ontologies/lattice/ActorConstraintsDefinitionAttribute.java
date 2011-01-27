@@ -48,6 +48,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.MoMLVariableChecker;
+import ptolemy.vergil.icon.EditorIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorConstraintsDefinitionAttribute
@@ -420,7 +422,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private methods                   ////
     
     /** Return a temporary instance of the actor class in the current container.  This
      *  instance will be used to find all the ports and attributes for the actor which
@@ -429,7 +431,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  @return A new instance of the specified actor class.
      *  @throws IllegalActionException If the actor class cannot be instantiated.
      */
-    protected Actor _createTempActorInstance(Class<? extends Actor> actorClass)
+    private Actor _createTempActorInstance(Class<? extends Actor> actorClass)
         throws IllegalActionException {
         
         Constructor<? extends Actor> actorConstructor = null;
@@ -474,32 +476,57 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *   be taken.
      *  @throws IllegalActionException If a problem occurs when trying to set the actor icon.
      */
-    protected void _setActorIcon(String actorClassNameString, ComponentEntity tempActorInstance)
+    private void _setActorIcon(String actorClassNameString, ComponentEntity tempActorInstance)
         throws IllegalActionException {
         // FIXME: This code that sets the actor icon is duplicated from code in
         // ptolemy.vergil.gt.TransformationEditor in the _importActorLibrary
         // method on lines 1383-1392. Could it be factored out to somewhere else?
         
+        // get the editor icon from the tempActorInstance and export its xml.
+       
         // First look for an icon file for the actor.        
-        String iconFile = actorClassNameString
-                .replace('.', '/')
-                + "Icon.xml";
+        String iconFile = actorClassNameString.replace('.', '/') + "Icon.xml";
         URL xmlFile = tempActorInstance.getClass().getClassLoader().getResource(
                 iconFile);
         if (xmlFile != null) {
-            MoMLParser parser = new MoMLParser(this.workspace());
-            parser.setContext(this);
             try {
+                // Apply the actor icon to the tempActorInstance
+                MoMLParser parser = new MoMLParser(this.workspace());
+                parser.setContext(this);
+                parser.setContext(tempActorInstance);
                 parser.parse(xmlFile, xmlFile);
+
+                // Extract the EditorIcon attribute from the tempActorInstance
+                // after it has been created by parsing the icon file.
+                List<EditorIcon> tempActorIconList = tempActorInstance.
+                        attributeList(EditorIcon.class);            
+                if (!tempActorIconList.isEmpty()) {
+                    
+                    // There should only be one EditorIcon attribute
+                    // in the list of attributes so just get the first one.
+                    EditorIcon actorIcon = tempActorIconList.get(0);
+                    String actorIconMoML = actorIcon.exportMoML();
+                    
+                    // Use the MoMLVariableChecker to find any variables
+                    // in the tempActorInstance that might be referenced by
+                    // the icon and need to be copied when applying the
+                    // actor icon to the ActorConstraintsDefinitionAttribute.
+                    MoMLVariableChecker momlChecker = new MoMLVariableChecker();
+                    String prependMoML = momlChecker.checkCopy(actorIconMoML,
+                            tempActorInstance, true);
+
+                    parser.setContext(this);
+                    parser.parse(prependMoML);
+                    parser.parse(actorIconMoML);
+                }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "Failed to parse the actor icon's XML" +
-                		" file when trying to set the actor icon.");
+                        " file when trying to set the actor icon.");
             }
-        }
-
-        // If no actor icon file was found, then use the _iconDescription
-        // attribute.
-        if (xmlFile == null) {
+        } else {
+            // If no actor icon file was found, then use the _iconDescription
+            // attribute.
+            
             ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) ((ComponentEntity) tempActorInstance)
                     .getAttribute("_iconDescription");
             if (actorIconAttribute != null) {
@@ -526,7 +553,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  @throws IllegalActionException Thrown if the component class cannot be
      *   found.
      */
-    protected boolean _validateComponentClass(ComponentEntity component) throws IllegalActionException {
+    private boolean _validateComponentClass(ComponentEntity component) throws IllegalActionException {
         String actorClassNameString = ((StringToken) actorClassName.getToken()).stringValue();
         try {
             if (component.getClass() == Class.forName(actorClassNameString)) {
@@ -541,10 +568,10 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                 ////
 
     /** The list of expressions that represent the constraint
      *  terms for each constraint in the actor.
      */
-    protected List<StringParameter> _constraintTermExpressions;
+    private List<StringParameter> _constraintTermExpressions;
 }
