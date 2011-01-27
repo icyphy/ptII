@@ -99,9 +99,34 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             OntologySolverModel solverModel,
             Ontology argumentDomainOntology)
         throws IllegalActionException {
+        List<Ontology> domainOntologies = new LinkedList<Ontology>();
+        domainOntologies.add(argumentDomainOntology);
+
+        _setup(arguments, solverModel, domainOntologies);
+    }
+
+    /** Construct an ExpressionConceptFunctionParseTreeEvaluator for
+     *  evaluating expressions that represent concept functions.
+     *
+     *  @param arguments A map of argument names to concept values.
+     *  @param solverModel The ontology solver model that contains the scope
+     *   of other concept functions that can be called in the expression.
+     *  @throws IllegalActionException If there is a problem instantiating
+     *   the parse tree evaluator object.
+     */
+    public ExpressionConceptFunctionParseTreeEvaluator(
+            Map<String, Concept> arguments,
+            OntologySolverModel solverModel,
+            List<Ontology> domainOntologies)
+        throws IllegalActionException {
+        _setup(arguments, solverModel, domainOntologies);
+    }
+
+    private void _setup(Map<String, Concept> arguments,
+            OntologySolverModel solverModel, List<Ontology> domainOntologies)
+            throws IllegalActionException {
         _solverModel = solverModel;
-        _domainOntologies = new LinkedList<Ontology>();
-        _domainOntologies.add(argumentDomainOntology);
+        _domainOntologies = domainOntologies;
         
         _argumentNames = new LinkedList<String>();
         _argumentConceptValues = new LinkedList<Concept>();
@@ -112,7 +137,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         
         _typeInference = new ExpressionConceptFunctionParseTreeTypeInference();
         _addConceptConstants();
-    }    
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

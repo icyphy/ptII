@@ -194,6 +194,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         }
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
         argumentDomains.add(_domainOntology);
+        argumentDomains.add(_rangeOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
                 argumentDomains);
@@ -218,6 +219,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 .jjtGetChild(1);
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
         argumentDomains.add(_domainOntology);
+        argumentDomains.add(_rangeOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
                 argumentDomains);
@@ -260,9 +262,13 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     private Concept _evaluateNode(ptolemy.data.expr.ASTPtRootNode node,
             Map<String, Concept> arguments) throws IllegalActionException {
+        
+        List<Ontology> domainOntologies = new LinkedList<Ontology>();
+        domainOntologies.add(_domainOntology);
+        domainOntologies.add(_rangeOntology);
 
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                arguments, null, _domainOntology);
+                arguments, null, domainOntologies);
         ConceptToken evaluatedToken = (ConceptToken) evaluator
                 .evaluateParseTree(node);
         return evaluatedToken.conceptValue();
