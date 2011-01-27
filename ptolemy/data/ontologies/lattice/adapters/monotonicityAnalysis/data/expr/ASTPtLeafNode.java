@@ -81,7 +81,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
         ASTPtLeafNodeFunction astRelationFunction = new ASTPtLeafNodeFunction(
                 leafNode,
                 getSolver().getOntology(),
-                getSolver().getAllContainedOntologies().get(0));
+                getSolver().getAllContainedOntologies().get(0),
+                getSolver().getAllContainedOntologies().get(1));
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms()));
@@ -111,9 +112,10 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
                 Ontology monotonicityOntology,
-                Ontology domainOntology) throws IllegalActionException {
+                Ontology domainOntology,
+                Ontology rangeOntology) throws IllegalActionException {
             super("MonotonicityASTPtLeafNodeFunction", 0,
-                    monotonicityOntology, domainOntology);
+                    monotonicityOntology, domainOntology, rangeOntology);
             _leafNode = leafNode;
         }
 

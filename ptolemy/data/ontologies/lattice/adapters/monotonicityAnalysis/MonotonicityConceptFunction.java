@@ -62,15 +62,6 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      */
     public MonotonicityConceptFunction(String name, int numArgs,
             Ontology monotonicityAnalysisOntology,
-            Ontology domainOntology)
-            throws IllegalActionException {
-        super(name, numArgs, monotonicityAnalysisOntology);
-        
-        _setup(monotonicityAnalysisOntology, domainOntology, domainOntology);
-    }
-    
-    public MonotonicityConceptFunction(String name, int numArgs,
-            Ontology monotonicityAnalysisOntology,
             Ontology domainOntology, Ontology rangeOntology)
             throws IllegalActionException {
         super(name, numArgs, monotonicityAnalysisOntology);
