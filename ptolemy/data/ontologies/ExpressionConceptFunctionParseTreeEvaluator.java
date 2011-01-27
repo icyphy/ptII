@@ -111,6 +111,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @param arguments A map of argument names to concept values.
      *  @param solverModel The ontology solver model that contains the scope
      *   of other concept functions that can be called in the expression.
+     *  @param domainOntologies Ontologies over which the parser is defined.
      *  @throws IllegalActionException If there is a problem instantiating
      *   the parse tree evaluator object.
      */
@@ -122,6 +123,16 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         _setup(arguments, solverModel, domainOntologies);
     }
 
+    /** Set up an ExpressionConceptFunctionParseTreeEvaluator for
+     *  evaluating expressions that represent concept functions.
+     *
+     *  @param arguments A map of argument names to concept values.
+     *  @param solverModel The ontology solver model that contains the scope
+     *   of other concept functions that can be called in the expression.
+     *  @param domainOntologies Ontologies over which the parser is defined.
+     *  @throws IllegalActionException If there is a problem instantiating
+     *   the parse tree evaluator object.
+     */
     private void _setup(Map<String, Concept> arguments,
             OntologySolverModel solverModel, List<Ontology> domainOntologies)
             throws IllegalActionException {

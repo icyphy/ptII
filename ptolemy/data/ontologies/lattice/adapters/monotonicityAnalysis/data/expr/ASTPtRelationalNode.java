@@ -80,15 +80,11 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
 
         ptolemy.data.expr.ASTPtRelationalNode _relationalNode = (ptolemy.data.expr.ASTPtRelationalNode) _getNode();
 
-        // Since our relational nodes will only be over the domain ontology,
-        // and their own range is only the set of booleans, we have no need
-        // to get the ontology for the range of the overall expression.
-        Ontology domainOntology = getSolver().getAllContainedOntologies().get(0);
         ASTPtRelationalNodeFunction astRelationFunction = new ASTPtRelationalNodeFunction(
                 _relationalNode.getOperator(),
                 getSolver().getOntology(),
-                domainOntology,
-                domainOntology);
+                getSolver().getAllContainedOntologies().get(0),
+                getSolver().getAllContainedOntologies().get(1));
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms()));
@@ -112,8 +108,10 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param operator Token for the operator at this node.
          *  @param monotonicityOntology The monotonicity ontology.
-         *  @param domainOntology The ontology over which the expression
-         *    containing this relational node is defined.
+         *  @param domainOntology The ontology over which the free variable of
+         *   the expression containing this relational node is defined.
+         *  @param rangeOntology The ontology over which the result of
+         *   the expression containing this relational node is defined.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,

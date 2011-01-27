@@ -59,8 +59,10 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  
      *  @param ifNode The AST node being constrained by this function. 
      *  @param monotonicityOntology The monotonicity ontology.
-     *  @param domainOntology The ontology over which the expression
-     *   should be interpreted. 
+     *  @param domainOntology The ontology over which the arguments of
+     *   the expression should be interpreted. 
+     * @param rangeOntology The ontology over which the result of the
+     *   expression should be interpreted.
      *  @throws IllegalActionException If a function cannot be created.
      */
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,

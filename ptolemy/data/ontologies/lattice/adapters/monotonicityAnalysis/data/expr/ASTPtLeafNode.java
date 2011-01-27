@@ -106,8 +106,10 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param leafNode The leaf node in question
          *  @param monotonicityOntology The monotonicity ontology.
-         *  @param domainOntology The ontology over which the expression
-         *    is defined.
+         *  @param domainOntology The ontology over which the free variable
+         *    of the expression is defined.
+         *  @param rangeOntology The ontology over which the result of the
+         *    expression is defined.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,

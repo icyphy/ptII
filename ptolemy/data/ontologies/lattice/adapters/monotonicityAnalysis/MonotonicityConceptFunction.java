@@ -57,8 +57,11 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *   monotonicity lattice.
      *  @param domainOntology The ontology that represents the domain of
      *   the function that we are checking for monotonicity.
+     *  @param rangeOntology The ontology that represents the range of
+     *   the function that we are checking for monotonicity.
      *  @exception IllegalActionException If the output ontology is null,
-     *   or numArgs is invalid.
+     *   numArgs is invalid, or the monotonicity ontology does not have
+     *   the expected structure
      */
     public MonotonicityConceptFunction(String name, int numArgs,
             Ontology monotonicityAnalysisOntology,
@@ -92,6 +95,20 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
         }
     }
     
+    /** Initialize all the variables we need to use monotonicity concepts.
+     *  This includes saving the monotonicity, domain, and range ontologies;
+     *  adding all necessary concepts to the expression parser;
+     *  and naming all the basic monotonicity concepts.
+     *
+     *  @param monotonicityAnalysisOntology The ontology over which the
+     *   monotonicity analysis's results are drawn.
+     *  @param domainOntology The ontology that represents the domain of
+     *   the function that we are checking for monotonicity.
+     *  @param rangeOntology The ontology that represents the range of
+     *   the function that we are checking for monotonicity.
+     *  @throws IllegalActionException If the monotonicity ontology
+     *   does not have the expected structure.
+     */
     private void _setup(Ontology monotonicityAnalysisOntology,
             Ontology domainOntology,
             Ontology rangeOntology) throws IllegalActionException {
@@ -138,11 +155,15 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
     /** The monotonicityAnalysis ontology referred to by all monotonicityAnalysis adapters. */
     protected Ontology _monotonicityAnalysisOntology;
     
-    /** The domain-level ontology.
-     *  This ontology is the domain and range of the functions that we
-     *  check for monotonicity
+    /** The domain ontology.
+     *  This ontology forms the domain of the functions whose monotonicity
+     *  we check.
      */
     protected Ontology _domainOntology;
+    /** The range ontology.
+     *  This ontology forms the range of the functions whose monotonicity
+     *  we check.
+     */
     protected Ontology _rangeOntology;
     
     // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters   
