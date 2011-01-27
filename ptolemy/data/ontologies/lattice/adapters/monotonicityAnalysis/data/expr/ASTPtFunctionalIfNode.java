@@ -73,19 +73,13 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         
-        // Here we make the assumption that the domain ontology
-        // (i.e. the one other than the monotonicity lattice) is
-        // the rearmost lattice.  This is because we already required
-        // that the lattice corresponding to the ontology from which
-        // the inferred concepts are drawn be the frontmost, in that
-        // getOntology always returns the frontmost lattice in the
-        // solver.
         List<Ontology> ontologies = getSolver().getAllContainedOntologies();
 
         IfNodeFunction astIfFunction = new IfNodeFunction(
                 (ptolemy.data.expr.ASTPtFunctionalIfNode) _getNode(),
                 getSolver().getOntology(),
-                ontologies.get(0));
+                ontologies.get(0),
+                ontologies.get(1));
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astIfFunction, _getChildNodeTerms()));

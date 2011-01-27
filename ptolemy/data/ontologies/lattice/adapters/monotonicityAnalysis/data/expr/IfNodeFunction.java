@@ -64,10 +64,12 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @throws IllegalActionException If a function cannot be created.
      */
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
-            Ontology monotonicityOntology, Ontology domainOntology)
+            Ontology monotonicityOntology,
+            Ontology domainOntology,
+            Ontology rangeOntology)
             throws IllegalActionException {
         super("defaultASTPtFunctionalIfNodeFunction", 3,
-                monotonicityOntology, domainOntology);
+                monotonicityOntology, domainOntology, rangeOntology);
         _ifNode = ifNode;
     }
 

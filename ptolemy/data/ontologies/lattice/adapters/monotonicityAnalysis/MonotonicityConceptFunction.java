@@ -65,11 +65,52 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
             Ontology domainOntology)
             throws IllegalActionException {
         super(name, numArgs, monotonicityAnalysisOntology);
+        
+        _setup(monotonicityAnalysisOntology, domainOntology, domainOntology);
+    }
+    
+    public MonotonicityConceptFunction(String name, int numArgs,
+            Ontology monotonicityAnalysisOntology,
+            Ontology domainOntology, Ontology rangeOntology)
+            throws IllegalActionException {
+        super(name, numArgs, monotonicityAnalysisOntology);
+        
+        _setup(monotonicityAnalysisOntology, domainOntology, rangeOntology);
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    /** Add the concepts from the domain ontologies as constants
+     *  for the parse tree evaluator.
+     *
+     *    FIXME: Is there a better alternative?
+     *
+     *  @param domainOntology The domain ontology containing the concepts
+     *    to add.
+     *  @throws IllegalActionException If there is a problem adding any
+     *   of the concepts to the Constants hash table.
+     */
+    private void _addConceptConstants(Ontology domainOntology)
+            throws IllegalActionException {
+        for (Object entity : domainOntology.allAtomicEntityList()) {
+            if (entity instanceof Concept) {
+                Constants.add(((Concept) entity).getName(),
+                        new ConceptToken((Concept)entity));
+            }
+        }
+    }
+    
+    private void _setup(Ontology monotonicityAnalysisOntology,
+            Ontology domainOntology,
+            Ontology rangeOntology) throws IllegalActionException {
         _monotonicityAnalysisOntology = monotonicityAnalysisOntology;
         _domainOntology = domainOntology;
+        _rangeOntology = rangeOntology;
+        
         _addConceptConstants(domainOntology);
-
+        _addConceptConstants(rangeOntology);
+        
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
         // Throw an exception if any of them are not found
@@ -99,29 +140,6 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
-
-    /** Add the concepts from the domain ontologies as constants
-     *  for the parse tree evaluator.
-     *
-     *    FIXME: Is there a better alternative?
-     *
-     *  @param domainOntology The domain ontology containing the concepts
-     *    to add.
-     *  @throws IllegalActionException If there is a problem adding any
-     *   of the concepts to the Constants hash table.
-     */
-    private void _addConceptConstants(Ontology domainOntology)
-            throws IllegalActionException {
-        for (Object entity : domainOntology.allAtomicEntityList()) {
-            if (entity instanceof Concept) {
-                Constants.add(((Concept) entity).getName(),
-                        new ConceptToken((Concept)entity));
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
     // The ontology for all the monotonicityAnalysis adapters
@@ -134,7 +152,8 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *  check for monotonicity
      */
     protected Ontology _domainOntology;
-
+    protected Ontology _rangeOntology;
+    
     // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters   
 
     /** The "Constant" Concept from the monotonicityAnalysis ontology. */
