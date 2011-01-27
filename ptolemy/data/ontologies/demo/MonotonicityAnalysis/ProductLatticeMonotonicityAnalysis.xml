@@ -35,7 +35,7 @@
         </property>
     </property>
     <entity name="IntegratorConstraintExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownUnknown) ? UnknownUnknown :&#10;ConflictConflict">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownUnknown) ? Unknown :&#10;Conflict">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
