@@ -28,6 +28,7 @@ import java.util.List;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -46,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
 */
-public class ProductLatticeConcept extends Concept {
+public class ProductLatticeConcept extends FiniteConcept {
 
     /** Create a new product lattice concept with the specified name and the
      *  specified product lattice ontology.
