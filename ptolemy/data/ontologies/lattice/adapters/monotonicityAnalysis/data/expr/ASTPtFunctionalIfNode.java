@@ -31,7 +31,6 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 import java.util.List;
 
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
-import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.graph.Inequality;
@@ -73,13 +72,10 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         
-        List<Ontology> ontologies = getSolver().getAllContainedOntologies();
-
         IfNodeFunction astIfFunction = new IfNodeFunction(
                 (ptolemy.data.expr.ASTPtFunctionalIfNode) _getNode(),
                 getSolver().getOntology(),
-                ontologies.get(0),
-                ontologies.get(1));
+                getSolver().getAllContainedOntologies());
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astIfFunction, _getChildNodeTerms()));

@@ -27,6 +27,8 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
+import java.util.List;
+
 import ptolemy.data.expr.Constants;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptToken;
@@ -55,21 +57,19 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *   this number is fixed, and -1 otherwise.
      *  @param monotonicityAnalysisOntology The ontology that represents
      *   monotonicity lattice.
-     *  @param domainOntology The ontology that represents the domain of
-     *   the function that we are checking for monotonicity.
-     *  @param rangeOntology The ontology that represents the range of
-     *   the function that we are checking for monotonicity.
+     *  @param domainOntologies The ontologies that represents the domain 
+     *   and range of the function that we are checking for monotonicity.
      *  @exception IllegalActionException If the output ontology is null,
      *   numArgs is invalid, or the monotonicity ontology does not have
      *   the expected structure
      */
     public MonotonicityConceptFunction(String name, int numArgs,
             Ontology monotonicityAnalysisOntology,
-            Ontology domainOntology, Ontology rangeOntology)
+            List<Ontology> domainOntologies)
             throws IllegalActionException {
         super(name, numArgs, monotonicityAnalysisOntology);
         
-        _setup(monotonicityAnalysisOntology, domainOntology, rangeOntology);
+        _setup(monotonicityAnalysisOntology, domainOntologies);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,22 +102,19 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *
      *  @param monotonicityAnalysisOntology The ontology over which the
      *   monotonicity analysis's results are drawn.
-     *  @param domainOntology The ontology that represents the domain of
-     *   the function that we are checking for monotonicity.
-     *  @param rangeOntology The ontology that represents the range of
+     *  @param domainOntologies The ontologies that represents the domain of
      *   the function that we are checking for monotonicity.
      *  @throws IllegalActionException If the monotonicity ontology
      *   does not have the expected structure.
      */
     private void _setup(Ontology monotonicityAnalysisOntology,
-            Ontology domainOntology,
-            Ontology rangeOntology) throws IllegalActionException {
+            List<Ontology> domainOntologies) throws IllegalActionException {
         _monotonicityAnalysisOntology = monotonicityAnalysisOntology;
-        _domainOntology = domainOntology;
-        _rangeOntology = rangeOntology;
+        _domainOntologies = domainOntologies;
         
-        _addConceptConstants(domainOntology);
-        _addConceptConstants(rangeOntology);
+        for (Ontology domainOntology : domainOntologies) {
+            _addConceptConstants(domainOntology);
+        }
         
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
@@ -159,12 +156,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      *  This ontology forms the domain of the functions whose monotonicity
      *  we check.
      */
-    protected Ontology _domainOntology;
-    /** The range ontology.
-     *  This ontology forms the range of the functions whose monotonicity
-     *  we check.
-     */
-    protected Ontology _rangeOntology;
+    protected List<Ontology> _domainOntologies;
     
     // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters   
 

@@ -83,8 +83,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
         ASTPtRelationalNodeFunction astRelationFunction = new ASTPtRelationalNodeFunction(
                 _relationalNode.getOperator(),
                 getSolver().getOntology(),
-                getSolver().getAllContainedOntologies().get(0),
-                getSolver().getAllContainedOntologies().get(1));
+                getSolver().getAllContainedOntologies());
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms()));
@@ -108,18 +107,15 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param operator Token for the operator at this node.
          *  @param monotonicityOntology The monotonicity ontology.
-         *  @param domainOntology The ontology over which the free variable of
-         *   the expression containing this relational node is defined.
-         *  @param rangeOntology The ontology over which the result of
-         *   the expression containing this relational node is defined.
+         *  @param domainOntologies The ontologies over which the
+         *   expression containing this relational node is defined.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
                 Ontology monotonicityOntology,
-                Ontology domainOntology,
-                Ontology rangeOntology) throws IllegalActionException {
+                List<Ontology> domainOntologies) throws IllegalActionException {
             super("defaultASTPtRelationalNodeFunction", 2,
-                    monotonicityOntology, domainOntology, rangeOntology);
+                    monotonicityOntology, domainOntologies);
             _operator = operator.toString();
         }
 

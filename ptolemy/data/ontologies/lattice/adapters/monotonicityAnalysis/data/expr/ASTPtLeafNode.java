@@ -81,8 +81,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
         ASTPtLeafNodeFunction astRelationFunction = new ASTPtLeafNodeFunction(
                 leafNode,
                 getSolver().getOntology(),
-                getSolver().getAllContainedOntologies().get(0),
-                getSolver().getAllContainedOntologies().get(1));
+                getSolver().getAllContainedOntologies());
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms()));
@@ -106,18 +105,15 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *
          *  @param leafNode The leaf node in question
          *  @param monotonicityOntology The monotonicity ontology.
-         *  @param domainOntology The ontology over which the free variable
-         *    of the expression is defined.
-         *  @param rangeOntology The ontology over which the result of the
-         *    expression is defined.
+         *  @param domainOntologies The ontologies over which the expression
+         *    is defined.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
                 Ontology monotonicityOntology,
-                Ontology domainOntology,
-                Ontology rangeOntology) throws IllegalActionException {
+                List<Ontology> domainOntologies) throws IllegalActionException {
             super("MonotonicityASTPtLeafNodeFunction", 0,
-                    monotonicityOntology, domainOntology, rangeOntology);
+                    monotonicityOntology, domainOntologies);
             _leafNode = leafNode;
         }
 
@@ -143,9 +139,10 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             }
             
             String conceptString = _leafNode.getName();
-            if (_domainOntology.getConceptByString(conceptString) != null
-                    || _rangeOntology.getConceptByString(conceptString) != null) {
-                return result;
+            for (Ontology domainOntology : _domainOntologies) {
+                if (domainOntology.getConceptByString(conceptString) != null) {
+                    return result;
+                }
             }
             
             // Otherwise, it is a free variable.

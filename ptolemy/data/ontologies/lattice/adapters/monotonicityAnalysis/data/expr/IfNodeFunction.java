@@ -59,19 +59,16 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  
      *  @param ifNode The AST node being constrained by this function. 
      *  @param monotonicityOntology The monotonicity ontology.
-     *  @param domainOntology The ontology over which the arguments of
-     *   the expression should be interpreted. 
-     * @param rangeOntology The ontology over which the result of the
-     *   expression should be interpreted.
+     *  @param domainOntologies The ontologies over which the expression
+     *   should be interpreted.
      *  @throws IllegalActionException If a function cannot be created.
      */
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
             Ontology monotonicityOntology,
-            Ontology domainOntology,
-            Ontology rangeOntology)
+            List<Ontology> domainOntologies)
             throws IllegalActionException {
         super("defaultASTPtFunctionalIfNodeFunction", 3,
-                monotonicityOntology, domainOntology, rangeOntology);
+                monotonicityOntology, domainOntologies);
         _ifNode = ifNode;
     }
 
@@ -194,12 +191,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 || !(rhs instanceof ptolemy.data.expr.ASTPtLeafNode)) {
             return false;
         }
-        List<Ontology> argumentDomains = new LinkedList<Ontology>();
-        argumentDomains.add(_domainOntology);
-        argumentDomains.add(_rangeOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
-                argumentDomains);
+                _domainOntologies);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
         if (!(rhsToken instanceof ConceptToken)) {
             return false;
@@ -219,12 +213,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             throws IllegalActionException {
         ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition
                 .jjtGetChild(1);
-        List<Ontology> argumentDomains = new LinkedList<Ontology>();
-        argumentDomains.add(_domainOntology);
-        argumentDomains.add(_rangeOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
-                argumentDomains);
+                _domainOntologies);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
         Concept constant = ((ConceptToken) rhsToken).conceptValue();
         return constant;
@@ -264,13 +255,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     private Concept _evaluateNode(ptolemy.data.expr.ASTPtRootNode node,
             Map<String, Concept> arguments) throws IllegalActionException {
-        
-        List<Ontology> domainOntologies = new LinkedList<Ontology>();
-        domainOntologies.add(_domainOntology);
-        domainOntologies.add(_rangeOntology);
 
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                arguments, null, domainOntologies);
+                arguments, null, _domainOntologies);
         ConceptToken evaluatedToken = (ConceptToken) evaluator
                 .evaluateParseTree(node);
         return evaluatedToken.conceptValue();
@@ -306,7 +293,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             toCheck = new MonotonicityCounterexamples();
         }
         // Get counterexamples to check from this predicate's border
-        ConceptGraph inputLattice = _domainOntology.getConceptGraph();
+        ConceptGraph inputLattice = constant.getOntology().getConceptGraph();
         List<Concept> downset = Arrays.asList(inputLattice.downSet(constant));
         for (Concept b : downset) {
             for (Concept d : ((FiniteConcept)b).getCoverSetAbove()) {
@@ -359,7 +346,10 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             throws IllegalActionException {
         CPO monotonicityLattice = _monotonicityAnalysisOntology
                 .getConceptGraph();
-        CPO inputLattice = _domainOntology.getConceptGraph();
+        // FIXME: Need a better way to determine input ontology for this if
+        // statement from list of all domain ontologies (i.e. It need not
+        // always be the first ontology in that list as it is in this case).
+        CPO inputLattice = _domainOntologies.get(0).getConceptGraph();
 
         // This represents the if rule. (from p144)
         Concept conditional = inputConceptValues.get(0);
