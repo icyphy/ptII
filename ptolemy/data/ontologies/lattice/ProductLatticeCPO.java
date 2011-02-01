@@ -172,13 +172,17 @@ public class ProductLatticeCPO extends ConceptGraph {
         }
     }
 
-    /** Compute the down-set of an element in this concept graph.
+   /** Compute the down-set of an element in this concept graph.
     *
-    *  Not implemented in this base class.
+    *  This is implemented by deferring to the downSet functions of the
+    *  component graphs and then enumerating all the product results.
     *
-    *  @param e An Object representing a concept in this concept graph.
-    *  @return An array of Concepts of the down-set of the specified element.
-    *  @exception IllegalArgumentException Always thrown in this base class.
+    *  @param e An Object representing a ProductLatticeConcept in this
+    *   concept graph.
+    *  @return An array of ProductLatticeConcepts of the down-set of
+    *   the given argument concept.
+    *  @exception IllegalArgumentException If the passed object is not a 
+    *   ProductLatticeConcept or does not belong to this CPO.
     */
    public ProductLatticeConcept[] downSet(Object e) {
        // FIXME: Modify _validateInputArguments to check single argument more
