@@ -103,8 +103,8 @@ public class ProductLatticeConcept extends FiniteConcept {
         return null;        
     }
     
-    /** Return the concept that is a component of this product lattice ontology
-     *  concept tuple from the given ontology.
+    /** Return the first concept that is a component of this product lattice
+     *  ontology concept tuple and belongs to the given ontology.
      *  @param ontology The specified ontology from which to get the component
      *   concept.  This should be one of the component ontologies from the
      *   product lattice ontology for this concept.
@@ -114,6 +114,8 @@ public class ProductLatticeConcept extends FiniteConcept {
      */
     public Concept getComponentConceptValue(Ontology ontology)
         throws IllegalActionException{
+        // FIXME: What about if there are multiple elements in the tuple with
+        // the same ontology?
         for (Concept innerConcept : _conceptTuple) {
             
             // FIXME: A single ontology could have multiple instances but we don't

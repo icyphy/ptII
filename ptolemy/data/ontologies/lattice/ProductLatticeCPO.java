@@ -24,6 +24,7 @@
 package ptolemy.data.ontologies.lattice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +171,57 @@ public class ProductLatticeCPO extends ConceptGraph {
             return CPO.INCOMPARABLE;
         }
     }
+
+    /** Compute the down-set of an element in this concept graph.
+    *
+    *  Not implemented in this base class.
+    *
+    *  @param e An Object representing a concept in this concept graph.
+    *  @return An array of Concepts of the down-set of the specified element.
+    *  @exception IllegalArgumentException Always thrown in this base class.
+    */
+   public ProductLatticeConcept[] downSet(Object e) {
+       // FIXME: Modify _validateInputArguments to check single argument more
+       // gracefully.  (Right now the error messages will be a little weird.)
+       _validateInputArguments(e,e);
+       ProductLatticeConcept productConcept = (ProductLatticeConcept)e;
+
+       // Get individual down set from each component ontology.
+       List<List<Concept>> downSets = new ArrayList<List<Concept>>();
+       for (Concept c : productConcept.getConceptTuple()) {
+           ConceptGraph cg = c.getOntology().getConceptGraph();
+           List<Concept> downSet = Arrays.asList(cg.downSet(c));
+           downSets.add(downSet);
+       }
+
+       // Take the product of each of those resulting component concepts.
+       List<List<Concept>> productLatticeConcepts = new ArrayList<List<Concept>>();
+       productLatticeConcepts.add(new ArrayList<Concept>());
+       for (List<Concept> concepts : downSets) {
+           List<List<Concept>> oldLayer = productLatticeConcepts;
+           productLatticeConcepts = new ArrayList<List<Concept>>();
+           for (Concept c : concepts) {
+               for (List<Concept> intermediateResult : oldLayer) {
+                   List<Concept> newLayer = new ArrayList<Concept>(intermediateResult);
+                   newLayer.add(c);
+                   productLatticeConcepts.add(newLayer);
+               }
+           }
+       }
+
+       // Change the lists of lists into a ProductLatticeConcept[] to return.
+       List<ProductLatticeConcept> result = new ArrayList<ProductLatticeConcept>();
+       for (List<Concept> pc : productLatticeConcepts) {
+           try {
+            result.add(_productOntology.getProductLatticeConceptFromTuple(pc));
+        } catch (IllegalActionException ex) {
+            throw new IllegalArgumentException("ProductLatticeCPO: "
+                    + "Argument's ontologies do not match this CPO: "
+                    + " arg = " + e + ", CPO = " + this, ex);
+        }
+       }
+       return result.toArray(new ProductLatticeConcept[0]);
+   }
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the CPO
