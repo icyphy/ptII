@@ -151,7 +151,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 545.0]">
         </property>
     </property>
-    <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+    <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/dimensionSystem/DimensionSystemSolverModel.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 410.0}">

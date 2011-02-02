@@ -32,6 +32,8 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/data/properties/lattice/test
 
+DIRS = auto
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 

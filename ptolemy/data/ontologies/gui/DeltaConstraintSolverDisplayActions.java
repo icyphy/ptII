@@ -139,8 +139,9 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
                 try {
                     solver.identifyConflicts();
                     if (solver.hasIdentifiedConflicts()) {
-                        solver.getMoMLHandler().highlightConcepts(
-                                solver.getIdentifiedConflicts().keySet());
+                        solver.getMoMLHandler().clearDisplay(true, true);
+                        solver.getMoMLHandler().highlightConcepts();
+                        solver.getMoMLHandler().showConceptAnnotations();
                     }
                 }
                 catch(KernelException ex) {

@@ -70,9 +70,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      */
     public DeltaConstraintSolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        
-        _identifiedConflicts = new HashMap<Object, Concept>();
+        super(container, name);       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,31 +86,20 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
     public void identifyConflicts() throws KernelException {
         
         // Reset the list of resolved constraints before executing the ontology solver resolution. 
-        _clearLists();       
-
-        // FIXME: The code from here to constraintList() doesn't really
-        // belong here. The constraintList() method of the Adapter should
-        // ensure that the constraint list it returns is valid.
-        NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
-
-        toplevelAdapter.reinitialize();
-
-        toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType());
-
-        // FIXME: have to generate the connection every time
-        // because the model structure can changed.
-        // (i.e. adding or removing connections.)
-        toplevelAdapter._setConnectionConstraintType(_getConstraintType());
-
-        // Collect and solve type constraints.
-        List<Inequality> constraintList = toplevelAdapter.constraintList();
+        super.reset();
+        super.initialize();
+        NamedObj toplevel = _toplevel();           
         
-        if (_resolvePropertiesHasErrors(toplevel, toplevelAdapter,
-                constraintList)) {
-            // Only do delta iteration when an error is found.
-            _doDeltaIteration(toplevel, toplevelAdapter, constraintList);
+        boolean errorOccurred = true;
+        try {
+            super.resolveConcepts();
+        } catch(KernelException ex) {
+            errorOccurred = true;
+        }
+        
+        if (errorOccurred || hasUnacceptableTerms())
+        {
+            _doDeltaIteration(toplevel, _resolvedConstraintList);
         }
     }
 
@@ -145,11 +132,8 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  executing the delta iteration.
      */
     private void _doDeltaIteration(NamedObj toplevel,
-            LatticeOntologyAdapter toplevelHelper,
-            List<Inequality> constraintList) throws TypeConflictException, IllegalActionException {
-
-        // Save original set _resolvedProperties
-        HashMap<Object, Concept> originalResolvedProperties = new HashMap<Object, Concept>(_resolvedProperties);
+            List<Inequality> constraintList) 
+            throws TypeConflictException, IllegalActionException {
         
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;
@@ -166,8 +150,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
 
                 if (testList.size() > 0) {
                     _resolvedProperties.clear();
-                    if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
-                            testList)) {
+                    if (_resolvePropertiesHasErrors(toplevel, testList)) {
                         errorList = testList;
                         blockSize = Math.min(errorList.size() / 2, blockSize);
                         continue WHILE_LOOP;
@@ -181,16 +164,11 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
 
         System.out.println(errorList);
         _resolvedProperties.clear();
-        // This will store the objects with unacceptable concepts in 
-        // _resolvedProperties.  Save to _identifiedConflicts
-        _resolveConcepts(toplevel, toplevelHelper, errorList);
-        if (_resolvedProperties != null && !_resolvedProperties.isEmpty()){
-            _identifiedConflicts = 
-                new HashMap<Object, Concept>(_resolvedProperties);
-        } 
         
-        // Restore original set _resolvedProperties
-        _resolvedProperties = originalResolvedProperties;
+        // This will store the objects with unacceptable concepts in 
+        // _resolvedProperties.  
+        _resolveConcepts(toplevel, errorList);
+        
     }
 
     /** Resolve the properties of the given top-level container,
@@ -206,12 +184,11 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      */
     
     protected boolean _resolvePropertiesHasErrors(NamedObj toplevel,
-            LatticeOntologyAdapter toplevelHelper,
             List<Inequality> constraintList) throws IllegalActionException 
     {
         boolean errorOccured = false;
         try {
-            super._resolveConcepts(toplevel, toplevelHelper, constraintList);
+            super._resolveConcepts(toplevel, constraintList);
         } catch (InternalErrorException ex) {
             // Thrown when there is a conflict with the concept resolution.
             errorOccured = true;
@@ -231,35 +208,4 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
                 
         return errorOccured;
     }
-    
-    /** Returns the objects (and their concepts) which are the cause of 
-     *  unacceptable concepts in the model.  Can be null.
-     *  
-     * @return  The objects (and their concepts) which are the cause of 
-     *  unacceptable concepts in the model.  Can be null.
-     */
-    public HashMap<Object, Concept> getIdentifiedConflicts()
-    {
-        return _identifiedConflicts;
-    }
-    
-    /** Returns true if unacceptable concepts exist in the model and the 
-     *  causing objects have been identified; false otherwise.
-     *  
-     *  @return True if unacceptable concepts exist in the model and the 
-     *  causing objects have been identified; false otherwise.
-     */
-    public boolean hasIdentifiedConflicts()
-    {
-        if (_identifiedConflicts != null && !_identifiedConflicts.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     *  A set of objects (and their concepts) which are the cause of 
-     *  unacceptable concepts in the model.
-     */
-    private HashMap<Object, Concept> _identifiedConflicts;
 }
