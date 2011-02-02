@@ -189,9 +189,9 @@ public class ProductLatticeOntology extends Ontology {
             // contain an array token of Ontology objects.
             ArrayToken ontologies = (ArrayToken) latticeOntologies.getToken();
 
+            List<Ontology> ontologiesList = new ArrayList<Ontology>();
             if (ontologies != null && ontologies.length() != 0) {
-                Token[] ontologiesTokenArray = (Token[]) ontologies.arrayValue();            
-                List<Ontology> ontologiesList = new ArrayList<Ontology>();
+                Token[] ontologiesTokenArray = (Token[]) ontologies.arrayValue();
                 for (int i = 0; i < ontologiesTokenArray.length; i++) {     
                     Ontology ontology = (Ontology) ((ObjectToken) ontologiesTokenArray[i]).getValue(); 
                     if (ontology != null) {
@@ -205,12 +205,9 @@ public class ProductLatticeOntology extends Ontology {
                         }
                     }
                 }
-
-                _latticeOntologies = ontologiesList;
-            } else {
-                _latticeOntologies = null;
             }
-            
+            _latticeOntologies = ontologiesList;
+
             // Set the lattice version after creating the new list of
             // lattice ontologies.
             _latticeVersion = workspace().getVersion();
