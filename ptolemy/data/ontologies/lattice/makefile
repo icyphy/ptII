@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies/lattice
 
-DIRS = 		adapters
+DIRS = 		adapters test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
