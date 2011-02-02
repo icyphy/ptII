@@ -186,6 +186,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      */
     public boolean isLattice() {
         _validate();
+        
+        if (nodeCount() == 0) {
+            return true;
+        }
 
         if ((bottom() == null) || (top() == null)) {
             return false;
