@@ -375,7 +375,7 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution.setExpression("false");
 
         assumedPlatformTimeSynchronizationErrorBound = new Parameter(this,
-        "AssumedSynchronizationErrorBound");
+        "assumedPlatformTimeSynchronizationErrorBound");
         assumedPlatformTimeSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
         assumedPlatformTimeSynchronizationErrorBound.setExpression("0.0");
 
@@ -389,20 +389,20 @@ public class PtidesBasicDirector extends DEDirector {
         highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
         highlightModelTimeDelays.setExpression("false");
 
-        initialExecutionTimeSynchronizationError = new Parameter(this,
+        initialExecutionSynchronizationError = new Parameter(this,
         "initialExecutionSynchronizationError");
-        initialExecutionTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initialExecutionTimeSynchronizationError.setExpression("0.0");
+        initialExecutionSynchronizationError.setTypeEquals(BaseType.DOUBLE);
+        initialExecutionSynchronizationError.setExpression("0.0");
 
         executionClockDrift= new Parameter(this,
         "executionClockDrift");
         executionClockDrift.setTypeEquals(BaseType.DOUBLE);
         executionClockDrift.setExpression("1.0");
 
-        initialPlatformTimeSynchronizationError = new Parameter(this,
+        initialPlatformSynchronizationError = new Parameter(this,
                 "initialPlatformSynchronizationError");
-        initialPlatformTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initialPlatformTimeSynchronizationError.setExpression("0.0");
+        initialPlatformSynchronizationError.setTypeEquals(BaseType.DOUBLE);
+        initialPlatformSynchronizationError.setExpression("0.0");
 
         platformClockDrift = new Parameter(this,
         "platformClockDrift");
@@ -465,11 +465,14 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter assumedPlatformTimeSynchronizationErrorBound;
 
-    /** An ID for the execution timer in this director.
+    /** An ID for the execution timer in this director. There are two timers
+     *  in a Ptides director: platform timer and execution timer. Actors
+     *  reference this ID in order to access a timer in the Ptides director.
+     *  @see #PLATFORM_TIMER 
      */
     public static final int EXECUTION_TIMER = 0;
 
-    /** Store the initial platform time synchronization error. This parameter is
+    /** The initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
      *  in that the other parameter parameter is the estimated bound, while
      *  this parameter stores the current synchronization error. This error
@@ -477,13 +480,16 @@ public class PtidesBasicDirector extends DEDirector {
      *  safe-to-process analysis could result in the processing of an unsafe
      *  event, in which case an exception is thrown.  
      */
-    public Parameter initialExecutionTimeSynchronizationError;
+    public Parameter initialExecutionSynchronizationError;
     
-    /** Store the initial clock drift of the execution clock.
+    /** The initial clock drift of the execution clock. The type of this
+     *  clock drift is a double, and the default value is 1.0, indicating the
+     *  execution clock runs at the same rate as the oracle clock. The oracle
+     *  clock is modeled by the model time of the enclosing DE director.
      */
     public Parameter executionClockDrift;
 
-    /** Store the initial platform time synchronization error. This parameter is
+    /** The initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
      *  in that the other parameter is the estimated bound, while
      *  this parameter stores the current synchronization error. This error
@@ -491,13 +497,19 @@ public class PtidesBasicDirector extends DEDirector {
      *  safe-to-process analysis could result in the processing of an unsafe
      *  event, in which case an exception is thrown.  
      */
-    public Parameter initialPlatformTimeSynchronizationError;
+    public Parameter initialPlatformSynchronizationError;
 
-    /** Store the initial clock drift of the platform clock.
+    /** The initial clock drift of the platform clock. The type of this
+     *  clock drift is a double, and the default value is 1.0, indicating the
+     *  platform clock runs at the same rate as the oracle clock. The oracle
+     *  clock is modeled by the model time of the enclosing DE director.
      */
     public Parameter platformClockDrift;
 
-    /** An ID for the platform timer in this director.
+    /** An ID for the platform timer in this director. There are two timers
+     *  in a Ptides director: platform timer and execution timer. Actors
+     *  reference this ID in order to access a timer in the Ptides director.
+     *  @see #EXECUTION_TIMER 
      */
     public static final int PLATFORM_TIMER = 1;
 
@@ -570,9 +582,11 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Return the current clock drift associated with the clock ID.
+     *  Possible clock ID's are: 
+     *  {@link #PLATFORM_TIMER} and {@link #EXECUTION_TIMER}.
      *  @param clock Clock ID.
      *  @return the current clock drift associated with the clock ID.
-     *  @throws IllegalActionException If clock ID is not recognized.
+     *  @exception IllegalActionException If clock ID is not recognized.
      */
     public Time getClockDrift(int clock) throws IllegalActionException {
         RealTimeClock realTimeClock = null;
@@ -673,12 +687,12 @@ public class PtidesBasicDirector extends DEDirector {
         _ignoredPlatformFireAtTimes = new LinkedList<Time>();
         _lastExecutingActor = null;
         _executionTimeClock = new RealTimeClock(
-                ((DoubleToken)initialExecutionTimeSynchronizationError
+                ((DoubleToken)initialExecutionSynchronizationError
                         .getToken()).doubleValue(), 
                         ((DoubleToken)executionClockDrift
                                 .getToken()).doubleValue());
         _platformTimeClock = new RealTimeClock(
-                ((DoubleToken)initialPlatformTimeSynchronizationError
+                ((DoubleToken)initialPlatformSynchronizationError
                         .getToken()).doubleValue(),
                         ((DoubleToken)platformClockDrift
                                 .getToken()).doubleValue());
