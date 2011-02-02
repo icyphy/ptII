@@ -428,7 +428,7 @@ void fireActor(Event* currentEvent) {
 }
 
 /* determines whether the event to fire this current actor is of higher priority than
-* whatever even that's currently being executed.
+*  whatever even that's currently being executed.
 */                                                                    
 unsigned int higherPriority(const Event* const event) {
     int i;

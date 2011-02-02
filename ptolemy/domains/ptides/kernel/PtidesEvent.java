@@ -146,8 +146,6 @@ public class PtidesEvent extends DEEvent {
             throw new InternalErrorException("This event is not a pure event, "
                     + "in which case the absolute deadline should be obtained "
                     + "from the destination port of the event.");
-        } else {
-            assert (_absoluteDeadline == null);
         }
         return _absoluteDeadline;
     }

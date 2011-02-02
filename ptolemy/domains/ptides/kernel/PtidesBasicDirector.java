@@ -374,6 +374,11 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
         animateExecution.setExpression("false");
 
+        assumedPlatformTimeSynchronizationErrorBound = new Parameter(this,
+        "AssumedSynchronizationErrorBound");
+        assumedPlatformTimeSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
+        assumedPlatformTimeSynchronizationErrorBound.setExpression("0.0");
+
         forceActorsToProcessEventsInTimestampOrder = new Parameter(this,
                 "forceActorsToProcessEventsInTimestampOrder");
         forceActorsToProcessEventsInTimestampOrder.setTypeEquals(BaseType.BOOLEAN);
@@ -384,25 +389,30 @@ public class PtidesBasicDirector extends DEDirector {
         highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
         highlightModelTimeDelays.setExpression("false");
 
-        assumedPlatformTimeSynchronizationErrorBound = new Parameter(this,
-                "AssumedSynchronizationErrorBound");
-        assumedPlatformTimeSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
-        assumedPlatformTimeSynchronizationErrorBound.setExpression("0.0");
+        initialExecutionTimeSynchronizationError = new Parameter(this,
+        "initialExecutionSynchronizationError");
+        initialExecutionTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
+        initialExecutionTimeSynchronizationError.setExpression("0.0");
+
+        executionClockDrift= new Parameter(this,
+        "executionClockDrift");
+        executionClockDrift.setTypeEquals(BaseType.DOUBLE);
+        executionClockDrift.setExpression("1.0");
+
+        initialPlatformTimeSynchronizationError = new Parameter(this,
+                "initialPlatformSynchronizationError");
+        initialPlatformTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
+        initialPlatformTimeSynchronizationError.setExpression("0.0");
+
+        platformClockDrift = new Parameter(this,
+        "platformClockDrift");
+        platformClockDrift.setTypeEquals(BaseType.DOUBLE);
+        platformClockDrift.setExpression("1.0");
 
         schedulerExecutionTime = new Parameter(this, "schedulerExecutionTime");
         schedulerExecutionTime.setTypeEquals(BaseType.DOUBLE);
         schedulerExecutionTime.setExpression("0.0");
         
-        initializePlatformTimeSynchronizationError = new Parameter(this,
-                "initializePlatformSynchronizationError");
-        initializePlatformTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initializePlatformTimeSynchronizationError.setExpression("0.0");
-
-        initializeExecutionTimeSynchronizationError = new Parameter(this,
-                "initializeExecutionSynchronizationError");
-        initializeExecutionTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initializeExecutionTimeSynchronizationError.setExpression("0.0");
-
         _zero = new Time(this);
     }
 
@@ -433,9 +443,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  could make the safe-to-process analysis simpler, while
      *  sacrificing concurrency of event execution in other parts
      *  of the system.
-     *  
-     *  FIXME: I haven't thought this through, not sure what are
-     *  the exact trade offs.
      */
     public Parameter forceActorsToProcessEventsInTimestampOrder;
 
@@ -458,15 +465,9 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter assumedPlatformTimeSynchronizationErrorBound;
 
-    /** Store the initial platform time synchronization error. This parameter is
-     *  different from the assumedPlatformTimeSynchronizationErrorBound
-     *  in that the other parameter is the estimated bound, while
-     *  this parameter stores the current synchronization error. This error
-     *  could be greater than the assumed error bound. If this happens, the
-     *  safe-to-process analysis could result in the processing of an unsafe
-     *  event, in which case an exception is thrown.  
+    /** An ID for the execution timer in this director.
      */
-    public Parameter initializePlatformTimeSynchronizationError;
+    public static final int EXECUTION_TIMER = 0;
 
     /** Store the initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
@@ -476,7 +477,29 @@ public class PtidesBasicDirector extends DEDirector {
      *  safe-to-process analysis could result in the processing of an unsafe
      *  event, in which case an exception is thrown.  
      */
-    public Parameter initializeExecutionTimeSynchronizationError;
+    public Parameter initialExecutionTimeSynchronizationError;
+    
+    /** Store the initial clock drift of the execution clock.
+     */
+    public Parameter executionClockDrift;
+
+    /** Store the initial platform time synchronization error. This parameter is
+     *  different from the assumedPlatformTimeSynchronizationErrorBound
+     *  in that the other parameter is the estimated bound, while
+     *  this parameter stores the current synchronization error. This error
+     *  could be greater than the assumed error bound. If this happens, the
+     *  safe-to-process analysis could result in the processing of an unsafe
+     *  event, in which case an exception is thrown.  
+     */
+    public Parameter initialPlatformTimeSynchronizationError;
+
+    /** Store the initial clock drift of the platform clock.
+     */
+    public Parameter platformClockDrift;
+
+    /** An ID for the platform timer in this director.
+     */
+    public static final int PLATFORM_TIMER = 1;
 
     /** A Parameter representing the simulated scheduling overhead time.
      *  In real-time programs, it takes time for the scheduler to
@@ -485,14 +508,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  is used to capture that scheduling overhead.
      */
     public Parameter schedulerExecutionTime;
-
-    /** An ID for the execution timer in this director.
-     */
-    public static final int EXECUTION_TIMER = 0;
-
-    /** An ID for the platform timer in this director.
-     */
-    public static final int PLATFORM_TIMER = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -552,6 +567,25 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Dependency delayDependency(double delay, int index) {
         return SuperdenseDependency.valueOf(delay, index);
+    }
+
+    /** Return the current clock drift associated with the clock ID.
+     *  @param clock Clock ID.
+     *  @return the current clock drift associated with the clock ID.
+     *  @throws IllegalActionException If clock ID is not recognized.
+     */
+    public Time getClockDrift(int clock) throws IllegalActionException {
+        RealTimeClock realTimeClock = null;
+        if (clock == PtidesBasicDirector.PLATFORM_TIMER) {
+            realTimeClock = _platformTimeClock;
+        } else if (clock == PtidesBasicDirector.EXECUTION_TIMER) {
+            realTimeClock = _executionTimeClock;
+        } else {
+            throw new IllegalActionException(this, "Trying to update a clock " +
+                        "with an ID that is neither platform time clock or " +
+                        "execution time clock.");
+        }
+        return realTimeClock._clockDrift;
     }
 
     /** Return the current {@link ptolemy.domains.ptides.kernel.Tag}.
@@ -638,8 +672,16 @@ public class PtidesBasicDirector extends DEDirector {
         _futurePlatformFireAtTimes = new LinkedList<Time>();
         _ignoredPlatformFireAtTimes = new LinkedList<Time>();
         _lastExecutingActor = null;
-        _executionTimeClock = null;
-        _platformTimeClock = null;
+        _executionTimeClock = new RealTimeClock(
+                ((DoubleToken)initialExecutionTimeSynchronizationError
+                        .getToken()).doubleValue(), 
+                        ((DoubleToken)executionClockDrift
+                                .getToken()).doubleValue());
+        _platformTimeClock = new RealTimeClock(
+                ((DoubleToken)initialPlatformTimeSynchronizationError
+                        .getToken()).doubleValue(),
+                        ((DoubleToken)platformClockDrift
+                                .getToken()).doubleValue());
 
         super.initialize();
 
@@ -647,22 +689,7 @@ public class PtidesBasicDirector extends DEDirector {
             .fireAtCurrentTime((Actor) getContainer());
 
         _setIcon(_getIdleIcon(), true);
-        
-        // If either _executionTimeClock or _platformTimeClock is null,
-        // create a new one with clock drift that's indicated in the parameter.
-        // FIXME: If a clock actor exists in the system, then
-        // initializeXXXTimeSynchornizationError has no effect. How do we
-        // make it clear to the user this is the case?
-        if (_executionTimeClock == null) {
-            _executionTimeClock = new RealTimeClock(
-                    ((DoubleToken)initializeExecutionTimeSynchronizationError
-                            .getToken()).doubleValue());
-        }
-        if (_platformTimeClock == null) {
-            _platformTimeClock = new RealTimeClock(
-                    ((DoubleToken)initializePlatformTimeSynchronizationError
-                            .getToken()).doubleValue());
-        }
+
     }
 
     /** Return false to get the superclass DE director to behave exactly
@@ -798,22 +825,6 @@ public class PtidesBasicDirector extends DEDirector {
         stopWhenQueueIsEmpty.setExpression("false");
     }
 
-    /** Sets the execution clock for the platform governed by ths Ptides
-     *  director. The execution time clock keeps track of the amount of
-     *  simulated physical time that has passed to execution events. 
-     *  @param realTimeClock The realTimeClock.
-     *  @exception IllegalActionException If an execution clock already exists.
-     */
-    public void setExecutionClock(RealTimeClock realTimeClock)
-            throws IllegalActionException {
-        if (_executionTimeClock != null) {
-            throw new IllegalActionException(this, "An execution clock " +
-                        "already exists for this Platform, cannot " +
-                        "override it.");
-        }
-        _executionTimeClock = realTimeClock;
-    }
-
     /** Set the microstep. A microstep is an
      *  integer which represents the index of the sequence of execution 
      *  phases when this director processes events with the same timestamp.
@@ -850,22 +861,6 @@ public class PtidesBasicDirector extends DEDirector {
         }
         _currentTime = newTime;
     }
-    
-    /** Sets the platform clock for the platform governed by ths Ptides
-     *  director. The platform time clock keeps track of the simulated
-     *  physical time of the platform. 
-     *  @param realTimeClock The realTimeClock.
-     *  @exception IllegalActionException If a platform clock already exists.
-     */
-    public void setPlatformClock(RealTimeClock realTimeClock)
-            throws IllegalActionException {
-        if (_platformTimeClock != null) {
-            throw new IllegalActionException(this, "A platform clock " +
-            		"already exists for this Platform, cannot " +
-            		"override it.");
-        }
-        _platformTimeClock = realTimeClock;
-    }
 
     /** Set the timestamp and microstep of the current time.
      *  @param timestamp A Time object specifying the timestamp.
@@ -889,8 +884,25 @@ public class PtidesBasicDirector extends DEDirector {
      *  @throws IllegalActionException If either the original or updated fireAt
      *  time is in the past.
      */
-    public void updateFireAtTimes(RealTimeClock realTimeClock, Time newClockDrift)
+    public void updateClockDrift(int clockID, Time newClockDrift)
             throws IllegalActionException {
+        if (newClockDrift.compareTo(_zero) < 0) {
+            throw new IllegalActionException(PtidesBasicDirector.this, "The new " +
+                        "clock drift is of value < 0, this means for every " +
+                        "cycle the clock advances in oracle time, the platform " +
+                        "cycle decreases, i.e, time goes backwards. This is not " +
+                        "allowed.");
+        }
+        RealTimeClock realTimeClock = null;
+        if (clockID == PtidesBasicDirector.PLATFORM_TIMER) {
+            realTimeClock = _platformTimeClock;
+        } else if (clockID == PtidesBasicDirector.EXECUTION_TIMER) {
+            realTimeClock = _executionTimeClock;
+        } else {
+            throw new IllegalActionException(this, "Trying to update a clock " +
+            		"with an ID that is neither platform time clock or " +
+            		"execution time clock.");
+        }
         if (realTimeClock._clockDrift.compareTo(newClockDrift) != 0) {
             // Based on the above information, update the future fireAt times.
             if (realTimeClock == _executionTimeClock) {
@@ -2137,7 +2149,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param platformTag The platform timestamp and microstep.
      *  @param clockID The corresponding clock to get the platform time.
      *  @return The oracle tag associated with the platform tag. Return null
-     *  if the oracle time of interes t is less than the last
+     *  if the oracle time of interest is less than the last
      *  saved oracle time of the corresponding clock.
      *  @exception IllegalActionException If the input clock ID cannot be identified.
      */
@@ -2758,6 +2770,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  </p><p>
      *  If the new event (e') is produced due to the processing of a earlier
      *  pure event, then the formula is the same, only delta == 0;
+     *  FIXME: this above reasoning and equations only work in the case where
+     *  a pure event will lead to an output event of the same timestamp.
+     *  This is true for actors such as VariableDelayCounter, but it's not
+     *  true in general.s
      *  @see #_saveEventInformation(List)
      */
     private Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
@@ -3926,59 +3942,31 @@ public class PtidesBasicDirector extends DEDirector {
      *  to a oracle time. It also contains the current clock drift, as
      *  well as the clock drift before the last change in clock drift.
      *  @author jiazou
-     *
      */
-    public class RealTimeClock {
-
-        /** Construct a real time clock, with all the times and clock drifts
-         *  set to default values: All clock drifts are initialized to Time 1.0,
-         *  and both oracle and platform times are initialized to Time 0.0
-         */
-        public RealTimeClock() throws IllegalActionException {
-            _lastPlatformTime = new Time(PtidesBasicDirector.this);
-            _clockDrift = new Time(PtidesBasicDirector.this, 1.0);
-            _lastOracleTime = new Time(PtidesBasicDirector.this);
-        }
+    private class RealTimeClock {
 
         /** Construct a real time clock, with all the times and clock drifts
          *  set to default values: All clock drifts are initialized to Time 1.0,
          *  and the oracle time is initialized to Time 0.0. However the corresponding
          *  platform is intialized to the initialClockSynchronizationError paramter.
          */
-        public RealTimeClock(double initialClockSynchronizationError)
-                throws IllegalActionException {
-            _lastPlatformTime = new Time(PtidesBasicDirector.this, initialClockSynchronizationError);
-            _clockDrift = new Time(PtidesBasicDirector.this, 1.0);
+        private RealTimeClock(double initialClockSynchronizationError,
+                double clockDrift) throws IllegalActionException {
+            _lastPlatformTime = new Time(PtidesBasicDirector.this,
+                    initialClockSynchronizationError);
+            _clockDrift = new Time(PtidesBasicDirector.this, clockDrift);
             _lastOracleTime = new Time(PtidesBasicDirector.this);
-        }
-
-        /** Update the clock drift with a new clock drift. Update all fireAt times
-         *  due to this change in clock drift.
-         *  @param newClockDrift The new clock drift.
-         *  @exception IllegalActionException when the clock drift is less than 0.
-         */
-        public void updateClockDrift(Time newClockDrift) throws IllegalActionException {
-            if (newClockDrift.compareTo(new Time(PtidesBasicDirector.this)) < 0) {
-                throw new IllegalActionException(PtidesBasicDirector.this, "The new " +
-                            "clock drift is of value < 0, this means for every " +
-                            "cycle the clock advances in oracle time, the platform " +
-                            "cycle decreases, i.e, time goes backwards. This is not " +
-                            "allowed.");
-            }
-            // Every time clock drift is updated, the fireAt times also needs to
-            // be updated.
-            PtidesBasicDirector.this.updateFireAtTimes(this, newClockDrift);
         }
 
         /** The last saved platform time. This time corresponds to the Time saved
          *  in the last oracle time.
          */
-        public Time _lastPlatformTime;
+        private Time _lastPlatformTime;
 
         /** The last saved oracle time. This time corresponds to the Time saved
          *  in the last platform time.
          */
-        public Time _lastOracleTime;
+        private Time _lastOracleTime;
         
         /** The ratio between how much the platform clock changes each unit time
          *  as the oracle clock changes. If there is platform time tracks the
@@ -3986,7 +3974,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  drift is < 0.0, then as the oracle time increases, the platform
          *  time decreases. This is not allowed in this simulator.
          */
-        public Time _clockDrift;
+        private Time _clockDrift;
     }
 
     /** A structure that holds a token with the port and channel it's
@@ -4029,7 +4017,6 @@ public class PtidesBasicDirector extends DEDirector {
 
         /** The token. */
         public Token token;
-
 
         /** Compares this RealTimeEvent with another. Compares the delivery
          *  times of these two events.

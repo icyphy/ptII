@@ -39,7 +39,6 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.kernel.Tag;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector.RealTimeClock;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,7 +76,7 @@ public class MasterClock extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        input = new TypedIOPort(this, "input", true, false);
+        trigger = new TypedIOPort(this, "input", true, false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,7 +92,7 @@ public class MasterClock extends TypedAtomicActor {
      *  that the type of the input cannot be greater than the type of the
      *  output.
      */
-    public TypedIOPort input;
+    public TypedIOPort trigger;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                   ////
@@ -102,8 +101,8 @@ public class MasterClock extends TypedAtomicActor {
      *  an input is received.
      */
     public void fire() throws NoTokenException, IllegalActionException {
-        if (input.hasToken(0)) {
-            input.get(0);
+        if (trigger.hasToken(0)) {
+            trigger.get(0);
             Tag tag = ((PtidesBasicDirector)getDirector())
             .getPlatformPhysicalTag(PtidesBasicDirector.PLATFORM_TIMER);
             Token token = new DoubleToken(tag.timestamp.getDoubleValue());
@@ -121,8 +120,6 @@ public class MasterClock extends TypedAtomicActor {
             throw new IllegalActionException(this, "This actor can only " +
             		"work under a Ptides director.");
         }
-        platformClock = ((PtidesBasicDirector)director).new RealTimeClock();
-        ((PtidesBasicDirector)director).setPlatformClock(platformClock);
     }
 
     /** Return the type constraints of this actor. The type constraint is
@@ -138,8 +135,4 @@ public class MasterClock extends TypedAtomicActor {
         typeConstraints.add(inequality);
         return typeConstraints;
     }
-
-    /** The master clock.
-     */
-    private RealTimeClock platformClock;
 }

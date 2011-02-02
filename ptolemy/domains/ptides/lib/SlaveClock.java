@@ -36,11 +36,9 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.kernel.Tag;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector.RealTimeClock;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -79,11 +77,6 @@ public class SlaveClock extends TypedAtomicActor {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
-
-        initializePlatformTimeSynchronizationError = new Parameter(this,
-        "initializePlatformTimeSynchronizationError");
-        initializePlatformTimeSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initializePlatformTimeSynchronizationError.setExpression("0.0");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,8 +94,6 @@ public class SlaveClock extends TypedAtomicActor {
      */
     public TypedIOPort output;
     
-    public Parameter initializePlatformTimeSynchronizationError;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                   ////
 
@@ -117,14 +108,18 @@ public class SlaveClock extends TypedAtomicActor {
         } else {
             return;
         }
-        Tag platformTag = ((PtidesBasicDirector)getDirector())
+        PtidesBasicDirector director = (PtidesBasicDirector)getDirector();
+        Tag platformTag = director
             .getPlatformPhysicalTag(PtidesBasicDirector.PLATFORM_TIMER);
         if (token.doubleValue() > platformTag.timestamp.getDoubleValue()) {
-            platformClock.updateClockDrift(new Time(getDirector(), 1.3));
+            director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
+                    new Time(director, 1.3));
         } else if (token.doubleValue() < platformTag.timestamp.getDoubleValue()) {
-            platformClock.updateClockDrift(new Time(getDirector(), 0.7));
+            director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
+                    new Time(director, 0.7));
         } else {
-            platformClock.updateClockDrift(new Time(getDirector(), 1.0));
+            director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
+                    new Time(director, 1.0));
         }
         output.send(0, new DoubleToken(platformTag.timestamp.getDoubleValue()));
     }
@@ -140,10 +135,6 @@ public class SlaveClock extends TypedAtomicActor {
             throw new IllegalActionException(this, "This actor can only " +
             		"work under a Ptides director.");
         }
-        platformClock = ((PtidesBasicDirector)director).new RealTimeClock(
-                ((DoubleToken)initializePlatformTimeSynchronizationError
-                        .getToken()).doubleValue());
-        ((PtidesBasicDirector)director).setPlatformClock(platformClock);
     }
 
     /** Return the type constraints of this actor. The type constraint is
@@ -160,8 +151,4 @@ public class SlaveClock extends TypedAtomicActor {
         typeConstraints.add(inequality);
         return typeConstraints;
     }
-
-    /** The slave clock.
-     */
-    private RealTimeClock platformClock;
 }
