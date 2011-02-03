@@ -90,7 +90,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         super.initialize();
         NamedObj toplevel = _toplevel();           
         
-        boolean errorOccurred = true;
+        boolean errorOccurred = false;
         try {
             super.resolveConcepts();
         } catch(KernelException ex) {

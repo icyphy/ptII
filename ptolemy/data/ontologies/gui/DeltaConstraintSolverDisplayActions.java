@@ -138,7 +138,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
                 // concepts (finding these is the point of this solver)
                 try {
                     solver.identifyConflicts();
-                    if (solver.hasIdentifiedConflicts()) {
+                    if (solver.hasUnacceptableTerms()) {
                         solver.getMoMLHandler().clearDisplay(true, true);
                         solver.getMoMLHandler().highlightConcepts();
                         solver.getMoMLHandler().showConceptAnnotations();

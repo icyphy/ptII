@@ -333,6 +333,22 @@ public class LatticeOntologySolver extends OntologySolver {
         return _conceptTermManager;
     }
     
+    /** Returns true if one or more terms resolved to unacceptable concepts, 
+     *  false otherwise (if the solver has not run, or if all terms have 
+     *  acceptable resolved concepts.   
+     * 
+     * @return  True if one or more terms resolved to unacceptable concepts,
+     *          false otherwise.
+     */
+    public boolean hasUnacceptableTerms()
+    {
+        if (_resolvedUnacceptableList != null 
+                && !_resolvedUnacceptableList.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+    
     /**
      * Initialize the solver:  Reset the solver (superclass) and then collect 
      * all of the initial constraints from the model.
@@ -392,10 +408,8 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public void resolveConcepts() throws KernelException {        
         NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = 
-            (LatticeOntologyAdapter) getAdapter(toplevel);
 
-        _resolveConcepts(toplevel, toplevelAdapter, _initialConstraintList);
+        _resolveConcepts(toplevel, _initialConstraintList);
     }
 
     /** Run concept inference and check the values match those trained.
@@ -501,22 +515,6 @@ public class LatticeOntologySolver extends OntologySolver {
         }
 
         return output.toString();
-    }
-    
-    /** Returns true if one or more terms resolved to unacceptable concepts, 
-     *  false otherwise (if the solver has not run, or if all terms have 
-     *  acceptable resolved concepts.   
-     * 
-     * @return  True if one or more terms resolved to unacceptable concepts,
-     *          false otherwise.
-     */
-    protected boolean hasUnacceptableTerms()
-    {
-        if (_resolvedUnacceptableList != null 
-                && !_resolvedUnacceptableList.isEmpty()) {
-            return true;
-        }
-        return false;
     }
     
     /** Return the list of inequality terms that resolved to unacceptable
@@ -658,12 +656,10 @@ public class LatticeOntologySolver extends OntologySolver {
     /** Resolve the concepts for the given top-level container,
      *  subject to the given constraint list.
      * @param toplevel The top-level container
-     * @param toplevelAdapter Must be toplevel.getAdapter()
      * @param constraintList The constraint list that we are solving
      * @exception OntologyResolutionException If constraints are unsatisfiable
      */
     protected void _resolveConcepts(NamedObj toplevel,
-            LatticeOntologyAdapter toplevelAdapter,
             List<Inequality> constraintList) 
         throws OntologyResolutionException {
 
@@ -875,6 +871,19 @@ public class LatticeOntologySolver extends OntologySolver {
     ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    /** The list of constraints collected from the model, before resolution.  */
+    protected List<Inequality> _initialConstraintList;
+    
+    /** The list of constraints after the ontology resolution algorithm has executed. */
+    protected List<Inequality> _resolvedConstraintList;
+    
+    /** The list of InequalityTerms that have resolved to an unacceptable concept value. 
+     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
+     *  for a definition of unacceptable.  */
+    protected List<InequalityTerm> _resolvedUnacceptableList;
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The set of Objects that have been manually annotated. */
@@ -886,16 +895,5 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The concept term manager that keeps track of all the concept terms in the model for the LatticeOntologySolver. */
     private ConceptTermManager _conceptTermManager;
-
-    /** The list of constraints collected from the model, before resolution.  */
-    private List<Inequality> _initialConstraintList;
-    
-    /** The list of constraints after the ontology resolution algorithm has executed. */
-    private List<Inequality> _resolvedConstraintList;
-    
-    /** The list of InequalityTerms that have resolved to an unacceptable concept value. 
-     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
-     *  for a definition of unacceptable.  */
-    private List<InequalityTerm> _resolvedUnacceptableList;
 
 }
