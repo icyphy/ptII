@@ -180,7 +180,7 @@ import javax.sound.sampled.TargetDataLine;
  audio output port. A future version of this class may support
  multiple objects playing to the output port simultaneously.
 
- @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee
+ @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts 
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (net)
@@ -927,15 +927,20 @@ public class LiveSound {
                 switch (_bytesPerSample) {
                 case 4:
                     result <<= 8;
-                    result += (byteArray[j++] | 0xff);
+                    // Dennis Geurts:
+                    // Use & instead of | here.
+                    // Running ptolemy/actor/lib/javasound/test/auto/testAudioCapture_AudioPlayer.xml 
+                    // results in a much better sound.
+                    // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=356
+                    result += (byteArray[j++] & 0xff);
 
                 case 3:
                     result <<= 8;
-                    result += (byteArray[j++] | 0xff);
+                    result += (byteArray[j++] & 0xff);
 
                 case 2:
                     result <<= 8;
-                    result += (byteArray[j++] | 0xff);
+                    result += (byteArray[j++] & 0xff);
                 }
 
                 doubleArray[currChannel][currSamp] = result
