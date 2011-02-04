@@ -884,6 +884,11 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         Iterator outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
+            // NOTE: The following assumes that if ANY destination
+            // receiver is known, then all are known. isKnown(j)
+            // will return false if ANY destination receiver on channel
+            // j is unknown, but send(j, null) will assert that ALL
+            // destination receivers are absent.
             for (int j = 0; j < outputPort.getWidth(); j++) {
                 if (!outputPort.isKnown(j)) {
                     if (_debugging) {
