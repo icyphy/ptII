@@ -78,5 +78,9 @@ public class ShortestPathFinderTest {
         // Check distance again. Should be 2 now.
         result = ShortestPathFinder.calculateDistance(entities, 0, 2);
         Assert.assertEquals(2, result);
+        
+        result = ShortestPathFinder.calculateDistance(entities, 0, 0);
+        Assert.assertEquals(2, result);
+
     }
 }
