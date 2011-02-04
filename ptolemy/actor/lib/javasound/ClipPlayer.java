@@ -86,12 +86,15 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         fileOrURL = new FileParameter(this, "fileOrURL");
         // Use $CLASSPATH instead of $PTII so that this actor can find its
         // audio file under Web Start.
-        fileOrURL
-                .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        fileOrURL.setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
         overlay.setExpression("false");
+
+        playToCompletion = new Parameter(this, "playToCompletion");
+        playToCompletion.setTypeEquals(BaseType.BOOLEAN);
+        playToCompletion.setExpression("false");
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -120,6 +123,11 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  the clip is stopped and restarted each time the actor fires.
      */
     public Parameter overlay;
+    
+    /** If true, then play the clip to completion before returning
+     *  from firing. This is a boolean that defaults to false.
+     */
+    public Parameter playToCompletion;
 
     /** The trigger.  When this port receives a token of any type,
      *  the actor begins playing the audio clip.
@@ -148,97 +156,90 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-        // Produce all outputs that have been requested.
-        // To respect the actor abstract semantics, we have
-        // to operate on a copy of the list created in the
-        // first firing of the iteration.
-        if (_outputEventsCopy == null) {
-            synchronized (_outputEvents) {
-                _outputEventsCopy = new LinkedList<BooleanToken>(_outputEvents);
-                _outputEvents.clear();
+        for(int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
             }
         }
-        for (BooleanToken token : _outputEventsCopy) {
-            output.send(0, token);
-        }
-    }
-
-    /** Read an input array and send to the audio hardware.
-     *  If the audio buffer cannot accept the samples, then this
-     *  method will stall the calling thread until it can.
-     *  @exception IllegalActionException If there is a problem
-     *   playing audio.
-     */
-    public boolean postfire() throws IllegalActionException {
-        // Output events will have been sent in fire().
-        _outputEventsCopy = null;
-        if (trigger.hasToken(0)) {
-            trigger.get(0);
-            boolean overlayValue = ((BooleanToken) overlay.getToken())
-                    .booleanValue();
-            if (overlayValue || _clips.size() == 0) {
-                // If there is an inactive clip in the list, then use that.
-                // Otherwise, create a new one.
-                for (Clip clip : _clips) {
-                    if (!clip.isActive()) {
-                        clip.setFramePosition(0);
-                        clip.start();
-                        return true;
-                    }
+        super.fire();
+        
+        boolean overlayValue = ((BooleanToken) overlay.getToken()).booleanValue();
+        if (overlayValue || _clips.size() == 0) {
+            // If there is an inactive clip in the list, then use that.
+            // Otherwise, create a new one.
+            for (Clip clip : _clips) {
+                if (!clip.isActive()) {
+                    clip.setFramePosition(0);
+                    clip.start();
                 }
+            }
+            try {
+                Clip clip = AudioSystem.getClip();
+                clip.addLineListener(this);
+                AudioInputStream stream = null;
                 try {
-                    Clip clip = AudioSystem.getClip();
-                    clip.addLineListener(this);
-                    AudioInputStream stream = null;
-                    try {
-                        stream = AudioSystem.getAudioInputStream(fileOrURL
-                                .asURL());
-                    } catch (IOException ex) {
-                        // Handle jar urls from WebStart or the installer
-                        try {
-                            URL possibleJarURL = ClassUtilities
-                                    .jarURLEntryResource(fileOrURL
-                                            .getExpression());
+                    stream = AudioSystem.getAudioInputStream(fileOrURL.asURL());
+                } catch (IOException ex) {
+                    // Handle jar urls from WebStart or the installer
+                    URL possibleJarURL = ClassUtilities.jarURLEntryResource(fileOrURL.getExpression());
+                    stream = AudioSystem.getAudioInputStream(possibleJarURL);
+                }
 
-                            stream = AudioSystem
-                                    .getAudioInputStream(possibleJarURL);
-                        } catch (Exception ex2) {
-                            IOException ioException = new IOException(
-                                    "Failed to open \""
-                                            + fileOrURL.getExpression() + "\".");
-                            ioException.initCause(ex);
-                            throw ioException;
+                clip.open(stream);
+                clip.start();
+                _clips.add(clip);
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e,
+                        "Error opening audio file or URL: "
+                        + fileOrURL.getExpression());
+            }
+        } else {
+            // Restart the last clip.
+            Clip clip = _clips.get(_clips.size() - 1);
+            // NOTE: Possible race condition: could become inactive
+            // before the stop() is called, which could result in
+            // two stop notifications to the update() method.
+            // Will the Clip give to stop notifications?
+            if (clip.isActive()) {
+                clip.stop();
+            }
+            clip.setFramePosition(0);
+            clip.start();
+        }
+        boolean playToCompletionValue = ((BooleanToken) playToCompletion.getToken()).booleanValue();
+        if (playToCompletionValue) {
+            // Wait until the clip is finished.
+            synchronized (_outputEvents) {
+                while(true) {
+                    if (_outputEvents.size() > 0) {
+                        BooleanToken lastMessage = _outputEvents.get(_outputEvents.size() - 1);
+                        if (!lastMessage.booleanValue()) {
+                            // Got the STOP message.
+                            break;
                         }
                     }
-
-                    clip.open(stream);
-                    clip.start();
-                    _clips.add(clip);
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
-                            "Error opening audio file or URL: "
-                                    + fileOrURL.getExpression());
+                    // Either the thread hasn't started yet or it hasn't
+                    // finished yet. Wait for one of those to occur.
+                    try {
+                        _outputEvents.wait();
+                    } catch (InterruptedException e) {
+                        throw new IllegalActionException(this, "Wait for completion interrupted");
+                    }
                 }
-            } else {
-                // Restart the last clip.
-                Clip clip = _clips.get(_clips.size() - 1);
-                // NOTE: Possible race condition: could become inactive
-                // before the stop() is called, which could result in
-                // two stop notifications to the update() method.
-                // Will the Clip give to stop notifications?
-                if (clip.isActive()) {
-                    clip.stop();
-                }
-                clip.setFramePosition(0);
-                clip.start();
             }
         }
-        return true;
+        
+        // Produce all outputs that have been requested.
+        synchronized (_outputEvents) {
+            for (BooleanToken token : _outputEvents) {
+                output.send(0, token);
+            }
+            _outputEvents.clear();
+        }
     }
 
-    /** Called to notify this object of changes in the status of
-     *  a clip.
+    /** Called by the clip to notify this object of changes
+     *  in the status of a clip.
      *  @param event The event, with one of type OPEN, CLOSE,
      *   START, STOP of class LineEvent.Type.
      */
@@ -246,10 +247,12 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         if (event.getType().equals(LineEvent.Type.STOP)) {
             synchronized (_outputEvents) {
                 _outputEvents.add(BooleanToken.FALSE);
+                _outputEvents.notifyAll();
             }
         } else if (event.getType().equals(LineEvent.Type.START)) {
             synchronized (_outputEvents) {
                 _outputEvents.add(BooleanToken.TRUE);
+                _outputEvents.notifyAll();
             }
         }
         try {
@@ -288,7 +291,4 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     /** The output values to be produced on the next firing. */
     private List<BooleanToken> _outputEvents = new LinkedList<BooleanToken>();
-
-    /** The output values to be produced on the next firing. */
-    private List<BooleanToken> _outputEventsCopy = null;
 }
