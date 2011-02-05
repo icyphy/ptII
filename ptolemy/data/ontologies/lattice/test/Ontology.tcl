@@ -45,19 +45,28 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test Ontology-1.0 {An empty ontology is a lattice} {
-    set prodOnt [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
-    set prodCPO [$prodOnt getConceptGraph]
+    set emptyOnt [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
+    set emptyCPO [$emptyOnt getConceptGraph]
 
-    list [$prodCPO isLattice] [$prodCPO isLattice]
+    list [$emptyOnt isLattice] [$emptyCPO isLattice]
 } {1 1}
 
 ######################################################################
 ####
 #
 test ProductLatticeOntology-1.0 {An empty product lattice ontology is a lattice} {
-    set prodOnt [java::new {ptolemy.data.ontologies.lattice.ProductLatticeOntology} [java::null]]
-    set prodCPO [$prodOnt getConceptGraph]
+    set emptyProdOnt [java::new {ptolemy.data.ontologies.lattice.ProductLatticeOntology} [java::null]]
+    set emptyProdCPO [$emptyProdOnt getConceptGraph]
 
-    list [$prodCPO isLattice] [$prodCPO isLattice]
+    list [$emptyProdOnt isLattice] [$emptyProdCPO isLattice]
 } {1 1}
 
+######################################################################
+####
+#
+test Lattices-1.0 {A one element lattice is a lattice} {
+    set singletonOnt [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
+    set singletonConcept [java::new {ptolemy.data.ontologies.FiniteConcept} $singletonOnt {A}]
+
+    list [$singletonOnt isLattice] [[$singletonOnt getConceptGraph] isLattice]
+} {1 1}
