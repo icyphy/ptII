@@ -70,3 +70,41 @@ test Lattices-1.0 {A one element lattice is a lattice} {
 
     list [$singletonOnt isLattice] [[$singletonOnt getConceptGraph] isLattice]
 } {1 1}
+
+######################################################################
+####
+#
+proc link {a b link} {
+  [java::field $a abovePort] link $link
+  [java::field $b belowPort] link $link
+}
+
+test Lattices-2.0 {A partial order with a top and bottom is not necessarily a lattice} {
+    set ont [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
+    set a [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {A}]
+    set b [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {B}]
+    set c [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {C}]
+    set d [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {D}]
+    set e [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {E}]
+    set f [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {F}]
+
+    set ab [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ab}]
+    set ac [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ac}]
+    set bd [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {bd}]
+    set be [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {be}]
+    set cD [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {cD}]
+    set ce [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ce}]
+    set df [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {df}]
+    set ef [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ef}]
+
+    link $a $b $ab
+    link $a $c $ac
+    link $b $e $be
+    link $b $d $bd
+    link $c $d $cD
+    link $c $e $ce
+    link $d $f $df
+    link $e $f $ef
+
+    list [$ont isLattice] [[$ont getConceptGraph] isLattice]
+} {0 0}
