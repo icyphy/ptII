@@ -45,10 +45,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 80.0]">
         </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-        </property>
     </property>
     <property name="nominalSpeed" class="ptolemy.data.expr.Parameter" value="45">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,10 +64,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 60.0]">
         </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-        </property>
     </property>
     <property name="a" class="ptolemy.data.expr.Parameter" value="6">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -90,10 +82,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 100.0]">
-        </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
         </property>
     </property>
     <property name="dimensionSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const2.output &gt;= Acceleration">
@@ -126,7 +114,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 460.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="JitterPeriod.output &gt;= Time">
+    <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="JitterPeriod.output &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -144,29 +132,21 @@
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/dimensionSystem/DimensionSystemSolverModel.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 465.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&lt;-- Change to Velocity">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 495.0]">
-        </property>
-    </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 90.0]">
         </property>
     </property>
     <entity name="driverDesiredSpeed" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="60">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -177,13 +157,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[146.75, 162.5]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -201,20 +174,9 @@
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 310.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
-            </property>
-        </port>
     </entity>
     <entity name="JitterPeriod" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="jitterPeriod">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 380.0]">
@@ -227,19 +189,13 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <display name="Const&#10;Nominal Speed&#10;in miles per hour"/>
         <property name="value" class="ptolemy.data.expr.Parameter" value="nominalSpeed">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 240.0]">
@@ -252,9 +208,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>
@@ -264,24 +218,12 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>
@@ -291,24 +233,12 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>
@@ -318,24 +248,18 @@
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
         <port name="divide" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
             </property>
         </port>
     </entity>
@@ -345,33 +269,12 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
             </property>
         </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="a">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -384,9 +287,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
             </property>
         </port>
     </entity>
