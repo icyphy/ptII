@@ -28,12 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.data.ontologies.lattice;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
-import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
@@ -82,8 +80,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  inequality terms that cause the unacceptable values.
      *  @exception KernelException If the _resolveProperties method throws it.
      */
-    
-    public void identifyConflicts() throws KernelException {
+    public void resolveConcepts() throws KernelException { 
         
         // Reset the list of resolved constraints before executing the ontology solver resolution. 
         super.reset();
@@ -124,7 +121,6 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
          size = size/2;
        </pre>
      * @param toplevel The toplevel NamedObj of the model.
-     * @param toplevelHelper The adapter for the toplevel NamedObj.
      * @param constraintList A list of constraints that causes an error
      * @exception TypeConflictException Thrown if there is a type conflict
      *  during the execution of the delta iteration.
@@ -139,7 +135,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         int blockSize = errorList.size() / 2;
 
         WHILE_LOOP: while (blockSize >= 1) {
-
+            System.err.println("Blocksize " + blockSize);
             for (int i = 0; i < errorList.size(); i += blockSize) {
 
                 //modify the list of constraints
@@ -149,7 +145,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
                         .size(), i + blockSize)));
 
                 if (testList.size() > 0) {
-                    _resolvedProperties.clear();
+                    _clearLists();
                     if (_resolvePropertiesHasErrors(toplevel, testList)) {
                         errorList = testList;
                         blockSize = Math.min(errorList.size() / 2, blockSize);
@@ -159,7 +155,6 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
             }
 
             blockSize /= 2;
-            System.err.println("Blocksize " + blockSize);
         }
 
         System.out.println(errorList);
@@ -176,7 +171,6 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  the resulting solution has errors.
      * 
      * @param toplevel The top-level container
-     * @param toplevelHelper Must be toplevel.getHelper()
      * @param constraintList The constraint list that we are solving
      * @return True If the found solution has errors.
      * @exception IllegalActionException  If the superclass method getAllPropertyables() throws it
@@ -205,7 +199,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         {
             errorOccured = true;
         }
-                
+
         return errorOccured;
     }
 }

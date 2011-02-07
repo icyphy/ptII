@@ -137,7 +137,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
                 // Catch and ignore any exceptions regarding unacceptable
                 // concepts (finding these is the point of this solver)
                 try {
-                    solver.identifyConflicts();
+                    solver.resolveConcepts();
                     if (solver.hasUnacceptableTerms()) {
                         solver.getMoMLHandler().clearDisplay(true, true);
                         solver.getMoMLHandler().highlightConcepts();
