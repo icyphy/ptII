@@ -222,62 +222,7 @@ public class Ontology extends CompositeEntity {
      */
     public boolean isLattice() {
         _graph = _buildConceptGraph();
-
-        // 01/04/2010 Charles Shelton - Debug information for isLattice() function:
-        // - Catch the exception from the directed acyclic graph _validate() method
-        //      that checks for a cycle in the graph.
-        // - Added additional debug messages to provide both positive and negative
-        //      feedback about the lattice.
-
-        try {
-            if (_graph.top() == null) {
-                _debug("This is not a lattice. Cannot find a unique top element.");
-                return false;
-            } else {
-                Concept top = (Concept) _graph.top();
-                _debug("Top is: " + top.toString());
-            }
-        } catch (GraphStateException e) {
-            _debug("This is not a lattice. Proposed graph has a cycle and is not a lattice.");
-            return false;
-        }
-
-        if (_graph.bottom() == null) {
-            _debug("This is not a lattice. Cannot find a unique bottom element.");
-            return false;
-        } else {
-            Concept bottom = (Concept) _graph.bottom();
-            _debug("Bottom is: " + bottom.toString());
-        }
-
-        List<FiniteConcept> ontologyConcepts = entityList(FiniteConcept.class);
-
-        // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
-        for (int i = 0; i < ontologyConcepts.size() - 1; i++) {
-            for (int j = i + 1; j < ontologyConcepts.size(); j++) {
-                Concept lub = (Concept) _graph.leastUpperBound(
-                        ontologyConcepts.get(i), ontologyConcepts.get(j));
-
-                if (lub == null) {
-                    // FIXME: add highlight color?
-                    // The offending nodes.
-                    _debug("This is not a lattice. \""
-                            + ontologyConcepts.get(i).getName()
-                            + "\" and \""
-                            + ontologyConcepts.get(j).getName()
-                            + "\""
-                            + " does not have a unique least upper bound (LUB).");
-                    return false;
-                } else {
-                    _debug("LUB(" + ontologyConcepts.get(i).getName() + ", "
-                            + ontologyConcepts.get(j).getName() + "): "
-                            + lub.toString());
-                }
-            }
-        }
-
-        _debug("This is a correctly formed lattice.");
-        return true;
+        return _graph.isLattice();
     }
 
     /** Create a new relation with the specified name, add it to the
