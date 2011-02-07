@@ -4,13 +4,13 @@
 <entity name="ProductLatticeMultiplyDivideMODELS" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1468, 14, 1280, 1024}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={369, 37, 1280, 878}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 914]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 768]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9069743476501">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{163.31003736413, 581.1509078557308}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{163.31003736413, 542.870371942935}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -30,17 +30,13 @@
     </property>
     <entity name="DivideConstraintExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;    (x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= VelocityTime) ? Acceleration :&#10;(x &lt;= PositionTime) ? Velocity :&#10;(x &lt;= PositionVelocity) ? Time :&#10;  (x &lt;= VelocityAcceleration) ? Time :&#10;(x &lt;= AccelerationAcceleration) ? Dimensionless :&#10;  (x &lt;= VelocityVelocity) ? Dimensionless :&#10;  (x &lt;= PositionPosition) ? Dimensionless :&#10;  (x &lt;= TimeTime) ? Dimensionless :&#10;  (x &lt;= DimensionlessDimensionless) ? Dimensionless :&#10;/* (x &lt;= ConflictDimensionless) ? x.project(0) : */&#10;(x &lt;= AccelerationDimensionless) ? Acceleration : &#10;  (x &lt;= VelocityDimensionless) ? Velocity :&#10;  (x &lt;= PositionDimensionless) ? Position :&#10;  (x &lt;= TimeDimensionless) ? Time :&#10;  (x &lt; ConflictDimensionless) ? Conflict :&#10;(x &lt; ConflictConflict) ?  Conflict : Dimensionless">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -57,11 +53,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = General}">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -71,10 +63,6 @@
     <entity name="MultiplyConstraintExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;    (x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= AccelerationTime) ? Velocity :&#10;    (x &lt;= VelocityDimensionless) ? Velocity :&#10;(x &lt;= VelocityTime) ? Position :&#10;    (x &lt;= PositionDimensionless) ? Position :&#10;/* (x &lt;= DimensionlessConflict) ? x.project(1) : */&#10;(x &lt;= DimensionlessVelocity) ? Velocity :&#10;    (x &lt;= DimensionlessPosition) ? Position :&#10;    (x &lt;= DimensionlessAcceleration) ? Acceleration :&#10;    (x &lt;= DimensionlessTime) ? Time :&#10;/* (x &lt;= ConflictDimensionless) ? x.project(0) : */&#10;(x &lt;= AccelerationDimensionless) ? Acceleration :&#10;    (x &lt;= TimeDimensionless) ? Time :&#10;Conflict">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -98,10 +86,6 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
