@@ -47,7 +47,7 @@ EXPERIMENTAL_DOMAINS =
 #   ojdbc6.jar was found.
 DOMAINS =	ca ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
-	        giotto $(PTJOGL_DIR) petrinet rendezvous properties \
+	        giotto $(PTJOGL_DIR) petrinet rendezvous \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
 
@@ -82,7 +82,6 @@ PTAUXALLJARS = \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
-		properties/properties.jar \
 		ptera/ptera.jar \
 		pthales/pthales.jar \
 		ptides/ptides.jar \
