@@ -427,6 +427,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         _graphicalClasses.put(
                 "ptolemy.vergil.ontologies.ConceptIcon", null);
+
+        _graphicalClasses.put(
+                "ptolemy.domains.petrinet.lib.gui.PetriNetDisplay",
+                "ptolemy.domains.petrinet.lib.PetriNetRecorder");
     }
 
     /** True if we should remove the GR domain. */
