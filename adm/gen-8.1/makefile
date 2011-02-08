@@ -549,6 +549,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		lib/synthesis.jar \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
 		ptolemy/actor/lib/ecsl \
+		ptolemy/actor/lib/io \
 		ptolemy/actor/lib/io/comm \
 		ptolemy/actor/lib/jai \
 		ptolemy/actor/lib/jmf \
@@ -1330,6 +1331,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/kernel/attributes \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
@@ -1345,9 +1347,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/comm \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/hoc \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/io \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/mail \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/net \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/python \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
@@ -1421,6 +1425,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/colt \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib \
@@ -1466,9 +1471,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/demo/MonotonicityAnalysis \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil/properties \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/ptalon \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
