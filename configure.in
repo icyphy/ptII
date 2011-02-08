@@ -2226,7 +2226,7 @@ else
 	# $PTII/ptolemy/domains/makefile if jogl.jar was found.
 	PTJOGL_DIR=jogl
         # PTJOGL_PACKAGES is used in ptII/doc/makefile
-	PTJOGL_PACKAGES="ptolemy.domains.jogl.kernel ptolemy.domains.jogl.lib"
+	PTJOGL_PACKAGES="ptolemy.domains.jogl.kernel ptolemy.domains.jogl.lib ptolemy.domains.jogl.objLoader ptolemy.domains.jogl.objModel ptolemy.domains.jogl.renderingActive ptolemy.domains.jogl.TourModelsGL ptolemy.domains.petrinet.lib.gui"
 
 	# Look for Jogl jar files
 	jogljars="jogl.jar gluegen-rt.jar"
