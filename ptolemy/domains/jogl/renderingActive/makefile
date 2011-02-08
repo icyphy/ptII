@@ -1,10 +1,10 @@
-# Makefile for Ptolemy Java OpenGL domain
+# Makefile for Java OpenGL (Jogl) domain: Animate the rotating cube using active rendering.
 #
-# @Authors: Yasemin Demir, based on a file by Christopher Brooks
+# @Authors: Christopher Brooks (makefile only)
 #
-# $Id: makefile 57375 2010-02-28 16:53:14Z cxh $
+# $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/domains/jogl
+ME =        ptolemy/domains/jogl/renderingActive
 
-DIRS =      kernel lib objLoader objModel renderingActive test TourModelsGL
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =      ../../..
+ROOT =      ../../../..
 
 # JOGL_JARS is set in $PTII/mk/ptII.mk
 CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(PTJOGL_JARS)
@@ -44,22 +44,16 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     jogl
+PTPACKAGE =     renderingActive
+PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSALLJAR = 
+PTCLASSALLJARS =
 
-PTCLASSJAR =
+JSRCS = \
+	CubeCanvasGL.java \
+	CubeGL.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-PTCLASSALLJARS = \
-	kernel/kernel.jar \
-	lib/lib.jar
-
-JSRCS =
-
-OTHER_FILES_TO_JAR = \
-	JOGL-copyright.htm
-
-EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_JAR)
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -68,12 +62,10 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	test \
-	demo \
-	doc
+	doc \
+	'CubeGL$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

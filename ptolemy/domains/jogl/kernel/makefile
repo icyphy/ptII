@@ -4,7 +4,7 @@
 #
 # $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2009-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -53,6 +53,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	GLActor3D.java \
+	GLToken.java \
+	GLTransform3D.java \
 	JoglDirector.java \
 	JoglScheduler.java 
 
@@ -66,7 +69,9 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	
+	'GLToken$$1.class' \
+	'GLToken$$GLType.class'
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 

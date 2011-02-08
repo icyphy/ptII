@@ -53,12 +53,15 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	Cube3D.java \
 	Display3D.java \
 	Line3D.java \
+	ModelLoader.java \
 	Point3D.java \
 	RandomPoints.java \
 	Rotate3D.java \
-	Translate3D.java
+	Translate3D.java \
+	Triangle3D.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -69,7 +72,8 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'ViewScene3D$$1.class'
+	'ViewScene3D$$1.class' \
+	'Display3D$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
