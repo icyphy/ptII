@@ -14,10 +14,9 @@
 	     paths that start with ptolemy/ so that we can find these
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
+
+	    <input source="ptolemy/domains/ca/lib/caentities.xml"/>
 	    <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
-        <!-- Promoted continouous
-          input source="ptolemy/domains/continuous/lib/continuousentities.xml"/
-        -->
 	    <input source="ptolemy/domains/dde/dde.xml"/>	 
 
 	    <!-- ddf is shipped with ptiny, so no need to list fsm here -->
