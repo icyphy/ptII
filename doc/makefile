@@ -384,6 +384,7 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies \
 	ptolemy.data.ontologies.gui \
 	ptolemy.data.ontologies.lattice \
+	ptolemy.data.ontologies.lattice.adapters.abstractInterpretation.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constPropagation \
 	ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt \
 	ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.data.expr \
