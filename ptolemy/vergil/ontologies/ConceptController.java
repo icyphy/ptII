@@ -32,8 +32,8 @@ import javax.swing.KeyStroke;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.domains.properties.kernel.LatticeElement;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -135,8 +135,8 @@ public class ConceptController extends StateController {
             NamedObj target = getTarget();
 
             // If the target is not an instance of LatticeElement, do nothing.
-            if (target instanceof LatticeElement) {
-                Parameter parameter = ((LatticeElement) target).isAcceptableSolution;
+            if (target instanceof Concept) {
+                Parameter parameter = ((Concept) target).isAcceptable;
 
                 try {
                     BooleanToken value = (BooleanToken) parameter.getToken();
