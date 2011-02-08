@@ -109,10 +109,10 @@ public class ModalController extends FSMActor implements DropTargetHandler,
 
         try {
             new ContainmentExtender(this, "_containmentExtender");
-        } catch (KernelException e) {
+        } catch (KernelException ex) {
             // This should never happen.
-            throw new InternalErrorException("Constructor error "
-                    + e.getMessage());
+            throw new InternalErrorException(this, ex,
+                    "Failed to create a ContainmentExtender.");
         }
     }
 
@@ -309,9 +309,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
-            throw new InternalErrorException(
-                    "ModalController.newPort: Internal error: "
-                            + ex.getMessage());
+            throw new InternalErrorException(this, ex,
+                    "ModalController.newPort(): Internal error.");
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
