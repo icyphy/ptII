@@ -1,6 +1,0 @@
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard.input	False	<=	eff		TypedIOPort	.BooleanSwitch.trueOutput	null
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard2.input	False	<=	eff		TypedIOPort	.BooleanSwitch.falseOutput	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.BooleanSwitch	base	eff		TypedIOPort	.BooleanSwitch.trueOutput	null	<=	eff		TypedIOPort	.BooleanSwitch.input	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.BooleanSwitch	base	eff		TypedIOPort	.BooleanSwitch.falseOutput	null	<=	eff		TypedIOPort	.BooleanSwitch.input	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.BooleanSwitch	base	eff		TypedIOPort	.BooleanSwitch.trueOutput	null	<=	eff		TypedIOPort	.BooleanSwitch.control	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.BooleanSwitch	base	eff		TypedIOPort	.BooleanSwitch.falseOutput	null	<=	eff		TypedIOPort	.BooleanSwitch.control	null

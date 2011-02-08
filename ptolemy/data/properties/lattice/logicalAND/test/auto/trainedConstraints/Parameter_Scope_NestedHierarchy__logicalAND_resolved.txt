@@ -1,3 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff	topLevelComposite	ASTPtLeafNode	PtLeafNode:true:null:10:null	True	<=	eff		Parameter	.P_topLevel	True
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.CompositeActor	base	eff	.CompositeActor	ASTPtLeafNode	PtLeafNode:false:null:null:P_topLevel	True	<=	eff		Parameter	.CompositeActor.P_nested	True
-ptolemy.data.properties.lattice.logicalAND.data.expr	ASTPtLeafNode	PtLeafNode:false:null:null:P_topLevel	base	eff		Parameter	.P_topLevel	True	<=	eff	.CompositeActor	ASTPtLeafNode	PtLeafNode:false:null:null:P_topLevel	True

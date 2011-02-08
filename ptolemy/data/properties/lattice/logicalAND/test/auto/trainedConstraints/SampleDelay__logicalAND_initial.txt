@@ -1,2 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.domains.sdf.lib	SampleDelay	.SampleDelay	base	eff		LatticeProperty	False	False	<=	eff		TypedIOPort	.SampleDelay.output	False
-ptolemy.data.properties.lattice.logicalAND.domains.sdf.lib	SampleDelay	.SampleDelay2	base	eff		LatticeProperty	False	False	<=	eff		TypedIOPort	.SampleDelay2.output	False

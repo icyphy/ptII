@@ -5,8 +5,6 @@
   <configure>
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
       <input source="ptolemy/configs/basicUtilities.xml"/>
-      <!-- Don't include properties code, it is based on data.properties, which is not shipping -->
-      <!-- input source="ptolemy/configs/properties/propertiesAttributeLibrary.xml"/ -->
       <entity name="State" class="ptolemy.domains.fsm.kernel.State">
         <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
       </entity>

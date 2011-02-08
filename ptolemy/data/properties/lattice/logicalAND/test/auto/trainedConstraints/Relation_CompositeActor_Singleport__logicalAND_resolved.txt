@@ -1,4 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.RelationInPort	base	eff		TypedIOPort	.RelationInPort.in1	Unknown	<=	eff		TypedIOPort	.RelationInPort.out1	Unknown
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.RelationOutPort	base	eff		TypedIOPort	.RelationOutPort.in1	Unknown	<=	eff		TypedIOPort	.RelationOutPort.out1	Unknown
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.RelationInPortOutPort	base	eff		TypedIOPort	.RelationInPortOutPort.in1	Unknown	<=	eff		TypedIOPort	.RelationInPortOutPort.out1	Unknown
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.ConnectionInside	base	eff		TypedIOPort	.ConnectionInside.in1	Unknown	<=	eff		TypedIOPort	.ConnectionInside.out1	Unknown

@@ -1,6 +1,0 @@
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard.input	False	<=	eff		TypedIOPort	.Maximum.maximumValue	null
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard2.input	False	<=	eff		TypedIOPort	.Maximum.maximumValue	null
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard3.input	False	<=	eff		TypedIOPort	.Maximum.channelNumber	null
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard4.input	False	<=	eff		TypedIOPort	.Maximum.channelNumber	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.Maximum	base	eff		TypedIOPort	.Maximum.maximumValue	null	<=	eff		TypedIOPort	.Maximum.input	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.Maximum	base	eff		TypedIOPort	.Maximum.channelNumber	null	<=	eff		TypedIOPort	.Maximum.input	null

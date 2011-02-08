@@ -1,3 +1,0 @@
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		Parameter	.Parameter	null	<=	eff	topLevelComposite	ASTPtSumNode	PtSumNode:true:null:null	null
-ptolemy.data.properties.lattice.logicalOrBackward.data.expr	ASTPtRootNode	PtSumNode:true:null:null	base	eff	topLevelComposite	ASTPtSumNode	PtSumNode:true:null:null	null	<=	eff	PtSumNode:true:null:null	ASTPtLeafNode	PtLeafNode:true:null:5:null	null
-ptolemy.data.properties.lattice.logicalOrBackward.data.expr	ASTPtRootNode	PtSumNode:true:null:null	base	eff	topLevelComposite	ASTPtSumNode	PtSumNode:true:null:null	null	<=	eff	PtSumNode:true:null:null	ASTPtLeafNode	PtLeafNode:true:null:4:null	null

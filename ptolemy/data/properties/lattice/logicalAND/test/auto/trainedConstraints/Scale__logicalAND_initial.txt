@@ -1,2 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Scale	.Scale	base	eff		TypedIOPort	.Scale.input	null	<=	eff		TypedIOPort	.Scale.output	null
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Scale	.Scale2	base	eff		LatticeProperty	True	True	<=	eff		TypedIOPort	.Scale2.output	True

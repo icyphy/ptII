@@ -1,7 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Ramp.output	False	<=	eff		TypedIOPort	.CompositeActor.in	False
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.CompositeActor	base	eff		TypedIOPort	.CompositeActor.in	False	<=	eff		TypedIOPort	.CompositeActor.CompositeActor.in	False
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.CompositeActor.CompositeActor	base	eff		TypedIOPort	.CompositeActor.CompositeActor.in	False	<=	eff		TypedIOPort	.CompositeActor.CompositeActor.CompositeActor.in	False
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	.CompositeActor.CompositeActor.CompositeActor	base	eff		TypedIOPort	.CompositeActor.CompositeActor.CompositeActor.in	False	<=	eff		TypedIOPort	.CompositeActor.CompositeActor.CompositeActor.Discard.input	False
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Ramp	.Ramp	base	eff		PortParameter	.Ramp.step	True	<=	eff		TypedIOPort	.Ramp.output	False
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Ramp	.Ramp	base	eff		LatticeProperty	False	False	<=	eff		TypedIOPort	.Ramp.output	False
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Ramp	.Ramp	base	eff	.Ramp	ASTPtLeafNode	PtLeafNode:true:null:1:null	True	<=	eff		PortParameter	.Ramp.step	True

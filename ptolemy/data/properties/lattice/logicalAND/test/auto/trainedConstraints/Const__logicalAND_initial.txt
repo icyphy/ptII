@@ -1,2 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	null	<=	eff		TypedIOPort	.Const.output	null
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Const	.Const	base	eff	.Const	ASTPtLeafNode	PtLeafNode:true:null:1:null	True	<=	eff		Parameter	.Const.value	null

@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data
 
-DIRS = 		expr test type properties unit ontologies
+DIRS = 		expr test type unit ontologies
 
 # Root of the Ptolemy II directory
 ROOT =		../..

@@ -1,4 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Subscriber.output	null	<=	eff		TypedIOPort	.Discard.input	null
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Subscriber2.output	null	<=	eff		TypedIOPort	.Discard.input	null
-ptolemy.data.properties.lattice.logicalAND.actor	AtomicActor	.Subscriber	base	eff		TypedIOPort	.Subscriber.input	null	<=	eff		TypedIOPort	.Subscriber.output	null
-ptolemy.data.properties.lattice.logicalAND.actor	AtomicActor	.Subscriber2	base	eff		TypedIOPort	.Subscriber2.input	null	<=	eff		TypedIOPort	.Subscriber2.output	null

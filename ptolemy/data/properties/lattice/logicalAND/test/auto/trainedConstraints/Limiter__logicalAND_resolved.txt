@@ -1,4 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff		MonotonicFunction	.Limiter$FunctionTerm	Unknown	<=	eff		TypedIOPort	.Limiter.output	Unknown
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff		TypedIOPort	.Limiter.input	Unknown	MFV	eff	.Limiter	MonotonicFunction	.Limiter$FunctionTerm	Unknown
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff	.Limiter	ASTPtLeafNode	PtLeafNode:true:null:1.0:null	True	<=	eff		Parameter	.Limiter.top	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff	.Limiter	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	True	<=	eff		Parameter	.Limiter.bottom	True

@@ -1,3 +1,0 @@
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard.input	False	<=	eff		TypedIOPort	.Distributor.output	null
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard2.input	False	<=	eff		TypedIOPort	.Distributor.output	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.Distributor	base	eff		TypedIOPort	.Distributor.output	null	<=	eff		TypedIOPort	.Distributor.input	null
