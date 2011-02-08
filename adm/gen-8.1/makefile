@@ -1458,12 +1458,12 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
 	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/ \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/exampleSetLattice \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalAND \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalOrBackward \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/token/firstValueToken \
+	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/lattice/adapters/abstractInterpretation \
+	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/lattice \
+	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/demo/CarTracking \
+	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/demo/ConstAbstractInterpretation \
+	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/demo/ConstNonconst \
+	$(REMOTE1PTIIDIST)/ptolemy/data/ontologies/demo/MonotonicityAnalysis \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/kernel \
