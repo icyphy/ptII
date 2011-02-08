@@ -658,8 +658,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         + "/xml/dtd/MoML_1.dtd\">\n");
             }
             super.exportMoML(output, depth, name);
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(this, e, "Unable to set "
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex, "Unable to set "
                     + "attributes for the states.");
         } finally {
             List<State> stateList = deepEntityList();
@@ -824,8 +824,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         try {
             stateDependent = ((BooleanToken) stateDependentCausality.getToken())
                     .booleanValue();
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to get the value of the stateDependentCausality parameter.");
         }
         if (!stateDependent) {
             if (_causalityInterface != null
@@ -1174,8 +1175,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (causality.dependentPorts(input).size() < numberOfOutputs) {
                     return false;
                 }
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(this, ex,
+                "Failed to get the dependent ports."); 
             }
         }
         return true;
@@ -1238,9 +1240,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return new TypedIOPort(this, name);
         } catch (IllegalActionException ex) {
             // This exception should not occur.
-            throw new InternalErrorException(
-                    "TypedAtomicActor.newPort: Internal error: "
-                            + ex.getMessage());
+            throw new InternalErrorException(this, ex,
+                    "Failed to create a port named \"" + name + "\"");
         } finally {
             _workspace.doneWriting();
         }
@@ -2314,8 +2315,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             finalStateNames.setVisibility(Settable.EXPERT);
         } catch (KernelException ex) {
             // This should never happen.
-            throw new InternalErrorException("Constructor error "
-                    + ex.getMessage());
+            throw new InternalErrorException(this, ex, "Constructor error.");
         }
 
         _identifierToPort = new HashMap<String, Port>();
