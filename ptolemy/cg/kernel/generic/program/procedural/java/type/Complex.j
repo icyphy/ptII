@@ -51,12 +51,14 @@ static Token Complex_new(double real, double imag) {
 /**/
 
 /***Complex_equals***/
+#ifdef PTCG_TYPE_Complex
 static Token Complex_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
     return Boolean_new(((ComplexCG)thisToken.payload).real == ((ComplexCG)otherToken.payload).real
     && ((ComplexCG)thisToken.payload).imag == ((ComplexCG)otherToken.payload).imag);
 }
+#endif
 /**/
 
 /***Complex_isCloseTo***/
