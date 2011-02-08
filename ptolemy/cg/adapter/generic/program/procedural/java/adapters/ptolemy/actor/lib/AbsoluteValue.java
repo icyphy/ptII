@@ -70,6 +70,9 @@ public class AbsoluteValue extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException(actor.output, "Only primitive types "
                     + "and Complex numbers may have their absolute value taken, "
                     + "the type was " + type);
+        } else {
+            // FIXME: This is how we tell the system that we are using Complex.
+            _templateParser.addNewTypesUsed("Complex");
         }
 
         CodeStream codeStream = _templateParser.getCodeStream();

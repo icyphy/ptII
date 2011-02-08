@@ -1217,8 +1217,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 CodeStream codeStream = new CodeStream(typesTemplate, this);
                 try {
                     if (codeStream.getCodeBlock("declareBlock").length() > 0) {
+                        String typeName = typesArray[i].toString();
+                        if (typeName.equals("Complex")) {
+                            typeName = "ComplexCG";
+                        }
                         _typeDeclarations.append("import "
-                                + topPackageName + typesArray[i] + ";" + _eol);
+                                + topPackageName + typeName + ";" + _eol);
                     }
                 } catch (IllegalActionException ex) {
                     IOException exception = new IOException(
@@ -1509,7 +1513,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         for (String file : (Set<String>) includingFiles) {
             if (!file.equals("<math.h>") && !file.equals("<stdio.h>")) {
-                code.append("import " + file + _eol);
+                code.append("import " + file +_eol );
             }
         }
         code.append("public class " + _sanitizedModelName + " {" + _eol);
@@ -1887,7 +1891,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         if (importLine.endsWith(".Token;")) {
                             sawTokenImport = true;
                         }
-                        if (importLine.endsWith(typesArray[i] + ";")) {
+                        String typeName = typesArray[i].toString();
+                        if (typeName.equals("Complex")) {
+                            typeName = "ComplexCG";
+                        }
+                        if (importLine.endsWith(typeName + ";")) {
                             try {
                                 // Reset the loop of types to the
                                 // first element so that we may search
