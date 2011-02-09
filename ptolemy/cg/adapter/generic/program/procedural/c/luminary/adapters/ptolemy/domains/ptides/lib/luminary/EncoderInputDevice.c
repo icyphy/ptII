@@ -55,6 +55,7 @@ IntEnable(INT_GPIO$pad);
 
 saveState();
 // need to push the currentModelTag onto the stack.
+int counter = locationCounter;
 stackedModelTagIndex++;
 if (stackedModelTagIndex > MAX_EVENTS) {
     die("MAX_EVENTS too small for stackedModelTagIndex");
@@ -78,6 +79,8 @@ encoderInputInterruptStatus |= (encoderInputPinStatus << 8);
 // do not need to disable interrupts if all interrupts have the same priority
 //disableInterrupts();
 $sensorFireMethod();
-// stack manipulation here instead of later.
-addStack();
+if (counter != locationCounter) {
+    // stack manipulation if event has been inserted into the event queue.
+    addStack();
+}
 /**/

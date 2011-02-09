@@ -291,9 +291,10 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
 	if (-1 == timeSub(*safeToProcessTime, currentTime, &timeToWait)) {
 		TimerLoadSet(TIMER0_BASE, TIMER_BOTH, 0);
 		timerInterruptSecsLeft = 0;	
-	}
-    TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(timeToWait.nsecs));
-    timerInterruptSecsLeft = timeToWait.secs;
+	} else {
+    	TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(timeToWait.nsecs));
+    	timerInterruptSecsLeft = timeToWait.secs;
+    }
 
     //
     //Setup the interrupts for the timer timeouts

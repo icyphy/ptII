@@ -248,16 +248,28 @@ Event* newEvent(void) {
     int counter = 0;
 	disableInterrupts();
     while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {
-        if (counter++ >= MAX_EVENTS) {  // if you've run out of memory just stop
+        // If ran out of memory, then die.
+        if (counter++ >= MAX_EVENTS) {
             die("ran out of memory");
         }
         locationCounter++;
-        // make it circular
-        locationCounter %= MAX_EVENTS;
+        // The event list is circular.
+        if (locationCounter >= MAX_EVENTS) {
+            locationCounter -= MAX_EVENTS;
+        }
+        // The following code is less efficient?
+        // locationCounter %= MAX_EVENTS;
     }
     //      RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
 	counter = locationCounter;
-    eventMemory[counter].inUse = locationCounter;
+    eventMemory[counter].inUse = counter;
+	locationCounter++;
+    // The event list is circular.
+    if (locationCounter >= MAX_EVENTS) {
+        locationCounter -= MAX_EVENTS;
+    }
+	// The following code is less efficient?    
+    // locationCounter %= MAX_EVENTS;
 	enableInterrupts();
     return &eventMemory[counter];
 }
@@ -338,7 +350,7 @@ void processEvents() {
         debugMessageNumber("wc = ", whilecount);
 #endif
 
-        if (higherPriority(event) == TRUE) {
+        if (higherPriority(event)) {
             safeToProcess(event, &processTime);
 
 #ifdef LCD_DEBUG
@@ -412,7 +424,7 @@ void processEvents() {
 }
 
 /* 
-* fire_actor checks if static timing analysis is needed.
+* Check if static timing analysis is needed.
 * if it is, static timing analysis is called, and returns
 * if it's not, firing method of the actor specified by the event is called
 */
@@ -427,7 +439,7 @@ void fireActor(Event* currentEvent) {
     stackedDeadlineIndex--;
 }
 
-/* determines whether the event to fire this current actor is of higher priority than
+/* Determines whether the event to fire this current actor is of higher priority than
 *  whatever even that's currently being executed.
 */                                                                    
 unsigned int higherPriority(const Event* const event) {
@@ -469,22 +481,22 @@ void queuePriority(Event* event) {
 }
 
 /*
-* set the current model time.
-*/
+ * Set the current model time.
+ */
 void setCurrentModelTag(Event* currentEvent) {
     currentModelTime = currentEvent->tag.timestamp;
     currentMicrostep = currentEvent->tag.microstep;
 }
 
 /*
-* propagate the data token to the downstream input port Event pointer.
-*/
+ * Propagate the data token to the downstream input port Event pointer.
+ */
 void propagateDataToken(Event* currentEvent){
     *(currentEvent->sinkEvent) = currentEvent;
 }
 
 /* 
-* Static timing analysis is called to set the timestamp of the event by a 
+* Static timing analysis to set the timestamp of the event by a 
 * specific amount in order to fire the event at an instance that ensures 
 * all events are exectued in order.
 * In this analysis, the clock event can be executed when real time exceeds
@@ -531,14 +543,14 @@ void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
 /**/
 
 /*** initPIBlock ***/
-// the platform independent initialization code goes here.
+// The platform independent initialization code goes here.
 initializeMemory();
 initializeEvents();
 initializePISystem();
 /**/
 
 /*** initPICodeBlock ***/
-// the platform independent initialization code goes here.
+// The platform independent initialization code goes here.
 void initializeEvents(void) {
     // no event initialization is needed here... for now.
 }
