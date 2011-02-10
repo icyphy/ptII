@@ -93,7 +93,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	conceptFunctionLibrary.xml \
 	ontologyLibrary.xml \
-	ontologySolverLibrary.xml
+	ontologySolverLibrary.xml \
+	ontologyAnalysisLibrary.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -106,7 +107,12 @@ MISC_FILES = doc gui lattice test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'ConceptGraph$$1.class' \
+	'ConceptGraph$$BoundType.class' \
+	'DAGConceptGraph$$1.class' \
+	'FlatTokenInfiniteConcept$$1.class' \
+	'RecordConcept$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
