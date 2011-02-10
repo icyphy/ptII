@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	constAbstractInterpretation
+PTPACKAGE = 	constPropagationAbsInt
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	data/data.jar

@@ -44,11 +44,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	test
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	data/data.jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =
+PTCLASSALLJAR =
 
 JSRCS =
 

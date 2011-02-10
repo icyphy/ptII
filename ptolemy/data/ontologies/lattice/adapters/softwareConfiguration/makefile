@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters softwareConfiguration
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # $Id$
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,18 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters
+ME =		ptolemy/data/ontologies/lattice/adapters/softwareConfiguration
 
-DIRS = 		abstractInterpretation \
-		constAbsIntObservable constAbstractInterpretation \
-		constLattice constObservableProductLattice \
-		constPropagation constPropagationAbsInt \
-		defaultAdapters dimensionSystem monotonicityAnalysis \
-		observableLattice \
-		reachableLattice softwareConfiguration
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -49,28 +43,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapters
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	abstractInterpretation/abstractInterpretation.jar \
-	constAbsIntObservable/constAbsIntObservable.jar \
-	constAbstractInterpretation/constAbstractInterpretation.jar \
-	constLattice/constLattice.jar \
-	constObservableProductLattice/constObservableProductLattice.jar \
-	constPropagation/constPropagation.jar \
-	constPropagationAbsInt/constPropagationAbsInt.jar \
-	defaultAdapters/defaultAdapters.jar \
-	dimensionSystem/dimensionSystem.jar \
-	monotonicityAnalysis/monotonicityAnalysis.jar \
-	observableLattice/observableLattice.jar \
-	reachableLattice/reachableLattice.jar \
-	softwareConfiguration/softwareConfiguration.jar
+PTPACKAGE = 	softwareConfiguration
+PTCLASSJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =
+PTCLASSALLJAR =
 
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	SWConfigurationSolverModel.xml \
+	softwareConfiguration.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
