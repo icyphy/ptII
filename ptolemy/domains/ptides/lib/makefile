@@ -62,6 +62,7 @@ JSRCS = \
 	NetworkInputDevice.java \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
+	RealisticSlaveClock.java \
 	SensorInputDevice.java \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \

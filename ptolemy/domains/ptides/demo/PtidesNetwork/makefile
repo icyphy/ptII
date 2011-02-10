@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: 
+# @Version: $Id$
 #
-# @Copyright (c) 2000-2010 The Regents of the University of California.
+# @Copyright (c) 2010-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesAirplaneFuelControl
+PTPACKAGE = 	PtidesNetwork
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -50,11 +50,12 @@ JSRCS = \
 	TTESwitch.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
+	2Bus.xml \
 	PtidesNetwork.xml \
 	TTE.xml
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 
 

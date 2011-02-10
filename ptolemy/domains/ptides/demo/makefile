@@ -67,7 +67,7 @@ PTCLASSALLJARS = \
 	PtidesClockSynchronizationError/PtidesClockSynchronizationError.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
-	PtidesNetwork.jar
+	PtidesNetwork/PtidesNetwork.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
