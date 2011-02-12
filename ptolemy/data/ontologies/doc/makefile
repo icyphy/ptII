@@ -49,9 +49,10 @@ PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	LatticeComposition.ppt \
+	LatticeComposition_TweetSlide.ppt
 	ontologies_class_diagram.zargo \
-	ontologies_class_diagram_extracted_Java.zargo \
-	LatticeComposition.ppt
+	ontologies_class_diagram_extracted_Java.zargo
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
