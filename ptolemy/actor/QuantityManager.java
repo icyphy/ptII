@@ -1,4 +1,4 @@
-/* This abstract class for a quantity manager.
+/* An interface for objects that can intervene in communication between actors.
 
 @Copyright (c) 2010 The Regents of the University of California.
 All rights reserved.
@@ -43,9 +43,21 @@ import ptolemy.kernel.util.IllegalActionException;
  *  into account shared resources. For example, it could delay delivery of any
  *  tokens to the original receiver (that created by the director) until the
  *  resources become available for the transport to occur.
+ *
  *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
  */
 public interface QuantityManager {
+
+    /** Create a receiver to mediate a communication via the specified receiver.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the receiver cannot be created.
+     */
+    public abstract Receiver getReceiver(Receiver receiver) throws IllegalActionException;
 
     /** Reset the QuantityManager.
      */
@@ -58,14 +70,7 @@ public interface QuantityManager {
      *  @param receiver The receiver for which this quantity manager is mediating
      *   communication.
      *  @param token The token for the communication to mediate.
-     *  @throws IllegalActionException If the token cannot be sent.
+     *  @exception IllegalActionException If the token cannot be sent.
      */
     public void sendToken(Receiver receiver, Token token) throws IllegalActionException;
-    
-    /** Create a receiver to mediate a communication via the specified receiver.
-     *  @param receiver Receiver whose communication is to be mediated.
-     *  @return A new receiver.
-     *  @throws IllegalActionException If something goes wrong.
-     */
-    public abstract Receiver getReceiver(Receiver receiver) throws IllegalActionException;
 }

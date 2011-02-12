@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 1998-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -92,6 +92,7 @@ JSRCS = \
 	Manager.java \
 	NoRoomException.java \
 	NoTokenException.java \
+	QuantityManager.java \
 	QuasiTransparentDirector.java \
 	QueueReceiver.java \
 	Receiver.java \
