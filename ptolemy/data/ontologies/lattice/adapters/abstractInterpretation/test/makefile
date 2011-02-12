@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters AbstractInterpretation Test
+# Makefile for the Java classes used to test the Ptolemy actors
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Hylands
 #
-# $Id$
+# @Version: $Id$
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 1997-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,9 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/test
-
-DIRS = 		
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -42,35 +41,52 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	test
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-PTCLASSALLJAR =
+JSRCS = 
 
-JSRCS =
+# Non-graphical Java tests written in Tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLEL_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = dummy.tcl
 
-OTHER_FILES_TO_BE_JARED = \
-	ConstScale.xml
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = $(DIRS)
+MISC_FILES =	alljtests.tcl \
+		auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
 
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass \
+	$(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	$(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
