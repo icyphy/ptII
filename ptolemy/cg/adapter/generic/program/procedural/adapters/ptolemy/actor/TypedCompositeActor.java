@@ -96,97 +96,6 @@ public class TypedCompositeActor extends
         }
     }
 
-    /** Generate the fire code of the associated composite actor. This method
-     *  first generates code for transferring any data from the input
-     *  ports of this composite to the ports connected on the inside
-     *  by calling the generateTransferInputsCode() method of the
-     *  local director adapter. It then invokes the generateFireCode()
-     *  method of its local director adapter.  After the
-     *  generateFireCode() method of the director adapter returns,
-     *  generate code for transferring any output data created by
-     *  calling the local director adapter's
-     *  generateTransferOutputsCode() method.
-     *  @return The generated fire code.
-     *  @exception IllegalActionException If the adapter associated
-     *  with an actor throws it while generating fire code for the
-     *  actor, or the director adapter throws it while generating code
-     *  for transferring data.
-     */
-    @Override
-    protected String _generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator().comment(2,
-                "Fire Composite " + getComponent().getName()));
-
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
-
-        Iterator<?> inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
-                .inputPortList().iterator();
-
-        // Update port parameters.
-        StringBuffer tempCode = new StringBuffer();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort
-                    && inputPort.isOutsideConnected()) {
-
-                PortParameter portParameter = ((ParameterPort) inputPort)
-                        .getParameter();
-                tempCode.append(CodeStream.indent(getCodeGenerator()
-                        .generateVariableName(portParameter)));
-                // FIXME: The = sign is language specific.
-                tempCode.append(" = ");
-                String reference = getReference(inputPort.getName(), false);
-                if (reference != "") {
-                    tempCode.append(reference);
-                } else {
-                    // Look for the reference in the exeuctive director.  Needed for
-                    // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml
-                    tempCode.append(getReference(inputPort.getName(), true));
-                }
-                tempCode.append(";" + _eol);
-            }
-        }
-        if (tempCode.length() > 0) {
-            code.append(CodeStream.indent(getCodeGenerator()
-                    .comment(
-                            "Update " + getComponent().getName()
-                                    + "'s port parameters")));
-            code.append(tempCode);
-        }
-
-        // Transfer the data to the inside.
-        inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
-                .inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            if (!(inputPort instanceof ParameterPort)) {
-                directorAdapter.generateTransferInputsCode(inputPort, code);
-            }
-        }
-
-        // Generate the fire code by the director adapter.
-        code.append(directorAdapter.generateFireCode());
-
-        // Transfer the data to the outside.
-        Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
-                .outputPortList().iterator();
-
-        if((getComponent() instanceof ModularCodeGenTypedCompositeActor) &&
-                ((ptolemy.actor.CompositeActor) getComponent())
-                .outputPortList().size() > 0)
-            code.append("if(export) {" + _eol);
-        
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-            directorAdapter.generateTransferOutputsCode(outputPort, code);
-        }
-        
-        return processCode(code.toString());
-    }
-
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the
@@ -418,6 +327,34 @@ public class TypedCompositeActor extends
         return libraries;
     }
 
+    /** Return the libraries specified in the "libraryDirectories" blocks in the
+     *  templates of the actors included in this CompositeActor.
+     *  @return A Set of libraryDirectories
+     *  @exception IllegalActionException If thrown when gathering libraries.
+     */
+    @Override
+    public Set<String> getLibraryDirectories() throws IllegalActionException {
+        Set<String> libraryDirectories = new LinkedHashSet<String>();
+        libraryDirectories.addAll(super.getLibraryDirectories());
+
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
+            libraryDirectories.addAll(adapterObject.getLibraryDirectories());
+        }
+
+        // Get libraries needed by the director adapter.
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        libraryDirectories.addAll(directorAdapter.getLibraryDirectories());
+
+        return libraryDirectories;
+    }
+
     /** Return a set of parameters that will be modified during the
      *  execution of the model. These parameters are those returned by
      *  getModifiedVariables() method of directors or actors that
@@ -469,5 +406,99 @@ public class TypedCompositeActor extends
         sharedCode.addAll(directorAdapter.getSharedCode());
 
         return sharedCode;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate the fire code of the associated composite actor. This method
+     *  first generates code for transferring any data from the input
+     *  ports of this composite to the ports connected on the inside
+     *  by calling the generateTransferInputsCode() method of the
+     *  local director adapter. It then invokes the generateFireCode()
+     *  method of its local director adapter.  After the
+     *  generateFireCode() method of the director adapter returns,
+     *  generate code for transferring any output data created by
+     *  calling the local director adapter's
+     *  generateTransferOutputsCode() method.
+     *  @return The generated fire code.
+     *  @exception IllegalActionException If the adapter associated
+     *  with an actor throws it while generating fire code for the
+     *  actor, or the director adapter throws it while generating code
+     *  for transferring data.
+     */
+    @Override
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(getCodeGenerator().comment(2,
+                "Fire Composite " + getComponent().getName()));
+
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+
+        Iterator<?> inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+                .inputPortList().iterator();
+
+        // Update port parameters.
+        StringBuffer tempCode = new StringBuffer();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            if (inputPort instanceof ParameterPort
+                    && inputPort.isOutsideConnected()) {
+
+                PortParameter portParameter = ((ParameterPort) inputPort)
+                        .getParameter();
+                tempCode.append(CodeStream.indent(getCodeGenerator()
+                        .generateVariableName(portParameter)));
+                // FIXME: The = sign is language specific.
+                tempCode.append(" = ");
+                String reference = getReference(inputPort.getName(), false);
+                if (reference != "") {
+                    tempCode.append(reference);
+                } else {
+                    // Look for the reference in the exeuctive director.  Needed for
+                    // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml
+                    tempCode.append(getReference(inputPort.getName(), true));
+                }
+                tempCode.append(";" + _eol);
+            }
+        }
+        if (tempCode.length() > 0) {
+            code.append(CodeStream.indent(getCodeGenerator()
+                    .comment(
+                            "Update " + getComponent().getName()
+                                    + "'s port parameters")));
+            code.append(tempCode);
+        }
+
+        // Transfer the data to the inside.
+        inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+                .inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            if (!(inputPort instanceof ParameterPort)) {
+                directorAdapter.generateTransferInputsCode(inputPort, code);
+            }
+        }
+
+        // Generate the fire code by the director adapter.
+        code.append(directorAdapter.generateFireCode());
+
+        // Transfer the data to the outside.
+        Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+                .outputPortList().iterator();
+
+        if((getComponent() instanceof ModularCodeGenTypedCompositeActor) &&
+                ((ptolemy.actor.CompositeActor) getComponent())
+                .outputPortList().size() > 0)
+            code.append("if(export) {" + _eol);
+        
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            directorAdapter.generateTransferOutputsCode(outputPort, code);
+        }
+        
+        return processCode(code.toString());
     }
 }

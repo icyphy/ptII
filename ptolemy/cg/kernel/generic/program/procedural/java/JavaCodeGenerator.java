@@ -823,7 +823,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableDeclaration());
@@ -1315,34 +1314,38 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-        //         ActorCodeGenerator adapter = _getAdapter(getContainer());
+        // NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
-        //         Set actorIncludeDirectories = adapter.getIncludeDirectories();
-        //         Iterator includeIterator = actorIncludeDirectories.iterator();
-        //         while (includeIterator.hasNext()) {
-        //             addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
-        //         }
+        // Set actorIncludeDirectories = adapter.getIncludeDirectories();
+        // Iterator includeIterator = actorIncludeDirectories.iterator();
+        // while (includeIterator.hasNext()) {
+        //     String includeDirectory = (String) includeIterator.next();
+        //     System.out.println("JCG._addActorIncludeDirectories(): " + includeDirectory); 
+        //     addInclude(includeDirectory);
+        // }
     }
 
     /** Add libraries specified by the actors in this model.
+     *  Libraries are specified in the "libraryDirectories" block of the template.    
+     *  FIXME: this might only be getting libraries from the TypedAtomicActor.
      *  @exception IllegalActionException If thrown when getting an actor's
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-        //         ActorCodeGenerator adapter = _getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
-        //         Set actorLibraryDirectories = adapter.getLibraryDirectories();
-        //         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
-        //         while (libraryDirectoryIterator.hasNext()) {
-        //             addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
-        //                     + "\"");
-        //         }
+        Set actorLibraryDirectories = adapter.getLibraryDirectories();
+        Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
+        while (libraryDirectoryIterator.hasNext()) {
+            String libraryDirectory = (String) libraryDirectoryIterator.next();
+            addLibrary(libraryDirectory);
+        }
 
-        //         Set actorLibraries = adapter.getLibraries();
-        //         Iterator librariesIterator = actorLibraries.iterator();
-        //         while (librariesIterator.hasNext()) {
-        //             addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
-        //         }
+        // Set actorLibraries = adapter.getLibraries();
+        // Iterator librariesIterator = actorLibraries.iterator();
+        // while (librariesIterator.hasNext()) {
+        //     addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
+        // }
     }
 
     /** Analyze the model to find out what connections need to be type
@@ -1513,7 +1516,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         for (String file : (Set<String>) includingFiles) {
             if (!file.equals("<math.h>") && !file.equals("<stdio.h>")) {
-                code.append("import " + file +_eol );
+                code.append("import " + file + _eol );
             }
         }
         code.append("public class " + _sanitizedModelName + " {" + _eol);
@@ -1905,7 +1908,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             } catch (IOException ex) {
                                 throw new IllegalActionException(getComponent(), ex,
                                         "Failed to read line after \"import ..."
-                                        + typesArray[i] + ";\""
+                                        + typeName + ";\""
                                         + "from the imports in\n"
                                         + block);
                             }

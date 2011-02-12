@@ -755,6 +755,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add include directories specified by the actors in this model.
+     *  @exception IllegalActionException Never in this base class.
+     */
+    protected void _addActorIncludeDirectories() throws IllegalActionException {
+    }
+
     /** Add libraries specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.
      */
@@ -1297,12 +1303,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Add include directories specified by the actors in this model.
-     *  @exception IllegalActionException Never in this base class.
-     */
-    private void _addActorIncludeDirectories() throws IllegalActionException {
-    }
 
     /** Pretty print the given line by indenting the line with the
      *  current indent level. If a block begin symbol is found, the

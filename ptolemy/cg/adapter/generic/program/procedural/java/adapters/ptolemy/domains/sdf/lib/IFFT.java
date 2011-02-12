@@ -26,8 +26,11 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
 
+import java.util.Set;
+
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 /**
  A code generation adapter class for ptolemy.domains.sdf.lib.IFFT.
@@ -47,19 +50,17 @@ public class IFFT extends ptolemy.cg.adapter.generic.program.procedural.adapters
     public IFFT(ptolemy.domains.sdf.lib.IFFT actor) {
         super(actor);
     }
-    /** Generate the initialize code for the IFFT actor by
-     *  declaring the initial values of the sink channels of the
-     *  output port of the IFFT actor.
-     *  @return The generated initialize code for the IFFT actor.
-     *  @exception IllegalActionException If the base class throws it,
-     *   or if the initial
-     *   outputs of the IFFT actor is not defined.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        String results = super.generateInitializeCode();
-        ((ProceduralCodeGenerator) getCodeGenerator()).addInclude("ptolemy.math.Complex");
-        ((ProceduralCodeGenerator) getCodeGenerator()).addInclude("ptolemy.math.SignalProcessing");
-        return results;
-    }
 
+    /** Get the classes needed by the code generated for the IFFT actor.
+     *  @return A set of strings that are names of the classes
+     *  needed by the code generated for the IFFT actor.
+     *  @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        ((ProceduralCodeGenerator) getCodeGenerator()).addLibraryIfNecessary(StringUtilities.getProperty("ptolemy.ptII.dir"));
+        Set files = super.getHeaderFiles();
+        files.add("ptolemy.math.Complex;");
+        files.add("ptolemy.math.SignalProcessing;");
+        return files;
+    }
 }
