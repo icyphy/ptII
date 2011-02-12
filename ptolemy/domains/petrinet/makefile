@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/petrinet
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
