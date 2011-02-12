@@ -71,7 +71,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass index.xml
+all: jclass
 install: jclass jars
 
 # Get the rest of the rules
