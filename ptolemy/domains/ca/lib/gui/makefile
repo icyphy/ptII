@@ -39,7 +39,7 @@ ROOT =		../../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		gui
+DIRS =
 
 CLASSPATH =	$(ROOT)
 
