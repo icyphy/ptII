@@ -51,6 +51,7 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = \
 	KielerGraphUtil.java \
 	KielerLayout.java \
+	LayoutHint.java \
 	PtolemyModelUtil.java
 
 OTHER_FILES_TO_BE_JARED = \
