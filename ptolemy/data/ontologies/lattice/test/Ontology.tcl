@@ -79,7 +79,7 @@ proc link {a b link} {
   [java::field $b belowPort] link $link
 }
 
-test Lattices-2.0 {A partial order with a top and bottom is not necessarily a lattice} {
+test Lattices-2.0 {This 6 element partial order is a lattice} {
     set ont [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
     set a [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {A}]
     set b [java::new {ptolemy.data.ontologies.FiniteConcept} $ont {B}]
@@ -92,7 +92,6 @@ test Lattices-2.0 {A partial order with a top and bottom is not necessarily a la
     set ac [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ac}]
     set bd [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {bd}]
     set be [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {be}]
-    set cD [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {cD}]
     set ce [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ce}]
     set df [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {df}]
     set ef [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {ef}]
@@ -101,10 +100,17 @@ test Lattices-2.0 {A partial order with a top and bottom is not necessarily a la
     link $a $c $ac
     link $b $e $be
     link $b $d $bd
-    link $c $d $cD
     link $c $e $ce
     link $d $f $df
     link $e $f $ef
+
+    list [$ont isLattice] [[$ont getConceptGraph] isLattice]
+} {1 1}
+
+test Lattices-2.1 {A partial order with a top and bottom is not necessarily a lattice} {
+    set evilLink [java::new {ptolemy.data.ontologies.ConceptRelation} $ont {cd}]
+
+    link $c $d $evilLink
 
     list [$ont isLattice] [[$ont getConceptGraph] isLattice]
 } {0 0}
