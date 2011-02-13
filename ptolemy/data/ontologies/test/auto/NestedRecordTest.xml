@@ -14,7 +14,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1440, 9, 1251, 816}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 22, 1251, 816}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1038, 706]">
     </property>
@@ -491,7 +491,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{packet = {acc = Acceleration, pos = Position, vel = Velocity}, t = Time}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{packet = {acc = Acceleration, pos = Position, vel = Velocity}, t = Time}">
             </property>
@@ -500,7 +500,7 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
             </property>
@@ -509,7 +509,7 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
             </property>
@@ -522,7 +522,7 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{packet = {acc = Acceleration, pos = Position, vel = Velocity}, t = Time}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{packet = {acc = Acceleration, pos = Position, vel = Velocity}, t = Time}">
             </property>
@@ -531,7 +531,7 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{acc = Acceleration, pos = Position, vel = Velocity}">
             </property>
@@ -540,7 +540,7 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
             </property>
@@ -598,7 +598,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
             </property>
