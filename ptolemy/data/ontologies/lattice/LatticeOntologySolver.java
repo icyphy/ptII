@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -468,7 +469,8 @@ public class LatticeOntologySolver extends OntologySolver {
         try {
             workspace().getWriteAccess();
             invokeSolver();
-            for (NamedObj conceptable : getAllConceptableNamedObjs()) {
+            Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
+            for (NamedObj conceptable : allNamedObjs) {
                 Concept inferred = getConcept(conceptable);
                 if (inferred == null) {
                     // If we have conceptables that do not resolve to concepts,
@@ -484,6 +486,10 @@ public class LatticeOntologySolver extends OntologySolver {
                             .getAttribute("_trainedConcept");
                 }
                 trained.setExpression(inferred.toString());
+                // The Variable class's setExpression can be handled lazily,
+                // so we need this to make sure that the MoML is really updated
+                // to the new value.
+                trained.getToken();
             }
         } finally {
             workspace().doneWriting();
