@@ -114,3 +114,45 @@ test Lattices-2.1 {A partial order with a top and bottom is not necessarily a la
 
     list [$ont isLattice] [[$ont getConceptGraph] isLattice]
 } {0 0}
+
+######################################################################
+####
+test DownSet-1.0 {The down set of bottom is a singleton set} {
+    set ont2 [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
+    set a2 [java::new {ptolemy.data.ontologies.FiniteConcept} $ont2 {A2}]
+    set b2 [java::new {ptolemy.data.ontologies.FiniteConcept} $ont2 {B2}]
+    set ab [java::new {ptolemy.data.ontologies.ConceptRelation} $ont2 {ab}]
+
+    link $a2 $b2 $ab
+
+    set downSet [[$ont2 getConceptGraph] downSet $a2]
+
+    $downSet length
+} {1}
+
+test DownSet-1.1 {The down set of top is the entire set} {
+    set downSet [[$ont2 getConceptGraph] downSet $b2]
+
+    $downSet length
+} {2}
+
+test DownSet-1.2 {The down set of a middle element only returns the elements below it} {
+    set ont4 [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
+    set a4 [java::new {ptolemy.data.ontologies.FiniteConcept} $ont4 {A4}]
+    set b4 [java::new {ptolemy.data.ontologies.FiniteConcept} $ont4 {B4}]
+    set c4 [java::new {ptolemy.data.ontologies.FiniteConcept} $ont4 {C4}]
+    set t4 [java::new {ptolemy.data.ontologies.FiniteConcept} $ont4 {Top4}]
+    set ab [java::new {ptolemy.data.ontologies.ConceptRelation} $ont4 {ab}]
+    set ac [java::new {ptolemy.data.ontologies.ConceptRelation} $ont4 {ac}]
+    set bt [java::new {ptolemy.data.ontologies.ConceptRelation} $ont4 {bt}]
+    set ct [java::new {ptolemy.data.ontologies.ConceptRelation} $ont4 {ct}]
+
+    link $a4 $b4 $ab
+    link $a4 $c4 $ac
+    link $b4 $t4 $bt
+    link $c4 $t4 $ct
+
+    set downSet [[$ont4 getConceptGraph] downSet $c4]
+
+    $downSet length
+} {2}
