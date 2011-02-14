@@ -78,9 +78,13 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  solver, given the model analyzer that invokes this.  Then, if some
      *  concepts resolved to unacceptable values, calculate the set of 
      *  inequality terms that cause the unacceptable values.
+     *  Note:  This has different behavior from resolveConcepts() in the 
+     *  superclass.  Call the superclass resolveConcepts() to calculate concepts
+     *  for all applicable elements in the model. 
      *  @exception KernelException If the _resolveProperties method throws it.
      */
-    public void resolveConcepts() throws KernelException { 
+   // public void resolveConcepts() throws KernelException { 
+    public void resolveConflicts() throws KernelException {
         
         // Reset the list of resolved constraints before executing the ontology solver resolution. 
         super.reset();
