@@ -33,12 +33,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
@@ -58,7 +56,6 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -68,17 +65,10 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-//import ptolemy.vergil.basic.layout.KielerLayoutTableau;
-//import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
-//import ptolemy.vergil.basic.layout.kieler.KielerLayout;
-//import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
 import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.graph.GraphPane;
-import diva.graph.basic.BasicLayoutTarget;
 import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////

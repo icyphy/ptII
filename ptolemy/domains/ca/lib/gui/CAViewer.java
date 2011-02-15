@@ -29,28 +29,19 @@
 
 package ptolemy.domains.ca.lib.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import javax.swing.JButton;
+
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import ptolemy.actor.gui.AbstractPlaceableActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TokenEffigy;
-import ptolemy.actor.gui.TokenTableau;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 /**
  * Cellular Automata Viewer.

@@ -34,12 +34,6 @@ import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ptolemy.math.Precision.IntegerFractionPrecisionFormat;
-import ptolemy.math.Precision.LengthExponentPrecisionFormat;
-import ptolemy.math.Precision.LengthIntegerPrecisionFormat;
-import ptolemy.math.Precision.PrecisionFormat;
-import ptolemy.math.Precision.VHDLPrecisionFormat;
-
 /**
  This class defines the precision of a signed or unsigned fixed point
  value. The precision of a fixed point value is represented as

@@ -28,8 +28,7 @@
 
 package ptolemy.kernel.test.junit;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 import ptolemy.kernel.test.ExampleSystem;
 
 ///////////////////////////////////////////////////////////////////

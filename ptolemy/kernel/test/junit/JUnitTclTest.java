@@ -28,8 +28,6 @@
 
 package ptolemy.kernel.test.junit;
 
-import tcl.lang.Interp;
-import java.io.File;
 import ptolemy.util.test.junit.JUnitTclTestBase;
 
 ///////////////////////////////////////////////////////////////////

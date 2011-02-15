@@ -8,7 +8,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
 public class Tank extends WirelessComposite {

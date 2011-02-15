@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.vergil.basic.layout.kieler;
 
-import ptolemy.kernel.util.NamedObj;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;

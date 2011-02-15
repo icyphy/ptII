@@ -31,18 +31,10 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.basic.BasicLayoutTarget;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -51,6 +43,9 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.IGuiAction;
 import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
 import ptolemy.vergil.basic.layout.kieler.KielerLayout;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.basic.BasicLayoutTarget;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerLayoutAction

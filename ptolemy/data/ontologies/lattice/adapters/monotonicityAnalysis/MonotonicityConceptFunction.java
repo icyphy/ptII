@@ -31,9 +31,9 @@ import java.util.List;
 
 import ptolemy.data.expr.Constants;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptToken;
 import ptolemy.data.ontologies.FiniteConcept;
-import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 

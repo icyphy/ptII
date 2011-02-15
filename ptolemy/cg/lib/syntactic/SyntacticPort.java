@@ -31,7 +31,6 @@ package ptolemy.cg.lib.syntactic;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.cg.lib.syntactic.SyntacticNode;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;

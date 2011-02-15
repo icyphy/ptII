@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.basic;
 
-import ptolemy.actor.gui.Effigy;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////

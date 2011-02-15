@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.graph.GraphStateException;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;

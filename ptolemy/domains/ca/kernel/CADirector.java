@@ -35,28 +35,23 @@ import java.util.Random;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.lib.Const;
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.actor.lib.gui.MatrixViewer;
-import ptolemy.actor.lib.SetVariable;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
+import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.SetVariable;
+import ptolemy.actor.lib.gui.MatrixViewer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ca.lib.CA2DConvolution;
 import ptolemy.domains.ca.lib.gui.CAViewer;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 
 
 /**

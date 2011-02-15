@@ -51,10 +51,7 @@
 
 package ptolemy.domains.petrinet.kernel;
 
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 /**
    Display the evolution of a Petri net after execution.

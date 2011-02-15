@@ -32,8 +32,6 @@ import java.util.List;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.FSMActor;

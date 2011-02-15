@@ -35,29 +35,17 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.Iterator;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
-import ptolemy.actor.gui.AbstractPlaceableActor;
-import ptolemy.actor.gui.Configuration;
+import javax.swing.JPanel;
+
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TokenEffigy;
-import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.Token;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 /**
  * This class is used by the CAViewer to render a 

@@ -49,7 +49,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;

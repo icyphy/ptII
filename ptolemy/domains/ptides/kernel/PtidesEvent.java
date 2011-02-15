@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.ptides.kernel;
 
+import org.python.parser.ast.If;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;

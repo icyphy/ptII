@@ -28,8 +28,9 @@
 
 package ptolemy.util.test.junit;
 
-import tcl.lang.Interp;
 import java.io.File;
+
+import tcl.lang.Interp;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest

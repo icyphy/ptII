@@ -54,13 +54,10 @@
 package ptolemy.domains.petrinet.kernel;
 
 import java.util.Comparator;
-import java.lang.ClassCastException;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

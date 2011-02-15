@@ -38,7 +38,6 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;

@@ -29,7 +29,6 @@
 //// PhaseUnwrap
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

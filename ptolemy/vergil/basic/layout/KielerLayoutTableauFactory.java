@@ -26,30 +26,13 @@
  */
 package ptolemy.vergil.basic.layout;
 
-import java.util.Iterator;
-
-import javax.swing.JFrame;
-
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.basic.BasicLayoutTarget;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
-import ptolemy.vergil.basic.layout.kieler.KielerLayout;
-import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
 
 /**
  * A factory that creates a control panel to display Kieler layout controls.

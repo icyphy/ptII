@@ -31,7 +31,6 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLModelAttribute;

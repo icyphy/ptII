@@ -42,12 +42,10 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Token)} method is called, delays
