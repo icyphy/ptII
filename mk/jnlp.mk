@@ -459,10 +459,6 @@ WIRELESS_JARS = \
 
 FULL_8_1_JARS = \
 	ptolemy/cg/cg.jar \
-	ptolemy/data/properties/properties.jar \
-	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
-	ptolemy/data/properties/demo/demo.jar \
-	ptolemy/vergil/properties/properties.jar \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/sequence/sequence.jar \
