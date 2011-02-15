@@ -73,7 +73,7 @@
 		size="19306"
 		download="eager"/>
 	<jar href="signed/doc/codeDoc.jar"
-		size="31364057"
+		size="31361242"
 		download="eager"/>
 	<jar href="signed/doc/design/usingVergil/usingVergil.jar"
 		size="11560877"
@@ -100,7 +100,7 @@
 		size="9691"
 		download="eager"/>
 	<jar href="signed/ptolemy/actor/lib/security/demo/demo.jar"
-		size="8830"
+		size="8832"
 		download="eager"/>
 	<jar href="signed/ptolemy/actor/lib/comm/demo/demo.jar"
 		size="21714"
@@ -445,7 +445,7 @@
 		size="15052"
 		download="eager"/>
 	<jar href="signed/ptolemy/cg/cg.jar"
-		size="680870"
+		size="680915"
 		download="eager"/>
 	<jar href="signed/ptolemy/data/ontologies/ontologies.jar"
 		size="63163"
