@@ -191,7 +191,8 @@ public class ChangeRequestTest implements ChangeListener {
         changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
             protected void _execute() throws Exception {
-                if (1 == 1) {
+                // Compare against true so that the code compiles.
+                if (true) {
                     throw new Exception("Always Thrown Exception");
                 }
             }
