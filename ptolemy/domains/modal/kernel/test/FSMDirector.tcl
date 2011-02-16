@@ -216,19 +216,28 @@ test FSMDirector-5.1 {test fireAt} {
     $e0 executeChangeRequests
     set dir [java::cast ptolemy.domains.modal.kernel.FSMDirector [$e1 getDirector]]
     set fsm [$e1 getController]
-    set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
     $p2 setOutput true
     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+
+    #set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+    set p3 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p3]]
     $p3 setOutput true
     $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
-    $p2 link $r3
-    $p3 link $r3
+
+    #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+    #$p2 link $r3
+    #$p3 link $r3
+    set lrl2 [$p2 linkedRelationList]
+    set r3 [$lrl2 get 0]
+
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
-    $p3 link $r4
-    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
+    #set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
+    #$p3 link $r4
+    #set lrl3 [$p3 linkedRelationList]
+    #set r4 [$lrl3 get 0]
+    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r3
 
     set s0 [java::new ptolemy.domains.modal.kernel.State $fsm s0]
     set s1 [java::new ptolemy.domains.modal.kernel.State $fsm s1]
@@ -347,21 +356,33 @@ test FSMDirector-7.1 {test clone a modal model} {
     set fsm [$e1 getController]
     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
     $p0 setInput true
-    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    
+    #set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    set p1 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p1]]
     $p1 setInput true
-    set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+
+    #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
     $p2 setOutput true
     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
-    $p0 link $r2
-    $p1 link $r2
+
+    #set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+    #$p0 link $r2
+    #$p1 link $r2
+    set lrl1 [$p1 linkedRelationList]
+    set r2 [$lrl1 get 0]
     [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
-    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
-    $p3 setOutput true
-    $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
-    $p2 link $r3
-    $p3 link $r3
+
+    #set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+    #$p3 setOutput true
+    #$p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+    #$p2 link $r3
+    set lrl2 [$p2 linkedRelationList]
+    set r3 [java::cast ptolemy.kernel.Relation [$lrl2 get 0]]
+    set pl [$r3 linkedPortList [java::null]]
+    set p3 [$pl get 1]
+    #$p3 link $r3
 
     set s0 [java::new ptolemy.domains.modal.kernel.State $fsm s0]
     set s1 [java::new ptolemy.domains.modal.kernel.State $fsm s1]
@@ -400,13 +421,14 @@ test FSMDirector-7.1 {test clone a modal model} {
     $e1clone setContainer $e0
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
-    [$e1clone getPort p0] link $r1
+    [$e1clone getPort p1] link $r1
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
-    [$e1clone getPort p3] link $r4
+    [$e1clone getPort p2] link $r4
     [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
 
     [$e0 getManager] execute
     # In FSM, we get: {1 3 1 6 1 9 1}
     listToStrings [$rec getHistory 0]
 } {1 3 1 6 1 9 1}
+
