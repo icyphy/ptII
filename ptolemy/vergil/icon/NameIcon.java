@@ -204,10 +204,7 @@ public class NameIcon extends EditorIcon {
         if (container != null) {
             name = container.getDisplayName();
         }
-        LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
-                SwingConstants.CENTER);
-        Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
-        label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
+        LabelFigure label = _getLabel(result, name);
         result.add(label);
         return result;
     }
@@ -292,6 +289,20 @@ public class NameIcon extends EditorIcon {
      */
     protected Paint _getFill() {
         return Color.white;
+    }
+
+    /** Get the label to put on the specified background
+     *  figure based on the specified name.
+     *  @param background The background figure on which to put the label.
+     *  @param name The name on which to base the label.
+     *  @return The label figure.
+     */
+    protected LabelFigure _getLabel(CompositeFigure background, String name) {
+        LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                SwingConstants.CENTER);
+        Rectangle2D backBounds = background.getBackgroundFigure().getBounds();
+        label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
+        return label;
     }
 
     /** Return the line width to use in rendering the box.
