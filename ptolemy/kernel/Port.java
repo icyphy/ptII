@@ -621,10 +621,10 @@ public class Port extends NamedObj {
                     entity._addPort(this);
                 } catch (IllegalActionException ex) {
                     _container = previousContainer;
-                    throw (IllegalActionException) ex.fillInStackTrace();
+                    throw ex;
                 } catch (NameDuplicationException ex) {
                     _container = previousContainer;
-                    throw (NameDuplicationException) ex.fillInStackTrace();
+                    throw ex;
                 }
 
                 if (previousContainer == null) {
