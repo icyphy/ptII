@@ -674,8 +674,17 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (!_hasSibling && isOutput) {
                     try {
                         TransitionRefinement container = (TransitionRefinement) getContainer();
-                        TransitionRefinementPort sibling = new TransitionRefinementPort(
+                        // Temporarily turn off mirroring while we create a port.
+                        // Needed by $PTII/ptolemy/domains/modal/demo/ModalBSC/ModalBSC.xml 
+                        // and $PTII/ptolemy/domains/modal/demo/StateTracker/StateTracker.xml
+                        TransitionRefinementPort sibling = null;
+                        try {
+                            container.setMirrorDisable(-1);
+                            sibling = new TransitionRefinementPort(
                                 container, getName() + "_in");
+                        } finally {
+                            container.setMirrorDisable(0);
+                        }
 
                         sibling._hasSibling = true;
                         sibling._mirrorDisable = true;
@@ -698,14 +707,9 @@ public class TransitionRefinementPort extends RefinementPort {
                         }
 
                         _hasSibling = true;
-                    } catch (IllegalActionException ex) {
-                        throw new InternalErrorException(
-                                "TransitionRefinementPort.setOutput: Internal error: "
-                                        + ex.getMessage());
                     } catch (NameDuplicationException ex) {
-                        throw new InternalErrorException(
-                                "TransitionRefinementPort.setOutput: Internal error: "
-                                        + ex.getMessage());
+                        throw new InternalErrorException(this, ex,
+                                "TransitionRefinementPort.setOutput: Internal error.");
                     }
                 }
             } else {
