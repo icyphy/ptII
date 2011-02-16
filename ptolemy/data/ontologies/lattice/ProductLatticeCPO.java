@@ -269,18 +269,21 @@ public class ProductLatticeCPO extends ConceptGraph {
         return glb;
     }
 
-    /** Test if this CPO is a lattice. A Product Lattice CPO is a lattice if
+    /** Return the reason why this CPO is not a lattice, or null if it is.
+     *  A Product Lattice CPO is a lattice if
      *  all of its component ontologies are lattices.
-     *  @return True if this CPO is a lattice;
-     *   <code>false</code> otherwise.
+     *  @return A string representing which subontology is responsible for
+     *   this not being a lattice;
+     *   <code>null</code> otherwise.
      */
-    public boolean isLattice() {
+    public String nonLatticeReason() {
         for(Ontology ontology : _ontologyList) {
             if (!ontology.isLattice()) {
-                return false;
+                return "The subontology " + ontology.toString()
+                    + " is not a lattice.";
             }
         }        
-        return true;
+        return null;
     }
 
     /** Compute the least upper bound (LUB) of two elements.

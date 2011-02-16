@@ -173,12 +173,12 @@ public class DAGConceptGraph extends ConceptGraph {
         return _getBoundForConcepts(concept1, concept2, BoundType.GREATESTLOWER);
     }
 
-    /** Return whether this concept graph is a lattice.
-     *  Should be true for all existing concept graphs.
-     *  @return True, if the concept graph is a lattice.
+    /** Return why this concept graph is not a lattice, or null if it is.
+     *  Should be null for all existing concept graphs.
+     *  @return Null, if the concept graph is a lattice.
      */
-    public boolean isLattice() {
-        return _dag.isLattice();
+    public String nonLatticeReason() {
+        return _dag.nonLatticeReason();
     }
 
     /** Compute the least upper bound (LUB) of two elements.

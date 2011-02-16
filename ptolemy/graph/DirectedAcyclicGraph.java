@@ -175,39 +175,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     }
 
     /** Test if this CPO is a lattice.
-     *  By a theorem in Davey and Priestley, only the LUB or the GLB
-     *  need to be checked, but not both. The implementation tests the
-     *  existence of the LUB of any pair of elements, as well as the
-     *  existence of the bottom and top elements. The complexity is
-     *  O(|N|*|N|) where N for elements, and an individual computation
-     *  is the LUB of two elements.
      *  @return True if this CPO is a lattice;
      *   <code>false</code> otherwise.
      */
     public boolean isLattice() {
-        _validate();
-        
-        if (nodeCount() == 0) {
-            return true;
-        }
-
-        if ((bottom() == null) || (top() == null)) {
-            return false;
-        }
-
-        Object[] nodes = weightArray(nodes());
-
-        for (int i = 0; i < (nodes.length - 1); i++) {
-            for (int j = i + 1; j < nodes.length; j++) {
-                if (leastUpperBound(nodes[i], nodes[j]) == null) {
-                    // Uncomment this to find the offending nodes.
-                    // System.out.println(">>>>> No LUB: " + nodes[i] + ", " + nodes[j]);
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return nonLatticeReason() == null;
     }
 
     /** Compute the least element of a subset.
@@ -249,6 +221,47 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     public Object leastUpperBound(Object[] subset) {
         _validate();
         return _lubShared(subset);
+    }
+
+    /** Return a human readable string as to why this graph is not a lattice.
+     *  If it is a lattice, return null.
+     *
+     *  By Theorem in Davey and Priestley, only the LUB or the GLB
+     *  need to be checked, but not both. The implementation tests the
+     *  existence of the LUB of any pair of elements, as well as the
+     *  existence of the bottom and top elements. The complexity is
+     *  O(|N|*|N|) where N for elements, and an individual computation
+     *  is the LUB of two elements.
+     *  
+     *  FIXME: Make the returned reason data-structure machine readable.
+     *
+     *  @return The reason why this graph is not a lattice, or null, if it is.
+     */
+    public String nonLatticeReason() {
+        _validate();
+
+        if (nodeCount() == 0) {
+            return null;
+        }
+
+        if (bottom() == null) {
+            return "No bottom element.";
+        }
+        if (top() == null) {
+            return "No top element.";
+        }
+
+        Object[] nodes = weightArray(nodes());
+
+        for (int i = 0; i < (nodes.length - 1); i++) {
+            for (int j = i + 1; j < nodes.length; j++) {
+                if (leastUpperBound(nodes[i], nodes[j]) == null) {
+                    return "No LUB: " + nodes[i] + ", " + nodes[j];
+                }
+            }
+        }
+
+        return null;
     }
 
     /** Return the opposite of the given compare return code, as if the
