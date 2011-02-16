@@ -32,7 +32,7 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  * An annotation attribute that specifies ontology constraints in the model. The
  * name of the attribute is prefixed by the ontology's name.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -69,11 +69,6 @@ public class OntologyAnnotationAttribute extends StringAttribute {
 
         if (tokens.length == 2) {
             return tokens[0];
-
-        } else if (tokens.length == 3) {
-            // If it is an extended use-case identifier,
-            // which would contain an extra "::" symbol.
-            return tokens[0] + "::" + tokens[1];
         }
 
         throw new IllegalActionException(
