@@ -19,15 +19,11 @@
   </entity>
   <entity name="FlatRepresentativeConcept" class="ptolemy.data.ontologies.FlatTokenRepresentativeConcept">
     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}"/>
-    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
-      <property name="isMultiple" value="true"/>
-    </property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon" />
   </entity>
   <entity name="FlatScalarRepresentativeConcept" class="ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept">
     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,1.0,1.0}"/>
-    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
-      <property name="isMultiple" value="true"/>
-    </property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon" />
   </entity>
 
 </group>

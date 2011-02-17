@@ -1,9 +1,8 @@
-/*
- * An icon that displays a LatticeElement.
+/* An icon that displays a Concept.
  * 
  * Below is the copyright agreement for the Ptolemy II system.
  * 
- * Copyright (c) 2009-2010 The Regents of the University of California. All rights
+ * Copyright (c) 2009-2011 The Regents of the University of California. All rights
  * reserved.
  * 
  * Permission is hereby granted, without written agreement and without license
@@ -28,40 +27,28 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.util.List;
 
-import javax.swing.Icon;
-
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.modal.StateIcon;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.gui.toolbox.FigureIcon;
+import ptolemy.vergil.icon.NameIcon;
 
-/**
- * An icon that displays the name of the container in an appropriately sized
- * rounded box. This is designed to be contained by an instance of
- * LatticeElement.
- * 
- * @author Man-Kit Leung
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+/** An icon that displays the name of the container in an appropriately sized
+ *  rounded box. This is designed to be contained by an instance of Concept.
+ *
+ *  @author Ben Lickly, Edward A. Lee, Elizabeth Latronico, Charles Shelton, Man-kit Leung
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
  */
-public class ConceptIcon extends StateIcon {
+public class ConceptIcon extends NameIcon {
 
-    /**
-     * Create a new icon with the given name in the given container. The
-     * container is required to implement Settable, or an exception will be
+    /** Create a new icon with the given name in the given container.
+     * The container is required to implement Settable, or an exception will be
      * thrown.
      * @param container The specified container.
      * @param name The specified name.
@@ -74,77 +61,13 @@ public class ConceptIcon extends StateIcon {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        isMultiple = new Parameter(this, "isMultiple");
-        isMultiple.setTypeEquals(BaseType.BOOLEAN);
-        isMultiple.setExpression("false");
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** Indicator that the concept actually represents a multiplicity
-     *  of concepts. This is boolean that defaults to false.
-     */
-    public Parameter isMultiple;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Create a new background figure.  This overrides the base class
-     *  to draw a box around the value display, where the width of the
-     *  box depends on the value.
-     *  @return A new figure.
-     */
-    public Figure createBackgroundFigure() {
-        try {
-            if (((BooleanToken)isMultiple.getToken()).booleanValue()) {
-                CompositeFigure composite = new CompositeFigure();
-                Figure background = super.createBackgroundFigure();
-                background.translate(10.0, 10.0);
-                composite.add(background);
-                composite.add(super.createBackgroundFigure());
-                return composite;
-            } else {
-                return super.createBackgroundFigure();                
-            }
-        } catch (IllegalActionException e) {
-            // If isMultiple cannot be evaluated, use the base class figure.
-            return super.createBackgroundFigure();
-        }
-    }
-    
-    /** Create an icon. This overrides the base class to add visual
-     *  indicator if <i>isMultiple</i> is true.
-     *  @return The icon.
-     */
-    public Icon createIcon() {
-        if (_iconCache != null) {
-            return _iconCache;
-        }
-        try {
-            if (((BooleanToken)isMultiple.getToken()).booleanValue()) {
-                CompositeFigure composite = new CompositeFigure();
-                composite.add(new RoundedRectangle(0, 0, 20, 10,
-                        _getFill(), 1.0f, 5.0, 5.0));
-                composite.add(new RoundedRectangle(-5, -5, 20, 10,
-                        _getFill(), 1.0f, 5.0, 5.0));
-                _iconCache = new FigureIcon(composite, 20, 15);
-                return _iconCache;
-            } else {
-                return super.createIcon();
-            }
-        } catch (IllegalActionException e) {
-            // If isMultiple cannot be evaluated, use the base class icon.
-            return super.createIcon();
-        }
+        // Change the default rounding to 20.
+        rounding.setExpression("20");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the fill color. This will return the color specified by
-     *  the first instance of ColorAttribute in the container, or white
-     *  if there is no such instance.
+    /** Return the fill color.
+     *  This will return the color specified by the first instance of
+     *  ColorAttribute in the container, or white if there is no such instance.
      *  @return The fill color.
      */
     protected Paint _getFill() {
@@ -157,29 +80,9 @@ public class ConceptIcon extends StateIcon {
         return Color.white;
     }
 
-    /** Get the label to put on the specified background
-     *  figure based on the specified name.
-     *  @param background The background figure on which to put the label.
-     *  @param name The name on which to base the label.
-     *  @return The label figure.
-     */
-    protected LabelFigure _getLabel(CompositeFigure background, String name) {
-        try {
-            if (((BooleanToken)isMultiple.getToken()).booleanValue()) {
-                LabelFigure result = super._getLabel(background, name);
-                result.translate(-5.0, -5.0);
-                return result;
-            } else {
-                return super._getLabel(background, name);
-            }
-        } catch (IllegalActionException e) {
-            // If isMultiple cannot be evaluated, use the base class icon.
-            return super._getLabel(background, name);
-        }
-    }
-
-    /** Return the line width. If the lattice element is an unacceptable
-     *  solution, this returns a thicker width.
+    /** Return the line width.
+     *  If the concept is an unacceptable solution, this returns
+     *  a thicker width.
      *  @return The line width.
      */
     protected float _getLineWidth() {
