@@ -30,7 +30,6 @@ package ptolemy.vergil.modal;
 import java.awt.Color;
 import java.awt.Paint;
 
-import javax.swing.Icon;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.ColorAttribute;
@@ -43,8 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.NameIcon;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// StateIcon
@@ -89,24 +86,6 @@ public class StateIcon extends NameIcon {
         // Change the default rounding to 20.
         rounding.setExpression("20");
     }
-
-    /** Create an icon.
-     *
-     *  @return The icon.
-     */
-    public Icon createIcon() {
-        if (_iconCache != null) {
-            return _iconCache;
-        }
-
-        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
-                _getFill(), 1.0f, 5.0, 5.0);
-        _iconCache = new FigureIcon(figure, 20, 15);
-        return _iconCache;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /** Return the paint to use to fill the icon.
      *  By default, this class returns Color.white, unless the refinement name

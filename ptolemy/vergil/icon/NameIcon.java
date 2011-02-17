@@ -33,6 +33,7 @@ import java.awt.Paint;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
 import ptolemy.data.BooleanToken;
@@ -50,6 +51,7 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.RoundedRectangle;
+import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// NameIcon
@@ -207,6 +209,21 @@ public class NameIcon extends EditorIcon {
         LabelFigure label = _getLabel(result, name);
         result.add(label);
         return result;
+    }
+
+    /** Create an icon.
+     *
+     *  @return The icon.
+     */
+    public Icon createIcon() {
+        if (_iconCache != null) {
+            return _iconCache;
+        }
+    
+        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
+                _getFill(), 1.0f, 5.0, 5.0);
+        _iconCache = new FigureIcon(figure, 20, 15);
+        return _iconCache;
     }
 
     /** Override the base class to add or set a _hideName parameter.
