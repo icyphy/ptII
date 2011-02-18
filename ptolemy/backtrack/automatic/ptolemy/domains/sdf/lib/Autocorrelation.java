@@ -29,6 +29,7 @@
 //// Autocorrelation
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.backtrack.Checkpoint;
