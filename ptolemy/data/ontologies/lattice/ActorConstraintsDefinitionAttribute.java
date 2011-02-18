@@ -516,7 +516,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             tempActorInstance, true);
 
                     parser.setContext(this);
-                    parser.parse(prependMoML);
+                    if (prependMoML != null && !prependMoML.equals("")) {
+                        parser.parse(prependMoML);
+                    }
                     parser.parse(actorIconMoML);
                 }
             } catch (Exception ex) {
