@@ -514,12 +514,14 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     MoMLVariableChecker momlChecker = new MoMLVariableChecker();
                     String prependMoML = momlChecker.checkCopy(actorIconMoML,
                             tempActorInstance, true);
+                    
+                    StringBuffer iconMoML = new StringBuffer();
+                    iconMoML.append("<group name=\"auto\">\n");
+                    iconMoML.append(prependMoML + actorIconMoML);
+                    iconMoML.append("</group>\n");
 
                     parser.setContext(this);
-                    if (prependMoML != null && !prependMoML.equals("")) {
-                        parser.parse(prependMoML);
-                    }
-                    parser.parse(actorIconMoML);
+                    parser.parse(iconMoML.toString());
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "Failed to parse the actor icon's XML" +
