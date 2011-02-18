@@ -27,8 +27,6 @@
  */
 package ptolemy.domains.ptides.kernel;
 
-import org.python.parser.ast.If;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -217,7 +215,8 @@ public class PtidesEvent extends DEEvent {
 
     /** Return the token (value) of this event.
      *  @return The token.
-     *  @exception If event is not a pure event and token field is null.
+     *  @exception InternalErrorException If event is not a pure event
+     *  and token field is null.
      */
     public final Token token() {
         if (!isPureEvent() && (_token == null)) {
