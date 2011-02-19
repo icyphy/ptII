@@ -30,8 +30,9 @@ import java.io.IOException;
 import java.net.URI;
 
 
-/** Given the pathname to the matlab executable, return
-    the pathname to the Matlab installation.
+/** Given the pathname to a file in bin/ directory, return
+    the pathname to installation directory by determining
+    the canonical path of the executable.
 
     Under Matlab 5.3.0, if the matlab executable is found
     at matlabr11/bin/matlab.exe, then the top level
@@ -51,20 +52,20 @@ import java.net.URI;
     @Pt.ProposedRating Green (cxh)
     @Pt.AcceptedRating Red
 */
-public class MatlabRootDirectory {
+public class RootDirectory {
     public static void main(String[] args) throws IOException {
         try {
-            System.out.print(_getMatlabRootDirectory(args[0]));
+            System.out.print(_getRootDirectory(args[0]));
         } catch (Exception exception) {
-            System.err.print("MatlabRootDirectory.main(): " + exception);
+            System.err.print("RootDirectory.main(): " + exception);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Given the pathname to the matlab executable, return the path name
-    // of the Matlab directory.
-    private static String _getMatlabRootDirectory(String matlabExecutable)
+    // Given the pathname to a file in a bin directory executable,
+    // return the path name of the directory.
+    private static String _getRootDirectory(String fileInBinDirectory)
         throws Exception {
         // Return the directory above the bin/ directory in
         // the path to the matlab executable
@@ -85,24 +86,24 @@ public class MatlabRootDirectory {
             // We could call cygpath -m and pass in the results, but
             // cygpath -m does not work in the version of Cygwin that
             // we shipped with Ptolemy II 2.0.1
-            _checkForBin(matlabExecutable);
-            return matlabExecutable.substring(0,
-                matlabExecutable.lastIndexOf("/bin/"));
+            _checkForBin(fileInBinDirectory);
+            return fileInBinDirectory.substring(0,
+                fileInBinDirectory.lastIndexOf("/bin/"));
         }
 
-        // matlabExecutable might be a symbolic link, so dereference it.
-        File matlabFile = new File(matlabExecutable);
-        String matlabCanonicalPath = matlabFile.getCanonicalPath();
+        // fileInBinDirectory might be a symbolic link, so dereference it.
+        File file = new File(fileInBinDirectory);
+        String CanonicalPath = file.getCanonicalPath();
 
-        _checkForBin(matlabCanonicalPath);
-        return matlabCanonicalPath.substring(0,
-            matlabCanonicalPath.lastIndexOf("/bin/"));
+        _checkForBin(CanonicalPath);
+        return CanonicalPath.substring(0,
+            CanonicalPath.lastIndexOf("/bin/"));
     }
 
     // Throw an exception if the path does not contain /bin/
     private static void _checkForBin(String path) throws Exception {
         if (path.indexOf("/bin/") == -1) {
-            throw new Exception("Cannot determine Matlab directory: '" + path
+            throw new Exception("Cannot determine directory: '" + path
                 + "' does not contain " + "/bin/");
         }
     }

@@ -279,7 +279,6 @@ if test ! -x "$GAWK"; then
     fi	
 fi
 
-
 # Substitute %20 for any spaces.
 PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #--------------------------------------------------------------------
@@ -324,7 +323,41 @@ else
   we are setting PTJAVA_DIR to '$PTJAVA_DIR'])
 	    fi
 	fi
+        if test "$PTJAVA_DIR" = "/usr"; then
+	    # $PTII/vendors/ptinyos/tinyos-1.x/contrib/ptII/ptinyos/tools/make/ptII/ptII.rules
+	    # uses -I$(PTJAVA_DIR).  If PTJAVA_DIR is /usr, then compilation of the ptinyos
+	    # demos fails.
+	    AC_MSG_CHECKING([PTJAVA_DIR == /usr, checking for links])
+	    startdir=$PTII
+	    cd "$srcdir/config"
+	    if "$JAVAC" RootDirectory.java ; then
+	        AC_MSG_CHECKING([the value of the Java directory ])
+		AC_PATH_PROG(JAVA, java)
+		set -x
+		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"> /dev/null; then
 
+		    PTJAVA_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"`
+
+		    # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+	            # Remove /cygdrive so we can compile with MSVC
+		    #PTJAVA_DIR_REAL=`echo "$PTJAVA_HOME_TMP" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+       	            if test -d "$PTJAVA_DIR_TMP"; then
+		        PTJAVA_DIR="$PTJAVA_DIR_TMP"
+		        PT_MSG_RESULT('$PTJAVA_DIR');
+		    else	
+		        AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA RootDirectory "$JAVAC"' failed.
+    We will not be able to search for the canonical Java home directory.]);
+		    fi
+	        else
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC RootDirectory.java' failed.
+    We will not be able to search for the canonical Java home directory.]);
+	        fi
+	        cd "$startdir"
+		set +x
+            fi
+        fi
     else
         AC_MSG_WARN([ Failed to find javac, perhaps Java is not installed?])
     fi
@@ -3717,11 +3750,11 @@ else
 	else 
 	    startdir=$PTII
 	    cd "$srcdir/config"
-	    if "$JAVAC" MatlabRootDirectory.java ; then
+	    if "$JAVAC" RootDirectory.java ; then
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
-		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
+		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$MATLAB"> /dev/null; then
 
-		    MATLAB_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
+		    MATLAB_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$MATLAB"`
 
 		    # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
@@ -3731,11 +3764,11 @@ changequote([, ])dnl
 
 		    PT_MSG_RESULT('$MATLAB_DIR')
 		else	
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA RootDirectory "$MATLAB"' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab/]);
 		fi
 	    else
-		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC MatlabRootDirectory.java' failed.
+		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC RootDirectory.java' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 	    fi
 	    cd "$startdir"
