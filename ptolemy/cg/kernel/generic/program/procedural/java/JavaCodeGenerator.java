@@ -1328,6 +1328,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /** Add libraries specified by the actors in this model.
      *  Libraries are specified in the "libraryDirectories" block of the template.    
      *  FIXME: this might only be getting libraries from the TypedAtomicActor.
+     *  @see ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#addLibrary(String)
+     *  @see ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#addLibraryIfNecessary(String)
      *  @exception IllegalActionException If thrown when getting an actor's
      *   libraries.
      */
@@ -1346,6 +1348,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // while (librariesIterator.hasNext()) {
         //     addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
         // }
+    }
+
+    /** Add the directories and files from the classpath to 
+     *  the list of libraries.
+     *  This method is used to add the JavaScope.zip file used by code
+     *  coverage so that we can use Ptolemy classes in the nightly build.
+     */
+    protected void _addClassPathLibraries() {
+        String javaClassPath = StringUtilities.getProperty("java.class.path");
+        StringTokenizer tokenizer = new StringTokenizer(javaClassPath,
+                File.pathSeparator);
+        while (tokenizer.hasMoreTokens()) {
+            addLibraryIfNecessary(tokenizer.nextToken());
+        }
     }
 
     /** Analyze the model to find out what connections need to be type
@@ -1677,6 +1693,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     .getProperty("path.separator"));
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
+
+            if (!_libraries.isEmpty()) {
+                // Loop through the path elements in java.class.path and add
+                // them as libraries.  We need this so that we can find the
+                // JavaScope.zip code coverage file in the nightly build
+                _addClassPathLibraries();
+            }
+
             substituteMap.put("@PTCGLibraries@",
                     _concatenateClasspath(_libraries));
 
