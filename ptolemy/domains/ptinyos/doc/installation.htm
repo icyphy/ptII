@@ -32,11 +32,11 @@ Below are the steps that worked in February, 2011 with RHEL Linux and Java 1.6.
  <li> Download the devel via svn and build.  See
  <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">http://chess.eecs.berkeley.edu/ptexternal</a>:
   <pre>
-    svn co https://source.eecs.berkeley.edu/svn/chess/ptII/trunk ptII
-    cd ptII
-    export PTII=`pwd`
-    ./configure
-    make 
+svn co https://source.eecs.berkeley.edu/svn/chess/ptII/trunk ptII
+cd ptII
+export PTII=`pwd`
+./configure
+make 
   </pre>
   </li>
   <li> Set up ptinyos1.x:
@@ -47,41 +47,45 @@ cd $PTII/vendors/ptinyos
 wget http://ptolemy.berkeley.edu/viptos/viptos1.0/tinyos-1.x-2007-01-17.tar.gz
 tar -zxf tinyos-1.x-2007-01-17.tar.gz
   </pre>
-  <li>Download nesc 1.2.8 from <a href="http://sourceforge.net/projects/nescc/files/nescc/v1.2.8/" target="_top">http://sourceforge.net/projects/nescc/files/nescc/v1.2.8/</a>.  We use nesc-1.2.8 to avoid <code>/usr/include/pthread.h:502: requested alignment is not a constant</a>, see
+  <li>Download nesc 1.2.8 from <a href="http://sourceforge.net/projects/nescc/files/nescc/v1.2.8/" target="_top">http://sourceforge.net/projects/nescc/files/nescc/v1.2.8/</a>.  We use nesc-1.2.8 to avoid <code>/usr/include/pthread.h:502: requested alignment is not a constant</code>, see
 <a href="http://bugs.gentoo.org/145870" target="_top">http://bugs.gentoo.org/145870</a>.
   <pre>
-  cd $PTII/vendors/ptinyos
-  wget "http://downloads.sourceforge.net/project/nescc/nescc/v1.2.8/nesc-1.2.8a.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fnescc%2Ffiles%2Fnescc%2Fv1.2.8%2F&ts=1298084236&use_mirror=superb-sea2"
-  tar -zxf nesc-1.2.8a.tar.gz 
+cd $PTII/vendors/ptinyos
+wget "http://downloads.sourceforge.net/project/nescc/nescc/v1.2.8/nesc-1.2.8a.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fnescc%2Ffiles%2Fnescc%2Fv1.2.8%2F&ts=1298084236&use_mirror=superb-sea2"
+tar -zxf nesc-1.2.8a.tar.gz 
+cd nesc-1.2.8
+./configure
+make
+sudo make install 
   </pre>
   </li> Set up the environment variables (<a href="#environmentVariables">details</a>)
   <li>
   <pre>
-   export TOSROOT=$PTII/vendors/ptinyos/tinyos-1.x
-   export TOSDIR=$TOSROOT/tos
-   export PTINYOS_MOMLROOT=$PTII/vendors/ptinyos/moml
+export TOSROOT=$PTII/vendors/ptinyos/tinyos-1.x
+export TOSDIR=$TOSROOT/tos
+export PTINYOS_MOMLROOT=$PTII/vendors/ptinyos/moml
   </pre>
   </li>
-  <li>
+  <li>Reconfigure:
   <pre>
-  cd $PTII
-  ./configure
+cd $PTII
+./configure
   </pre> 
   </li>
   <li> Configure and install the TinyOS 1.x nesC tools.
   <pre>
-  cd $TOSROOT/tools/src/ncc
-  ./Bootstrap
-  ./configure
-  make
-  sudo make install
+cd $TOSROOT/tools/src/ncc
+./Bootstrap
+./configure
+make
+sudo make install
   </pre>
   </li>
-  <li> See if you have installed TinyOS 1.x and nesC correctly (<a name="TinyOSTest">details</a>)
+  <li> See if you have installed TinyOS 1.x and nesC correctly (<a href="#TinyOSTest">details</a>)
   <pre>
-  cd $TOSROOT/apps/Blink
-  make pc
-  ./build/pc/main.exe 1
+cd $TOSROOT/apps/Blink
+make pc
+./build/pc/main.exe 1
   </pre>
   </li>
   <li> Unzip the pre-generated libraries and applications
@@ -99,10 +103,11 @@ $PTII/bin/viptos $PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds-InWi
   </li>  
 </ol>
 
+<h2>Windows Notes</h2>
     <blockquote>
     <table border=1>
         <tr><td>
-            <h3>Windows Notes</h3>
+	    <i>Important information about running under Windows</i>
             <p>To invoke Viptos, we use $PTII/jni/launcher/launcher.exe.
               This tool solves problems with Cygwin and JNI.
 
