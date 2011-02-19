@@ -46,7 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	abstractInterpretation
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	data/data.jar test/test.jar
+	data/data.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
