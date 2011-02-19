@@ -431,6 +431,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put(
                 "ptolemy.domains.petrinet.lib.gui.PetriNetDisplay",
                 "ptolemy.domains.petrinet.lib.PetriNetRecorder");
+
+        _graphicalClasses.put(
+                "ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Tank",
+                "ptolemy.domains.wireless.kernel.WirelessComposite");
     }
 
     /** True if we should remove the GR domain. */
