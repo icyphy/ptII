@@ -18,11 +18,13 @@ for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_transformSize); $actor
     $actorSymbol(_inComplexArray)[$actorSymbol(i)] = new Complex(((ComplexCG)token.payload).real, ((ComplexCG)token.payload).imag);
 }
 
-Complex $actorSymbol(outComplexArray)[] = ptolemy.math.SignalProcessing.FFTComplexOut($actorSymbol(_inComplexArray), $val(order));
+{
+    Complex $actorSymbol(outComplexArray)[] = ptolemy.math.SignalProcessing.FFTComplexOut($actorSymbol(_inComplexArray), $val(order));
 
-for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_transformSize); $actorSymbol(i)++) {
-    Complex complex = $actorSymbol(outComplexArray)[$actorSymbol(i)];
-    ((Array)$actorSymbol(_outTokenArray).payload).elements[$actorSymbol(i)] = $Complex_new(complex.real, complex.imag);
+    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_transformSize); $actorSymbol(i)++) {
+        Complex complex = $actorSymbol(outComplexArray)[$actorSymbol(i)];
+        ((Array)$actorSymbol(_outTokenArray).payload).elements[$actorSymbol(i)] = $Complex_new(complex.real, complex.imag);
+    }
 }
 
 $put(output, $actorSymbol(_outTokenArray));
