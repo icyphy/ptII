@@ -187,29 +187,34 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     @Override
     public void layout(Object composite) {
+        // some variables for time statistics
         long overallTime = System.currentTimeMillis();
+        long graphOverhead;
+        long layoutTime;
+        long momlRequestOverhead;
+
         String report;
         _ptolemyModelUtil = new PtolemyModelUtil();
 
-        report = "Removing unnecessary relation vertices... ";
-        _report(report);
-        if (DEBUG) {
-            _time = System.currentTimeMillis();
-            System.out.print(report);
-        }
+        //        report = "Removing unnecessary relation vertices... ";
+        //        _report(report);
+        //        if (DEBUG) {
+        //            _time = System.currentTimeMillis();
+        //            System.out.print(report);
+        //        }
 
         // TODO: Dont do this any more?
         // PtolemyModelUtil._removeUnnecessaryRelations(this._compositeActor);
 
-        if (DEBUG) {
-            System.out.println("done in "
-                    + (System.currentTimeMillis() - _time) + "ms");
-        }
+        //        if (DEBUG) {
+        //            System.out.println("done in "
+        //                    + (System.currentTimeMillis() - _time) + "ms");
+        //        }
 
         report = "Creating Kieler KGraph from Ptolemy model... ";
         _report(report);
+        _time = System.currentTimeMillis();
         if (DEBUG) {
-            _time = System.currentTimeMillis();
             System.out.print(report);
         }
 
@@ -234,14 +239,14 @@ public class KielerLayout extends AbstractGlobalLayout {
         // infos
         _createGraph(composite, hierarchicalLayoutNode, boxLayoutNode);
 
-        report = "Performing layout... ";
-        _report(report);
+        graphOverhead = System.currentTimeMillis() - _time;
         if (DEBUG) {
-            System.out.println("done in "
-                    + (System.currentTimeMillis() - _time) + "ms");
-            _time = System.currentTimeMillis();
+            System.out.println("done in " + (graphOverhead) + "ms");
             System.out.print(report);
         }
+        report = "Performing layout... ";
+        _report(report);
+        _time = System.currentTimeMillis();
 
         // create the layout providers which contains the actual layout
         // algorithm
@@ -268,15 +273,16 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             report = "Applying layout to Ptolemy diagram... ";
 
+            layoutTime = System.currentTimeMillis() - _time;
             // write to XML file for debugging layout
             // writing to file requires XMI resource factory
             if (DEBUG) {
-                System.out.println("done in "
-                        + (System.currentTimeMillis() - _time) + "ms");
+                System.out.println("done in " + layoutTime + "ms");
                 KielerGraphUtil._writeToFile(boxLayoutNode);
                 _time = System.currentTimeMillis();
                 System.out.print(report);
             }
+            _time = System.currentTimeMillis();
 
             // apply layout to ptolemy model. Will do so
             // recursively for all containing nodes (e.g. especially
@@ -284,13 +290,15 @@ public class KielerLayout extends AbstractGlobalLayout {
             _applyLayout(hierarchicalLayoutNode);
             // _applyLayout(boxLayoutNode);
 
+            momlRequestOverhead = System.currentTimeMillis() - _time;
             if (DEBUG) {
-                System.out.println("done in "
-                        + (System.currentTimeMillis() - _time) + "ms");
+                System.out.println("done in " + momlRequestOverhead + "ms");
             }
-
-            report = "KIELER layout done in "
-                    + (System.currentTimeMillis() - overallTime) + "ms.";
+            overallTime = System.currentTimeMillis() - overallTime;
+            report = "KIELER layout done in " + overallTime
+                    + "ms (Graph conversion " + graphOverhead
+                    + "ms, Algorithm " + layoutTime + "ms, MoMLChanges "
+                    + momlRequestOverhead + "ms).";
             _report(report);
 
         } catch (KielerException e) {
