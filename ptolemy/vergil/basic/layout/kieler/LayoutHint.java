@@ -41,6 +41,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import diva.canvas.connector.ManhattanConnector;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.ArrayToken;
@@ -67,7 +69,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.KielerLayoutConnector;
-import diva.canvas.connector.ManhattanConnector;
 
 ///////////////////////////////////////////////////////////////////
 ////LayoutHint
@@ -263,7 +264,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * points. If no {@link LayoutHintItem} is stored for the given head and
      * tail, null is returned. It works like a map with two keys that have to
      * match. As links in Ptolemy are not directed, it does not matter if head
-     * and tail get switched.
+     * and tail get switched. However, for layout the direction does matter and
+     * the bendpoint list is directed from head to tail. So if there is an item
+     * available where head and tail are swapped, then this item will be
+     * returned but the entries get swapped again to guarantee that head and
+     * tail and the bendpoint order are correct.
      * 
      * @param head The starting point of the link, e.g. a Ptolemy Port or
      *            Relation.
@@ -278,6 +283,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
             // also return this hint if head and tail are switched
             if (item.getHead() == tail && item.getTail() == head) {
+                item._reverse();
                 return item;
             }
         }
@@ -396,6 +402,12 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             item = new LayoutHintItem(head, tail);
             _layoutHintItems.add(item);
         }
+        // make sure head and tail are in the right order
+        if (head == item.getTail() && tail == item.getHead()) {
+            // they are reversed, so reverse also bendpoints
+            _reverseCoordinateArray(bendPoints);
+        }
+
         item.setBendpoints(bendPoints);
 
         if (_valueListeners != null) {
@@ -431,7 +443,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @exception IllegalActionException If the expression is invalid.
      */
     public Collection validate() throws IllegalActionException {
-        if(DEBUG){
+        if (DEBUG) {
             System.out.println("validate: " + this.getExpression());
         }
         _layoutHintItems = new ArrayList<LayoutHintItem>();
@@ -591,10 +603,44 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         return result;
     }
 
+    /**
+     * Reverse the order of an array of coordinates, i.e. every two entries are
+     * assumed to belong together and will be kept in right order.
+     * 
+     * @param bendPoints the array to reverse, will be changed
+     * @return the changed array
+     */
+    private static double[] _reverseCoordinateArray(double[] bendPoints) {
+        int size = bendPoints.length - (bendPoints.length % 2); // make sure
+                                                                // only to
+        // process even length
+        // don't do anything if the array has only one location
+        if (size >= 4) {
+            double tempx, tempy;
+            int lastX, lastY;
+            int iterations = size / 4;
+            for (int i = 0; i < iterations; i += 1) {
+                int index = i * 2;
+                tempx = bendPoints[index];
+                tempy = bendPoints[index + 1];
+                lastY = size - 1 - index;
+                lastX = lastY - 1;
+                bendPoints[index] = bendPoints[lastX];
+                bendPoints[index + 1] = bendPoints[lastY];
+                bendPoints[lastX] = tempx;
+                bendPoints[lastY] = tempy;
+            }
+        }
+        return bendPoints;
+    }
+
     /** Debug flag, if set will give some debug output to console */
     private static final boolean DEBUG = false;
     /** A valid example expression to show in the GUI in case of errors. */
-    private static final String EXAMPLE_EXPRESSION = "{  \n{head={\"a.out\",10,11},tail={\"relation1\",20,21},points={1,2,3,4,5,6}} , \n{head={\"b.out1\",10,11},tail={\"relation2\",20,21},points={1,2,3,4,5,6}} \n}";
+    private static final String EXAMPLE_EXPRESSION = "{  \n{head={\"a.out\",10,11},"
+            + "tail={\"relation1\",20,21},points={1,2,3,4,5,6}} ,"
+            + " \n{head={\"b.out1\",10,11},"
+            + "tail={\"relation2\",20,21},points={1,2,3,4,5,6}} \n}";
     /** The expression given in setExpression(). */
     private String _expression;
     /** Indicator that the expression is the most recent spec for the location. */
@@ -700,13 +746,13 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
             _headMultiportIndex[1] = multiportWidthHead;
             _tailMultiportIndex[1] = multiportWidthTail;
-            if(DEBUG){
+            if (DEBUG) {
                 System.out.println("construct: " + this.getExpression());
             }
         }
 
         /**
-         * Get the bend points stored in this hin as an array of doubles, where
+         * Get the bend points stored in this hint as an array of doubles, where
          * each two entries correspond to x and y of one bend point.
          * 
          * @return array containing bend point coordinates
@@ -800,10 +846,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          *         as before, false otherwise
          */
         public boolean revalidate() {
-            if(DEBUG){
+            if (DEBUG) {
                 System.out.println("revalidate: " + this.getExpression());
             }
             if (_bendPoints == null || _bendPoints.length <= 0) {
+                // System.out.println("Kick: no bendpoints");
                 return false;
             }
             NamedObj h = _head;
@@ -812,6 +859,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 // check if the width of a multiport has changed
                 int width = _getChannelWidth(h);
                 if (width != _headMultiportIndex[1]) {
+                    // System.out.println("Kick: head index");
                     return false;
                 }
                 h = h.getContainer();
@@ -819,6 +867,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (t instanceof Port) {
                 int width = _getChannelWidth(t);
                 if (width != _tailMultiportIndex[1]) {
+                    // System.out.println("Kick: tail index");
                     return false;
                 }
                 t = t.getContainer();
@@ -829,7 +878,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (Arrays.equals(newHeadLocation, _headLocation)
                     && Arrays.equals(newTailLocation, _tailLocation)) {
                 // nothing has changed, we don't need to update anything
-                if(DEBUG){
+                if (DEBUG) {
                     System.out.println("the same");
                     System.out.println("after: " + this.getExpression());
                 }
@@ -845,6 +894,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if ((int) oldDistanceX != (int) newDistanceX
                     || (int) oldDistanceY != (int) newDistanceY) {
                 // in this case we cannot use the bend points anymore
+                // System.out.println("Kick: moved");
                 return false;
             }
             // now we know the head and tail have been moved but the relative
@@ -879,11 +929,40 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             return getExpression();
         }
 
+        /**
+         * Reverse the list of bend points. This may be neces
+         */
+        protected void _reverse() {
+            if (DEBUG) {
+                System.out.println("reversing " + this);
+            }
+            Object temp;
+            // swap head and tail
+            temp = _head;
+            _head = _tail;
+            _tail = (NamedObj) temp;
+            // swap location
+            temp = _headLocation;
+            _headLocation = _tailLocation;
+            _tailLocation = (double[]) temp;
+            // swap multiport stuff
+            temp = _headMultiportIndex;
+            _headMultiportIndex = _tailMultiportIndex;
+            _tailMultiportIndex = (int[]) temp;
+            // reverse bendpoints
+            _reverseCoordinateArray(_bendPoints);
+            if (DEBUG) {
+                System.out.println("reversed " + this);
+            }
+        }
+
         // /////////////////////////////////////////////////////////////////
         // // private methods ////
 
         /**
-         * Get the width of a channel corresponding to a port. If no {@link IOPort} is passed, return 0.
+         * Get the width of a channel corresponding to a port. If no
+         * {@link IOPort} is passed, return 0.
+         * 
          * @param port port for which to determine the channel width
          * @return channel width if applicable, else 0
          */
@@ -922,7 +1001,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @param y amount on the x-axis to translate
          */
         private void _translate(double x, double y) {
-            if(DEBUG){
+            if (DEBUG) {
                 System.out.println("translate: " + this.getExpression());
             }
             _headLocation[0] += x;
@@ -943,21 +1022,26 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * get read from the current model objects.
          */
         private void _updateHeadTailLocations() {
-            if(DEBUG){
+            if (DEBUG) {
                 System.out.println("update: " + this.getExpression());
             }
             _headLocation = PtolemyModelUtil._getLocation(_head);
             _tailLocation = PtolemyModelUtil._getLocation(_tail);
             _updateChannelIndex(_head, _headMultiportIndex);
             _updateChannelIndex(_tail, _tailMultiportIndex);
+            if (DEBUG) {
+                System.out.println("updated: " + this);
+            }
         }
 
         /**
-         * Update the channel width of a given object. For an IOPort, the
-         * actual channel width is obtained and otherwise set it to
-         * default 1.
-         * @param port The port for which the update is required, may also be some other type than port, e.g. a Relation
-         * @param indexLocation array with at least 2 entries in where to store the index locations
+         * Update the channel width of a given object. For an IOPort, the actual
+         * channel width is obtained and otherwise set it to default 1.
+         * 
+         * @param port The port for which the update is required, may also be
+         *            some other type than port, e.g. a Relation
+         * @param indexLocation array with at least 2 entries in where to store
+         *            the index locations
          */
         private void _updateChannelIndex(Object port, int[] indexLocation) {
             int width = 1;
@@ -969,20 +1053,26 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             indexLocation[1] = width;
         }
 
-        /** Local storage of bend points, where every 2 doubles form x and y coordinates. */
+        /**
+         * Local storage of bend points, where every 2 doubles form x and y
+         * coordinates.
+         */
         private double[] _bendPoints = {};
         /** Head object to identify this item */
         private NamedObj _head = null;
         /** Coordinates for the head at which this item is only valid */
         private double[] _headLocation = { 0.0, 0.0 };
-        /** Width and index of the multiport, if the head actually is a multiport */
+        /**
+         * Width and index of the multiport, if the head actually is a multiport
+         */
         private int[] _headMultiportIndex = { 1, 1 };
         /** Tail object to identify this item */
         private NamedObj _tail = null;
         /** Coordinates for the tail at which this item is only valid */
         private double[] _tailLocation = { 0.0, 0.0 };
-        /** Width and index of the multiport, if the tail actually is a multiport */
+        /**
+         * Width and index of the multiport, if the tail actually is a multiport
+         */
         private int[] _tailMultiportIndex = { 1, 1 };
     }
 }
-

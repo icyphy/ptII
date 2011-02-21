@@ -27,18 +27,20 @@
  */
 package ptolemy.vergil.actor;
 
+import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
+import ptolemy.vergil.basic.layout.kieler.LayoutHint;
+import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
 import diva.canvas.Site;
+import diva.canvas.TransformContext;
+import diva.canvas.connector.BasicManhattanRouter;
+import diva.canvas.connector.Connector;
+import diva.canvas.connector.PerimeterSite;
 import diva.util.java2d.Polyline2D;
 
 ///////////////////////////////////////////////////////////////////
@@ -58,8 +60,8 @@ import diva.util.java2d.Polyline2D;
 
 public class KielerLayoutConnector extends LinkManhattanConnector {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
     /**
      * Construct a new connector with the given tail and head for the specified
@@ -79,39 +81,45 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
     /**
      * Tell the connector to route itself between the current positions of the
      * head and tail sites. If bend points are available, draw the line with
-     * these instead. Delete bend point information if modification detected 
+     * these instead. Delete bend point information if modification detected
      * (i.e., movement of one or the other end of a link).
      */
     public void route() {
+        repaint();
+
         // Parse the bend points if existing.
         List<Point2D> bendPointList = null;
         Object object = this.getUserObject();
         Link link = null;
         Relation relation = null;
+        LayoutHintItem layoutHintItem = null;
+        boolean considerBendPoints = false;
         if (object instanceof Link) {
             link = (Link) object;
             relation = link.getRelation();
-
-            // The following code should try to delete possibly added layout hints.
-            if (isModified(relation, link)) {
-                try {
-                    PtolemyModelUtil _ptolemyModelUtil = (new PtolemyModelUtil());
-                    _ptolemyModelUtil
-                            ._layoutHints(relation.getName(), link, "");
-                    _ptolemyModelUtil
-                            ._performChangeRequest((CompositeActor) relation
-                                    .getContainer());
-                } catch (Exception e) {
-                    // Ignore if we cannot delete anything.
-                    // FIXME: There should be a way to check first whether bend
-                    // point layout hints exist. We only then should try to 
-                    // delete this information
+            // relation may be null if a new link is currently dragged from some
+            // port
+            if (relation != null) {
+                LayoutHint layoutHint = (LayoutHint) relation
+                        .getAttribute("_layoutHint");
+                if (layoutHint != null) {
+                    layoutHintItem = layoutHint.getLayoutHintItem(
+                            link.getHead(), link.getTail());
+                    if (layoutHintItem != null) {
+                        considerBendPoints = layoutHintItem.revalidate();
+                        if (!considerBendPoints) {
+                            layoutHint.removeLayoutHintItem(link.getHead(),
+                                    link.getTail());
+                            if (layoutHint.isEmpty()) {
+                                layoutHint.removeLayoutHintProperty(relation);
+                            }
+                        } else {
+                            bendPointList = layoutHintItem.getBendPointList();
+                        }
+                    }
                 }
-            } else {
-                bendPointList = parseBendPoints(relation, link);
             }
         }
-        repaint();
 
         Polyline2D polyline = (Polyline2D) getRouter().route(this);
         int count = polyline.getVertexCount();
@@ -123,7 +131,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                     (polyline.getY(count / 2) + polyline.getY((count / 2) - 1)) / 2));
         } else {
             // Attach the label to the only point of the connector.
-            _labelLocation = new Point2D.Double(polyline.getX(0), polyline.getY(0));
+            _labelLocation = new Point2D.Double(polyline.getX(0),
+                    polyline.getY(0));
         }
 
         if (_bendRadius == 0) {
@@ -131,72 +140,29 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
         } else {
             GeneralPath path = new GeneralPath();
 
-            double startX = polyline.getX(0);
-            double startY = polyline.getY(0);
-            double previousX = startX;
-            double previousY = startY;
-            double endX = (float) polyline.getX(polyline.getVertexCount() - 1);
-            double endY = (float) polyline.getY(polyline.getVertexCount() - 1);
+            if (considerBendPoints && bendPointList != null) {
 
-            boolean considerBendPoints = bendPointList != null
-                    && bendPointList.size() > 0;
-
-            if (considerBendPoints) {
-                boolean isVertexConnected = relation.exportMoMLPlain()
-                        .contains("<vertex");
-
-                // In this case we have bend points provided e.g., by a layouter.
-                // We will consider these instead of doing the originally manhatten
-                // routing.
-                boolean reverseOrder = false;
-                if (bendPointList.size() > 1) {
-                    reverseOrder = isReversedOrder(new Point2D.Double(startX,
-                            startY), new Point2D.Double(endX, endY),
-                            bendPointList);
-                }
-
-                // The following is a workaround because vertex "port position" seem
-                // to adapt the older ptolemy layout so we replace the first position!
-                if (isVertexConnected) {
-                    // In this case the reverse order does not matter, we seem always
-                    // to draw from the vertex as a starting point.
-                    double sY = startY;
-                    double bX = bendPointList.get(0).getX();
-                    double bY = bendPointList.get(0).getY();
-
-                    double marging = 20;
-                    if (!reverseOrder) {
-                        if ((sY < bY + marging) && (sY > bY - marging)) {
-                            startY = bY;
-                            previousY = startY;
-                        } else {
-                            startX = bX;
-                            previousX = startX;
-                        }
-                    }
-                }
+                // we need the "real" start and end points, i.e. the anchor points on the sites
+                Point2D[] startEnd = _getHeadTailPoints(this, bendPointList);
+                double startX = startEnd[0].getX();
+                double startY = startEnd[0].getY();
+                double previousX = startX;
+                double previousY = startY;
+                double endX = startEnd[1].getX();
+                double endY = startEnd[1].getY();
 
                 // Start drawing the line.
                 // Under Java 1.5, we only have moveTo(float, float).
-                path.moveTo((float)startX, (float)startY);
+                path.moveTo((float) startX, (float) startY);
 
-                // Add the start point and end point to the bendPointList in 
+                // Add the start point and end point to the bendPointList in
                 // order to get the curveTo-effect working.
-                if (!reverseOrder) {
-                    bendPointList.add(0, new Point2D.Double(startX, startY));
-                    bendPointList.add(new Point2D.Double(endX, endY));
-                } else {
-                    bendPointList.add(new Point2D.Double(startX, startY));
-                    bendPointList.add(0, new Point2D.Double(endX, endY));
-                }
+                bendPointList.add(0, new Point2D.Double(startX, startY));
+                bendPointList.add(new Point2D.Double(endX, endY));
 
                 for (int i = 1; i <= bendPointList.size() - 1; i++) {
                     int i1 = i;
                     int i0 = i - 1;
-                    if (reverseOrder) {
-                        i1 = bendPointList.size() - i - 1;
-                        i0 = bendPointList.size() - i;
-                    }
                     if (i0 < 0) {
                         i0 = 0;
                     }
@@ -250,7 +216,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
 
                 // Finally close the last segment with a line.
                 // Under Java 1.5, we only have moveTo(float, float).
-                path.lineTo((float)endX, (float)endY);
+                path.lineTo((float) endX, (float) endY);
 
                 // Now set the shape.
                 setShape(path);
@@ -264,7 +230,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 // we use the normal draw functionality.
                 super.route();
             }
-        }
+        } // else bendradius == 2
+          // System.out.println("end route: "+relation.exportMoMLPlain());
     }
 
     /**
@@ -284,117 +251,80 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
-
     /**
-     * Returns true if at least one of the end point actors of a link has been
-     * moved. Movement invalidates the modificationMarker. This method checks,
-     * whether this marker is still valid.
+     * Get the center point of a Perimeter Site. Copied the idea from
+     * {@link PerimeterSite#getPoint(double)}.
      * 
-     * @param relation the relation in question
-     * @param link the link in question
-     * @return true, if is end point was moved and the link is considered to 
-     *         be modified
+     * @param site the site
+     * @return the center point of the shape that corresponds to the site
      */
-    private boolean isModified(Relation relation, Link link) {
-        if (relation != null) {
-            Attribute attribute = relation.getAttribute("_modificationMarker:"
-                    + PtolemyModelUtil.getLinkId(link));
-            if ((attribute != null) && (attribute instanceof StringAttribute)) {
-                String modificationMarker = ((StringAttribute) attribute)
-                        .getExpression();
-                String currentMarker = PtolemyModelUtil
-                        .getModificationMarker(link);
-                return (!modificationMarker.equals(currentMarker));
-            }
+    private Point2D _getCenterPoint(Site site) {
+        try {
+            Rectangle bounds = site.getFigure().getShape().getBounds();
+            return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
+        } catch (NullPointerException e) {
+            return site.getPoint();
         }
-        return false;
     }
 
     /**
-     * Parse the bend points of a link that are saved in a parameter of the
-     * corresponding relation.
+     * Get the starting and ending points of a connector. Copied some code from 
+     * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
+     * @param c the corresponding connector
+     * @param bendPoints a list of bendpoints to determine the anchor point on the site
+     * @return the anchor points at the start and end of the connectior, i.e. a Point2D array of size 2 
      * 
-     * @param relation the relation
-     * @param link the link
-     * @return the list of bend points if any, null otherwise
      */
-    private List<Point2D> parseBendPoints(Relation relation, Link link) {
-        List<Point2D> bendPointList = null;
-
-        if (relation != null) {
-            Attribute attribute = relation.getAttribute("_layoutHints:"
-                    + PtolemyModelUtil.getLinkId(link));
-            if ((attribute != null) && (attribute instanceof StringAttribute)) {
-                bendPointList = new LinkedList<Point2D>();
-                String bendPoints = ((StringAttribute) attribute)
-                        .getExpression();
-                String[] bendPointArray = bendPoints.split(";");
-                for (String bendPointString : bendPointArray) {
-                    String[] bendPointXY = bendPointString.split(",");
-                    if (bendPointXY != null && bendPointXY.length == 2) {
-                        Point2D bend = new Point2D.Double();
-                        bend.setLocation(new Float(bendPointXY[0]).intValue(),
-                                new Float(bendPointXY[1]).intValue());
-                        bendPointList.add(bend);
-                    }
-                }
+    private Point2D[] _getHeadTailPoints(Connector c, List<Point2D> bendPoints) {
+        TransformContext currentContext = c.getTransformContext();
+        Point2D headPt, tailPt;
+        Site headSite = c.getHeadSite();
+        Site tailSite = c.getTailSite();
+        if (currentContext != null) {
+            headPt = _getCenterPoint(headSite);//headSite.getPoint(currentContext);
+            tailPt = _getCenterPoint(tailSite);//tailSite.getPoint(currentContext);
+            // get neighbor point to head and tail to determine the output sides
+            Point2D headBend, tailBend;
+            if (!bendPoints.isEmpty()) {
+                headBend = bendPoints.get(0);
+                tailBend = bendPoints.get(bendPoints.size() - 1);
+            } else {
+                headBend = tailPt;
+                tailBend = headPt;
             }
+            // now change the "Normal" side of the site
+            headSite.setNormal(_getNormal(headPt, headBend));
+            // headSite.setNormal(Math.PI);
+            tailSite.setNormal(_getNormal(tailPt, tailBend));
+            // and get the points again
+            headPt = headSite.getPoint(currentContext);
+            tailPt = tailSite.getPoint(currentContext);
+        } else {
+            // fallback if called too early, i.e. no context available
+            tailPt = tailSite.getPoint();
+            headPt = headSite.getPoint();
         }
-        return bendPointList;
+        Point2D[] result = { headPt, tailPt };
+        return result;
     }
 
     /**
-     * Return true if the bend points must be drawn in reversed order. This
-     * is true if the start of drawing the line is the end. Ptolemy has no
-     * notion of a start or the end of a link. The KIELER Layout has such a
-     * notion. This method helps to detect such cases. Let ps be the start port
-     * point pe the end port point. Let b1..n be the n bend points in between.
-     * Normally length(ps,b1)+length(bn,pe) should be <
-     * length(pe,b1)+length(bs,pe). If this is not the case then the order is
-     * assumed to be reversed.
+     * Get the angle in radians from the origin to the other point.
      * 
-     * @param start the start
-     * @param end the end
-     * @param pointList the point list
-     * @return true, if is reversed order
+     * @param origin the original point
+     * @param other the other point
+     * @return angle in radians
      */
-    private boolean isReversedOrder(Point2D start, Point2D end,
-            List<Point2D> pointList) {
-        double d0 = length(start, pointList.get(0))
-                + length(end, pointList.get(pointList.size() - 1));
-        double d1 = length(end, pointList.get(0))
-                + length(start, pointList.get(pointList.size() - 1));
-        return (d0 > d1);
+    private double _getNormal(Point2D origin, Point2D other) {
+        Point2D normalPoint = new Point2D.Double(other.getX() - origin.getX(),
+                other.getY() - origin.getY());
+        // use negative y coordinate, because atan uses "normal" y direction
+        double theta = Math.atan2(-normalPoint.getY(), normalPoint.getX());
+        return theta;
     }
 
-    /**
-     * Calculate the length between two points.
-     * 
-     * @param p0 the p0
-     * @param p1 the p1
-     * @return the double
-     */
-    private double length(Point2D p0, Point2D p1) {
-        return length(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-    }
-
-    /**
-     * Calculate the length between two pairs of doubles describing two points.
-     * 
-     * @param x0 the x0
-     * @param y0 the y0
-     * @param x1 the x1
-     * @param y1 the y1
-     * @return the double
-     */
-    private double length(double x0, double y0, double x1, double y1) {
-        return Math.sqrt(((x1 - x0) * (x1 - x0)) + ((y1 - y0) * (y1 - y0)));
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // private variables ////
 
     /**
      * The radius for filleting the corners of the connector.

@@ -43,11 +43,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
-import ptolemy.vergil.kernel.Link;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyModelUtil
@@ -67,8 +67,8 @@ import ptolemy.vergil.kernel.Link;
  */
 public class PtolemyModelUtil {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
     /**
      * Construct an instance and initialize the internal request buffer.
@@ -80,12 +80,161 @@ public class PtolemyModelUtil {
     }
 
     /**
+     * Add an {@link Attribute} to a Ptolemy object by means of a
+     * {@link MoMLChangeRequest}. Although this might be inefficient, this will
+     * take care about correct updating of all things that require the change,
+     * e.g. the GUI.
+     * 
+     * @param target the target Ptolem object
+     * @param attribute the attribute to add
+     */
+    public void addProperty(NamedObj target, Attribute attribute) {
+        String moml = attribute.exportMoMLPlain();
+        MoMLChangeRequest request = new MoMLChangeRequest(target, target, moml);
+        request.setUndoable(true);
+        if (_anyRequestsSoFar) {
+            request.setMergeWithPreviousUndo(true);
+        }
+        target.requestChange(request);
+        _anyRequestsSoFar = true;
+    }
+
+    /**
+     * Flush all buffered change requests to the given Actor. Reset the buffer
+     * afterwards.
+     * 
+     * @param actor The target of the change request, e.g. the composite actor
+     *            containing the objects for which changes are requested.
+     */
+    public void performChangeRequest(CompositeActor actor) {
+        if (_momlChangeRequest.toString().trim().equals("")) {
+            // if request is empty, don't do anything.
+            return;
+        }
+        _momlChangeRequest.insert(0, "<group>");
+        _momlChangeRequest.append("</group>");
+        // System.out.println(_momlChangeRequest);
+        MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
+                _momlChangeRequest.toString());
+        request.setUndoable(true);
+        if (_anyRequestsSoFar) {
+            request.setMergeWithPreviousUndo(true);
+        }
+        actor.requestChange(request);
+        // reset the current request
+        _momlChangeRequest = new StringBuffer();
+        _anyRequestsSoFar = true;
+    }
+
+    /**
+     * Remove all unnecessary relations within a composite actor. Unnecessary
+     * means that a relation is connected only with 0, 1 or 2 objects. In such
+     * case a relation can be either simply removed or replaced by a direct link
+     * between the objects. Iterate all relations in the parent actor and for
+     * all unnecessary relations with vertices, remove them and if required
+     * reestablish the links such that the semantics keeps the same.
+     * 
+     * @param parent The composite actor in which to look for unnecessary
+     *            relations.
+     */
+    public static void removeUnnecessaryRelations(CompositeActor parent) {
+        PtolemyModelUtil util = new PtolemyModelUtil();
+        for (Iterator containedIterator = parent.containedObjectsIterator(); containedIterator
+                .hasNext();) {
+            Object containedElement = containedIterator.next();
+            if (containedElement instanceof Relation) {
+                Relation relation = (Relation) containedElement;
+                List linkedObjects = relation.linkedObjectsList();
+
+                if (linkedObjects.size() == 0 || linkedObjects.size() == 1) {
+                    util._removeRelation(relation, parent);
+                    util.performChangeRequest(parent);
+                } else {
+                    List<Vertex> vertices = relation
+                            .attributeList(ptolemy.moml.Vertex.class);
+                    if (!vertices.isEmpty()) {
+                        // ok, now we found a relation with a relation vertex...
+                        if (linkedObjects.size() == 2) {
+                            // here we can remove this relation!
+                            Object o1 = linkedObjects.get(0);
+                            Object o2 = linkedObjects.get(1);
+                            if (o1 instanceof Port && o2 instanceof Port) {
+                                util._removeRelationVertex(relation);
+                            } else if (o1 instanceof Relation
+                                    && o2 instanceof Relation) {
+                                util._link("relation1",
+                                        ((Relation) o1).getName(), "relation2",
+                                        ((Relation) o2).getName());
+                                util._removeRelation(relation, parent);
+                                util.performChangeRequest(parent);
+                            } else { // now we have one port and one relation
+                                Port connectedPort = null;
+                                Relation connectedRelation = null;
+                                if (o1 instanceof Port
+                                        && o2 instanceof Relation) {
+                                    connectedPort = (Port) o1;
+                                    connectedRelation = (Relation) o2;
+                                } else if (o2 instanceof Port
+                                        && o1 instanceof Relation) {
+                                    connectedPort = (Port) o2;
+                                    connectedRelation = (Relation) o1;
+                                }
+                                if (connectedPort != null
+                                        && connectedRelation != null) {
+                                    // make sure to keep the right channel for
+                                    // the new relation
+                                    int index = connectedPort
+                                            .linkedRelationList().indexOf(
+                                                    relation);
+                                    if (index >= 0) {
+                                        util._removeRelation(relation, parent);
+                                        util.performChangeRequest(parent);
+                                        util._linkPort(
+                                                connectedPort.getName(parent),
+                                                "relation",
+                                                connectedRelation.getName(),
+                                                index);
+                                        util.performChangeRequest(parent);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        util.performChangeRequest(parent);
+    }
+
+    /**
+     * Toggle show or hide status of unnecessary relation vertices. Iterate all
+     * relations in the parent composite actor and find unnecessary relations.
+     * I.e. relations that are connected to exactly 2 other object. These
+     * relation vertices have no semantic impact and are likely only added to
+     * manipulate the routing of the corresponding edges. Either hide or show
+     * those relation vertices. Relations with connection degree 0 or 1 do not
+     * get hidden, because they are not only inserted for layout. Usually those
+     * are completely unnecessary and should be removed, so the user should be
+     * able to see them.
+     * 
+     * @param parent Composite actor that should be searched for unnecessary
+     *            vertices.
+     */
+    public static void showUnnecessaryRelationsToggle(CompositeActor parent) {
+        _showUnnecessaryRelations(parent, !_hide);
+        _hide = !_hide;
+    }
+
+    // /////////////////////////////////////////////////////////////////
+    // // protected methods ////
+
+    /**
      * Create a new MoMLChangeRequest to add a new Relation. The MoML code is
      * appended to the field MoMLChangeRequest buffer to buffer multiple such
      * requests. Don't actually execute the request.
      * 
      * To flush the request, the method
-     * {@link #_performChangeRequest(CompositeActor)} must be called.
+     * {@link #performChangeRequest(CompositeActor)} must be called.
      * 
      * @param relationName Name of the new relation which needs to be unique
      * @return name of newly created relation
@@ -100,116 +249,13 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Returns the a computed link id. It is computed by the unique name of the
-     * two objects.
-     * 
-     * @param link the link
-     * @return the link id
-     */
-    public static String getLinkId(Link link) {
-        Object object1 = link.getTail();
-        Object object2 = link.getHead();
-        String obj1Id = object1.hashCode() + "";
-        String obj2Id = object2.hashCode() + "";
-        if (object1 instanceof Port) {
-            Port port1 = (Port) object1;
-            obj1Id = port1.getName(port1.getContainer().getContainer());
-        }
-        else if (object1 instanceof NamedObj) {
-            obj1Id = ((NamedObj) object1).getName();
-        }
-
-        if (object2 instanceof Port) {
-            Port port2 = (Port) object2;
-            obj2Id = port2.getName(port2.getContainer().getContainer());
-        }
-        else if (object2 instanceof NamedObj) {
-            obj2Id = ((NamedObj) object2).getName();
-        }
-        return ""+(obj1Id + obj2Id).hashCode();
-    }
-
-    /**
-     * Returns the modification marker value.
-     * 
-     * @param link the link
-     * @return the modification marker
-     */
-    public static String getModificationMarker(Link link) {
-        NamedObj source = null;
-        NamedObj target = null;
-        Object objectSource = link.getTail();
-        Object objectTarget = link.getHead();
-        String sourceTargetLocation = "";
-        if (objectSource instanceof Port) {
-            source = ((Port) objectSource).getContainer();
-        }
-        if (objectTarget instanceof Port) {
-            target = ((Port) objectTarget).getContainer();
-        }
-        if (source != null) {
-            sourceTargetLocation += source.getAttribute("_location").toString();
-        }
-        if (target != null) {
-            sourceTargetLocation += target.getAttribute("_location").toString();
-        }
-        if (objectSource instanceof Vertex) {
-            sourceTargetLocation += ((Vertex) objectSource).getValueAsString();
-        }
-        if (objectTarget instanceof Vertex) {
-            sourceTargetLocation += ((Vertex) objectTarget).getValueAsString();
-        }
-        return "" + sourceTargetLocation.hashCode();
-    }
-
-    /**
-     * Create a new MoMLChangeRequest to add a new StringAttribute with a value.
-     * The MoML code is appended to the field MoMLChangeRequest buffer to buffer
-     * multiple such requests. Don't actually execute the request.
-     * 
-     * To flush the request, the method
-     * {@link #_performChangeRequest(CompositeActor)} must be called.
-     * 
-     * @param relationName Name of the relation in question
-     * @param link the link in question
-     * @param hints String of layout hints
-     * @return name of newly created StringAttribute
-     */
-    public String _layoutHints(String relationName, Link link, String hints) {
-        String modificationMarker = PtolemyModelUtil
-                .getModificationMarker(link);
-        // calculate marker
-        String propertyString1 = "<property name=\"_layoutHints:"
-                + PtolemyModelUtil.getLinkId(link)
-                + "\" class=\"ptolemy.kernel.util.StringAttribute\" value=\""
-                + hints + "\"/>";
-        String propertyString2 = "<property name=\"_modificationMarker:"
-                + PtolemyModelUtil.getLinkId(link)
-                + "\" class=\"ptolemy.kernel.util.StringAttribute\" value=\""
-                + modificationMarker + "\"/>";
-        // delete hints if there are no hints
-        if (hints == null) {
-            propertyString1 = "<deleteProperty name=\"_layoutHints:"
-                    + PtolemyModelUtil.getLinkId(link) + "\"/>";
-            propertyString2 = "<deleteProperty name=\"_modificationMarker:"
-                    + PtolemyModelUtil.getLinkId(link) + "\"/>";
-        }
-        String moml = "<relation name=\"" + relationName + "\" >"
-                + propertyString1 + propertyString2 + "</relation>\n";
-        if (hints == null || !hints.equals("")) {
-            _momlChangeRequest.append(moml);
-        }
-        return relationName;
-    }
-
-    /**
      * Create a new MoMLChangeRequest to add a new Relation with a Vertex at a
      * given position. The MoML code is appended to the field MoMLChangeRequest
      * buffer to buffer multiple such requests. Don't actually execute the
      * request.
      * 
      * To flush the request, the method
-     * {@link #_performChangeRequest(CompositeActor)} must be called.
+     * {@link #performChangeRequest(CompositeActor)} must be called.
      * 
      * @param relationName Name of the new relation which needs to be unique
      * @param x coordinate of new vertex
@@ -261,7 +307,7 @@ public class PtolemyModelUtil {
      * the corresponding type.
      * 
      * To flush the request, the method
-     * {@link #_performChangeRequest(CompositeActor)} must be called.
+     * {@link #performChangeRequest(CompositeActor)} must be called.
      * 
      * @param type1 type of the first item to be linked, e.g. port, relation,
      *            relation1, relation2
@@ -310,132 +356,6 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Remove a single relation.
-     * 
-     * @param relation Relation to be removed.
-     * @param actor Parent actor of the relation.
-     */
-    protected void _removeRelation(Relation relation, CompositeActor actor) {
-        StringBuffer moml = new StringBuffer();
-        moml.append("<deleteRelation name=\"" + relation.getName() + "\"/>\n");
-        _momlChangeRequest.append(moml);
-    }
-
-    /**
-     * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
-     * model object.
-     * 
-     * @param relationSet Set of relation to be removed from the Ptolemy model
-     */
-    protected void _removeRelations(Set<Relation> relationSet) {
-        StringBuffer moml = new StringBuffer();
-        for (Relation relation : relationSet) {
-            // Delete the relation.
-            moml.append("<deleteRelation name=\"" + relation.getName()
-                    + "\"/>\n");
-        }
-        _momlChangeRequest.append(moml);
-    }
-
-    /**
-     * Remove all unnecessary relations within a composite actor. Unnecessary
-     * means that a relation is connected only with 0, 1 or 2 objects. In such
-     * case a relation can be either simply removed or replaced by a direct link
-     * between the objects. Iterate all relations in the parent actor and for
-     * all unnecessary relations with vertices, remove them and if required
-     * reestablish the links such that the semantics keeps the same.
-     * 
-     * @param parent The composite actor in which to look for unnecessary
-     *            relations.
-     */
-    public static void _removeUnnecessaryRelations(CompositeActor parent) {
-        PtolemyModelUtil util = new PtolemyModelUtil();
-        for (Iterator containedIterator = parent.containedObjectsIterator(); containedIterator
-                .hasNext();) {
-            Object containedElement = containedIterator.next();
-            if (containedElement instanceof Relation) {
-                Relation relation = (Relation) containedElement;
-                List linkedObjects = relation.linkedObjectsList();
-
-                if (linkedObjects.size() == 0 || linkedObjects.size() == 1) {
-                    util._removeRelation(relation, parent);
-                    util._performChangeRequest(parent);
-                } else {
-                    List<Vertex> vertices = relation
-                            .attributeList(ptolemy.moml.Vertex.class);
-                    if (!vertices.isEmpty()) {
-                        // ok, now we found a relation with a relation vertex...
-                        if (linkedObjects.size() == 2) {
-                            // here we can remove this relation!
-                            Object o1 = linkedObjects.get(0);
-                            Object o2 = linkedObjects.get(1);
-                            if (o1 instanceof Port && o2 instanceof Port) {
-                                util._removeRelationVertex(relation);
-                            } else if (o1 instanceof Relation
-                                    && o2 instanceof Relation) {
-                                util._link("relation1",
-                                        ((Relation) o1).getName(), "relation2",
-                                        ((Relation) o2).getName());
-                                util._removeRelation(relation, parent);
-                                util._performChangeRequest(parent);
-                            } else { // now we have one port and one relation
-                                Port connectedPort = null;
-                                Relation connectedRelation = null;
-                                if (o1 instanceof Port
-                                        && o2 instanceof Relation) {
-                                    connectedPort = (Port) o1;
-                                    connectedRelation = (Relation) o2;
-                                } else if (o2 instanceof Port
-                                        && o1 instanceof Relation) {
-                                    connectedPort = (Port) o2;
-                                    connectedRelation = (Relation) o1;
-                                }
-                                if (connectedPort != null
-                                        && connectedRelation != null) {
-                                    // make sure to keep the right channel for
-                                    // the new relation
-                                    int index = connectedPort
-                                            .linkedRelationList().indexOf(
-                                                    relation);
-                                    if (index >= 0) {
-                                        util._removeRelation(relation, parent);
-                                        util._performChangeRequest(parent);
-                                        util._linkPort(
-                                                connectedPort.getName(parent),
-                                                "relation",
-                                                connectedRelation.getName(),
-                                                index);
-                                        util._performChangeRequest(parent);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        util._performChangeRequest(parent);
-    }
-
-    /**
-     * Remove a vertex from a relation.
-     * 
-     * @param relation The relation to remove the vertex from.
-     */
-    protected void _removeRelationVertex(Relation relation) {
-        List<Vertex> vertices = relation
-                .attributeList(ptolemy.moml.Vertex.class);
-        if (vertices != null && vertices.size() > 0) {
-            Vertex vertex = vertices.get(0);
-            String moml = "<relation name=\"" + relation.getName()
-                    + "\" class=\"ptolemy.actor.TypedIORelation\">"
-                    + "<deleteProperty name=\"" + vertex.getName() + "\"/>"
-                    + "</relation>\n";
-            _momlChangeRequest.append(moml);
-        }
-    }
-
-    /**
      * Get the location given by the location attribute of the given input
      * object. If the Ptolemy object has no location attribute, return double
      * zero.
@@ -447,17 +367,50 @@ public class PtolemyModelUtil {
      *         location attribute is set for the object.
      */
     protected static double[] _getLocation(NamedObj namedObj) {
-        Attribute locationAttribute = namedObj.getAttribute("_location");
         double[] location = { 0, 0 };
-        if (locationAttribute != null){
-            if (locationAttribute instanceof Location) {
-                location = ((Location) locationAttribute).getLocation();
+        Location locationAttribute = null;
+        if (namedObj instanceof Location) {
+            locationAttribute = (Location) namedObj;
+        } else if (namedObj instanceof Vertex) {
+            location = ((Vertex) namedObj).getLocation();
+        } else {
+            NamedObj object = namedObj;
+            Attribute attribute = null;
+            // search for the next entity in the hierarchy that has
+            // a location attribute
+            while (attribute == null && object != null) {
+                attribute = object.getAttribute("_location");
+                object = object.getContainer();
             }
-            else if(locationAttribute instanceof LocationParameter){
-                location = ((LocationParameter)locationAttribute).getLocation();
+            if (attribute != null) {
+                if (attribute instanceof Location) {
+                    locationAttribute = ((Location) attribute);
+                } else if (attribute instanceof LocationParameter) {
+                    location = ((LocationParameter) attribute).getLocation();
+                }
             }
         }
-        return location;
+        if (locationAttribute != null) {
+            /* Workaround for a strange behavior: If loading a model
+             * from MoML, a Location might have set a valid expression with
+             * non trivial values, but it hasn't been validated and therefore
+             * the value is still {0,0} 
+             */
+            location = locationAttribute.getLocation();
+            if (location[0] == 0 && location[1] == 0) {
+                try {
+                    locationAttribute.validate();
+                    location = locationAttribute.getLocation();
+                } catch (IllegalActionException e) {
+                    /* nothing, use default value */
+                }
+            }
+        }
+        // double arrays are used call-by-reference, so we return a copy here
+        double[] locationCopy = { 0, 0 };
+        locationCopy[0] = location[0];
+        locationCopy[1] = location[1];
+        return locationCopy;
     }
 
     /**
@@ -608,30 +561,49 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Flush all buffered change requests to the given Actor. Reset the buffer
-     * afterwards.
+     * Remove a single relation.
      * 
-     * @param actor The target of the change request, e.g. the composite actor
-     *            containing the objects for which changes are requested.
+     * @param relation Relation to be removed.
+     * @param actor Parent actor of the relation.
      */
-    public void _performChangeRequest(CompositeActor actor) {
-        if (_momlChangeRequest.toString().trim().equals("")) {
-            // if request is empty, don't do anything.
-            return;
+    protected void _removeRelation(Relation relation, CompositeActor actor) {
+        StringBuffer moml = new StringBuffer();
+        moml.append("<deleteRelation name=\"" + relation.getName() + "\"/>\n");
+        _momlChangeRequest.append(moml);
+    }
+
+    /**
+     * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
+     * model object.
+     * 
+     * @param relationSet Set of relation to be removed from the Ptolemy model
+     */
+    protected void _removeRelations(Set<Relation> relationSet) {
+        StringBuffer moml = new StringBuffer();
+        for (Relation relation : relationSet) {
+            // Delete the relation.
+            moml.append("<deleteRelation name=\"" + relation.getName()
+                    + "\"/>\n");
         }
-        _momlChangeRequest.insert(0, "<group>");
-        _momlChangeRequest.append("</group>");
-        // System.out.println(_momlChangeRequest);
-        MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
-                _momlChangeRequest.toString());
-        request.setUndoable(true);
-        if (_anyRequestsSoFar) {
-            request.setMergeWithPreviousUndo(true);
+        _momlChangeRequest.append(moml);
+    }
+
+    /**
+     * Remove a vertex from a relation.
+     * 
+     * @param relation The relation to remove the vertex from.
+     */
+    protected void _removeRelationVertex(Relation relation) {
+        List<Vertex> vertices = relation
+                .attributeList(ptolemy.moml.Vertex.class);
+        if (vertices != null && vertices.size() > 0) {
+            Vertex vertex = vertices.get(0);
+            String moml = "<relation name=\"" + relation.getName()
+                    + "\" class=\"ptolemy.actor.TypedIORelation\">"
+                    + "<deleteProperty name=\"" + vertex.getName() + "\"/>"
+                    + "</relation>\n";
+            _momlChangeRequest.append(moml);
         }
-        actor.requestChange(request);
-        // reset the current request
-        _momlChangeRequest = new StringBuffer();
-        _anyRequestsSoFar = true;
     }
 
     /**
@@ -726,7 +698,10 @@ public class PtolemyModelUtil {
                                             vertex.getName(), false);
                                 } else {/* nothing */
                                 }
-                            } else if (linkedObjects.size() == 2) { // only hide if exactly 2 linked
+                            } else if (linkedObjects.size() == 2) { // only hide
+                                                                    // if
+                                                                    // exactly 2
+                                                                    // linked
                                                                     // objects
                                 util._hideVertex(relation.getName(),
                                         vertex.getName(), true);
@@ -739,30 +714,8 @@ public class PtolemyModelUtil {
 
             }
         }
-        util._performChangeRequest(parent);
+        util.performChangeRequest(parent);
     }
-
-    /**
-     * Toggle show or hide status of unnecessary relation vertices. Iterate all
-     * relations in the parent composite actor and find unnecessary relations.
-     * I.e. relations that are connected to exactly 2 other object. These
-     * relation vertices have no semantic impact and are likely only added to
-     * manipulate the routing of the corresponding edges. Either hide or show
-     * those relation vertices. Relations with connection degree 0 or 1 do not
-     * get hidden, because they are not only inserted for layout. Usually those
-     * are completely unnecessary and should be removed, so the user should be
-     * able to see them.
-     * 
-     * @param parent Composite actor that should be searched for unnecessary
-     *            vertices.
-     */
-    public static void _showUnnecessaryRelationsToggle(CompositeActor parent) {
-        _showUnnecessaryRelations(parent, !_hide);
-        _hide = !_hide;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /**
      * Return a string that is identical to the specified string except any
@@ -834,9 +787,9 @@ public class PtolemyModelUtil {
         _momlChangeRequest.append(moml);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    
+    // /////////////////////////////////////////////////////////////////
+    // // private variables ////
+
     /**
      * Flag indicating whether there have been any MoMLChangeRequests processed
      * so far or not. This is required for proper undo, because if there were
@@ -845,18 +798,18 @@ public class PtolemyModelUtil {
     private boolean _anyRequestsSoFar = false;
 
     /**
+     * Toggle variable to set the hidden status of unnecessary relation
+     * vertices.
+     */
+    private static boolean _hide = true;
+
+    /**
      * StringBuffer for Requests of Model changes. In Ptolemy the main
      * infrastructure to do model changes is through XML change requests of the
      * XML representation. This field is used to collect all changes in one
      * String and then carry them out in only one operation whereas possible.
      */
     private StringBuffer _momlChangeRequest;
-
-    /**
-     * Toggle variable to set the hidden status of unnecessary relation
-     * vertices.
-     */
-    private static boolean _hide = true;
 
     /**
      * Local cache of used names.

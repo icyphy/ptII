@@ -310,10 +310,10 @@ public class KielerLayoutTableau extends Tableau {
                 } else {
                     if (_removeUnnecessaryRelations) {
                         PtolemyModelUtil
-                                ._removeUnnecessaryRelations((CompositeActor) model);
+                                .removeUnnecessaryRelations((CompositeActor) model);
                     } else if (_showUnnecessaryRelationsToggle) {
                         PtolemyModelUtil
-                                ._showUnnecessaryRelationsToggle((CompositeActor) model);
+                                .showUnnecessaryRelationsToggle((CompositeActor) model);
                     } else {
                         BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
 
