@@ -143,7 +143,11 @@ public class FileWriter extends Sink {
             // default value. Have to use getToken().
             String filenameValue = ((StringToken)filename.getToken()).stringValue();
 
-            if (!filenameValue.equals(_previousFilename)) {
+            if (filenameValue == null || filenameValue.equals("\"\"")) {
+                // See $PTII/ptolemy/domains/sdf/kernel/test/auto/zeroRate_delay5.xml, which sets
+                // the filename to a string that has two doublequotes. ""
+                _setWriter(null);
+            } else if (!filenameValue.equals(_previousFilename)) {
                 // New filename. Close the previous.
                 _previousFilename = filenameValue;
                 _setWriter(null);
