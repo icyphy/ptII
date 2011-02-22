@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="bizarre" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -80,7 +80,11 @@
         </property>
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 295.0]">
+        <property name="_Director" class="ptolemy.domains.modal.kernel.FSMDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 295.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 48, 813, 510}, maximized=false}">
         </property>
@@ -106,12 +110,23 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 170.0]">
             </property>
         </port>
+        <port name="p1" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="p2" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 380.0}">
+            </property>
+        </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="stateDependentCausality">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 130.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 198, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -119,12 +134,13 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <port name="p1" class="ptolemy.actor.TypedIOPort">
+            <port name="p1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 195.0]">
                 </property>
             </port>
-            <port name="p2" class="ptolemy.actor.TypedIOPort">
+            <port name="p2" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
                 </property>
