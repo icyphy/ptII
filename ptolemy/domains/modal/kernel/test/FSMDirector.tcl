@@ -133,20 +133,27 @@ test FSMDirector-4.1 {test action methods} {
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
     $p0 link $r1
-    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    #set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    set p1 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p1]]
     $p1 setInput true
-    set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
     $p2 setOutput true
     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+    #set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+    set lrl1 [$p1 linkedRelationList]
+    set r2 [$lrl1 get 0]
     $p0 link $r2
-    $p1 link $r2
+    #$p1 link $r2
     [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
     set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
     $p3 setOutput true
     $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
-    $p2 link $r3
+    #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+    set lrl2 [$p2 linkedRelationList]
+    set r3 [$lrl2 get 0]
+
+    #$p2 link $r3
     $p3 link $r3
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
