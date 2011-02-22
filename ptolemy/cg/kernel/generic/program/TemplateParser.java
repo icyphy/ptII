@@ -47,7 +47,9 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
@@ -55,6 +57,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -666,8 +669,23 @@ public class TemplateParser {
             // Check for ${foo}, which is used in Parameters that are in string mode.
             int openCurlyBracketIndex = code.indexOf("{", currentPos + 1);
             if (openParenIndex == -1 && openCurlyBracketIndex == -1) {
-                CGException.throwException(_component,
-                        "Failed to find open paren or open curly bracket in \"" + code + "\".");
+                try {
+                    // FIXME: A hack to look up $TMPDIR/FileWriter1Output.txt for
+                    // $PTII/bin/ptcg -language java  -inline false  $PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml
+                    StringParameter variable = new StringParameter(
+                            ((NamedObj)_component).getContainer(),
+                            ((NamedObj)_component).getContainer().uniqueName("TemporaryTemplateParser"));
+                    variable.setStringMode(true);
+                    variable.setExpression(code);
+                    variable.validate();
+                    String value = variable.stringValue();
+                    variable.setContainer(null);
+                    return value;
+                } catch (Throwable throwable) {
+                    CGException.throwException(_component, throwable,
+                            "Failed to find open paren or open curly bracket in \"" + code
+                            + "\".  Failed to create parse tree.");
+                }
             }
             if (openCurlyBracketIndex != -1 
                     && ((openParenIndex != -1 && openCurlyBracketIndex < openParenIndex)
@@ -683,13 +701,27 @@ public class TemplateParser {
                 Attribute attribute = ModelScope.getScopedVariable(null,
                         ((NamedObj)_component).getContainer(),
                         attributeName);
-                if (attribute == null) {
-                    CGException.throwException(_component,
-                            "Failed to find '" + attributeName + "' variable in scope, "
-                            + "code was \"" + code + "\".");
-                }
-                Variable variable = (Variable) attribute;
-                result.append(variable.getExpression());
+                Token constant = null;
+                if (attribute != null) {
+                    Variable variable = (Variable) attribute;
+                    result.append(variable.getExpression());
+                } else {
+                    // Handle things like ${TMPDIR}
+                    constant = Constants.get(attributeName);
+                    if (constant != null) {
+                        if (constant instanceof StringToken) { 
+                            // Get rid or leading and trailing double quotes.
+                            result.append(((StringToken)constant).stringValue());
+                        } else {
+                            result.append(constant.toString());
+                        }
+                    } else {
+                        CGException.throwException(_component,
+                                "Failed to find '" + attributeName + "' variable in scope, "
+                                + "code was \"" + code + "\".");
+                    }
+                } 
+
                 currentPos = closeCurlyBracketIndex;
                 nextPos = _getMacroStartIndex(code, closeCurlyBracketIndex + 1);
 
