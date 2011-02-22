@@ -362,7 +362,10 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                     throw new IllegalActionException(this,
                             "Ports must be added to a ModalController via the newPort()"
                             + " method, which in Vergil is accessed by clicking on one of"
-                            + " the port buttons at the top of the window.");                    
+                            + " the port buttons at the top of the window.  "  
+                            + "Failed to add a port of type " + port.getClass().getName()
+                            + " named \"" + port.getName()
+                            + "\" to " + container.getFullName());
                 }
             }
         }
