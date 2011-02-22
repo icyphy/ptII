@@ -47,7 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  strings. The <i>separator</i> parameter is a regular expression
  that determines where the split should occur. The default behavior
  will split the input at newline characters.
- </p>
 
  @author  Edward A. Lee
  @version $Id$

@@ -201,7 +201,7 @@ public class CAViewer extends AbstractPlaceableActor {
     ///////////////////////////////////////////////////////////////////
     ////                    protected variables                    ////
     /**
-     * True if the actor has been initialized
+     * True if the actor has been initialized.
      */
     protected boolean _initialized;
     

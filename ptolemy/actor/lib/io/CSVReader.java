@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Settable;
  </p><p>
  The file or URL is specified using any form acceptable
  to FileParameter.
- </p></p>
+ </p><p>
  Before an end of file is reached, the <i>endOfFile</i>
  output produces <i>false</i>.  In the iteration where the last line
  of the file is read and produced on the <i>output</i> port, this actor

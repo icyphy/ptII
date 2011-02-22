@@ -70,7 +70,10 @@ public class TimedEvent implements Comparable<TimedEvent> {
         return "timeStamp: " + timeStamp + ", contents: " + contents;
     }
 
-    /** Compare two TimedEvent's by comparing their timestamps.
+    /** Compare two TimedEvents by comparing their timestamps.
+     *  @param timedEvent The event to compare against.
+     *  @return The integer -1, 0, or 1 if this is less than, equal to, or
+     *   greater than the argument.
      */
     public int compareTo(TimedEvent timedEvent) {
         return timeStamp.compareTo(timedEvent.timeStamp);
@@ -78,6 +81,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
     ///////////////////////////////////////////////////////////////////
     //// TimeComparator
 

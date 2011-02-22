@@ -165,9 +165,11 @@ public class PthalesCompositeActor extends TypedCompositeActor {
 
     /** Compute iteration number of the actor,
      * which is the number of times internal entities are called. 
-     * and set corresponding attribute
+     * and set corresponding attribute.
      * @param portIn the input port
      * @param sizes dimensions sizes of the input
+     * @return An array of iterations.  The length of the
+     * array is equal to the tiling on the input port.
      */
     public Integer[] computeIterations(IOPort portIn,
             LinkedHashMap<String, Integer> sizes) {

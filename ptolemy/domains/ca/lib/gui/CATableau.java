@@ -99,6 +99,7 @@ public class CATableau extends Tableau {
      */
     public void append(List list) throws IllegalActionException {
         if (mainFrame != null) {
+            // FIXME: what happens here?
         }
     }
 
@@ -137,7 +138,7 @@ public class CATableau extends Tableau {
     ////                    public variables                       ////
 
     /** 
-     * The TableauFrame to hold the CAMatrixViewer
+     * The TableauFrame to hold the CAMatrixViewer.
      */
     public TableauFrame mainFrame;
 

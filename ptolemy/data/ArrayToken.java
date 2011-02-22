@@ -749,6 +749,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     /** Return a new ArrayToken whose elements are in reverse order of this
      *  ArrayToken.
      *  @return An ArrayToken
+     *  @exception IllegalActionException If thrown while creating the new
+     *  ArrayToken.
      */
     public ArrayToken reverse() throws IllegalActionException {
         Token[] result = new Token[_value.length];

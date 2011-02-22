@@ -59,32 +59,57 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (daib)
  @Pt.AcceptedRating Red (daib)
  */
-
 public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
 
-    /**
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+    /** Construct a PthalesDynamicCompositeActor in the default workspace with no
+     *  container and an empty string as its name. Add the actor to the
+     *  workspace directory.  You should set the local director or
+     *  executive director before attempting to send data to the actor or
+     *  to execute it. Increment the version number of the workspace.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public PthalesDynamicCompositeActor() throws NameDuplicationException,
             IllegalActionException {
+        // FIXME: Don't you want to call super() here?
     }
 
-    /** Constructor
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct a PthalesDynamicCompositeActor with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This actor will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.  This actor will have no
+     *  local director initially, and its executive director will be simply
+     *  the director of the container.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public PthalesDynamicCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /**
-     * @param workspace
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+
+    /** Construct a PthalesDynamicCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public PthalesDynamicCompositeActor(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
@@ -96,10 +121,9 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      * minimum of legal iterations from the ports.
      * 
      * @return The number of iterations of the actor.
-     * @throws NoTokenException
-     * @throws IllegalActionException
+     * @exception IllegalActionException If thrown while reading a port
      */
-    public int computeIterations() throws NoTokenException,
+    public int computeIterations() throws /*NoTokenException,*/
             IllegalActionException {
 
         int minIterations = -1;

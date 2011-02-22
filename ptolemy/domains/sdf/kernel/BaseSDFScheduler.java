@@ -128,6 +128,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  @exception IllegalActionException If there is a problem setting
      *  the rate dependency on a port
      */
+    @SuppressWarnings("unused")
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             Port port, String name, List dependents)
             throws IllegalActionException {
@@ -228,6 +229,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *   connected on the inside to ports that have different
      *   tokenInitProduction.
      */
+    @SuppressWarnings("unused")
     protected void _saveContainerRates(Map externalRates)
             throws NotSchedulableException, IllegalActionException {
         Director director = (Director) getContainer();

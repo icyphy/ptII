@@ -207,7 +207,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * A LayoutHint has no default expression.
      */
-    @Override
     public String getDefaultExpression() {
         return null;
     }
@@ -293,7 +292,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * {@inheritDoc}
      */
-    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -301,7 +299,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /**
      * {@inheritDoc}
      */
-    @Override
     public Visibility getVisibility() {
         return _visibility;
     }

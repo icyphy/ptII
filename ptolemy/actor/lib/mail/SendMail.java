@@ -1,3 +1,30 @@
+/** Send email.
+
+ @Copyright (c) 2011 The Regents of the University of California.
+ All rights reserved.
+
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.mail;
 
 import java.io.IOException;
@@ -64,9 +91,21 @@ import ptolemy.util.MessageHandler;
  *  a cryptic NoSuchProviderException.
  * 
  *  @author Edward A. Lee
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class SendMail extends TypedAtomicActor {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public SendMail(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -118,6 +157,9 @@ public class SendMail extends TypedAtomicActor {
         output.setTypeEquals(BaseType.STRING);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
     /** File to attach, if any. By default, this is empty,
      *  which means to not attach any file.
      */
@@ -187,7 +229,7 @@ public class SendMail extends TypedAtomicActor {
     }
     
     /** Set up the properties for the SMTP protocol.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -202,7 +244,7 @@ public class SendMail extends TypedAtomicActor {
 
     /** Update the parameters based on any available inputs
      *  and then send one email message.
-     *  @throws IllegalActionException If any of several errors
+     *  @exception IllegalActionException If any of several errors
      *   occur while attempting to send the message. 
      */
     public boolean postfire() throws IllegalActionException {

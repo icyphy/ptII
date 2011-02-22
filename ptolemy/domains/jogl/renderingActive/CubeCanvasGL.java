@@ -74,7 +74,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
   private double averageUPS = 0.0;
 
   private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
-  private DecimalFormat timedf = new DecimalFormat("0.####");  // 4 dp
+  //private DecimalFormat timedf = new DecimalFormat("0.####");  // 4 dp
 
   // used at game termination
   private volatile boolean gameOver = false;
@@ -358,7 +358,7 @@ public class CubeCanvasGL extends Canvas implements Runnable
 
   private void renderScene() 
   { 
-    if (context.getCurrent() == null) {
+    if (GLContext.getCurrent() == null) {
       System.out.println("Current context is null");
       System.exit(0);
     }
@@ -456,8 +456,8 @@ public class CubeCanvasGL extends Canvas implements Runnable
       long realElapsedTime = timeNow - prevStatsTime;   // time since last stats collection
       totalElapsedTime += realElapsedTime;
 
-      double timingError = 
-         ((double)(realElapsedTime - statsInterval) / statsInterval) * 100.0;
+      /*double timingError = 
+         ((double)(realElapsedTime - statsInterval) / statsInterval) * 100.0;*/
 
       totalRendersSkipped += rendersSkipped;
 

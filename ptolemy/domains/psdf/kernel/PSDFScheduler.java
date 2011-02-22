@@ -226,6 +226,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
+    @SuppressWarnings("unused")
     protected Schedule _getSchedule() throws NotSchedulableException,
             IllegalActionException {
         PSDFDirector director = (PSDFDirector) getContainer();

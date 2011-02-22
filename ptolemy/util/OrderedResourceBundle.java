@@ -76,9 +76,6 @@ public class OrderedResourceBundle {
         BufferedReader propsReader = new BufferedReader(new InputStreamReader(
                 stream));
 
-        if (stream == null) {
-            throw new NullPointerException();
-        }
         // This method closes propsReader
         orderedMap = getPropsAsOrderedMap(propsReader);
     }

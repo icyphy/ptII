@@ -129,7 +129,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   // used at game termination
   private volatile boolean gameOver = false;
-  private int score = 0;
+  //private int score = 0;
 
   private long period;        // period between drawing in _nanosecs_
 
@@ -447,24 +447,24 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
   }  // end of addLight()
 
 
-  private void addFog()
-  {
-    gl.glEnable(GL.GL_FOG);
-
-    gl.glFogi(GL.GL_FOG_MODE, GL.GL_EXP2);
-      // possible modes are: GL.GL_LINEAR, GL.GL_EXP, GL.GL_EXP2
-
-    float[] fogColor = {0.7f, 0.6f, 0.6f, 1.0f};  // same colour as background
-    gl.glFogfv(GL.GL_FOG_COLOR, fogColor, 0);
-
-    gl.glFogf(GL.GL_FOG_DENSITY, 0.35f); 
-
-    gl.glFogf(GL.GL_FOG_START, 1.0f);  // start depth
-    gl.glFogf(GL.GL_FOG_END, 5.0f);	   // end depth
-
-    gl.glHint(GL.GL_FOG_HINT, GL.GL_DONT_CARE);	
-      // possible hints are: GL.GL_DONT_CARE, GL.GL_NICEST or GL.GL_FASTEST
-  }  // end of addFog()
+//  private void addFog()
+//  {
+//    gl.glEnable(GL.GL_FOG);
+//
+//    gl.glFogi(GL.GL_FOG_MODE, GL.GL_EXP2);
+//      // possible modes are: GL.GL_LINEAR, GL.GL_EXP, GL.GL_EXP2
+//
+//    float[] fogColor = {0.7f, 0.6f, 0.6f, 1.0f};  // same colour as background
+//    gl.glFogfv(GL.GL_FOG_COLOR, fogColor, 0);
+//
+//    gl.glFogf(GL.GL_FOG_DENSITY, 0.35f); 
+//
+//    gl.glFogf(GL.GL_FOG_START, 1.0f);  // start depth
+//    gl.glFogf(GL.GL_FOG_END, 5.0f);	   // end depth
+//
+//    gl.glHint(GL.GL_FOG_HINT, GL.GL_DONT_CARE);	
+//      // possible hints are: GL.GL_DONT_CARE, GL.GL_NICEST or GL.GL_FASTEST
+//  }  // end of addFog()
 
 
   // ---------------- frame-based rendering -----------------------
@@ -553,7 +553,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
 
   private void renderScene() 
   { 
-    if (context.getCurrent() == null) {
+    if (GLContext.getCurrent() == null) {
       System.out.println("Current context is null");
       System.exit(0);
     }
@@ -802,7 +802,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
      and create a 'picking' area using the viewport. */
   {
     // initialize the selection buffer
-    int selectBuf[] = new int[BUFSIZE];
+    // int selectBuf[] = new int[BUFSIZE];
     selectBuffer = BufferUtil.newIntBuffer(BUFSIZE);
     gl.glSelectBuffer(BUFSIZE, selectBuffer);
 
@@ -988,8 +988,8 @@ public class TourModelsCanvasGL extends Canvas implements Runnable
       long realElapsedTime = timeNow - prevStatsTime;   // time since last stats collection
       totalElapsedTime += realElapsedTime;
 
-      double timingError = 
-         ((double)(realElapsedTime - statsInterval) / statsInterval) * 100.0;
+      //double timingError = 
+      //   ((double)(realElapsedTime - statsInterval) / statsInterval) * 100.0;
 
       totalRendersSkipped += rendersSkipped;
 

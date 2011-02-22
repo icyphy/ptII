@@ -303,11 +303,6 @@ public class MovieWriter extends Sink implements ControllerListener,
 
         MediaLocator mediaLocator = new MediaLocator(_fileRoot);
 
-        if (mediaLocator == null) {
-            throw new IllegalActionException("Could not create "
-                    + "MediaLocator from the given URL: " + _fileRoot);
-        }
-
         // Get dimensions
         if (_jmfImageToken == null) {
             throw new IllegalActionException(this,

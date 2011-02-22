@@ -2025,23 +2025,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
 
-        // if (_exportPDFAction == null) {
-        //     //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-        //     String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-        //     try {
-        //         Class exportPDFActionClass = Class
-        //                 .forName(exportPDFActionClassName);
-        //         Constructor exportPDFActionConstructor = exportPDFActionClass
-        //                 .getDeclaredConstructor(BasicGraphFrame.class);
-        //         _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-        //                 .newInstance(this);
-        //     } catch (Throwable throwable) {
-        //         new InternalErrorException(null, throwable,
-        //                 "Failed to construct export PDF class \""
-        //                         + exportPDFActionClassName
-        //                         + "\", which was read from the configuration.");
-        //     }
-        // }
+        if (_exportPDFAction == null) {
+            //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+            String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+            try {
+                Class exportPDFActionClass = Class
+                        .forName(exportPDFActionClassName);
+                Constructor exportPDFActionConstructor = exportPDFActionClass
+                        .getDeclaredConstructor(BasicGraphFrame.class);
+                _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                        .newInstance(this);
+            } catch (Throwable throwable) {
+                new InternalErrorException(null, throwable,
+                        "Failed to construct export PDF class \""
+                                + exportPDFActionClassName
+                                + "\", which was read from the configuration.");
+            }
+        }
         // End of block to uncomment.
 
         if (_exportPDFAction != null) {

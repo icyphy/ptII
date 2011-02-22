@@ -482,9 +482,10 @@ public class CADirector extends Director {
     }
 
     /**
-     * This is a helper method called in _iterate() that sets the current 
-     * matrix for any MatrixViewer, Const with a DoubleMatrixToken, or 
-     * CAViewer actors.
+     * Set the current matrix for any MatrixViewer, Const with a
+     * DoubleMatrixToken, or CAViewer actors.
+     * @exception IllegalActionException If thrown while reading a token or iterating
+     * the actors
      */
     protected void _showMatrix() throws IllegalActionException {
         // FIXME: This is kind of an odd way to iterate.  It only
