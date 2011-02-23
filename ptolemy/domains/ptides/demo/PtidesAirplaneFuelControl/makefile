@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: 
+# @Version: $Id$
 #
-# @Copyright (c) 2000-2010 The Regents of the University of California.
+# @Copyright (c) 2010-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -45,8 +45,7 @@ PTPACKAGE = 	PtidesAirplaneFuelControl
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Bus.java \
-	Tank.java
+	Bus.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
