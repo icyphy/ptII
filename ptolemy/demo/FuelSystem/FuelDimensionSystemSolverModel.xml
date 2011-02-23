@@ -218,7 +218,7 @@ Constraints</text></svg></configure>
             </property>
         </property>
     </property>
-    <entity name="fuelDimensionSystem" class="ptolemy.demo.FuelSystem.fuelDimensionSystem">
+    <entity name="FuelDimensionSystem" class="ptolemy.demo.FuelSystem.FuelDimensionSystem">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
         </property>
     </entity>
