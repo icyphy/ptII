@@ -46,7 +46,7 @@ to generate ReadFile1Output.txt
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-53.5555555555555, 60.9532828282828}">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="eval(readFile(&quot;ReadFile1Output.txt&quot;))">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="eval(readFile(&quot;auto/ReadFile1Output.txt&quot;))">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
