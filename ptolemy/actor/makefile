@@ -87,6 +87,7 @@ JSRCS = \
 	IORelation.java \
 	Initializable.java \
 	InvariantViolationException.java \
+	IntermediateReceiver.java \
 	LazyTypedCompositeActor.java \
 	Mailbox.java \
 	Manager.java \
