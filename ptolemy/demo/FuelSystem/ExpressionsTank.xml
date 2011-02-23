@@ -1,0 +1,199 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="ExpressionsTank" extends="ptolemy.demo.FuelSystem.AbstractTank">
+    <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 200.0">
+    </property>
+    <property name="capacity" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, -55.0]">
+        </property>
+    </property>
+    <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, -30.0]">
+        </property>
+    </property>
+    <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="initialLevel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation_1_" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This SetVariable actor makes the current&#10;tank level available as a parameter that&#10;can be referenced in the icon, which enables&#10;the animation of the level.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 360.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Overly simplistic tank model.&#10;&#10;This model cuts off the input flow when the tank is full and&#10;the output flow when the tank is empty.&#10;&#10;This design has a flaw that can cause it to chatter when the&#10;tank becomes full or empty. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 215.0]">
+        </property>
+    </property>
+    <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 40.0]">
+        </property>
+    </port>
+    <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[54.75, 122.0]">
+        </property>
+    </port>
+    <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[489.75, 32.0]">
+        </property>
+    </port>
+    <port name="level" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 345.0]">
+        </property>
+    </port>
+    <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[364.75, 112.0]">
+        </property>
+    </port>
+    <port name="fullIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 295.0]">
+        </property>
+    </port>
+    <port name="actualOutFlow" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 160.0]">
+        </property>
+    </port>
+    <port name="emptyIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 235.0]">
+        </property>
+    </port>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[554.75, 107.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 390.0]">
+        </property>
+    </entity>
+    <entity name="Expression_1_" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(level &lt; capacity) ? desiredFlow : 0.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 50.0]">
+        </property>
+        <port name="desiredFlow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="level" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(level &gt; 0) ? desiredFlow : 0.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[239.75, 112.0]">
+        </property>
+        <port name="level" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="desiredFlow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[494.75, 107.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="capacity">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector_1_" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 295.0]">
+        </property>
+    </entity>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[30.0, 190.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{30.0, 60.0}">
+        </vertex>
+    </relation>
+    <relation name="relation_1_2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation_1_3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation_1_4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation_1_6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation_1_7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation_1_8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[459.75, 57.0]">
+        </vertex>
+    </relation>
+    <relation name="relation_1_5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation_1_9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="desiredInFlow" relation="relation_1_2"/>
+    <link port="desiredOutFlow" relation="relation_1_3"/>
+    <link port="actualInFlow" relation="relation_1_8"/>
+    <link port="availableOutFlow" relation="relation_1_7"/>
+    <link port="fullIndicator" relation="relation_1_9"/>
+    <link port="actualOutFlow" relation="relation_1_6"/>
+    <link port="emptyIndicator" relation="relation_1_5"/>
+    <link port="Integrator.derivative" relation="relation_1_4"/>
+    <link port="Expression_1_.output" relation="relation_1_8"/>
+    <link port="Expression_1_.desiredFlow" relation="relation_1_2"/>
+    <link port="Expression_1_.level" relation="relation"/>
+    <link port="Expression.output" relation="relation_1_7"/>
+    <link port="Expression.level" relation="relation"/>
+    <link port="Expression.desiredFlow" relation="relation_1_3"/>
+    <link port="AddSubtract.plus" relation="relation_1_8"/>
+    <link port="AddSubtract.minus" relation="relation_1_6"/>
+    <link port="AddSubtract.output" relation="relation_1_4"/>
+    <link port="LevelCrossingDetector.output" relation="relation_1_5"/>
+    <link port="LevelCrossingDetector.trigger" relation="relation8"/>
+    <link port="LevelCrossingDetector_1_.output" relation="relation_1_9"/>
+    <link port="LevelCrossingDetector_1_.trigger" relation="relation8"/>
+    <link relation1="relation8" relation2="relation"/>
+</class>
