@@ -72,9 +72,9 @@ test Expression-2.1 {run with default empty expression} {
 } {ptolemy.kernel.util.InternalErrorException: Type resolution failed because of an error during type inference
   in .top
 Because:
-An error occurred during expression type inference
+An error occurred during expression type inference of "".
   in .top.expr
-Because}
+}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]
