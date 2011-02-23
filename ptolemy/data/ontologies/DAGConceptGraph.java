@@ -25,6 +25,7 @@ package ptolemy.data.ontologies;
 
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.NonLatticeCounterExample;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -153,7 +154,7 @@ public class DAGConceptGraph extends ConceptGraph {
             throw new IllegalArgumentException("downSet method not implemented"
                     + " for Concept subclass " + e.getClass().getName() + ".");
         }
-    }
+    }    
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the concept graph
@@ -177,7 +178,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  Should be null for all existing concept graphs.
      *  @return Null, if the concept graph is a lattice.
      */
-    public String nonLatticeReason() {
+    public NonLatticeCounterExample nonLatticeReason() {
         return _dag.nonLatticeReason();
     }
 

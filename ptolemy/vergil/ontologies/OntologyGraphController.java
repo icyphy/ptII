@@ -24,6 +24,7 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.event.ActionEvent;
 
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -87,30 +88,29 @@ public class OntologyGraphController extends FSMGraphController {
     /**
      * The action for checking whether the graph is a lattice.
      */
-    protected CheckIsLatticeAction _checkIsLatticeAction = new CheckIsLatticeAction();
+    protected CheckIsLatticeAction _checkIsLatticeAction = new CheckIsLatticeAction(this);
 
-    /**
-     * An action that checks whether the model graph is a valid lattice. The
-     * user is given an message upon the completion of the check.
+    /** An action that checks whether the ontology model graph is a valid lattice.
+     *  If the check is successful, the user is given an OK message. If not,
+     *  the user is given a message showing a counterexample that shows why the
+     *  graph is not a lattice, and the relevant nodes are highlighted in the model.
      */
-    protected static class CheckIsLatticeAction extends FigureAction {
-        public CheckIsLatticeAction() {
+    protected class CheckIsLatticeAction extends FigureAction {
+        public CheckIsLatticeAction(OntologyGraphController graphController) {
             super("Check Lattice Graph");
+            _graphController = graphController;
         }
 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
-
-            boolean isLattice = ((Ontology) target.getContainer()).isLattice();
-
-            if (isLattice) {
-                MessageHandler.message("The model graph is a valid lattice.");
-            } else {
-                MessageHandler.error("The model graph is not a valid lattice.");
-            }
+            Ontology ontologyModel = (Ontology) target.getContainer();
+            ReportOntologyLatticeStatus.showStatusAndHighlightCounterExample(
+                    ontologyModel, _graphController);
         }
+        
+        private OntologyGraphController _graphController;
     }
 
 }

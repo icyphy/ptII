@@ -237,18 +237,26 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *
      *  @return The reason why this graph is not a lattice, or null, if it is.
      */
-    public String nonLatticeReason() {
-        _validate();
+    public NonLatticeCounterExample nonLatticeReason() {
+        try {
+            _validate();
+            
+        // If there is a cycle in the graph, a runtime GraphStateException
+        // will be thrown by the _validate() method.
+        } catch (GraphStateException graphStateEx) {
+            Node cycleNode = _findNodeWithCycle();
+            
+            // If a node in a cycle cannot be found, rethrow the
+            // GraphStateException.
+            if (cycleNode == null) {
+                throw graphStateEx;
+            } else {
+                return new NonLatticeCounterExample(cycleNode.getWeight());
+            }
+        }
 
         if (nodeCount() == 0) {
             return null;
-        }
-
-        if (bottom() == null) {
-            return "No bottom element.";
-        }
-        if (top() == null) {
-            return "No top element.";
         }
 
         Object[] nodes = weightArray(nodes());
@@ -256,7 +264,17 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         for (int i = 0; i < (nodes.length - 1); i++) {
             for (int j = i + 1; j < nodes.length; j++) {
                 if (leastUpperBound(nodes[i], nodes[j]) == null) {
-                    return "No LUB: " + nodes[i] + ", " + nodes[j];
+                    return new NonLatticeCounterExample(BoundType.LEASTUPPER,
+                            nodes[i], nodes[j]);
+                }
+            }
+        }
+        
+        for (int i = 0; i < (nodes.length - 1); i++) {
+            for (int j = i + 1; j < nodes.length; j++) {
+                if (greatestLowerBound(nodes[i], nodes[j]) == null) {
+                    return new NonLatticeCounterExample(BoundType.GREATESTLOWER,
+                            nodes[i], nodes[j]);
                 }
             }
         }
@@ -452,6 +470,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     // compare two elements using their nodeIds using _closure.
     private int _compareNodeId(int i1, int i2) {
         if (i1 == i2) {
@@ -467,6 +486,28 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         }
 
         return INCOMPARABLE;
+    }
+    
+    /** If the graph has a cycle, find one node on the cycle path and return it,
+     *  or null if the graph has no cycles.
+     *  @return A node in the graph on the cycle path, or null if the graph has
+     *   no cycles.
+     */
+    private Node _findNodeWithCycle() {        
+        int cycleNodeIndex = -1;
+        boolean[][] transitiveClosureMatrix = transitiveClosure();
+        for (int i = 0; i < transitiveClosureMatrix.length; i++) {
+            if (transitiveClosureMatrix[i][i] == true) {
+                cycleNodeIndex = i;
+                break;
+            }
+        }
+        
+        if (cycleNodeIndex < 0) {
+            return null;
+        } else {
+            return node(cycleNodeIndex);
+        }
     }
 
     // compute the least element of a subset nodeIds using _closure.

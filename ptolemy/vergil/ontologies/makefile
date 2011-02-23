@@ -55,7 +55,8 @@ JSRCS = \
 	OntologyGraphModel.java \
 	OntologyGraphTableau.java \
 	OntologySolverTableau.java \
-	RelationController.java
+	RelationController.java \
+	ReportOntologyLatticeStatus.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -82,7 +83,8 @@ OPTIONAL_FILES = \
 	'OntologyGraphFrame$$DebugMenuListener.class' \
 	'OntologyGraphTableau$$Factory.class' \
 	'OntologySolverTableau$$Factory.class' \
-	'RelationController$$LinkRenderer.class'
+	'RelationController$$LinkRenderer.class' \
+	'ReportOntologyLatticeStatus$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

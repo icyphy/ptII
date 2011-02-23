@@ -35,6 +35,7 @@ import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.NonLatticeCounterExample;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -276,11 +277,11 @@ public class ProductLatticeCPO extends ConceptGraph {
      *   this not being a lattice;
      *   <code>null</code> otherwise.
      */
-    public String nonLatticeReason() {
+    public NonLatticeCounterExample nonLatticeReason() {
         for(Ontology ontology : _ontologyList) {
             if (!ontology.isLattice()) {
-                return "The subontology " + ontology.toString()
-                    + " is not a lattice.";
+                // FIXME: add a subclass of NonLatticeCounterExample that covers product lattices.
+                return null;
             }
         }        
         return null;

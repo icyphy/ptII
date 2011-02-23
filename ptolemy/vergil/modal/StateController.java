@@ -27,6 +27,7 @@
  */
 package ptolemy.vergil.modal;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -37,10 +38,12 @@ import java.util.Map;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
@@ -50,6 +53,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
+import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.Figure;
@@ -207,6 +211,23 @@ public class StateController extends AttributeController {
 
             Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
+            
+            // New way to specify a highlight color.
+            try {
+                ColorAttribute highlightAttribute = (ColorAttribute) (object
+                        .getAttribute("_highlightColor", ColorAttribute.class));
+                if (highlightAttribute != null
+                        && !highlightAttribute.getExpression().trim()
+                                .equals("")) {
+                    Color color = highlightAttribute.asColor();
+                    AnimationRenderer animationRenderer = new AnimationRenderer(
+                            color);
+                    animationRenderer.renderSelected(figure);
+                }
+            } catch (IllegalActionException e) {
+                // Ignore.
+            }
+            
             return figure;
         }
 

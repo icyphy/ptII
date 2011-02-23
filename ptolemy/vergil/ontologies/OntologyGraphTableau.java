@@ -1,4 +1,4 @@
-/* An FSM graph view for Ptolemy models
+/* An Ontology graph view for Ptolemy models.
 
  Copyright (c) 1998-2010 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.moml.LibraryAttribute;
 ///////////////////////////////////////////////////////////////////
 //// OntologyGraphTableau
 
-/** An editor tableau for finite state machines.
+/** An editor tableau for Ontology models.
 
  @author  Steve Neuendorffer and Edward A. Lee
  @version $Id$
@@ -54,7 +54,7 @@ import ptolemy.moml.LibraryAttribute;
  */
 public class OntologyGraphTableau extends Tableau {
 
-    /** Create a new FSM editor tableau with the specified container
+    /** Create a new Ontology editor tableau with the specified container
      *  and name, with no default library.
      *  @param container The container.
      *  @param name The name.
@@ -68,7 +68,7 @@ public class OntologyGraphTableau extends Tableau {
         this(container, name, null);
     }
 
-    /** Create a new FSM editor tableau with the specified container,
+    /** Create a new Ontology editor tableau with the specified container,
      *  name, and default library.
      *  @param container The container.
      *  @param name The name.
@@ -160,10 +160,10 @@ public class OntologyGraphTableau extends Tableau {
         }
 
         /** Create an instance of OntologyGraphTableau for the specified effigy,
-         *  if it is an effigy for an instance of FSMActor.
-         *  @param effigy The effigy for an FSMActor.
+         *  if it is an effigy for an instance of Ontology.
+         *  @param effigy The effigy for an Ontology.
          *  @return A new OntologyGraphTableau, if the effigy is a PtolemyEffigy
-         *   that references an FSMActor, or null otherwise.
+         *   that references an Ontology, or null otherwise.
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */

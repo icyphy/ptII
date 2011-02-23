@@ -153,11 +153,12 @@ public class ConceptController extends StateController {
         }
     }
 
-    /**
-     * An action that checks whether the model graph is a valid lattice. If the
-     * check is successful, the user is given an OK message.
+    /** An action that checks whether the ontology model graph is a valid lattice.
+     *  If the check is successful, the user is given an OK message. If not,
+     *  the user is given a message showing a counterexample that shows why the
+     *  graph is not a lattice, and the relevant nodes are highlighted in the model.
      */
-    protected static class CheckIsLatticeAction extends FigureAction {
+    protected class CheckIsLatticeAction extends FigureAction {
         public CheckIsLatticeAction() {
             super("Check Lattice Graph");
         }
@@ -165,16 +166,10 @@ public class ConceptController extends StateController {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            NamedObj target = getTarget();
-
-            boolean isLattice = ((Ontology) target.getContainer()).isLattice();
-
-            if (isLattice) {
-                MessageHandler.message("The model graph is a valid lattice.");
-            } else {
-                MessageHandler
-                        .message("The model graph is not a valid lattice.");
-            }
+            Concept target = (Concept) getTarget();
+            Ontology ontologyModel = target.getOntology();            
+            ReportOntologyLatticeStatus.showStatusAndHighlightCounterExample(
+                    ontologyModel, (OntologyGraphController) getController());
         }
     }
 }

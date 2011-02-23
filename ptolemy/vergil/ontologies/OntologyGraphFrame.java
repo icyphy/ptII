@@ -124,37 +124,12 @@ public class OntologyGraphFrame extends FSMGraphFrame implements ActionListener 
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
 
-            // there is only one command, which is to check lattice
-            try {
-                if (actionCommand.equals(CHECK_LATTICE)) {
-                    Effigy effigy = (Effigy) getTableau().getContainer();
-
-                    // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy, effigy
-                            .uniqueName("debug listener"));
-                    DebugListenerTableau tableau = new DebugListenerTableau(
-                            textEffigy, textEffigy.uniqueName("debugListener"));
-
-                    Ontology ontologyModel = (Ontology) getModel();
-
-                    tableau.setDebuggable(ontologyModel);
-
-                    boolean isLattice = ontologyModel.isLattice();
-
-                    if (isLattice) {
-                        MessageHandler
-                                .message("The model graph is a valid lattice.");
-                    } else {
-                        MessageHandler
-                                .message("The model graph is not a valid lattice.");
-                    }
-                }
-            } catch (KernelException ex) {
-                try {
-                    MessageHandler.warning("Failed to create debug listener: "
-                            + ex);
-                } catch (CancelException exception) {
-                }
+            // there is only one command, which is to check to see if the
+            // ontology is a lattice.
+            if (actionCommand.equals(CHECK_LATTICE)) {
+                Ontology ontologyModel = (Ontology) getModel();                    
+                ReportOntologyLatticeStatus.showStatusAndHighlightCounterExample(
+                        ontologyModel, (OntologyGraphController) _controller);
             }
         }
     }

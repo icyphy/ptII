@@ -75,7 +75,8 @@ JSRCS = \
     Inequality.java \
     InequalitySolver.java \
     InequalityTerm.java \
-    Node.java
+    Node.java \
+    NonLatticeCounterExample.java
 
 OTHER_FILES_TO_BE_JARED = graph-license.htm 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -90,10 +91,12 @@ MISC_FILES =    analysis mapping sched test
 OPTIONAL_FILES = \
     doc \
     demo \
+    'CPO$$BoundType.class' \
     'InequalitySolver$$1.class' \
     'InequalitySolver$$Info.class' \
     'LabeledList$$1.class' \
-    'LabeledList$$SubList.class'
+    'LabeledList$$SubList.class' \
+    'NonLatticeCounterExample$$ExampleType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

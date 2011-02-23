@@ -221,6 +221,8 @@ public class Ontology extends CompositeEntity {
      */
     public boolean isLattice() {
         _graph = _buildConceptGraph();
+        return _graph.isLattice();
+        /*
         String nonLatticeReason = _graph.nonLatticeReason();
         if (null != nonLatticeReason) {
             _debug(nonLatticeReason);
@@ -228,6 +230,7 @@ public class Ontology extends CompositeEntity {
         } else {
             return true;
         }
+        */
     }
 
     /** Create a new relation with the specified name, add it to the

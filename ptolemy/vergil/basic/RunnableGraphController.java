@@ -110,8 +110,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
         getFrame().report(throwable);
 
         if (throwable instanceof KernelException) {
-            _highlightError(((KernelException) throwable).getNameable1());
-            _highlightError(((KernelException) throwable).getNameable2());
+            highlightError(((KernelException) throwable).getNameable1());
+            highlightError(((KernelException) throwable).getNameable2());
 
             // Type conflict errors need to be handled specially.
             if (throwable instanceof TypeConflictException) {
@@ -124,14 +124,14 @@ public abstract class RunnableGraphController extends WithIconGraphController
                         if (term != null) {
                             Object object = term.getAssociatedObject();
                             if (object instanceof Nameable) {
-                                _highlightError((Nameable) object);
+                                highlightError((Nameable) object);
                             }
                         }
                         term = inequality.getLesserTerm();
                         if (term != null) {
                             Object object = term.getAssociatedObject();
                             if (object instanceof Nameable) {
-                                _highlightError((Nameable) object);
+                                highlightError((Nameable) object);
                             }
                         }
                     }
@@ -141,7 +141,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
             Iterator<?> causes = ((KernelRuntimeException) throwable)
                     .getNameables().iterator();
             while (causes.hasNext()) {
-                _highlightError((Nameable) causes.next());
+                highlightError((Nameable) causes.next());
             }
         }
     }
@@ -151,6 +151,26 @@ public abstract class RunnableGraphController extends WithIconGraphController
      */
     public synchronized void executionFinished(Manager manager) {
         getFrame().report("execution finished.");
+    }
+    
+    /** Highlight the specified object and all its containers to
+     *  indicate that it is the source of an error.
+     *  @param culprit The culprit.
+     */
+    public void highlightError(final Nameable culprit) {
+        if (culprit instanceof NamedObj) {
+            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+                protected void _execute() throws Exception {
+                    _addErrorHighlightIfNeeded(culprit);
+                    NamedObj container = culprit.getContainer();
+                    while (container != null) {
+                        _addErrorHighlightIfNeeded(container);
+                        container = container.getContainer();
+                    }
+                }
+            };
+            ((NamedObj) culprit).requestChange(request);
+        }
     }
 
     /** Report that a manager state has changed.
@@ -286,26 +306,6 @@ public abstract class RunnableGraphController extends WithIconGraphController
             highlightColor.setPersistent(false);
             ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
             _errorHighlights.add(highlightColor);
-        }
-    }
-
-    /** Highlight the specified object and all its containers to
-     *  indicate that it is the source of an error.
-     *  @param culprit The culprit.
-     */
-    private void _highlightError(final Nameable culprit) {
-        if (culprit instanceof NamedObj) {
-            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
-                protected void _execute() throws Exception {
-                    _addErrorHighlightIfNeeded(culprit);
-                    NamedObj container = culprit.getContainer();
-                    while (container != null) {
-                        _addErrorHighlightIfNeeded(container);
-                        container = container.getContainer();
-                    }
-                }
-            };
-            ((NamedObj) culprit).requestChange(request);
         }
     }
 

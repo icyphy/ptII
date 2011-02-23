@@ -24,6 +24,7 @@
 package ptolemy.data.ontologies;
 
 import ptolemy.graph.CPO;
+import ptolemy.graph.NonLatticeCounterExample;
 
 ///////////////////////////////////////////////////////////////////
 //// ConceptGraph
@@ -132,7 +133,7 @@ public abstract class ConceptGraph implements CPO {
      *
      *  @return The reason why this graph is not a lattice, or null, if it is.
      */
-    public String nonLatticeReason() {
+    public NonLatticeCounterExample nonLatticeReason() {
         throw new IllegalArgumentException(_notImplementedMessage());
     }
 

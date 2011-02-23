@@ -206,4 +206,19 @@ public interface CPO {
      *  @see #compare
      */
     public static final int SAME = 0;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public inner classes              ////
+    
+    /** An enumeration type to represent the two different types of bounds
+     *  that can be calculated on a set of nodes in a CPO; either
+     *  a greatest lower bound or least upper bound.
+     */
+    public static enum BoundType {
+        /** Represents the greatest lower bound. */
+        GREATESTLOWER,
+        
+        /** Represents the least upper bound. */
+        LEASTUPPER
+    }
 }
