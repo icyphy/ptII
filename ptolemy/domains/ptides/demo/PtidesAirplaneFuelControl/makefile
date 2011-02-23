@@ -45,7 +45,7 @@ PTPACKAGE = 	PtidesAirplaneFuelControl
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Bus.java
+	
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
