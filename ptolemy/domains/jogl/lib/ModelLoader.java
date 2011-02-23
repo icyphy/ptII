@@ -89,10 +89,13 @@ public class ModelLoader extends Sink {
         }
 
         if (input.hasToken(0)) {
-            GL gl= null;
+            GL gl = null;
             // FIXME: this ignores the modelName parameter.
             String name = "bo";
             float maxSize = 1;
+            // FIXME: FindBugs: Non-virtual method call passes null for nonnull parameter
+            // In this case, the thrid parameter cannot be null,
+            // it is eventually dereferenced in OBJModel.drawToList().
             new OBJModel(name, maxSize, gl, true);
             ObjectToken inputToken = (ObjectToken)input.get(0);
             Object inputObject = inputToken.getValue();

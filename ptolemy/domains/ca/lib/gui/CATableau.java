@@ -120,7 +120,9 @@ public class CATableau extends Tableau {
      * @exception IllegalActionException If the frame cannot be created.
      */
     public void createFrame(TableauFrame frame) throws IllegalActionException {
-        frame = new TableauFrame(this, null);
+        if (frame == null) {
+            frame = new TableauFrame(this, null);
+        }
         setFrame(frame);
         frame.setTableau(this);
         mainFrame = frame;

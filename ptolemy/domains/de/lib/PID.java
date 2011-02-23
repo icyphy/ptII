@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
 //// PID
@@ -196,15 +197,16 @@ public class PID extends DETransformer {
                 // signal was already generated. However if the value has changed, then the signal
                 // is discontinuous and we should throw an exception unless derivative control
                 // is disabled (Kd=0).
-                if (timeGap.equals(0)) {
-                    if (!Kd.equals(0) && !currentToken.equals(lastToken)) {
+                if (timeGap.isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
+                    if (!((DoubleToken)Kd.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()
+                            && !currentToken.equals(lastToken)) {
                         throw new IllegalActionException(
                                 "PID controller recevied discontinuous input.");
                     }
                 }
                 // Otherwise, the signal is continuous and we add integral and derivative components
                 else {
-                    if (!Ki.getExpression().equals(0)) {
+                    if (! (((DoubleToken)Ki.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue())) {
                         //Calculate integral component and accumulate
                         _accumulated = (DoubleToken) _accumulated
                                 .add(currentToken.add(lastToken).multiply(
