@@ -62,8 +62,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      */
     public HTMLCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        generatorPackage.setExpression("html");
+        super(container, name, "html");
         generatorPackageList.setExpression("generic.html");
     }
 

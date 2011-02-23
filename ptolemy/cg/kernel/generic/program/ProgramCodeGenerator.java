@@ -90,8 +90,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public ProgramCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        generatorPackage.setExpression(outputFileExtension);
+        super(container, name, outputFileExtension);
 
         _templateExtension = templateExtension;
 

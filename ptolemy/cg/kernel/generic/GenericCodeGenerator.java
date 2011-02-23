@@ -154,8 +154,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
-     *  @deprecated Set <i>generatorPackage</i> and use @{link #GenericCodeGenerator(container, name)
-     *  instead.
      */
     public GenericCodeGenerator(NamedObj container, String name,
             String outputFileExtension) throws IllegalActionException,
@@ -910,7 +908,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  the string value of the generatorPackage parameter.
      */
     protected String _getOutputFilename() throws IllegalActionException {
-        if (_outputFileExtension == null) {
+        if (_outputFileExtension == null || _outputFileExtension.length() == 0) {
             _outputFileExtension = _getOutputFileExtension();
         }
         return _sanitizedModelName + "." + _outputFileExtension;
