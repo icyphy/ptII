@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AverageOverTime.java \
+	Bus.java \
 	Derivative.java \
 	DETransformer.java \
 	EventButton.java \
