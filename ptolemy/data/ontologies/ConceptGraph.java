@@ -210,21 +210,6 @@ public abstract class ConceptGraph implements CPO {
     public Concept[] upSet(Object e) {
         throw new IllegalArgumentException(_notImplementedMessage());
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-    
-    /** An enumeration type to represent the two different types of bounds
-     *  that can be calculated on two concepts in a lattice ontology; either
-     *  a greatest lower bound or least upper bound.
-     */
-    public static enum BoundType {
-        /** Represents the greatest lower bound. */
-        GREATESTLOWER,
-        
-        /** Represents the least upper bound. */
-        LEASTUPPER
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////

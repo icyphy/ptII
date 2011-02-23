@@ -23,8 +23,8 @@ package ptolemy.data.ontologies;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.Token;
-import ptolemy.data.ontologies.ConceptGraph.BoundType;
 import ptolemy.graph.CPO;
+import ptolemy.graph.CPO.BoundType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
