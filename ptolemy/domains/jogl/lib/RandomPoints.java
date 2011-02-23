@@ -2,6 +2,7 @@ package ptolemy.domains.jogl.lib;
 
 
 import javax.media.opengl.GL;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;

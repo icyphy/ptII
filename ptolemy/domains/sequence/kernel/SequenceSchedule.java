@@ -903,29 +903,27 @@ public class SequenceSchedule extends Schedule {
             throw new UnsupportedOperationException();
         }
 
-        /** Determines if an actor has already been scheduled to fire.
-         *  FIXME:  Make this more efficient in the future!  Try hashtable of actors.
-         *  
-         *  @param act The specified actor.
-         *  @param methodName The specified method name to be executed for the actor.
-         *  @return true If the actor has already been scheduled, false otherwise.
-         */
-        private boolean alreadyScheduled(Actor act, String methodName) {
-            boolean checkMethodName = act instanceof MultipleFireMethodsInterface &&
-                                        ((MultipleFireMethodsInterface) act).numFireMethods() > 1;
-            for (int i = 0; i < _schedule.size(); i++) {
-                SequenceFiring f = (SequenceFiring) _schedule.get(i);
-                if (f.getActor().equals(act) &&
-                        (!checkMethodName ||
-                                (checkMethodName && f.getMethodName().equals(methodName)))) {
-                    return true;
-                }
-            }
-            return false;
-        }
+//        /** Determines if an actor has already been scheduled to fire.
+//         *  FIXME:  Make this more efficient in the future!  Try hashtable of actors.
+//         *  
+//         *  @param act The specified actor.
+//         *  @param methodName The specified method name to be executed for the actor.
+//         *  @return true If the actor has already been scheduled, false otherwise.
+//         */
+//        private boolean alreadyScheduled(Actor act, String methodName) {
+//            boolean checkMethodName = act instanceof MultipleFireMethodsInterface &&
+//                                        ((MultipleFireMethodsInterface) act).numFireMethods() > 1;
+//            for (int i = 0; i < _schedule.size(); i++) {
+//                SequenceFiring f = (SequenceFiring) _schedule.get(i);
+//                if (f.getActor().equals(act) &&
+//                        (!checkMethodName ||
+//                                (checkMethodName && f.getMethodName().equals(methodName)))) {
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         private methods                 ////
 
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////

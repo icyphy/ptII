@@ -326,7 +326,7 @@ public class GiottoDirector extends
                 zeros.append('0');
                 count++;
             }
-            periodString = temp + zeros.toString();
+            periodString = new String(temp) + zeros.toString();
         }
         if (periodString.charAt(0) == '0') // leading zero so remove it
         {
@@ -1628,20 +1628,14 @@ public class GiottoDirector extends
                 //ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
                 //        actor.getDirector());
                 //if (dir == null)
-                if (dir == null) {
-
-                    if (_debugging) {
-                        _debug("no director in composite actor ");
-                    }
-
-                } else {
-                    double dummyWCET = directorHelper.getWCET();//df.getWCET();//dir.getWCET();
-                    if (_debugging) {
-                        _debug("Composite Actor:" + actor.getFullName()
-                                + " has WCET " + dummyWCET);
-                    }
-                    wcet += dummyWCET;
+               
+                double dummyWCET = directorHelper.getWCET();//df.getWCET();//dir.getWCET();
+                if (_debugging) {
+                    _debug("Composite Actor:" + actor.getFullName()
+                            + " has WCET " + dummyWCET);
                 }
+                wcet += dummyWCET;
+                
             } else {
 
                 if (frequency == null) {

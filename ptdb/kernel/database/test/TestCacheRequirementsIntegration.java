@@ -30,7 +30,6 @@ package ptdb.kernel.database.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,14 +44,12 @@ import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.CacheManager;
 import ptdb.kernel.database.DBConnection;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
 //// TestCacheRequirementsIntegration
@@ -110,7 +107,7 @@ public class TestCacheRequirementsIntegration {
         
         SaveModelManager saveManager = new SaveModelManager();
         
-        String modelID = saveManager.save(dbModel);
+        /*String modelID =*/ saveManager.save(dbModel);
        
         // Load the model to place it into cache.
         PtolemyEffigy effigy = loadModel(dbModel.getModelName());
@@ -135,7 +132,7 @@ public class TestCacheRequirementsIntegration {
         
         // Save the model again.  This should clear it from the cache.
         dbModel.setIsNew(false);
-        modelID = saveManager.save(dbModel);
+        /*modelID =*/ saveManager.save(dbModel);
         
         // Now load the model again.  This time it will be from the DB (not the cache).
         effigy = null;

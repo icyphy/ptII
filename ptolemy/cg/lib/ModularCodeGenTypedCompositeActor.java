@@ -469,7 +469,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
             String className = NamedProgramCodeGeneratorAdapter
                     .generateName(this);
-            String topDirectory = ".";
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             // FIXME: generateInSubdirectory fix
             if (((BooleanToken) _codeGenerator.generateInSubdirectory

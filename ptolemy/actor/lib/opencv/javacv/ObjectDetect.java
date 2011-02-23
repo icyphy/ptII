@@ -27,21 +27,15 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import static java.lang.Math.round;
 import static name.audet.samuel.javacv.jna.cv.cvEqualizeHist;
 import static name.audet.samuel.javacv.jna.cv.cvHaarDetectObjects;
 import static name.audet.samuel.javacv.jna.cxcore.IPL_DEPTH_8U;
-import static name.audet.samuel.javacv.jna.cxcore.cvCircle;
 import static name.audet.samuel.javacv.jna.cxcore.cvClearMemStorage;
 import static name.audet.samuel.javacv.jna.cxcore.cvCreateImage;
 import static name.audet.samuel.javacv.jna.cxcore.cvCreateMemStorage;
-import static name.audet.samuel.javacv.jna.cxcore.cvGetSeqElem;
 import static name.audet.samuel.javacv.jna.cxcore.cvLoad;
 import name.audet.samuel.javacv.jna.cv.CvHaarClassifierCascade;
 import name.audet.samuel.javacv.jna.cxcore.CvMemStorage;
-import name.audet.samuel.javacv.jna.cxcore.CvPoint;
-import name.audet.samuel.javacv.jna.cxcore.CvRect;
-import name.audet.samuel.javacv.jna.cxcore.CvScalar;
 import name.audet.samuel.javacv.jna.cxcore.CvSeq;
 import name.audet.samuel.javacv.jna.cxcore.CvSize;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
@@ -52,8 +46,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageFlip
@@ -163,23 +155,23 @@ public class ObjectDetect extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
-    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
-        int i = 0;
-        int objTotal = 0;
-        if(objs != null) objTotal = objs.total;
-
-        for (i = 0; i < objTotal; i++) {
-            Pointer r = cvGetSeqElem (objs, i);
-            CvRect rect = new CvRect(r);
-            CvPoint center = new CvPoint(0,0);
-            int radius;
-            center.x = (int)round (rect.x + rect.width * 0.5);
-            center.y = (int)round (rect.y + rect.height * 0.5);
-            radius = (int)round ((rect.width + rect.height) * 0.25);
-            cvCircle (_image, center.byValue(), radius, CvScalar.RED , 3, 8, 0);
-          }
-
-    }
+//    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
+//        int i = 0;
+//        int objTotal = 0;
+//        if(objs != null) objTotal = objs.total;
+//
+//        for (i = 0; i < objTotal; i++) {
+//            Pointer r = cvGetSeqElem (objs, i);
+//            CvRect rect = new CvRect(r);
+//            CvPoint center = new CvPoint(0,0);
+//            int radius;
+//            center.x = (int)round (rect.x + rect.width * 0.5);
+//            center.y = (int)round (rect.y + rect.height * 0.5);
+//            radius = (int)round ((rect.width + rect.height) * 0.25);
+//            cvCircle (_image, center.byValue(), radius, CvScalar.RED , 3, 8, 0);
+//          }
+//
+//    }
 
     
     ///////////////////////////////////////////////////////////////////

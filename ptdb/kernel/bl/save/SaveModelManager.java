@@ -44,8 +44,8 @@ import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateParentsToNewVersionTask;
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.dto.XMLDBModelWithReferenceChanges;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.DBModelNotFoundException;
@@ -325,7 +325,7 @@ public class SaveModelManager {
 
             }
             
-            String oldModelId = "";
+            //String oldModelId = "";
             
             modelId = save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
@@ -664,7 +664,11 @@ public class SaveModelManager {
             XMLDBModelParsingException, CircularDependencyException {
 
         String newModelId = null;
-
+        if (xmlDBModel == null) {
+            throw new IllegalArgumentException(
+                    "Failed while attempting to save."
+                            + " The XMLDBModel to be saved is null");
+        }
         try {
 
 
@@ -682,11 +686,7 @@ public class SaveModelManager {
             
             xmlDBModel.setModel(modelBody);
             
-            if (xmlDBModel == null) {
-                throw new IllegalArgumentException(
-                        "Failed while attempting to save."
-                                + " The XMLDBModel to be saved is null");
-            }
+            
 
             xmlDBModel = populateChildModelsList(xmlDBModel);
 

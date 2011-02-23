@@ -109,7 +109,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
                     javax.swing.JTable target = (javax.swing.JTable) e
                             .getSource();
                     int row = target.getSelectedRow();
-                    int column = target.getSelectedColumn();
+                    //int column = target.getSelectedColumn();
                     _loadModel((String) target.getValueAt(row, 1));
                 }
             }

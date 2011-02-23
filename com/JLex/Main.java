@@ -2418,6 +2418,7 @@ class CMinimize {
      Function: minimize
      Description: Removes redundant transition table states.
      **************************************************************/
+    @SuppressWarnings("unused")
     private void minimize() {
         Vector dtrans_group;
         Vector new_group;
@@ -2531,6 +2532,7 @@ class CMinimize {
      Function: init_groups
      Description:
      **************************************************************/
+    @SuppressWarnings("unused")
     private void init_groups() {
         int i;
         int j;
@@ -2701,6 +2703,7 @@ class CNfa2Dfa {
      Function: make_dfa
      Description: High-level access function to module.
      **************************************************************/
+    @SuppressWarnings("unused")
     void make_dfa(CLexGen lexGen, CSpec spec) {
         reset();
         set(lexGen, spec);
@@ -3070,6 +3073,7 @@ class CNfa2Dfa {
      Function: get_unmarked
      Description: Returns next unmarked DFA state.
      **************************************************************/
+    @SuppressWarnings("unused")
     private CDfa get_unmarked() {
         int size;
         CDfa dfa;
@@ -4337,6 +4341,7 @@ class CLexGen {
      Function: generate
      Description:
      **************************************************************/
+    @SuppressWarnings("unused")
     void generate() throws java.io.IOException, java.io.FileNotFoundException {
         if (false == m_init_flag) {
             CError.parse_error(CError.E_INIT, 0);

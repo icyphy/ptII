@@ -63,8 +63,6 @@ public class ImageDisplay extends Sink {
         input.setTypeEquals(BaseType.OBJECT);
 
         //cvNamedWindow ("Display", 1);
-        
-        _frameNum=0;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -118,7 +116,4 @@ public class ImageDisplay extends Sink {
 
     //private IplImage _frame;
     private Pointer _frame;
-     
-     // debug
-     private int _frameNum;
 }

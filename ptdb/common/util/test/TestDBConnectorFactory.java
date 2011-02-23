@@ -425,7 +425,7 @@ public class TestDBConnectorFactory {
 
             PowerMock.replay(Class.class, mockXmlDBClass);
 
-            DBConnection conn = DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn =*/ DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class, mockXmlDBClass);
 

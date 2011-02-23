@@ -56,7 +56,6 @@ import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.PTDBGenericAttribute;
-import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
@@ -72,11 +71,8 @@ import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.Utilities;
 import ptolemy.actor.IOPort;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
@@ -1403,11 +1399,6 @@ public class OracleXMLDBConnection implements DBConnection {
             query = "replace node doc('dbxml:/"+ _xmlContainer.getName() 
                     + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
                     + xmlDBAttribute.getAttributeId() + "'] with "+ attributeNode;
-
-            if (xmlQueryContext == null)
-                throw new DBExecutionException(
-                        "Failed to UpdateAttributeTask - The Query context is null "
-                                + "and cannot be used to execute queries.");
 
             _xmlManager.query(_xmlTransaction, query, xmlQueryContext, null);        
             
@@ -2764,17 +2755,7 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
     }
-    
-    /**
-     * Remove the double quotes from the given value.
-     * @param originalString String from which we want to
-     * remove double quotes.
-     * @return OriginalString without double quotes.
-     */
-    private String _removeQuotes(String originalString) {
-        return originalString.replaceAll("\"", "");
-    }
-    
+        
     /**
      * Replace the reference tags in a given model with the reference content.
      * @param modelContent The model content.

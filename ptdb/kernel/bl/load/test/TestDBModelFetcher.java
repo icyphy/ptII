@@ -28,12 +28,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.load.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
-
-import static org.junit.Assert.assertNotNull;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;

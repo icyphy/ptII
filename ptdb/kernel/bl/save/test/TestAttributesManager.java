@@ -32,7 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.kernel.bl.save.test;
 
 import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
 
 import java.util.ArrayList;

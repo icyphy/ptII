@@ -42,7 +42,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -408,7 +407,6 @@ public class FuzzyLogic extends TypedAtomicActor{
     private ArrayList<String> _rules;
     private ArrayList<LinguisticVariable> _linguisticVariableArray;
     private FuzzyParser _fuzzyParser;
-    private final String _eol = System.getProperty("line.separator");
     private int _numOutputs;
     private int _numInputs;
     private TypedIOPort tempInputPort;

@@ -39,6 +39,7 @@ package ptolemy.codegen.rtmaude.domains.de.lib;
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
+ * @deprecated Use ptolemy.actor.lib.ResettableTimer.
  */
 public class NonInterruptibleTimer extends Timer {
     /**

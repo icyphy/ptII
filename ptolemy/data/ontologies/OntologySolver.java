@@ -85,7 +85,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
         Collections.sort(errors);
 
         if (!errors.isEmpty()) {
-            String errorMessage = errors.toString();
+            // String errorMessage = errors.toString();
 
             // FIXME:  Replace with proper error logging.  See java.util.logging
             // throw new OntologyResolutionException(this, errorMessage);

@@ -31,7 +31,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptdb.kernel.bl.search.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -42,6 +45,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 

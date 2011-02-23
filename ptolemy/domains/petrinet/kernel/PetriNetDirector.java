@@ -851,22 +851,22 @@ public class PetriNetDirector extends Director {
         }
     }
     
-    /**
-     * This method is a helper method that adds white space to a string
-     * 
-     * @param amount
-     *            The amount of white space to add to the output string.
-     *            
-     * @return Return the new output string with white space added.
-     */
-    private String _createWhiteSpace(int amount) {
-        String output = "";
-        for (int i = 0; i < amount; i++) {
-            output += " ";
-        }
-        return output;
-    }
-    
+//    /**
+//     * This method is a helper method that adds white space to a string
+//     * 
+//     * @param amount
+//     *            The amount of white space to add to the output string.
+//     *            
+//     * @return Return the new output string with white space added.
+//     */
+//    private String _createWhiteSpace(int amount) {
+//        String output = "";
+//        for (int i = 0; i < amount; i++) {
+//            output += " ";
+//        }
+//        return output;
+//    }
+//    
     /** Create the random number generator using current parameter values.
      *  @exception IllegalActionException If thrown while reading the
      *  seed Token.

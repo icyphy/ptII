@@ -377,7 +377,7 @@ COPERNICUSPACKAGES = \
 	ptolemy.copernicus.kernel \
 	ptolemy.copernicus.shallow \
 
-# Packages used by data/properties 
+# Packages used by data/ontologies
 # Use this command to update:
 # cd $PTII/ptolemy/data/ontologies; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/ontologies" dir}' | sed 's@/@.@g'
 DATAONTOLOGIESPACKAGES = \
@@ -396,86 +396,6 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr
-
-
-# Packages used by data/properties 
-# Use this command to update:
-# cd $PTII/ptolemy/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
-DATAPROPERTIESPACKAGES = \
-	ptolemy.data.properties \
-	ptolemy.data.properties.configuredSolvers.lattice \
-	ptolemy.data.properties.configuredSolvers.token \
-	ptolemy.data.properties.gui \
-	ptolemy.data.properties.lattice \
-	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority \
-	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.actor \
-	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.data.expr \
-	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.domains.fsm.kernel \
-	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.kernel \
-	ptolemy.data.properties.lattice.academicFalseTrueSet \
-	ptolemy.data.properties.lattice.academicFalseTrueSet.actor \
-	ptolemy.data.properties.lattice.academicFalseTrueSet.data.expr \
-	ptolemy.data.properties.lattice.academicFalseTrueSet.domains.fsm.kernel \
-	ptolemy.data.properties.lattice.academicFalseTrueSet.kernel \
-	ptolemy.data.properties.lattice.dimensionSystem \
-	ptolemy.data.properties.lattice.dimensionSystem.actor \
-	ptolemy.data.properties.lattice.dimensionSystem.actor.lib \
-	ptolemy.data.properties.lattice.dimensionSystem.actor.lib.logic \
-	ptolemy.data.properties.lattice.dimensionSystem.data.expr \
-	ptolemy.data.properties.lattice.dimensionSystem.domains.continuous.lib \
-	ptolemy.data.properties.lattice.logicalAND.domains.continuous.lib \
-	ptolemy.data.properties.lattice.logicalAND.domains.modal.kernel \
-	ptolemy.data.properties.lattice.exampleSetLattice \
-	ptolemy.data.properties.lattice.exampleSetLattice.actor \
-	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
-	ptolemy.data.properties.lattice.exampleSetLattice.data.expr \
-	ptolemy.data.properties.lattice.exampleSetLattice.kernel \
-	ptolemy.data.properties.lattice.generic.actor.lib \
-	ptolemy.data.properties.lattice.imageOntology \
-	ptolemy.data.properties.lattice.imageOntology.actor \
-	ptolemy.data.properties.lattice.imageOntology.actor.lib.image \
-	ptolemy.data.properties.lattice.imageOntology.kernel \
-	ptolemy.data.properties.lattice.logicalAND \
-	ptolemy.data.properties.lattice.logicalAND.actor \
-	ptolemy.data.properties.lattice.logicalAND.actor.lib \
-	ptolemy.data.properties.lattice.logicalAND.data.expr \
-	ptolemy.data.properties.lattice.logicalAND.domains.ct.lib \
-	ptolemy.data.properties.lattice.logicalAND.domains.fsm.kernel \
-	ptolemy.data.properties.lattice.logicalAND.domains.sdf.lib \
-	ptolemy.data.properties.lattice.logicalAND.kernel \
-	ptolemy.data.properties.lattice.logicalOrBackward \
-	ptolemy.data.properties.lattice.logicalOrBackward.actor \
-	ptolemy.data.properties.lattice.logicalOrBackward.actor.lib \
-	ptolemy.data.properties.lattice.logicalOrBackward.data.expr \
-	ptolemy.data.properties.lattice.logicalOrBackward.domains.fsm.kernel \
-	ptolemy.data.properties.lattice.logicalOrBackward.kernel \
-	ptolemy.data.properties.lattice.namingSetLattice \
-	ptolemy.data.properties.lattice.namingSetLattice.actor \
-	ptolemy.data.properties.lattice.softwareConfiguration \
-	ptolemy.data.properties.lattice.softwareConfiguration.actor \
-	ptolemy.data.properties.lattice.softwareConfiguration.actor.lib \
-	ptolemy.data.properties.lattice.softwareConfiguration.data.expr \
-	ptolemy.data.properties.lattice.softwareConfiguration.domains.fsm.kernel \
-	ptolemy.data.properties.lattice.softwareConfiguration.domains.modal.kernel \
-	ptolemy.data.properties.lattice.softwareConfiguration.kernel \
-	ptolemy.data.properties.lattice.typeSystem_C \
-	ptolemy.data.properties.lattice.typeSystem_C.actor \
-	ptolemy.data.properties.lattice.typeSystem_C.actor.lib \
-	ptolemy.data.properties.lattice.typeSystem_C.actor.lib.logic \
-	ptolemy.data.properties.lattice.typeSystem_C.data.expr \
-	ptolemy.data.properties.lattice.typeSystem_C.domains.fsm.kernel \
-	ptolemy.data.properties.lattice.typeSystem_C.kernel \
-	ptolemy.data.properties.test \
-	ptolemy.data.properties.token \
-	ptolemy.data.properties.token.combinedValueToken.actor \
-	ptolemy.data.properties.token.combinedValueToken.domains.fsm.kernel \
-	ptolemy.data.properties.token.combinedValueToken.kernel \
-	ptolemy.data.properties.token.firstValueToken \
-	ptolemy.data.properties.token.firstValueToken.actor \
-	ptolemy.data.properties.token.firstValueToken.domains.fsm.kernel \
-	ptolemy.data.properties.token.firstValueToken.kernel \
-	ptolemy.data.properties.util \
-	ptolemy.domains.properties.lib
 
 # Packages used by Diva
 DIVAPACKAGES = \
@@ -673,7 +593,6 @@ ALLPACKAGES = \
 	$(COMPACKAGES) \
 	$(COPERNICUSPACKAGES) \
 	$(DATAONTOLOGIESPACKAGES) \
-	$(DATAPROPERTIESPACKAGES) \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
 	$(GRAPHTRANSFORMATIONPACKAGES) \
@@ -738,7 +657,6 @@ ALLPACKAGES = \
 	ptolemy.domains.petrinet.lib \
 	ptolemy.domains.petrinet.gui \
 	ptolemy.domains.psdf.kernel \
-	ptolemy.domains.properties.kernel \
 	ptolemy.domains.ptera.kernel \
 	ptolemy.domains.ptera.lib \
 	ptolemy.domains.pthales.JNI \
@@ -765,7 +683,6 @@ ALLPACKAGES = \
 	ptolemy.vergil.fsm.ia \
 	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
-	ptolemy.vergil.properties \
 	ptolemy.vergil.ptera \
 	ptolemy.vergil.tdl \
 	ptolemy.verification.gui \

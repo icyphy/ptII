@@ -32,7 +32,6 @@ import java.util.List;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.RefinementPort;
@@ -184,7 +183,7 @@ public class TDLActor extends FSMActor {
      */
     public boolean inputIsSafeToProcess(IOPort port)
             throws IllegalActionException {
-        Time modelTime = getDirector().getModelTime();
+        //Time modelTime = getDirector().getModelTime();
 
         Director executiveDirector = ((CompositeActor) getExecutiveDirector()
                 .getContainer()).getExecutiveDirector();
@@ -192,11 +191,11 @@ public class TDLActor extends FSMActor {
         Director topLevelDirector = ((CompositeActor) executiveDirector
                 .getContainer()).getExecutiveDirector();
 
-        Time physicalTime = null;
+        //Time physicalTime = null;
         if (topLevelDirector != null) {
-            physicalTime = topLevelDirector.getModelTime();
+            /*physicalTime =*/ topLevelDirector.getModelTime();
         } else {
-            physicalTime = executiveDirector.getModelTime();
+            /*physicalTime =*/ executiveDirector.getModelTime();
         }
 //        TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) ((TDLModule) getContainer())
 //                .getContainer()).getCausalityInterface();

@@ -598,8 +598,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *  @param actor The actor to be assigned a new local time
      */
     public void setActorLocalTime(Time newTime, Actor actor) {
-        DTActor dtActor = (DTActor) _allActorsTable.get(actor);
-        dtActor.localTime = newTime;
+        //DTActor dtActor = (DTActor) _allActorsTable.get(actor);
+        //dtActor.localTime = newTime;
     }
 
     /** Set a new value to the current time of the model, where
@@ -1206,7 +1206,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
-        public Time localTime;
+        //public Time localTime;
 
         private Actor _actor;
 
@@ -1219,7 +1219,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
          */
         public DTActor(Actor actor) {
             _actor = actor;
-            localTime = new Time(_actor.getDirector());
+            //localTime = new Time(_actor.getDirector());
             _repeats = 0;
             _shouldGenerateInitialTokens = false;
         }

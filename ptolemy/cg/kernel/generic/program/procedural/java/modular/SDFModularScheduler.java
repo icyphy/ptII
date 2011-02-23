@@ -70,6 +70,7 @@ public class SDFModularScheduler extends SDFScheduler {
      *  firing.
      * @exception IllegalActionException
      */
+    @SuppressWarnings("unused")
     public Map getFiringVector(CompositeActor container, int vectorizationFactor)
             throws IllegalActionException {
 
@@ -520,6 +521,7 @@ public class SDFModularScheduler extends SDFScheduler {
      *  @exception IllegalActionException If the expression for a
      *  rate parameter is not valid.
      */
+    @SuppressWarnings("unused")
     private void _propagatePort(CompositeActor container, IOPort currentPort,
             Map entityToFiringsPerIteration, Map externalRates,
             LinkedList remainingActors, LinkedList pendingActors,

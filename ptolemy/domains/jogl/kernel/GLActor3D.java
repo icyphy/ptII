@@ -28,6 +28,7 @@
 package ptolemy.domains.jogl.kernel;
 
 import javax.media.opengl.GL;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 /** 

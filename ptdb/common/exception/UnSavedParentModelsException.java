@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.common.exception;
 
 import java.util.Collection;
+
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 

@@ -35,6 +35,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -181,7 +182,7 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         
         
         JPanel statusPanel = new JPanel(new BorderLayout());
-        statusPanel.setPreferredSize(new Dimension(outerPanel.WIDTH, 50));
+        statusPanel.setPreferredSize(new Dimension(ImageObserver.WIDTH, 50));
         
         outerPanel.add(statusPanel);
         

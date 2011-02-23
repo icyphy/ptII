@@ -55,20 +55,28 @@ package ptolemy.domains.jogl.TourModelsGL;
      * a deep, red-ish fog (see addFog())
 */
 
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.util.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.nio.IntBuffer;
 import java.text.DecimalFormat;
-import javax.imageio.ImageIO;
-import java.nio.*;
 
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
-import com.sun.opengl.util.*;
-import com.sun.opengl.util.texture.*;
-import ptolemy.domains.jogl.objLoader.OBJModel;   // my OBJ file loader package
+import javax.media.opengl.GL;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLContext;
+import javax.media.opengl.GLDrawable;
+import javax.media.opengl.GLDrawableFactory;
+import javax.media.opengl.glu.GLU;
+
+import ptolemy.domains.jogl.objLoader.OBJModel;
+
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.GLUT;
 
 
 public class TourModelsCanvasGL extends Canvas implements Runnable

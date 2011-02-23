@@ -27,8 +27,6 @@
 
 package ptolemy.domains.sequence.lib;
 
-import java.util.ArrayList;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.SetVariable;
 import ptolemy.data.Token;
@@ -452,7 +450,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
          // Set up strings for moml change requests
          // FIXME:  In the future, use this to manage parameter deletion for parameters
          // that are no longer needed when actors are deleted
-         ArrayList<String> momlChangeRequests = new ArrayList<String>();
+         //ArrayList<String> momlChangeRequests = new ArrayList<String>();
          
          // Don't run this code the first time - the constructor has
          // its own code that needs to be executed before super.setName(name)

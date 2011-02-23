@@ -179,7 +179,6 @@ public class Combine extends TypedAtomicActor {
 
     public boolean postfire() throws IllegalActionException {
         //cleanup for next run
-        _countDownRegions = input.getWidth();
         _present = false;
         resetValue();
     	  return true;
@@ -192,8 +191,7 @@ public class Combine extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-  	  	//cleanup for first run
-    	_countDownRegions = input.getWidth();
+  	//cleanup for first run
         _present = false;
         resetValue();
     }
@@ -343,8 +341,6 @@ public class Combine extends TypedAtomicActor {
         
     /** True if the signal is present. */
     private boolean _present;
-    
-    private int _countDownRegions;
     
     /** Current (combined) signal value. */
     private int _value;

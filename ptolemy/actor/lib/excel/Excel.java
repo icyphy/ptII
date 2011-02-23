@@ -32,10 +32,8 @@ import java.io.File;
 import java.io.IOException;
 
 import jxl.Workbook;
-import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -125,10 +123,10 @@ public class Excel extends TypedAtomicActor {
         String macro = ((Parameter) getAttribute("macro")).getExpression();
 
         // Variables
-        IOPort portIn = null;
+        //IOPort portIn = null;
 
         // Input ports 
-        portIn = (IOPort) getPort("in");
+        //portIn = (IOPort) getPort("in");
 
         // BEFORE CALLING TASK //
         // Input ports created and filled before elementary task called 
@@ -140,10 +138,10 @@ public class Excel extends TypedAtomicActor {
 
         // Excel open
         WritableWorkbook workbook = null;
-        WritableSheet sheet = null;
+        //WritableSheet sheet = null;
         try {
             workbook = Workbook.createWorkbook((new File(destFileName)));
-            sheet = workbook.createSheet("Res", 0);
+            /*sheet =*/ workbook.createSheet("Res", 0);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -30,11 +30,11 @@
  */
 package ptolemy.actor.lib.x10;
 
+import gnu.io.CommPortIdentifier;
+
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
-
-import gnu.io.CommPortIdentifier;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.StringParameter;

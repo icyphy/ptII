@@ -38,9 +38,7 @@ import org.junit.Test;
 
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
-import ptdb.common.exception.DBModelNotFoundException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.load.DBModelFetcher;

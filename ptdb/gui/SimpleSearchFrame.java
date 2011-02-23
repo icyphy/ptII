@@ -40,6 +40,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -50,10 +51,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.Action;
 import javax.swing.filechooser.FileFilter;
-
-import diva.gui.GUIUtilities;
 
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
@@ -78,6 +76,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// SimpleSearchFrame
@@ -296,7 +295,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                          * If the enter button is pressed, perform the search
                          *  action.
                          */
-                        if (e.getKeyCode() == e.VK_ENTER) {
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
                             _searchButton.getActionListeners()[0]
                                     .actionPerformed(null);

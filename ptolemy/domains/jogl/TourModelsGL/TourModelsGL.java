@@ -14,10 +14,21 @@ package ptolemy.domains.jogl.TourModelsGL;
      * fog
 */
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*; 
-import javax.media.opengl.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.media.opengl.AWTGraphicsConfiguration;
+import javax.media.opengl.AWTGraphicsDevice;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLDrawableFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 public class TourModelsGL extends JFrame implements WindowListener

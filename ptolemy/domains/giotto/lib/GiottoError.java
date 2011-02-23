@@ -139,8 +139,8 @@ public class GiottoError extends TypedAtomicActor {
             j = temp.indexOf(")");
             k = temp.lastIndexOf("(");
             l = temp.lastIndexOf(")");
-            double wcet = Double.parseDouble(temp.substring(i + 1, j));
-            double periodvalue = Double.parseDouble(temp.substring(k + 1, l));
+            /*double wcet =*/ Double.parseDouble(temp.substring(i + 1, j));
+            /*double periodvalue =*/ Double.parseDouble(temp.substring(k + 1, l));
             return true;
         } else if (_errorAction == ErrorAction.reset) {
             throw exception;

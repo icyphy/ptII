@@ -17,12 +17,15 @@
 package ptolemy.domains.jogl.objLoader;
 
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-import javax.media.opengl.*;
-import com.sun.opengl.util.*;
-import com.sun.opengl.util.texture.*;
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.texture.Texture;
 
 
 public class Materials

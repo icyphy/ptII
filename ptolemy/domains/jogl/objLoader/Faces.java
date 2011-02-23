@@ -22,12 +22,10 @@
 
 package ptolemy.domains.jogl.objLoader;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-import javax.media.opengl.*;
-import com.sun.opengl.util.*;
-import java.text.DecimalFormat;
+import javax.media.opengl.GL;
 
 
 
@@ -47,7 +45,7 @@ public class Faces
   private ArrayList<Tuple3> texCoords;
 
   // for reporting
-  private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
+  //private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
 
 
   public Faces(ArrayList<Tuple3> vs, ArrayList<Tuple3> ns, 
@@ -147,11 +145,11 @@ public class Faces
 
     int polytype;
     if (vertIdxs.length == 3)
-      polytype = gl.GL_TRIANGLES;
+      polytype = GL.GL_TRIANGLES;
     else if (vertIdxs.length == 4)
-      polytype = gl.GL_QUADS;
+      polytype = GL.GL_QUADS;
     else
-      polytype = gl.GL_POLYGON;
+      polytype = GL.GL_POLYGON;
 
 
     gl.glBegin(polytype);

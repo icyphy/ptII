@@ -145,27 +145,18 @@ public class TestLoadRequirementsIntegration {
      */
     @Test
     public void testloadModel_NotInDatabase() throws Exception {
-
         String inputString = "not in database";
-
-
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
         ModelDirectory modelDirectory = new ModelDirectory(configuration, 
                 "directory");
         modelDirectory.setContainer(configuration);
-        
-        PtolemyEffigy effigy = null;
-
         try {
-            effigy = LoadManager.loadModel(inputString, configuration);
-
+           LoadManager.loadModel(inputString, configuration);
         } catch (Exception e) {
-            assertTrue("The system throwed an exception" + e.getMessage(), true);
+            assertTrue("The system threw an exception" + e.getMessage(), true);
         }
-
         PowerMock.verifyAll();
-
     }
 
     /**
@@ -178,26 +169,19 @@ public class TestLoadRequirementsIntegration {
      */
     @Test
     public void testloadModel_NullModelName() throws Exception {
-
         String inputString = null;
-
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
         ModelDirectory modelDirectory = new ModelDirectory(configuration, 
                 "directory");
         modelDirectory.setContainer(configuration);
-        
-        PtolemyEffigy effigy = null;
-
         try {
-            effigy = LoadManager.loadModel(inputString, configuration);
+            LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
             assertTrue("The system throwed an exception" + e.getMessage(), true);
         }
-
         PowerMock.verifyAll();
-
     }
 
     /**
@@ -210,26 +194,17 @@ public class TestLoadRequirementsIntegration {
      */
     @Test
     public void testloadModel_EmptyModelName() throws Exception {
-
         String inputString = "";
-
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
         ModelDirectory modelDirectory = new ModelDirectory(configuration, 
                 "directory");
         modelDirectory.setContainer(configuration);
-        
-        PtolemyEffigy effigy = null;
-
         try {
-            effigy = LoadManager.loadModel(inputString, configuration);
-
+            LoadManager.loadModel(inputString, configuration);
         } catch (Exception e) {
             assertTrue("The system throwed an exception" + e.getMessage(), true);
         }
-
         PowerMock.verifyAll();
-
     }
-
 }

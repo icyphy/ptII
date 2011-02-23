@@ -156,7 +156,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
+        //CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         Set codeBlocks = super.getSharedCode();
         //codeBlocks.add(processCode(parseTreeCG.generateSharedCode()));

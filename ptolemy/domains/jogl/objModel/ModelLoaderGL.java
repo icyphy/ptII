@@ -27,13 +27,17 @@ package ptolemy.domains.jogl.objModel;
    model.
 */
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*; 
-import java.text.DecimalFormat;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import javax.media.opengl.*;
-import com.sun.opengl.util.*;    // for FPSAnimator
+import javax.media.opengl.GLCanvas;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import com.sun.opengl.util.FPSAnimator;
 
 
 public class ModelLoaderGL extends JFrame
@@ -113,16 +117,15 @@ public class ModelLoaderGL extends JFrame
   }  // end of main()
 
 
-  private static float getMaxSize(String arg)
-  {
-    float maxSize = MAX_SIZE;
-    try {
-      maxSize = Float.parseFloat(arg);
-    } 
-    catch (NumberFormatException e) 
-    {  System.out.println(arg + " not a float; using " + MAX_SIZE);  }
-
-    return maxSize;
-  }  // end of getMaxSize()
+//  private static float getMaxSize(String arg) {
+//    float maxSize = MAX_SIZE;
+//    try {
+//      maxSize = Float.parseFloat(arg);
+//    } 
+//    catch (NumberFormatException e) 
+//    {  System.out.println(arg + " not a float; using " + MAX_SIZE);  }
+//
+//    return maxSize;
+//  }  // end of getMaxSize()
 
 } // end of ModelLoaderGL class

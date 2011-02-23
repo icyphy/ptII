@@ -34,7 +34,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;

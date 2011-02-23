@@ -29,6 +29,7 @@
 package ptolemy.domains.jogl.lib;
 
 import javax.media.opengl.GL;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.StringParameter;
@@ -92,7 +93,7 @@ public class ModelLoader extends Sink {
             // FIXME: this ignores the modelName parameter.
             String name = "bo";
             float maxSize = 1;
-            _model = new OBJModel(name, maxSize, gl, true);
+            new OBJModel(name, maxSize, gl, true);
             ObjectToken inputToken = (ObjectToken)input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof GL)) {
@@ -102,7 +103,5 @@ public class ModelLoader extends Sink {
             }
         }
     }
-
-    private OBJModel _model;
 }
 

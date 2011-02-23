@@ -10,7 +10,9 @@
 
 package ptolemy.domains.jogl.objLoader;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class FaceMaterials

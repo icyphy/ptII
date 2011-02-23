@@ -31,10 +31,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptdb.kernel.bl.search.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+
 import org.junit.Test;
+
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -42,7 +45,6 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.data.expr.StringParameter;
-
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

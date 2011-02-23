@@ -8,15 +8,13 @@ package ptolemy.domains.jogl.objModel;
    and possibly rotating.
 */
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.text.DecimalFormat;
-import java.io.*;
+import java.util.Random;
 
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
-import com.sun.opengl.util.*;
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
+
 import ptolemy.domains.jogl.objLoader.OBJModel;
 
 
@@ -25,7 +23,7 @@ public class ModelLoaderGLListener implements GLEventListener
   private static final float INCR_MAX = 0.45f;   // for rotation increments
   private static final double Z_DIST = 7.0;      // for the camera position
 
-  private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
+  //private DecimalFormat df = new DecimalFormat("0.##");  // 2 dp
 
   private GLU glu;
 

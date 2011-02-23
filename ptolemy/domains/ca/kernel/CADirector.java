@@ -339,7 +339,6 @@ public class CADirector extends Director {
 
         _currentIteration = ((IntToken) iterations.getToken()).intValue();
 
-        _firstFire = true;
         _currentX = 0;
         _currentY = 0;
 
@@ -467,8 +466,8 @@ public class CADirector extends Director {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Iterator actorList = container.entityList().iterator();
 
-        Actor actorMatrixViewer = null;
-        Actor actorConst = null;
+        //Actor actorMatrixViewer = null;
+        //Actor actorConst = null;
 
         // FIXME: iterating through the actors by type
         // seems odd.  What if we add a new actor type?
@@ -541,12 +540,6 @@ public class CADirector extends Director {
      * The yLocation of the current matrix cell being updated.
      */
     private int _currentY;
-    
-    /**
-     * True if the director has not been fired for a given iteration,
-     * false otherwise.
-     */
-    private boolean _firstFire;
     
     /**
      *  The size of one dimension of the square matrix.

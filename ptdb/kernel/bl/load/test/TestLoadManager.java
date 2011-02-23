@@ -28,9 +28,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.load.test;
 
-import static org.junit.Assert.*;
-
-import java.net.URL;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -40,23 +40,20 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.common.util.Utilities;
-import ptolemy.data.expr.StringConstantParameter;
-import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.load.DBModelFetcher;
+import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.database.DBConnection;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
 //// TestLoadManager
@@ -465,7 +462,7 @@ public class TestLoadManager {
         
         String inputString=null;
 
-        Entity entity = null;
+        //Entity entity = null;
 
         PowerMock.replayAll();
 
@@ -473,7 +470,7 @@ public class TestLoadManager {
         
         try{
         
-            entity = LoadManager.importModel(inputString, false, container);
+            /*entity =*/ LoadManager.importModel(inputString, false, container);
             
         } catch(Exception e){
             
@@ -565,7 +562,7 @@ public class TestLoadManager {
             
             try{
                 
-                Entity modelWithImport = 
+                /*Entity modelWithImport = */
                     LoadManager.importModel(importModel, true, container);
             
             } catch (CircularDependencyException e){

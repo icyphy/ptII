@@ -28,7 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.migration.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -176,30 +177,18 @@ public class TestMigrateModelsManager {
             try {
 
                 int count = 0;
-                String line = null;
-
-                while ((line = input.readLine()) != null) {
-
+                while (input.readLine() != null) {
                     count++;
-                   
                 }
-                
                 assertTrue(count == 3);
                 
             } finally {
-
                 input.close();
-
             }
-            
-
-
-            PowerMock.verifyAll();
-            
+            PowerMock.verifyAll();    
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
-        } finally {
-            
+        } finally { 
             deleteDirectory(directoryPath);
             File file = new File(directoryPath);
             file.delete();
@@ -239,26 +228,15 @@ public class TestMigrateModelsManager {
             BufferedReader input = new BufferedReader(new FileReader(csvFile));
 
             try {
-
                 int count = 0;
-                String line = null;
-
-                while ((line = input.readLine()) != null) {
-
+                while (input.readLine() != null) {
                     count++;
-                   
                 }
-                
                 assertTrue(count == 3);
-                
+               
             } finally {
-
                 input.close();
-
-            }
-            
-
-
+            }     
             PowerMock.verifyAll();
             
         } catch (IOException e) {
@@ -305,14 +283,9 @@ public class TestMigrateModelsManager {
             try {
 
                 int count = 0;
-                String line = null;
-
-                while ((line = input.readLine()) != null) {
-
-                    count++;
-                   
+                while (input.readLine() != null) {
+                    count++;      
                 }
-                
                 assertTrue(count == 3);
                 
             } finally {
@@ -414,9 +387,6 @@ public class TestMigrateModelsManager {
      * 
      */
     private String createDirectory(int levels, int models) throws IOException {
-
-        String fileName = "";
-
         String fileContent = "<?xml version=\"1.0\" standalone=\"no\"?>"
                 + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"  "
                 + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"

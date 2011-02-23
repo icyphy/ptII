@@ -25,14 +25,18 @@ package ptolemy.domains.jogl.renderingActive;
    than J3DTimer.getValue(), so require J2SE 5.0.
 */
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
 import java.text.DecimalFormat;
+import java.util.Random;
 
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
-import com.sun.opengl.util.*;
+import javax.media.opengl.GL;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLContext;
+import javax.media.opengl.GLDrawable;
+import javax.media.opengl.GLDrawableFactory;
+import javax.media.opengl.glu.GLU;
 
 
 public class CubeCanvasGL extends Canvas implements Runnable

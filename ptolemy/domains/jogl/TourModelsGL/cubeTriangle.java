@@ -1,12 +1,30 @@
 package ptolemy.domains.jogl.TourModelsGL;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
+import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_DEPTH_TEST;
+import static javax.media.opengl.GL.GL_LEQUAL;
+import static javax.media.opengl.GL.GL_MODELVIEW;
+import static javax.media.opengl.GL.GL_NICEST;
+import static javax.media.opengl.GL.GL_PERSPECTIVE_CORRECTION_HINT;
+import static javax.media.opengl.GL.GL_PROJECTION;
+import static javax.media.opengl.GL.GL_QUADS;
+import static javax.media.opengl.GL.GL_SMOOTH;
+import static javax.media.opengl.GL.GL_TRIANGLES;
+
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import com.sun.opengl.util.FPSAnimator;
-import static javax.media.opengl.GL.*; // static import constants
 
 /**
  * NeHe Lesson 5: 3D Shape

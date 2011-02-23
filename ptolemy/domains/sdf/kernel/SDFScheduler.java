@@ -398,6 +398,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @return The number of unfulfilled input ports of the given actor.
      *  @exception IllegalActionException If any called method throws it.
      */
+    @SuppressWarnings("unused")
     protected int _countUnfulfilledInputs(Actor actor, List actorList,
             boolean resetCapacity) throws IllegalActionException {
         if (_debugging && VERBOSE) {
@@ -494,6 +495,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
+    @SuppressWarnings("unused")
     protected Schedule _getSchedule() throws NotSchedulableException,
             IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
@@ -851,6 +853,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param externalRates Map representing production rates of
      *  external ports.
      */
+    @SuppressWarnings("unused")
     protected void _vectorizeFirings(int vectorizationFactor,
             Map entityToFiringsPerIteration, Map externalRates) {
         // Note: after we have called the _solveBalanceEquations(),
@@ -1103,6 +1106,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @exception IllegalActionException If the expression for a
      *  rate parameter is not valid.
      */
+    @SuppressWarnings("unused")
     private void _propagatePort(CompositeActor container, IOPort currentPort,
             Map entityToFiringsPerIteration, Map externalRates,
             LinkedList remainingActors, LinkedList pendingActors,
@@ -1418,6 +1422,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *   inconsistent internal state, or detects a graph that cannot be
      *   scheduled.
      */
+    @SuppressWarnings("unused")
     private Schedule _scheduleConnectedActors(Map externalRates,
             List actorList, CompositeActor container)
             throws NotSchedulableException {
@@ -1769,6 +1774,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @exception IllegalActionException If thrown while reading a token,
      *  setting the capacity of a receiver or counting unfulfilled input.s
      */
+    @SuppressWarnings("unused")
     protected void _simulateExternalInputs(IOPort port, int count,
             List actorList, LinkedList readyToScheduleActorList)
             throws IllegalActionException {
@@ -1893,6 +1899,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *   to be scheduled.  This will be updated if any actors that receive
      *   tokens from outputPort are now ready to fire.
      */
+    @SuppressWarnings("unused")
     private void _simulateTokensCreated(IOPort outputPort, int createdTokens,
             List actorList, LinkedList readyToScheduleActorList)
             throws IllegalActionException {

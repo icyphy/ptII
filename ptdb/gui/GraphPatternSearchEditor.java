@@ -76,7 +76,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.gt.TransformationEditor;
-
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
 
@@ -161,8 +160,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
         setTitle("Database Pattern Search");
 
-        _containerModel = containerModel;
-        _sourceFrame = sourceFrame;
+        //_containerModel = containerModel;
+        //_sourceFrame = sourceFrame;
 
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
@@ -750,8 +749,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private NamedObj _containerModel;
+    //private NamedObj _containerModel;
     private SimpleSearchFrame _simpleSearchFrame;
-    private JFrame _sourceFrame;
+    //private JFrame _sourceFrame;
 
 }

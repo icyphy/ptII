@@ -33,8 +33,6 @@ package ptdb.common.dto;
 
 import java.util.ArrayList;
 
-import ptolemy.kernel.util.Attribute;
-
 ///////////////////////////////////////////////////////////////////
 //// AttributeSearchTask
 

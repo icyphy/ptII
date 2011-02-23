@@ -867,9 +867,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
-                String parameterValue = "";
+                //String parameterValue = "";
                 try {
-                    parameterValue = containerAdapter.getParameterValue(
+                    /*parameterValue =*/ containerAdapter.getParameterValue(
                             variable.getName(), variable.getContainer());
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(container, throwable, "Failed to get the value of \""
@@ -1211,7 +1211,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             Object[] typesArray = types.toArray();
             // Add imports for non-empty declareBlocks (usually just Array)
             for (int i = 0; i < typesArray.length; i++) {
-                StringBuffer declareBlock = new StringBuffer();
                 String typesTemplate = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/" + typesArray[i] + ".j";
                 CodeStream codeStream = new CodeStream(typesTemplate, this);
                 try {
@@ -1674,13 +1673,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        File codeDirectoryFile = null;
-        try {
-            codeDirectoryFile = _codeDirectoryAsFile();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, getComponent(),
-                    "Failed to get the codeDirectory as a parameter");
-        }
+        //File codeDirectoryFile = null;
+        //try {
+        //    /*codeDirectoryFile =*/ _codeDirectoryAsFile();
+        //} catch (IOException ex) {
+        //    throw new IllegalActionException(this, getComponent(),
+        //            "Failed to get the codeDirectory as a parameter");
+        //}
 
         Map<String, String> substituteMap;
         try {
@@ -1879,7 +1878,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // Write out the second and successive elements.
 
-        boolean sawTokenImport = false;
+        //boolean sawTokenImport = false;
         File codeDirectoryFile = null;
         try {
             codeDirectoryFile = _codeDirectoryAsFile();
@@ -1915,9 +1914,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // The first import is of the form "import RepeatVariables.Token;"
                     // FIXME: This is weak, what happens if the format changes.
                     for (int i = 0; i < typesArray.length && importLine != null; i++) {
-                        if (importLine.endsWith(".Token;")) {
-                            sawTokenImport = true;
-                        }
+                        //if (importLine.endsWith(".Token;")) {
+                        //    sawTokenImport = true;
+                        //}
                         String typeName = typesArray[i].toString();
                         if (typeName.equals("Complex")) {
                             typeName = "ComplexCG";
@@ -2011,12 +2010,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         HashSet<String> typesAndToken = _getReferencedTypes(functions);
-        CodeStream[] typeStreams = new CodeStream[typesAndToken.size()];
-        if (sawTokenImport) {
-            // Add Token to the set of types so that we only need one loop
-            typesAndToken.add("Token");
-            typeStreams = new CodeStream[typesAndToken.size()];
-        }
+//        CodeStream[] typeStreams = new CodeStream[typesAndToken.size()];
+//        if (sawTokenImport) {
+//            // Add Token to the set of types so that we only need one loop
+//            typesAndToken.add("Token");
+//            typeStreams = new CodeStream[typesAndToken.size()];
+//        }
 
         if (!((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
             Object[] typesAndTokenArray = typesAndToken.toArray();

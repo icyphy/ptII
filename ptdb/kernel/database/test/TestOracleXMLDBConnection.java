@@ -74,19 +74,13 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.OracleXMLDBConnection;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.AddSubtract;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 import com.sleepycat.db.Environment;
-import com.sleepycat.db.TransactionConfig;
 import com.sleepycat.dbxml.XmlException;
 import com.sleepycat.dbxml.XmlManager;
-import com.sleepycat.dbxml.XmlTransaction;
 
 ///////////////////////////////////////////////////////////////////
 //// TestOracleXMLDBConnection
@@ -1557,7 +1551,7 @@ public class TestOracleXMLDBConnection {
 
         try {
 
-            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+            /* XMLDBModel model =*/ oracleXMLDBConnection.executeGetModelTask(task);
 
             fail("method should throw an exception");
             
@@ -1598,7 +1592,7 @@ public class TestOracleXMLDBConnection {
 
         try {
 
-            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+            /* XMLDBModel model =*/ oracleXMLDBConnection.executeGetModelTask(task);
 
             fail("method should throw an exception");
             
@@ -1646,7 +1640,7 @@ public class TestOracleXMLDBConnection {
 
         try {
 
-            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+            /* XMLDBModel model =*/ oracleXMLDBConnection.executeGetModelTask(task);
 
 
             fail("Method should throw an exception since the task does not contain enough information.");
@@ -1677,8 +1671,6 @@ public class TestOracleXMLDBConnection {
         String modelName = "NoReferences";
 
         GetModelTask task = new GetModelTask(modelName);
-        
-        XMLDBModel modelCache = null;
 
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
@@ -2340,7 +2332,7 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(true);
 
-        XMLDBAttribute attribute = new XMLDBAttribute(
+        /*XMLDBAttribute attribute = */ new XMLDBAttribute(
                 "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "testId");
 
         

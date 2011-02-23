@@ -29,14 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,24 +66,18 @@ import ptdb.common.exception.IllegalNameException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.exception.UnSavedParentModelsException;
 import ptdb.common.util.Utilities;
+import ptdb.kernel.bl.load.LoadManager;
+import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.StringConstantParameter;
-import ptdb.kernel.bl.load.DBModelFetcher;
-import ptdb.kernel.bl.load.LoadManager;
-import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -285,7 +278,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                          * If the enter button is pressed, perform the action
                          *  based on the enabled button.
                          */
-                        if (e.getKeyCode() == e.VK_ENTER) {
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                             if (_saveButton.isEnabled()) {
 
                                 _saveButton.getActionListeners()[0]

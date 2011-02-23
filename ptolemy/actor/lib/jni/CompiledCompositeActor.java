@@ -66,6 +66,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.JVMBitWidth;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
@@ -799,7 +800,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.c.actor.CompiledCompositeActor");
 
-        if (PointerToken.is32Bit() && !_pointerTypeInitialized) {
+        if (JVMBitWidth.is32Bit() && !_pointerTypeInitialized) {
             Constants.add("pointer", new PointerToken());
             _pointerTypeInitialized = true;
         }

@@ -32,9 +32,9 @@ import java.util.List;
 
 import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.DeleteAttributeTask;
+import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
-import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;

@@ -20,12 +20,23 @@ package ptolemy.domains.jogl.renderingActive;
    rotations in the x,y,z- axes.
 */
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*; 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
 
-import javax.media.opengl.*;
+import javax.media.opengl.AWTGraphicsConfiguration;
+import javax.media.opengl.AWTGraphicsDevice;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLDrawableFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 public class CubeGL extends JFrame implements WindowListener

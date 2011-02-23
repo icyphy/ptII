@@ -30,7 +30,6 @@ package ptolemy.vergil.modal;
 import java.awt.Color;
 import java.awt.Paint;
 
-
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ArrayToken;

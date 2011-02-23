@@ -289,8 +289,8 @@ public class TestCacheManager {
         
         try {
             
-            XMLDBModel dbModel = null;
-            dbModel = CacheManager.loadFromCache(loadModel);
+            //XMLDBModel dbModel = null;
+            /*dbModel = */ CacheManager.loadFromCache(loadModel);
 
         } catch( IllegalArgumentException e){
             
@@ -324,8 +324,8 @@ public class TestCacheManager {
         
         try {
         
-            XMLDBModel dbModel = null;
-            dbModel = CacheManager.loadFromCache(loadModel);
+            //XMLDBModel dbModel = null;
+            /*dbModel =*/ CacheManager.loadFromCache(loadModel);
         
         } catch (DBConnectionException e){
             

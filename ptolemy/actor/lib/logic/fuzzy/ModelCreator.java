@@ -97,7 +97,7 @@ public class ModelCreator extends DefaultHandler {
         _startArchitecture = false;
         _startOption = false;
         _startDimension = false;
-        _endArchitecture = false;
+       //_endArchitecture = false;
         _endOption = false;
         _endDimension = false;
         _outputFileName = filename.replace(".xml", "Model.xml");
@@ -227,7 +227,7 @@ public class ModelCreator extends DefaultHandler {
         if ("".equals(uri)) {
             if ("gov.nasa.jpl.trades.ui.menu.ExportArchitecture_-ArchitectureExport"
                     .equals(qName)) {
-                _endArchitecture = true;
+                //_endArchitecture = true;
                 if (_debugging) {
                     System.out.println("#### in End element");
                     System.out.println("For arch " + _architecture.getName()
@@ -273,7 +273,7 @@ public class ModelCreator extends DefaultHandler {
         } else {
             if ("gov.nasa.jpl.trades.ui.menu.ExportArchitecture_-ArchitectureExport"
                     .equals(name)) {
-                _endArchitecture = true;
+                //_endArchitecture = true;
             } else if ("optionName".equals(name)) {
                 _endOption = true;
             } else if ("associatedDimensions".equals(name)) {
@@ -354,7 +354,7 @@ public class ModelCreator extends DefaultHandler {
                 //Note: Findbugs correctly detects a deadstore to a local
                 // variable. This is acceptable in this case since the work is done
                 // in the constructor
-                ModelCreator cF = new ModelCreator(fileName);
+                /*ModelCreator cF =*/ new ModelCreator(fileName);
             }
 
         } catch (Exception ex) {
@@ -660,7 +660,7 @@ public class ModelCreator extends DefaultHandler {
     private boolean _startArchitecture;
     private boolean _startOption;
     private boolean _startDimension;
-    private boolean _endArchitecture;
+    //private boolean _endArchitecture;
     private boolean _endOption;
     private boolean _endDimension;
 

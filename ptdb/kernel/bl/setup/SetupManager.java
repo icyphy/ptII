@@ -31,8 +31,6 @@ package ptdb.kernel.bl.setup;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -41,7 +39,6 @@ import ptdb.common.dto.SetupParameters;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
-import ptdb.kernel.database.OracleXMLDBConnection;
 import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////

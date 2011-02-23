@@ -135,7 +135,7 @@ public class FixedPointReceiver extends AbstractReceiver {
                             + "FixedPointReceiver " + "with status unknown.");
         }
         if (_token == null) {
-            throw new NoTokenException(
+            throw new NoTokenException(_director,
                     "FixedPointReceiver: Attempt to get data from an "
                             + "empty receiver.");
         }

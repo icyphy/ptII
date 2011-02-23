@@ -110,7 +110,6 @@ public class ImageRotAlternate extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int width = input.getWidth();
         double scale = ((DoubleToken) (scaleParam.getToken())).doubleValue();
         int rotation = ((IntToken) (rotationInDegrees.getToken())).intValue();
         

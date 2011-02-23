@@ -533,7 +533,7 @@ public class CTScheduler extends Scheduler {
             if (a instanceof SequenceActor) {
                 // Set all ports of a sequence actor with signal type "DISCRETE"
                 if (predecessorList(a).isEmpty()) {
-                    throw new NotSchedulableException(((Nameable) a).getName()
+                    throw new NotSchedulableException(a, ((Nameable) a).getName()
                             + " is a SequenceActor, which cannot be a"
                             + " source actor in the CT domain.");
                 }

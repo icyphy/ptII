@@ -39,10 +39,10 @@ import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
-import ptolemy.data.expr.StringConstantParameter;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
+import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.kernel.Entity;
 
 public class TestImportByReferenceRequirementsIntegration {
@@ -90,7 +90,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "</property>" + "</entity>" + "</entity>");
 
             SaveModelManager saveManager = new SaveModelManager();
-            String modelID = saveManager.save(dbModel);
+            /*String modelID =*/ saveManager.save(dbModel);
             
             entity = LoadManager.importModel(modelName, true, container);
             assertEquals(entity.getName(), modelName);
@@ -148,7 +148,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "</property>" + "</entity>" + "</entity>");
 
             SaveModelManager saveManager = new SaveModelManager();
-            String modelID = saveManager.save(dbModel);
+            /*String modelID =*/ saveManager.save(dbModel);
             
             entity = LoadManager.importModel(modelName, true, container);
             assertEquals(entity.getName(), modelName);
@@ -208,7 +208,7 @@ public class TestImportByReferenceRequirementsIntegration {
                 + "</property>" + "</entity>" + "</entity>");
 
             SaveModelManager saveManager = new SaveModelManager();
-            String modelID = saveManager.save(dbModel);
+            /*String modelID =*/ saveManager.save(dbModel);
 
             entity = LoadManager.importModel(modelName, false, container);
             assertEquals(entity.getName(), modelName);
@@ -267,7 +267,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "</property>" + "</entity>" + "</entity>");
 
             SaveModelManager saveManager = new SaveModelManager();
-            String modelID = saveManager.save(dbModel);
+            /*String modelID =*/ saveManager.save(dbModel);
         
             entity = LoadManager.importModel(modelName, false, container);
             assertEquals(entity.getName(), modelName);
@@ -294,13 +294,13 @@ public class TestImportByReferenceRequirementsIntegration {
         
         String inputString=null;
 
-        Entity entity = null;
+        //Entity entity = null;
 
         boolean isSuccess = false;
         
-        try{
+        try {
         
-            entity = LoadManager.importModel(inputString, false, container);
+            /*entity =*/ LoadManager.importModel(inputString, false, container);
             
         } catch(Exception e){
             

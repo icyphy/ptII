@@ -428,8 +428,8 @@ public abstract class ActorController extends AttributeController {
 
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
-                int portRotation = IOPortController._getCardinality(port);
-                int direction = IOPortController._getDirection(portRotation);
+                int portRotation = IOPortController.getCardinality(port);
+                int direction = IOPortController.getDirection(portRotation);
                 if (direction == SwingConstants.WEST) {
                     westPorts.add(port);
                 } else if (direction == SwingConstants.NORTH) {

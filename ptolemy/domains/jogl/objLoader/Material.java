@@ -14,12 +14,12 @@
 package ptolemy.domains.jogl.objLoader;
 
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
 
-import javax.media.opengl.*;
-import com.sun.opengl.util.*;
-import com.sun.opengl.util.texture.*;
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
 
 
 public class Material

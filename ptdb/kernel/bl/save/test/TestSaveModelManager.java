@@ -1252,21 +1252,13 @@ public class TestSaveModelManager {
      */
     @Test
     public void test_saveWithParents_NullModelToBeSaved() throws Exception {
-
         SaveModelManager saveManager = new SaveModelManager();
-        
         XMLDBModelWithReferenceChanges modelWithReference = new XMLDBModelWithReferenceChanges(null, null, "Test");
-        
         PowerMock.replayAll();
-
         try {
-
-            String modelId = saveManager.saveWithParents(modelWithReference);
-
+            saveManager.saveWithParents(modelWithReference);
             fail("Did not throw an exception when it should.");
-
         } catch (IllegalArgumentException e) {
-
             assertTrue("Exception thrown", true);
         }
 

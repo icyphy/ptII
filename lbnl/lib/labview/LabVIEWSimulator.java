@@ -29,6 +29,7 @@ package lbnl.lib.labview;
 import java.io.IOException;
 
 import lbnl.actor.lib.Simulator;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
@@ -139,7 +140,7 @@ public class LabVIEWSimulator extends Simulator {
             if (nextSimulationTime < 0) {
                 return;
             }
-            getDirector().fireAt(this, nextSimulationTime);
+            getDirector().fireAt(this, new Time(getDirector(), nextSimulationTime));
             if (dblRea.length == 1) {
                 output.send(0, new DoubleToken(dblRea[0]));
             } else if (dblRea.length != 0) {

@@ -36,13 +36,10 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.util.MessageHandler;

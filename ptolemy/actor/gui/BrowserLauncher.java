@@ -339,7 +339,7 @@ public class BrowserLauncher {
                     && !url.startsWith("https:")) {
                 // Needed by Web Start file:
                 // ptII/ptolemy/domains/ct/demo/CartPendulum/CartPendulum.jnlp
-                url = new File(url).toURL().toString();
+                url = new File(url).toURI().toURL().toString();
             }
 
             errorMessage = "Command was a call to openURL(" + url + ")";

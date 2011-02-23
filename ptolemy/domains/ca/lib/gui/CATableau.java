@@ -42,7 +42,6 @@ import javax.swing.JPanel;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TokenEffigy;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -121,8 +120,6 @@ public class CATableau extends Tableau {
      * @exception IllegalActionException If the frame cannot be created.
      */
     public void createFrame(TableauFrame frame) throws IllegalActionException {
-
-        TokenEffigy effigy = (TokenEffigy) getContainer();
         frame = new TableauFrame(this, null);
         setFrame(frame);
         frame.setTableau(this);

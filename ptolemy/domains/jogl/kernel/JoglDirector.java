@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
@@ -228,8 +227,8 @@ public class JoglDirector extends StaticSchedulingDirector{
         _buildActorTable();
         _iteration = 0;
 
-        _startIteration = ((IntToken) ((ArrayToken) (iterationInterval
-                .getToken())).getElement(0)).intValue();
+        //_startIteration = ((IntToken) ((ArrayToken) (iterationInterval
+        //        .getToken())).getElement(0)).intValue();
 
         _stopIteration = ((IntToken) ((ArrayToken) (iterationInterval
                 .getToken())).getElement(1)).intValue();
@@ -468,15 +467,15 @@ public class JoglDirector extends StaticSchedulingDirector{
                         1));
             }
 
-            if (actor instanceof CompositeActor) {
-                CompositeActor compositeActor = (CompositeActor) actor;
-                Director insideDirector = compositeActor.getDirector();
+            //if (actor instanceof CompositeActor) {
+                //CompositeActor compositeActor = (CompositeActor) actor;
+                //Director insideDirector = compositeActor.getDirector();
                 // FIXME: This is bogus.  This is assuming there is no
                 // more than one inside director, and is delegating the
                 // incrementing of time to that inside director.
-                _insideDirector = insideDirector;
-                _pseudoTimeEnabled = true;
-            }
+                //_insideDirector = insideDirector;
+                //_pseudoTimeEnabled = true;
+            //}
 
             boolean flag = actor.prefire();
 
@@ -511,7 +510,7 @@ public class JoglDirector extends StaticSchedulingDirector{
             }
 
             // Make sure we reset the pseudotime flag.
-            _pseudoTimeEnabled = false;
+            //_pseudoTimeEnabled = false;
         }
     }
  
@@ -566,13 +565,13 @@ public class JoglDirector extends StaticSchedulingDirector{
     
     private long _lastIterationTime;
 
-    private Director _insideDirector;
+    //private Director _insideDirector;
 
     private int _iteration = 0;
     
-    private boolean _pseudoTimeEnabled = false;
+    //private boolean _pseudoTimeEnabled = false;
     
-    private int _startIteration = 0;
+    //private int _startIteration = 0;
 
     private int _stopIteration = 0;
 

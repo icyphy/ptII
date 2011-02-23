@@ -178,6 +178,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
+    @SuppressWarnings("unused")
     protected Schedule _getParallelSchedule() throws NotSchedulableException,
             IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
@@ -380,6 +381,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  scheduled.
      *
      */
+    @SuppressWarnings("unused")
     protected Schedule _scheduleInParallelConnectedActors(
             Map minimumBufferSize, Map externalRates, LinkedList actorList,
             CompositeActor container, LinkedList allActorList)
@@ -749,7 +751,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 string.append(entity.getFullName() + "\n");
             }
 
-            throw new NotSchedulableException(string.toString());
+            throw new NotSchedulableException(this, string.toString());
         }
 
         if (_debugging) {
@@ -772,6 +774,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  tokens from outputPort are now ready to fire.
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
+    @SuppressWarnings("unused")
     protected void _simulateTokensCreatedLast(IOPort outputPort,
             int createdTokens, LinkedList actorList,
             LinkedList readyToScheduleActorList) throws IllegalActionException {

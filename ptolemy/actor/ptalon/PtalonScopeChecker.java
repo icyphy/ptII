@@ -942,9 +942,9 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             case ID:
             case DYNAMIC_NAME: {
                 {
-                    if (_t == null) {
-                        _t = ASTNULL;
-                    }
+//                    if (_t == null) {
+//                        _t = ASTNULL;
+//                    }
                     switch (_t.getType()) {
                     case ID: {
                         b = (PtalonAST) _t;
