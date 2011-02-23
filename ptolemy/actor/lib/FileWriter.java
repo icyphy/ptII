@@ -109,6 +109,8 @@ public class FileWriter extends Sink {
      *  By default, this parameter contains an empty string, which
      *  is interpreted to mean that output should be directed to the
      *  standard output.
+     *  See {@link ptolemy.actor.parameters.FilePortParameter} for
+     *  details about relative path names.
      */
     public FilePortParameter filename;
 
