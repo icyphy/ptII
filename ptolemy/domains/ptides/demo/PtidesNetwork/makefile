@@ -45,8 +45,6 @@ PTPACKAGE = 	PtidesNetwork
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Bus.java \
-	IntermediateReceiver.java \
 	TTESwitch.java
 
 OTHER_FILES_TO_BE_JARED = \
