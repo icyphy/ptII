@@ -32,6 +32,7 @@ package ptolemy.domains.ptides.demo.PtidesNetwork;
 
 import java.util.Hashtable;
 
+import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
