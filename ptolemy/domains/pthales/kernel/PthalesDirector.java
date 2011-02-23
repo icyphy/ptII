@@ -378,7 +378,7 @@ public class PthalesDirector extends SDFDirector {
         // less efficient and for some collections, might throw a
         // ConcurrentModificationException."
         //_receivers.removeAll(_receivers);
-        _receivers.clear()
+        _receivers.clear();
 
         super.preinitialize();
     }
