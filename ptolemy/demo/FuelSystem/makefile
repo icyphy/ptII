@@ -54,7 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 	FuelSystem_Ontology.xml \
 	FuelSystem_QuantityManager.xml \
 	FuelSystem_SingleTank_Improved.xml \ 
-	FuelSystem_SingleTank.xml \
+	FuelSystem.xml \
 	ModalTank.xml
 
 EXTRA_SRCS = \
