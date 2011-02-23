@@ -28,6 +28,7 @@
 package ptolemy.actor.util;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
@@ -718,7 +719,14 @@ public class Time implements Comparable {
             if (_divisorAndRemainder == null) {
                 return _timeValue.hashCode();
             } else {
-                return _timeValue.hashCode() >>> _divisorAndRemainder.hashCode();
+                // FindBugs: DMI: Invocation of hashCode on an array
+                // "The code invokes hashCode on an array. Calling
+                // hashCode on an array returns the same value as
+                // System.identityHashCode, and ingores the contents
+                // and length of the array. If you need a hashCode
+                // that depends on the contents of an array a, use
+                // java.util.Arrays.hashCode(a)."
+                return _timeValue.hashCode() >>> Arrays.hashCode(_divisorAndRemainder);
             }
         }
     }
