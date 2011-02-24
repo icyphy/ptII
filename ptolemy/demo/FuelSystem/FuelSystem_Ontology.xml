@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 22, 1077, 645}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 22, 1079, 652}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[864, 535]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0940978077572">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.4256381193315, 242.3808990467327}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.4256381193314, 242.3808990467327}">
     </property>
     <property name="FuelDimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="FuelDimensionSystemSolverModel.xml">
@@ -103,7 +103,7 @@
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
         </property>
     </property>
-    <property name="fuelDimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank2InFlow &gt;= Flow">
+    <property name="FuelDimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank2InFlow &gt;= Flow">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -118,7 +118,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 385.0]">
         </property>
     </property>
-    <property name="fuelDimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank1OutFlow &gt;= Flow">
+    <property name="FuelDimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank1OutFlow &gt;= Flow">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -133,7 +133,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 405.0]">
         </property>
     </property>
-    <property name="fuelDimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="capacity &gt;= Level">
+    <property name="FuelDimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="capacity &gt;= Level">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -159,7 +159,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Definition ontologies for models.&#10;&#10;[see Leung, Mandl, Lee, Latronico, Shelton, Tripakis, &amp; Lickly, &#10;ÒScalable Semantic Annotation using Lattice-based &#10;Ontologies,Ó MODELS 2009.]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Definition ontologies for models.&#10;&#10;[see Leung, Mandl, Lee, Latronico, Shelton, Tripakis, &amp; Lickly, &#10;ï¿½Scalable Semantic Annotation using Lattice-based &#10;Ontologies,ï¿½ MODELS 2009.]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 365.0]">
         </property>
@@ -179,7 +179,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Tank1, Tank2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 471, 936, 286}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 471, 944, 297}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[936, 242]">
         </property>
