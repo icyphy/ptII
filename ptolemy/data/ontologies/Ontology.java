@@ -88,6 +88,9 @@ public class Ontology extends CompositeEntity {
         }
         _attachText("_iconDescription", _ICON);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Name of the class that provides the expression operations for
      *  any infinite concepts contained in this ontology.
