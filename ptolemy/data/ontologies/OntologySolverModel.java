@@ -26,6 +26,8 @@
 package ptolemy.data.ontologies;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -43,6 +45,19 @@ import ptolemy.kernel.util.Workspace;
  */
 public class OntologySolverModel extends CompositeEntity {
 
+    /** Create a new OntologySolverModel with the specified name and container.
+     *  @param container The container for the solver model.
+     *  @param name The name for the ontology solver model.
+     *  @throws IllegalActionException If the base class throws it.
+     *  @throws NameDuplicationException If the container already contains an
+     *   entity with the specified name.
+     */
+    public OntologySolverModel(CompositeEntity container, String name) throws
+        IllegalActionException, NameDuplicationException {
+        super(container, name);
+        _solverContainer = null;
+    }
+    
     /** Construct an OntologySolverModel in the specified workspace.
      *  If the workspace argument is null, then use the default workspace.
      *  Add the entity to the workspace directory.

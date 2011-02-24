@@ -5,12 +5,12 @@
   <entity name="Ontology Solver Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
     <entity name="blank" class="ptolemy.data.ontologies.OntologySolverModel">
         <!-- Annotate with instructions. -->
-        <!--
 	    <property name="annotation" class="ptolemy.kernel.util.Attribute">
 	      <property name="_hideName"
 			class="ptolemy.kernel.util.SingletonAttribute"/>
 	      <property name="_iconDescription"
-			class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create an ontology solver here.  Drag elements from the palette on
+			class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create an ontology solver here.  Drag an ontology
+and actor constraint elements from the palette on
 the right into this window, then right click to configure them.
 Then delete this annotation.</text>
 </svg></configure></property>
@@ -28,8 +28,7 @@ Then delete this annotation.</text>
 		</entity>
 	      </configure>
 	    </property>
-            -->
-        </entity>
+      </entity>
   </entity>
 </group>
 
