@@ -7,10 +7,10 @@ void pwmDisable(void){
 	PWMGenDisable(PWM_BASE, MOTOR_PWM);							//disable PWM generator
 }
 #define NUM_OUTPUTS 10
-volatile int32 motorOutputPower[NUM_OUTPUTS];
-volatile uint32 motorNextOutput = 0;
-volatile uint32 motorLastOutput = 0;
-volatile uint32 numMotorOutputs = 0;
+int32 motorOutputPower[NUM_OUTPUTS];
+uint32 motorNextOutput = 0;
+uint32 motorLastOutput = 0;
+uint32 numMotorOutputs = 0;
 /**/
 
 /*** sharedBlock ***/
@@ -74,7 +74,7 @@ if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 } else {
 	die("dead miss");
 }
-if (Event_Head_TunnelingBallDevice2_Tunnelling_Ball_Device_Controller_MotorOutputDevice_input[0]->Val.int_Value != 0) {
+if ($get(input#0) != 0) {
 	debugSendPacket(&saved_discDesired, &saved_g_disc, saved_timeLeft, saved_controlSignal, saved_tempTime);
 }
 /**/

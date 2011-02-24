@@ -1,7 +1,7 @@
 /***preinitBlock***/
 int32 encoderInputInterruptStatus;
 uint8 encoderInterruptOccurred = 0;
-static volatile Disc g_disc;
+static Disc g_disc;
 /**/
 
 /*** sharedBlock ***/
@@ -38,7 +38,6 @@ if (!encoderInterruptOccurred) {
 		trajectoryEnable();
 	} else if (encoderInputInterruptStatus & ENCODER_PIN_I){
 		g_disc.position = g_disc.position & 0xfffffffc;
-		g_positionAtHole  = g_disc.position;
 	}
 	encoderInterruptOccurred = 0;
 	return;
@@ -74,19 +73,44 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
+Event* temp;
+saveState();
 #ifdef LCD_DEBUG
-    debugMessage("$pad$pin");
+   debugMessage("$pad$pin");
 #endif
-
+// Push the currentModelTag onto the stack.
+// The following lines of code must be atomic. Atomicity is
+// guaranteed by giving all sensor/timer interrupts the same
+// priority.
+stackedModelTagIndex++;
+if (stackedModelTagIndex > MAX_EVENTS) {
+    die("MAX_EVENTS too small for stackedModelTagIndex");
+}
+executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
+executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
+// For sensing purposes, set the current time to the platform time.
+getRealTime(&currentModelTime);
+currentMicrostep = 0;
 encoderInputInterruptStatus = GPIOPinIntStatus(ENCODER_BASE, 0);
-// Clear the interrupt
+// Clear the interrupt flags.
 GPIOPinIntClear(ENCODER_BASE, encoderInputInterruptStatus);
 GPIOPinIntClear(ENCODER_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
-
 encoderInputInterruptStatus |= (GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B) << 8);
-
-// do not need to disable interrupts if all interrupts have the same priority
-//disableInterrupts();
 encoderInterruptOccurred = 1;
+
+temp = FREE_EVENT_LIST;
 $sensorFireMethod();
+if (temp != FREE_EVENT_LIST) {
+   	addStack();
+} else {
+// processEvents is not called, return to the last executing event, thus
+// restore the last executing stacked model tag.
+// The following lines of code must be atomic. Atomicity is
+// guaranteed by giving all sensor/timer interrupts the same
+// priority.
+currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
+currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
+stackedModelTagIndex--;
+loadState();
+}
 /**/

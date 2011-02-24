@@ -39,7 +39,6 @@ typedef signed char             int8;
 
 // Number of cycles until timer rolls over
 static unsigned long TIMER_ROLLOVER_CYCLES;
-static unsigned long ADJUSTED_TRC;
 
 // amount of delay between when the interrupt occurs and the ISR is entered
 // (assuming no resource contention). In the Luminary case, the latency is 4us. 
@@ -51,6 +50,7 @@ $super.StructDefBlock();
 /*** FuncProtoBlock ***/
 void addStack(void);
 void saveState(void);
+void loadState(void);
 uint32 convertCyclesToNsecs(uint32);
 uint32 convertNsecsToCycles(uint32);
 void die(char*);
@@ -99,7 +99,6 @@ char *_ultoa(uint32 value, char *string, uint16 radix){
 //Uses all screenlines from STARTLINE
 #define DBG_STARTLINE 2
 void debugMessage(char * szMsg){
-        int16 interruptDisabled = 0;
         static uint16 screenIndex = DBG_STARTLINE * 8;    //Screen line to write message (incremented by 8)
         static uint16 eventCount = 0;                     //Event count (0x00 - 0xFF, incremented by 1)
         static char screenBuffer[36] = {'\0'};
@@ -117,13 +116,10 @@ void debugMessage(char * szMsg){
         }
         screenBuffer[index+3] = '\0';
 
-        //interruptDisabled = IntMasterDisable();
         disableInterrupts();
         RIT128x96x4StringDraw("                      ", 0, screenIndex, 15);
         RIT128x96x4StringDraw(screenBuffer, 0, screenIndex, 15);
-        /*if (!interruptDisabled) {
-                IntMasterEnable();
-        }*/
+
         enableInterrupts();
         screenIndex = screenIndex < 88 ? screenIndex + 8 : DBG_STARTLINE * 8;
         eventCount = (eventCount + 1) & 0xFF;
@@ -184,7 +180,6 @@ void die(char *mess) {
         RIT128x96x4DisplayOn();
         RIT128x96x4StringDraw(mess, 0,88,15);
         while(1);
-        return;
 }
 
 // Disable all peripheral and timer interrupts (does not include the systick)
@@ -256,12 +251,6 @@ void getRealTime(Time * const physicalTime){
     tempSecs = _secs;
     tempQuarterSecs = _quarterSecs;
     tick2 = SysTickValueGet();
-    // since systick interrupt could take up to 5us to trigger, to make
-	// sure the tick2 value correspond to the correct _secs and _quarterSecs
-	// values, we do the following check:
-	/*if (tick2 > ADJUSTED_TRC) {
-		continue;
-	}*/
     // If the system tick rolls over (the tick counts down) between accessing
     // the volatile variables _secs and _quartersecs, then we account for this here
     // by incrementing _quartersecs
@@ -589,8 +578,6 @@ void initializePDSystem() {
         SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_8MHZ);
 
         TIMER_ROLLOVER_CYCLES = SysCtlClockGet();
-        
-        ADJUSTED_TRC = (TIMER_ROLLOVER_CYCLES >> 2) - INTERRUPT_DELAY;
 
         // since systick register is only 24 bits, it can only hold values
         // between 0 and 1677xxxx, assuming the main system clock runs at 50MHz,

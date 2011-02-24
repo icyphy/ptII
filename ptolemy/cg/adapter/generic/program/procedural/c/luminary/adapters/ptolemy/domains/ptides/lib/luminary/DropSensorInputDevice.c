@@ -48,7 +48,6 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 /**/
 
 /*** fireBlock ***/
-static uint32 dropCount = 0;										//Number of drop sensor events received
 static Time previousEventTimestamp;
 static Time dropTime;
 // Time it took ball to pass through both sensors
@@ -91,27 +90,39 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
+Event* temp;
 saveState();
 GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
 #ifdef LCD_DEBUG
-    debugMessage("$pad$pin");
+debugMessage("$pad$pin");
 #endif
-
-// need to push the currentModelTag onto the stack.
+// Push the currentModelTag onto the stack.
+// The following lines of code must be atomic. Atomicity is
+// guaranteed by giving all sensor/timer interrupts the same
+// priority.
 stackedModelTagIndex++;
 if (stackedModelTagIndex > MAX_EVENTS) {
     die("MAX_EVENTS too small for stackedModelTagIndex");
 }
 executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
 executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
-
-// for sensing purposes, set the current time to the physical time.
+// For sensing purposes, set the current time to the platform time.
 getRealTime(&currentModelTime);
 currentMicrostep = 0;
 
-// do not need to disable interrupts if all interrupts have the same priority
-//disableInterrupts();
+temp = FREE_EVENT_LIST;
 $sensorFireMethod();
-// stack manipulation here instead of later.
-addStack();
+if (temp != FREE_EVENT_LIST) {
+   	addStack();
+} else {
+	// processEvents is not called, return to the last executing event, thus
+    // restore the last executing stacked model tag.
+	// The following lines of code must be atomic. Atomicity is
+	// guaranteed by giving all sensor/timer interrupts the same
+	// priority.
+    currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
+    currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
+    stackedModelTagIndex--;
+	loadState();
+}
 /**/

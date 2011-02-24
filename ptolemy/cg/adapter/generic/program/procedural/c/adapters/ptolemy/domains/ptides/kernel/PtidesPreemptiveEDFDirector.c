@@ -1,9 +1,6 @@
 /*** StructDefBlock ***/
 //#define LCD_DEBUG
 
-#define FALSE 0
-#define TRUE  1
-
 #define LESS -1
 #define MORE 1
 #define EQUAL 0
@@ -38,10 +35,8 @@ typedef struct event {
     Time deadline;
     Time offsetTime;
 
-    char inUse;
-
     struct event* nextEvent;
-    // we need a port to indicate where this is pointing to.
+    struct event* prevEvent;
 } Event;
 /**/
 
@@ -63,38 +58,39 @@ int timeSub(const Time, const Time, Time*);
 
 /* static variables */
 Event eventMemory[MAX_EVENTS];
-volatile Event* DEADLINE_QUEUE_HEAD = NULL;
-volatile int locationCounter;
-volatile Time currentModelTime;
-volatile int currentMicrostep;
+Event* DEADLINE_QUEUE_HEAD = NULL;
+Event* DEADLINE_QUEUE_TAIL = NULL;
+Event* FREE_EVENT_LIST = NULL;
+Time currentModelTime;
+int currentMicrostep;
 
 // Global variable to keep track of number of times the timer needs to interrupt before physical
 // time has exceeded safe to process time.
-volatile unsigned long timerInterruptSecsLeft;
-volatile unsigned long actuatorTimerInterruptSecsLeft;
+unsigned long timerInterruptSecsLeft;
+unsigned long actuatorTimerInterruptSecsLeft;
 
 // ID of the current actuator that's causing the timer to run.
-volatile int actuatorRunning = -1;
-volatile Time lastActuateTime;
+int actuatorRunning = -1;
+Time lastActuateTime;
 
-volatile int stackedDeadlineIndex = -1;
-volatile Time executingDeadlines[MAX_EVENTS];
-volatile void (*executingActors[MAX_EVENTS])();
+int stackedDeadlineIndex = -1;
+Time executingDeadlines[MAX_EVENTS];
+void (*executingActors[MAX_EVENTS])();
 
-volatile Tag executingModelTag[MAX_EVENTS];
-volatile int stackedModelTagIndex = -1;
+Tag executingModelTag[MAX_EVENTS];
+int stackedModelTagIndex = -1;
 
-volatile Time lastTimerInterruptTime;
+Time lastTimerInterruptTime;
 volatile uint32 _secs = 0;
 volatile uint32 _quarterSecs = 0;
 
 // actuator queue
 // Head points to the head of the array.
-volatile int actuatorArrayHeadPtrs[numActuators];
+int actuatorArrayHeadPtrs[numActuators];
 // Tail points to the last element array.
-volatile int actuatorArrayTailPtrs[numActuators];
-volatile int actuatorArrayCounts[numActuators];
-volatile Time actuatorTimerValues[numActuators][MAX_ACTUATOR_TIMER_VALUES];
+int actuatorArrayTailPtrs[numActuators];
+int actuatorArrayCounts[numActuators];
+Time actuatorTimerValues[numActuators][MAX_ACTUATOR_TIMER_VALUES];
 
 // Times.
 static Time MAX_TIME = {(uint32)-1, (uint32)-1};
@@ -137,48 +133,53 @@ int compareEvents(Event* event1, Event* event2) {
     }
 }
 
+// Insert an event into the event queue.
 void addEvent(Event* newEvent) {
-    // now add event to the deadline queue
-    Event *compare_deadline;
-    Event *before_deadline;
-    disableInterrupts();
-    before_deadline  = NULL;
-    compare_deadline = DEADLINE_QUEUE_HEAD;
-    if (newEvent == NULL) {
-    	die("NULL new event");
-    }
-    while (1) {
-        // We've reached the end of the queue.
-        if (compare_deadline == NULL) {
-            break;
-        } else if (compareEvents(newEvent, compare_deadline) <= 0) {
-            break;
-        } else {
-            before_deadline = compare_deadline;
-            compare_deadline = compare_deadline->nextEvent;
-        }
-    }
-    newEvent->nextEvent = compare_deadline;
-    if (before_deadline == NULL) {
-        DEADLINE_QUEUE_HEAD = newEvent;
-    } else {
-        before_deadline->nextEvent = newEvent;
-    }
-    #ifdef LCD_DEBUG
-    //sprintf(str,"addedEvent: %d",addeventcount);
-    //RIT128x96x4StringDraw(str,   12,80,15);
-    #endif
-	enableInterrupts();
+    Event* compareDeadline = DEADLINE_QUEUE_HEAD;
+	disableInterrupts();
+	if (DEADLINE_QUEUE_HEAD == NULL) {
+		DEADLINE_QUEUE_HEAD = newEvent;
+		DEADLINE_QUEUE_TAIL = newEvent;
+		newEvent->prevEvent = NULL;
+		newEvent->nextEvent = NULL;
+	} else {
+		if (compareEvents(newEvent, DEADLINE_QUEUE_TAIL) >= 0) {
+			newEvent->prevEvent = DEADLINE_QUEUE_TAIL;
+			DEADLINE_QUEUE_TAIL->nextEvent = newEvent;
+			newEvent->nextEvent = NULL;
+			DEADLINE_QUEUE_TAIL = newEvent;
+		} else {
+			while (true) {
+				if (compareDeadline == NULL) {
+					die("FAIL!!");
+				}
+				if (compareEvents(newEvent, compareDeadline) <= 0) {
+					break;
+				} else {
+					compareDeadline = compareDeadline->nextEvent;
+				}
+			}
+			newEvent->nextEvent = compareDeadline;
+			newEvent->prevEvent = compareDeadline->prevEvent;
+			compareDeadline->prevEvent = newEvent;
+			if (compareDeadline != DEADLINE_QUEUE_HEAD) {
+				newEvent->prevEvent->nextEvent = newEvent;
+			} else {
+				DEADLINE_QUEUE_HEAD = newEvent;
+			}
+		}
+	}
+    enableInterrupts();
 }
 
-Event* peekEvent(unsigned int peekingIndex) {
-    int i = 0;
-    Event* deadline = DEADLINE_QUEUE_HEAD;
-	while (deadline != NULL && i < peekingIndex) {
-		deadline = deadline->nextEvent;
-		i++;
-    }
-    return deadline;
+// Peek the next event pointed to by thisEvent. If thisEvent is NULL,
+// return the head of the event queue.
+Event* peekNextEvent(Event* thisEvent) {
+	if (thisEvent == NULL) {
+		return DEADLINE_QUEUE_HEAD;
+	} else {
+		return thisEvent->nextEvent;
+	}
 }
 
 int notSameTag(const Event* event1, const Event* event2) {
@@ -198,91 +199,78 @@ int sameDestination(const Event* event1, const Event* event2) {
     return event1->fireMethod == event2->fireMethod;
 }
 
-void removeAndPropagateSameTagEvents(int peekingIndex) {
-    int i;
-    Event* event = DEADLINE_QUEUE_HEAD;
-    Event* prevEvent = NULL;
-    Event* refEvent = NULL;
-    if (peekingIndex == 0) {
-		// remove event from the event queue.
-        DEADLINE_QUEUE_HEAD = event->nextEvent;
-    } else {
-        for (i = 0; i < peekingIndex; i++) {
-            prevEvent = event;
-            event = event->nextEvent;
-        }
-		// remove event from the event queue.
-		prevEvent->nextEvent = event->nextEvent;
-    }
-    // propagate data
-    propagateDataToken(event);
+// Remove this event from event queue.
+void removeEventFromQueue(Event* event) {
+	if (event->prevEvent != NULL) {
+		event->prevEvent->nextEvent = event->nextEvent;
+	} else {
+		// Event is the head.
+		DEADLINE_QUEUE_HEAD = event->nextEvent;
+	}
+	if (event->nextEvent != NULL) {
+		event->nextEvent->prevEvent = event->prevEvent;
+	} else {
+		DEADLINE_QUEUE_TAIL = event->prevEvent;
+	}
+	event->nextEvent = NULL;
+}
 
+// Remove this event from the event queue, as well as all other
+// events that share the same timestamp, as well as destination actor.
+void removeAndPropagateSameTagEvents(Event* thisEvent) {
+	Event* nextEvent = thisEvent->nextEvent;
+	Event* lastEvent = thisEvent;
+    propagateDataToken(thisEvent);
+	removeEventFromQueue(thisEvent);
     // Now find the next event see we should process it at the same time.
-    refEvent = event;
     while (true) {
-        event = event->nextEvent;
-		if (event == NULL) {
-			break;
-		} else if (notSameTag(refEvent, event)) {
+        if (nextEvent == NULL) {
+            break;
+        } else if (notSameTag(nextEvent, thisEvent)) {
             break;
         } else {
-            // tags are the same, but only propagate if the destination
-            // actor for these two events are the same.
-            if (sameDestination(refEvent, event)) {
-                propagateDataToken(event);
-				// remove event from the event queue,
-				if (prevEvent == NULL) {
-					DEADLINE_QUEUE_HEAD = event->nextEvent;
-				} else {	
-                	prevEvent->nextEvent = event->nextEvent;
-				}
-            } else {
-                prevEvent = event;
+            // If the next event and this event share the same tag,
+			// as well as the same destination
+            // actor, then propagate this event.
+            if (sameDestination(nextEvent, thisEvent)) {
+                propagateDataToken(nextEvent);
+				removeEventFromQueue(nextEvent);
+				lastEvent->nextEvent = nextEvent;
+				lastEvent = nextEvent;
             }
+			nextEvent = nextEvent->nextEvent; 
         }
     }
+	// Make this linked list semi-circular by pointing
+	// the prevEvent of thisEvent to the end of the list.
+	// This is used later in freeEvent().
+	thisEvent->prevEvent = lastEvent;
 }
 
+// Allocate a new event from the free list of events.
 Event* newEvent(void) {
-    // counter counts the number of times we loop around the memory.
-    int counter = 0;
+	Event* result;
 	disableInterrupts();
-    while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {
-        // If ran out of memory, then die.
-        if (counter++ >= MAX_EVENTS) {
-            die("ran out of memory");
-        }
-        locationCounter++;
-        // The event list is circular.
-        if (locationCounter >= MAX_EVENTS) {
-            locationCounter -= MAX_EVENTS;
-        }
-        // The following code is less efficient?
-        // locationCounter %= MAX_EVENTS;
-    }
-    //      RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
-	counter = locationCounter;
-    eventMemory[counter].inUse = counter;
-	locationCounter++;
-    // The event list is circular.
-    if (locationCounter >= MAX_EVENTS) {
-        locationCounter -= MAX_EVENTS;
-    }
-	// The following code is less efficient?    
-    // locationCounter %= MAX_EVENTS;
+	if (FREE_EVENT_LIST == NULL) {
+		die("ran out of memory");
+	}
+	result = FREE_EVENT_LIST;
+	FREE_EVENT_LIST = FREE_EVENT_LIST->nextEvent;
 	enableInterrupts();
-    return &eventMemory[counter];
+	return result;
 }
 
+// Deallocate this event, as well as all next events linked together using
+// the nextEvent construct to the free list of events.
 void freeEvent(Event* thisEvent) {
-	disableInterrupts();
-    if (thisEvent->inUse == MAX_EVENTS+1) {
-        die("already free");
-	}
-	if (&(eventMemory[thisEvent->inUse]) != thisEvent) {
-		die("wrong event");
-	}
-	thisEvent->inUse = MAX_EVENTS+1;
+    disableInterrupts();
+	// This line of code is confusing. To understand it, refer to the last
+	// line of removeAndPropageSameTagEvents() method. There, the prevEvent
+	// pointer of thisEvent is set to the end of the list of events removed
+	// from the event queue. We simply append this list to the head of
+	// FREE_EVENT_LIST.
+	thisEvent->prevEvent->nextEvent = FREE_EVENT_LIST;
+	FREE_EVENT_LIST = thisEvent;
     enableInterrupts();
 }
 
@@ -325,118 +313,116 @@ int timeSub(const Time time1, const Time time2, Time* timeSub) {
     return 1;
 }
 
-/* event processing */
-
+/* Event processing */
 void processEvents() {
-    // peekingPoint keeps track which event to peek at.
-    int peekingIndex = 0;
-    // keeps track of how many events in the event queue cannot be processed because their
-    // buffer has been blocked.
-    Event* event;
-    int whilecount = 0;
+    Event* event = NULL;
     Time processTime;
-    Time physicalTime;
-
+    Time platformTime;
+	// Get the current platform time. This time is later used to
+	// perform safe-to-process. This function must be called
+	// before interrupts are disabled to ensure DE semantics.
+    getRealTime(&platformTime);
     disableInterrupts();
-
     while (true) {
-        event = peekEvent(peekingIndex);
-        if (event == NULL) {
+        // If event is null, then return the highest priority event
+        // from the queue. Otherwise, return the next event pointed
+        // to by event. Return NULL if there are no more events
+        // in the event queue. The event queue is sorted in
+        // deadline order.
+        event = peekNextEvent(event);
+        // If there are no more events in the event queue, break
+        // out of the while loop.
+		if (!event) {
             break;
         }
-        // If event queue is not empty, keep going.
-        whilecount++;
-#ifdef LCD_DEBUG
-        debugMessageNumber("wc = ", whilecount);
-#endif
-
+        // If this event's priority is higher than the last priority
+        // saved in storePriority(), then continue.
+        // The priority here is the priority of the event,
+        // not the priority of the interrupt.
         if (higherPriority(event)) {
+            // check if this event is safe to process.
             safeToProcess(event, &processTime);
-
-#ifdef LCD_DEBUG
-            //debugMessageNumber("hpwc=", whilecount);
-#endif
-            getRealTime(&physicalTime);
-
-            if (timeCompare(physicalTime, processTime) >= 0) {
-                // We have decided to process this event, thus we let the rest
-                // of the system know this decision by queuing the priority, and
-                // setting the tag of this event.
+            if (timeCompare(platformTime, processTime) >= 0) {
+                // Store the priority of the previous interrupt.
+                // Stored priority is later used for comparison in
+                // higherPriority().
                 queuePriority(event);
-                removeAndPropagateSameTagEvents(peekingIndex);
+                // Get all events of the same timestamp, and share
+                // the same destination equivalence class.
+                // Remove these events from the event queue.
+                removeAndPropagateSameTagEvents(event);
                 setCurrentModelTag(event);
+                // Ready to process the next event, so first enable
+                // interrupts.
                 enableInterrupts();
-                // Execute the event. During
-                // this process more events may
-                // be posted to the queue.
-
+                // Execute this event by firing the corresponding
+                // actor. During this process more events may
+                // be posted onto the queue
                 fireActor(event);
-                // After an actor fires, we not sure which event is safe to process,
-                // so we start examine the queue again start from the beginning.
+                // The executed event can now be freed into the
+                // pool of available events
+				freeEvent(event);
+				// This event has finished execution. The priority of
+				// this event can be forgotten. We forget by decrementing
+				// the stackedDeadlineIndex.
+				stackedDeadlineIndex--;
+				// Reset event to null so the next peekNextEvent()
+                // looks at the top event.
+                event = NULL;
+				// Get the current platform time. This time is later used to
+				// perform safe-to-process. This function must be called
+				// before interrupts are disabled to ensure DE semantics.
+			    getRealTime(&platformTime);
+                // We are ready to look at the next event in the
+                // event queue. Before doing that interrupts need
+                // to be disabled
                 disableInterrupts();
-				peekingIndex = 0;
             } else {
-                // Set timed interrupt to run
-                // the event at the top of the
-                // event queue when physical time
-                // has passed for it to be
-                // safe to process
-                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                // This event is not safe to process yet. Set
+                // timed interrupt to run this event when platform
+                // time has passed for it to be safe to process.
+				if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
                     lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
-                // this event is not safe to process, we look at the next one.
-                //peekingIndex++;
-                break;
-
-            }// end !(curentPhysicalTime >= processTime)
+				// This event is not safe to process, we continue processing
+				// by going back to the beginning of the loop.
+				// HACK: that doesn't seem to work yet, we'll just process
+				// the top event from the queue for now.
+				break;
+	        }
         } else {
-            // This is the only place for us to break out of the while loop. The only other possibility
-            // is that we have looked all all events in the queue, and none of them are safe to process.
-#ifdef LCD_DEBUG
-            debugMessageNumber("endwc=", peekingIndex);
-#endif
+            // This event is of lower priority than the one 
+            // currently executing, break out of the while loop.
             break;
-        }//end EVENT_QUEUE_HEAD != NULL
+        }//end while().
     }
-
     // restore the last executing stacked model tag.
     if (stackedModelTagIndex >= 0) {
         currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
         currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
         stackedModelTagIndex--;
     } else {
-    	die("cannot restore model tag");
+        die("cannot restore model tag");
     }
-    // This implies within the while loop, if all events cannot be processed, 
-    // we need to go through the entire event queue before another event can come in.
+	// End of processEvents(), enable interrupts.
     enableInterrupts();
-    // if all events are blocked because buffers are full
-    // if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex) 
-#ifdef LCD_DEBUG
-    //debugMessage("ret PE()");
-#endif
-	// we do not need to disable interrupts for this routine, because it
+    // we do not need to disable interrupts for this routine, because it
     // is triggered through a SVC call, which has higher priority than
     // all other external interrupts in the system.
     restoreStack();
     die("should never get here");
 }
 
-/* 
-* Check if static timing analysis is needed.
-* if it is, static timing analysis is called, and returns
-* if it's not, firing method of the actor specified by the event is called
+/*
+* Fire the corresponding actor for this event.
 */
-void fireActor(Event* currentEvent) {
-    if (currentEvent->fireMethod != NULL){
-        (currentEvent->fireMethod)();
+void fireActor(Event* thisEvent) {
+    if (thisEvent->fireMethod != NULL){
+        (thisEvent->fireMethod)();
     } else {
         die("no such method, cannot fire\n");
     }
-
-    freeEvent(currentEvent);
-    stackedDeadlineIndex--;
 }
 
 /* Determines whether the event to fire this current actor is of higher priority than
@@ -446,7 +432,7 @@ unsigned int higherPriority(const Event* const event) {
     int i;
     if (stackedDeadlineIndex < 0) {
         // there are no events on the stack, so it's always true.
-        return TRUE;
+        return true;
     } else if (timeCompare(executingDeadlines[stackedDeadlineIndex], event->deadline) == LESS) {
 #ifdef LCD_DEBUG
         debugMessageNumber("exDe sec=",
@@ -454,16 +440,16 @@ unsigned int higherPriority(const Event* const event) {
         debugMessageNumber("exDe nsec=",
                 executingDeadlines[stackedDeadlineIndex].nsecs); 
 #endif
-        return FALSE;
+        return false;
     } else {
         // check for all actors that are currently firing, and make sure we
         // don't fire an actor that's already firing.
         for (i = 0; i <= stackedDeadlineIndex; i++) {
             if (executingActors[i] == event->fireMethod) {
-                return FALSE;
+                return false;
             }
         }
-        return TRUE;
+        return true;
     }
 }
 
@@ -496,45 +482,17 @@ void propagateDataToken(Event* currentEvent){
 }
 
 /* 
-* Static timing analysis to set the timestamp of the event by a 
-* specific amount in order to fire the event at an instance that ensures 
-* all events are exectued in order.
-* In this analysis, the clock event can be executed when real time exceeds
-* tau - model_delay3
+* Determine whether an event is safe to process by subtracting the
+* event's timestamp subtracted by an offset. Store the result
+* in safeTimestamp. If the event is always safe to process, then
+* store zeros in safeTimestamp.
 */
 void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
-
-    //   safeTimestamp = physical time - offset;
-
-    //      unsigned int safeThroughPropagation = TRUE;
-
-    //FIXME: we only check the first event in the event queue.
-    /*
-    while (inputPort != NULL) {
-    if (inputPort != thisEvent->atPort) {
-    if (timeCompare(&(inputPort->modelTime), &(thisEvent->tag.timestamp)) == LESS) {
-    safeThroughPropagation = FALSE;
-    break;
-    }
-    }
-    inputPort = inputPort->next;
-    }*/
-
-
-    //      if (safeThroughPropagation == TRUE) {
-    //          timeSet(safeTimestamp, &ZERO_TIME);
-    //      } else {
-    // if (thisEvent->tag.timestamp = MAX_LONG_LONG) {
-    //      safeTimestamp = 0; //always safe
-    // } else {
 	int out = timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
 	if (out == -1) {
 		safeTimestamp->secs = 0;
 		safeTimestamp->nsecs = 0;
 	}
-    // }
-    //      }
-
 #ifdef LCD_DEBUG
     //sprintf(str, "STP=%d", safeTimestamp->secs);
     //RIT128x96x4StringDraw(str, 0,40,15);
@@ -555,18 +513,17 @@ void initializeEvents(void) {
     // no event initialization is needed here... for now.
 }
 
-/* initialize global variables
+/* initialize Event memory structures.
  */
 void initializeMemory() {
     int i;
-    locationCounter = 0;
     _secs = 0;
     _quarterSecs = 0;
-
-    for(i = 0; i < MAX_EVENTS; i++) {
+    for(i = 1; i < MAX_EVENTS; i++) {
         // event is "freed and can be returned by newEvent"
-        eventMemory[i].inUse = MAX_EVENTS + 1; 
+        eventMemory[i-1].nextEvent = &eventMemory[i];
     }
+	FREE_EVENT_LIST = &eventMemory[0];
 }
 
 void initializePISystem() {
@@ -579,80 +536,93 @@ void initializePISystem() {
 /**/
 
 /*** mainLoopBlock ***/
+// Don't call initialize() here, it is called in main.
 void execute() {
-    // peekingPoint keeps track which event to peek at.
-    int peekingIndex = 0;
-    // keeps track of how many events in the event queue cannot be processed because their
-    // buffer has been blocked.
-    Event* event;
-    int whilecount = 0;
+    Event* event = NULL;
     Time processTime;
-    Time physicalTime;
+    Time platformTime;
+	// Get the current platform time. This time is later used to
+	// perform safe-to-process. This function must be called
+	// before interrupts are disabled to ensure DE semantics.
+    getRealTime(&platformTime);
     disableInterrupts();
     while (true) {
-        event = peekEvent(peekingIndex);
-        if (event == NULL) {
+        // If event is null, then return the highest priority event
+        // from the queue. Otherwise, return the next event pointed
+        // to by event. Return NULL if there are no more events
+        // in the event queue. The event queue is sorted in
+        // deadline order.
+        event = peekNextEvent(event);
+        // If there are no more events in the event queue, break
+        // out of the while loop.
+		if (!event) {
             break;
         }
-        // If event queue is not empty, keep going.
-        whilecount++;
-        #ifdef LCD_DEBUG
-        //debugMessageNumber("wc = ", whilecount);
-        #endif
-        if (higherPriority(event) == TRUE) {
+        // If this event's priority is higher than the last priority
+        // saved in storePriority(), then continue.
+        // The priority here is the priority of the event,
+        // not the priority of the interrupt.
+        if (higherPriority(event)) {
+            // check if this event is safe to process.
             safeToProcess(event, &processTime);
-            #ifdef LCD_DEBUG
-            //debugMessageNumber("hpwc=", whilecount);
-            #endif
-            getRealTime(&physicalTime);
-            if (timeCompare(physicalTime, processTime) >= 0) {
-                // We have decided to process this event, thus we let the rest
-                // of the system know this decision by queuing the priority, and
-                // setting the tag of this event.
+            if (timeCompare(platformTime, processTime) >= 0) {
+                // Store the priority of the previous interrupt.
+                // Stored priority is later used for comparison in
+                // higherPriority().
                 queuePriority(event);
-                removeAndPropagateSameTagEvents(peekingIndex);
+                // Get all events of the same timestamp, and share
+                // the same destination equivalence class.
+                // Remove these events from the event queue.
+                removeAndPropagateSameTagEvents(event);
                 setCurrentModelTag(event);
+                // Ready to process the next event, so first enable
+                // interrupts.
                 enableInterrupts();
-                // Execute the event. During
-                // this process more events may
-                // be posted to the queue.
+                // Execute this event by firing the corresponding
+                // actor. During this process more events may
+                // be posted onto the queue
                 fireActor(event);
-                // After an actor fires, we not sure which event is safe to process,
-                // so we start examine the queue again start from the beginning.
+                // The executed event can now be freed into the
+                // pool of available events
+				freeEvent(event);
+				// This event has finished execution. The priority of
+				// this event can be forgotten. We forget by decrementing
+				// the stackedDeadlineIndex.
+				stackedDeadlineIndex--;
+				// Reset event to null so the next peekNextEvent()
+                // looks at the top event.
+                event = NULL;
+				// Get the current platform time. This time is later used to
+				// perform safe-to-process. This function must be called
+				// before interrupts are disabled to ensure DE semantics.
+			    getRealTime(&platformTime);
+                // We are ready to look at the next event in the
+                // event queue. Before doing that interrupts need
+                // to be disabled
                 disableInterrupts();
-                peekingIndex = 0;
             } else {
-                // Set timed interrupt to run
-                // the event at the top of the
-                // event queue when physical time
-                // has passed for it to be
-                // safe to process
-                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                // This event is not safe to process yet. Set
+                // timed interrupt to run this event when platform
+                // time has passed for it to be safe to process.
+				if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
                     lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
-                // this event is not safe to process, we look at the next one.
-                //peekingIndex++;
-                break;
-            }// end !(curentPhysicalTime >= processTime)
+				// This event is not safe to process, we continue processing
+				// by going back to the beginning of the loop.
+				// HACK: that doesn't seem to work yet, we'll just process
+				// the top event from the queue for now.
+				break;
+	        }
         } else {
-            // This is the only place for us to break out of the while loop. The only other possibility
-            // is that we have looked all all events in the queue, and none of them are safe to process.
-            #ifdef LCD_DEBUG
-            //debugMessageNumber("endwc=", peekingIndex);
-            #endif
+            // This event is of lower priority than the one 
+            // currently executing, break out of the while loop.
             break;
-        }//end EVENT_QUEUE_HEAD != NULL
+        }//end while().
     }
-    // This implies within the while loop, if all events cannot be processed,
-    // we need to go through the entire event queue before another event can come in.
+	// End of processEvents(), enable interrupts.
     enableInterrupts();
-    // if all events are blocked because buffers are full
-    // if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex)
-    #ifdef LCD_DEBUG
-    //debugMessage("ret PE()");
-    #endif
-
+	// Go into an infinite loop to wait for a wakeup signal.
     while (1);
 }
 /**/
