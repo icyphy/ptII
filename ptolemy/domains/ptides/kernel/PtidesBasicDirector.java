@@ -615,6 +615,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Get the simulated physical time of the environment, which is the oracle
      *  physical time offset by the clock synchronization error due to clock
      *  drift.
+     *  @param clockId Clock ID.
      *  @return the platform physical time.
      *  @exception IllegalActionException If director cannot get token for the
      *  parameter platformTimeSynchronizationError.
@@ -894,7 +895,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  then the future fireAt times will also change. Also keep track of
      *  the list of ignored future fireAt times, so that when this director
      *  is woken up at those times, the director will not fire.
-     *  @param realTimeClock The realTimeClock of interest.
+     *  @param clockID an int specifying the ID of the clock.
+     *  @param newClockDrift a Time object that indicates the new drift of that
+     *  particular clock.
      *  @throws IllegalActionException If either the original or updated fireAt
      *  time is in the past.
      */
@@ -1155,7 +1158,16 @@ public class PtidesBasicDirector extends DEDirector {
         for (IOPort inputPort : (Set<IOPort>) _inputModelTimeDelays.keySet()) {
             Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
                     .get(inputPort);
-            double[] delayOffsets = new double[channelDependency.size()];
+            // Since the channel sizes may not start at 0 and grow by one monotonically, we need to traverse
+            // the whole channelDependency and see what the maximum size is in order to prevent
+            // a out of index error.
+            int size = 1;
+            for (Integer portChannelMinDelay : channelDependency.keySet()) {
+                if (portChannelMinDelay.intValue() >= size) {
+                    size = portChannelMinDelay.intValue() + 1;
+                }
+            }
+            double[] delayOffsets = new double[size];
             for (Integer portChannelMinDelay : channelDependency.keySet()) {
                 delayOffsets[portChannelMinDelay.intValue()] = _calculateMinDelayForPortChannel(
                         inputPort, portChannelMinDelay);
@@ -2120,7 +2132,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the oracle tag, and vise versa. We also assume the platform tag to be
      *  continuous. If the platform time of interest is less than the last
      *  saved platform time of the corresponding clock, throw an exception.
-     *  @param platformTag The platform timestamp and microstep.
+     *  @param platformTime The platform timestamp.
      *  @param clockId The ID of the corresponding platform clock.
      *  @return The oracle tag associated with the platform tag. Returns null
      *  if the platform time of interest is less than the last
@@ -2160,8 +2172,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  the oracle tag, and vise versa. We also assume the platform tag to be
      *  continuous. If the oracle time of interest is less than the last
      *  saved oracle time of the corresponding clock, throw an exception.
-     *  @param platformTag The platform timestamp and microstep.
-     *  @param clockID The corresponding clock to get the platform time.
+     *  @param oracleTime a Time object that tracks the current oracle time.
+     *  @param clockId an int specifying the ID of the clock.
      *  @return The oracle tag associated with the platform tag. Return null
      *  if the oracle time of interest is less than the last
      *  saved oracle time of the corresponding clock.
@@ -2315,7 +2327,8 @@ public class PtidesBasicDirector extends DEDirector {
     /** Convert the platform to an oracle time based on the platform clock
      *  that is used. Call fireAt() of the executive director, which is in
      *  charge of keeping track of the simulated physical time.
-     *  @param wakeUpTime The time to wake up.
+     *  @param platformTime a Time object indicate the future platform time to fire.
+     *  @param clockId an int specifying the ID of the clock.
      *  @exception IllegalActionException If cannot call fireAt of enclosing
      *  director, or if the oracle time is in the past, or cannot get the oracle
      *  time.
@@ -4006,6 +4019,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param channel The destination channel.
          *  @param token The token to be delivered.
          *  @param deliveryTag The platform time of delivery of this token.
+         *  @param timestampTag The timestamp tag of this token.
          */
         public RealTimeEvent(IOPort port, int channel, Token token,
                 Tag deliveryTag, Tag timestampTag) {
@@ -4026,7 +4040,7 @@ public class PtidesBasicDirector extends DEDirector {
         /** The port. */
         public IOPort port;
 
-        /** The tag of the input event */
+        /** The tag of the input event. */
         public Tag timestampTag;
 
         /** The token. */
