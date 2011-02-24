@@ -51,6 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	FuelDimensionSystem.xml \
 	FuelDimensionSystemSolverModel.xml \
 	FuelSystem_2Tanks.xml \
+	FuelSystem_ErrorHandling.xml \
 	FuelSystem_Ontology.xml \
 	FuelSystem_QuantityManager.xml \
 	FuelSystem_SingleTank_Improved.xml \ 
