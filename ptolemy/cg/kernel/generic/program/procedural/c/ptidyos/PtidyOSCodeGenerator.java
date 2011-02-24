@@ -92,20 +92,31 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
     ////                         protected methods                 ////
 
     /** Generate code for the assembly file.
-     *  @exception IllegalActionException if getAdaptor throws it.
+     *  @throws IllegalActionException if getAdaptor throws it, or if the
+     *  PtidyOSCodeGenerator is not used in a Ptides environment.
      * 
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
         PtidesPreemptiveEDFDirector directorAdapter = null;
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
-                .deepEntityList()) {
-            Director director = actor.getDirector();
-            if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-                directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
+        Director director = ((TypedCompositeActor) getContainer()).getDirector();
+        if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
+            _writeCode(directorAdapter.generateAsseblyFile());
+        } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
+            // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
+            // should be generated for each platform.
+            for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
+                    .deepEntityList()) {
+                Director insideDirector = actor.getDirector();
+                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                    directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
+                    _writeCode(directorAdapter.generateAsseblyFile());
+                }
             }
+        } else {
+            throw new IllegalActionException(director, "This PtidyOS code generator should be used " +
+            		"with a Ptides director.");
         }
-
-        _writeCode(directorAdapter.generateAsseblyFile());
     }
 
     /**
