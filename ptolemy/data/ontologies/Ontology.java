@@ -216,21 +216,11 @@ public class Ontology extends CompositeEntity {
 
     }
 
-    /** Return true if the ontology graph is a lattice.
-     *  @return True if the graph is a lattice.
+    /** Return true if the ontology graph is a lattice, false otherwise.
+     *  @return True if the graph is a lattice, false otherwise.
      */
     public boolean isLattice() {
-        _graph = _buildConceptGraph();
-        return _graph.isLattice();
-        /*
-        String nonLatticeReason = _graph.nonLatticeReason();
-        if (null != nonLatticeReason) {
-            _debug(nonLatticeReason);
-            return false;
-        } else {
-            return true;
-        }
-        */
+        return getConceptGraph().isLattice();
     }
 
     /** Create a new relation with the specified name, add it to the

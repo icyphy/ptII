@@ -36,7 +36,7 @@ import java.util.List;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.NonLatticeCounterExample;
-import ptolemy.graph.NonLatticeCounterExample.ExampleType;
+import ptolemy.graph.NonLatticeCounterExample.GraphExampleType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.util.MessageHandler;
@@ -68,7 +68,7 @@ public class ReportOntologyLatticeStatus {
             MessageHandler.message("The ontology model graph is a valid lattice.");
         } else {
             NonLatticeCounterExample nonLatticeExample = ontologyModel.getConceptGraph().nonLatticeReason();
-            ExampleType exampleType = nonLatticeExample.getExampleType();
+            GraphExampleType exampleType = (GraphExampleType) nonLatticeExample.getExampleType();
             List concepts = nonLatticeExample.getNodeList();
 
             StringBuffer errorMessageBuffer = new StringBuffer();

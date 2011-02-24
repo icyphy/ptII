@@ -321,7 +321,6 @@ public abstract class OntologyAdapter {
      * a StringAttribute with the name "expression" or a Variable
      * with full visibility.  However, Variables with certain names
      * are excluded.
-     * @see ptolemy.data.properties.Propertyable
      * @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {

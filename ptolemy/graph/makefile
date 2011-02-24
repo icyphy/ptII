@@ -96,7 +96,8 @@ OPTIONAL_FILES = \
     'InequalitySolver$$Info.class' \
     'LabeledList$$1.class' \
     'LabeledList$$SubList.class' \
-    'NonLatticeCounterExample$$ExampleType.class'
+    'NonLatticeCounterExample$$ExampleType.class' \
+    'NonLatticeCounterExample$$GraphExampleType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

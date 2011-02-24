@@ -212,7 +212,11 @@ public class StateController extends AttributeController {
             Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
             
-            // New way to specify a highlight color.
+            // This code was copied from ptolemy.vergil.actor.IOPortController
+            // in the render() method of the EntityPortRenderer inner class
+            // to allow states in a modal model or ontology concepts in an
+            // ontology model to be highlighted when their _highlightColor
+            // attribute is set.
             try {
                 ColorAttribute highlightAttribute = (ColorAttribute) (object
                         .getAttribute("_highlightColor", ColorAttribute.class));

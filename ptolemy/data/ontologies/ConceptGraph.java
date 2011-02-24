@@ -128,15 +128,6 @@ public abstract class ConceptGraph implements CPO {
         return _getBoundForConceptSubset(subset, BoundType.GREATESTLOWER);
     }
     
-    /** Return a human readable string as to why this graph is not a lattice.
-     *  If it is a lattice, return null.
-     *
-     *  @return The reason why this graph is not a lattice, or null, if it is.
-     */
-    public NonLatticeCounterExample nonLatticeReason() {
-        throw new IllegalArgumentException(_notImplementedMessage());
-    }
-
     /** Return whether this concept graph is a lattice.
      *  Should be true for all existing concept graphs.
      *
@@ -193,6 +184,13 @@ public abstract class ConceptGraph implements CPO {
     public Concept leastUpperBound(Object[] subset) {
         return _getBoundForConceptSubset(subset, BoundType.LEASTUPPER);
     }
+
+    /** Return a human readable string as to why this graph is not a lattice.
+     *  If it is a lattice, return null.
+     *
+     *  @return The reason why this graph is not a lattice, or null, if it is.
+     */
+    public abstract NonLatticeCounterExample nonLatticeReason();
 
     /** Return the greatest element in this concept graph.
      *  @return The greatest element in this concept graph.

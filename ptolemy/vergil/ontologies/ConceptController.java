@@ -129,9 +129,7 @@ public class ConceptController extends StateController {
         }
 
         public void actionPerformed(ActionEvent e) {
-
             super.actionPerformed(e);
-
             NamedObj target = getTarget();
 
             // If the target is not an instance of LatticeElement, do nothing.

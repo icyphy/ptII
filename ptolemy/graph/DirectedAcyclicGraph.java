@@ -223,19 +223,15 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         return _lubShared(subset);
     }
 
-    /** Return a human readable string as to why this graph is not a lattice.
+    /** Return a counterexample reason as to why this graph is not a lattice.
      *  If it is a lattice, return null.
+     *  First check to see if the graph has a cycle. If it does not, then
+     *  check to see if all pair combinations of elements in the graph have
+     *  both a least upper bound and a greatest lower bound. The first time
+     *  a counterexample is found, return it.
      *
-     *  By Theorem in Davey and Priestley, only the LUB or the GLB
-     *  need to be checked, but not both. The implementation tests the
-     *  existence of the LUB of any pair of elements, as well as the
-     *  existence of the bottom and top elements. The complexity is
-     *  O(|N|*|N|) where N for elements, and an individual computation
-     *  is the LUB of two elements.
-     *  
-     *  FIXME: Make the returned reason data-structure machine readable.
-     *
-     *  @return The reason why this graph is not a lattice, or null, if it is.
+     *  @return A counterexample that demonstrates why this graph is not a
+     *   lattice, or null if it is.
      */
     public NonLatticeCounterExample nonLatticeReason() {
         try {

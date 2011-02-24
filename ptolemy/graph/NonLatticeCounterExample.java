@@ -53,7 +53,7 @@ public class NonLatticeCounterExample {
     /** Construct a NonLatticeCounterExample object with the given example
      *  type and list of nodes in the graph
      *  @param exampleType The given example type for this counterexample.
-     *  @param nodeList The list of nodes for this counterexample.
+     *  @param nodeList The list of node weights for this counterexample.
      */
     public NonLatticeCounterExample(ExampleType exampleType, List nodeList) {
         _exampleType = exampleType;
@@ -61,10 +61,11 @@ public class NonLatticeCounterExample {
     }
     
     /** Construct a NonLatticeCounterExample object for a graph with a cycle.
-     *  @param node One of the nodes in the graph that is on the cycle path.
+     *  @param node The weight of one of the nodes in the graph that is on the
+     *   cycle path.
      */
     public NonLatticeCounterExample(Object node) {
-        _exampleType = ExampleType.GRAPHCYCLE;
+        _exampleType = GraphExampleType.GRAPHCYCLE;
         _nodeList = new ArrayList();
         _nodeList.add(node);
     }
@@ -72,8 +73,8 @@ public class NonLatticeCounterExample {
     /** Construct a NonLatticeCounterExample object for a pair of nodes that
      *  have either no least upper or greatest lower bound.
      *  @param bound The bound type for this counter example.
-     *  @param node1 The first node.
-     *  @param node2 The second node.
+     *  @param node1 The first node weight.
+     *  @param node2 The second node weight.
      */
     public NonLatticeCounterExample(BoundType bound, Object node1, Object node2) {
         _exampleType = getExampleTypeFromBoundType(bound);
@@ -92,8 +93,9 @@ public class NonLatticeCounterExample {
         return _exampleType;
     }
     
-    /** Return the list of nodes in the graph associated with this counter example.
-     *  @return The list of nodes.
+    /** Return the list of node weights in the graph associated with this
+     *  counter example.
+     *  @return The list of node weights.
      */
     public List getNodeList() {
         return _nodeList;
@@ -110,9 +112,9 @@ public class NonLatticeCounterExample {
     private ExampleType getExampleTypeFromBoundType(BoundType boundType) {
         switch(boundType) {
         case LEASTUPPER:
-            return ExampleType.LEASTUPPER;
+            return GraphExampleType.LEASTUPPER;
         case GREATESTLOWER:
-            return ExampleType.GREATESTLOWER;
+            return GraphExampleType.GREATESTLOWER;
         default:
             return null;
         }
@@ -130,10 +132,23 @@ public class NonLatticeCounterExample {
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
     
+    /** Marker interface for the counter example type. This allows
+     *  us to create other enumerations of counter example types in
+     *  subclasses. In particular, this is needed for the ontologies
+     *  package classes {@link ptolemy.data.ontologies.lattice.ProductLatticeOntology
+     *  ProductLatticeOntology} and
+     *  {@link ptolemy.data.ontologies.lattice.ProductLatticeCPO ProductLatticeCPO}.
+     *  When a product lattice is not a lattice, the reason is because one of
+     *  its component lattices is not a lattice. This is only relevant for
+     *  product lattice ontologies.
+     */
+    public interface ExampleType {
+    }
+    
     /** An enumeration type to represent the types of counterexamples
      *  that can be found when checking to see if a graph is a lattice.
      */
-    public static enum ExampleType {
+    public static enum GraphExampleType implements ExampleType {
         /** Represents a counterexample where some nodes have no greatest lower bound. */
         GREATESTLOWER,
         

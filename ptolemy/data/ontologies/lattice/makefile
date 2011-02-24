@@ -71,6 +71,7 @@ JSRCS = \
 	LatticeOntologySolver.java \
 	LogicOpConceptFunctionDefinition.java \
 	MultiplyConceptFunctionDefinition.java \
+	NonProductLatticeCounterExample.java \
 	ParseTreeConstraintAnnotationEvaluator.java \
 	ProductLatticeConcept.java \
 	ProductLatticeCPO.java \
@@ -97,7 +98,8 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'ConceptTermManager$$InequalityTerm.class' \
-	'LatticeOntologySolver$$ConstraintType.class'		
+	'LatticeOntologySolver$$ConstraintType.class' \
+	'NonProductLatticeCounterExample$$ProductExampleType.class'		
 
 JCLASS = $(JSRCS:%.java=%.class)
 

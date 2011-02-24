@@ -35,7 +35,6 @@ import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.ObjectType;
-import ptolemy.graph.CPO;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -214,25 +213,6 @@ public class ProductLatticeOntology extends Ontology {
         }
         
         return _latticeOntologies;
-    }
-    
-    /** Return true if the product lattice ontology is a lattice. If all the
-     *  component onotlogies are lattices, then the product lattice ontology
-     *  will also be a lattice. This is determined by the complete partial order
-     *  for this lattice.
-     *  @return true if the product lattice ontology is a lattice, false
-     *   otherwise.
-     *  @see #getConceptGraph()
-     *  @see ProductLatticeCPO
-     */
-    public boolean isLattice() {
-        CPO ontologyCPO = getConceptGraph();
-        
-        if (ontologyCPO != null) {
-            return ontologyCPO.isLattice();
-        } else {
-            return false;
-        }        
     }
     
     /** Set the component ontology from which the colors will be derived

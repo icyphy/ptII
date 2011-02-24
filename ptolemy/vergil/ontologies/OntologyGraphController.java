@@ -24,10 +24,8 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.event.ActionEvent;
 
-import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.modal.FSMGraphController;
