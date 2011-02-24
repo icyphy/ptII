@@ -482,10 +482,8 @@ void propagateDataToken(Event* currentEvent){
 }
 
 /* 
-* Determine whether an event is safe to process by subtracting the
-* event's timestamp subtracted by an offset. Store the result
-* in safeTimestamp. If the event is always safe to process, then
-* store zeros in safeTimestamp.
+* Determine the physical time at which an event becomes safe to process.
+* This time is calculated by subtracting the event's timestamp by an offset.
 */
 void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
 	int out = timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
@@ -536,7 +534,6 @@ void initializePISystem() {
 /**/
 
 /*** mainLoopBlock ***/
-// Don't call initialize() here, it is called in main.
 void execute() {
     Event* event = NULL;
     Time processTime;
