@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Python demo
+# Makefile for Ptolemy II PythonScript RecordManipulation demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/python/demo
+ME =		ptolemy/actor/lib/python/demo/RecordManipulation
 
-DIRS =		HelloWorld NotifyFailedTest RecordManipulation \
-		Ptolemnizer PythonScale
-
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+# Root of the Java directory
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,41 +41,51 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	RecordManipulation
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	HelloWorld/HelloWorld.jar \
-	NotifyFailedTest/NotifyFailedTest.jar \
-	RecordManipulation/RecordManipulation.jar \
-	Ptolemnizer/Ptolemnizer.jar \
-	PythonScale/PythonScale.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	RecordManipulation.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) 
+
+#	RecordManipulation.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil #demo_applet demo_applet_vergil 
+
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer RecordManipulation.htm
+
+demo_applet_vergil:
+	CLASSPATH="$(CLASSPATH)" appletviewer RecordManipulationVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" RecordManipulation.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" RecordManipulation.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

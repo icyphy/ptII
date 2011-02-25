@@ -1,0 +1,355 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RecordManipulation" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 1014, 556}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 446]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1337579617834">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.2007575757576, 169.2310606060606}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.75, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.4, 0.4, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Bob Weber">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 300.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use Python to query the user about which&#10;record to manipulate.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, -20.0]">
+        </property>
+    </property>
+    <entity name="Recordmaker" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="from ptolemy.data import StringToken&#10;from ptolemy.data import ArrayToken&#10;from ptolemy.data import RecordToken&#10;from ptolemy.data.type import BaseType&#10;class Main :&#10;  &quot;Dialog Example&quot;&#10;  def fire(self) :&#10;    if self.label.hasToken(0):&#10;       slabel = [self.label.get(0).stringValue()]&#10;    if self.value.hasToken(0):&#10;        inputValue = [(self.value.get(0))]&#10;    self.record.broadcast(RecordToken(slabel,inputValue))&#10;">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.75, 160.0]">
+        </property>
+        <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="Creates a record consisting of the label set equal to the value. Label must be a string, value can be anything.&#10;Acts as the inverse of Recordparser to permit dynamic construction and accessing of java Records">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Robert Weber">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="1">
+            </property>
+            <property name="label (port)" class="ptolemy.kernel.util.StringAttribute" value="String">
+            </property>
+            <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="general">
+            </property>
+            <property name="record (port)" class="ptolemy.kernel.util.StringAttribute" value="RecordToken">
+            </property>
+        </property>
+        <port name="label" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="record" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <entity name="Recordparser" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="from ptolemy.data import StringToken&#10;from ptolemy.data import ArrayToken&#10;from ptolemy.data import RecordToken&#10;from ptolemy.data.type import BaseType&#10;class Main :&#10;  &quot;Dialog Example&quot;&#10;  def fire(self) :&#10;    if self.label.hasToken(0) :&#10;        thelabel = self.label.get(0).stringValue()&#10;    if self.record.hasToken(0):&#10;          theRecord=self.record.get(0)&#10;          labels = theRecord.labelSet().iterator()&#10;          while (labels.hasNext()) :&#10;               alabel=labels.next()&#10;               if(thelabel==alabel) :&#10;                   value = (theRecord.get(thelabel))&#10;                   self.array.broadcast(value)&#10;               #endif testing label equality&#10;          #endwhile iterating over the labels in the record&#10;    #endif testing whether there is an input record&#10;    #endif testing whether there is an input label&#10; #enddef of the fire phase">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.75, 185.0]">
+        </property>
+        <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="Accesses the field in the input record specified by the label input. Acts as the inverse of Recordmaker to permit dynamic &#10;construction and accessing of java records.	">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Robert Weber">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="1">
+            </property>
+            <property name="label (port)" class="ptolemy.kernel.util.StringAttribute" value="String">
+            </property>
+            <property name="record (port)" class="ptolemy.kernel.util.StringAttribute" value="Record, e.g., {x=53}">
+            </property>
+            <property name="array (port)" class="ptolemy.kernel.util.StringAttribute" value="value of the field specified by the label string as a matrix.">
+            </property>
+        </property>
+        <port name="label" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="record" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="array" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <entity name="RecordMerge" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# This is a simple actor that copies the input to the output.&#10;# You can remove the ports, add new ports, and modify the script.&#10;class Main :&#10;  &quot;Copy the inputs to the output.&quot;&#10;  def fire(self) :&#10;    token1 = self.record1.get(0)&#10;    token2 = self.record2.get(0)&#10;    self.output.broadcast(token1.merge(token1,token2))&#10;    return&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.75, 195.0]">
+        </property>
+        <port name="record1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="record2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Recordmaker2" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="from ptolemy.data import StringToken&#10;from ptolemy.data import ArrayToken&#10;from ptolemy.data import RecordToken&#10;from ptolemy.data.type import BaseType&#10;class Main :&#10;  &quot;Dialog Example&quot;&#10;  def fire(self) :&#10;    if self.label.hasToken(0):&#10;       slabel = [self.label.get(0).stringValue()]&#10;    if self.value.hasToken(0):&#10;        inputValue = [(self.value.get(0))]&#10;    self.record.broadcast(RecordToken(slabel,inputValue))&#10;">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.75, 250.0]">
+        </property>
+        <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="Creates a record consisting of the label set equal to the value. Label must be a string, value can be anything.&#10;Acts as the inverse of Recordparser to permit dynamic construction and accessing of java Records">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Robert Weber">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="1">
+            </property>
+            <property name="label (port)" class="ptolemy.kernel.util.StringAttribute" value="String">
+            </property>
+            <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="general">
+            </property>
+            <property name="record (port)" class="ptolemy.kernel.util.StringAttribute" value="RecordToken">
+            </property>
+        </property>
+        <port name="label" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="record" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="A">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.75, 145.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="B">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 240.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.75, 180.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="Selectordialog" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="import javax.swing as sshwing&#10;from ptolemy.data import StringToken&#10;from ptolemy.data import ArrayToken&#10;from ptolemy.data.type import BaseType&#10;class Main :&#10;  &quot;Dialog Example&quot;&#10;  def fire(self) :&#10;    prompt = &quot;Select&quot;&#10;    if self.prompt.hasToken(0) :&#10;       prompt = self.prompt.get(0).stringValue()&#10;    inputTokens = self.choices.get(0)&#10;    picks = []&#10;    i=0&#10;    while i &lt; inputTokens.length() :&#10;      if inputTokens.getElement(i).getType().equals(BaseType.STRING) :&#10;         value = inputTokens.getElement(i).stringValue()&#10;      else :&#10;         value = inputTokens.getElement(i).toString()&#10;      picks.append(value)&#10;      i = i + 1&#10;    choice = sshwing.JOptionPane.showInputDialog(None,prompt,&quot;Selection&quot;,1,None,picks,picks[0])&#10;    st = StringToken(choice)&#10;    self.output.broadcast(st)&#10;">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.75, 65.0]">
+        </property>
+        <port name="choices" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="prompt" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{&quot;A&quot;,&quot;B&quot;}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 45.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Which parameter?">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 75.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 185.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Recordmaker.label" relation="relation"/>
+    <link port="Recordmaker.value" relation="relation3"/>
+    <link port="Recordmaker.record" relation="relation5"/>
+    <link port="Recordparser.label" relation="relation9"/>
+    <link port="Recordparser.record" relation="relation7"/>
+    <link port="Recordparser.array" relation="relation12"/>
+    <link port="RecordMerge.record1" relation="relation5"/>
+    <link port="RecordMerge.output" relation="relation7"/>
+    <link port="RecordMerge.record2" relation="relation6"/>
+    <link port="Recordmaker2.label" relation="relation2"/>
+    <link port="Recordmaker2.value" relation="relation4"/>
+    <link port="Recordmaker2.record" relation="relation6"/>
+    <link port="StringConst.output" relation="relation"/>
+    <link port="StringConst2.output" relation="relation2"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Const2.output" relation="relation4"/>
+    <link port="Selectordialog.choices" relation="relation8"/>
+    <link port="Selectordialog.prompt" relation="relation10"/>
+    <link port="Selectordialog.output" relation="relation9"/>
+    <link port="Const3.output" relation="relation8"/>
+    <link port="StringConst3.output" relation="relation10"/>
+    <link port="MonitorValue2.input" relation="relation12"/>
+</entity>

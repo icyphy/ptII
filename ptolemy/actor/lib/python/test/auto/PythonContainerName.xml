@@ -1,0 +1,128 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PythonContainerName" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Composite Actor contains an actor that reports the name of its container.&#10;The name is fetched at runtime so it will be reported correctly even if it has been&#10;changed by the user in between runs. The name of the Composite Actor has been &#10;set to include a trailing &quot;&gt;&quot; so that another actor at the same level can have the same&#10;name. The motiviation is to have a parameter source and a parameter sink with the&#10;same root name (kind of like a dynamically renamable Publish/Subscriber pair).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 215.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.4, 0.4, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Bob Weber">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 325.0]">
+        </property>
+    </property>
+    <entity name="Parameter&gt;" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 155}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 195.0]">
+            </property>
+        </port>
+        <port name="myname" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 195.0]">
+            </property>
+        </port>
+        <entity name="ContainerName" class="ptolemy.actor.lib.python.PythonScript">
+            <display name="Container Name"/>
+            <property name="script" class="ptolemy.kernel.util.StringAttribute" value="import java.util.regex.Matcher&#10;import java.util.regex.Pattern&#10;import java.util.regex.PatternSyntaxException&#10;from ptolemy.data import StringToken&#10;from ptolemy.data import ArrayToken&#10;from ptolemy.data.type import BaseType&#10;# This is a simple actor that outputs the name of its container.&#10;# You can remove the ports, add new ports, and modify the script.&#10;class Main :&#10;  &quot;Copy the inputs to the output.&quot;&#10;  def fire(self):&#10;    if self.trigger.hasToken(0) :&#10;       trigger = self.trigger.get(0) # discarded but must be fetched&#10;       name = self.actor.getContainer().getName()&#10;       termstring =self.terminator.getToken().stringValue()&#10;       token = StringToken(name.rstrip(termstring))&#10;       self.output.broadcast(token)&#10;       return">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{280, 195}">
+            </property>
+            <property name="terminator" class="ptolemy.data.expr.Parameter" value="&quot;&gt;&quot;">
+            </property>
+            <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+                <property name="description" class="ptolemy.kernel.util.StringAttribute" value="Actor fetches the name of its container when triggered. &#10;The name of the container should end with the character stored in the terminator parameter.&#10;That character will be removed from the name before the name is reported. Therefore the &#10;container can have the same name as another actor at the same level, e.g., an actor that fetches&#10;a value from the container.">
+                </property>
+                <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Robert Weber">
+                </property>
+                <property name="version" class="ptolemy.kernel.util.StringAttribute" value="2">
+                </property>
+                <property name="terminator (parameter)" class="ptolemy.data.expr.StringParameter" value="a single character string, e.g. &quot;&gt;&quot;">
+                </property>
+                <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="name of the container of this actor">
+                </property>
+                <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="any value; used to trigger the execution of this actor.">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="trigger" relation="relation2"/>
+        <link port="myname" relation="relation3"/>
+        <link port="ContainerName.output" relation="relation3"/>
+        <link port="ContainerName.trigger" relation="relation2"/>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Parameter&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 155.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Parameter&gt;.trigger" relation="relation2"/>
+    <link port="Parameter&gt;.myname" relation="relation3"/>
+    <link port="SingleEvent.output" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+</entity>
