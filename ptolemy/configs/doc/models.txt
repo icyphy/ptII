@@ -88,7 +88,7 @@ $CLASSPATH/ptolemy/data/unit/demo/Units/Units.xml
 $CLASSPATH/ptolemy/demo/ExecDemos.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystem.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystem2Tanks.xml
-$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemErrorHandler.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemErrorHandling.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemOntology.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemQuantityManager.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved.xml
