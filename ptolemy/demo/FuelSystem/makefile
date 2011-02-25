@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -42,19 +42,20 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	FuelSystem
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 
-OTHER_FILES_TO_BE_JARED = \ 
+OTHER_FILES_TO_BE_JARED = \
 	AbstractTank.xml \
 	ExpressionsTank.xml \
 	FuelDimensionSystem.xml \
 	FuelDimensionSystemSolverModel.xml \
-	FuelSystem_2Tanks.xml \
-	FuelSystem_ErrorHandling.xml \
-	FuelSystem_Ontology.xml \
-	FuelSystem_QuantityManager.xml \
-	FuelSystem_SingleTank_Improved.xml \ 
+	FuelSystem2Tanks.xml \
+	FuelSystemErrorHandling.xml \
+	FuelSystemOntology.xml \
+	FuelSystemQuantityManager.xml \
+	FuelSystemSingleTank.xml \
+	FuelSystemSingleTankImproved.xml \
 	FuelSystem.xml \
 	ModalTank.xml
 
