@@ -54,7 +54,6 @@ OTHER_FILES_TO_BE_JARED = \
 	FuelSystemErrorHandling.xml \
 	FuelSystemOntology.xml \
 	FuelSystemQuantityManager.xml \
-	FuelSystemSingleTank.xml \
 	FuelSystemSingleTankImproved.xml \
 	FuelSystem.xml \
 	ModalTank.xml
