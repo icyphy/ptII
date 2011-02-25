@@ -830,7 +830,7 @@
         <link port="SingleEvent.output" relation="relation3"/>
         <link port="SingleEvent3.output" relation="relation10"/>
     </entity>
-    <entity name="Bus" class="ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Bus">
+    <entity name="Bus" class="ptolemy.domains.de.lib.Bus">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 380.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -4104,7 +4104,7 @@
         <link port="TimedDelay3.input" relation="relation6"/>
         <link port="TimedDelay3.output" relation="relation5"/>
     </entity>
-    <entity name="t1" class="ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Bus">
+    <entity name="t1" class="ptolemy.domains.de.lib.Bus">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 235.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -4118,7 +4118,7 @@
             </property>
         </property>
     </entity>
-    <entity name="t2" class="ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Bus">
+    <entity name="t2" class="ptolemy.domains.de.lib.Bus">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 225.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -4132,7 +4132,7 @@
             </property>
         </property>
     </entity>
-    <entity name="t2-t1" class="ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Bus">
+    <entity name="t2-t1" class="ptolemy.domains.de.lib.Bus">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 175.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -5429,7 +5429,7 @@
         <link port="TimedDelay3.input" relation="relation6"/>
         <link port="TimedDelay3.output" relation="relation5"/>
     </entity>
-    <entity name="t3" class="ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Bus">
+    <entity name="t3" class="ptolemy.domains.de.lib.Bus">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 220.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -5443,7 +5443,7 @@
             </property>
         </property>
     </entity>
-    <entity name="t3-t1" class="ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Bus">
+    <entity name="t3-t1" class="ptolemy.domains.de.lib.Bus">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 170.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
