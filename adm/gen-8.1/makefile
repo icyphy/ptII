@@ -1481,6 +1481,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
 	$(REMOTE1PTIIDIST)/doc/books/design/time \
+	$(REMOTE1PTIIDIST)/doc/tutorial/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/demo \
