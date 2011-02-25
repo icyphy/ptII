@@ -80,7 +80,7 @@ public class ShortestPathFinderTest {
         Assert.assertEquals(2, result);
         
         result = ShortestPathFinder.calculateDistance(entities, 0, 0);
-        Assert.assertEquals(2, result);
+        Assert.assertEquals(0, result);
 
     }
 }
