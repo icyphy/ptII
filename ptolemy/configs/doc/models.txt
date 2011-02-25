@@ -86,6 +86,12 @@ $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
 $CLASSPATH/ptolemy/data/unit/demo/Units/Units.xml
 $CLASSPATH/ptolemy/demo/ExecDemos.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystem.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystem2Tanks.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemErrorHandler.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemOntology.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemQuantityManager.xml
+$CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved.xml
 $CLASSPATH/ptolemy/demo/RunDemos.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/ca/demo/Conway/Conway.xml
