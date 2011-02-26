@@ -45,21 +45,24 @@ PTPACKAGE = 	FuelSystem
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
-OTHER_FILES_TO_BE_JARED = \
-	AbstractTank.xml \
-	ExpressionsTank.xml \
-	FuelDimensionSystem.xml \
-	FuelDimensionSystemSolverModel.xml \
+EXAMPLE_MODELS = \
 	FuelSystem2Tanks.xml \
 	FuelSystemErrorHandling.xml \
 	FuelSystemOntology.xml \
 	FuelSystemQuantityManager.xml \
 	FuelSystemSingleTankImproved.xml \
-	FuelSystem.xml \
+	FuelSystem.xml
+
+OTHER_FILES_TO_BE_JARED = \
+	$(EXAMPLE_MODELS) \
+	AbstractTank.xml \
+	ExpressionsTank.xml \
+	FuelDimensionSystem.xml \
+	FuelDimensionSystemSolverModel.xml \
 	ModalTank.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -75,6 +78,14 @@ KRUFT = \
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
+
+jnlps:
+	cd $(ROOT); \
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		echo "Creating applet for $(ME)/$$x" ; \
+		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
+	done
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
