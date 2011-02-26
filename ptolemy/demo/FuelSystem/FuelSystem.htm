@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id: modelJnlp-ssi.htm.in 57580 2010-04-11 20:21:29Z cxh $
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css"/>
+<title>FuelSystem</title>
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+<!-- /head -->
+<!-- body -->
+<h1>FuelSystem</h1>
+Model with a single Tank. The tank has a constant input flow of 1.0.
+The output flow 0.0 between time 0 and time 3 and it is 2.0 between 
+time 3 and time 8. At time 8 the output flow is changed to 0.0 again
+and the sequence of values for the output flow is repeated.
+
+In this example, the signal starts chattering when the tank becomes 
+empty. This is due to a modeling error.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+FuelSystem is available in two formats:</p>
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../doc/deployJava.js" type="text/javascript"></script>
+<script type="text/javascript" >
+   var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+   var url = dir + "FuelSystem.jnlp";
+   deployJava.createWebStartLaunchButton(url);
+</script>
+<li> As a <a href="FuelSystemVergil.htm">applet</a>.</li>
+</ul>  
+ <p>The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+
+<!--#include virtual="/ssi/bottom.htm" -->

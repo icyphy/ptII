@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id: modelJnlp-ssi.htm.in 57580 2010-04-11 20:21:29Z cxh $
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css"/>
+<title>FuelSystem2Tanks</title>
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+<!-- /head -->
+<!-- body -->
+<h1>FuelSystem2Tanks</h1>
+This model draws fuel at a constant rate from Tank1. When the level in Tank1
+gets below 1/4 of its capacity, the model begins transferring fuel from Tank2
+to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).
+
+This is complicated by the fact that the physics does not allow an empty tank
+to provide fuel nor a full tank to accept it. The actual rate of fuel flow, therefore,
+is a consensus among the two tanks.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+FuelSystem2Tanks is available in two formats:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../doc/deployJava.js" type="text/javascript"></script>
+<script type="text/javascript">
+   var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+   var url = dir + "FuelSystem2Tanks.jnlp";
+   deployJava.createWebStartLaunchButton(url);
+</script>
+<li> As a <a href="FuelSystem2TanksVergil.htm">applet</a>.</li>
+</ul>  
+<p>The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+
+<!-- /body -->
+<!-- /html -->
+<!--#include virtual="/ssi/bottom.htm" -->

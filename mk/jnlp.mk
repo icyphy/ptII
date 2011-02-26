@@ -1701,14 +1701,20 @@ osgi_demo_test:
 #
 # 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
 # the passwords and the alias.  This file is used by copernicus to create signed jars.
+# 
+# 3. If you are using Server Side Includes (SSI) on the server, copy the *-ssi.htm.in files:
+#   cd $PTII/ptolemy/copernicus/applet
+#   cp modelJnlp-ssi.htm.in modelJnlp.htm.in 
+#   cp modelVergil-ssi.htm.in modelVergil.htm.in 
+#   cd $PTII
 #
-# 3. Clean up any previous work for a model:
+# 4. Clean up any previous work for a model:
 #   make book_real_clean JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem JNLP_MODEL=FuelSystem
 #
-# 4. To create a JNLP file for one model and upload it:
+# 5. To create a JNLP file for one model and upload it:
 #   make JNLP_MODEL=FuelSystem JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-modelingCPS book_dist_update
 #
-# 5. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
+# 6. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
 #   cd $PTII/doc/books/design/modal
 #   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-modelingCPS jnlps
 
@@ -1752,7 +1758,7 @@ book: $(JNLP_FILE_FIXED)
 book_clean:
 	rm -f $(JNLP_FILE_FIXED) 
 book_real_clean:
-	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE)
+	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE) $(JNLP_HTM)
 
 # Fix the jnlp file by substituting in the proper URL
 $(JNLP_FILE_FIXED): $(JNLP_FILE)
