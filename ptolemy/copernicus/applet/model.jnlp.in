@@ -26,7 +26,7 @@
 
   <resources>
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
-  	<j2se version="1.5+" max-heap-size="500m" />
+  	<j2se version="1.6+" max-heap-size="500m" />
 	<!-- Start Jars -->
 @jnlpJars@
 	<!-- End Jars -->
