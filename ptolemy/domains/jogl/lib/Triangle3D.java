@@ -105,9 +105,8 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
     /** The x,y,z coordinate of the end position of the Cube in the view screen. */
     public Parameter lineEnd;
     
-   
     /** Render a Jogl OpenGL 3D object.
-     *  @param object The GL object to be rendered.
+     *  @param gl The GL object to be rendered.
      *  @exception IllegalActionException If the object cannot be rendered.
      */
     public void render(GL gl) throws IllegalActionException {

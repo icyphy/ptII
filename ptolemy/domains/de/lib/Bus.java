@@ -109,7 +109,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     }
 
     /** If the attribute is <i>serviceTime</i>, then ensure that the value
-     *  is non-negative
+     *  is non-negative.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */

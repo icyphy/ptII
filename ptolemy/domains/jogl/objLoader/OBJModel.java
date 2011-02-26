@@ -1,33 +1,27 @@
+/* 
+The source code is originally from:
 
-// OBJModel.java
-// Andrew Davison, February 2007, ad@fivedots.coe.psu.ac.th
 
-/* Load the OBJ model from MODEL_DIR, centering and scaling it.
-   The scale comes from the sz argument in the constructor, and
-   is implemented by changing the vertices of the loaded model.
-   
-   The model can have vertices, normals and tex coordinates, and
-   refer to materials in a MTL file.
+ Pro Java 6 3D Game Development
+ Andrew Davison
+ Apress, April 2007
+ ISBN: 1590598172 
+ http://www.apress.com/book/bookDisplay.html?bID=10256
+ Web Site for the book: http://fivedots.coe.psu.ac.th/~ad/jg2
 
-   The OpenGL commands for rendering the model are stored in 
-   a display list (modelDispList), which is drawn by calls to
-   draw().
+ Contact Address:
+ Dr. Andrew Davison
+ Dept. of Computer Engineering
+ Prince of Songkla University
+ Hat Yai, Songkhla 90112, Thailand
+ E-mail: ad@fivedots.coe.psu.ac.th
 
-   Information about the model is printed to stdout.
+ If you use this code, please mention my name, and include a link
+ to the book's Web site.
 
-   Based on techniques used in the OBJ loading code in the
-   JautOGL multiplayer racing game by Evangelos Pournaras 
-   (http://today.java.net/pub/a/today/2006/10/10/
-               development-of-3d-multiplayer-racing-game.html 
-   and https://jautogl.dev.java.net/), and the 
-   Asteroids tutorial by Kevin Glass 
-   (http://www.cokeandcode.com/asteroidstutorial)
-
-   CHANGES (Feb 2007)
-     - a global flipTexCoords boolean
-     - drawToList() sets and uses flipTexCoords
+ Thanks,
+  Andrew
 */
-
 package ptolemy.domains.jogl.objLoader;
 
 import java.io.BufferedReader;
@@ -39,6 +33,34 @@ import java.util.StringTokenizer;
 import javax.media.opengl.GL;
 
 
+/** Load the OBJ model from MODEL_DIR, centering and scaling it.
+   The scale comes from the sz argument in the constructor, and
+   is implemented by changing the vertices of the loaded model.
+   
+   <p>The model can have vertices, normals and tex coordinates, and
+   refer to materials in a MTL file.</p>
+
+   <p>The OpenGL commands for rendering the model are stored in 
+   a display list (modelDispList), which is drawn by calls to
+   draw().</p>
+
+   <p>Information about the model is printed to stdout.</p>
+
+   <p>Based on techniques used in the OBJ loading code in the
+   JautOGL multiplayer racing game by Evangelos Pournaras 
+   (<a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doccheck/ptolemy/cg/lib/PackageErrors.html">http://chess.eecs.berkeley.edu/ptexternal/nightly/doccheck/ptolemy/cg/lib/PackageErrors.html</a>
+   and <a href="https://jautogl.dev.java.net/">https://jautogl.dev.java.net/</a>), and the 
+   Asteroids tutorial by Kevin Glass 
+   (<a href="http://www.cokeandcode.com/asteroidstutorial">http://www.cokeandcode.com/asteroidstutorial</a>)</p>
+
+   <p>CHANGES (Feb 2007)
+     <br> - a global flipTexCoords boolean
+     <br> - drawToList() sets and uses flipTexCoords</p>
+
+  @author Andrew Davison, February 2007, ad@fivedots.coe.psu.ac.th
+  @version $Id$
+
+*/
 public class OBJModel
 {
   private static final String MODEL_DIR = "/Users/yasemindemir/Documents/workspacePTII/ptII/ptolemy/domains/jogl/objLoader/models/";
@@ -64,10 +86,21 @@ public class OBJModel
   private int modelDispList;  // the model's display list
 
 
+  /** Construct a model.
+   *  @param nm The model name.
+   *  @param gl The GL object to be rendered.
+   */ 
   public OBJModel(String nm, GL gl)
   {  this(nm, 1.0f, gl, false);  }
 
 
+  /** Construct a model.
+   *  @param nm The model name.
+   *  @param sz The size of the model.
+   *  @param gl The GL object to be rendered.
+   *  @param showDetails True if details are to be printed
+   *  to standard out.
+   */ 
   public OBJModel(String nm, float sz, GL gl, boolean showDetails)
   {
     modelNm = nm;
@@ -342,6 +375,9 @@ public class OBJModel
 
 
 
+  /** Draw the model
+   *  @param gl The GL object to be rendered.
+   */   
   public void draw(GL gl)
   {  gl.glCallList(modelDispList);  } 
 

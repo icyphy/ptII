@@ -108,7 +108,7 @@ public class Cube3D extends TypedAtomicActor implements GLActor3D {
     public Parameter lineEnd;
        
     /** Render a Jogl OpenGL 3D object.
-     *  @param object The GL object to be rendered.
+     *  @param gl The GL object to be rendered.
      *  @exception IllegalActionException If the object cannot be rendered.
      */
     public void render(GL gl) throws IllegalActionException {

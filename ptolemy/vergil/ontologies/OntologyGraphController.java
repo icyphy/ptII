@@ -1,7 +1,8 @@
-/*
+/* A Graph Controller for Ontologies.
+ *
  * Below is the copyright agreement for the Ptolemy II system.
  * 
- * Copyright (c) 2009-2010 The Regents of the University of California. All rights
+ * Copyright (c) 2009-2011 The Regents of the University of California. All rights
  * reserved.
  * 
  * Permission is hereby granted, without written agreement and without license
@@ -38,8 +39,7 @@ import diva.graph.JGraph;
  * control-clicking and dragging from one element to another.
  * 
  * @author Man-Kit Leung
- * @version $Id: LatticeGraphFrameController.java 53955 2009-05-27 20:49:38Z
- * cshelton $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
@@ -94,6 +94,11 @@ public class OntologyGraphController extends FSMGraphController {
      *  graph is not a lattice, and the relevant nodes are highlighted in the model.
      */
     protected class CheckIsLatticeAction extends FigureAction {
+        /** Construct an action that checks whether the ontology model graph
+         *  is a valid lattice.
+         *  @param graphController The graphController that will display
+         *  the results.
+         */
         public CheckIsLatticeAction(OntologyGraphController graphController) {
             super("Check Lattice Graph");
             _graphController = graphController;

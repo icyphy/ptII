@@ -28,17 +28,11 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuItem;
 
-import ptolemy.actor.gui.DebugListenerTableau;
-import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import diva.graph.GraphPane;

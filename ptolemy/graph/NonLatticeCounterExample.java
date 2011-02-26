@@ -1,7 +1,7 @@
 /** A data structure that provides counterexample information when a graph is
     tested to see if it is a lattice.
 
- Copyright (c) 1997-2010 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,7 +51,7 @@ the graph has a cycle.
 public class NonLatticeCounterExample {
     
     /** Construct a NonLatticeCounterExample object with the given example
-     *  type and list of nodes in the graph
+     *  type and list of nodes in the graph.
      *  @param exampleType The given example type for this counterexample.
      *  @param nodeList The list of node weights for this counterexample.
      */

@@ -1,6 +1,6 @@
 /* This actor implements a receiver that adds functionality to another receiver.
 
-@Copyright (c) 2010 The Regents of the University of California.
+@Copyright (c) 2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  than put().
  *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
@@ -100,6 +100,7 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** Delegate to the internal receiver and return whatever it returns.
      *  @return The port containing the internal receiver.
+     *  @see #setContainer(IOPort)
      */
     public IOPort getContainer() {
         return _receiver.getContainer();
