@@ -12,16 +12,15 @@
 <!-- /head -->
 <!-- body -->
 <h1>FuelSystem2Tanks</h1>
-This model draws fuel at a constant rate from Tank1. When the level in Tank1
+<p>This model draws fuel at a constant rate from Tank1. When the level in Tank1
 gets below 1/4 of its capacity, the model begins transferring fuel from Tank2
-to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).
+to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).</p>
 
-This is complicated by the fact that the physics does not allow an empty tank
+<p>This is complicated by the fact that the physics does not allow an empty tank
 to provide fuel nor a full tank to accept it. The actual rate of fuel flow, therefore,
-is a consensus among the two tanks.
+is a consensus among the two tanks.</p>
 <!-- PT DEPLOYJAVA CONVERTER -->
-<p>
-FuelSystem2Tanks is available in two formats:
+<p>FuelSystem2Tanks is available as a <a href="../../../doc/webStartHelp.htm">Web Start Application</a>:</p>
 <ul>
 <!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
 <script src="../../../doc/deployJava.js" type="text/javascript"></script>
@@ -30,15 +29,6 @@ FuelSystem2Tanks is available in two formats:
    var url = dir + "FuelSystem2Tanks.jnlp";
    deployJava.createWebStartLaunchButton(url);
 </script>
-<li> As a <a href="FuelSystem2TanksVergil.htm">applet</a>.</li>
 </ul>  
-<p>The Java Web Start version is preferred, though browsers with versions of Java
-earlier than Java 1.6.0_13 may only work with the applet version.
-See <a href="../../../doc/webStartHelp.htm">Web Start Help</a> for details.
 <!-- /PT DEPLOYJAVA CONVERTER -->
-
-</p>
-
-<!-- /body -->
-<!-- /html -->
 <!--#include virtual="/ssi/bottom.htm" -->
