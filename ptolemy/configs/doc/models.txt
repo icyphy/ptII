@@ -92,6 +92,7 @@ $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemErrorHandling.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemOntology.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemQuantityManager.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved.xml
+$CLASSPATH/ptolemy/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/demo/RunDemos.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/ca/demo/Conway/Conway.xml
