@@ -1,9 +1,9 @@
-# Makefile for Ptolemy model that executes a suite of other Ptolemy II models.
+# Makefile for a Power Plant model from "Distributed Real-Time Software for Cyber-Physical Systems"
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,54 +29,37 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/demo
+ME =		ptolemy/demo/PowerPlant
 
-DIRS = 		Demos FuelSystem PowerPlant
+DIRS = 		PowerPlant
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	PowerPlant
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml and util/ classes
-PTAUXALLJARS = \
-	Demos/Demos.jar \
-	FuelSystem/FuelSystem.jar \
-	PowerPlant/PowerPlant.jar
 
-PTAUXALLJAR = $(PTPACKAGE).jar
+EXAMPLE_MODELS = \
+	PowerPlant.xml
 
 OTHER_FILES_TO_BE_JARED = \
-	README.txt \
-	ExecDemos.xml \
-	RunDemos.xml \
-	RunDemosInNewProcess.xml \
-	Shell.xml
+	$(EXAMPLE_MODELS)
+
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	ExecDemos.htm \
-	ExecDemosVergil.htm \
-	ExecHyVisualDemos.xml \
-	demo.txt \
-	rundemos.bat \
-	shutdown.bat \
-	startdemo.sh
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = Demos
+MISC_FILES =
 
-OPTIONAL_FILES = \
-	ExecDemos.jar \
-	signed_ExecDemos.jar
+OPTIONAL_FILES =
 
 # Files to remove with 'make clean'
 KRUFT = \
@@ -84,6 +67,14 @@ KRUFT = \
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
+
+jnlps:
+	cd $(ROOT); \
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		echo "Creating applet for $(ME)/$$x" ; \
+		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
+	done
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
