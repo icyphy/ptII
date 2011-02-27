@@ -622,31 +622,52 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
 
-        String functionCode = "";
+        StringBuffer functionCode = new StringBuffer("\n/* FIXME: This code does work.*/\n");
 
-        /*
+        // Handle functions like iterate()
+        // FIXME: Needs to be finished.  iterate() takes a Ptolemy Token
+        // as a third argument.
+        // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/codegen/c/actor/lib/test/auto/knownFailedTests/ExpressionIterate.xml 
+
         // FIXME: Generate function declaration in _preinitCode.
-        functionCode += type.getReturnType().toString();
-        functionCode += " $actorSymbol(function) (";
+        //functionCode += type.getReturnType().toString();
+
         List argumentNames = node.getArgumentNameList();
         Type[] argumentTypes = node.getArgumentTypes();
 
-        if (argumentNames.size() > 0) {
-            functionCode += argumentTypes[0] + " ";
-            functionCode += argumentNames.get(0);
-
-            for (int i = 1; i < argumentNames.size(); i++) {
-                functionCode += ", " + argumentTypes[i] + " ";
-                functionCode += argumentNames.get(i);
+        // FIXME: If we are going to use ptolemy classes, we need
+        // to add $PTII to the classpath some how.
+        functionCode.append(" new ptolemy.data.expr.ExpressionFunction(\n"
+                + "java.util.Arrays.asList(new String[]\n{\n");
+        for (int i = 0; i < argumentNames.size(); i++) { 
+            functionCode.append("\"" + argumentNames.get(i) + "\"");
+            if (i < argumentNames.size() - 1) {
+                functionCode.append(", ");
             }
         }
-        functionCode += ") {\n";
-        functionCode += "    return ";
-        functionCode += evaluateParseTree(node.getExpressionTree(), _scope);
-        functionCode += ";\n}\n";
-         */
+        functionCode.append("\n}\n),\n new ptolemy.data.type.Type[] \n{\n");
+        for (int i = 0; i < argumentTypes.length; i++) { 
+            functionCode.append("ptolemy.data.type.BaseType." + argumentTypes[i].toString().toUpperCase());
+            if (i < argumentTypes.length - 1) {
+                functionCode.append(", ");
+            }
+        }
+        functionCode.append("\n}\n,\n");
 
-        _childCode = functionCode;
+        // FIXME: The problem here is that we need a way to create
+        // a ASTPtRootNode at run time that contains the functionality
+        // required.  One idea would be to create an anonymous class
+        // that extended ExpressionFunction and had an apply() method
+        // that had a body that consisted of the functionality we want.
+        functionCode.append(null + "\n/*" + node.getExpressionTree() + "*/\n)");
+
+        //functionCode += ") {\n";
+        //functionCode += "    return ";
+        // See ExpressionFunction.apply() for how to create a temporary scope.
+        //functionCode += evaluateParseTree(node.getExpressionTree(), _scope);
+        //functionCode += ";\n}\n";
+        
+        _childCode = functionCode.toString();
         return;
     }
 
@@ -1889,6 +1910,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         cFunctionMap.put("exp", "Math.exp");
         cFunctionMap.put("expm1", "Math.expm1");
         cFunctionMap.put("floor", "Math.floor");
+        cFunctionMap.put("iterate", "ptolemy.data.expr.UtilityFunctions.iterate");
         cFunctionMap.put("log", "Math.log");
         cFunctionMap.put("log10", "Math.log10");
         cFunctionMap.put("log1p", "Math.log1p");
