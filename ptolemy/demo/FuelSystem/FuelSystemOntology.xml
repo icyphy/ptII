@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.4256381193314, 242.3808990467327}">
     </property>
     <property name="FuelDimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="FuelDimensionSystemSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/demo/FuelSystem/FuelDimensionSystemSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
