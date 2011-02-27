@@ -67,10 +67,9 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = Demos
+MISC_FILES =
 
-OPTIONAL_FILES = \
-
+OPTIONAL_FILES =
 
 # Files to remove with 'make clean'
 KRUFT = \
