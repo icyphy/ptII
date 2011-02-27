@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/python/demo
 
-DIRS =		HelloWorld NotifyFailedTest RecordManipulation \
+DIRS =		RecordManipulation \
 		Ptolemnizer PythonScale
 
 # Root of the Ptolemy II directory
@@ -49,8 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	HelloWorld/HelloWorld.jar \
-	NotifyFailedTest/NotifyFailedTest.jar \
 	RecordManipulation/RecordManipulation.jar \
 	Ptolemnizer/Ptolemnizer.jar \
 	PythonScale/PythonScale.jar
