@@ -1,0 +1,1516 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FuelSystemOntology" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 22, 1077, 645}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[864, 535]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0940978077572">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.4256381193313, 242.3808990467327}">
+    </property>
+    <property name="FuelDimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/demo/FuelSystem/FuelDimensionSystemSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 45.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 25.0]">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+        </property>
+    </property>
+    <property name="tank2InFlow" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 45.0]">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+        </property>
+    </property>
+    <property name="tank1OutFlow" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 65.0]">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+        </property>
+    </property>
+    <property name="FuelDimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank2InFlow &gt;= Flow">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 385.0]">
+        </property>
+    </property>
+    <property name="FuelDimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank1OutFlow &gt;= Flow">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 405.0]">
+        </property>
+    </property>
+    <property name="FuelDimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="capacity &gt;= Level">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 425.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model draws fuel at a constant rate from Tank1. When the level in Tank1&#10;gets below 1/4 of its capacity, the model begins transferring fuel from Tank2&#10;to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 450.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Definition ontologies for models.&#10;&#10;[see Leung, Mandl, Lee, Latronico, Shelton, Tripakis, &amp; Lickly, &#10;&quot;Scalable Semantic Annotation using Lattice-based &#10;Ontologies,&quot; MODELS 2009.]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 365.0]">
+        </property>
+    </property>
+    <entity name="FuelMover" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 340.0]">
+        </property>
+        <property name="moveRate" class="ptolemy.data.expr.Parameter" value="8">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <port name="tank2to1" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="tank1Level" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="foo" class="ptolemy.data.expr.Parameter" value="Const2">
+            </property>
+            <property name="arbitraryName" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+            </property>
+        </port>
+        <port name="tank1Full" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="quantityManager" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={626, 366, 668, 467}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 350]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{226.5, 175.0}">
+            </property>
+            <port name="tank2to1" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 55.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="tank1Level" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 30.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+            <port name="tank1Full" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 70.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <entity name="idle" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="idle">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 135.0]">
+                </property>
+            </entity>
+            <entity name="moving" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="moving">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 210.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="tank1Level_isPresent &amp;&amp; tank1Level&#10;  &lt; capacity / 4.0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6894309144768234">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="tank1Full_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4837772553293984">
+                </property>
+            </relation>
+            <link port="idle.incomingPort" relation="relation2"/>
+            <link port="idle.outgoingPort" relation="relation"/>
+            <link port="moving.incomingPort" relation="relation"/>
+            <link port="moving.outgoingPort" relation="relation2"/>
+        </entity>
+        <entity name="idle" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 815, 517}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="flowConstant" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 30.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 25.0]">
+                </property>
+            </property>
+            <port name="tank2to1" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 85.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="tank1Level" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 75.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+            <port name="tank1Full" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 115.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+                </property>
+                <property name="value" class="ptolemy.data.expr.Parameter" value="flowConstant">
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                    </property>
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 85.0]">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="tank2to1" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
+        </entity>
+        <entity name="moving" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 300, 594, 467}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[379, 350]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{189.5, 175.0}">
+            </property>
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 25.0]">
+                </property>
+            </property>
+            <port name="tank2to1" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 90.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="tank1Level" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 75.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+            <port name="tank1Full" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 115.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="moveRate">
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                    </property>
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 90.0]">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="tank2to1" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
+        </entity>
+        <relation name="tank2to1Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="tank1LevelRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="tank1FullRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="tank2to1" relation="tank2to1Relation"/>
+        <link port="tank1Level" relation="tank1LevelRelation"/>
+        <link port="tank1Full" relation="tank1FullRelation"/>
+        <link port="_Controller.tank2to1" relation="tank2to1Relation"/>
+        <link port="_Controller.tank1Level" relation="tank1LevelRelation"/>
+        <link port="_Controller.tank1Full" relation="tank1FullRelation"/>
+        <link port="idle.tank2to1" relation="tank2to1Relation"/>
+        <link port="idle.tank1Level" relation="tank1LevelRelation"/>
+        <link port="idle.tank1Full" relation="tank1FullRelation"/>
+        <link port="moving.tank2to1" relation="tank2to1Relation"/>
+        <link port="moving.tank1Level" relation="tank1LevelRelation"/>
+        <link port="moving.tank1Full" relation="tank1FullRelation"/>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="tank1OutFlow">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 140.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="tank2InFlow">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 245.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+    </entity>
+    <entity name="Tank1" class="ptolemy.demo.FuelSystem.ModalTank">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 140.0]">
+        </property>
+        <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.62500000020616E-5">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="level" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+            </property>
+        </port>
+        <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="fullIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+            </property>
+        </port>
+        <port name="actualOutFlow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="emptyIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+            </property>
+        </port>
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+        </entity>
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+            <property name="capacity" class="ptolemy.data.expr.Parameter" value="10.0">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <port name="availableOutFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="desiredInFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="actualInFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="full" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <port name="empty" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+            </entity>
+            <entity name="normal" class="ptolemy.domains.modal.modal.Refinement">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+            </entity>
+            <entity name="full" class="ptolemy.domains.modal.modal.Refinement">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="minimumValue" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                </entity>
+            </entity>
+            <entity name="empty" class="ptolemy.domains.modal.modal.Refinement">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="minimumValue" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                </entity>
+            </entity>
+        </entity>
+        <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+        </entity>
+        <entity name="LevelCrossingDetector_1_2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 255.0]">
+        </property>
+        <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-4.999999999999449E-5">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="level" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+            </property>
+        </port>
+        <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="fullIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+            </property>
+        </port>
+        <port name="actualOutFlow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+            </property>
+        </port>
+        <port name="emptyIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+            </property>
+        </port>
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Level">
+                </property>
+            </port>
+        </entity>
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+            <property name="capacity" class="ptolemy.data.expr.Parameter" value="10.0">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <port name="availableOutFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="desiredInFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="actualInFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="full" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <port name="empty" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+            </entity>
+            <entity name="normal" class="ptolemy.domains.modal.modal.Refinement">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+            </entity>
+            <entity name="full" class="ptolemy.domains.modal.modal.Refinement">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="minimumValue" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                </entity>
+            </entity>
+            <entity name="empty" class="ptolemy.domains.modal.modal.Refinement">
+                <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                    </property>
+                </port>
+                <port name="full" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <port name="empty" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </port>
+                <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="minimumValue" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                    <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                        </property>
+                    </port>
+                </entity>
+            </entity>
+        </entity>
+        <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+        </entity>
+        <entity name="LevelCrossingDetector_1_2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Flow">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0, 1.0, 1.0, 1.7, 2.4, 3.1, 3.8, 4.00005, 4.00005, 4.00005, 4.00005, 4.00005, 3.90005, 3.80005, 3.70005, 3.60005, 3.50005, 3.40005, 3.30005, 3.20005, 3.10005, 3.00005, 2.90005, 2.80005, 2.70005, 2.60005, 2.50005, 2.40005, 2.30005, 2.20005, 2.10005, 2.00005, 1.90005, 1.80005, 1.70005, 1.60005, 1.50005, 1.40005, 1.30005, 1.20005, 1.10005, 1.00005, 0.99995, 0.99995, 0.99995, 1.49994375, 1.49994375, 1.49994375, 1.49994375, 1.39994375, 1.29994375, 1.19994375, 1.09994375, 0.99994375, 0.89994375, 0.79994375, 0.69994375, 0.59994375, 0.49994375, 0.39994375, 0.29994375, 0.19994375, 0.09994375, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5, -5.62500000020616E-5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{620, 80}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 3.2, 2.4, 1.6, 0.8, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, 0.5713714285714, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5, -4.999999999999449E-5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 180.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[450.0, 295.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{440.0, 330.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{430.0, 350.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[185.0, 200.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[440.0, 130.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[415.0, 255.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{415.0, 215.0}">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[143.67903518676758, 215.62305450439453]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="FuelMover.tank2to1" relation="relation9"/>
+    <link port="FuelMover.tank1Level" relation="relation6"/>
+    <link port="FuelMover.tank1Full" relation="relation3"/>
+    <link port="Const.output" relation="relation13"/>
+    <link port="Const2.output" relation="relation8"/>
+    <link port="Tank1.desiredInFlow" relation="relation11"/>
+    <link port="Tank1.desiredOutFlow" relation="relation13"/>
+    <link port="Tank1.actualInFlow" relation="relation5"/>
+    <link port="Tank1.level" relation="relation12"/>
+    <link port="Tank1.availableOutFlow" relation="relation"/>
+    <link port="Tank1.fullIndicator" relation="relation3"/>
+    <link port="Tank1.actualOutFlow" relation="relation"/>
+    <link port="Tank2.desiredInFlow" relation="relation8"/>
+    <link port="Tank2.desiredOutFlow" relation="relation9"/>
+    <link port="Tank2.level" relation="relation4"/>
+    <link port="Tank2.availableOutFlow" relation="relation7"/>
+    <link port="Tank2.actualOutFlow" relation="relation5"/>
+    <link port="NonStrictTest.input" relation="relation12"/>
+    <link port="NonStrictTest2.input" relation="relation4"/>
+    <link relation1="relation6" relation2="relation12"/>
+    <link relation1="relation7" relation2="relation2"/>
+    <link relation1="relation2" relation2="relation11"/>
+</entity>

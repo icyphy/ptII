@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		Demos FuelSystem PowerPlant
+DIRS = 		Demos FuelSystem PowerPlant test
 
 # Root of Ptolemy II directory
 ROOT =		../..
