@@ -308,6 +308,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
     /**
      * {@inheritDoc}.
+     * @see #setVisibility(ptolemy.kernel.util.Settable.Visibility)
      */
     public Visibility getVisibility() {
         return _visibility;
