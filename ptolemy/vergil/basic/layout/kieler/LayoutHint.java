@@ -70,7 +70,7 @@ import ptolemy.vergil.actor.KielerLayoutConnector;
 import diva.canvas.connector.ManhattanConnector;
 
 ///////////////////////////////////////////////////////////////////
-////LayoutHint
+////                      LayoutHint
 /**
  * A LayoutHint is an Attribute for Ptolemy Relations that holds the
  * specification of bend points for links. Its value field contains a list of
@@ -125,10 +125,18 @@ import diva.canvas.connector.ManhattanConnector;
  */
 public class LayoutHint extends SingletonAttribute implements Settable {
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
-    /**
+    /** Construct an attribute with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   attribute with this name, and the class of that container is not
+     *   SingletonAttribute.
+     *
      * @see SingletonAttribute#SingletonAttribute(NamedObj, String)
      */
     public LayoutHint(NamedObj container, String name)
@@ -136,8 +144,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         super(container, name);
     }
 
-    /**
-     * @see SingletonAttribute#SingletonAttribute(Workspace)
+    /** Construct a new attribute with
+     *  no container and an empty string as a name. 
+     *  @param workspace The workspace that will list the attribute.
+     *  @see SingletonAttribute#SingletonAttribute(Workspace)
      */
     public LayoutHint(Workspace workspace) {
         super(workspace);
@@ -273,6 +283,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param tail The ending point of the link, e.g. a Ptolemy Port or
      *            Relation.
      * @return the LayoutHintItem stored for this link or null
+     * @see #setLayoutHintItem(NamedObj, NamedObj, double[])
      */
     public LayoutHintItem getLayoutHintItem(Object head, Object tail) {
         for (LayoutHintItem item : _layoutHintItems) {
@@ -289,14 +300,14 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      */
     public String getValueAsString() {
         return getExpression();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      */
     public Visibility getVisibility() {
         return _visibility;
@@ -389,6 +400,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param tail the tail object of the corresponding link
      * @param bendPoints an array of double coordinates, where always two
      *            correspond to a bend point
+     * @see #getLayoutHintItem(Object, Object)
      */
     public void setLayoutHintItem(NamedObj head, NamedObj tail,
             double[] bendPoints) {
@@ -468,8 +480,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         return null;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
 
     /**
      * Propagate the value of this object to the specified object. The specified
@@ -485,8 +497,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         ((LayoutHint) destination).setExpression(getExpression());
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
 
     /**
      * Create {@link LayoutHintItem}s from parsed Ptolemy Expression in form of
@@ -696,8 +708,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      */
     public static class LayoutHintItem {
 
-        // /////////////////////////////////////////////////////////////////
-        // // public methods ////
+        ///////////////////////////////////////////////////////////////////
+        ////                     public methods                        ////
 
         /**
          * Simple constructor specifying only head and tail for this
@@ -952,8 +964,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
         }
 
-        // /////////////////////////////////////////////////////////////////
-        // // private methods ////
+        ///////////////////////////////////////////////////////////////////
+        ////                     private methods                       ////
 
         /**
          * Get the width of a channel corresponding to a port. If no
