@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California.
+# @Copyright (c) 2005-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,41 +29,52 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/demo
+ME =		ptolemy/demo/ExecDemos
 
-DIRS = 		ExecDemos FuelSystem PowerPlant test
+DIRS = 		Demos
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
+PTPACKAGE = 	ExecDemos
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
-	ExecDemos/ExecDemos.jar \
-	FuelSystem/FuelSystem.jar \
-	PowerPlant/PowerPlant.jar
+	Demos/Demos.jar
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	README.txt \
+	ExecDemos.xml \
+	RunDemos.xml \
+	RunDemosInNewProcess.xml \
+	Shell.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
-
+	$(OTHER_FILES_TO_BE_JARED) \
+	ExecDemos.htm \
+	ExecDemosVergil.htm \
+	ExecHyVisualDemos.xml \
+	demo.txt \
+	rundemos.bat \
+	shutdown.bat \
+	startdemo.sh
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = Demos
 
 OPTIONAL_FILES = \
+	ExecDemos.jar \
+	signed_ExecDemos.jar
 
 # Files to remove with 'make clean'
 KRUFT = \
