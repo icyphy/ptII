@@ -14,18 +14,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={221, 93, 831, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 783, 523}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[618, 397]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[570, 413]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 198.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.0, 206.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model with a single Tank. The tank has a constant input flow of 1.0.&#10;The output flow 0.0 between time 0 and time 3 and it is 2.0 between &#10;time 3 and time 8. At time 8 the output flow is changed to 0.0 again&#10;and the sequence of values for the output flow is repeated.&#10;&#10;In this example, the signal starts chattering when the tank becomes &#10;empty. This is due to a modeling error.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a fuel tank that can exhibit chattering behavior.&#10;In this model, the tank stops input flow when the tank become full&#10;and stops output flow when it becomes empty.&#10;&#10;The top-level of this model tests the tank in a scenario where the&#10;tank has a constant input flow of 1.0, and the output flow is&#10;0.0 from time 0 to 3, and then becomes 2.0 from time 3 to 8.&#10;At time 8 the output flow is changed to 0.0 again&#10;and the sequence of values for the output flow is repeated.&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the Tank icon and&#10;select Open Actor to see how the&#10;tank is modeled.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Patricia Derler and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 370.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">

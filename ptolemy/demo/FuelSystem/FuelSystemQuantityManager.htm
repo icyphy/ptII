@@ -12,14 +12,17 @@
 <!-- /head -->
 <!-- body -->
 <h1>FuelSystemQuantityManager</h1>
-<p>This model draws fuel at a constant rate from Tank1. When the level in Tank1
-gets below 1/4 of its capacity, the model begins transferring fuel from Tank2
-to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).</p>
-
-<p>The FuelMover receives inputs through a network component, the Bus. The Bus 
+<p>
+This model uses
+the quantity manager concept to model contention for resouces on a network.
+This contention has an effect on timing, captured by the model.
+</p>
+<p>
+The FuelMover receives inputs through a network component, the Bus. The Bus 
 has a parameter for the service time, i.e. the time it takes to transfer a message
 on the network. This service time has an influence on the behavior of the model
-as messages get delayed.</p>
+as messages get delayed.
+</p>
 <!-- PT DEPLOYJAVA CONVERTER -->
 <p>FuelSystemQuantityManager is available as a <a href="../../../doc/webStartHelp.htm">Web Start Application</a>:</p>
 <ul>

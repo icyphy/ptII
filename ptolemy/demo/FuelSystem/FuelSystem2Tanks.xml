@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.3046715561224, 220.8554687499999}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model draws fuel at a constant rate from Tank1. When the level in Tank1&#10;gets below 1/4 of its capacity, the model begins transferring fuel from Tank2&#10;to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).&#10;&#10;This is complicated by the fact that the physics does not allow an empty tank&#10;to provide fuel nor a full tank to accept it. The actual rate of fuel flow, therefore,&#10;is a consensus among the two tanks.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model draws fuel at a constant rate from Tank1. When the level in Tank1&#10;gets below 1/4 of its capacity, the model begins transferring fuel from Tank2&#10;to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).&#10;&#10;The model is complicated by the fact that the physics does not allow an empty tank&#10;to provide fuel nor a full tank to accept it. The actual rate of fuel flow, therefore,&#10;is a consensus among the two tanks.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 260.0]">
         </property>
@@ -33,9 +33,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Definition of the tank as a class facilitates model &#10;maintenance. It is defined in one place and&#10;instantiated in multiple places.&#10;&#10;[see Lee, Liu, and Neuendorffer, Classes and &#10;inheritance in actor-oriented design, TECS 8(4), 2009]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The two tanks are instances of a single class definition.&#10;Definition of the tank as a class facilitates model &#10;maintenance. It is defined in one place and&#10;instantiated in multiple places.&#10;[see Lee, Liu, and Neuendorffer, Classes and &#10;inheritance in actor-oriented design, TECS 8(4), 2009]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, -30.0]">
         </property>
     </property>
     <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -55,6 +55,24 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Patricia Derler and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the Tank icons and&#10;select Open Actor to see how the&#10;tank is modeled.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -5.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -318,17 +336,17 @@
             </property>
         </property>
     </entity>
-    <entity name="Tank3" class="ptolemy.demo.FuelSystem.ModalTank">
+    <entity name="Tank1" class="ptolemy.demo.FuelSystem.ModalTank">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 105.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
         </property>
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.62500000020616E-5">
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
     </entity>
-    <entity name="Tank4" class="ptolemy.demo.FuelSystem.ModalTank">
+    <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 170.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
@@ -375,17 +393,17 @@
     <link port="FuelMover.tank1Full" relation="relation3"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Const2.output" relation="relation8"/>
-    <link port="Tank3.desiredInFlow" relation="relation10"/>
-    <link port="Tank3.desiredOutFlow" relation="relation2"/>
-    <link port="Tank3.actualInFlow" relation="relation5"/>
-    <link port="Tank3.level" relation="relation6"/>
-    <link port="Tank3.availableOutFlow" relation="relation"/>
-    <link port="Tank3.fullIndicator" relation="relation3"/>
-    <link port="Tank3.actualOutFlow" relation="relation"/>
-    <link port="Tank4.desiredInFlow" relation="relation8"/>
-    <link port="Tank4.desiredOutFlow" relation="relation9"/>
-    <link port="Tank4.level" relation="relation4"/>
-    <link port="Tank4.availableOutFlow" relation="relation10"/>
-    <link port="Tank4.actualOutFlow" relation="relation5"/>
+    <link port="Tank1.desiredInFlow" relation="relation10"/>
+    <link port="Tank1.desiredOutFlow" relation="relation2"/>
+    <link port="Tank1.actualInFlow" relation="relation5"/>
+    <link port="Tank1.level" relation="relation6"/>
+    <link port="Tank1.availableOutFlow" relation="relation"/>
+    <link port="Tank1.fullIndicator" relation="relation3"/>
+    <link port="Tank1.actualOutFlow" relation="relation"/>
+    <link port="Tank2.desiredInFlow" relation="relation8"/>
+    <link port="Tank2.desiredOutFlow" relation="relation9"/>
+    <link port="Tank2.level" relation="relation4"/>
+    <link port="Tank2.availableOutFlow" relation="relation10"/>
+    <link port="Tank2.actualOutFlow" relation="relation5"/>
     <link relation1="relation6" relation2="relation7"/>
 </entity>

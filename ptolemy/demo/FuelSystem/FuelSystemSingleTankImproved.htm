@@ -12,10 +12,16 @@
 <!-- /head -->
 <!-- body -->
 <h1>FuelSystemSingleTankImproved</h1>
-<p>Model with a single Tank. The tank has a constant input flow of 1.0.
-The output flow 0.0 between time 0 and time 3 and it is 2.0 between 
-time 3 and time 8. At time 8 the output flow is changed to 0.0 again
-and the sequence of values for the output flow is repeated.</p>
+<p>
+Improved model with a single Tank. Like the
+<a href="FuelSystem.htm">chattering model</a>, this one limits
+the input and output flows when the tank becomes full or empty,
+but it does so without introducing chattering behavior.
+This is a modal model that leverages the rigorous Ptolemy II
+semantics for hybrid systems.
+See the <a href="FuelSystem2Tanks.htm">two-tank model</a> for a more interesting
+test case for this tank model.
+</p>
 <!-- PT DEPLOYJAVA CONVERTER -->
 <p>FuelSystemSingleTankImproved is available as a <a href="../../../doc/webStartHelp.htm">Web Start Application</a>:</p>
 <ul>

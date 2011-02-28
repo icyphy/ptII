@@ -12,23 +12,25 @@
 <!-- /head -->
 <!-- body -->
 <h1>FuelSystemErrorHandling</h1>
-<h3>Model of fuel system in aircraft - normal operation.</h3>
+<h3>Model of fuel system in aircraft with error handling.</h3>
 
-<p>During takeoff, the engine used an increased amount of fuel, 
+<p>
+During takeoff, the engine used an increased amount of fuel, 
 and no fuel is transfered between the tanks.
-<br/>At altitude=10, fuel consumption decrease, and fuel is transfered
+<br/>At altitude=10, fuel consumption decreases, and fuel is transfered
 from the middle tank LMT, to the trim tank TT in the back of the aircraft.
-<br/>When the feed tank LFT is low on fuel, fuel is transfered from LMT to LFT.
-<br/>When LFT is empty, fuel is transfered from TT to LFT.
+<br/>
+When the feed tank LFT is low on fuel, fuel is transfered from LMT to LFT.
+<br/>
+When LFT is empty, fuel is transfered from TT to LFT.
 </p>
-
-<h3>Introduce error on TT level sensor</h3>
-
-<p>By setting the stop time of the SampleClock to less than the simulation time,
+<p>
+This model introduces an error on TT level sensor.
+By setting the stop time of the SampleClock to less than the simulation time,
 an error is introduced, and the TT_level sensor no longer sends a signal.
 <br/>The fuel transfer controller reacts by stopping all transfers to/from TT. 
 <br/>Normal operation will continue with the remaining tanks.
-</p
+</p>
 <!-- PT DEPLOYJAVA CONVERTER -->
 <p>FuelSystemErrorHandling is available as a <a href="../../../doc/webStartHelp.htm">Web Start Application</a>:</p>
 <ul>

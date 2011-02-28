@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -150.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1069, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 631]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0940978077572">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.913606179727, 99.8275622806032}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.4871265249827, 160.6082342904657}">
     </property>
     <property name="transferRate" class="ptolemy.data.expr.Parameter" value="2.2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -73,7 +73,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of fuel system in aircraft - normal operation.&#10;--------------------------------------------------------------------------&#10;During takeoff, the engine used an increased amount of fuel, &#10;and no fuel is transfered between the tanks.&#10;At altitude=10, fuel consumption decrease, and fuel is transfered&#10;from the middle tank LMT, to the trim tank TT in the back of the aircraft.&#10;When the feed tank LFT is low on fuel, fuel is transfered from LMT to LFT.&#10;When LFT is empty, fuel is transfered from TT to LFT.&#10;&#10;Introduce error on TT level sensor&#10;--------------------------------------------------------------------------&#10;By setting the stop time of the SampleClock to less than the simulation time,&#10;an error is introduced, and the TT_level sensor no longer sends a signal.&#10;The fuel transfer controller reacts by stopping all transfers to/from TT. &#10;Normal operation will continue with the remaining tanks.&#10;&#10;Author: Sune Wolff, Aarhus School of Engineering, Denmark">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 215.0]">
         </property>
     </property>
     <class name="Tank" extends="ptolemy.actor.TypedCompositeActor">

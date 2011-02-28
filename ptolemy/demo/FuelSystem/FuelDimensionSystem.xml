@@ -9,18 +9,30 @@
 		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 144, 813, 511}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 151, 682, 542}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[469, 431]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{236.6891891891892, 204.7094594594595}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{184.2891891891892, 217.1094594594595}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple dimension system for fuel tanks.">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 65.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple ontology for fuel tanks.&#10;This ontology defines the relationships&#10;among five concepts. The relationships&#10;are required to form a lattice.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="[see Leung, Mandl, Lee, Latronico, Shelton, &#10;Tripakis, &amp; Lickly, &quot;Scalable Semantic &#10;Annotation using Lattice-based &#10;Ontologies,&quot; MODELS 2009.]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 320.0]">
         </property>
     </property>
     <entity name="Dimensionless" class="ptolemy.data.ontologies.FiniteConcept">
@@ -82,7 +94,7 @@
     <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 140.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
@@ -111,7 +123,7 @@
     <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 295.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
