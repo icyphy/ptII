@@ -2127,7 +2127,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Given a platform physical tag, get the corresonding oracle physical tag.
+    /** Given a platform physical time, get the corresonding oracle physical time.
      *  This assumes there's a one-to-one mapping from the platform's tag to
      *  the oracle tag, and vise versa. We also assume the platform tag to be
      *  continuous. If the platform time of interest is less than the last
@@ -2157,11 +2157,11 @@ public class PtidesBasicDirector extends DEDirector {
             		"the oracle time.");
         }
         if (realTimeClock._clockDrift.equals(_zero)) {
-            // If clock drift is zero, then the oracle time is simply
-            // the current oracle time + difference between last oracle
-            // time and last platform time.
-            return (realTimeClock._lastOracleTime.subtract(
-                    realTimeClock._lastPlatformTime)).add(platformTime);
+            // With a clock drift of zero, we cannot determine what oracle
+            // time is given the platform time, because platform time is not
+            // advancing as oracle time advances.
+            throw new IllegalActionException(this,
+                    "Cannot get oracle time from platform time if the clock drift is zero");
         }
         return (timeDifference.divide(realTimeClock._clockDrift)).add(
                         realTimeClock._lastOracleTime);
@@ -3965,9 +3965,12 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Stores a real time clock, which maps a platform time in the past
-     *  to a oracle time. It also contains the current clock drift, as
-     *  well as the clock drift before the last change in clock drift.
+    /** A data structure to store two Time values that are interpreted
+     *  as simultaneous. Specifically, one of these values is called the
+     *  oracle time and one is called the platform time.
+     *  When this class is constructed, an initial value of the platform
+     *  time is given, and this is interpreted as being simultaneous with
+     *  an oracle time of zero.
      *  @author jiazou
      */
     private class RealTimeClock {
@@ -3976,30 +3979,37 @@ public class PtidesBasicDirector extends DEDirector {
          *  set to default values: All clock drifts are initialized to Time 1.0,
          *  and the oracle time is initialized to Time 0.0. However the corresponding
          *  platform is intialized to the initialClockSynchronizationError paramter.
+         *  The <i>clockDrift</i> parameter specifies how much platform time should
+         *  be incremented for each unit increment of oracle time. A clock drift
+         *  of 1.0 means that the clocks remain perfectly synchronized. A clock drift
+         *  less than 1.0 means that the platform time clock progresses more slowly
+         *  than oracte time, and a clock drift greater than 1.0 means that it
+         *  progresses more rapidly.
+         *  @param platformTimeAtOracleTimeZero The platform Time value interpreted to be
+         *   simultaneous with oracle time zero.
+         *  @param clockDrift The relative rate of advance of platform time w.r.t.
+         *   oracle time.
          */
-        private RealTimeClock(double initialClockSynchronizationError,
+        private RealTimeClock(double platformTimeAtOracleTimeZero,
                 double clockDrift) throws IllegalActionException {
             _lastPlatformTime = new Time(PtidesBasicDirector.this,
-                    initialClockSynchronizationError);
+                    platformTimeAtOracleTimeZero);
             _clockDrift = new Time(PtidesBasicDirector.this, clockDrift);
             _lastOracleTime = new Time(PtidesBasicDirector.this);
         }
 
-        /** The last saved platform time. This time corresponds to the Time saved
-         *  in the last oracle time.
+        /** The last saved platform time. This time is interpreted as being
+         *  simultaneous with the value of _lastOracleTime.
          */
         private Time _lastPlatformTime;
 
-        /** The last saved oracle time. This time corresponds to the Time saved
-         *  in the last platform time.
+        /** The last saved oracle time. This time is interpreted as being
+         *  simultaneous with the value of _lastPlatformTime.
          */
         private Time _lastOracleTime;
         
         /** The ratio between how much the platform clock changes each unit time
-         *  as the oracle clock changes. If there is platform time tracks the
-         *  oracle time perfectly, then the clock drift is 1.0. If the clock
-         *  drift is < 0.0, then as the oracle time increases, the platform
-         *  time decreases. This is not allowed in this simulator.
+         *  as the oracle clock changes.
          */
         private Time _clockDrift;
     }
