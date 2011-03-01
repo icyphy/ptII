@@ -61,8 +61,13 @@ OTHER_FILES_TO_BE_JARED = \
 	FuelDimensionSystemSolverModel.xml \
 	ModalTank.xml
 
+EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
+
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	$(EXAMPLE_MODEL_HTML) \
+	index.htm \
+	toc.htm
 
 
 # Sources that may or may not be present, but if they are present, we don't
