@@ -52,19 +52,54 @@ but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 
 public class PthalesWrapperCompositeActor extends TypedCompositeActor {
 
+    /** Construct a PthalesWrapperCompositeActor in the default workspace with no
+     *  container and an empty string as its name. Add the actor to the
+     *  workspace directory.  You should set the local director or
+     *  executive director before attempting to send data to the actor or
+     *  to execute it. Increment the version number of the workspace.
+     */
+    
     public PthalesWrapperCompositeActor() {
-        // TODO Auto-generated constructor stub
+        super();
+        setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
     }
 
+    /** Construct a PthalesWrapperCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    
     public PthalesWrapperCompositeActor(Workspace workspace) {
         super(workspace);
-        // TODO Auto-generated constructor stub
+        setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
     }
 
+    /** Construct a PthalesWrapperCompositeActor with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This actor will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.  This actor will have no
+     *  local director initially, and its executive director will be simply
+     *  the director of the container.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    
     public PthalesWrapperCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
+        setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
     }
 
     /** Return a new receiver of flexible buffer size to interface with PN actors.
