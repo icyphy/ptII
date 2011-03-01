@@ -86,5 +86,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
 
+all: $(EXTRA_SRCS)
+	@echo "To run the tests in $(ME), run 'make tests'"
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
