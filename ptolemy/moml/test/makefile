@@ -102,6 +102,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	AltFileNameExceptionTestFile.xml \
 	ComplexCompositeCopyAndPasteTest.xml \
 	CompositeCopyAndPasteTest.xml \
+	CompositeOpaqueCopyAndPasteTest.xml \
 	ConvertToLazyTest.xml \
 	ConstClassDefinition.xml \
 	inputTestB.xml \

@@ -603,5 +603,55 @@ test MoMLVariableChecker-3.1 {copy a composite that has an expression that refer
 
 } {ParameterP ParameterAP ParameterP2 ParameterP3}
 
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-3.2 {copy an expression in an opaque composite to an adjacent opaque composite} {
+    set w [java::new ptolemy.kernel.util.Workspace w3_2]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+    java::call ptolemy.moml.MoMLParser purgeModelRecord CompositeOpaqueCopyAndPasteTest.xml
+
+    set toplevel3_2 [java::cast ptolemy.actor.CompositeActor \
+			 [$parser parseFile \
+			      CompositeOpaqueCopyAndPasteTest.xml]]
+    set compositeActorA [java::cast ptolemy.actor.CompositeActor [$toplevel3_2 getEntity CompositeActorA]]
+    set expressionA [$compositeActorA getEntity Expression]
+
+    # Copy
+    set expressionAMoML [$expressionA exportMoML]
+    set variableChecker3_2 [java::new ptolemy.moml.MoMLVariableChecker]
+    set copyMoML3_2 [$variableChecker3_2 checkCopy $expressionAMoML $compositeActorA]
+    
+    # Paste.
+    # The bug was that when do the paste in an Opaque Composite,
+    # if createIfNecessary is true, then we should look up the hierarchy
+    # for values declared outside the container.
+    set compositeActorA2 [java::cast ptolemy.actor.CompositeActor [$toplevel3_2 getEntity CompositeActorA2]]
+    set moml3_2  "$header <group name=\"auto\"> $copyMoML3_2 $expressionAMoML </group>" 
+    set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
+			   $compositeActorA2 $compositeActorA2 $moml3_2]
+    set manager [java::new ptolemy.actor.Manager [$toplevel3_2 workspace] \
+		     "myManager"]
+    $toplevel3_2 setManager $manager
+    $compositeActorA2 requestChange $changeRequest
+
+    # Link the new Expression actor
+    set r10 [$compositeActorA2 connect \
+		 [$compositeActorA2 getPort port] \
+		 [[$compositeActorA2 getEntity Expression] getPort input]]
+    set r11 [$compositeActorA2 connect \
+		 [$compositeActorA2 getPort port2] \
+		 [[$compositeActorA2 getEntity Expression] getPort output]]
+
+    # Change the top parameter.  CompositeActorA2 should not have
+    # a copy of ParameterP so the values going to the Test actor from
+    # the composites should be the same for both composites.
+    set topParameter [java::cast ptolemy.data.expr.Parameter [$toplevel3_2 getAttribute ParameterP]]
+    $topParameter setExpression 50
+
+    $manager execute
+} {}
+
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
