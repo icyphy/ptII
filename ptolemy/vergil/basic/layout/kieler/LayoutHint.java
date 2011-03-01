@@ -1,8 +1,6 @@
-/* Layout Hint Attribute for Ptolemy relations to specify bendpoints
- * for an explicit routing for links.
- */
-/*
- @Copyright (c) 2009-2011 The Regents of the University of California.
+/* Layout Hint Attribute for Ptolemy relations to specify bendpoints for an explicit routing for links.
+
+ @Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -75,15 +73,15 @@ import diva.canvas.connector.ManhattanConnector;
  * A LayoutHint is an Attribute for Ptolemy Relations that holds the
  * specification of bend points for links. Its value field contains a list of
  * {@link LayoutHintItem} objects because one Relation can correspond to
- * multiple links, which are no real objects in the Ptolemy abstract syntax and
+ * multiple links, which are not real objects in the Ptolemy abstract syntax and
  * therefore can not carry any attributes. Each item carries a list of
  * bendpoints for a specific link.
  * <p>
  * The LayoutHint uses a Ptolemy Expression as its value in which the
  * {@link LayoutHintItem} objects are encoded. Therefore the Expression is
- * expected to contain an {@link ArrayToken} of {@link LayoutHintItem} objects.
+ * expected to contain an {@link ArrayToken} of {@link LayoutHintItem} objects.</p>
  * <p>
- * A complete LayoutHint with two {@link LayoutHintItem}s could look like this:
+ * A complete LayoutHint with two {@link LayoutHintItem}s could look like this:</p>
  * 
  * <pre>
  * { 
@@ -100,23 +98,22 @@ import diva.canvas.connector.ManhattanConnector;
  * }
  * </pre>
  * 
- * This storage works like a {@link Map} with always two keys. One
+ * <p>This storage works like a {@link Map} with always two keys. One
  * {@link LayoutHintItem} is unambiguously identified by its head and tail,
  * which are Ptolemy objects like {@link Port}s or {@link Relation}s. The
  * methods to access this are {@link #getLayoutHintItem(Object, Object)},
  * {@link #setLayoutHintItem(NamedObj, NamedObj, double[])} and
- * {@link #removeLayoutHintItem(Object, Object)}.
+ * {@link #removeLayoutHintItem(Object, Object)}.</p>
  * <p>
  * The class extends {@link SingletonAttribute} because every Relation is
  * expected to have only one such Attribute, while one of these Attributes can
  * carry multiple {@link LayoutHintItem}s as explained above. It is also
  * {@link Settable} as it can be set by loading a MOML file or by setting it
  * manually through the GUI. However, usually its visibility is set to EXPERT
- * mode only.
+ * mode only.</p>
  * <p>
  * Some of the standard code for example for value listeners is copied from
- * {@link Location}.
- * <p>
+ * {@link Location}.</p>
  * 
  * @author Hauke Fuhrmann, <kieler@informatik.uni-kiel.de>
  * @since Ptolemy II 8.1
@@ -229,13 +226,13 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * If setExpression(String value) was called, then the return value is
      * exactly what ever was passed in as the argument to setExpression. This
      * means that there is no guarantee that the return value of getExpression()
-     * is a well formed Ptolemy array expression.
+     * is a well formed Ptolemy array expression.</p>
      * 
      * <p>
      * If setLayoutHintItem(NamedObj, NamedObj, double[]) was called, then the
      * return value is a well formed Ptolemy array expression that starts with
      * "{" and ends with "}", and contains the expressions of
-     * {@link LayoutHintItem}s as array elements. Example:
+     * {@link LayoutHintItem}s as array elements. Example:</p>
      * 
      * <pre>
      * { item1, item2 }
@@ -576,7 +573,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
         } catch (Exception e) {
             throw new IllegalActionException(
-                    this,
+                    this, e,
                     e.getMessage()
                             + "\nExpression is expected to be an Array of layout hint Records. "
                             + "The following expression is of wrong format: \n"
@@ -663,8 +660,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
     /**
      * A LayoutHintItem is the specification of layout information for one Link.
-     * As there are usually multiple links corresponding to one {@link Relation}
-     * , a {@link LayoutHint} is attached to a Relation and carries multiple of
+     * As there are usually multiple links corresponding to one {@link Relation},
+     * a {@link LayoutHint} is attached to a Relation and carries multiple of
      * these LayoutHintItems corresponding to the links. As links are no
      * persisted objects in Ptolemy, a link is identified by its head and tail
      * objects, which are {@link Port}s or {@link Relation}s.
@@ -800,19 +797,19 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          */
         public String getExpression() {
             StringBuffer b = new StringBuffer();
-            b.append("{ head={\"" + _getName(_head) + "\"");
-            b.append("," + _headLocation[0] + "," + _headLocation[1]);
+            b.append("{ head={\"" + _getName(_head) + "\""
+                    + "," + _headLocation[0] + "," + _headLocation[1]);
             if (_headMultiportIndex[1] != 1) {
                 b.append("," + _headMultiportIndex[1]);
             }
-            b.append("}, ");
-            b.append("tail={\"" + _getName(_tail) + "\"");
-            b.append("," + _tailLocation[0] + "," + _tailLocation[1]);
+            b.append("}, "
+                    + "tail={\"" + _getName(_tail) + "\""
+                    + "," + _tailLocation[0] + "," + _tailLocation[1]);
             if (_tailMultiportIndex[1] != 1) {
                 b.append("," + _tailMultiportIndex[1]);
             }
-            b.append("}, ");
-            b.append("points={");
+            b.append("}, "
+                    + "points={");
             for (int i = 0; i < (_bendPoints.length - 1); i += 2) {
                 if (i > 0) {
                     b.append(",");
@@ -1067,20 +1064,20 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * coordinates.
          */
         private double[] _bendPoints = {};
-        /** Head object to identify this item */
+        /** Head object to identify this item. */
         private NamedObj _head = null;
-        /** Coordinates for the head at which this item is only valid */
+        /** Coordinates for the head at which this item is only valid. */
         private double[] _headLocation = { 0.0, 0.0 };
         /**
-         * Width and index of the multiport, if the head actually is a multiport
+         * Width and index of the multiport, if the head actually is a multiport.
          */
         private int[] _headMultiportIndex = { 1, 1 };
-        /** Tail object to identify this item */
+        /** Tail object to identify this item. */
         private NamedObj _tail = null;
-        /** Coordinates for the tail at which this item is only valid */
+        /** Coordinates for the tail at which this item is only valid. */
         private double[] _tailLocation = { 0.0, 0.0 };
         /**
-         * Width and index of the multiport, if the tail actually is a multiport
+         * Width and index of the multiport, if the tail actually is a multiport.
          */
         private int[] _tailMultiportIndex = { 1, 1 };
     }

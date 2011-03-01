@@ -1535,6 +1535,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * _ptolemyDiva2KielerEdges map and store the source and target information
      * in _divaEdgeSource resp. _divaEdgeTarget.
      */
+    @SuppressWarnings("unused")
     private void _storeEndpoints() {
         if (DEBUG) {
             System.out.print("Store endpoints");
