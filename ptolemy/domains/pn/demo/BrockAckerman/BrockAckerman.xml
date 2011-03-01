@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BrockAckerman" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 225.0]">
     </property>
@@ -42,7 +42,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 30.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 239, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 239, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -71,30 +71,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 235.0}">
             </property>
         </port>
-        <entity name="NondeterministicMerge" class="ptolemy.domains.pn.kernel.NondeterministicMerge">
-            <property name="director" class="ptolemy.domains.pn.kernel.NondeterministicMerge$MergeDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 160.0}">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-                </property>
-            </port>
-            <port name="channel" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-                </property>
-            </port>
-        </entity>
         <entity name="BlockedIdentity" class="ptolemy.domains.sdf.lib.Chop">
             <property name="numberToRead" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -587,34 +563,38 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 235.0]">
             </property>
         </entity>
+        <entity name="NondeterministicMerge2" class="ptolemy.domains.pn.kernel.NondeterministicMerge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 135.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="in" relation="relation"/>
         <link port="out" relation="relation6"/>
         <link port="in2" relation="relation2"/>
-        <link port="NondeterministicMerge.input" relation="relation3"/>
-        <link port="NondeterministicMerge.input" relation="relation7"/>
-        <link port="NondeterministicMerge.output" relation="relation5"/>
-        <link port="BlockedIdentity.input" relation="relation5"/>
+        <link port="BlockedIdentity.input" relation="relation3"/>
         <link port="BlockedIdentity.output" relation="relation6"/>
         <link port="Repeat.input" relation="relation"/>
-        <link port="Repeat.output" relation="relation3"/>
+        <link port="Repeat.output" relation="relation8"/>
         <link port="Repeat2.input" relation="relation2"/>
         <link port="Repeat2.output" relation="relation4"/>
         <link port="Sleep.input" relation="relation4"/>
         <link port="Sleep.output" relation="relation7"/>
+        <link port="NondeterministicMerge2.input" relation="relation8"/>
+        <link port="NondeterministicMerge2.input" relation="relation7"/>
+        <link port="NondeterministicMerge2.output" relation="relation3"/>
     </entity>
     <entity name="Starver" class="ptolemy.domains.pn.lib.Starver">
         <property name="limit" class="ptolemy.data.expr.Parameter" value="2">
@@ -679,10 +659,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 235.0}">
             </property>
         </port>
-        <entity name="NondeterministicMerge" class="ptolemy.domains.pn.kernel.NondeterministicMerge">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 160.0}">
-            </property>
-        </entity>
         <entity name="BlockedIdentity" class="ptolemy.domains.sdf.lib.Chop">
             <property name="numberToRead" class="ptolemy.data.expr.Parameter" value="2">
             </property>
@@ -1163,30 +1139,34 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 235.0}">
             </property>
         </entity>
+        <entity name="NondeterministicMerge2" class="ptolemy.domains.pn.kernel.NondeterministicMerge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 165.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="in" relation="relation"/>
         <link port="out" relation="relation6"/>
         <link port="in2" relation="relation2"/>
-        <link port="NondeterministicMerge.input" relation="relation3"/>
-        <link port="NondeterministicMerge.input" relation="relation4"/>
-        <link port="NondeterministicMerge.output" relation="relation5"/>
-        <link port="BlockedIdentity.input" relation="relation5"/>
+        <link port="BlockedIdentity.input" relation="relation4"/>
         <link port="BlockedIdentity.output" relation="relation6"/>
         <link port="Repeat.input" relation="relation"/>
-        <link port="Repeat.output" relation="relation3"/>
+        <link port="Repeat.output" relation="relation7"/>
         <link port="Repeat2.input" relation="relation2"/>
-        <link port="Repeat2.output" relation="relation4"/>
+        <link port="Repeat2.output" relation="relation3"/>
+        <link port="NondeterministicMerge2.input" relation="relation7"/>
+        <link port="NondeterministicMerge2.input" relation="relation3"/>
+        <link port="NondeterministicMerge2.output" relation="relation4"/>
     </entity>
     <entity name="Starver2" class="ptolemy.domains.pn.lib.Starver">
         <property name="limit" class="ptolemy.data.expr.Parameter" value="2">
