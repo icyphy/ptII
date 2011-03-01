@@ -39,7 +39,7 @@ ROOT =		../../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =
+DIRS =	test
 
 # KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(KIELER_JAR)
@@ -65,7 +65,8 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'LayoutHint$$LayoutHintItem.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

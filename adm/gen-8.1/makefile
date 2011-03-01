@@ -1502,6 +1502,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/save \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/setup \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic/layout/kieler \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 
