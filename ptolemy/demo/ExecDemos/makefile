@@ -63,7 +63,6 @@ EXTRA_SRCS = \
 	ExecDemos.htm \
 	ExecDemosVergil.htm \
 	ExecHyVisualDemos.xml \
-	demo.txt \
 	rundemos.bat \
 	shutdown.bat \
 	startdemo.sh
