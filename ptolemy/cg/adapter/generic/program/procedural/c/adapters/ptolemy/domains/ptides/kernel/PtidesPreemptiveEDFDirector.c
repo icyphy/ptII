@@ -5,7 +5,7 @@
 #define MORE 1
 #define EQUAL 0
 
-#define MAX_EVENTS 100
+#define MAX_EVENTS 50
 #define MAX_ACTUATOR_TIMER_VALUES 10
 
 /* structures */
@@ -83,6 +83,8 @@ int stackedModelTagIndex = -1;
 Time lastTimerInterruptTime;
 volatile uint32 _secs = 0;
 volatile uint32 _quarterSecs = 0;
+
+volatile uint32 processVersion = 0;
 
 // actuator queue
 // Head points to the head of the array.
@@ -265,7 +267,7 @@ Event* newEvent(void) {
 void freeEvent(Event* thisEvent) {
     disableInterrupts();
 	// This line of code is confusing. To understand it, refer to the last
-	// line of removeAndPropageSameTagEvents() method. There, the prevEvent
+	// line of removeAndPropagateSameTagEvents() method. There, the prevEvent
 	// pointer of thisEvent is set to the end of the list of events removed
 	// from the event queue. We simply append this list to the head of
 	// FREE_EVENT_LIST.
@@ -310,7 +312,7 @@ int timeSub(const Time time1, const Time time2, Time* timeSub) {
     } else {
         timeSub->nsecs = time1.nsecs - time2.nsecs;
     }
-    return 1;
+    return 0;
 }
 
 /* Event processing */
@@ -318,6 +320,8 @@ void processEvents() {
     Event* event = NULL;
     Time processTime;
     Time platformTime;
+	// Increment the process version.
+	processVersion++;
 	// Get the current platform time. This time is later used to
 	// perform safe-to-process. This function must be called
 	// before interrupts are disabled to ensure DE semantics.
@@ -378,18 +382,30 @@ void processEvents() {
                 // to be disabled
                 disableInterrupts();
             } else {
+                // save the current process level
+                uint32 localProcessVersion = processVersion;
                 // This event is not safe to process yet. Set
                 // timed interrupt to run this event when platform
                 // time has passed for it to be safe to process.
-				if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
                     lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
-				// This event is not safe to process, we continue processing
-				// by going back to the beginning of the loop.
-				// HACK: that doesn't seem to work yet, we'll just process
-				// the top event from the queue for now.
-				break;
+				// Enables higher priority events to preempt this processEvents().
+				// This is especially useful if the size of the event queue is
+				// very large, and takes a long time to traverse through.
+				enableInterrupts();
+				getRealTime(&platformTime);
+				disableInterrupts();
+				if (localProcessVersion != processVersion) {
+					// If processEvents ran during the last interrupt enable,
+					// then we should traverse the event queue anymore.
+					// Instead we simply return.
+					break;
+				}
+                // If processEvents did not run during the last interrupt enable,
+                // then we keep analyze events in the event queue by going back
+                // to the beginning of the loop.
 	        }
         } else {
             // This event is of lower priority than the one 
@@ -492,8 +508,8 @@ void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
 		safeTimestamp->nsecs = 0;
 	}
 #ifdef LCD_DEBUG
-    //sprintf(str, "STP=%d", safeTimestamp->secs);
-    //RIT128x96x4StringDraw(str, 0,40,15);
+    sprintf(str, "STP=%d", safeTimestamp->secs);
+    RIT128x96x4StringDraw(str, 0,40,15);
 #endif
 }
 /**/
@@ -598,18 +614,30 @@ void execute() {
                 // to be disabled
                 disableInterrupts();
             } else {
+                // save the current process level
+                uint32 localProcessVersion = processVersion;
                 // This event is not safe to process yet. Set
                 // timed interrupt to run this event when platform
                 // time has passed for it to be safe to process.
-				if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
                     lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
-				// This event is not safe to process, we continue processing
-				// by going back to the beginning of the loop.
-				// HACK: that doesn't seem to work yet, we'll just process
-				// the top event from the queue for now.
-				break;
+				// Enables higher priority events to preempt this processEvents().
+				// This is especially useful if the size of the event queue is
+				// very large, and takes a long time to traverse through.
+				enableInterrupts();
+				getRealTime(&platformTime);
+				disableInterrupts();
+				if (localProcessVersion != processVersion) {
+					// If processEvents ran during the last interrupt enable,
+					// then we should traverse the event queue anymore.
+					// Instead we simply return.
+					break;
+				}
+                // If processEvents did not run during the last interrupt enable,
+                // then we keep analyze events in the event queue by going back
+                // to the beginning of the loop.
 	        }
         } else {
             // This event is of lower priority than the one 

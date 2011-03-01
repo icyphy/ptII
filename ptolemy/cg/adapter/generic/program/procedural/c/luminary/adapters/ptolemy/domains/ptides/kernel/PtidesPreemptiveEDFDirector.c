@@ -40,10 +40,6 @@ typedef signed char             int8;
 // Number of cycles until timer rolls over
 static unsigned long TIMER_ROLLOVER_CYCLES;
 
-// amount of delay between when the interrupt occurs and the ISR is entered
-// (assuming no resource contention). In the Luminary case, the latency is 4us. 
-#define INTERRUPT_DELAY 6000
-
 $super.StructDefBlock();
 /**/
 
@@ -72,7 +68,7 @@ $super.FuncProtoBlock();
 /*** FuncBlock($dis1, $dis2, $dis3, $dis4, $dis5, $dis6, $dis7, $dis8, 
 $en1, $en2, $en3, $en4, $en5, $en6, $en7, $en8) ***/
 
-//#ifdef LCD_DEBUG
+#ifdef LCD_DEBUG
 //Unsigned long to ASCII; fixed maxiumum output string length of 32 characters
 char *_ultoa(uint32 value, char *string, uint16 radix){
         char digits[32];
@@ -146,11 +142,11 @@ void debugMessageNumber(char * szMsg, uint32 num){
 
         debugMessage(szResult);
 }
-//#else
+#else
     //Debug messages will have no effect
-//    #define debugMessage(x)
-//    #define debugMessageNumber(x, y)
-//#endif
+    #define debugMessage(x)
+    #define debugMessageNumber(x, y)
+#endif
 
 void exit(int zero) {
         die("program exit?");
@@ -201,16 +197,11 @@ void disableInterrupts(void) {
 	$dis6
 	$dis7
 	$dis8
-	
-	//HACK
-	IntDisable(INT_TIMER2A);
-	IntDisable(INT_TIMER2B);
 }
 // Enable all peripheral and timer interrupts (does not include the systick)
 // IntMasterEnable should not be called here, because the systick handler would be disabled.
 // Instead, we disable each interrupt individually.
 void enableInterrupts(void) {
-	IntMasterDisable();
 	// enable Timer0
 	IntEnable(INT_TIMER0A);
 	IntEnable(INT_TIMER0B);
@@ -230,12 +221,6 @@ void enableInterrupts(void) {
 	$en6
 	$en7
 	$en8
-	
-	//HACK
-	IntEnable(INT_TIMER2A);
-	IntEnable(INT_TIMER2B);
-
-	IntMasterEnable();
 }
 
 //Return the real physical time.
@@ -442,8 +427,6 @@ void setActuationInterrupt(int actuatorToActuate) {
                         if (actuatorArrayTailPtrs[actuatorToActuate] == MAX_ACTUATOR_TIMER_VALUES) {
                                 actuatorArrayTailPtrs[actuatorToActuate] = 0;   
                         }
-                        //sprintf(str, "AAC: %d", actuatorArrayCounts[i]);
-                        //RIT128x96x4StringDraw(str, 0,80,15);
                 }
         }
 
@@ -459,9 +442,6 @@ void setActuationInterrupt(int actuatorToActuate) {
                 }
         }
         enableInterrupts();
-
-        //      RIT128x96x4StringDraw("endSetActuator",   20,90,15);
-
 }
 
 void Timer1IntHandler(void) {
@@ -476,7 +456,6 @@ void Timer1IntHandler(void) {
         // Clear the timer interrupt.
         //
         TimerIntClear(TIMER1_BASE, TIMER_TIMA_TIMEOUT); 
-        //      RIT128x96x4Clear();
         if (actuatorTimerInterruptSecsLeft > 0) {
                 actuatorTimerInterruptSecsLeft--;
                 // setup this timer to run once more
@@ -597,7 +576,7 @@ void initializePDSystem() {
         RIT128x96x4StringDraw("PtidyOSv1.0", 36,  0, 15);
 
 #ifndef LCD_DEBUG
-        //RIT128x96x4Disable();
+        RIT128x96x4Disable();
         //RIT128x96x4DisplayOff();
 #endif
 }

@@ -35,7 +35,6 @@ if (!encoderInterruptOccurred) {
 	}
 	if (!discAligned && (encoderInputInterruptStatus & ENCODER_PIN_I)){
 		discAligned = 1;
-		trajectoryEnable();
 	} else if (encoderInputInterruptStatus & ENCODER_PIN_I){
 		g_disc.position = g_disc.position & 0xfffffffc;
 	}
