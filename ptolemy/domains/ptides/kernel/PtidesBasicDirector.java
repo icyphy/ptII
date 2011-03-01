@@ -890,16 +890,19 @@ public class PtidesBasicDirector extends DEDirector {
         setMicrostep(microstep);
     }
 
-    /** Update all future fireAt times. This method should be used when the
-     *  clock drift for a particular (platform or execution) clock changes,
-     *  then the future fireAt times will also change. Also keep track of
-     *  the list of ignored future fireAt times, so that when this director
-     *  is woken up at those times, the director will not fire.
+    /** Update the clock drift of the particular realTimeClock, based on the
+     *  clock ID. Checks if the new clock drift is less than zero. If so, throw
+     *  an exception. If the new clock drift is different from the old one,
+     *  update all future oracle fireAt times. Also keep track of
+     *  the list of ignored future fireAt times, so that this director will not
+     *  fire when when it wakes up at those times.
+     *  @see #_updateFireAtTimes
+     *  All parameters of the realTimeClock are also updated in the process.
      *  @param clockID an int specifying the ID of the clock.
      *  @param newClockDrift a Time object that indicates the new drift of that
      *  particular clock.
      *  @throws IllegalActionException If either the original or updated fireAt
-     *  time is in the past.
+     *  time is in the past, or if the new clock drift is less than zero.
      */
     public void updateClockDrift(int clockID, Time newClockDrift)
             throws IllegalActionException {
@@ -3635,9 +3638,20 @@ public class PtidesBasicDirector extends DEDirector {
         _portDelays = localPortDelays;
     }
 
-    /** Given original fireAt times, and a realTime clock with updated clock
-     *  drift, create a new list of fireAt times. Also add the old fireAt
-     *  times into the list of ignored fireAt times.
+    /** Update the future oracle times for this director to fire as
+     *  a consequence of the change in clock drift. 
+     *  This director has requested the enclosing DE director to fire
+     *  at some oracle times. However, since the clock drift is updated,
+     *  the future oracle times at which this director should fire also
+     *  needs to be updated.
+     *  The updated future fireAt times are calculated as follows:
+     *  Let the new fireAt oracle time be o2', the old fireAt time
+     *  be o2, the last oracle time saved in the realTimeClock be o1,
+     *  the old clock drift be c, and the new clock drift be c'. 
+     *  The equation to calculate o2' is:
+     *  o2' = o1*(c' - c)/c' + o2*c/c'
+     *  Also add the original future fire times into the list of
+     *  ignored fireAt times.
      *  @param originalFireAtTimes The original fireAt times.
      *  @param ignoreFireAtTimes The list of ignored fireAt times.
      *  @param realTimeClock The real time clock whose clock drift has changed.
@@ -3677,13 +3691,7 @@ public class PtidesBasicDirector extends DEDirector {
                         "is actually in the past: " +
                         _getOraclePhysicalTag().timestamp.toString());
             }
-            // Let the new fireAt oracle time be o2', the old fireAt time
-            // be o2, the last oracle time be o1, then old clock drift be
-            // c, and the new clock drift be c', the to find o2', we need:
             // o2' = o1*(c' - c)/c' + o2*c/c'
-            // the last platform time to be p1, 
-            // the new clock drift be c', then the new current
-            // time is: 
             Time clockDriftDiff = newClockDrift.subtract(
                     realTimeClock._clockDrift);
             Time temp1 = (realTimeClock._lastOracleTime.multiply(
