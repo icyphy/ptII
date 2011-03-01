@@ -39,17 +39,13 @@ import ptolemy.math.ExtendedMath;
 //// Time
 
 /**
- * An object of the Time class represents model time, as distinct from
- * "wall-clock time," which is time in the physical world. An instance of Time
- * has a value that is immutable. It has no limit on the magnitude. There are
- * two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY. Notice in
- * some directors, such as Ptides, an object of the Time class is also used
- * to represent simulated physical time. e.g., to simulate execution time
- * of actors.
- *
+ * An object of the Time class represents time in a model. An instance of Time
+ * has a value that is immutable. It has no limit on the magnitude, and
+ * it does not lose resolution as the magnitude increases. There are
+ * two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY.
  * <p>
  * The time value is quantized to the time resolution specified by the
- * <i>timeResolution </i> parameter of the associated director. The reason for
+ * <i>timeResolution</i> parameter of the associated director. The reason for
  * this is that without quantization, it is extremely difficult to compare two
  * time values with digit-to-digit accuracy because of the unpredictable
  * numerical errors introduced during computation. In practice, two time values
@@ -57,42 +53,36 @@ import ptolemy.math.ExtendedMath;
  * measuring instrument, which always has a smallest unit for measurement. This
  * smallest unit measurement gives the physical meaning of the time resolution
  * used for quantization.
- *
+ * <p>
+ * This implementation of Time does not lose resolution as the magnitude of
+ * the time increases (unlike floating point numbers). This is because
+ * Time is represented internally as a multiple of the resolution, and
+ * the multiple is not constrained to any limited magnitude.
  * <p>
  * The time value can be retrieved in three ways, the {@link #toString()}method
  * and the {@link #getDoubleValue()}method and the {@link #getLongValue()}
  * method. The first method returns a string representation while the second
  * method returns a double value. There are some limitations on both methods.
- * For the toString() method, we can not directly do numerical operations on
+ * For the toString() method, we cannot directly do numerical operations on
  * strings. For the getDoubleValue() method, we can not guarantee that the
  * returned double value preserves the time resolution because of the limited
  * digits for double representation. We recommend to operate on time objects
  * directly instead of the time values of time objects. getLongValue() returns
  * an integer multiple of the director resolution.
- *
  * <p>
  * Four operations, add, subtract, multiply and divide can be performed on a
- * time object, where
- * the argument can be a double or a time object. If the argument is not a time
- * object, the argument is quantized before the operations are performed. These
- * operations return a new time object with a quantized result. When a division
- * is performed, if a remainder is resent, then this remainder is saved as a
- * fraction in the Time object. This fraction is taken into account if further
- * operations are performed in the Time object.
- *
+ * time object, where the argument can be a double or a time object. If the
+ * argument is not a time object, the argument is quantized before the operations
+ * are performed. These operations return a new time object with a quantized result.
  * <p>
  * The time value of a time object can be infinite. The add, subtract, multiply,
- * and divide
- * operations on infinite time values follow rules similar to the IEEE Standard
- * 754 for Floating Point Numbers. In particular, adding two positive/negative
- * infinities yield a positive/negative infinity; adding a positive infinity and
+ * and divide operations on infinite time values follow rules similar to the IEEE Standard
+ * 754 for Floating Point Numbers. In particular, adding two positive or negative
+ * infinities yield a positive or negative infinity; adding a positive infinity to
  * a negative infinity, however, triggers an ArithmeticException; the negation
- * of a positive/negative infinity is a negative/positive infinity. Multiplying
- * a positive/negative infinity with zero, dividing by zero, and dividing an
+ * of a positive or negative infinity is a negative or positive infinity, respectively.
+ * Multiplying a positive or negative infinity by zero, dividing by zero, and dividing an
  * infinity by another infinity also triggers an ArithmeticException.
- * The following link gives a list of operations,
- * http://en.wikipedia.org/wiki/Infinity.
- *
  * <p>
  * This class implements the Comparable interface, where two time objects can be
  * compared in the following way. If any of the two time objects contains an
@@ -104,13 +94,12 @@ import ptolemy.math.ExtendedMath;
  * equal, or they represent the same model time. Otherwise, the time object
  * containing a bigger time value is regarded to happen after the time object
  * with a smaller time value.
- *
  * <p>
  * All time objects share the same time resolution, which is provided by the
  * top-level director. In some domains, such as CT and DE, users can change the
  * time resolution by configuring the <i>timeResolution </i> parameter. The
  * default value for this parameter "1E-10", which has value 10 <sup>-10 </sup>.
- * To preserve the consistency of time values, timeResolution can not be changed
+ * To preserve the consistency of time values, timeResolution cannot be changed
  * when a model is running (attempting to do so will trigger an exception).
  *
  * @author Haiyang Zheng, Edward A. Lee, Elaine Cheong
