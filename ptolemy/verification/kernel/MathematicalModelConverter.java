@@ -280,7 +280,13 @@ public class MathematicalModelConverter extends Attribute {
                             }
 
                         } finally {
-                            reader.close();
+                            if (reader != null) {
+                                try {
+                                    reader.close();
+                                } catch (IOException ex) {
+                                    System.err.println("Failed to close reader? " + ex);
+                                }
+                            }
                         }
                         _deleteFolder(smvFolder);
                         return returnStringBuffer;
