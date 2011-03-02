@@ -51,6 +51,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	Diff.java \
 	InnerClassTest.java \
 	ThreadStreamExec.java
 
