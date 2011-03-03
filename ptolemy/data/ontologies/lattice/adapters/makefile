@@ -37,7 +37,7 @@ DIRS = 		abstractInterpretation \
 		constPropagation constPropagationAbsInt \
 		defaultAdapters dimensionSystem monotonicityAnalysis \
 		observableLattice \
-		reachableLattice softwareConfiguration
+		reachableLattice softwareConfiguration unitSystem
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -64,7 +64,8 @@ PTCLASSALLJARS = \
 	monotonicityAnalysis/monotonicityAnalysis.jar \
 	observableLattice/observableLattice.jar \
 	reachableLattice/reachableLattice.jar \
-	softwareConfiguration/softwareConfiguration.jar
+	softwareConfiguration/softwareConfiguration.jar \
+	unitSystem/unitSystem.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

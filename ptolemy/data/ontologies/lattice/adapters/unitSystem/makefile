@@ -1,6 +1,6 @@
-# Makefile for ontologies demos
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters UnitSystem
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Charles Shelton, based on a file by Christopher Brooks
 #
 # $Id$
 #
@@ -26,50 +26,45 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =        ptolemy/data/ontologies/lattice/adapters/unitSystem
 
-DIRS = 	CarTracking ConstAbstractInterpretation ConstAbstractInterpretationObservable \
-	ConstNonconst ConstPropagation DimensionSystemExample MonotonicityAnalysis \
-	Observable ProductLattices UnitSystemExample
+DIRS =      domains
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =      ../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	CarTracking/CarTracking.jar \
-	ConstAbstractInterpretation/ConstAbstractInterpretation.jar \
-	ConstAbstractInterpretationObservable/ConstAbstractInterpretationObservable.jar \
-	ConstNonconst/ConstNonconst.jar \
-	ConstPropagation/ConstPropagation.jar \
-	DimensionSystemExample/DimensionSystemExample.jar \
-	MonotonicityAnalysis/MonotonicityAnalysis.jar \
-	Observable/Observable.jar \
-	ProductLattices/ProductLattices.jar \
-	UnitSystemExample/UnitSystemExample.jar
+PTPACKAGE =     unitSystem
+
+PTCLASSJAR =	
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
+PTCLASSALLJARS = \
+	domains/domains.jar
 
-OTHER_FILES_TO_BE_JARED =
+JSRCS = \
+	BaseUnitConcept.java \
+	BaseUnitRepresentativeConcept.java \
+	UnitInformation.java
+	
+OTHER_FILES_TO_BE_JARED = \
+	unitSystem.xml
+	UnitSystemSolverModel.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
 MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash

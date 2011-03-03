@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Ontologies Observable Demo Observable
+# Makefile for Ptolemy Ontologies Observable Demo DimensionSystemExample
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/data/ontologies/demo/Observable
+ME =		ptolemy/data/ontologies/demo/DimensionSystemExample
 
 DIRS =
 
@@ -43,14 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Observable
+PTPACKAGE = 	DimensionSystemExample
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Observable.xml
+	DimensionSystemExample.xml \
+	DimensionSystemExampleWrong.xml \
+	DimensionSystemExampleWrongWithoutConstraints.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -70,7 +72,7 @@ all: jclass
 	@echo "To run the demo, run 'make run'"
 
 run:
-	"$(PTII)/bin/vergil" Observable.xml
+	"$(PTII)/bin/vergil" DimensionSystemExample.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

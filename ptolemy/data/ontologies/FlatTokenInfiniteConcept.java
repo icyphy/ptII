@@ -194,7 +194,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
-    /** Create a new Record concept, belonging to the given
+    /** Create a new FlatTokenInfiniteConcept, belonging to the given
      *  ontology.
      * 
      *  @param ontology The ontology to which this concept belongs.

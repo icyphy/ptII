@@ -1,10 +1,9 @@
-# Makefile for ontologies demos
+# Makefile for Ptolemy Domains Ontologies
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Version: $Id$
+# @Author: Xiaojun Liu
 #
-# $Id$
-#
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 1998-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,58 +28,39 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =		ptolemy/domains/ontologies
 
-DIRS = 	CarTracking ConstAbstractInterpretation ConstAbstractInterpretationObservable \
-	ConstNonconst ConstPropagation DimensionSystemExample MonotonicityAnalysis \
-	Observable ProductLattices UnitSystemExample
+DIRS =		lib
 
-# Root of the Ptolemy II directory
-ROOT =		../../../..
+# Root of Ptolemy II directory
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
+PTPACKAGE = 	ontologies
+PTCLASSJAR =
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CarTracking/CarTracking.jar \
-	ConstAbstractInterpretation/ConstAbstractInterpretation.jar \
-	ConstAbstractInterpretationObservable/ConstAbstractInterpretationObservable.jar \
-	ConstNonconst/ConstNonconst.jar \
-	ConstPropagation/ConstPropagation.jar \
-	DimensionSystemExample/DimensionSystemExample.jar \
-	MonotonicityAnalysis/MonotonicityAnalysis.jar \
-	Observable/Observable.jar \
-	ProductLattices/ProductLattices.jar \
-	UnitSystemExample/UnitSystemExample.jar
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
-
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = $(DIRS)
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
-
-JCLASS = $(JSRCS:%.java=%.class)
+OPTIONAL_FILES =
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

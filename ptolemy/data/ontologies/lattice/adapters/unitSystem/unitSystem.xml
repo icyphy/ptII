@@ -1,0 +1,278 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="unitSystem" extends="ptolemy.data.ontologies.Ontology">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+        <configure>
+		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
+	      </configure>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={429, 320, 1062, 560}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[847, 443]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{376.7878787878788, 228.3939393939394}">
+    </property>
+    <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 40.0]">
+        </property>
+    </entity>
+    <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 410.0]">
+        </property>
+    </entity>
+    <entity name="Mass" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;kg&quot;, &quot;g&quot;, &quot;mg&quot;, &quot;ug&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0, 0.001, 1e-6, 1e-9}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.4,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="Length" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;m&quot;, &quot;km&quot;, &quot;cm&quot;, &quot;mm&quot;, &quot;um&quot;, &quot;nm&quot;, &quot;ft&quot;, &quot;inch&quot;, &quot;yd&quot;, &quot;mi&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0, 1000.0, 0.01, 0.001, 1e-6, 1e-9, 0.3048, 0.3048 / 12, 0.3048 * 3, 0.3048 *  5280}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Time" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;sec&quot;, &quot;ms&quot;, &quot;us&quot;, &quot;ns&quot;, &quot;min&quot;, &quot;hr&quot;, &quot;day&quot;, &quot;wk&quot;, &quot;yr&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0, 0.001, 1e-6, 1e-9, 60.0, 60.0 * 60, 60.0 * 60 * 24, 60.0 * 60 * 24 * 7, 60.0 * 60 * 24 * 365}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,1.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Current" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;A&quot;, &quot;mA&quot;, &quot;uA&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0, 0.001, 1e-6}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,1.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Temperature" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;K&quot;, &quot;C&quot;, &quot;F&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 5.0/9.0}">
+        </property>
+        <property name="unitOffsets" class="ptolemy.data.expr.Parameter" value="{0.0, 273.15, 459.67}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="Substance" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;mol&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="LightIntensity" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseUnitRepresentativeConcept">
+        <property name="unitNames" class="ptolemy.data.expr.Parameter" value="{&quot;cd&quot;}">
+        </property>
+        <property name="unitFactors" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Dimensionless" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 160.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.19478573421134443">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.3715659277062966">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.634804800166202">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.08366188736725">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5705604719711566">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.90621542813083">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.1440867235319896">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.3654284642473806">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.32161354913499857">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.576182803665855">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.9117921048273554">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.3255744742444153">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.791894339302459">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.1331503888579197">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.3461750948169455">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.463400352549643">
+        </property>
+    </relation>
+    <link port="Conflict.belowPort" relation="relation9"/>
+    <link port="Conflict.belowPort" relation="relation10"/>
+    <link port="Conflict.belowPort" relation="relation11"/>
+    <link port="Conflict.belowPort" relation="relation12"/>
+    <link port="Conflict.belowPort" relation="relation13"/>
+    <link port="Conflict.belowPort" relation="relation14"/>
+    <link port="Conflict.belowPort" relation="relation15"/>
+    <link port="Conflict.belowPort" relation="relation16"/>
+    <link port="Unknown.abovePort" relation="relation"/>
+    <link port="Unknown.abovePort" relation="relation2"/>
+    <link port="Unknown.abovePort" relation="relation3"/>
+    <link port="Unknown.abovePort" relation="relation4"/>
+    <link port="Unknown.abovePort" relation="relation5"/>
+    <link port="Unknown.abovePort" relation="relation6"/>
+    <link port="Unknown.abovePort" relation="relation7"/>
+    <link port="Unknown.abovePort" relation="relation8"/>
+    <link port="Mass.belowPort" relation="relation7"/>
+    <link port="Mass.abovePort" relation="relation10"/>
+    <link port="Length.belowPort" relation="relation6"/>
+    <link port="Length.abovePort" relation="relation11"/>
+    <link port="Time.belowPort" relation="relation5"/>
+    <link port="Time.abovePort" relation="relation12"/>
+    <link port="Current.belowPort" relation="relation4"/>
+    <link port="Current.abovePort" relation="relation13"/>
+    <link port="Temperature.belowPort" relation="relation3"/>
+    <link port="Temperature.abovePort" relation="relation14"/>
+    <link port="Substance.belowPort" relation="relation2"/>
+    <link port="Substance.abovePort" relation="relation15"/>
+    <link port="LightIntensity.belowPort" relation="relation"/>
+    <link port="LightIntensity.abovePort" relation="relation16"/>
+    <link port="Dimensionless.belowPort" relation="relation8"/>
+    <link port="Dimensionless.abovePort" relation="relation9"/>
+</class>
