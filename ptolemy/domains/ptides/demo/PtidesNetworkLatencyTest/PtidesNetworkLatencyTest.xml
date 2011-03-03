@@ -4,28 +4,28 @@
 <entity name="PtidesNetworkLatencyTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 11, 910, 631}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 11, 881, 659}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 516]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 544]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.0, 258.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5, 272.0}">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 75.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model measures the sum of network delay and clock synchronization error between&#10;Platform1 and Platform2.&#10;&#10;Assumptions:&#10;1. Master clock time = oracle time, i.e., master clock platform cannot have any clock drift&#10;or synchronization error.&#10;&#10;Possible solutions:&#10;1. fireAtPlatformTime() for the Ptides director to abstract timed interrupt devices.&#10;2. model time clock within the platform">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model performs a imprecise  measurement of the network delay between&#10;Platform1 and Platform2.&#10;&#10;Platform1 and Platform 2 do not have synchronized clocks. In fact, the clock of Platform2&#10;drift at the rate of 1.1 of that of Platform1. &#10;&#10;The network delay between the two platforms is set to 1.0. However, because of the&#10;clock synchronization error, the actual calculated error will be different from 1.0.&#10;In fact, since the drift between two platforms is constant, we expect the calculated&#10;network delay to drift from the actual network delay over time. This is indeed what&#10;we observe as we run the system.&#10;&#10;Also, notice to perform the safe-to-proces analysis in Ptides, port3 of Platform2 must&#10;be anotated with the correct networkDelay value. This value indicates the assumed&#10;sum of bound on network delay + bound on clock synchronization error between these&#10;two platforms. However, as time goes on, since the synchronization error increases,&#10;this bound value will no loner hold, and we would expect the Ptides director throw an&#10;exception. In fact, in this example, if the networkDelay parameter of port3 of Platform2&#10;is changed from 2.7 to 2.6, this exception is indeed observed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 215.0]">
         </property>
     </property>
     <entity name="Platform1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 155.0]">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -118,11 +118,11 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 155.0]">
         </property>
     </entity>
     <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 145.0]">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -302,56 +302,41 @@
         <link port="Expression.output" relation="relation4"/>
         <link port="Expression.input" relation="relation2"/>
     </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.2, 1.32, 1.44, 1.56, 1.68, 1.8, 1.92, 2.04, 2.16, 2.28, 2.4, 2.52, 2.64}">
-        </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 185.0]">
-        </property>
-    </entity>
     <entity name="NetworkDelay" class="ptolemy.actor.lib.TimeDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 155.0]">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.4545454545, 5.6545454545, 6.8545454545, 8.0545454545, 9.2545454545, 10.4545454545, 11.6545454545, 12.8545454545, 14.0545454545, 15.2545454545, 16.4545454545, 17.6545454545, 18.8545454545}">
+    <entity name="Calculated network delay" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 226, 508, 347}, maximized=false}">
         </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 145.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 270.0]">
-        </property>
-    </entity>
-    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 270.0}">
-        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Calculated network delay</title>
+<xLabel>Oracle physical times at which measurements are taken</xLabel>
+<yLabel>Network delay measurement</yLabel>
+<xRange min="4.4545454545" max="18.854545454500002"/>
+<yRange min="1.2000000000000002" max="2.639999999999999"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-        </property>
-        <vertex name="vertex1" value="[420.0, 185.0]">
-        </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[290.0, 195.0]">
+        <vertex name="vertex1" value="[320.0, 155.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Platform1.port" relation="relation"/>
     <link port="Platform1.port2" relation="relation2"/>
@@ -359,10 +344,7 @@
     <link port="Platform2.port2" relation="relation4"/>
     <link port="Platform2.port3" relation="relation3"/>
     <link port="Platform2.port" relation="relation3"/>
-    <link port="Test2.input" relation="relation4"/>
     <link port="NetworkDelay.input" relation="relation2"/>
     <link port="NetworkDelay.output" relation="relation3"/>
-    <link port="Test.input" relation="relation5"/>
-    <link port="CurrentTime.output" relation="relation5"/>
-    <link port="CurrentTime.trigger" relation="relation4"/>
+    <link port="Calculated network delay.input" relation="relation4"/>
 </entity>

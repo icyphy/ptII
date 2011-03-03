@@ -34,7 +34,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
@@ -113,13 +112,13 @@ public class SlaveClock extends TypedAtomicActor {
             .getPlatformPhysicalTag(PtidesBasicDirector.PLATFORM_TIMER);
         if (token.doubleValue() > platformTag.timestamp.getDoubleValue()) {
             director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
-                    new Time(director, 1.3));
+                    1.3);
         } else if (token.doubleValue() < platformTag.timestamp.getDoubleValue()) {
             director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
-                    new Time(director, 0.7));
+                    0.7);
         } else {
             director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
-                    new Time(director, 1.0));
+                    1.0);
         }
         output.send(0, new DoubleToken(platformTag.timestamp.getDoubleValue()));
     }
