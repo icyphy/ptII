@@ -3072,7 +3072,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  of time in the physical environment. Note this oracle physical time
      *  is different from the platform physical time, which is offset by
      *  the platform clock synchronization error.
-     *  This method should not be used 
      *  @return the model time of the enclosing director, which is a model of
      *  time in the physical environment.
      *  @exception IllegalActionException If enclosing director is not
@@ -3090,7 +3089,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Get the platform time associated with the current oracle time.
      *  If the current oracle time is stored in the time cache pair (which
-     *  may be either oracle-platform time pair or oracle-execution time
+     *  may be either an oracle-platform or an oracle-execution time
      *  pair), then simply return the platform time saved in that cache.
      *  Otherwise calculate the platform time based on the last saved oracle time,
      *  current oracle time, old platfrom time, and the clock drift.
@@ -3704,7 +3703,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  have corresponded to oracle time o1 (so o1 is stored on the list).
      *  After the change in drift, p1 corresponds to oracle time o2.
      *  The equation to calculate o2 is:
-     *  o2 = o + (p1 - p) / c'
+     *  <code>o2 = o + (p1 - p) / c'</code>
      *  Also add the original future fire times into the list of
      *  ignored fireAt times.
      *  Note, even if an oracle time is added to the ignore list,
