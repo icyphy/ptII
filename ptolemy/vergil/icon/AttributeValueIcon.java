@@ -140,16 +140,17 @@ public class AttributeValueIcon extends XMLIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Get the string to render in the icon.  This string is the
-     *  expression giving the value of the attribute of the container
-     *  having the name <i>attributeName</i>, truncated so that it is
-     *  no longer than <i>displayWidth</i> characters.  If it is truncated,
-     *  then the string has a trailing "...".  If the string is empty,
-     *  then return a string with one space (diva fails on empty strings).
-     *  @return The string to display, or a string with one space if none is found.
+    
+    /** Get the string value of the attribute to render in the icon.
+     *  This string is the expression giving the value of the attribute of the
+     *  container having the name <i>attributeName</i>. If the string is empty,
+     *  then return a string with one space (diva fails on empty strings). This
+     *  method will always return the full string value of the attribute and will
+     *  not be truncated.
+     *  @return The string value of the attribute to display, or a string with
+     *   one space if none is found.
      */
-    protected String _displayString() {
+    protected String _attributeValueString() {
         NamedObj container = getContainer();
 
         if (container != null) {
@@ -160,7 +161,7 @@ public class AttributeValueIcon extends XMLIcon {
                             .getExpression());
                 } else if (container instanceof CompositeEntity) {
                     NamedObj entity = ((CompositeEntity) container)
-                            .getEntity(entityName.stringValue());
+                    .getEntity(entityName.stringValue());
                     if (entity != null) {
                         associatedAttribute = entity.getAttribute(attributeName
                                 .getExpression());
@@ -172,27 +173,42 @@ public class AttributeValueIcon extends XMLIcon {
 
             if (associatedAttribute instanceof Settable) {
                 String value = ((Settable) associatedAttribute).getExpression();
-                String truncated = value;
-
-                try {
-                    int width = ((IntToken) displayWidth.getToken()).intValue();
-                    int height = ((IntToken) displayHeight.getToken())
-                            .intValue();
-                    truncated = StringUtilities.truncateString(value, width,
-                            height);
-                } catch (IllegalActionException ex) {
-                    // Ignore... use whole string.
+                if (value == null || value.equals("")) {
+                    value = " ";
                 }
-
-                if (truncated.length() == 0) {
-                    truncated = " ";
-                }
-
-                return truncated;
+                return value;
             }
         }
-
+        
         return " ";
+    }
+
+    /** Get the string to render in the icon.  This string is the
+     *  expression giving the value of the attribute of the container
+     *  having the name <i>attributeName</i>, truncated so that it is
+     *  no longer than <i>displayWidth</i> characters.  If it is truncated,
+     *  then the string has a trailing "...".  If the string is empty,
+     *  then return a string with one space (diva fails on empty strings).
+     *  @return The string to display, or a string with one space if none is found.
+     */
+    protected String _displayString() {
+        String truncated = _attributeValueString();
+
+        try {
+            int width = ((IntToken) displayWidth.getToken()).intValue();
+            int height = ((IntToken) displayHeight.getToken())
+            .intValue();
+            truncated = StringUtilities.truncateString(truncated, width,
+                    height);
+        } catch (IllegalActionException ex) {
+            // Ignore... use whole string.
+        }
+
+        if (truncated.length() == 0) {
+            truncated = " ";
+        }
+
+        return truncated;
     }
 
     ///////////////////////////////////////////////////////////////////

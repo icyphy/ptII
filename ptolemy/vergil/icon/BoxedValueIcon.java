@@ -107,4 +107,12 @@ public class BoxedValueIcon extends AttributeValueIcon {
 
         return new BasicRectangle(0, 0, width, height, boxColor.asColor(), 1);
     }
+    
+    /** Override the base class _displayString() method to return the full
+     *  string value of the attribute without truncating it.
+     *  @return The full string value of the attribute to be displayed.
+     */
+    protected String _displayString() {
+        return _attributeValueString();
+    }
 }
