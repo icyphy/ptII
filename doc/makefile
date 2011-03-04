@@ -220,6 +220,7 @@ COREPACKAGES = \
 	ptolemy.vergil.basic \
 	ptolemy.vergil.basic.layout \
 	ptolemy.vergil.basic.layout.kieler \
+	ptolemy.vergil.basic.layout.kieler.test.junit \
 	ptolemy.vergil.debugger \
 	ptolemy.vergil.icon \
 	ptolemy.vergil.modal \
@@ -395,7 +396,10 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
-	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr
+	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.unitSystem \
+	ptolemy.data.ontologies.lattice.adapters.unitSystem.domains.ontologies.lib \
+	ptolemy.domains.ontologies.lib
 
 # Packages used by Diva
 DIVAPACKAGES = \
