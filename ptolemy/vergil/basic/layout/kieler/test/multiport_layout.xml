@@ -1,0 +1,203 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="multiport_layout" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 33, 1316, 808}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1103, 698]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{147.2753117108586, 125.6840080492423}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model with many ports and&#10;all kinds of multiports,&#10;both internal and external. These&#10;are quite difficult to translate&#10;to the KIELER datastructure &#10;because there is no concept of&#10;a multiport. Instead, multiple&#10;simple ports are created for&#10;one multiport. However, getting the&#10;right offsets between those is&#10;tricky.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, 50.0]">
+        </property>
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 0.0]">
+        </property>
+    </property>
+    <property name="Parameter" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 35.0]">
+        </property>
+    </property>
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0,25.0}">
+        </property>
+    </port>
+    <port name="port2" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="multiport"/>
+        <display name="port with a very long label"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0,80.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </port>
+    <port name="port3" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0,40.0}">
+        </property>
+    </port>
+    <port name="port4" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="multiport"/>
+        <display name="port&#10;with&#10;a&#10;multiline&#10;label"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0,155.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </port>
+    <port name="port5" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0,195.0}">
+        </property>
+    </port>
+    <port name="port6" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="output"/>
+        <property name="multiport"/>
+        <display name="port labels &#10;of hidden &#10;ports are&#10;ugly"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0,320.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </port>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0,90.0}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 380.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </port>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation"/>
+    </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0,125.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=270.0,y=25.0}, tail={id=&quot;CompositeActor.port&quot;,x=20.0,y=200.0,index=2}, points={315.0,25.0,315.0,85.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;CompositeActor.port&quot;,x=20.0,y=200.0,index=2}, points={160.0,80.0,160.0,60.0,305.0,60.0,305.0,90.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, tail={id=&quot;port3._location&quot;,x=485.0,y=40.0}, points={450.0,90.0,450.0,40.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Discard.input&quot;,x=250.0,y=125.0,index=2}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={245.0,85.0,295.0,85.0,295.0,140.0,370.0,140.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port5._location&quot;,x=265.0,y=195.0}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={265.0,160.0,295.0,160.0,295.0,150.0,375.0,150.0} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=235.0,y=320.0}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={230.0,235.0,305.0,235.0,305.0,160.0,380.0,160.0} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=235.0,y=320.0}, tail={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, points={235.0,245.0,315.0,245.0,315.0,170.0,440.0,170.0,440.0,95.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={170.0,85.0,170.0,-15.0,460.0,-15.0,460.0,145.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={450.0,100.0,450.0,150.0} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[200.0,75.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Discard.input&quot;,x=250.0,y=125.0,index=2}, tail={id=&quot;relation11.vertex1&quot;,x=200.0,y=75.0}, points={250.0,75.0} },{ head={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, tail={id=&quot;relation11.vertex1&quot;,x=200.0,y=75.0}, points={190.0,215.0,190.0,75.0} } }">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[180.0,215.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, points={160.0,90.0,160.0,215.0} },{ head={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={190.0,215.0,190.0,355.0,450.0,355.0,450.0,155.0} } }">
+        </property>
+    </relation>
+    <link port="port" relation="relation"/>
+    <link port="port2" relation="relation2"/>
+    <link port="port2" relation="relation3"/>
+    <link port="port2" relation="relation12"/>
+    <link port="port3" relation="relation5"/>
+    <link port="port4" relation="relation3"/>
+    <link port="port4" relation="relation4"/>
+    <link port="port4" relation="relation12"/>
+    <link port="port5" relation="relation7"/>
+    <link port="port6" relation="relation8"/>
+    <link port="port6" relation="relation9"/>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor.port" relation="relation2"/>
+    <link port="CompositeActor.port2" relation="relation5"/>
+    <link port="CompositeActor.port2" relation="relation9"/>
+    <link port="CompositeActor.port2" relation="relation4"/>
+    <link port="CompositeActor.port3" relation="relation6"/>
+    <link port="CompositeActor.port3" relation="relation7"/>
+    <link port="CompositeActor.port3" relation="relation8"/>
+    <link port="Discard.input" relation="relation6"/>
+    <link port="Discard.input" relation="relation11"/>
+    <link relation1="relation11" relation2="relation12"/>
+</entity>
