@@ -42,6 +42,8 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
@@ -70,29 +72,32 @@ import diva.canvas.connector.ManhattanConnector;
 ///////////////////////////////////////////////////////////////////
 ////                      LayoutHint
 /**
+ * <p>
  * A LayoutHint is an Attribute for Ptolemy Relations that holds the
  * specification of bend points for links. Its value field contains a list of
  * {@link LayoutHintItem} objects because one Relation can correspond to
  * multiple links, which are not real objects in the Ptolemy abstract syntax and
  * therefore can not carry any attributes. Each item carries a list of
  * bendpoints for a specific link.
+ * </p>
  * <p>
  * The LayoutHint uses a Ptolemy Expression as its value in which the
  * {@link LayoutHintItem} objects are encoded. Therefore the Expression is
  * expected to contain an {@link ArrayToken} of {@link LayoutHintItem} objects.</p>
+ * 
  * <p>
  * A complete LayoutHint with two {@link LayoutHintItem}s could look like this:</p>
  * 
  * <pre>
  * { 
  *   { 
- *     head={"Discard.input",60.0,115.0,2}, 
- *     tail={"CompositeActor.port3",300.0,380.0,3}, 
+ *     head={id="Discard.input",x=60.0,y=115.0,index=2}, 
+ *     tail={id="CompositeActor.port3",x=300.0,y=380.0,index=3}, 
  *     points={105.0,235.0,105.0,190.0,265.0,190.0,265.0,135.0}
  *   },
  *   { 
- *     head={"Ramp.output",320.0,225.0}, 
- *     tail={"CompositeActor.port2",580.0,200.0,3}, 
+ *     head={id="Ramp.output",x=320.0,y=225.0}, 
+ *     tail={id="CompositeActor.port2",x=580.0,y=200.0,index=3}, 
  *     points={135.0,25.0,135.0,125.0}
  *   }
  * }
@@ -212,6 +217,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
     /**
      * A LayoutHint has no default expression.
+     * @return always null
      */
     public String getDefaultExpression() {
         return null;
@@ -249,18 +255,18 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // will not return something that is parseable by setExpression()
             return _expression;
         }
-        StringBuffer b = new StringBuffer();
-        b.append("{ ");
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("{ ");
         int i = 0;
         for (LayoutHintItem item : _layoutHintItems) {
             if (i > 0) {
-                b.append(",");
+                buffer.append(",");
             }
-            b.append(item.getExpression());
+            buffer.append(item.getExpression());
             i++;
         }
-        b.append(" }");
-        return b.toString();
+        buffer.append(" }");
+        return buffer.toString();
     }
 
     /**
@@ -297,15 +303,21 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     }
 
     /**
-     * {@inheritDoc}.
+     * Get the value of the attribute, which is the evaluated expression.
+     * @return The value.
+     * @see Settable#getValueAsString()
      */
     public String getValueAsString() {
         return getExpression();
     }
 
     /**
-     * {@inheritDoc}.
+     * Get the visibility of this Settable, as set by setVisibility().
+     * The returned value is one of the static
+     * instances of the {@link Settable.Visibility} inner class.
+     * @return The visibility of this Settable.
      * @see #setVisibility(ptolemy.kernel.util.Settable.Visibility)
+     * @see Settable#getVisibility()
      */
     public Visibility getVisibility() {
         return _visibility;
@@ -516,37 +528,36 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 RecordToken layoutItem = (RecordToken) ((ArrayToken) hints)
                         .getElement(i);
                 // a LayoutHintItem has a head and tail entry which are
-                // arrays containing an identifying String, coordinates
+                // records containing an identifying String, coordinates
                 // and optionally the width of a multiport
-                ArrayToken headToken = ((ArrayToken) layoutItem.get("head"));
+                RecordToken headToken = ((RecordToken) layoutItem.get("head"));
                 NamedObj head = _findNamedObj(this,
-                        ((StringToken) headToken.getElement(0)).stringValue());
+                        ((StringToken) headToken.get("id")).stringValue());
                 double[] headLocation = new double[2];
-                headLocation[0] = Double.parseDouble(((StringToken) headToken
-                        .getElement(1)).stringValue());
-                headLocation[1] = Double.parseDouble(((StringToken) headToken
-                        .getElement(2)).stringValue());
+                headLocation[0] = ((DoubleToken) headToken
+                        .get("x")).doubleValue();
+                headLocation[1] = ((DoubleToken) headToken
+                        .get("y")).doubleValue();
                 int headMultiportWidth = 1;
-                if (headToken.length() >= 4) {
-                    headMultiportWidth = Integer
-                            .parseInt(((StringToken) headToken.getElement(3))
-                                    .stringValue());
+                if(headToken.get("index") != null){
+                    headMultiportWidth = ((IntToken) headToken.get("index"))
+                                    .intValue();
+                }
+                
+                RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
+                NamedObj tail = _findNamedObj(this,
+                        ((StringToken) tailToken.get("id")).stringValue());
+                double[] tailLocation = new double[2];
+                tailLocation[0] = ((DoubleToken) tailToken
+                        .get("x")).doubleValue();
+                tailLocation[1] = ((DoubleToken) tailToken
+                        .get("y")).doubleValue();
+                int tailMultiportWidth = 1;
+                if(tailToken.get("index") != null){
+                    tailMultiportWidth = ((IntToken) tailToken.get("index"))
+                                    .intValue();
                 }
 
-                ArrayToken tailToken = ((ArrayToken) layoutItem.get("tail"));
-                NamedObj tail = _findNamedObj(this,
-                        ((StringToken) tailToken.getElement(0)).stringValue());
-                double[] tailLocation = new double[2];
-                tailLocation[0] = Double.parseDouble(((StringToken) tailToken
-                        .getElement(1)).stringValue());
-                tailLocation[1] = Double.parseDouble(((StringToken) tailToken
-                        .getElement(2)).stringValue());
-                int tailMultiportWidth = 1;
-                if (tailToken.length() >= 4) {
-                    tailMultiportWidth = Integer
-                            .parseInt(((StringToken) tailToken.getElement(3))
-                                    .stringValue());
-                }
                 // the LayoutHintItem record contains a points entry, containing
                 // an array of bend points
                 ArrayToken bendPoints = (ArrayToken) layoutItem.get("points");
@@ -573,7 +584,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
         } catch (Exception e) {
             throw new IllegalActionException(
-                    this, e,
+                    this,
+                    e,
                     e.getMessage()
                             + "\nExpression is expected to be an Array of layout hint Records. "
                             + "The following expression is of wrong format: \n"
@@ -643,10 +655,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     /** Debug flag, if set will give some debug output to console */
     private static final boolean DEBUG = false;
     /** A valid example expression to show in the GUI in case of errors. */
-    private static final String EXAMPLE_EXPRESSION = "{  \n{head={\"a.out\",10,11},"
-            + "tail={\"relation1\",20,21},points={1,2,3,4,5,6}} ,"
-            + " \n{head={\"b.out1\",10,11},"
-            + "tail={\"relation2\",20,21},points={1,2,3,4,5,6}} \n}";
+    private static final String EXAMPLE_EXPRESSION = "{  \n{head={id=\"a.out\",x=10,y=11},"
+            + "tail={id=\"relation1\",x=20,y=21},points={1,2,3,4,5,6}} ,"
+            + " \n{head={id=\"b.out1\",x=10,y=11},"
+            + "tail={id=\"relation2\",x=20,y=21},points={1,2,3,4,5,6}} \n}";
     /** The expression given in setExpression(). */
     private String _expression;
     /** Indicator that the expression is the most recent spec for the location. */
@@ -796,28 +808,26 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @return String representation of this LayoutHint
          */
         public String getExpression() {
-            StringBuffer b = new StringBuffer();
-            b.append("{ head={\"" + _getName(_head) + "\""
-                    + "," + _headLocation[0] + "," + _headLocation[1]);
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("{ head={id=\"" + _getName(_head) + "\"" + ",x="
+                    + _headLocation[0] + ",y=" + _headLocation[1]);
             if (_headMultiportIndex[1] != 1) {
-                b.append("," + _headMultiportIndex[1]);
+                buffer.append(",index=" + _headMultiportIndex[1]);
             }
-            b.append("}, "
-                    + "tail={\"" + _getName(_tail) + "\""
-                    + "," + _tailLocation[0] + "," + _tailLocation[1]);
+            buffer.append("}, " + "tail={id=\"" + _getName(_tail) + "\"" + ",x="
+                    + _tailLocation[0] + ",y=" + _tailLocation[1]);
             if (_tailMultiportIndex[1] != 1) {
-                b.append("," + _tailMultiportIndex[1]);
+                buffer.append(",index=" + _tailMultiportIndex[1]);
             }
-            b.append("}, "
-                    + "points={");
+            buffer.append("}, " + "points={");
             for (int i = 0; i < (_bendPoints.length - 1); i += 2) {
                 if (i > 0) {
-                    b.append(",");
+                    buffer.append(",");
                 }
-                b.append(_bendPoints[i] + "," + _bendPoints[i + 1]);
+                buffer.append(_bendPoints[i] + "," + _bendPoints[i + 1]);
             }
-            b.append("} }");
-            return b.toString();
+            buffer.append("} }");
+            return buffer.toString();
         }
 
         /**
@@ -859,24 +869,24 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 // System.out.println("Kick: no bendpoints");
                 return false;
             }
-            NamedObj h = _head;
-            NamedObj t = _tail;
-            if (h instanceof Port) {
+            NamedObj head = _head;
+            NamedObj tail = _tail;
+            if (head instanceof Port) {
                 // check if the width of a multiport has changed
-                int width = _getChannelWidth(h);
+                int width = _getChannelWidth(head);
                 if (width != _headMultiportIndex[1]) {
                     // System.out.println("Kick: head index");
                     return false;
                 }
-                h = h.getContainer();
+                head = head.getContainer();
             }
-            if (t instanceof Port) {
-                int width = _getChannelWidth(t);
+            if (tail instanceof Port) {
+                int width = _getChannelWidth(tail);
                 if (width != _tailMultiportIndex[1]) {
                     // System.out.println("Kick: tail index");
                     return false;
                 }
-                t = t.getContainer();
+                tail = tail.getContainer();
             }
             double[] newHeadLocation = PtolemyModelUtil._getLocation(_head);
             double[] newTailLocation = PtolemyModelUtil._getLocation(_tail);
