@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,7 +58,7 @@ JSRCS = \
 	UnitInformation.java
 	
 OTHER_FILES_TO_BE_JARED = \
-	unitSystem.xml
+	unitSystem.xml \
 	UnitSystemSolverModel.xml
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
