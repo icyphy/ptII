@@ -78,13 +78,18 @@ public class KielerJUnitTest {
             filters.add(new RemoveGraphicalClasses());
             MoMLParser.setMoMLFilters(filters);
 
+            // Conver the file name to a canonical file name so that
+            // this test may be run from any directory or from within Eclipse.
+            File canonicalModelFile = FileUtilities.nameToFile(modelFileName, null);
+            String canonicalModelFileName = canonicalModelFile.getCanonicalPath();
+
             // FIXME: are we in the right thread?
             ConfigurationApplication application = 
                 new ConfigurationApplication( new String[] {
                             // Need to display a frame or Kieler fails.
                             //"ptolemy/actor/gui/test/testConfiguration.xml",
                             "ptolemy/configs/full/configuration.xml", 
-                            modelFileName});
+                            canonicalModelFileName});
             
             // FIXME: we should see the original model and then
             // see it get laid out.
@@ -115,9 +120,9 @@ public class KielerJUnitTest {
             
             // Export the model and compare it with the original.
             String laidOutMoML = model.exportMoML();
-            byte [] originalMoMLBytes = FileUtilities.binaryReadURLToByteArray(new File(modelFileName).toURI().toURL());
+            byte [] originalMoMLBytes = FileUtilities.binaryReadURLToByteArray(canonicalModelFile.toURI().toURL());
 
-            System.out.println("Difference between " + modelFileName
+            System.out.println("Difference between " + canonicalModelFileName
                     + " and the exported MoML after Kieler Layout:");
             System.out.println(Diff.diff(new String(originalMoMLBytes),
                             laidOutMoML));
@@ -139,7 +144,7 @@ public class KielerJUnitTest {
             // TODO: Invoke the Kieler layout mechanism again and export.
 
             Manager manager = new Manager(model.workspace(), "KJUT");
-            for(int i = 1; i <= 10; i ++) {
+            for(int i = 1; i <= 2; i ++) {
                 System.out.println(util.testsuite.PrintThreads.allThreads(true));
                 try {
                     Thread.sleep(1000);
@@ -195,11 +200,10 @@ public class KielerJUnitTest {
     @org.junit.Test 
     public void run() throws Exception {
         // FIXME: Just list all the .xml files in the models/ directory.
+        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml");
 
-        layoutTest("models/ConstDisplay.xml");
-
-        layoutTest("models/ConstConstDisplay.xml");
-
+        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml");
+        
         // FIXME: we should have a way to run the test on arbitrary
         // models that have not yet been laid out.
         //layoutTest("models/Spectrum.xml");
@@ -209,5 +213,5 @@ public class KielerJUnitTest {
         org.junit.runner.JUnitCore.main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
-    private static String _eol = System.getProperty("line.separator");
+    // private static String _eol = System.getProperty("line.separator");
 }
