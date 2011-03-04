@@ -110,9 +110,10 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                             } else {
                                 message = "The first frame of "
                                         + tableauxCount
-                                        + " found by findEffigy() is a \""
-                                        + firstFrame.getClass().getName()
-                                        + "\", which is not an instance of ActorGraphFrame."
+                                        + " found by findEffigy() is "
+                                        + (firstFrame == null ? "null" 
+                                                : "a \"" + firstFrame.getClass().getName() + "\"")
+                                        + ", which is not an instance of ActorGraphFrame."
                                         + " None of the other frames were ActorGraphFrames either.";
                             }
                         }
