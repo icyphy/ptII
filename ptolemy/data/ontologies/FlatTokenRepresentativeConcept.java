@@ -34,7 +34,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A finite concept in an ontology that represents a flat set of infinite
  *  concepts that map to a set of arbitrary Ptolemy tokens.
- * 
+ *  @see FlatTokenInfiniteConcept
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0

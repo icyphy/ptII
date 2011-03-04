@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This code is adapted from the
  *  {@link ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept}
  *  implementation.
- *  
+ *  @see FlatScalarTokenRepresentativeConcept
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 9.0

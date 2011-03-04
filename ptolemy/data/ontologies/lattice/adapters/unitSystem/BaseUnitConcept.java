@@ -42,7 +42,43 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A concept in the unitSystem ontology for a specific unit for
  *  a specific physical dimension.
-
+ *  
+ *  A unit for a base dimension is defined by the physical dimension it
+ *  measures and the multiplication factor and offset values required to convert
+ *  a value in its unit measurment to a unit measurement in the SI unit for this
+ *  dimension.
+ *  
+ *  For example, to represent the units for measuring temperature in degrees
+ *  Fahrenheit, the multiplication factor and offset are specified as what is
+ *  needed to convert Fahrenheit to Kelvin:
+ *  <ul>
+ *  <li>unitFactor = 5.0/9.0
+ *  <li>unitOffset = 459.67
+ *  </ul>
+ *  
+ *  <p>To convert a temperature measurement value in degrees F to degrees K, apply
+ *  the formula:<br>
+ *  <code>value in K = (value in F + unitOffset) * unitFactor</code>
+ *  </p>
+ *  <p>Inversely, to convert a measurement from the SI unit (K) to this unit (F),
+ *  apply this formula:<br>
+ *  <code>value in F = (value in K) / unitFactor - unitOffset</code>
+ *  </p>
+ *  <p>So far temperature is the only dimension that requires an offset. All
+ *  the other dimensions only require a multiplication
+ *  factor, so their offset is always zero. For example,
+ *  To represent the length dimension units in kilometers (km):</p>
+ *  <ul>
+ *  <li>unitFactor = 1000.0
+ *  <li>unitOffset = 0.0
+ *  </ul>
+ *  </p>The SI unit for length is meters (m) so the kilometers unitFactor is 1000.0
+ *  and there is zero offset.<p>
+ *  This class is an infinite concept so that an arbitrary number of different
+ *  unit measurements can be represented for any physical dimension. All that is
+ *  required is specify the name of units and the multiplication factor and offset
+ *  needed to convert the unit to the SI unit for that dimension.
+@see BaseUnitRepresentativeConcept
 @author Charles Shelton
 @version $Id$
 @since Ptolemy II 8.0

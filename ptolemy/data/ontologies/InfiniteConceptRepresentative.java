@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** An abstract base class for a finite concept in an ontology that represents
  *  a set of infinite concepts.
- * 
+ *  @see InfiniteConcept
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0

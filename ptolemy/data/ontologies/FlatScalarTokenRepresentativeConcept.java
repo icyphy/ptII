@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Settable;
 
 /** A finite concept in an ontology that represents a flat set of infinite
  *  concepts that map to an interval of scalar numbers.
- * 
+ *  @see FlatScalarTokenInfiniteConcept
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
