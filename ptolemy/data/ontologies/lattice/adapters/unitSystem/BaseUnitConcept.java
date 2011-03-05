@@ -1,7 +1,7 @@
 /* A concept in the unitSystem ontology for a specific unit for
  * a specific physical dimension.
 
- Copyright (c) 1998-2011 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -72,16 +72,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  <li>unitFactor = 1000.0
  *  <li>unitOffset = 0.0
  *  </ul>
- *  </p>The SI unit for length is meters (m) so the kilometers unitFactor is 1000.0
+ *  <p>The SI unit for length is meters (m) so the kilometers unitFactor is 1000.0
  *  and there is zero offset.<p>
- *  This class is an infinite concept so that an arbitrary number of different
+ *  <p>This class is an infinite concept so that an arbitrary number of different
  *  unit measurements can be represented for any physical dimension. All that is
  *  required is specify the name of units and the multiplication factor and offset
- *  needed to convert the unit to the SI unit for that dimension.
+ *  needed to convert the unit to the SI unit for that dimension.</p>
 @see BaseUnitRepresentativeConcept
 @author Charles Shelton
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 8.1
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */

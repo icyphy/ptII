@@ -148,7 +148,7 @@ public class KielerJUnitTest {
                 System.out.println(util.testsuite.PrintThreads.allThreads(true));
                 try {
                     Thread.sleep(1000);
-                } catch (Throwable ex) {
+                 } catch (Throwable ex) {
                     //Ignore
                 }
                 // Invoke undo and compare against the Ptolemy layout.
@@ -195,7 +195,12 @@ public class KielerJUnitTest {
     }
 
     /** 
-     *  
+     * Test the layout facility by reading in a models, stripping
+     * out the graphical elements, laying out the models, comparing
+     * the new results with the known good results and then doing
+     * undo and redo.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
      */ 
     @org.junit.Test 
     public void run() throws Exception {
@@ -209,6 +214,9 @@ public class KielerJUnitTest {
         //layoutTest("models/Spectrum.xml");
     }
 
+    /** Test the Kieler layout facility.
+     *  @exception args Not used.
+     */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore.main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
