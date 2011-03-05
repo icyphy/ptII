@@ -1,9 +1,9 @@
 # Makefile for Ptolemy Domains Ontologies Lib
 #
 # @Version: $Id$
-# @Author: Xiaojun Liu
+# @Author: Charles Shelton 
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,6 +35,7 @@ DIRS =		lib
 # Root of Ptolemy II directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -42,12 +43,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = 
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = 
 
 JSRCS = \
 	UnitsConverter.java
@@ -55,6 +56,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
