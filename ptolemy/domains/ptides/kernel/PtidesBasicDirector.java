@@ -144,8 +144,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  In such an environment, all platforms are assumed to be synchronized
  *  within a bounded error. Thus we assume there is a oracle that holds
  *  the "correct" time in the system, and this oracle time is the model
- *  time of the enclosing director. In many systems, the oracle time is
- *  simply the time of the master clock. Each platform then has two local
+ *  time of the enclosing DE director. Each platform then has two local
  *  clocks that tracks this time. One is a execution clock, which simulates
  *  the main clock that triggers the CPU, and it is used to simulate how long
  *  it takes for a particular actor to finish its execution. On the other hand,
@@ -157,22 +156,21 @@ import ptolemy.moml.MoMLChangeRequest;
  *  <p> Each of the clocks is an instance of the
  *  {@link RealTimeClock} inner class. The clock keeps track of its time by
  *  saving a pair of timer values, the oracle time, and the execution/platform
- *  time. These two times reflect the same point in time. A clock drift
- *  parameter then tracks the drift of the execution/platform time with
+ *  time. This pair of time values correspond to the oracle time 
+ *  execution/platform time at the same wall clock time. In other words, since
+ *  the execution/platform time drifts away from the oracle time, the saved
+ *  pair indicate a starting point at which these values are "simultaneous". A clock
+ *  drift parameter then tracks the drift of the execution/platform time with
  *  respect to the oracle time. If the times are perfectly synchronized, then
  *  the clock drift takes a value of 1.0. If the clock drift is bigger than
- *  1.0, then it means the execution/platform time runs faster than the
- *  oracle time. If the clock drift is 0.0, that means the execution/platform
+ *  1.0, then the execution/platform clock runs faster than the
+ *  oracle time clock. If the clock drift is 0.0, that means the execution/platform
  *  time does not change as oracle time changes. The clock drift is not allowed
- *  to take a negative value.  That is, As the oracle time increases, the
+ *  to take a negative value. That is, As the oracle time increases, the
  *  execution/platform time cannot decrease. Every time the clock drift
  *  changes, the pair of saved execution/platform and oracle time needs to be
  *  updated. Currently,the execution/platform clocks can only be updated by
  *  changing the clock drift. 
- *  FIXME: the above may not be what we want, since at the start of
- *  simulation, the execution/platform time may be very different from oracle
- *  time, and we don't want to wait forever for these times to catch up to
- *  each other.
  *  
  *  <p> While in some hardware platforms the platform clock and the execution
  *  clock are
@@ -197,17 +195,15 @@ import ptolemy.moml.MoMLChangeRequest;
  *  of the actor. Notice the oracle time is also used to keep track of
  *  real-time delays (d_o) for sensors.</p>
  *  
- *  <p> On the other hand, the platform time is used in the following
+ *  <p> The platform time is used in the following
  *  situations: generating timestamps for sensor events, enforcing deadlines
  *  for actuation events, and setup the wake-up time for timed interrupts.
- *  The time synchronization error is captured in the the parameter
- *  {@link #platformTimeSynchronizationError}. Currently this error
- *  is a fixed double, but in the future, it should be a function that
- *  depends on oracle time. Also, the Ptides operational semantics assumes
+ *  Also, the Ptides operational semantics assumes
  *  a bound in the time synchronization error. This error is captured in the
  *  parameter {@link #assumedPlatformTimeSynchronizationErrorBound}. If
  *  the actual error exceeds this bound, the safe-to-process analysis could
- *  produce an incorrect result.</p>
+ *  produce an incorrect result. The demo PtidesNetworkLatencyTest illustrates
+ *  this error.</p>
  *  
  *  <p> The simulation of physical time makes it possible
  *  to simulate event preemption. However, in this basic version,
@@ -228,7 +224,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  must only be connected to input and output ports of the composite
  *  actor governed by the Ptides director. In addition, input
  *  ports to the Ptides director hold information about
- *  real time delays (see above paper reference for the definition
+ *  real time delays (see paper reference 3 paragraphs later for the definition
  *  of real time delay) at sensors and network inputs, thus these ports
  *  must be annotated correctly. If an input port is connected to a
  *  SensorInputDevice, the port is considered a sensor port, and it
@@ -237,7 +233,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  port, and could be annotated with <i>networkDelay</i> and
  *  <i>networkDriverDelay</i>
  *  parameters (the difference between these parameters are explained in
- *  the following paragraph). However a port cannot be a sensor port and
+ *  the following paragraph). Note a port cannot be a sensor port and
  *  a network port at the same time. If an input port is not annotated and
  *  if it is not connected to either a SensorInputDevice or a
  *  NetworkInputDevice, the port is assumed to be a sensor port. We make
@@ -258,7 +254,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  delay experience by a packet, between when the packet first leaves the
  *  source platform, and when the packet arrives at the sink platform. This
  *  delay should be modeled as a part of the Ptides model, in the enclosing
- *  DE director, however the maximum bound of this delay needs to be annotated
+ *  DE director, while the maximum bound of this delay needs to be annotated
  *  as <i>networkDelay</i> at the input port of the receiving platform. If it
  *  is not properly annotated, safe-to-process analysis of the Ptides platform
  *  could produce false positive results. On the other hand, the 
