@@ -2884,31 +2884,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String className = (String) _attributes.get("class");
                 String propertyName = (String) _attributes.get("name");
                 _checkForNull(propertyName, "No name for element \"property\"");
-
-
                 if (createIfNecessary != null
                         && createIfNecessary.equals("true") && _current != null
-                        && propertyName != null) {
-                    new Exception("createIfNecessary is true").printStackTrace();
-                    if (_current.getAttribute(propertyName) != null) {
-                        // The createIfNecessary="true" and the property
-                        // already exists
-                    } else {
-                        Attribute masterAttribute = _current.getAttribute(propertyName);
-                        if (masterAttribute == null) {
-                            // Needed to find Parameters that are up scope
-                            NamedObj searchContainer = _current;
-                            while (searchContainer != null && masterAttribute == null) {
-                                masterAttribute = searchContainer.getAttribute(propertyName);
-                                System.out.println("MoMLParser: searchContainer: " + searchContainer + " masterAttribute" + masterAttribute);
-                                searchContainer = searchContainer.getContainer();
-                            }
-                        }
-                        if (masterAttribute == null) {
-                            String value = (String) _attributes.get("value");
-                            _handlePropertyElement(className, propertyName, value);
-                        }
-                    }
+                        && propertyName != null
+                        && _current.getAttribute(propertyName) != null) {
+                    // The createIfNecessary="true" and the property
+                    // already exists
                 } else {
                     // If the createIfNecessary property is true and
                     // there already is a property with this name, we
