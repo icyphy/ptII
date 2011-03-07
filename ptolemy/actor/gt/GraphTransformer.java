@@ -47,6 +47,7 @@ import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gt.data.SequentialTwoWayHashMap;
 import ptolemy.actor.gt.data.TwoWayHashMap;
 import ptolemy.actor.gt.ingredients.operations.Operation;
+import ptolemy.actor.lib.hoc.MirrorComposite;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -314,15 +315,20 @@ public class GraphTransformer extends ChangeRequest {
                             : (Relation) host;
 
                     NamedObj hostContainer = relation.getContainer();
-                    String moml;
-                    if (relation == hostLinkedObject) {
-                        moml = _getLinkMoML(host, relation);
-                    } else {
-                        moml = _getLinkMoML(hostLinkedObject, relation);
+                    // FIXME: Do not create the link because MirrorComposite creates it
+                    // automatically. There should be a more general solution for this.
+                    if (!(hostContainer instanceof MirrorComposite))
+                    {
+                        String moml;
+                        if (relation == hostLinkedObject) {
+                            moml = _getLinkMoML(host, relation);
+                        } else {
+                            moml = _getLinkMoML(hostLinkedObject, relation);
+                        }
+                        MoMLChangeRequest request = _createChangeRequest(
+                                hostContainer, moml);
+                        request.execute();
                     }
-                    MoMLChangeRequest request = _createChangeRequest(
-                            hostContainer, moml);
-                    request.execute();
                 }
             }
 
@@ -337,12 +343,14 @@ public class GraphTransformer extends ChangeRequest {
                         Relation replacementRelation = (Relation) replacementRelationObject;
                         Relation hostRelation = (Relation) _replacementToHost
                                 .get(replacementRelation);
-                        if (!hostComponentPort.insideRelationList().contains(
-                                hostRelation)) {
+                        NamedObj hostContainer = host.getContainer();
+                        // FIXME: Do not create the link because MirrorComposite creates it
+                        // automatically. There should be a more general solution for this.
+                        if (!(hostContainer instanceof MirrorComposite) &&
+                            !hostComponentPort.insideRelationList().contains(
+                                    hostRelation)) {
                             // There is no link between hostPort and
                             // hostRelation, so create a new link.
-                            NamedObj hostContainer = hostRelation
-                                    .getContainer();
                             String moml = _getLinkMoML(host, hostRelation);
                             MoMLChangeRequest request = _createChangeRequest(
                                     hostContainer, moml);
