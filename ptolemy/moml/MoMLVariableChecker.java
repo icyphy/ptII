@@ -397,17 +397,12 @@ public class MoMLVariableChecker {
                     if (node == null) {
                         // Needed when we are copying a composite that contains
                         // an Expression that refers to an upscope Parameter.
-                        System.out.println("MoMLVariableChecker: node == null, masterVariable: " 
-                               + masterVariable + " variableName: " + variableName
-                               + " nodeName: " + nodeName + " container: " + container
-                                + " parsedContainer: " + parsedContainer); 
                         node = masterVariable;
                     }
 
                     if (node == _previousNode) {
                         // We've already seen this node, so stop
                         // looping through the getToken() loop.
-                        System.out.println("MoMLVariableChecker: node == _previousNode, returning False");
                         return false;
                     }
                     _previousNode = node;
