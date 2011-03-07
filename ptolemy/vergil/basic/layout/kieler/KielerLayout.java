@@ -565,7 +565,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         _ptolemyModelUtil.addProperty(relation, layoutHint);
                     }
                 } catch (Exception e) {
-                    throw new IllegalActionException(
+                    throw new IllegalActionException(relation, e, 
                             "Cannot set _layoutHint attribute for " + relation
                                     + ": " + e.getMessage());
                 }
