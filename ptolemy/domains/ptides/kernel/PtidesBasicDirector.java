@@ -409,6 +409,7 @@ public class PtidesBasicDirector extends DEDirector {
         schedulerExecutionTime.setTypeEquals(BaseType.DOUBLE);
         schedulerExecutionTime.setExpression("0.0");
 
+        // FIXME: make this static final.  See LongToken.ZERO.
         _zero = new Time(this);
     }
 
@@ -964,6 +965,7 @@ public class PtidesBasicDirector extends DEDirector {
                     + "with an ID that is neither platform time clock or "
                     + "execution time clock.");
         }
+        // FIXME: FindBugs: Test for floating point equality.
         if (realTimeClock._clockDrift != newClockDrift) {
             // First update all the parameters in realTimeClock.
             Time newOracleTime = _getOraclePhysicalTag().timestamp;
@@ -2907,6 +2909,11 @@ public class PtidesBasicDirector extends DEDirector {
             Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
                     .get(port);
             if (channelDependency != null) {
+                // FIXME: FindBugs "WMI: Inefficient use of keySet iterator instead of
+                // entrySet iterator (WMI_WRONG_MAP_ITERATOR)" "This method accesses
+                // the value of a Map entry, using a key that was retrieved from a
+                // keySet iterator. It is more efficient to use an iterator on the
+                // entrySet of the map, to avoid the Map.get(key) lookup."
                 for (Integer integer : channelDependency.keySet()) {
                     if (((BooleanToken) forceActorsToProcessEventsInTimestampOrder
                             .getToken()).booleanValue()) {
@@ -3548,6 +3555,18 @@ public class PtidesBasicDirector extends DEDirector {
                             + getPlatformPhysicalTag(PLATFORM_TIMER).timestamp
                             + ".");
         } else if (result == 0) {
+            // FIXME: FindBugs: Unchecked type in generic call 
+            // GC: In class ptolemy.domains.ptides.kernel.PtidesBasicDirector
+            // In class ptolemy.domains.ptides.kernel.PtidesBasicDirector
+            // In method ptolemy.domains.ptides.kernel.PtidesBasicDirector._timedInterruptOccurred()
+            // Actual type Object
+            // Expected ptolemy.domains.ptides.kernel.PtidesEvent
+            // Called method java.util.Set.remove(Object)
+            // Invoked on ptolemy.domains.ptides.kernel.PtidesBasicDirector._eventsWithTimedInterrupt
+            // ptolemy.actor.util.TimedEvent.contents passed as argument
+            // Object.equals(Object) used to determine equality
+            // At PtidesBasicDirector.java:[line 3552]
+            // Unchecked argument of type Object provided where type PtidesEvent is expected in ptolemy.domains.ptides.kernel.PtidesBasicDirector._timedInterruptOccurred()
             _timedInterruptTimes.remove(0);
             _eventsWithTimedInterrupt.remove(timedEvent.contents);
             return true;
@@ -4009,7 +4028,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the remaining execution time (in physical time) for processing
      *  the event.
      */
-    public class DoubleTimedEvent extends TimedEvent {
+    public static class DoubleTimedEvent extends TimedEvent {
 
         /** Construct a new event with the specified time stamp,
          *  destination actor, and execution time.
@@ -4103,6 +4122,20 @@ public class PtidesBasicDirector extends DEDirector {
      *  @author jiazou
      */
     private class RealTimeClock {
+        // FIXME: Findbugs: "SIC: Could be refactored into a static
+        // inner class (SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS)" 
+
+        // "This
+        // class is an inner class, but does not use its embedded
+        // reference to the object which created it except during
+        // construction of the inner object.  This reference makes the
+        // instances of the class larger, and may keep the reference
+        // to the creator object alive longer than necessary.  If
+        // possible, the class should be made into a static inner
+        // class. Since the reference to the outer object is required
+        // during construction of the inner instance, the inner class
+        // will need to be refactored so as to pass a reference to the
+        // outer instance to the constructor for the inner class."
 
         /** Construct a real time clock, with all the times and clock drifts
          *  set to default values: All clock drifts are initialized to Time 1.0,
@@ -4192,5 +4225,26 @@ public class PtidesBasicDirector extends DEDirector {
         public int compareTo(Object other) {
             return deliveryTag.compareTo(((RealTimeEvent) other).deliveryTag);
         }
+        //  FIXME: FindBugs: "Eq: Class defines compareTo(...) and                                           
+        //  uses Object.equals() (EQ_COMPARETO_USE_OBJECT_EQUALS)"                                           
+
+        //  "This class defines a compareTo(...) method but inherits its                                     
+        //  equals() method from java.lang.Object. Generally, the value of                                   
+        //  compareTo should return zero if and only if equals returns                                       
+        //  true. If this is violated, weird and unpredictable failures                                      
+        //  will occur in classes such as PriorityQueue. In Java 5 the                                       
+        //  PriorityQueue.remove method uses the compareTo method, while                                     
+        //  in Java 6 it uses the equals method."                                                            
+
+        //  "From the JavaDoc for the compareTo method in the Comparable interface:"                         
+
+        //      "It is strongly recommended, but not strictly                                                
+        //      required that (x.compareTo(y)==0) ==                                                         
+        //      (x.equals(y)). Generally speaking, any class that                                            
+        //      implements the Comparable interface and violates                                             
+        //      this condition should clearly indicate this                                                  
+        //      fact. The recommended language is "Note: this                                                
+        //      class has a natural ordering that is inconsistent                                            
+        //      with equals."" 
     }
 }
