@@ -1,0 +1,93 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="GTThreadedComposite" class="ptolemy.actor.gt.controller.ModelBasedTransformation">
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model that illustrates a bug with GT and ThreadedComposite actors.&#10;The solution is to not mirror ports if the host container is a&#10;MIrrorComposite.  See r60488 of ptolemy/actor/gt/GraphTransformer.java&#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
+            </property>
+        </property>
+        <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 160}">
+            </property>
+            <configure>
+                <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
+                    <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
+                    </property>
+                    <property name="repeatUntilFixpoint" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="repeatCount" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="GTDirector" class="ptolemy.actor.gt.TransformationRule$TransformationDirector">
+                        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                        </property>
+                    </property>
+                    <port name="matched" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                        </property>
+                    </port>
+                    <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+                        <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+                            <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+                            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+                                <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+                                </property>
+                                <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                                </property>
+                                <property name="includeName" class="ptolemy.data.expr.Parameter" value="true">
+                                </property>
+                            </property>
+                            <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+                            </property>
+                            <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+                            </property>
+                            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 155}">
+                            </property>
+                            <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+                                <property name="output"/>
+                            </port>
+                            <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+                                <property name="input"/>
+                                <property name="multiport"/>
+                            </port>
+                            <entity name="Const" class="ptolemy.actor.lib.Const">
+                                <doc>Create a constant sequence.</doc>
+                                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                                    </property>
+                                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                    </property>
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 150}">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                </entity>
+            </configure>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4193995915213094">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3319114526637732">
+            </property>
+        </relation>
+        <link port="InitModel.outgoingPort" relation="relation"/>
+        <link port="Transform.incomingPort" relation="relation"/>
+    </entity>
+</entity>
