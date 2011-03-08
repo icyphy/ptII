@@ -385,18 +385,35 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // then skip if there already is an element with that name.
                 String createIfNecessary = (String) _attributes
                         .get("createIfNecessary");
+                // uniqueName() is not a good test for whether oldValue is
+                // present because uniqueName() strips off any numeric suffix
+                // before testing for existence.  Thus, if q1 exists, then
+                // uniqueName(q1) will return q if there is no q.
                 value = _current.uniqueName(oldValue);
                 if (createIfNecessary != null
-                        && createIfNecessary.equals("true")
-                        && !value.equals(oldValue)) {
-                    // There already is something with that name, so we skip
-                    String currentElement = _xmlParser.getCurrentElement();
+                        && createIfNecessary.equals("true")) {
+                    // Check value against oldValue so that MoMLVariableChecker-2.3.4 passes.
+                    // Check for oldValue in _current so that MoMLVariableChecker-3.2 passes.
+                    if (!value.equals(oldValue)  || _current.getAttribute(oldValue) == null ) {
+                        // Needed to find Parameters that are up scope.
+                        // FIXME: does this check ScopeExtendingAttributes?
+                        Attribute masterAttribute = null;
+                        NamedObj searchContainer = _current;
+                        while (searchContainer != null && masterAttribute == null) {
+                            masterAttribute = searchContainer.getAttribute(oldValue);
+                            searchContainer = searchContainer.getContainer();
+                        }
+                        if (!value.equals(oldValue) || masterAttribute != null) {
+                            // There already is something with that name, so we skip.
+                            String currentElement = _xmlParser.getCurrentElement();
 
-                    // FIXME: increment _skipElement or set it to 1?
-                    _skipElement++;
-                    _skipElementIsNew = true;
-                    _skipElementName = currentElement;
-                    return;
+                            // FIXME: increment _skipElement or set it to 1?
+                            _skipElement++;
+                            _skipElementIsNew = true;
+                            _skipElementName = currentElement;
+                            return;
+                        }
+                    }
                 }
                 _namespaceTranslationTable.put(oldValue, value);
             }

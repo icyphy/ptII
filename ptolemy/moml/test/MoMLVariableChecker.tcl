@@ -622,13 +622,18 @@ test MoMLVariableChecker-3.2 {copy an expression in an opaque composite to an ad
     set expressionAMoML [$expressionA exportMoML]
     set variableChecker3_2 [java::new ptolemy.moml.MoMLVariableChecker]
     set copyMoML3_2 [$variableChecker3_2 checkCopy $expressionAMoML $compositeActorA]
+    #puts "copyMoML3_2:"
+    #puts "$copyMoML3_2"
     
     # Paste.
     # The bug was that when do the paste in an Opaque Composite,
     # if createIfNecessary is true, then we should look up the hierarchy
     # for values declared outside the container.
     set compositeActorA2 [java::cast ptolemy.actor.CompositeActor [$toplevel3_2 getEntity CompositeActorA2]]
-    set moml3_2  "$header <group name=\"auto\"> $copyMoML3_2 $expressionAMoML </group>" 
+    set moml3_2  "$header <group name=\"auto\">
+         $copyMoML3_2
+         $expressionAMoML
+</group>" 
     set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
 			   $compositeActorA2 $compositeActorA2 $moml3_2]
     set manager [java::new ptolemy.actor.Manager [$toplevel3_2 workspace] \
@@ -645,10 +650,13 @@ test MoMLVariableChecker-3.2 {copy an expression in an opaque composite to an ad
 		 [[$compositeActorA2 getEntity Expression] getPort output]]
 
     # Change the top parameter.  CompositeActorA2 should not have
-    # a copy of ParameterP so the values going to the Test actor from
+    # a copy of the parameters so the values going to the Test actor from
     # the composites should be the same for both composites.
-    set topParameter [java::cast ptolemy.data.expr.Parameter [$toplevel3_2 getAttribute ParameterP]]
-    $topParameter setExpression 50
+    set topParameterLetter [java::cast ptolemy.data.expr.Parameter [$toplevel3_2 getAttribute ParameterEndsInLetter]]
+    $topParameterLetter setExpression 50
+
+    set topParameterNumber [java::cast ptolemy.data.expr.Parameter [$toplevel3_2 getAttribute ParameterEndsInNumber1]]
+    $topParameterNumber setExpression 30
 
     $manager execute
 } {}
