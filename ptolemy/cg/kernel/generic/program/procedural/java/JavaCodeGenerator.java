@@ -1074,6 +1074,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     line = bufferedReader.readLine();
                     //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
 
+                    if (i > 10000000) {
+                        new InternalErrorException("Internal Error: looped more than 10000000 lines?"
+                                + " This can happen if curly brackets are not on lines"
+                                + " by themselves."
+                                + " ifCount: " + ifCount
+                                + " openBracketCount: " + openBracketCount
+                                + " commentCount: " + commentCount
+                                + " tryCount: " + tryCount
+                                + " line:\n" + line);
+                    }
                     if (line != null) {
                         body.append(line + _eol);
                         trimmedLine = line.trim();
