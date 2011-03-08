@@ -91,7 +91,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  Ptides directors are forced to be placed within a composite actor,
  *  with an enclosing director on the outside. Also unlike most other
  *  directors, where the local notion of
- *  model time is tightly coupled with with that of the enclosing
+ *  model time is tightly coupled with that of the enclosing
  *  director, this director's notion of model time
  *  is decoupled from that of the enclosing director. This design
  *  allows the use of time in the enclosing
@@ -115,7 +115,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  To address the distributed aspect, each composite actor that
  *  has a Ptides director inside simulates a computation platform
  *  (e.g., a microprocessor), while the enclosing director simulates
- *  the physical world. Actors under Ptides director then communicate
+ *  the physical world. Actors under the Ptides director then communicate
  *  to the outside via sensors, actuators, or networks. These
  *  components are simulated by input/output ports of the composite
  *  actors, as well as special actors that simulate network devices.
@@ -145,28 +145,28 @@ import ptolemy.moml.MoMLChangeRequest;
  *  within a bounded error. Thus we assume there is a oracle that holds
  *  the "correct" time in the system, and this oracle time is the model
  *  time of the enclosing DE director. Each platform then has two local
- *  clocks that tracks this time. One is a execution clock, which simulates
- *  the main clock that triggers the CPU, and it is used to simulate how long
- *  it takes for a particular actor to finish its execution. On the other hand,
- *  the platform clock is the timer in the system. For example, when the sensor
+ *  clocks that track this time. One is a execution clock, which simulates
+ *  the main clock that triggers the CPU. It is used to simulate how long
+ *  it takes for a particular actor to finish its execution. The other is
+ *  the platform clock, which simulates the system timer. For example, when the sensor
  *  produces a timestamped event, the timestamp is retrieved using the platform
- *  clock. The execution clock and the platform clock produces execution time
+ *  clock. The execution clock and the platform clock simulate execution time
  *  and platform time, respectively.
  *
  *  <p> Each of the clocks is an instance of the
  *  {@link RealTimeClock} inner class. The clock keeps track of its time by
- *  saving a pair of timer values, the oracle time, and the execution/platform
- *  time. This pair of time values correspond to the oracle time
+ *  saving a pair of Time values, the oracle time, and the execution or platform
+ *  time, depending on the clock used. This pair of Time values correspond to the oracle time
  *  execution/platform time at the same wall clock time. In other words, since
  *  the execution/platform time drifts away from the oracle time, the saved
- *  pair indicate a starting point at which these values are "simultaneous". A clock
+ *  pair indicates a starting point at which these values are "simultaneous". A clock
  *  drift parameter then tracks the drift of the execution/platform time with
  *  respect to the oracle time. If the times are perfectly synchronized, then
  *  the clock drift takes a value of 1.0. If the clock drift is bigger than
  *  1.0, then the execution/platform clock runs faster than the
  *  oracle time clock. If the clock drift is 0.0, that means the execution/platform
  *  time does not change as oracle time changes. The clock drift is not allowed
- *  to take a negative value. That is, As the oracle time increases, the
+ *  to take a negative value. That is, as the oracle time increases, the
  *  execution/platform time cannot decrease. Every time the clock drift
  *  changes, the pair of saved execution/platform and oracle time needs to be
  *  updated. Currently, the execution/platform clocks can only be updated by
@@ -176,28 +176,22 @@ import ptolemy.moml.MoMLChangeRequest;
  *  clock are
  *  closely related (e.g., they may be tied to the same oscillator, but
  *  frequency divided by different factors), this is not true in general.
- *  Moreover, in most Ptides systems that implements clock synchronization,
- *  the above assumption does not hold. As there exists separate hardware
- *  that performs clock synchronization by updating the clock drift as time
- *  synchronization packets are received. In the case they are the same,
+ *  Moreover, the above assumption does not hold in most Ptides systems that
+ *  implement clock synchronization. There usually exists separate hardware
+ *  that performs clock synchronization. Clock drifts are updated as time
+ *  synchronization packets are received at the hardware. In the case platform
+ *  and execution times are the same,
  *  a single {@link RealTimeClock} object can be created, and can be set to
  *  both the execution and platform clock.</p>
  *
- *  <p> FIXME: Instead of execution times, maybe we should use execution clock
- *  cycles coupled with clock frequency instead. And the clock drift of
- *  the execution clock can be replaced by the frequency drift of the CPU.
  *  We assume all execution times are in terms of oracle time. That
  *  is, if an actor is annotated with <i>executionTime</i> equal to <i>t</i>,
  *  an event that triggers this actor will take exactly <i>t</i> amount of
- *  oracle time to process. Notice, when the actor finishes firing, the
- *  amount of platform time passed may or may not be <i>t</i>, since the
- *  synchronization error could have changed within the execution time
- *  of the actor. Notice the oracle time is also used to keep track of
- *  real-time delays (d_o) for sensors.</p>
+ *  oracle time to process.</p>
  *
  *  <p> The platform time is used in the following
  *  situations: generating timestamps for sensor events, enforcing deadlines
- *  for actuation events, and setup the wake-up time for timed interrupts.
+ *  for actuation events, and to setup the wake-up time for timed interrupts.
  *  Also, the Ptides operational semantics assumes
  *  a bound in the time synchronization error. This error is captured in the
  *  parameter {@link #assumedPlatformTimeSynchronizationErrorBound}. If
@@ -212,76 +206,18 @@ import ptolemy.moml.MoMLChangeRequest;
  *  On the other hand, this scheduler simulates scheduling overhead,
  *  which is the amount of time for a scheduler to determine what is
  *  the next event to be executed. The parameter
- *  {@link #schedulerExecutionTime} annotates the amount of physical
+ *  {@link #schedulerExecutionTimeBound} bounds the amount of physical
  *  time it takes for the Ptides scheduler to make its scheduling
  *  decision. This decision is made whenever a sensor or timed
- *  interrupt occurs, or when an event has finished processing.</p>
- *
- *  <p> Since sensors, actuators, and network devices are important
- *  in the context of Ptides, special actors such as {@link
- *  SensorInputDevice, ActuatorOutputDevice, NetworkInputDevice,
- *  NetworkOutputDevice} are used in Ptides models. These actors
- *  must only be connected to input and output ports of the composite
- *  actor governed by the Ptides director. In addition, input
- *  ports to the Ptides director hold information about
- *  real time delays (see paper reference 3 paragraphs later for the definition
- *  of real time delay) at sensors and network inputs, thus these ports
- *  must be annotated correctly. If an input port is connected to a
- *  SensorInputDevice, the port is considered a sensor port, and it
- *  could be annotated with parameter realTimeDelay; If an input port is
- *  connected to a NetworkInputDevice, the port is considered a network
- *  port, and could be annotated with <i>networkDelay</i> and
- *  <i>networkDriverDelay</i>
- *  parameters (the difference between these parameters are explained in
- *  the following paragraph). Note a port cannot be a sensor port and
- *  a network port at the same time. If an input port is not annotated and
- *  if it is not connected to either a SensorInputDevice or a
- *  NetworkInputDevice, the port is assumed to be a sensor port. We make
- *  this assumption because the SensorInputDevice is not necessarily
- *  needed to simulate the functionality of the Ptides model, while
- *  NetworkInputDevice is. However, if the {@link #schedulerExecutionTime}
- *  parameter of the director is set to a non-zero value, SensorInputDevice
- *  and ActuationOutputDevice must be included in the Ptides model in order
- *  to correctly simulate the scheduling overhead after each interrupt
- *  event.</p>
- *
- *  <p> While the <i>networkDelay</i> and <i>networkDriverDelay</i> parameters
- *  both characterize the
- *  physical time delay at the receiving end of a network interface, there
- *  are subtle differences between these two parameters. The
- *  <i>networkDelay</i> parameter is used to characterize the amount of
- *  simulated physical time
- *  delay experience by a packet, between when the packet first leaves the
- *  source platform, and when the packet arrives at the sink platform. This
- *  delay should be modeled as a part of the Ptides model, in the enclosing
- *  DE director, while the maximum bound of this delay needs to be annotated
- *  as <i>networkDelay</i> at the input port of the receiving platform. If it
- *  is not properly annotated, safe-to-process analysis of the Ptides platform
- *  could produce false positive results. On the other hand, the
- *  <i>networkDriverDelay</i>
- *  specifies the amount of execution time it takes for a packet to be
- *  consumed and an event produced in the sink platform.</p>
- *
- *  <p> Like input ports, output ports of the composite actor governed by the
- *  Ptides director can also be annotated. By default, the director checks
- *  whether an output event's timestamp is smaller or equal to the simulated
- *  physical time of when this event is first produced. If the check fails,
- *  a deadline miss is implied, and
- *  the director throws an exception. If the check passes, the director
- *  transfers this event to the outside of the platform at physical time equal
- *  to the timestamp of the output event. However, if the output port is
- *  annotated with an <i>ignoreDeadline</i> parameter, then the director does
- *  not
- *  throw an exception. Instead, if the simulated physical time is smaller
- *  than the timestamp of the output event, the output event is transferred
- *  to the outside immediately. The output port could also be annotated with
- *  a parameter <i>transferImmediately</i>. If the parameter is true, then all
- *  events arriving at the output port will be transferred to the outside
- *  immediately, otherwise, the director will transfer these events to the
- *  outside when physical time equals the timestsamp of the event.</p>
+ *  interrupt occurs, or when an event has finished processing. Notice
+ *  in actual implementation, the actual scheduling overhead may be
+ *  less than this bound, since the overhead might be dependent on the
+ *  number of events in the system. However, the currently implementation
+ *  takes a conservative approach and only simulates the overhead as if
+ *  scheduling always takes maximum bounded time to execute.</p>
  *
  *  <p> The following paragraphs describe implementation details of this
- *  director. The implementation is based on the operation semantics
+ *  director. The implementation is based on the operational semantics
  *  of Ptides, as described in: Jia Zou, Slobodan Matic, Edward
  *  A. Lee, Thomas Huining Feng, Patricia Derler.  <a
  *  href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution
@@ -289,6 +225,73 @@ import ptolemy.moml.MoMLChangeRequest;
  *  Embedded Systems</a>, 15th IEEE Real-Time and Embedded Technology
  *  and Applications Symposium, 2009, IEEE Computer Society, 77-86,
  *  April, 2009.</p>
+ *  
+ *  <p> Since sensors, actuators, and network devices are important
+ *  in the context of Ptides, special actors such as {@link
+ *  SensorInputDevice, ActuatorOutputDevice, NetworkInputDevice,
+ *  NetworkOutputDevice} are used in Ptides models. These actors
+ *  must only be connected to input and output ports of the composite
+ *  actor governed by the Ptides director. In addition, input
+ *  ports to the Ptides director hold information about
+ *  real time delays (see paper reference above)
+ *  at sensors and network inputs. If an input port is connected to a
+ *  SensorInputDevice, the port is considered a sensor port, and it
+ *  could be annotated with parameter <i>realTimeDelay</i>, which is of
+ *  type double. If an input port is
+ *  connected to a NetworkInputDevice, the port is considered a network
+ *  port, and could be annotated with <i>networkDelay</i> and
+ *  <i>networkDriverDelay</i>
+ *  parameters (the difference between these parameters are explained in
+ *  the following paragraph). Both of these parameters are of type double.
+ *  Note a port can be either a sensor, network input, network output, or
+ *  actuator port, but it cannot be more than one of these all at once.
+ *  If an input port is not annotated and
+ *  if it is not connected to either a SensorInputDevice or a
+ *  NetworkInputDevice, the port is assumed to be a sensor port. We make
+ *  this assumption because the SensorInputDevice is not necessarily
+ *  needed to simulate the functionality of the Ptides model, while
+ *  NetworkInputDevice is. The same reasoning applies to actuator ports
+ *  as well. However, if the {@link #schedulerExecutionTimeBound}
+ *  parameter of the director is set to a non-zero value, sensor and actuator
+ *  ports must be connected to SensorInputDevice and ActuationOutputDevice,
+ *  respectively, in order
+ *  to correctly simulate the scheduling overhead after each interrupt
+ *  event.</p>
+ *
+ *  <p> While the <i>networkDelay</i> and <i>networkDriverDelay</i> parameters
+ *  both characterize the platform physical time delay at the receiving end
+ *  of a network interface, there are subtle differences between these two
+ *  parameters. The <i>networkDelay</i> parameter is used to characterize the
+ *  amount of simulated platform physical time
+ *  delay experience by a packet, between when the packet first leaves the
+ *  source platform, and when the packet arrives at the destination platform. This
+ *  delay should be modeled as a part of the Ptides model, in the enclosing
+ *  DE director, while the maximum bound of this delay needs to be annotated
+ *  as <i>networkDelay</i> at the input port of the destination platform. If it
+ *  is not properly annotated, safe-to-process analysis of the Ptides platform
+ *  could produce false positive results. On the other hand, the
+ *  <i>networkDriverDelay</i>
+ *  specifies the amount of execution time it takes for a packet to be
+ *  consumed and an event produced in the destination platform. Note, the
+ *  <i>d_o</i> parameter for network inputs is calculated by summing 
+ *  <i>networkDelay</i> and <i>networkDriverDelay</i>.</p>
+ *
+ *  <p> Like input ports, output ports of the composite actor governed by the
+ *  Ptides director can also be annotated. By default, the director checks
+ *  whether an output event's timestamp is smaller or equal to the simulated
+ *  platform physical time of when this event is first produced. If the check fails,
+ *  a deadline miss is implied, and
+ *  the director throws an exception. If the check passes, the director
+ *  transfers this event to the outside of the platform at physical time equal
+ *  to the timestamp of the output event. However, if the output port is
+ *  annotated with an <i>ignoreDeadline</i> parameter, then the director does
+ *  not throw an exception. Instead, if the simulated physical time is smaller
+ *  than the timestamp of the output event, the output event is transferred
+ *  to the outside immediately. The output port could also be annotated with
+ *  a parameter <i>transferImmediately</i>. If the parameter is true, then all
+ *  events arriving at the output port will be transferred to the outside
+ *  immediately, otherwise, the director will transfer these events to the
+ *  outside when physical time equals the timestsamp of the event.</p>
  *
  *  <p> The semantics of Ptides is based DE, which specifies
  *  all actors must process events in timestamp order. DE enforces
@@ -302,10 +305,10 @@ import ptolemy.moml.MoMLChangeRequest;
  *  can be processed without violating Ptides
  *  semantics, based on information such as events currently in the
  *  event queue, their model time relationship with each other, as
- *  well as the current physical time. In this particular version of
+ *  well as the current platform physical time. In this particular version of
  *  the Ptides scheduler, the director takes the earliest (smallest
  *  timestamp) event from the event queue, and compares its timestamp
- *  with the current physical time + a pre-computed offset (call this
+ *  with the current platform physical time + a pre-computed offset (call this
  *  the delayOffset). If the physical time is larger, then this event
  *  is safe to process. Otherwise, we wait for physical time to pass
  *  until this event becomes safe, at which point it is processed. For
@@ -382,10 +385,10 @@ public class PtidesBasicDirector extends DEDirector {
                 .setTypeEquals(BaseType.BOOLEAN);
         forceActorsToProcessEventsInTimestampOrder.setExpression("false");
 
-        highlightModelTimeDelays = new Parameter(this,
+        highlightModelTimeDelay = new Parameter(this,
                 "highlightModelTimeDelay");
-        highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
-        highlightModelTimeDelays.setExpression("false");
+        highlightModelTimeDelay.setTypeEquals(BaseType.BOOLEAN);
+        highlightModelTimeDelay.setExpression("false");
 
         initialExecutionSynchronizationError = new Parameter(this,
                 "initialExecutionSynchronizationError");
@@ -405,9 +408,9 @@ public class PtidesBasicDirector extends DEDirector {
         platformClockDrift.setTypeEquals(BaseType.DOUBLE);
         platformClockDrift.setExpression("1.0");
 
-        schedulerExecutionTime = new Parameter(this, "schedulerExecutionTime");
-        schedulerExecutionTime.setTypeEquals(BaseType.DOUBLE);
-        schedulerExecutionTime.setExpression("0.0");
+        schedulerExecutionTimeBound = new Parameter(this, "schedulerExecutionTime");
+        schedulerExecutionTimeBound.setTypeEquals(BaseType.DOUBLE);
+        schedulerExecutionTimeBound.setExpression("0.0");
 
         // FIXME: make this static final.  See LongToken.ZERO.
         _zero = new Time(this);
@@ -449,7 +452,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  When set to false, remove any such highlighting.
      *  This is a boolean that defaults to false.
      */
-    public Parameter highlightModelTimeDelays;
+    public Parameter highlightModelTimeDelay;
 
     /** Store the estimated platform time synchronization error bound in the
      *  platform governed by
@@ -510,13 +513,13 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public static final int PLATFORM_TIMER = 1;
 
-    /** A Parameter representing the simulated scheduling overhead time.
+    /** A Parameter representing the bound on the simulated scheduling overhead time.
      *  In real-time programs, it takes time for the scheduler to
      *  schedule a particular event processing. While simulating the
      *  passage of physical time, this Parameter
      *  is used to capture that scheduling overhead.
      */
-    public Parameter schedulerExecutionTime;
+    public Parameter schedulerExecutionTimeBound;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -533,14 +536,14 @@ public class PtidesBasicDirector extends DEDirector {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
-        if (attribute == highlightModelTimeDelays) {
+        if (attribute == highlightModelTimeDelay) {
             for (Actor actor : (List<Actor>) ((CompositeEntity) getContainer())
                     .deepEntityList()) {
                 if (actor instanceof AtomicActor) {
                     ((AtomicActor) actor).declareDelayDependency();
                 }
             }
-            if (((BooleanToken) highlightModelTimeDelays.getToken())
+            if (((BooleanToken) highlightModelTimeDelay.getToken())
                     .booleanValue()) {
                 _highlightModelDelays((CompositeActor) getContainer(), true);
                 _timeDelayHighlighted = true;
@@ -1842,7 +1845,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  firing; the scheduler must run to decide whether the next event should
      *  be processed. Since the Ptides simulator simulates the passage of physical
      *  time, we also simulate the overhead for the scheduler to make its decision.
-     *  The parameter: {@link #schedulerExecutionTime} indicates this time.
+     *  The parameter: {@link #schedulerExecutionTimeBound} indicates this time.
      *  Note, when sensor and timed interrupts occurs, the currently executing
      *  event will be preempted to perform the scheduling overhead.
      *  <p>
@@ -3863,6 +3866,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  clock drift occurs. At initialization, this parameter should be set
      *  to the initial clock platform time synchronization erros between this
      *  platform's time and the oracle time.
+     *  FIXME: Instead of execution times, maybe we should use execution clock
+     *  cycles coupled with clock frequency instead. And the clock drift of
+     *  the execution clock can be replaced by the frequency drift of the CPU.
      */
     private RealTimeClock _executionTimeClock;
 
