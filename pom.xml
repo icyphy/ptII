@@ -618,7 +618,6 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/actor/lib/joystick/**</exclude>
            <exclude>ptolemy/actor/lib/jxta/**</exclude>
            <exclude>ptolemy/actor/lib/opencv/**</exclude>
-           <exclude>ptolemy/actor/lib/x10/**</exclude>
            <exclude>ptolemy/domains/gr/lib/quicktime/**</exclude>
            <exclude>ptolemy/moml/jxta/**</exclude>
            <exclude>ptolemy/moml/test/NoPackageActor.java</exclude>

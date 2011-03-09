@@ -624,7 +624,6 @@ ALLPACKAGES = \
 	$(PTQUICKTIME_PACKAGES) \
 	$(PTRXTX_PACKAGES) \
 	$(PTSPACEDOMAIN_PACKAGES) \
-	$(PTX10_PACKAGES) \
 	$(SUPERBPACKAGES) \
 	$(THALESPACKAGES) \
 	$(VIPTOSPACKAGES) \
@@ -735,7 +734,7 @@ all_packages:
 	  PTJMF_PACKAGES=ptolemy.actor.lib.jmf \
 	  PTJOYSTICK_PACKAGES=ptolemy.actor.lib.joystick \
 	  PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime \
-	  PTX10_PACKAGES=ptolemy.actor.lib.x10 codeDoc/tree.html
+	  codeDoc/tree.html
 
 #############################################################################
 # Make derived versions of .htm files for Vergil

@@ -63,17 +63,13 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
 #
-# $PTII/configure looks for X10 and sets PTX10_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
-
 DIRS = 		conversions embeddedJava gui logic hoc image \
 		javasound jni jopio net io xslt \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTOPENCV_DIR) \
-		$(PTX10_DIR)
+		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTOPENCV_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -330,7 +326,6 @@ OPTIONAL_FILES = \
 	joystick \
 	opencv \
 	reactable \
-	x10 \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
 	'Commutator$$WidthDependentParameter.class' \

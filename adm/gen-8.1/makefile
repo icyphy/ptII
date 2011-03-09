@@ -507,17 +507,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
-		ptolemy/actor/lib/x10/ApplianceController.class \
-		ptolemy/actor/lib/x10/CommandListener.class \
-		ptolemy/actor/lib/x10/LampController.class \
-		ptolemy/actor/lib/x10/LevelListener.class \
-		ptolemy/actor/lib/x10/Listener.class \
-		ptolemy/actor/lib/x10/Receiver$$1.class \
-		ptolemy/actor/lib/x10/Receiver.class \
-		ptolemy/actor/lib/x10/Receiver$$CommandListener.class \
-		ptolemy/actor/lib/x10/Sender.class \
-		ptolemy/actor/lib/x10/X10Interface.class \
-		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
+		ptolemy/actor/lib/x10/
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
@@ -2614,14 +2604,14 @@ $(JNLPDIST): $(GENLOG_DIR)
 
 
 # Directory that should be in vendors so that we build the jar files
-$(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar: $(JNLPDIST)
-	# Build joystick, rxtx, x10, tjx10
+$(JNLPDIST)/vendors/misc/rxtx/RXTXcomm.jar: $(JNLPDIST)
+	# Build joystick, rxtx
 	if [ ! -f $@ ]; then \
 		echo "Reconfiguring with all optional packages"; \
 		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTII)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
 	fi
 
-$(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar
+$(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/rxtx/RXTXcomm.jar
 	if [ ! -d $@ ]; then \
 		echo "Creating $@"; \
 		cp ptKeystore.properties $(JNLPDIST); \
