@@ -64,17 +64,20 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   of other concept functions that can be called in the expression.
      *  @param argumentDomainOntologies The array of ontologies that
      *   represent the concept domain for each input concept argument.
+     *  @param outputRangeOntology The ontology that represents the concept
+     *   range for the concept function.
      *  @throws IllegalActionException If there is a problem instantiating
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
             List<Concept> inputConceptValues, OntologySolverModel solverModel,
-            List<Ontology> argumentDomainOntologies)
+            List<Ontology> argumentDomainOntologies, Ontology outputRangeOntology)
         throws IllegalActionException {
         _argumentNames = new LinkedList<String>(argumentNames);
         _argumentConceptValues = new LinkedList<Concept>(inputConceptValues);
         _solverModel = solverModel;
-        _domainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
+        _scopeOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
+        _scopeOntologies.add(outputRangeOntology);
 
         _typeInference = new ExpressionConceptFunctionParseTreeTypeInference();
         _addConceptConstants();
@@ -87,16 +90,19 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @param solverModel The ontology solver model that contains the scope
      *   of other concept functions that can be called in the expression.
      *  @param domainOntologies Ontologies over which the parser is defined.
+     *  @param outputRangeOntology The ontology that represents the concept
+     *   range for the concept function.
      *  @throws IllegalActionException If there is a problem instantiating
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(
             Map<String, Concept> arguments,
             OntologySolverModel solverModel,
-            List<Ontology> domainOntologies)
+            List<Ontology> domainOntologies, Ontology outputRangeOntology)
         throws IllegalActionException {
         _solverModel = solverModel;
-        _domainOntologies = domainOntologies;
+        _scopeOntologies = new LinkedList<Ontology>(domainOntologies);
+        _scopeOntologies.add(outputRangeOntology);
         
         _argumentNames = new LinkedList<String>();
         _argumentConceptValues = new LinkedList<Concept>();
@@ -231,7 +237,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   of the concepts to the Constants hash table.
      */
     protected void _addConceptConstants() throws IllegalActionException {
-        for (Ontology domainOntology : _domainOntologies) {
+        for (Ontology domainOntology : _scopeOntologies) {
             for (Object entity : domainOntology.allAtomicEntityList()) {
                 if (entity instanceof Concept) {
                     Constants.add(((Concept) entity).getName(),
@@ -266,11 +272,14 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         throws IllegalActionException {
 
         Concept outputConcept = null;
-        for (Ontology domainOntology : _domainOntologies) {
+        for (Ontology domainOntology : _scopeOntologies) {
             outputConcept = (Concept) domainOntology.getConceptByString(conceptString);
             if (outputConcept != null) {
                 break;
             }
+        }
+        if (outputConcept == null) {
+            //outputConcept = (Concept) 
         }
         if (outputConcept == null) {
             throw new IllegalActionException("Concept named " + conceptString +
@@ -303,7 +312,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  argument to the concept function defined by the parsed
      *  expression.
      */
-    protected List<Ontology> _domainOntologies;
+    protected List<Ontology> _scopeOntologies;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

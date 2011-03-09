@@ -1,5 +1,5 @@
 /* A representative concept in the unitSystem ontology for a set of units for
- * a specific physical dimension.
+ * a specific physical dimension that is one of the 7 base dimensions.
 
  Copyright (c) 1998-2011 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,6 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -45,13 +44,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// BaseUnitRepresentativeConcept
 
 /** A representative concept in the unitSystem ontology for a set of units for
- *  a specific physical dimension.
+ *  a specific physical dimension that is one of the 7 base dimensions.
  *  
  *  There are 7 base dimensions from which all other unit dimensions are derived. These are
  *  specified in the unitSystem ontology by 7 BaseUnitRepresentativeConcepts: 
  *  <ul>
  *  <li>Mass - SI unit kilograms (kg)
- *  <li>Length - SI unit meters (m)
+ *  <li>Position - SI unit meters (m)
  *  <li>Time - SI unit seconds (sec)
  *  <li>Current - SI unit amperes (amp)
  *  <li>Temperature - SI unit Kelvin (K)
@@ -65,8 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */
-public class BaseUnitRepresentativeConcept extends
-        FlatTokenRepresentativeConcept {
+public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeConcept {
 
     /** Create a new BaseUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -77,22 +75,17 @@ public class BaseUnitRepresentativeConcept extends
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public BaseUnitRepresentativeConcept(Ontology ontology, String name)
+    public BaseDimensionRepresentativeConcept(Ontology ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-        unitNames = new Parameter(this, "unitNames");
         unitFactors = new Parameter(this, "unitFactors");
         unitOffsets = new Parameter(this, "unitOffsets");
-        unitNames.setTypeEquals(new ArrayType(BaseType.STRING));
         unitFactors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         unitOffsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** The array of names for the units for this dimension. */
-    public Parameter unitNames;
     
     /** The array of multiplication factors for the units for this dimension. */
     public Parameter unitFactors;

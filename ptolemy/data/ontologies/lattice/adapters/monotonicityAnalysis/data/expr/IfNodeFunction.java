@@ -193,7 +193,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         }
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
-                _domainOntologies);
+                _domainOntologies, _outputRangeOntology);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
         if (!(rhsToken instanceof ConceptToken)) {
             return false;
@@ -215,7 +215,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 .jjtGetChild(1);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
-                _domainOntologies);
+                _domainOntologies, _outputRangeOntology);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
         Concept constant = ((ConceptToken) rhsToken).conceptValue();
         return constant;
@@ -257,7 +257,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             Map<String, Concept> arguments) throws IllegalActionException {
 
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                arguments, null, _domainOntologies);
+                arguments, null, _domainOntologies, _outputRangeOntology);
         ConceptToken evaluatedToken = (ConceptToken) evaluator
                 .evaluateParseTree(node);
         return evaluatedToken.conceptValue();

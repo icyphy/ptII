@@ -37,7 +37,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologySolver;
-import ptolemy.data.ontologies.lattice.adapters.unitSystem.UnitInformation;
+import ptolemy.data.ontologies.lattice.adapters.unitSystem.UnitConcept;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ObjectType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -82,6 +83,9 @@ public class UnitsConverter extends Transformer {
     public UnitsConverter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         unitSystemOntologySolver = new Parameter(this, "unitSystemOntologySolver");
         unitSystemOntologySolver.setTypeEquals(new ObjectType(OntologySolver.class));
@@ -209,7 +213,7 @@ public class UnitsConverter extends Transformer {
      *   the attribute passed in is not one of the actor's inputUnitConcept
      *   or outputUnitConcept attributes.
      */
-    public UnitInformation getUnitConcept(boolean fromInput)
+    public UnitConcept getUnitConcept(boolean fromInput)
             throws IllegalActionException {
         Ontology unitOntology = _getUnitOntology();
         if (unitOntology == null) {
@@ -232,8 +236,8 @@ public class UnitsConverter extends Transformer {
             
             Concept unitConcept = unitOntology.getConceptByString(
                     dimensionConceptName + "_" + unitName);
-            if (unitConcept instanceof UnitInformation) {
-                return (UnitInformation) unitConcept;
+            if (unitConcept instanceof UnitConcept) {
+                return (UnitConcept) unitConcept;
             } else {
                 throw new IllegalActionException(this, "Could not find unit " +
                 		"named: " + dimensionConceptName + "_" +
@@ -296,10 +300,10 @@ public class UnitsConverter extends Transformer {
     /** The ontology concept that represents the units specification for the
      *  input port.
      */
-    private UnitInformation _inputUnitConcept;
+    private UnitConcept _inputUnitConcept;
     
     /** The ontology concept that represents the units specification for the
      *  output port.
      */
-    private UnitInformation _outputUnitConcept;
+    private UnitConcept _outputUnitConcept;
 }

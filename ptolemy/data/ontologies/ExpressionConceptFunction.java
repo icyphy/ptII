@@ -152,7 +152,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
         // Evaluate the concept function expression.
         ExpressionConceptFunctionParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 _argumentNames, inputConceptValues, _solverModel,
-                _argumentDomainOntologies);
+                _argumentDomainOntologies, _outputRangeOntology);
         
         ConceptToken conceptToken = null;
         if (_functionScope != null) {

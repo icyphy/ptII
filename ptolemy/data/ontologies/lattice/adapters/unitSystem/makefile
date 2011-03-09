@@ -53,9 +53,12 @@ PTCLASSALLJARS = \
 	domains/domains.jar
 
 JSRCS = \
+	BaseDimensionRepresentativeConcept.java \
 	BaseUnitConcept.java \
-	BaseUnitRepresentativeConcept.java \
-	UnitInformation.java
+	DerivedDimensionRepresentativeConcept.java \
+	DerivedUnitConcept.java \
+	DimensionRepresentativeConcept.java \
+	UnitConcept.java
 	
 OTHER_FILES_TO_BE_JARED = \
 	unitSystem.xml \
@@ -69,7 +72,8 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	'DimensionRepresentativeConcept$$BaseDimensionType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -31,7 +31,7 @@ import java.util.List;
 
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.adapters.unitSystem.UnitInformation;
+import ptolemy.data.ontologies.lattice.adapters.unitSystem.UnitConcept;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -76,8 +76,8 @@ public class UnitsConverter extends LatticeOntologyAdapter {
             
             // The UnitsConverter actor specifies which units ontology concepts
             // should be applied to its input and output ports.
-            UnitInformation inputConcept = actor.getUnitConcept(true);
-            UnitInformation outputConcept = actor.getUnitConcept(false);
+            UnitConcept inputConcept = actor.getUnitConcept(true);
+            UnitConcept outputConcept = actor.getUnitConcept(false);
             
             if (inputConcept != null) {
                 setAtLeast(actor.input, inputConcept);

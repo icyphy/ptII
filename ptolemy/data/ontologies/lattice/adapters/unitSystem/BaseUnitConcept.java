@@ -30,9 +30,7 @@ package ptolemy.data.ontologies.lattice.adapters.unitSystem;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.ontologies.FlatTokenInfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -45,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  
  *  A unit for a base dimension is defined by the physical dimension it
  *  measures and the multiplication factor and offset values required to convert
- *  a value in its unit measurment to a unit measurement in the SI unit for this
+ *  a value in its unit measurement to a unit measurement in the SI unit for this
  *  dimension.
  *  
  *  For example, to represent the units for measuring temperature in degrees
@@ -67,61 +65,56 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  <p>So far temperature is the only dimension that requires an offset. All
  *  the other dimensions only require a multiplication
  *  factor, so their offset is always zero. For example,
- *  To represent the length dimension units in kilometers (km):</p>
+ *  To represent the position dimension units in kilometers (km):</p>
  *  <ul>
  *  <li>unitFactor = 1000.0
  *  <li>unitOffset = 0.0
  *  </ul>
- *  <p>The SI unit for length is meters (m) so the kilometers unitFactor is 1000.0
+ *  <p>The SI unit for position is meters (m) so the kilometers unitFactor is 1000.0
  *  and there is zero offset.<p>
  *  <p>This class is an infinite concept so that an arbitrary number of different
  *  unit measurements can be represented for any physical dimension. All that is
  *  required is specify the name of units and the multiplication factor and offset
  *  needed to convert the unit to the SI unit for that dimension.</p>
-@see BaseUnitRepresentativeConcept
+@see BaseDimensionRepresentativeConcept
 @author Charles Shelton
 @version $Id$
 @since Ptolemy II 8.1
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */
-public class BaseUnitConcept extends FlatTokenInfiniteConcept
-    implements UnitInformation {
+public class BaseUnitConcept extends UnitConcept {
     
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
     
-    /** Create a new flat token infinite concept, belonging to the given
+    /** Create a new base unit concept, belonging to the given
      *  ontology, with an automatically generated name.
      * 
      *  @param ontology The ontology to which this concept belongs.
      *  @param representative The finite concept that represents where the infinite
      *   token concepts belong in the ontology lattice.
-     *  @param unitInfo The token value for this FlatTokenInfiniteConcept.
+     *  @param unitInfo The token value for this BaseUnitConcept.
      *  @return The newly created RecordConcept.
      *  @throws IllegalActionException If the base class throws it.
      */
     public static BaseUnitConcept createBaseUnitConcept(
-            Ontology ontology, BaseUnitRepresentativeConcept representative, RecordToken unitInfo)
+            Ontology ontology, BaseDimensionRepresentativeConcept representative,
+            RecordToken unitInfo)
                 throws IllegalActionException {
         try {
             return new BaseUnitConcept(ontology, representative, unitInfo);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(
                     "Name conflict with automatically generated infinite concept name.\n"
-                  + "This should never happen."
-                  + "Original exception:" + e.toString());
+                    + "This should never happen."
+                    + "Original exception:" + e.toString());
         }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                    public variables                       ////
-    
-    /** The name label for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String unitNameLabel = "Name";
-    
+
     /** The factor label for the unit record token information when constructing
      *  a new BaseUnitConcept.
      */
@@ -137,56 +130,6 @@ public class BaseUnitConcept extends FlatTokenInfiniteConcept
      */
     public static final String[] unitRecordLabelArray = new String[]{
                             unitNameLabel, unitFactorLabel, unitOffsetLabel};
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                    public methods                         ////
-    
-    /** Return true if this unit can be converted to the specified unit. 
-     *  @param unit The other unit concept to compare to this one.
-     *  @return true if the units can be converted, false otherwise.
-     */
-    public boolean canBeConvertedTo(UnitInformation unit) {
-        if (unit instanceof BaseUnitConcept &&
-                getRepresentative().equals(((BaseUnitConcept) unit).getRepresentative())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    /** Return the multiplication factor that converts a value in this unit to the
-     *  SI unit for this dimension.
-     *  @return The unit factor as a double value.
-     */
-    public double getUnitFactor() {
-        return _unitFactor;
-    }
-    
-    /** Return the name of the unit.
-     *  @return The name of the unit.
-     */
-    public String getUnitName() {
-        return _unitName;
-    }
-    
-    /** Return the offset factor that converts a value in this unit to the SI
-     *  unit for this dimension. Currently this is only used for temperature
-     *  unit conversions.
-     *  @return The unit offset as a double value.
-     */
-    public double getUnitOffset() {
-        return _unitOffset;
-    }
-    
-    /** Return the string representation of this base unit concept.
-     *  It concatenates the name of the representative concept physical
-     *  dimension name with the name of the unit.
-     *  
-     *  @return The string representation of this concept.
-     */
-    public String toString() {
-        return _representative.getName() + "_" + _unitName;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
@@ -204,22 +147,11 @@ public class BaseUnitConcept extends FlatTokenInfiniteConcept
      *  @throws IllegalActionException If the base class throws it.
      */
     protected BaseUnitConcept(Ontology ontology,
-            BaseUnitRepresentativeConcept representative,
+            BaseDimensionRepresentativeConcept representative,
             RecordToken unitInfo)
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
-        _representative = representative;
-        _tokenValue = unitInfo;
-           
-        Token unitName = unitInfo.get(unitNameLabel);            
-        if (unitName instanceof StringToken) {
-            _unitName = ((StringToken) unitName).stringValue();
-        } else {
-            throw new IllegalActionException(this,
-                    "Invalid unit name token (must be a String token): " +
-                    unitName);
-        }
-
+        
         Token unitFactor = unitInfo.get(unitFactorLabel);
         if (unitFactor instanceof DoubleToken) {
             _unitFactor = ((DoubleToken) unitFactor).doubleValue();
@@ -228,7 +160,7 @@ public class BaseUnitConcept extends FlatTokenInfiniteConcept
                     "Invalid unit factor value (must be a double value): " +
                     unitFactor);
         }
-
+        
         Token unitOffset = unitInfo.get(unitOffsetLabel);
         if (unitFactor instanceof DoubleToken) {
             _unitOffset = ((DoubleToken) unitOffset).doubleValue();
@@ -238,20 +170,4 @@ public class BaseUnitConcept extends FlatTokenInfiniteConcept
                     unitOffset);
         }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
-    
-    /** The name of the unit represented by this unit concept. */
-    private String _unitName;
-    
-    /** The multiplication factor for converting this unit to the SI
-     *  unit for this physical dimension.
-     */
-    private double _unitFactor;
-    
-    /** The offset factor for converting this unit to the SI
-     *  unit for this physical dimension.
-     */
-    private double _unitOffset;
 }
