@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// BaseUnitRepresentativeConcept
+//// BaseDimensionRepresentativeConcept
 
 /** A representative concept in the unitSystem ontology for a set of units for
  *  a specific physical dimension that is one of the 7 base dimensions.

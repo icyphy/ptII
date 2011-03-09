@@ -1,4 +1,5 @@
-/* An interface for the unitSystem ontology base and derived unit concepts.
+/* The abstract base class for the unitSystem ontology base and derived unit
+ * concepts.
 
  Copyright (c) 1998-2011 The Regents of the University of California.
  All rights reserved.
@@ -36,9 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// UnitInformation
+//// UnitConcept
 
-/** An interface for the unitSystem ontology base and derived unit concepts.
+/** The abstract base class for the unitSystem ontology base and derived unit
+ *  concepts.
 
 @author Charles Shelton
 @version $Id$
