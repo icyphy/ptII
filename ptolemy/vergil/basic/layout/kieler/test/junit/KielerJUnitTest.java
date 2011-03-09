@@ -33,6 +33,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.ConfigurationApplication;
@@ -204,14 +205,23 @@ public class KielerJUnitTest {
      */ 
     @org.junit.Test 
     public void run() throws Exception {
-        // FIXME: Just list all the .xml files in the models/ directory.
-        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml");
-
-        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml");
+        Runnable runActions = new Runnable() {
+                public void run() {
+                    try {
+                        // FIXME: Just list all the .xml files in the models/ directory.
+                        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml");
+                
+                        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml");
         
-        // FIXME: we should have a way to run the test on arbitrary
-        // models that have not yet been laid out.
-        //layoutTest("models/Spectrum.xml");
+                        // FIXME: we should have a way to run the test on arbitrary
+                        // models that have not yet been laid out.
+                        //layoutTest("models/Spectrum.xml");
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+        SwingUtilities.invokeAndWait(runActions);
     }
 
     /** Test the Kieler layout facility.
