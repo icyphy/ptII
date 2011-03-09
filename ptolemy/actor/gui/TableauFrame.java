@@ -1254,7 +1254,7 @@ public class TableauFrame extends Top {
     private boolean _packCalled = false;
 
     /** Set in pack() if an alternate topPack is used. */
-    private TopPack _topPack = null;
+    protected TopPack _topPack = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
