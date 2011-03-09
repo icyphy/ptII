@@ -122,10 +122,10 @@ public class GenerateCopyrights {
                 "ptolemy.actor.gui.run.RunLayoutFrame",
                 "org/mlc/mlc-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
+        _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
                 "ptolemy/cal/saxon-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
+        _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
                 "ptolemy/cal/cup-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
@@ -233,6 +233,10 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap,
                 "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
+                "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
         // Check for the _applicationCopyrights parameter
         try {
