@@ -32,6 +32,7 @@
 ME =		ptolemy/domains/ptides/demo
 
 DIRS =		PtidesAirplaneFuelControl \
+		PtidesBasicDistributedPowerPlant\
 		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
 		PtidesBasicOnePlatform PtidesBasicPowerPlant \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
@@ -59,6 +60,7 @@ PTPACKAGE = 	demo
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	PtidesAirplaneFuelControl/PtidesAirplaneFuelControl.jar \
+	PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.jar \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
 	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
 	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
