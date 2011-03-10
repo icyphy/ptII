@@ -691,6 +691,17 @@ public class TableauFrame extends Top {
         }
         return result;
     }
+    
+    
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the 
+     *  dispose() method of the superclass,
+     *  {@link ptolemy.actor.gui.Top}.
+     */
+    public void dispose() {
+        super.dispose();
+    }
 
     /** Confirm that writing the specified model to the specified file is OK.
      *  In particular, if the file exists, ask the user whether it is OK

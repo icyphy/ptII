@@ -194,6 +194,16 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
         setVisible(false);
     }
+    
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the 
+     *  dispose() method of the superclass,
+     *  {@link ptolemy.vergil.basic.BasicGraphFrame}.
+     */
+    public void dispose() {
+        super.dispose();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -55,6 +55,7 @@ JSRCS = \
 	GraphicalMessageHandler.java \
 	JFileChooserBugFix.java \
 	JTextAreaExec.java \
+	MemoryCleaner.java \
 	MessageHandler.java \
 	PtGUIUtilities.java \
 	Query.java \

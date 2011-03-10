@@ -607,6 +607,21 @@ public abstract class Top extends JFrame {
             return true;
         }
     }
+    
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the 
+     *  dispose() method of the superclass,
+     *  {@link javax.swing.JFrame}.
+     */
+    public void dispose() {
+        int removed = MemoryCleaner.removeActionListeners(_menubar);
+        // System.out.println("Top menubar action listeners removed: " + removed);
+        removed = MemoryCleaner.removeWindowListeners(this);
+        // System.out.println("Top window listeners removed: " + removed);
+        getContentPane().removeAll();
+        super.dispose();
+    }
 
     /** Create the items in the File menu. A null element in the array
      *  represents a separator in the menu.

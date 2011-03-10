@@ -290,6 +290,7 @@ public class ComponentDialog extends JDialog {
             _doneHandleClosing = true;
             ((CloseListener) contents).windowClosed(this, _buttonPressed);
         }
+        //getContentPane().removeAll();
     }
 
     ///////////////////////////////////////////////////////////////////

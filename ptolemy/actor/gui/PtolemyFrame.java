@@ -258,6 +258,16 @@ public abstract class PtolemyFrame extends TableauFrame {
 
         return super._close();
     }
+    
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the 
+     *  dispose() method of the superclass,
+     *  {@link ptolemy.actor.gui.TableauFrame}.
+     */
+    public void dispose() {
+        super.dispose();
+    }
 
     /** Display more detailed information than given by _about().
      *  If the model contains an instance of FileParameter named "_help",
