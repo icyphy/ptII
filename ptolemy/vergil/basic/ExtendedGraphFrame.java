@@ -121,7 +121,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // Restore association with the graph panner.
             _graphPanner.setCanvas(getJGraph());
         } else {
-            //getContentPane().add(_getRightComponent());
+            getContentPane().add(_getRightComponent());
         }
         pack();
         show();
