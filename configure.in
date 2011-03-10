@@ -333,7 +333,6 @@ else
 	    if "$JAVAC" RootDirectory.java ; then
 	        AC_MSG_CHECKING([the value of the Java directory ])
 		AC_PATH_PROG(JAVA, java)
-		set -x
 		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"> /dev/null; then
 
 		    PTJAVA_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"`
@@ -355,7 +354,6 @@ changequote([, ])dnl
     We will not be able to search for the canonical Java home directory.]);
 	        fi
 	        cd "$startdir"
-		set +x
             fi
         fi
     else
