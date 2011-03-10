@@ -1,6 +1,6 @@
 /* Methods that clean up possible memory leaks caused by listeners.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,14 +48,21 @@ import javax.swing.JMenuItem;
  * never gets garbage collected.
  * 
  * @author Aaron Schultz
+ * @version $Id$
+ * @since Ptolemy II 1.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class MemoryCleaner {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Remove ActionListeners from a JMenuBar.
-     * Experimental.
      * 
-     * @param menubar
+     * @param menubar The menubar from which the ActionListeners
+     * are to be removed.
      * @return The number of listeners removed.
      */
     public static int removeActionListeners(JMenuBar menubar) {
@@ -78,9 +85,9 @@ public class MemoryCleaner {
 
     /**
      * Remove ActionListeners from a JMenu.
-     * Experimental.
      * 
-     * @param menu
+     * @param menu  The menu from which the ActionListeners
+     * are to be reemoved.
      * @return The number of listeners removed.
      */
     public static int removeActionListeners(JMenu menu) {
@@ -114,7 +121,8 @@ public class MemoryCleaner {
      * Remove ActionListeners from a JMenuItem.
      * Experimental.
      * 
-     * @param menuItem
+     * @param menuItem The menu item from which ActionListeners
+     * are to be removed.
      * @return The number of listeners removed.
      */
     public static int removeActionListeners(JMenuItem menuItem) {
@@ -141,7 +149,8 @@ public class MemoryCleaner {
      * Remove WindowListeners from a Window.
      * Experimental.
      * 
-     * @param window
+     * @param window  The Window from which WindowListeners
+     * are to be removed.
      * @return The number of listeners removed.
      */
     public static int removeWindowListeners(Window window) {
@@ -158,6 +167,8 @@ public class MemoryCleaner {
         return listenersRemoved;
     }
     
-    private static boolean _isDebugging = false;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    private static boolean _isDebugging = false;
 }
