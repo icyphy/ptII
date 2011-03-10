@@ -262,17 +262,23 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         _screen.dispose();
 
-        // Put the component back into the original window.
-        _splitPane.setRightComponent(_getRightComponent());
-        JTabbedPane tabbedPane = getFrameController().getTabbedPane();
-        tabbedPane.add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
-        tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
+        // Only include the palettePane and panner if there is an actor library.
+        // The ptinyViewer configuration uses this.
+        Configuration configuration = getFrameController()
+            .getConfiguration();
+        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
+            // Put the component back into the original window.
+            _splitPane.setRightComponent(_getRightComponent());
+            JTabbedPane tabbedPane = getFrameController().getTabbedPane();
+            tabbedPane.add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
+            tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
 
-        // Restore association with the graph panner.
-        if (_fullScreenComponent instanceof JGraph) {
-            _graphPanner.setCanvas((JGraph) _fullScreenComponent);
-        } else {
-            _graphPanner.setCanvas(null);
+            // Restore association with the graph panner.
+            if (_fullScreenComponent instanceof JGraph) {
+                _graphPanner.setCanvas((JGraph) _fullScreenComponent);
+            } else {
+                _graphPanner.setCanvas(null);
+            }
         }
 
         _fullScreenComponent.removeKeyListener(getFrameController());

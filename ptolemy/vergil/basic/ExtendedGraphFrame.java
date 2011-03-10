@@ -41,6 +41,7 @@ import javax.swing.InputMap;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -111,11 +112,15 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _screen.dispose();
         _screen = null;
 
-        // Put the component back into the original window.
-        _splitPane.setRightComponent(_getRightComponent());
+        // Only include the palettePane and panner if there is an actor library.
+        // The ptinyViewer configuration uses this.
+        if ((CompositeEntity) getConfiguration().getEntity("actor library") != null) {
+            // Put the component back into the original window.
+            _splitPane.setRightComponent(_getRightComponent());
 
-        // Restore association with the graph panner.
-        _graphPanner.setCanvas(getJGraph());
+            // Restore association with the graph panner.
+            _graphPanner.setCanvas(getJGraph());
+        }
         pack();
         show();
         UndeferredGraphicalMessageHandler.setContext(_previousDefaultContext);

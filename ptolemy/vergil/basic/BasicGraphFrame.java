@@ -2634,7 +2634,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The paste action. */
     protected Action _pasteAction;
 
-    /** The split pane for library and editor. */
+    /** The split pane for library and editor. Note that this variable
+     *  can be null if the configuration does not have an entity named
+     *  "actor library".  For example, see $PTII/bin/vergil -ptinyViewer.
+     */
     protected JSplitPane _splitPane;
 
     /** The toolbar. */
