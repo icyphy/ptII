@@ -1082,7 +1082,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 + " openBracketCount: " + openBracketCount
                                 + " commentCount: " + commentCount
                                 + " tryCount: " + tryCount
-                                + " line:\n" + line);
+			        + " line:\n" + line).printStackTrace();
                     }
                     if (line != null) {
                         body.append(line + _eol);
