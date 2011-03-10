@@ -356,6 +356,11 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.///
      */
+    /* FIXME: This implementation is bogus. The controller just
+     * delegates to its container, which is this actor, so we get
+     * a stack overflow error.
+     */
+    /*
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         if(_debugging){
@@ -366,6 +371,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         return theActor.handleModelError(context, exception);
 
     }
+    */
 
     /** Get representation of dependencies between input ports and
      *  output ports.
