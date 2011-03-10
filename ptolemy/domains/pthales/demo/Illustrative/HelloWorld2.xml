@@ -136,7 +136,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Play with different values of the &quot;consumeBase&quot;&#10;parameter to see how the output chunk is displaced.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 325.0]">
         </property>
     </property>
     <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
