@@ -1403,7 +1403,7 @@ public abstract class Top extends JFrame {
      * and add listener to each line
      * @param historyList
      */
-    private void _populateHistory(List historyList) {
+    protected void _populateHistory(List historyList) {
         Component[] components = _fileMenu.getMenuComponents();
         JMenu history = null;
         for (Component component : components) {
