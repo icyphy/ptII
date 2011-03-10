@@ -279,6 +279,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             } else {
                 _graphPanner.setCanvas(null);
             }
+        } else {
+            getContentPane().add(_getRightComponent());
         }
 
         _fullScreenComponent.removeKeyListener(getFrameController());
@@ -402,8 +404,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     (JPanel) _fullScreenComponent, true);
         }
 
-        // Remove association with the graph panner.
-        _graphPanner.setCanvas(null);
+        // The ptinyViewer configuration will have a null _graphPanner.
+        if (_graphPanner != null) {
+            _graphPanner.setCanvas(null);
+        }
 
         setVisible(false);
         GraphicalMessageHandler.setContext(_previousDefaultContext);

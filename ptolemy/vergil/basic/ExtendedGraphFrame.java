@@ -120,6 +120,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
             // Restore association with the graph panner.
             _graphPanner.setCanvas(getJGraph());
+        } else {
+            //getContentPane().add(_getRightComponent());
         }
         pack();
         show();
@@ -184,8 +186,11 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         InputMap inputMap = getJGraph().getInputMap();
         inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), _fullScreenAction);
 
-        // Remove association with the graph panner.
-        _graphPanner.setCanvas(null);
+        // The ptinyViewer configuration will have a null _graphPanner.
+        if (_graphPanner != null) {
+            // Remove association with the graph panner.
+            _graphPanner.setCanvas(null);
+        }
 
         setVisible(false);
     }

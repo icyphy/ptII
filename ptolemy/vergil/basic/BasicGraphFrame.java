@@ -2607,7 +2607,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The export to PDF action. */
     protected Action _exportPDFAction;
 
-    /** The panner. */
+    /** The panner. Note that this variable
+     *  can be null if the configuration does not have an entity named
+     *  "actor library".  For example, see $PTII/bin/vergil -ptinyViewer.
+     */
     protected JCanvasPanner _graphPanner;
 
     /** The library display widget. */
