@@ -6,9 +6,24 @@
 
 The Vergil graph layout mechanism can optionally use the Kieler layout
 algoritm.
+<p>For details about Kieler,
+see <a href="http://www.informatik.uni-kiel.de/rtsys/kieler/">http://www.informatik.uni-kiel.de/rtsys/kieler/</a>.</p>
 
-<p>For details, see <a href="http://www.informatik.uni-kiel.de/rtsys/kieler/">http://www.informatik.uni-kiel.de/rtsys/kieler/</a>.</p>
-<p>Kieler has the following license, which is in ptII/lib/kieler.jar as epl-v10.html.</p>
+<p>The Kieler layout algorithm is in $PTII/lib/kieler.jar.  That jar
+file includes a subset of the Eclipse Modeling Framework (EMF).  See:
+<a href="http://wiki.eclipse.org/index.php/EMF-FAQ#I_want_to_use_EMF.2C_SDO.2C_or_XSD_in_my_standalone_project.2C_or_include_only_a_working_subset_of_the_code._What_libraries_.28jar_files.29_do_I_need_in_my_CLASSPATH.3F">I want to use EMF, SDO, or XSD in my standalone project, or include only a working subset of the code. What libraries (jar files) do I need in my CLASSPATH?</a>
+
+That FAQ lists these jar files:
+<ul>
+<li> org.eclipse.emf.common_2.3.0.v200706262000.jar</li>
+<li> org.eclipse.emf.ecore_2.3.0.v200706262000.jar</li>
+<li> org.eclipse.emf.ecore.change_2.3.0.v200706262000.jar</li>
+<li> org.eclipse.emf.ecore.xmi_2.3.0.v200706262000.jar</li>
+</ul>
+
+</p>
+
+<p>Kieler and the subset of EMF have the following license, which is in ptII/lib/kieler.jar as epl-v10.html.</p>
 
 <blockquote>
 
@@ -243,5 +258,112 @@ rights to a jury trial in any resulting litigation.</p>
 
 
 </blockquote>
+
+In addition, org.eclipse.emf.ecore_2.6.1.v20100914-1218.jar has the
+following license:
+
+<blockquote>
+<h3>Third Party Content</h3>
+
+<p>The Content includes items that have been sourced from third parties as set out below. If you 
+did not receive this Content directly from the Eclipse Foundation, the following is provided 
+for informational purposes only, and you should look to the Redistributor's license for 
+terms and conditions of use.</p>
+
+<h4>XML4J 4.3</h4>
+<p>The plug-in is based on XML4J which is based on Xerces developed by The Apache Software Foundation as part of the Apache XML project.  Therefore:</p>
+
+<blockquote>This product includes software developed by the Apache Software Foundation<br />
+	(<a href="http://www.apache.org/">http://www.apache.org/</a>).</blockquote>
+
+<p>The following classes in the plug-in JAR:</p>
+
+<ul>
+	<li>org.eclipse.emf.ecore.xml.type.internal.DataValue</li>
+	<li>org.eclipse.emf.ecore.xml.type.internal.RegEx</li>
+	<li>org.eclipse.emf.ecore.xml.type.internal.XMLCalendar</li>
+	<li>org.eclipse.emf.ecore.xml.type.internal.XMLDuration</li>
+</ul>
+
+<p>are based on code from the following packages in XML4J:</p>
+
+<ul>
+	<li>org.apache.xerces.impl.xpath.regex</li>
+	<li>org.apache.xerces.util</li>
+	<li>org.apache.xerces.impl.dv</li>
+	<li>org.apache.xerces.impl.dv.util</li>
+	<li>org.apache.xerces.impl.dv.xs</li>
+</ul>
+
+<p>and shall be defined as the &quot;XML4J Derivative Work.&quot;</p>
+
+<p>The XMLJ Derivative Work binary code can be found in the plug-in JAR in the following files:</p>
+
+<ul>
+	<li>org\eclipse\emf\ecore\xml\type\internal\DataValue.class</li>
+	<li>org\eclipse\emf\ecore\xml\type\internal\RegEx.class</li>
+	<li>org\eclipse\emf\ecore\xml\type\internal\XMLCalendar.class</li>
+	<li>org\eclipse\emf\ecore\xml\type\internal\XMLDuration.class</li>
+</ul>
+
+<p>The XMLJ Derivative Work source code can be found in src.zip in the following files:</p>
+
+<ul>
+	<li>org\eclipse\emf\ecore\xml\type\internal\DataValue.java</li>
+	<li>org\eclipse\emf\ecore\xml\type\internal\RegEx.java</li>
+	<li>org\eclipse\emf\ecore\xml\type\internal\XMLCalendar.java</li>
+	<li>org\eclipse\emf\ecore\xml\type\internal\XMLDuration.java</li>
+</ul>
+
+<p>The XML4J Derivative Work is:</p>
+
+<blockquote>Copyright (c) 1999-2004 The Apache Software Foundation.  All rights reserved.</blockquote>
+
+<p>Your use of the XML4J Derivative Work is subject to the terms and conditions of the Apache Software License
+which is available at <a href="http://xml.apache.org/dist/LICENSE.txt">http://xml.apache.org/dist/LICENSE.txt</a>.
+More specifically:</p>
+
+<blockquote>
+  1. Redistributions of source code must retain the above copyright<br />
+     notice, this list of conditions and the following disclaimer.<br />
+<br />
+  2. Redistributions in binary form must reproduce the above copyright<br />
+     notice, this list of conditions and the following disclaimer in<br />
+     the documentation and/or other materials provided with the<br />
+     distribution.<br />
+ <br />
+  3. The end-user documentation included with the redistribution,<br />
+    if any, must include the following acknowledgment:<br />
+		<blockquote>
+        "This product includes software developed by the<br />
+         Apache Software Foundation (<a href="http://www.apache.org/">http://www.apache.org/</a>)."<br />
+		</blockquote>
+     Alternately, this acknowledgment may appear in the software itself,<br />
+     if and wherever such third-party acknowledgments normally appear.<br />
+ <br />
+  4. The names "Xerces" and "Apache Software Foundation" must<br />
+     not be used to endorse or promote products derived from this<br />
+     software without prior written permission. For written<br />
+     permission, please contact <a href="mailto:apache@apache.org">apache@apache.org</a>.<br />
+ <br />
+  5. Products derived from this software may not be called "Apache",<br />
+     nor may "Apache" appear in their name, without prior written<br />
+     permission of the Apache Software Foundation.<br />
+ <br />
+  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED<br />
+  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES<br />
+  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE<br />
+  DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR<br />
+  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,<br />
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT<br />
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF<br />
+  USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND<br />
+  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,<br />
+  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT<br />
+  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF<br />
+  SUCH DAMAGE.
+</blockquote>
+</blockquote>
+
 </body>
 </html>
