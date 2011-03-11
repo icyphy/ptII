@@ -79,11 +79,21 @@ public class PlotApplet extends JApplet {
      *  it should clean up.
      */
     public void destroy() {
-        _plot.destroy();
-        // Needed to get rid of the Mouse, MouseMotion and Key listeners
-        //getRootPane().getContentPane().removeAll();
-        getContentPane().remove(_plot);
-        _plot = null;
+        try {
+            // See http://download.oracle.com/javase/tutorial/uiswing/components/applet.html
+            SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run() {
+                        _plot.destroy();
+                        // Needed to get rid of the Mouse, MouseMotion and Key listeners
+                        //getRootPane().getContentPane().removeAll();
+                        getContentPane().remove(_plot);
+                        _plot = null;
+                    }
+                });
+        } catch (Exception ex) { 
+            System.err.println("init() didn't successfully complete");
+            ex.printStackTrace();
+        }
         super.destroy();
     }
 
