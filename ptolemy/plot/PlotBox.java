@@ -81,6 +81,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -4360,8 +4361,20 @@ public class PlotBox extends JPanel implements Printable {
                 // set this property:
                 // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
                 // and then run $PTII/bin/vergil
-                if (StringUtilities.getProperty("ptolemy.ptII.print.platform")
-                        .equals("CrossPlatform")) {
+                String printPlatformProperty = "";
+
+                try {
+                    printPlatformProperty = StringUtilities.getProperty("ptolemy.ptII.print.platform");
+                } catch (SecurityException ex) {
+                    if (!_printedSecurityExceptionMessage) {
+                        _printedSecurityExceptionMessage = true;
+                        System.out.println("Warning: Failed to get the "
+                                + "ptolemy.ptII.print.platform property "
+                                + "(-sandbox always causes this)");
+                    }
+                }
+                if (printPlatformProperty.equals("CrossPlatform")
+                        || UIManager.getLookAndFeel().getName().startsWith("Mac OS")) {
                     _printCrossPlatform();
                 } else {
                     _printNative();
@@ -4653,4 +4666,8 @@ public class PlotBox extends JPanel implements Printable {
 
         private Set<PlotBox> _listeners = new HashSet<PlotBox>();
     }
+
+    // True if we have printed the securityExceptionMessage.
+    private static boolean _printedSecurityExceptionMessage = false;
+
 }
