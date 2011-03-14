@@ -436,24 +436,6 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter animateExecution;
 
-    /** If true, force all actors to process events in timestamp
-     *  order, even though some actors (in particular those without
-     *  states) could process events out of timestamp order without
-     *  affecting the deterministic behavior of the system. This
-     *  could make the safe-to-process analysis simpler, while
-     *  sacrificing concurrency of event execution in other parts
-     *  of the system.
-     */
-    public Parameter forceActorsToProcessEventsInTimestampOrder;
-
-    /** When set to true, highlight all deeply contained actors
-     *  that have non-zero model time delays (including
-     *  actors that only introduce microstep delays).
-     *  When set to false, remove any such highlighting.
-     *  This is a boolean that defaults to false.
-     */
-    public Parameter highlightModelTimeDelay;
-
     /** Store the estimated platform time synchronization error bound in the
      *  platform governed by
      *  this Ptides director.  In a distributed Ptides environment,
@@ -472,6 +454,31 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public static final int EXECUTION_TIMER = 0;
 
+    /** The initial clock drift of the execution clock. The type of this
+     *  clock drift is a double, and the default value is 1.0, indicating the
+     *  execution clock runs at the same rate as the oracle clock. The oracle
+     *  clock is modeled by the model time of the enclosing DE director.
+     */
+    public Parameter executionClockDrift;
+
+    /** If true, force all actors to process events in timestamp
+     *  order, even though some actors (in particular those without
+     *  states) could process events out of timestamp order without
+     *  affecting the deterministic behavior of the system. This
+     *  could make the safe-to-process analysis simpler, while
+     *  sacrificing concurrency of event execution in other parts
+     *  of the system.
+     */
+    public Parameter forceActorsToProcessEventsInTimestampOrder;
+
+    /** When set to true, highlight all deeply contained actors
+     *  that have non-zero model time delays (including
+     *  actors that only introduce microstep delays).
+     *  When set to false, remove any such highlighting.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter highlightModelTimeDelay;
+
     /** The initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
      *  in that the other parameter parameter is the estimated bound, while
@@ -481,13 +488,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  event, in which case an exception is thrown.
      */
     public Parameter initialExecutionSynchronizationError;
-
-    /** The initial clock drift of the execution clock. The type of this
-     *  clock drift is a double, and the default value is 1.0, indicating the
-     *  execution clock runs at the same rate as the oracle clock. The oracle
-     *  clock is modeled by the model time of the enclosing DE director.
-     */
-    public Parameter executionClockDrift;
 
     /** The initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
@@ -613,7 +613,7 @@ public class PtidesBasicDirector extends DEDirector {
         return new Tag(_currentTime, _microstep);
     }
 
-    /** Get the simulated physical time of the environment, which is the oracle
+    /** Get the simulaed platform physical time of the environment, which is the oracle
      *  physical time offset by the clock synchronization error due to clock
      *  drift.
      *  @param clockId Clock ID.
@@ -635,7 +635,7 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
-    /** Get the simulated physical time of the environment, which is the oracle
+    /** Get the simulated platform physical time of the environment, which is the oracle
      *  physical time offset by the clock synchronization error due to clock
      *  drift.
      *  @param realTimeClock The real time clock.
