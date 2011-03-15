@@ -185,10 +185,10 @@ public class UnitsConverter extends Transformer {
                 if (((BooleanToken) transformOnLeft.getToken()).booleanValue()) {
                     // Scale on the left.                    
                     // Transform the input value from its original units to the SI units for this dimension.
-                    valueSIUnits = inputFactor.multiply(inputOffset.add(in));
+                    valueSIUnits = inputFactor.multiply(in.add(inputOffset));
                     
                     // Transform the value in SI units to the specified output units.
-                    result = outputOffset.subtractReverse(outputFactor.divideReverse(valueSIUnits));
+                    result = outputFactor.divideReverse(valueSIUnits).subtract(outputOffset);
                 } else {
                     // Scale on the right.
                     // Transform the input value from its original units to the SI units for this dimension.
