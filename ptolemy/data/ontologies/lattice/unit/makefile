@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DefaultAdapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Unit
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Charles Shelton, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,43 +26,55 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/defaultAdapters
+ME =        ptolemy/data/ontologies/lattice/unit
 
-DIRS = 		actor data domains
+DIRS =      domains
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =      ../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	defaultAdapters
+PTPACKAGE =     unit
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar
+PTCLASSJAR =	
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
-EXTRA_SRCS =	$(JSRCS)
+PTCLASSALLJARS = \
+	domains/domains.jar
+
+JSRCS = \
+	BaseDimensionRepresentativeConcept.java \
+	BaseUnitConcept.java \
+	DerivedDimensionRepresentativeConcept.java \
+	DerivedUnitConcept.java \
+	DimensionRepresentativeConcept.java \
+	UnitConcept.java
+	
+OTHER_FILES_TO_BE_JARED = \
+	baseDimensionsLibrary.xml \
+	derivedDimensionsLibrary.xml \
+	unitDimensionsLibrary.xml
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
 MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	'DimensionRepresentativeConcept$$BaseDimensionType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

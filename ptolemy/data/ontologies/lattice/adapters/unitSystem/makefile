@@ -52,13 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	domains/domains.jar
 
-JSRCS = \
-	BaseDimensionRepresentativeConcept.java \
-	BaseUnitConcept.java \
-	DerivedDimensionRepresentativeConcept.java \
-	DerivedUnitConcept.java \
-	DimensionRepresentativeConcept.java \
-	UnitConcept.java
+JSRCS = 
 	
 OTHER_FILES_TO_BE_JARED = \
 	unitSystem.xml \

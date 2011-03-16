@@ -26,13 +26,18 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.ontologies.lattice.adapters.unitSystem;
+package ptolemy.data.ontologies.lattice.unit;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
-import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -63,18 +68,44 @@ public abstract class DimensionRepresentativeConcept extends
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public DimensionRepresentativeConcept(Ontology ontology, String name)
+    public DimensionRepresentativeConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-        unitNames = new Parameter(this, "unitNames");
-        unitNames.setTypeEquals(new ArrayType(BaseType.STRING));
+        unitInfoRecords = new Parameter(this, "unitInfoRecords");
+        unitInfoRecords.setTypeEquals(new ArrayType(BaseType.RECORD));
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** The array of names for the units for this dimension. */
-    public Parameter unitNames;
+    /** The array of information records for the units for this dimension. */
+    public Parameter unitInfoRecords;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** React to a change in the unitInfoRecords parameter. Update the array
+     *  of user defined unit specification record tokens based on the value
+     *  of the unitInfoRecords parameter. 
+     *  @param attribute The attribute that has changed.
+     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *   token from the unitInfoRecords parameter.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute.equals(unitInfoRecords)) {
+            Token unitTokenArrayToken = unitInfoRecords.getToken();
+            if (unitTokenArrayToken != null) {
+                Token[] unitTokenArray = ((ArrayToken) unitTokenArrayToken).arrayValue();
+                _userDefinedUnitRecords = new RecordToken[unitTokenArray.length];
+                for (int i = 0; i < unitTokenArray.length; i++) {
+                    _userDefinedUnitRecords[i] = (RecordToken) unitTokenArray[i];
+                }
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }   
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -91,83 +122,34 @@ public abstract class DimensionRepresentativeConcept extends
     protected abstract UnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException;
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         public inner classes              ////
-    
-    /** The enumeration type that represents the 7 base dimensions for the
-     *  unit system.
+    /** Return the user defined unit record with the given Name field that was
+     *  specified by the user in the unitInfoRecords parameter. 
+     *  @param unitName The value of the Name field of the unit record token to
+     *   be found.
+     *  @return The unit info RecordToken with the given Name field, or null if
+     *   it is not found.
      */
-    public enum BaseDimensionType {
-        /** The Mass Dimension. */
-        MASS (0, "Mass"),
-        
-        /** The Position Dimension. */
-        POSITION (1, "Position"),
-        
-        /** The Time Dimension. */
-        TIME (2, "Time"),
-        
-        /** The Current Dimension. */
-        CURRENT (3, "Current"),
-        
-        /** The Temperature Dimension. */
-        TEMPERATURE (4, "Temperature"),
-        
-        /** The Substance Dimension. */
-        SUBSTANCE (5, "Substance"),
-        
-        /** The Light Intensity Dimension. */
-        LIGHTINTENSITY (6, "LightIntensity");        
-        
-        /** Instantiate a BaseDimensionType enum with the specified index
-         *  and name.
-         *  @param index The index for the base dimension.
-         *  @param name The name of the base dimension concept.
-         */
-        BaseDimensionType(int index, String name) {
-            _index = index;
-            _dimensionConceptName = name;
-        }
-        
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-        
-        /** Get the index value for the BaseDimensionType.
-         *  @return The integer index value.
-         */
-        public int getIndex() {
-            return _index;
-        }
-        
-        /** Get the BaseDimensionType enum that has the given string name.
-         *  @param baseDimensionName The name of the base dimension.
-         *  @return The BaseDimensionType enum with the given name.
-         */
-        public static BaseDimensionType getBaseDimensionTypeByName(
-                String baseDimensionName) {
-            for (BaseDimensionType dimension : BaseDimensionType.values()) {
-                if (dimension._dimensionConceptName.equals(baseDimensionName)) {
-                    return dimension;
+    protected RecordToken _findUserDefinedUnitRecordByName(String unitName) {
+        if (_userDefinedUnitRecords == null) {
+            return null;
+        } else {
+            for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
+                Token unitNameToken = ((RecordToken) unitRecordToken).
+                    get(UnitConcept.unitNameLabel);
+                if (unitNameToken instanceof StringToken &&
+                        unitName.equals(((StringToken) unitNameToken).stringValue())) {
+                    return unitRecordToken;
                 }
-            }            
+            }
             return null;
         }
-        
-        /** Return the number of base dimensions specified in the
-         *  BaseDimensionType enum type.
-         *  @return The number of base dimensions.
-         */
-        public static int numBaseDimensions() {
-            return BaseDimensionType.values().length;
-        }
-        
-        ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 ////
-        
-        /** The index for the base dimension type enum. */
-        private final int _index;
-        
-        /** The name of the base dimension type enum. */
-        private final String _dimensionConceptName;
-    }
+    }    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The array of record tokens specified by the user in the unitInfoRecords
+     *  parameter.
+     */
+    private RecordToken[] _userDefinedUnitRecords = null;
 }

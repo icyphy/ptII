@@ -35,6 +35,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// Concept
@@ -65,7 +66,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public Concept(Ontology ontology, String name)
+    public Concept(CompositeEntity ontology, String name)
             throws IllegalActionException, NameDuplicationException {
         super(ontology, name);
 
@@ -119,7 +120,12 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     *  @return The containing ontology.
     */
    public Ontology getOntology() {
-       return (Ontology) getContainer();
+       NamedObj container = getContainer();
+       if (container instanceof Ontology) {
+           return (Ontology) container;
+       } else {
+           return null;
+       }
    }
 
     /** Return the current value of the InequalityTerm. Since a concept
@@ -201,23 +207,6 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
             // assumption that value is acceptable.
             return true;
         }
-    }
-
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of {@link Ontology} or null.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the argument is not an Ontology
-     *   or null.
-     *  @exception NameDuplicationException If the container already has
-     *   a concept with the name of this concept.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof Ontology)) {
-            throw new IllegalActionException(container, this,
-                    "Concept can only be contained by instances of Ontology.");
-        }
-        super.setContainer(container);
     }
 
     /** Try to set the value of this InequalityTerm, or in this case, just

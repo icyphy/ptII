@@ -37,7 +37,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologySolver;
-import ptolemy.data.ontologies.lattice.adapters.unitSystem.UnitConcept;
+import ptolemy.data.ontologies.lattice.unit.UnitConcept;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ObjectType;
 import ptolemy.kernel.CompositeEntity;

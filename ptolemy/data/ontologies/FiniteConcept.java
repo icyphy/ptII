@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -57,7 +58,7 @@ public class FiniteConcept extends Concept implements Flowable {
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public FiniteConcept(Ontology ontology, String name)
+    public FiniteConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
 

@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.ontologies.lattice.adapters.unitSystem;
+package ptolemy.data.ontologies.lattice.unit;
 
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -57,6 +57,16 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
      *  a new BaseUnitConcept.
      */
     public static final String unitNameLabel = "Name";
+    
+    /** The factor label for the unit record token information when constructing
+     *  a new BaseUnitConcept.
+     */
+    public static final String unitFactorLabel = "Factor";
+    
+    /** The offset label for the unit record token information when constructing
+     *  a new BaseUnitConcept.
+     */
+    public static final String unitOffsetLabel = "Offset";
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -26,9 +26,10 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.ontologies.lattice.adapters.unitSystem;
+package ptolemy.data.ontologies.lattice.unit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ptolemy.data.ArrayToken;
@@ -38,9 +39,10 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.ontologies.Ontology;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -82,17 +84,17 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public DerivedDimensionRepresentativeConcept(Ontology ontology, String name)
+    public DerivedDimensionRepresentativeConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);        
-        unitConversionInfo = new Parameter(this, "unitConversionInfo");
         dimensionArray = new Parameter(this, "dimensionArray");
-        unitConversionInfo.setTypeEquals(new ArrayType(BaseType.RECORD));
         dimensionArray.setTypeEquals(new ArrayType(BaseType.RECORD));
         
         _componentDimensions = new HashMap<DimensionRepresentativeConcept,
                                             Integer>();
-        _baseDimensionExponentsArray = new int[BaseDimensionType.numBaseDimensions()];
+        _componentBaseDimensions = new HashMap<BaseDimensionRepresentativeConcept,
+                                            Integer>();
+        _dimensionNameToReferenceName = new HashMap<String, String>();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -103,29 +105,8 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      */
     public Parameter dimensionArray;
     
-    /** The array of units specifications for each unit name in this dimension. */
-    public Parameter unitConversionInfo;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** React to a change in the dimensionArray parameter. Update the
-     *  component dimensions based on the new value of the dimensionArray.
-     *  @param attribute The attribute that has changed.
-     *  @throws IllegalActionException Thrown if there is a problem creating
-     *   the component dimensions map from the dimension array parameter.
-     */
-    public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
-        if (attribute.equals(dimensionArray)) {
-            ArrayToken dimensionArrayToken = (ArrayToken) dimensionArray.getToken();
-            if (dimensionArrayToken != null) {
-                _setUnitDimensions(dimensionArrayToken);
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
     
     /** Return the component dimensions map for this derived unit dimension.
      *  @return The map of component units and their exponents for this
@@ -133,6 +114,19 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      */
     public Map<DimensionRepresentativeConcept, Integer> getComponentDimensions() {
         return _componentDimensions;
+    }
+    
+    /** Return the reference name used by the unit specifications in this
+     *  concept for the given dimension name. The reference name allows us
+     *  to specify derived dimension representative concepts in MoML that may
+     *  depend on other dimension concepts without have to specify those
+     *  dependencies until after the ontology model is created. 
+     *  @param dimensionName The name of the dimension being referenced.
+     *  @return The reference name used in the unit specifications to
+     *   refer to the given dimension.
+     */
+    public String getReferenceNameByDimensionName(String dimensionName) {
+        return _dimensionNameToReferenceName.get(dimensionName);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -149,36 +143,14 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      */
     protected DerivedUnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
+        _updateDimensionInformation();
+        
         if (containsThisInfiniteConceptString(infiniteConceptString)) {
             String unitName = infiniteConceptString.substring(getName()
                     .length() + 1);
             
-            Token[] unitNamesArray = ((ArrayToken) unitNames.getToken()).arrayValue();            
-            int index = 0;
-            for (Token unitNameToken : unitNamesArray) {
-                if (unitName.equals(((StringToken) unitNameToken).stringValue())) {
-                    try {
-                        RecordToken unitConversionToken = (RecordToken)
-                            ((ArrayToken) unitConversionInfo.getToken()).
-                                getElement(index);                        
-                        Token[] valuesArray = new Token[]{unitNameToken,
-                                                          unitConversionToken};                        
-                        RecordToken unitRecord = new RecordToken(
-                                DerivedUnitConcept.derivedUnitRecordLabelArray,
-                                valuesArray);
-                        return DerivedUnitConcept.createDerivedUnitConcept(
-                                getOntology(), this, unitRecord);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        throw new IllegalActionException(this,
-                                "No matching unit conversion info record for " +
-                                "the unit named: " +
-                                ((StringToken) unitNameToken).stringValue());
-                    }
-                }
-                index++;
-            }
-            throw new IllegalActionException(this, "No unit named " + unitName
-                    + " for the " + this + " dimension.");            
+            return DerivedUnitConcept.createDerivedUnitConcept(getOntology(),
+                    this, _findUnitRecordByName(unitName));           
         } else {
             throw new IllegalActionException(this, "The given string cannot " +
                         "be used to derive a valid infinite concept contained " +
@@ -194,11 +166,8 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *  @throws IllegalActionException Thrown if an unrecognized dimension
      *   concept is found.
      */
-    private void _deriveBaseDimensionExponentsArray() throws IllegalActionException {
-        // Clear the base dimension exponents array values to all zeros.
-        for (int i = 0; i < _baseDimensionExponentsArray.length; i++) {
-            _baseDimensionExponentsArray[i] = 0;
-        }
+    private void _deriveComponentBaseDimensionsMap() throws IllegalActionException {
+        _componentBaseDimensions.clear();
         
         for (DimensionRepresentativeConcept dimension : _componentDimensions.keySet()) {
             int exponentValue = _getExponentValueForComponentDimension(_componentDimensions, dimension);
@@ -218,6 +187,47 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         }
     }
     
+    /** Return the unit info record token with the given Name field. First
+     *  look in the array of user defined record tokens, and if it is not
+     *  found there then look in the list of pre-specified unit
+     *  parameters.
+     *  @param unitName The value of the Name field of the unit record token to
+     *   be found.
+     *  @return The unit info RecordToken with the given Name field.
+     *  @throws IllegalActionException Thrown if the unit cannot be found, or
+     *   if the unit specification parameter is invalid.
+     */
+    private RecordToken _findUnitRecordByName(String unitName)
+            throws IllegalActionException {
+        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
+        if (userDefinedRecord == null) {
+            
+            // Find the given unitName in the list of pre-specified parameters.
+            List<Parameter> unitParameterList = attributeList(Parameter.class);
+            for (Parameter unitParameter : unitParameterList) {
+                if (unitName.equals(unitParameter.getName())) {
+                    Token unitConversionInfo = unitParameter.getToken();
+                    if (unitConversionInfo instanceof RecordToken) {
+                        RecordToken unitNameRecord = new RecordToken(
+                                new String[]{UnitConcept.unitNameLabel},
+                                new Token[]{new StringToken(unitName)});
+                        return RecordToken.merge(unitNameRecord,
+                                (RecordToken) unitConversionInfo);
+                        
+                    } else {
+                        throw new IllegalActionException(this,
+                                "Invalid unit specification parameter: " +
+                                unitParameter);
+                    }
+                }
+            }
+            throw new IllegalActionException(this, "No unit named " + unitName
+                    + " for the " + this + " dimension.");
+        } else {
+            return userDefinedRecord;
+        }
+    }
+    
     /** Get the dimension concept from a dimensionRecord record token.
      *  @param dimensionRecord The record token that specifies the dimension
      *   and its exponent.
@@ -227,14 +237,37 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      */
     private DimensionRepresentativeConcept _getDimensionValue(RecordToken dimensionRecord)
         throws IllegalActionException {
-        Token dimensionObjectToken = dimensionRecord.get(_dimensionLabel);
-        if (dimensionObjectToken instanceof ObjectToken) {
-            Object dimensionObject = ((ObjectToken) dimensionObjectToken).getValue();
-            if (dimensionObject instanceof DimensionRepresentativeConcept) {
-                return (DimensionRepresentativeConcept) dimensionObject;
+        Token dimensionNameToken = dimensionRecord.get(_dimensionLabel);
+        if (dimensionNameToken instanceof StringToken) {
+            String dimensionName = ((StringToken) dimensionNameToken).stringValue();
+            
+            // First see if the name is a reference name that is mapped to a
+            // dimension parameter specified in this concept.
+            Attribute dimensionAttribute = getAttribute(dimensionName);
+            if (dimensionAttribute instanceof Parameter &&
+                    ((Parameter) dimensionAttribute).getToken() instanceof ObjectToken) {
+                ObjectToken dimensionConceptToken = (ObjectToken) ((Parameter) dimensionAttribute).getToken();
+                Object dimensionConceptObject = dimensionConceptToken.getValue();
+                if (dimensionConceptObject instanceof DimensionRepresentativeConcept) {
+                    _dimensionNameToReferenceName.put(
+                            ((DimensionRepresentativeConcept)
+                                    dimensionConceptObject).getName(),
+                                    dimensionName);
+                    return (DimensionRepresentativeConcept) dimensionConceptObject;
+                } else {
+                    throw new IllegalActionException(this, "Invalid dimension " +
+                            "object: " + dimensionConceptObject);
+                }
+                
+            // Next see if the name refers to a dimension name in the ontology.
             } else {
-                throw new IllegalActionException(this, "Invalid dimension " +
-                                "specification: " + dimensionObject);
+                Concept dimensionConcept = getOntology().getConceptByString(dimensionName);
+                if (dimensionConcept instanceof DimensionRepresentativeConcept) {
+                    return (DimensionRepresentativeConcept) dimensionConcept;
+                } else {
+                    throw new IllegalActionException(this, "Invalid dimension " +
+                            "specification: " + dimensionName);
+                }
             }
         } else {
             throw new IllegalActionException(this, "Invalid dimension record " +
@@ -296,16 +329,14 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      */
     private void _incrementBaseDimensionExponent(
             BaseDimensionRepresentativeConcept dimension, int exponentValue)
-                throws IllegalActionException {
-        
-        BaseDimensionType baseDimension = BaseDimensionType.
-            getBaseDimensionTypeByName(dimension.getName());
-        if (baseDimension == null) {
-            throw new IllegalActionException(this, "Invalid base unit " +
-            		"dimension concept: " + dimension);
-        }        
-        int baseDimensionIndex = baseDimension.getIndex();
-        _baseDimensionExponentsArray[baseDimensionIndex] += exponentValue;     
+                throws IllegalActionException {        
+        Integer currentExponent = _componentBaseDimensions.get(dimension);
+        if (currentExponent == null) {
+            _componentBaseDimensions.put(dimension, new Integer(exponentValue));
+        } else {
+            int newExponentValue = currentExponent.intValue() + exponentValue;
+            _componentBaseDimensions.put(dimension, new Integer(newExponentValue));
+        }   
     }
     
     /** Increment the derived dimension exponents by the given exponent value.
@@ -348,6 +379,7 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     private void _setUnitDimensions(ArrayToken dimensionArrayToken)
         throws IllegalActionException {
         _componentDimensions.clear();
+        _dimensionNameToReferenceName.clear();
         
         Token[] dimensions = dimensionArrayToken.arrayValue();
         for (Token dimensionRecord : dimensions) {
@@ -362,25 +394,53 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
             }
         }
         
-        _deriveBaseDimensionExponentsArray();
+        _deriveComponentBaseDimensionsMap();
+    }
+    
+    /** Update the component dimension information for this concept if the
+     *  ontology model has changed. Otherwise do nothing. This method is
+     *  called every time a new DerivedUnitConcept is created to ensure that
+     *  those unit concepts are based on the most recent specification
+     *  information in this dimension concept.
+     *  @throws IllegalActionException Thrown if there is a problem setting
+     *   the dimension information.
+     */
+    private void _updateDimensionInformation() throws IllegalActionException {
+        if (workspace().getVersion() != _dimensionVersion) {
+            ArrayToken dimensionArrayToken = (ArrayToken) dimensionArray.getToken();
+            if (dimensionArrayToken != null) {
+                _setUnitDimensions(dimensionArrayToken);
+                _dimensionVersion = workspace().getVersion();
+            }
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The map of component base dimensions to the exponents that comprises
+     *  this derived dimension.
+     */
+    private Map<BaseDimensionRepresentativeConcept, Integer> _componentBaseDimensions;
     
     /** The map of component dimensions to the exponents that comprises
      *  this derived dimension.
      */
     private Map<DimensionRepresentativeConcept, Integer> _componentDimensions;
     
-    /** The array of base dimension exponents that defines this derived
-     *  dimension.
-     */
-    private int[] _baseDimensionExponentsArray;
-    
     /** The label for the Dimension field for the dimension record token. */
     private static final String _dimensionLabel = "Dimension";
     
     /** The label for the Exponent field for the dimension record token. */
     private static final String _exponentLabel = "Exponent";
+    
+    /** The map of component dimension names to their reference names in
+     *  this dimension concept.
+     */
+    private Map<String, String> _dimensionNameToReferenceName;
+    
+    /** The last workspace version at which the cached dimension information
+     *  was valid.
+     */
+    private long _dimensionVersion = -1L;
 }

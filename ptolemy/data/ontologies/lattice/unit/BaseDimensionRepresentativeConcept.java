@@ -26,7 +26,9 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.ontologies.lattice.adapters.unitSystem;
+package ptolemy.data.ontologies.lattice.unit;
+
+import java.util.List;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -34,9 +36,8 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.ontologies.Ontology;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -75,26 +76,13 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public BaseDimensionRepresentativeConcept(Ontology ontology, String name)
+    public BaseDimensionRepresentativeConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-        unitFactors = new Parameter(this, "unitFactors");
-        unitOffsets = new Parameter(this, "unitOffsets");
-        unitFactors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        unitOffsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-    
-    /** The array of multiplication factors for the units for this dimension. */
-    public Parameter unitFactors;
-    
-    /** The array of offsets for the units for this dimension. */
-    public Parameter unitOffsets;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
     
     /** Return a BaseUnitConcept instance from the given concept string
      *  representation. The string must represent one of the units specified
@@ -112,47 +100,62 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
             String unitName = infiniteConceptString.substring(getName()
                     .length() + 1);
             
-            Token[] unitNamesArray = ((ArrayToken) unitNames.getToken()).arrayValue();            
-            int index = 0;
-            for (Token unitNameToken : unitNamesArray) {
-                if (unitName.equals(((StringToken) unitNameToken).stringValue())) {
-                    try {
-                        DoubleToken unitFactorToken = (DoubleToken)
-                            ((ArrayToken) unitFactors.getToken()).
-                                getElement(index);
-                        
-                        DoubleToken unitOffsetToken = null;
-                        if (unitOffsets.getToken() == null ||
-                                unitOffsets.getToken().equals(Token.NIL)) {
-                            unitOffsetToken = DoubleToken.ZERO;
-                        } else {
-                            unitOffsetToken = (DoubleToken) ((ArrayToken)
-                                    unitOffsets.getToken()).getElement(index);
-                        }
-                        
-                        Token[] valuesArray = new Token[]{unitNameToken,
-                                                            unitFactorToken,
-                                                            unitOffsetToken};
-                        
-                        RecordToken unitRecord = new RecordToken(
-                                BaseUnitConcept.unitRecordLabelArray, valuesArray);
-                        return BaseUnitConcept.createBaseUnitConcept(
-                                getOntology(), this, unitRecord);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        throw new IllegalActionException(this,
-                                "No matching unit factor or offset for the " +
-                                "unit named: " +
-                                ((StringToken) unitNameToken).stringValue());
-                    }
-                }
-                index++;
-            }
-            throw new IllegalActionException(this, "No unit named " + unitName
-                    + " for the " + this + " dimension.");            
+            return BaseUnitConcept.createBaseUnitConcept(getOntology(), this,
+                    _findUnitRecordByName(unitName));
         } else {
             throw new IllegalActionException(this, "The given string cannot " +
                         "be used to derive a valid infinite concept contained " +
                         "by this representative.");
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Return the unit info record token with the given Name field. First
+     *  look in the array of user defined record tokens, and if it is not
+     *  found there then look in the list of pre-specified unit
+     *  parameters.
+     *  @param unitName The value of the Name field of the unit record token to
+     *   be found.
+     *  @return The unit info RecordToken with the given Name field.
+     *  @throws IllegalActionException Thrown if the unit cannot be found, or
+     *   if the unit specification parameter is invalid.
+     */
+    private RecordToken _findUnitRecordByName(String unitName)
+            throws IllegalActionException {
+        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
+        if (userDefinedRecord == null) {
+            
+            // Find the given unitName in the list of pre-specified parameters.
+            List<Parameter> unitParameterList = attributeList(Parameter.class);
+            for (Parameter unitParameter : unitParameterList) {
+                if (unitName.equals(unitParameter.getName())) {
+                    Token[] unitRecordArray = new Token[3];
+                    unitRecordArray[0] = new StringToken(unitName);
+
+                    Token unitConversionInfo = unitParameter.getToken();
+                    if (unitConversionInfo instanceof DoubleToken) {
+                        unitRecordArray[1] = unitConversionInfo;
+                        unitRecordArray[2] = DoubleToken.ZERO;
+                    } else if (unitConversionInfo instanceof ArrayToken &&
+                            ((ArrayToken) unitConversionInfo).length() == 2 &&
+                            ((ArrayToken) unitConversionInfo).getElementType().equals(BaseType.DOUBLE)) {
+                        unitRecordArray[1] = ((ArrayToken) unitConversionInfo).getElement(0);
+                        unitRecordArray[2] = ((ArrayToken) unitConversionInfo).getElement(1);
+                    } else {
+                        throw new IllegalActionException(this,
+                                "Invalid unit specification parameter: " +
+                                unitParameter);
+                    }
+                    return new RecordToken(BaseUnitConcept.unitRecordLabelArray,
+                            unitRecordArray);
+                }
+            }
+            throw new IllegalActionException(this, "No unit named " + unitName
+                    + " for the " + this + " dimension.");
+        } else {
+            return userDefinedRecord;
         }
     }
 }

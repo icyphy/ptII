@@ -1,6 +1,6 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DefaultAdapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DefaultAdapters Domains Ontologies
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Charles Shelton, based on a file by Christopher Brooks
 #
 # $Id$
 #
@@ -26,38 +26,40 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters/defaultAdapters
+ME =        ptolemy/data/ontologies/lattice/adapters/defaultAdapters/domains/ontologies
 
-DIRS = 		actor data domains
+DIRS =      lib
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =      ../../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	defaultAdapters
+PTPACKAGE =     ontologies
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar
+PTCLASSJAR =	
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
-EXTRA_SRCS =	$(JSRCS)
+PTCLASSALLJARS = \
+	lib/lib.jar
+
+JSRCS = 
+	
+OTHER_FILES_TO_BE_JARED = 
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
 MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash

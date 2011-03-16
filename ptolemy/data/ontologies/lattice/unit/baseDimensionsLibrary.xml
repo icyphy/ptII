@@ -1,0 +1,174 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  
+  <entity name="Mass" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.4,0.0,1.0}"/>
+	<property name="g" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="mg" class="ptolemy.data.expr.Parameter" value="0.001*g">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ug" class="ptolemy.data.expr.Parameter" value="1E-09*g">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="kg" class="ptolemy.data.expr.Parameter" value="1000*g">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="tonMetric" class="ptolemy.data.expr.Parameter" value="1000*kg">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="lbm" class="ptolemy.data.expr.Parameter" value="453.5924*g"> <!--Avoirdupois APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="ton" class="ptolemy.data.expr.Parameter" value="2000*lbm"> <!--Short ton-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="tonLong" class="ptolemy.data.expr.Parameter" value="2240*lbm"> <!--Long ton-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="oz" class="ptolemy.data.expr.Parameter" value="lbm/16">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="lbmTroy" class="ptolemy.data.expr.Parameter" value="373.2417*g"> <!--Troy or apothecary APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="ozTroy" class="ptolemy.data.expr.Parameter" value="lbmTroy/12"> <!--Yes 12, not 16-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Length" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,1.0,1.0}"/>
+  	<property name="cm" class="ptolemy.data.expr.Parameter" value="1.0">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="m" class="ptolemy.data.expr.Parameter" value="100*cm">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="km" class="ptolemy.data.expr.Parameter" value="1000*m">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="mm" class="ptolemy.data.expr.Parameter" value="0.001*m">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="um" class="ptolemy.data.expr.Parameter" value="1E-06*m">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="nm" class="ptolemy.data.expr.Parameter" value="1E-09*m">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="angstrom" class="ptolemy.data.expr.Parameter" value="1E-10*m">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="astronomicalUnit" class="ptolemy.data.expr.Parameter" value="1.495979E+11*m"> <!--APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="inch" class="ptolemy.data.expr.Parameter" value="0.0254*m">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="ft" class="ptolemy.data.expr.Parameter" value="0.3048*m">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="yd" class="ptolemy.data.expr.Parameter" value="3*ft">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="ftUSSurvey" class="ptolemy.data.expr.Parameter" value="0.3048006*m"> <!--APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="fathom" class="ptolemy.data.expr.Parameter" value="6*ftUSSurvey">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="miNautical" class="ptolemy.data.expr.Parameter" value="1852*m">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="mi" class="ptolemy.data.expr.Parameter" value="5280*ft">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Time" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,1.0,1.0}"/>
+	<property name="sec" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ms" class="ptolemy.data.expr.Parameter" value="0.001*sec">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="us" class="ptolemy.data.expr.Parameter" value="1E-06*sec">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ns" class="ptolemy.data.expr.Parameter" value="1E-09*sec">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="minute" class="ptolemy.data.expr.Parameter" value="60*sec">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="hr" class="ptolemy.data.expr.Parameter" value="3600*sec">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="day" class="ptolemy.data.expr.Parameter" value="24*hr">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="yrCalendar" class="ptolemy.data.expr.Parameter" value="365.2425*day"> <!--Leap year %4 && !(%100 && !%400)-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="yrSidereal" class="ptolemy.data.expr.Parameter" value="31558150*sec"> <!--APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="yrTropical" class="ptolemy.data.expr.Parameter" value="31556930*sec"> <!--APPROXIMATE-->
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Current" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,1.0,1.0}"/>
+	<property name="Amp" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="mAmp" class="ptolemy.data.expr.Parameter" value="0.001*Amp">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="uAmp" class="ptolemy.data.expr.Parameter" value="1E-06*Amp">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Temperature" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.0,1.0}"/>
+	<property name="K" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="C" class="ptolemy.data.expr.Parameter" value="{1.0*K, 273.15}">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="F" class="ptolemy.data.expr.Parameter" value="{(5.0/9.0)*K, 459.67}">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Substance" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.0,1.0}"/>
+	<property name="mol" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="LightIntensity" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.0,1.0}"/>
+	<property name="cd" class="ptolemy.data.expr.Parameter" value="1.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+
+</group>

@@ -30,8 +30,10 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.Ontology;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// ProductLatticeConcept
@@ -58,7 +60,7 @@ public class ProductLatticeConcept extends FiniteConcept {
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public ProductLatticeConcept(ProductLatticeOntology ontology, String name)
+    public ProductLatticeConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
     }
@@ -136,6 +138,19 @@ public class ProductLatticeConcept extends FiniteConcept {
     public List<Concept> getConceptTuple() {
         return new ArrayList<Concept>(_conceptTuple);
     }
+    
+    /** Return the product lattice ontology that contains this concept.
+    *
+    *  @return The containing product lattice ontology.
+    */
+   public Ontology getOntology() {
+       NamedObj container = getContainer();
+       if (container instanceof ProductLatticeOntology) {
+           return (ProductLatticeOntology) container;
+       } else {
+           return null;
+       }
+   }
 
     /** Return the string that represents this concept, its name.
      *  @return The string name that represents this concept.

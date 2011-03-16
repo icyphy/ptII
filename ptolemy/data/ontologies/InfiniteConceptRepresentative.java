@@ -27,6 +27,7 @@ package ptolemy.data.ontologies;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -53,7 +54,7 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public InfiniteConceptRepresentative(Ontology ontology, String name)
+    public InfiniteConceptRepresentative(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);        
         _instantiatedInfiniteConcepts = new HashSet<InfiniteConcept>();

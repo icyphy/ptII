@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.ontologies.lattice.adapters.unitSystem;
+package ptolemy.data.ontologies.lattice.unit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,18 +124,8 @@ public class DerivedUnitConcept extends UnitConcept {
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
         _componentUnits = new HashMap<DimensionRepresentativeConcept, UnitConcept[]>();
-        Token derivedUnitRecord = unitInfo.get(derivedUnitConversionLabel);
-        
-        if (derivedUnitRecord instanceof RecordToken) {
-            _setComponentUnitsMap((RecordToken) derivedUnitRecord, representative);
-            _setConversionFactors((RecordToken) derivedUnitRecord);
-            
-            
-        } else {
-            throw new IllegalActionException(this, "Invalid derived unit " +
-                        "conversion data (must be a record token): " +
-                        derivedUnitRecord);
-        }
+        _setComponentUnitsMap(unitInfo, representative);
+        _setConversionFactors(unitInfo);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -163,6 +153,50 @@ public class DerivedUnitConcept extends UnitConcept {
         }
     }
     
+    /** Get the array of component unit names for the specified component
+     *  dimension from the unit record token for this derived unit concept.
+     *  @param derivedUnitRecord The RecordToken that specifies the component
+     *   dimensions and units that make up this derived unit.
+     *  @param dimensionName The specific component dimension name from which
+     *   to get the array of unit names.
+     *  @return The array of unit names for this component dimension as an
+     *   array of StringTokens.
+     *  @throws IllegalActionException Thrown if the units array cannot be found
+     *   or it is invalid.
+     */
+    private Token[] _getUnitsArray(RecordToken derivedUnitRecord, String dimensionName) throws IllegalActionException {
+        // First check to see if the record token has a label that matches
+        // the given dimensionName.        
+        Token unitsArrayToken = derivedUnitRecord.get(dimensionName);
+        
+        // If the unitsArrayToken is not found, the dimensionName might be
+        // specified by a reference name used in the parent
+        // DerivedDimensionRepresentativeConcept. Try to find the unitsArrayToken
+        // based on that reference name.
+        if (unitsArrayToken == null) {
+            String referenceName = ((DerivedDimensionRepresentativeConcept)
+                    _representative).getReferenceNameByDimensionName(dimensionName);
+            if (referenceName != null) {
+                unitsArrayToken = derivedUnitRecord.get(referenceName);
+            }
+        }
+        
+        if (unitsArrayToken == null) {
+            throw new IllegalActionException(this, "Could not find the units " +
+            		"information for the " + dimensionName + " dimension.");
+        } else {
+            if (unitsArrayToken instanceof ArrayToken &&
+                    ((ArrayToken) unitsArrayToken).getElementType().
+                        equals(BaseType.STRING)) {
+                return ((ArrayToken) unitsArrayToken).arrayValue();
+            } else {
+                throw new IllegalActionException(this, "Invalid units array " +
+                    "for the " + dimensionName + " dimension: " +
+                    unitsArrayToken);
+            }
+        }
+    }
+    
     /** Set the component units for the derived unit based on the given
      *  record token that specifies the component units for this derived unit.
      *  @param derivedUnitRecord The record token that contains the specified
@@ -177,44 +211,34 @@ public class DerivedUnitConcept extends UnitConcept {
                 throws IllegalActionException {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions =
             unitDimensionRepresentative.getComponentDimensions();
+        
         for (DimensionRepresentativeConcept dimension : componentDimensions.keySet()) {
             String dimensionName = dimension.getName();
-            Token unitsArrayToken = derivedUnitRecord.get(dimensionName);
-            if (unitsArrayToken instanceof ArrayToken &&
-                    ((ArrayToken) unitsArrayToken).getElementType().
-                        equals(BaseType.STRING)) {
-                
-                Token[] unitsStringTokens = ((ArrayToken) unitsArrayToken).arrayValue();
-                int dimensionExponent = componentDimensions.get(dimension).intValue();
-                int dimensionExponentAbsValue = Math.abs(dimensionExponent);
+            Token[] unitsStringTokens = _getUnitsArray(derivedUnitRecord, dimensionName);
+            int dimensionExponent = componentDimensions.get(dimension).intValue();
+            int dimensionExponentAbsValue = Math.abs(dimensionExponent);
 
-                if (unitsStringTokens.length == dimensionExponentAbsValue) {
-                    UnitConcept[] unitsArray = new UnitConcept[unitsStringTokens.length];
-                    
-                    int index = 0;
-                    for (Token unitStringToken : unitsStringTokens) {
-                        String unitName = ((StringToken) unitStringToken).stringValue();
-                        Concept unit = getOntology().getConceptByString(dimensionName + "_" + unitName);
-                        if (unit instanceof UnitConcept) {
-                            unitsArray[index++] = (UnitConcept) unit;
-                        } else {
-                            throw new IllegalActionException(this, "Invalid " +
-                            		"unit concept: " + unit);
-                        }
+            if (unitsStringTokens.length == dimensionExponentAbsValue) {
+                UnitConcept[] unitsArray = new UnitConcept[unitsStringTokens.length];
+
+                int index = 0;
+                for (Token unitStringToken : unitsStringTokens) {
+                    String unitName = ((StringToken) unitStringToken).stringValue();
+                    Concept unit = getOntology().getConceptByString(dimensionName + "_" + unitName);
+                    if (unit instanceof UnitConcept) {
+                        unitsArray[index++] = (UnitConcept) unit;
+                    } else {
+                        throw new IllegalActionException(this, "Invalid " +
+                                "unit concept: " + unit);
                     }
-                    _componentUnits.put(dimension, unitsArray);
-                } else {
-                    throw new IllegalActionException(this, "The component " +
-                            "dimension " + dimension + " has an exponent of "
-                            + dimensionExponent + " so its units array " +
-                            "should have " + dimensionExponentAbsValue +
-                            " elements but it does not. Units array is: " +
-                            unitsArrayToken);
                 }
+                _componentUnits.put(dimension, unitsArray);
             } else {
-                throw new IllegalActionException(this, "Invalid units array " +
-                		"for the " + dimensionName + " dimension: " +
-                		unitsArrayToken);
+                throw new IllegalActionException(this, "The component " +
+                        "dimension " + dimension + " has an exponent of "
+                        + dimensionExponent + " so its units array " +
+                        "should have " + dimensionExponentAbsValue +
+                        " elements but it does not.");
             }
         }
     }
@@ -229,7 +253,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private void _setConversionFactors(RecordToken derivedUnitRecord)
             throws IllegalActionException {
-        Token unitFactorToken = derivedUnitRecord.get(_unitFactorLabel);
+        Token unitFactorToken = derivedUnitRecord.get(unitFactorLabel);
         if (unitFactorToken == null) {
             _unitFactor = 1.0;
         } else if (unitFactorToken instanceof DoubleToken) {
@@ -239,7 +263,7 @@ public class DerivedUnitConcept extends UnitConcept {
             		"factor: " + unitFactorToken);
         }
         
-        Token unitOffsetToken = derivedUnitRecord.get(_unitOffsetLabel);
+        Token unitOffsetToken = derivedUnitRecord.get(unitOffsetLabel);
         if (unitOffsetToken == null) {
             _unitOffset = 0.0;
         } else if (unitOffsetToken instanceof DoubleToken) {
@@ -260,10 +284,4 @@ public class DerivedUnitConcept extends UnitConcept {
      *  for that component dimension.
      */
     private Map<DimensionRepresentativeConcept, UnitConcept[]> _componentUnits;
-    
-    /** Label for the unit factor field of the units record token. */
-    private static final String _unitFactorLabel = "UnitFactor";
-    
-    /** Label for the unit offset field of the units record token. */
-    private static final String _unitOffsetLabel = "UnitOffset";
 }

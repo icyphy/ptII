@@ -26,6 +26,7 @@ package ptolemy.data.ontologies;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -52,7 +53,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public FlatTokenRepresentativeConcept(Ontology ontology, String name)
+    public FlatTokenRepresentativeConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
     }

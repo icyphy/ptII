@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.ontologies.lattice.adapters.unitSystem;
+package ptolemy.data.ontologies.lattice.unit;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
@@ -114,16 +114,6 @@ public class BaseUnitConcept extends UnitConcept {
     
     ///////////////////////////////////////////////////////////////////
     ////                    public variables                       ////
-
-    /** The factor label for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String unitFactorLabel = "Factor";
-    
-    /** The offset label for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String unitOffsetLabel = "Offset";
     
     /** The array of labels for the unit record token information when constructing
      *  a new BaseUnitConcept.
