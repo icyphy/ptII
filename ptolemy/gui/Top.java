@@ -158,11 +158,7 @@ public abstract class Top extends JFrame {
         // Ensure that user is prompted before closing if the data
         // has been modified.
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                _close();
-            }
-        });
+        addWindowListener(new CloseWindowAdapter());
 
         getContentPane().setLayout(new BorderLayout());
 
@@ -180,16 +176,7 @@ public abstract class Top extends JFrame {
      *  and performed in that thread.
      */
     public void centerOnScreen() {
-        Runnable doCenter = new Runnable() {
-            public void run() {
-                Toolkit tk = Toolkit.getDefaultToolkit();
-                setLocation((tk.getScreenSize().width - getSize().width) / 2,
-                        (tk.getScreenSize().height - getSize().height) / 2);
-
-                // Make this the default context for modal messages.
-                UndeferredGraphicalMessageHandler.setContext(Top.this);
-            }
-        };
+        Runnable doCenter = new CenterOnScreenRunnable();
 
         deferIfNecessary(doCenter);
     }
@@ -201,11 +188,7 @@ public abstract class Top extends JFrame {
      *  so that it is executed in the swing thread.
      */
     public final void close() {
-        Runnable doClose = new Runnable() {
-            public void run() {
-                _close();
-            }
-        };
+        Runnable doClose = new CloseWindowRunnable();
 
         deferIfNecessary(doClose);
     }
@@ -240,11 +223,7 @@ public abstract class Top extends JFrame {
                 // If it hasn't already been requested, request that actions
                 // be performed in the event dispatch thread.
                 if (!_actionsDeferred) {
-                    Runnable doActions = new Runnable() {
-                        public void run() {
-                            _executeDeferredActions();
-                        }
-                    };
+                    Runnable doActions = new DeferredActionsRunnable();
 
                     try {
                         // NOTE: Using invokeAndWait() here risks causing
@@ -312,87 +291,7 @@ public abstract class Top extends JFrame {
      *  performed in that thread.
      */
     public void pack() {
-        Runnable doPack = new Runnable() {
-            public void run() {
-                // NOTE: This always runs in the swing thread,
-                // so there is no need to synchronize.
-                if (!_menuPopulated) {
-                    // Set up the menus.
-                    _fileMenu.setMnemonic(KeyEvent.VK_F);
-                    _helpMenu.setMnemonic(KeyEvent.VK_H);
-
-                    // Construct the File menu by adding action commands
-                    // and action listeners.
-                    FileMenuListener fileMenuListener = new FileMenuListener();
-
-                    // Set the action command and listener for each menu item.
-                    for (int i = 0; i < _fileMenuItems.length; i++) {
-                        if (_fileMenuItems[i] == null) {
-                            _fileMenu.addSeparator();
-                        } else {
-                            _fileMenuItems[i]
-                                    .setActionCommand(_fileMenuItems[i]
-                                            .getText());
-                            _fileMenuItems[i]
-                                    .addActionListener(fileMenuListener);
-                            _fileMenu.add(_fileMenuItems[i]);
-                        }
-                    }
-
-                    _menubar.add(_fileMenu);
-
-                    // History fill
-                    try {
-                        _populateHistory(_readHistory());
-                    } catch (IOException ex) {
-                        // Ignore
-                    } catch (SecurityException ex) {
-                        // Ignore
-                    }
-
-                    // Construct the Help menu by adding action commands
-                    // and action listeners.
-                    HelpMenuListener helpMenuListener = new HelpMenuListener();
-
-                    // Set the action command and listener for each menu item.
-                    for (int i = 0; i < _helpMenuItems.length; i++) {
-                        _helpMenuItems[i].setActionCommand(_helpMenuItems[i]
-                                .getText());
-                        _helpMenuItems[i].addActionListener(helpMenuListener);
-                        _helpMenu.add(_helpMenuItems[i]);
-                    }
-
-                    // Unfortunately, at this time, Java provides no
-                    // mechanism for derived classes to insert menus
-                    // at arbitrary points in the menu bar.  Also, the
-                    // menubar ignores the alignment property of the
-                    // JMenu.  By convention, however, we want the
-                    // help menu to be the rightmost menu.  Thus, we
-                    // use a strategy pattern here, and call a
-                    // protected method that derived classes can use
-                    // to add menus.
-                    _addMenus();
-
-                    _menubar.add(_helpMenu);
-
-                    if (!_hideMenuBar) {
-                        setJMenuBar(_menubar);
-                    }
-
-                    // Add the status bar, if there is one.
-                    if (_statusBar != null) {
-                        getContentPane().add(_statusBar, BorderLayout.SOUTH);
-                    }
-                }
-
-                Top.super.pack();
-
-                if (_centering) {
-                    centerOnScreen();
-                }
-                _menuPopulated = true;
-            }
-        };
+        Runnable doPack = new DoPackRunnable();
 
         deferIfNecessary(doPack);
     }
@@ -403,13 +302,7 @@ public abstract class Top extends JFrame {
      *  @param message The message to report.
      */
     public void report(final String message) {
-        Runnable doReport = new Runnable() {
-            public void run() {
-                if (_statusBar != null) {
-                    _statusBar.setMessage(message);
-                }
-            }
-        };
+        Runnable doReport = new StatusBarMessageRunnable(message);
 
         deferIfNecessary(doReport);
     }
@@ -424,17 +317,7 @@ public abstract class Top extends JFrame {
      *  @param throwable The Throwable to report.
      */
     public void report(final String message, final Throwable throwable) {
-        Runnable doReport = new Runnable() {
-            public void run() {
-                if (_statusBar != null) {
-                    _statusBar.setMessage(MessageHandler
-                            .shortDescription(throwable)
-                            + ". " + message);
-                }
-
-                MessageHandler.error(message, throwable);
-            }
-        };
+        Runnable doReport = new StatusBarMessageReportRunnable(message,throwable);
 
         deferIfNecessary(doReport);
     }
@@ -458,18 +341,8 @@ public abstract class Top extends JFrame {
      *  @param background The background color.
      */
     public void setBackground(final Color background) {
-        Runnable doSet = new Runnable() {
-            public void run() {
-                Top.super.setBackground(background);
-
-                // This seems to be called in a base class
-                // constructor, before this variable has been
-                // set. Hence the test against null.
-                if (_statusBar != null) {
-                    _statusBar.setBackground(background);
-                }
-            }
-        };
+        _statusBarBackground = background;
+        Runnable doSet = new SetBackgroundRunnable();
 
         deferIfNecessary(doSet);
     }
@@ -512,19 +385,7 @@ public abstract class Top extends JFrame {
      *  performed in that thread.
      */
     public void show() {
-        Runnable doShow = new Runnable() {
-            public void run() {
-                // NOTE: We used to call pack() here, but this would
-                // override any manual changes in sizing that had been
-                // made.
-                setState(Frame.NORMAL);
-                // FIXME: show() is deprecated, but calling setVisible()
-                // here results in a loop.
-                //Top.super.setVisible(true);
-                Top.super.show();
-
-            }
-        };
+        Runnable doShow = new ShowWindowRunnable();
 
         deferIfNecessary(doShow);
     }
@@ -1430,6 +1291,183 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** A runnable for showing the window. */
+    class ShowWindowRunnable implements Runnable {
+        public void run() {
+            // NOTE: We used to call pack() here, but this would
+            // override any manual changes in sizing that had been
+            // made.
+            setState(Frame.NORMAL);
+            // FIXME: show() is deprecated, but calling setVisible()
+            // here results in a loop.
+            //Top.super.setVisible(true);
+            Top.super.show();
+
+        }
+    }
+    
+    /** A runnable for setting the status bar message for a report. */
+    class StatusBarMessageReportRunnable implements Runnable {
+        public StatusBarMessageReportRunnable(String message, Throwable throwable) {
+            _message = message;
+            _throwable = throwable;
+        }
+        public void run() {
+            if (_statusBar != null) {
+                _statusBar.setMessage(MessageHandler
+                        .shortDescription(_throwable)
+                        + ". " + _message);
+            }
+
+            MessageHandler.error(_message, _throwable);
+        }
+        private String _message;
+        private Throwable _throwable;
+    }
+    
+    /** A runnable for setting the status bar message. */
+    class StatusBarMessageRunnable implements Runnable {
+        public StatusBarMessageRunnable(String message) {
+            _message = message;
+        }
+        public void run() {
+            if (_statusBar != null) {
+                _statusBar.setMessage(_message);
+            }
+        }
+        private String _message;
+    }
+    
+    /** A runnable for packing the Window. */
+    class DoPackRunnable implements Runnable {
+        public void run() {
+            // NOTE: This always runs in the swing thread,
+            // so there is no need to synchronize.
+            if (!_menuPopulated) {
+                // Set up the menus.
+                _fileMenu.setMnemonic(KeyEvent.VK_F);
+                _helpMenu.setMnemonic(KeyEvent.VK_H);
+
+                // Construct the File menu by adding action commands
+                // and action listeners.
+                FileMenuListener fileMenuListener = new FileMenuListener();
+
+                // Set the action command and listener for each menu item.
+                for (int i = 0; i < _fileMenuItems.length; i++) {
+                    if (_fileMenuItems[i] == null) {
+                        _fileMenu.addSeparator();
+                    } else {
+                        _fileMenuItems[i]
+                                .setActionCommand(_fileMenuItems[i]
+                                        .getText());
+                        _fileMenuItems[i]
+                                .addActionListener(fileMenuListener);
+                        _fileMenu.add(_fileMenuItems[i]);
+                    }
+                }
+
+                _menubar.add(_fileMenu);
+
+                // History fill
+                try {
+                    _populateHistory(_readHistory());
+                } catch (IOException ex) {
+                    // Ignore
+                } catch (SecurityException ex) {
+                    // Ignore
+                }
+
+                // Construct the Help menu by adding action commands
+                // and action listeners.
+                HelpMenuListener helpMenuListener = new HelpMenuListener();
+
+                // Set the action command and listener for each menu item.
+                for (int i = 0; i < _helpMenuItems.length; i++) {
+                    _helpMenuItems[i].setActionCommand(_helpMenuItems[i]
+                            .getText());
+                    _helpMenuItems[i].addActionListener(helpMenuListener);
+                    _helpMenu.add(_helpMenuItems[i]);
+                }
+
+                // Unfortunately, at this time, Java provides no
+                // mechanism for derived classes to insert menus
+                // at arbitrary points in the menu bar.  Also, the
+                // menubar ignores the alignment property of the
+                // JMenu.  By convention, however, we want the
+                // help menu to be the rightmost menu.  Thus, we
+                // use a strategy pattern here, and call a
+                // protected method that derived classes can use
+                // to add menus.
+                _addMenus();
+
+                _menubar.add(_helpMenu);
+
+                if (!_hideMenuBar) {
+                    setJMenuBar(_menubar);
+                }
+
+                // Add the status bar, if there is one.
+                if (_statusBar != null) {
+                    getContentPane().add(_statusBar, BorderLayout.SOUTH);
+                }
+            }
+
+            Top.super.pack();
+
+            if (_centering) {
+                centerOnScreen();
+            }
+            _menuPopulated = true;
+        }
+    }
+    
+    /** A runnable for executing deferred actions. */
+    static class DeferredActionsRunnable implements Runnable {
+        public void run() {
+            _executeDeferredActions();
+        }
+    }
+    
+    /** A runnable for closing the window. */
+    class CloseWindowRunnable implements Runnable {
+        public void run() {
+            _close();
+        }
+    }
+    
+    /** A runnable for centering the window on the screen. */
+    class CenterOnScreenRunnable implements Runnable {
+        public void run() {
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            setLocation((tk.getScreenSize().width - getSize().width) / 2,
+                    (tk.getScreenSize().height - getSize().height) / 2);
+
+            // Make this the default context for modal messages.
+            UndeferredGraphicalMessageHandler.setContext(Top.this);
+        }
+    }
+    
+    /** A runnable for setting the background color of the status bar. */
+    class SetBackgroundRunnable implements Runnable {
+        public void run() {
+            Top.super.setBackground(_statusBarBackground);
+
+            // This seems to be called in a base class
+            // constructor, before this variable has been
+            // set. Hence the test against null.
+            if (_statusBar != null) {
+                _statusBar.setBackground(_statusBarBackground);
+            }
+        }
+    }
+    
+    /** Listener for windowClosing action. */
+    class CloseWindowAdapter extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
+            _close();
+        }
+    }
+    
     /** Listener for history menu commands. */
     class HistoryMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -1463,6 +1501,9 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The background color of the status bar */
+    private Color _statusBarBackground;
+    
     /** Indicator of whether actions are deferred. */
     private static boolean _actionsDeferred = false;
 

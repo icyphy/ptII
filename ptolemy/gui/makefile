@@ -124,15 +124,15 @@ OPTIONAL_FILES = \
 	'SwingWorker$$1.class' \
 	'SwingWorker$$2.class' \
 	'SwingWorker$$ThreadVar.class' \
-	'Top$$1.class' \
-	'Top$$2.class' \
-	'Top$$3.class' \
-	'Top$$4.class' \
-	'Top$$5.class' \
-	'Top$$6.class' \
-	'Top$$7.class' \
-	'Top$$8.class' \
-	'Top$$9.class' \
+	'Top$$CenterOnScreenRunnable.class' \
+	'Top$$CloseWindowAdapter.class' \
+	'Top$$CloseWindowRunnable.class' \
+	'Top$$DeferredActionsRunnable.class' \
+	'Top$$DoPackRunnable.class' \
+	'Top$$SetBackgroundRunnable.class' \
+	'Top$$ShowWindowRunnable.class' \
+	'Top$$StatusBarMessageReportRunnable.class' \
+	'Top$$StatusBarMessageRunnable.class' \
 	'Top$$FileMenuListener.class' \
 	'Top$$HelpMenuListener.class' \
 	'Top$$HistoryMenuListener.class' \
