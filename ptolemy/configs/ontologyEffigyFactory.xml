@@ -24,7 +24,7 @@ in this lattice.  Then delete this annotation.</text>
 	    </property>
 	    <property name="_library" class="ptolemy.moml.LibraryAttribute">
 	      <configure>
-		<entity name="library" class="ptolemy.data.ontologies.Ontology">
+		<entity name="library" class="ptolemy.kernel.CompositeEntity">
 		  <input source="ptolemy/data/ontologies/ontologyLibrary.xml"/>
 		</entity>
 	      </configure>
