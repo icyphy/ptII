@@ -9,13 +9,13 @@
 		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 316, 1185, 568}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1471, 184, 1147, 627}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[970, 451]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[934, 516]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2454849498328">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{438.2878787878788, 232.3939393939394}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.954350161117, 229.6482277121374}">
     </property>
     <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
@@ -24,7 +24,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 35.0]">
         </property>
     </entity>
     <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
@@ -34,7 +34,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 415.0]">
         </property>
     </entity>
     <entity name="Mass" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -48,7 +48,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[369.62554950553937, 205.50388746344663]">
         </property>
     </entity>
     <entity name="Position" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -62,7 +62,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 120.0]">
         </property>
     </entity>
     <entity name="Time" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -76,7 +76,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 95.0]">
         </property>
     </entity>
     <entity name="Current" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -90,7 +90,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 240.0]">
         </property>
     </entity>
     <entity name="Temperature" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -106,7 +106,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 295.0]">
         </property>
     </entity>
     <entity name="Substance" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -120,7 +120,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 275.0}">
         </property>
     </entity>
     <entity name="LightIntensity" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.BaseDimensionRepresentativeConcept">
@@ -134,7 +134,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 325.0}">
         </property>
     </entity>
     <entity name="Dimensionless" class="ptolemy.data.ontologies.FiniteConcept">
@@ -144,7 +144,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 80.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 70.0]">
         </property>
     </entity>
     <entity name="Velocity" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.DerivedDimensionRepresentativeConcept">
@@ -160,7 +160,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{740.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 145.0]">
         </property>
     </entity>
     <entity name="Acceleration" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.DerivedDimensionRepresentativeConcept">
@@ -176,7 +176,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[855.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 175.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
