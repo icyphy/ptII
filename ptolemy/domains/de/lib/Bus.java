@@ -42,6 +42,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -63,6 +64,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This actor will be used on any communication where the receiving
  *  port has a parameter named "QuantityManager" that refers by name
  *  to the instance of this actor.
+ *  <p>
+ *  FIXME: This receiver behaves differently for Continuous and DE. Allowing
+ *  the use of this actor across hierarchies might therefore be problematic.
  *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -207,6 +211,9 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
      *  schedule a refiring.
      */
     public boolean postfire() throws IllegalActionException {
+        // This method contains two places where refirings can be
+        // scheduled. We only want to schedule a refiring once.
+        boolean refiringScheduled = false;
         Time currentTime = getDirector().getModelTime();
         
         // If a token was actually sent to a delegated receiver
@@ -223,6 +230,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                 _nextTimeFree = currentTime.add(_serviceTimeValue);
                 _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
                 _fireAt(_nextTimeFree);
+                refiringScheduled = true;
                 // FIXME:
                 // Not only does this bus need to be fired
                 // at the _nextTimeFree, but so does the destination
@@ -234,6 +242,8 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                 // a good idea, but we really do want to be able
                 // to share a QuantityManager across modes of a
                 // modal model. How to fix???
+            } else {
+                refiringScheduled = false;
             }
         }
         // If sendToken() was called in the current iteration,
@@ -241,7 +251,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if (_receiversAndTokensToSendTo != null) {
+        if (!(getDirector() instanceof DEDirector) &&  _receiversAndTokensToSendTo != null) {
             for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
                 Token token = _receiversAndTokensToSendTo.get(receiver);
                 if (token != null) {
@@ -251,7 +261,8 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             _receiversAndTokensToSendTo.clear();
             
             // if there was no token in the queue, schedule a refiring.
-            if (_tokens.size() == 1) {
+            // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) { 
+            if (!refiringScheduled && _tokens.size() > 0) {
                 _nextTimeFree = currentTime.add(_serviceTimeValue);
                 _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
                 _fireAt(_nextTimeFree);
@@ -308,7 +319,22 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                         + " in the same iteration.");
             }
         } else {
-            _receiversAndTokensToSendTo.put(receiver, token);
+           
+            // In the Continuous domain, this actor gets fired if tokens are available
+            // or not. In the DE domain we need to schedule a refiring. 
+            if (getDirector() instanceof DEDirector) {
+                // FIXME: Can the token be null in DE?
+                if (token != null) {
+                    _tokens.put(new Object[] {receiver, token});
+                }
+                if (_tokens.size() == 1) { 
+                    _nextTimeFree = currentTime.add(_serviceTimeValue);
+                    _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
+                    _fireAt(_nextTimeFree);
+                }
+            } else {
+                _receiversAndTokensToSendTo.put(receiver, token);
+            }
         }
 
         // If the token is null, then this means there is not actually
