@@ -799,6 +799,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _rightComponent.removeMouseWheelListener(this);
         _rightComponent.removeMouseMotionListener(this);
         _rightComponent.removeMouseListener(this);
+
+        if (_libraryContextMenuCreator != null) {
+            _libraryContextMenuCreator.clear();
+        }
         
         _mousePressedLayerAdapter = null;
         _redoAction = null;
@@ -806,7 +810,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _cutAction = null;
         _editPreferencesAction = null;
         _copyAction = null;
-        _libraryContextMenuCreator.clear();
         _openContainerAction = null;
         _undoAction = null;
         _zoomOutAction = null;
