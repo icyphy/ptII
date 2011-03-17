@@ -29,9 +29,12 @@ package ptolemy.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -490,6 +493,14 @@ public abstract class Top extends JFrame {
         // ensure reference to this is removed
         UndeferredGraphicalMessageHandler.setContext(null);
         
+        // I'm not sure exactly why this works but it does!
+        // I think it has to do with the KeyboardFocusManager
+        // holding onto the last focused component, so clearing and
+        // cycling seems to free up the reference to this window.
+        KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        focusManager.clearGlobalFocusOwner();
+        focusManager.downFocusCycle();
+
         getContentPane().removeAll();
         super.dispose();
     }
