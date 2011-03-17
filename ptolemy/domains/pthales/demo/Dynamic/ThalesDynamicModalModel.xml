@@ -97,8 +97,6 @@
         </property>
         <port name="port" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
-            <property name="size" class="ptolemy.data.expr.Parameter" value="[]">
-            </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
