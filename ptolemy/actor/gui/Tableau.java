@@ -281,6 +281,10 @@ public class Tableau extends CompositeEntity {
         if (_frame == frame) {
             return;
         }
+        if (frame == null) {
+            _frame = null;
+            return;
+        }
 
         _frame = frame;
 
