@@ -225,15 +225,9 @@ public abstract class Top extends JFrame {
                 if (!_actionsDeferred) {
                     Runnable doActions = new DeferredActionsRunnable();
 
-                    try {
-                        // NOTE: Using invokeAndWait() here risks causing
-                        // deadlock.  Don't do it!
-                        SwingUtilities.invokeLater(doActions);
-                    } catch (Exception ex) {
-                        // Ignore InterruptedException.
-                        // Other exceptions should not occur.
-                    }
-
+                    // NOTE: Using invokeAndWait() here risks causing
+                    // deadlock.  Don't do it!
+                    SwingUtilities.invokeLater(doActions);
                     _actionsDeferred = true;
                 }
             }
@@ -476,20 +470,20 @@ public abstract class Top extends JFrame {
      *  {@link javax.swing.JFrame}.
      */
     public void dispose() {
-        int removed = MemoryCleaner.removeActionListeners(_menubar);
+        /*int removed =*/ MemoryCleaner.removeActionListeners(_menubar);
         //System.out.println("Top menubar action listeners removed: " + removed);
-        removed = MemoryCleaner.removeWindowListeners(this);
+        /*removed =*/ MemoryCleaner.removeWindowListeners(this);
         //System.out.println("Top window listeners removed: " + removed);
-        removed = MemoryCleaner.removeActionListeners(_historyMenu);
+        /*removed =*/ MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("Top history action listeners removed: " + removed);
         
         // Deal  with fileMenuItems
         for (int i = 0; i < _fileMenuItems.length; i++) {
-            JMenuItem mi = _fileMenuItems[i];
-            if (mi instanceof JMenu) {
-                removed = MemoryCleaner.removeActionListeners((JMenu)mi);
+            JMenuItem menuItem = _fileMenuItems[i];
+            if (menuItem instanceof JMenu) {
+                /*removed =*/ MemoryCleaner.removeActionListeners((JMenu)menuItem);
             } else {
-                removed = MemoryCleaner.removeActionListeners(mi);
+                /*removed =*/ MemoryCleaner.removeActionListeners(menuItem);
             }
             //System.out.println("Top _fileMenuItems["+i+"] action listeners removed: " + removed);
         }
@@ -1107,11 +1101,11 @@ public abstract class Top extends JFrame {
                 } else if (actionCommand.equals("Exit")) {
                     _exit();
                 }
-            } catch (Exception exception) {
+            } catch (Throwable throwable) {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                MessageHandler.error("File Menu Exception:", exception);
+                MessageHandler.error("File Menu Exception:", throwable);
             }
 
             // NOTE: The following should not be needed, but jdk1.3beta
@@ -1136,11 +1130,11 @@ public abstract class Top extends JFrame {
                 } else if (actionCommand.equals("Help")) {
                     _help();
                 }
-            } catch (Exception exception) {
+            } catch (Throwable throwable) {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                MessageHandler.error("Help Menu Exception:", exception);
+                MessageHandler.error("Help Menu Exception:", throwable);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -1211,16 +1205,17 @@ public abstract class Top extends JFrame {
             return historyList;
         }
         FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
         try {
             fileReader = new FileReader(historyFileName);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 historyList.add(line);
             }
         } finally {
-            if (fileReader != null) {
-                fileReader.close();
+            if (bufferedReader != null) {
+                bufferedReader.close();
             }
         }
 
@@ -1273,9 +1268,11 @@ public abstract class Top extends JFrame {
         _populateHistory(historyList);
     }
 
-    /** Update submenu with history list
-     * and add listener to each line
-     * @param historyList
+    /** Update the submenu with a history list
+     * and add a listener to each line.
+     * @param historyList The list of history items,
+     * where each element is a String is the name of the 
+     * menu item.
      */
     protected void _populateHistory(List historyList) {
         Component[] components = _fileMenu.getMenuComponents();
