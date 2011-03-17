@@ -688,6 +688,18 @@ public class TableauFrame extends Top {
      *  {@link ptolemy.actor.gui.Top}.
      */
     public void dispose() {
+        // release reference to this frame from the Tableau
+        try {
+            _tableau.setFrame(null);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+        
+        // The size attribute is holding a reference to this frame
+        // with an attached listener.  Free the reference so this
+        // frame can be garbage collected.
+        _tableau.size.setSize(null);
+        
         super.dispose();
     }
 

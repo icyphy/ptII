@@ -161,6 +161,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _layoutAction = null;
         _advancedLayoutDialogAction = null;
         _createHierarchyAction = null;
+        _controller.setFrame(null);
         super.dispose();
     }
 

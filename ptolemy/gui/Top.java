@@ -487,6 +487,9 @@ public abstract class Top extends JFrame {
             }
             //System.out.println("Top _fileMenuItems["+i+"] action listeners removed: " + removed);
         }
+        // ensure reference to this is removed
+        UndeferredGraphicalMessageHandler.setContext(null);
+        
         getContentPane().removeAll();
         super.dispose();
     }
