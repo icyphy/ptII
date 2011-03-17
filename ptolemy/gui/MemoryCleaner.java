@@ -31,9 +31,11 @@ import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
 
 /**
  * Methods that clean up possible memory leaks caused by listeners.  
@@ -163,6 +165,37 @@ public class MemoryCleaner {
             }
             int countAfter = window.getWindowListeners().length;
             listenersRemoved = count - countAfter;
+        }
+        return listenersRemoved;
+    }
+    
+    /**
+     * Remove ActionListeners from a JToolBar.
+     * 
+     * @param toolbar The tool bar from which the ActionListeners
+     * are to be removed.
+     * @return The number of listeners removed.
+     */
+    public static int removeActionListeners(JToolBar toolbar) {
+        int listenersRemoved = 0;
+        if (toolbar != null) {
+            int count = toolbar.getComponentCount();
+            if (_isDebugging) {
+                System.out.println("component count: " + count);
+            }
+            
+            for (int m = 0; m < count; m++) {
+                Component c = toolbar.getComponentAtIndex(m);
+                if (c instanceof JButton) {
+                    JButton b = (JButton) c;
+                    b.setAction(null);
+                    listenersRemoved++;
+                } else {
+                    if (_isDebugging) {
+                        System.out.println(c.getClass().getName());
+                    }
+                }
+            }
         }
         return listenersRemoved;
     }

@@ -106,6 +106,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.MemoryCleaner;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -145,10 +146,12 @@ import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
 import diva.canvas.JCanvas;
 import diva.canvas.Site;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
+import diva.canvas.event.EventLayer;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
@@ -783,6 +786,39 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _libraryModel.setRoot(null);
         }
         _openGraphFrames.remove(this);
+        
+        GraphPane pain = _jgraph.getGraphPane();
+        EventLayer fel = pain.getForegroundEventLayer();
+        fel.removeLayerListener(_mousePressedLayerAdapter);
+
+        //int removed = 
+        MemoryCleaner.removeActionListeners(_toolbar);
+        //System.out.println("BasicGraphFrame toolbar action listeners removed: " + removed);
+        
+        getModel().removeChangeListener(this);
+        _rightComponent.removeMouseWheelListener(this);
+        _rightComponent.removeMouseMotionListener(this);
+        _rightComponent.removeMouseListener(this);
+        
+        _mousePressedLayerAdapter = null;
+        _redoAction = null;
+        _moveToBackAction = null;
+        _cutAction = null;
+        _editPreferencesAction = null;
+        _copyAction = null;
+        _libraryContextMenuCreator.clear();
+        _openContainerAction = null;
+        _undoAction = null;
+        _zoomOutAction = null;
+        _zoomInAction = null;
+        _moveToFrontAction = null;
+        _zoomFitAction = null;
+        _printAction = null;
+        _zoomResetAction = null;
+        _saveAction = null;
+        _pasteAction = null;
+        
+        _exportPDFAction = null;
         disposeSuper();
     }
 
@@ -1576,15 +1612,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         _rightComponent = _createRightComponent(getModel());
 
-        ActionListener deletionListener = new ActionListener() {
-            /** Delete any nodes or edges from the graph that are
-             *  currently selected.  In addition, delete any edges
-             *  that are connected to any deleted nodes.
-             */
-            public void actionPerformed(ActionEvent e) {
-                delete();
-            }
-        };
+        ActionListener deletionListener = new DeletionListener();
 
         _rightComponent.registerKeyboardAction(deletionListener, "Delete",
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
@@ -1804,7 +1832,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
-
+        
         GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
         if (getModel() == getModel().toplevel()) {
             // If we are at the top level, disable
@@ -2079,23 +2107,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected JComponent _createRightComponent(NamedObj entity) {
         GraphPane pane = _createGraphPane(entity);
-        pane.getForegroundLayer().setPickHalo(2);
-        pane.getForegroundEventLayer().setConsuming(false);
-        pane.getForegroundEventLayer().setEnabled(true);
-        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-            /** Invoked when the mouse is pressed on a layer
-             * or figure.
-             */
-            public void mousePressed(LayerEvent event) {
-                Component component = event.getComponent();
+        
+        FigureLayer fl = pane.getForegroundLayer();
+        fl.setPickHalo(2);
+        
+        EventLayer fel = pane.getForegroundEventLayer();
+        fel.setConsuming(false);
+        fel.setEnabled(true);
+        
+        _mousePressedLayerAdapter = new MousePressedLayerAdapter();
+        fel.addLayerListener(_mousePressedLayerAdapter);
 
-                if (!component.hasFocus()) {
-                    component.requestFocus();
-                }
-            }
-        });
-
-        setJGraph(new JGraph(pane));
+        JGraph graph = new JGraph(pane);
+        setJGraph(graph);
         _dropTarget = new EditorDropTarget(_jgraph);
         return _jgraph;
     }
@@ -2661,6 +2685,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action for opening the container, moving uplevel. */
     private Action _openContainerAction = new OpenContainerAction(
             "Open the container");
+    
+    /** A layer adapter to handle the mousePressed event. */
+    private MousePressedLayerAdapter _mousePressedLayerAdapter;
 
     /** List of references to graph frames that are open. */
     protected static LinkedList<BasicGraphFrame> _openGraphFrames = new LinkedList<BasicGraphFrame>();
@@ -2705,6 +2732,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
+    /** A Layer Adapter to handle the mousePressed layer event. */
+    protected class MousePressedLayerAdapter extends LayerAdapter {
+        /** Invoked when the mouse is pressed on a layer
+         * or figure.
+         */
+        public void mousePressed(LayerEvent event) {
+            Component component = event.getComponent();
+
+            if (!component.hasFocus()) {
+                component.requestFocus();
+            }
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     //// CopyAction
 
@@ -3248,7 +3289,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-
+    
+    /** An ActionListener for handling deletion events. */
+    private class DeletionListener implements ActionListener {
+        /** Delete any nodes or edges from the graph that are
+         *  currently selected.  In addition, delete any edges
+         *  that are connected to any deleted nodes.
+         */
+        public void actionPerformed(ActionEvent e) {
+            delete();
+        }
+    }
+        
     ///////////////////////////////////////////////////////////////////
     //// OpenContainerAction
     /** An action to open the container of this entity. */

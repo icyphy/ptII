@@ -99,8 +99,8 @@ OPTIONAL_FILES = \
 	'BasicGraphController$$OpenBaseClassAction.class' \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
 	'BasicGraphController$$UnitSolverDialogAction.class' \
-	'BasicGraphFrame$$1.class' \
-	'BasicGraphFrame$$2.class' \
+	'BasicGraphFrame$$MousePressedLayerAdapter.class' \
+	'BasicGraphFrame$$DeletionListener.class' \
 	'BasicGraphFrame$$CopyAction.class' \
 	'BasicGraphFrame$$CutAction.class' \
 	'BasicGraphFrame$$DocumentationMenuItemFactory$$1.class' \

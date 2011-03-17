@@ -103,6 +103,12 @@ public class PTreeMenuCreator extends MouseAdapter {
     public void removeMenuItemFactory(MenuItemFactory factory) {
         _factoryList.remove(factory);
     }
+    
+    /** Remove all MenuItemFactories from the factory list.
+     */
+    public void clear() {
+        _factoryList.clear();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

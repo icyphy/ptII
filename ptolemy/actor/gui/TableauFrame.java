@@ -504,20 +504,8 @@ public class TableauFrame extends Top {
                     canCreateBlank = true;
 
                     String name = factory.getName();
-                    ActionListener menuListener = new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-                            Effigy effigy = null;
-
-                            try {
-                                effigy = factory.createEffigy(directory);
-                            } catch (Exception ex) {
-                                MessageHandler.error(
-                                        "Could not create new effigy", ex);
-                            }
-
-                            configuration.createPrimaryTableau(effigy);
-                        }
-                    };
+                    ActionListener menuListener = new MenuItemListener(
+                            factory,directory,configuration);
 
                     JMenuItem item = new JMenuItem(name);
                     item.setActionCommand(name);
@@ -1270,6 +1258,31 @@ public class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** A Listener for menu items. */
+    protected class MenuItemListener implements ActionListener {
+        public MenuItemListener (EffigyFactory factory,
+                ModelDirectory directory, Configuration configuration) {
+            _factory = factory;
+            _directory = directory;
+            _configuration = configuration;
+        }
+        public void actionPerformed(ActionEvent event) {
+            Effigy effigy = null;
+    
+            try {
+                effigy = _factory.createEffigy(_directory);
+            } catch (Exception ex) {
+                MessageHandler.error(
+                        "Could not create new effigy", ex);
+            }
+    
+            _configuration.createPrimaryTableau(effigy);
+        }
+        private EffigyFactory _factory;
+        private ModelDirectory _directory;
+        private Configuration _configuration;
+    }
+    
     /** File filter that filters out files that do not have one of a
      *  pre-specified list of extensions.
      *  Note that as of Java 1.6, there is a FileNameExtensionFilter which

@@ -148,6 +148,19 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      *  {@link ptolemy.vergil.basic.ExtendedGraphFrame}.
      */
     public void dispose() {
+        KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
+        int count = keyStroke.length;
+        for (int i = 0; i < count; i++) {
+            KeyStroke ks = keyStroke[i];
+            _rightComponent.unregisterKeyboardAction(ks);
+        }
+        _saveInLibraryAction = null;
+        _importLibraryAction = null;
+        _instantiateAttributeAction = null;
+        _instantiateEntityAction = null;
+        _layoutAction = null;
+        _advancedLayoutDialogAction = null;
+        _createHierarchyAction = null;
         super.dispose();
     }
 

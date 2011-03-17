@@ -41,7 +41,6 @@ import javax.swing.InputMap;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -202,6 +201,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      *  {@link ptolemy.vergil.basic.BasicGraphFrame}.
      */
     public void dispose() {
+        _fullScreenAction = null;
         super.dispose();
     }
 

@@ -292,11 +292,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     protected void _print() {
         if (_model != null) {
-            ChangeRequest request = new ChangeRequest(this, "Print") {
-                protected void _execute() throws Exception {
-                    PtolemyFrame.super._print();
-                }
-            };
+            ChangeRequest request = new PrintChangeRequest(this, "Print");
 
             _model.requestChange(request);
         } else {
@@ -429,6 +425,21 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** The query used to specify save as options. */
     protected Query _query;
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** A ChangeRequest for calling the _print() method. */
+    class PrintChangeRequest extends ChangeRequest {
+        public PrintChangeRequest(Object source, String description) {
+            super(source,description);
+        }
+        protected void _execute() throws Exception {
+            PtolemyFrame.super._print();
+        }
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

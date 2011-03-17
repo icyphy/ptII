@@ -275,7 +275,7 @@ OPTIONAL_FILES = \
 	'PtolemyDialog$$2.class' \
 	'PtolemyEffigy$$Factory.class' \
 	'PtolemyEffigy$$FactoryWithoutNew.class' \
-	'PtolemyFrame$$1.class' \
+	'PtolemyFrame$$PrintChangeRequest.class' \
 	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
 	'PtolemyQuery$$1.class' \
 	'PtolemyQuery$$2.class' \
@@ -290,7 +290,7 @@ OPTIONAL_FILES = \
 	'ShellTextArea$$3$1.class' \
 	'Tableau$$1.class' \
 	'TableauFactory$$1.class' \
-	'TableauFrame$$1.class' \
+	'TableauFrame$$MenuItemListener.class' \
 	'TableauFrame$$ExtensionFileFilter.class' \
 	'TableauFrame$$ViewMenuListener.class' \
 	'TextEditorTableau$$Factory.class' \

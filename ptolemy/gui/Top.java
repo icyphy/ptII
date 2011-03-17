@@ -477,9 +477,22 @@ public abstract class Top extends JFrame {
      */
     public void dispose() {
         int removed = MemoryCleaner.removeActionListeners(_menubar);
-        // System.out.println("Top menubar action listeners removed: " + removed);
+        //System.out.println("Top menubar action listeners removed: " + removed);
         removed = MemoryCleaner.removeWindowListeners(this);
-        // System.out.println("Top window listeners removed: " + removed);
+        //System.out.println("Top window listeners removed: " + removed);
+        removed = MemoryCleaner.removeActionListeners(_historyMenu);
+        //System.out.println("Top history action listeners removed: " + removed);
+        
+        // Deal  with fileMenuItems
+        for (int i = 0; i < _fileMenuItems.length; i++) {
+            JMenuItem mi = _fileMenuItems[i];
+            if (mi instanceof JMenu) {
+                removed = MemoryCleaner.removeActionListeners((JMenu)mi);
+            } else {
+                removed = MemoryCleaner.removeActionListeners(mi);
+            }
+            //System.out.println("Top _fileMenuItems["+i+"] action listeners removed: " + removed);
+        }
         getContentPane().removeAll();
         super.dispose();
     }
@@ -1266,25 +1279,25 @@ public abstract class Top extends JFrame {
      */
     protected void _populateHistory(List historyList) {
         Component[] components = _fileMenu.getMenuComponents();
-        JMenu history = null;
+        _historyMenu = null;
         for (Component component : components) {
             if (component instanceof JMenu
                     && ((JMenu) component).getText().equals("Recent Files")) {
-                history = (JMenu) component;
+                _historyMenu = (JMenu) component;
             }
         }
-        if (history == null) {
+        if (_historyMenu == null) {
             throw new RuntimeException(
                     "Unexpected loss of Recent Files menu.");
         }
         HistoryMenuListener listener = new HistoryMenuListener();
 
-        history.removeAll();
+        _historyMenu.removeAll();
 
         for (int i = 0; i < historyList.size(); i++) {
             JMenuItem item = new JMenuItem((String) historyList.get(i));
             item.addActionListener(listener);
-            history.add(item);
+            _historyMenu.add(item);
         }
     }
 
@@ -1500,7 +1513,9 @@ public abstract class Top extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
+    private JMenu _historyMenu;
+    
     /** The background color of the status bar */
     private Color _statusBarBackground;
     
