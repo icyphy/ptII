@@ -104,7 +104,11 @@ public class MemoryCleaner {
 
             for (int n = 0; n < totalMenuItems; n++) {
                 Component component = menu.getMenuComponent(n);
-                if (component instanceof JMenuItem) {
+                if (component instanceof JMenu) {
+                    JMenu jmenu = (JMenu) component;
+                    int removed = removeActionListeners(jmenu);
+                    listenersRemoved += removed;
+                } else if (component instanceof JMenuItem) {
                     JMenuItem menuItem = (JMenuItem) component;
                     int removed = removeActionListeners(menuItem);
                     listenersRemoved += removed;
