@@ -154,6 +154,13 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  @return True if successful.
      */
     public boolean setSize(Component component) {
+        if (component == null) {
+            if (_listeningTo != null) {
+                _listeningTo.removeComponentListener(this);
+                _listeningTo = null;
+            }
+            return true;
+        }
         if (_listeningTo != component) {
             if (_listeningTo != null) {
                 _listeningTo.removeComponentListener(this);
