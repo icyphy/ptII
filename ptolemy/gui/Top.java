@@ -237,6 +237,46 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the 
+     *  dispose() method of the superclass,
+     *  {@link javax.swing.JFrame}.
+     */
+    public void dispose() {
+        MemoryCleaner.removeActionListeners(_menubar);
+        // Don't call removeWindowListeners here because Tableau.setFrame()
+        // adds a WindowListener to windowsClosed events and that listener
+        // handles closing the plots associated with a model.
+        // MemoryCleaner.removeWindowListeners(this);
+        MemoryCleaner.removeActionListeners(_historyMenu);
+        
+        // Deal  with fileMenuItems
+        for (int i = 0; i < _fileMenuItems.length; i++) {
+            JMenuItem menuItem = _fileMenuItems[i];
+            if (menuItem instanceof JMenu) {
+                /*removed =*/ MemoryCleaner.removeActionListeners((JMenu)menuItem);
+            } else {
+                /*removed =*/ MemoryCleaner.removeActionListeners(menuItem);
+            }
+            //System.out.println("Top _fileMenuItems["+i+"] action listeners removed: " + removed);
+        }
+        // ensure reference to this is removed
+        UndeferredGraphicalMessageHandler.setContext(null);
+        
+        // I'm not sure exactly why this works but it does!
+        // I think it has to do with the KeyboardFocusManager
+        // holding onto the last focused component, so clearing and
+        // cycling seems to free up the reference to this window.
+        KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        focusManager.clearGlobalFocusOwner();
+        focusManager.downFocusCycle();
+
+        getContentPane().removeAll();
+        super.dispose();
+    }
+
+
     /** Return true if the window is set to be centered when pack() is called.
      *  @return True if the window will be centered when pack is called.
      *  @see #setCentering(boolean)
@@ -466,45 +506,6 @@ public abstract class Top extends JFrame {
         }
     }
     
-    /** Dispose of this frame.
-     *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the 
-     *  dispose() method of the superclass,
-     *  {@link javax.swing.JFrame}.
-     */
-    public void dispose() {
-        /*int removed =*/ MemoryCleaner.removeActionListeners(_menubar);
-        //System.out.println("Top menubar action listeners removed: " + removed);
-        /*removed =*/ MemoryCleaner.removeWindowListeners(this);
-        //System.out.println("Top window listeners removed: " + removed);
-        /*removed =*/ MemoryCleaner.removeActionListeners(_historyMenu);
-        //System.out.println("Top history action listeners removed: " + removed);
-        
-        // Deal  with fileMenuItems
-        for (int i = 0; i < _fileMenuItems.length; i++) {
-            JMenuItem menuItem = _fileMenuItems[i];
-            if (menuItem instanceof JMenu) {
-                /*removed =*/ MemoryCleaner.removeActionListeners((JMenu)menuItem);
-            } else {
-                /*removed =*/ MemoryCleaner.removeActionListeners(menuItem);
-            }
-            //System.out.println("Top _fileMenuItems["+i+"] action listeners removed: " + removed);
-        }
-        // ensure reference to this is removed
-        UndeferredGraphicalMessageHandler.setContext(null);
-        
-        // I'm not sure exactly why this works but it does!
-        // I think it has to do with the KeyboardFocusManager
-        // holding onto the last focused component, so clearing and
-        // cycling seems to free up the reference to this window.
-        KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        focusManager.clearGlobalFocusOwner();
-        focusManager.downFocusCycle();
-
-        getContentPane().removeAll();
-        super.dispose();
-    }
-
     /** Create the items in the File menu. A null element in the array
      *  represents a separator in the menu.
      *
