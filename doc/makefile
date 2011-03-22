@@ -392,6 +392,7 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.constAbsIntObservable.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constAbstractInterpretation.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.domains.ontologies.lib \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
@@ -399,6 +400,7 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.unitSystem \
 	ptolemy.data.ontologies.lattice.adapters.unitSystem.domains.ontologies.lib \
+	ptolemy.data.ontologies.lattice.unit \
 	ptolemy.domains.ontologies.lib
 
 # Packages used by Diva
