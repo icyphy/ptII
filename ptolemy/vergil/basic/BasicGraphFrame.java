@@ -57,8 +57,10 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
@@ -106,6 +108,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
@@ -2001,9 +2004,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  In this class, if the configuration contains a StringParmeter
      *  with the name "_exportPDFActionClassName", the then value of
      *  that parameter is assumed to name a class that extends AbstractAction
-     *  and that export PDF.
+     *  and that exports PDF.
      *  If there is no parameter by that name, then value returned
      *  by super._createFileMenuItems is returned.
+     *  This method also adds a method to export a PNG file.
      *  @return The items in the File menu, optionally include an "Export PDF"
      *  menu choice.
      */
@@ -2016,6 +2020,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             if (configuration == null) {
                 //new Exception("BSF: configuration is null").printStackTrace();
             } else {
+                // Deal with the PDF Action first.
                 StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
                         .getAttribute("_exportPDFActionClassName",
                                 StringParameter.class);
@@ -2055,24 +2060,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
-
-//         if (_exportPDFAction == null) {
-//             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-//             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-//             try {
-//                 Class exportPDFActionClass = Class
-//                         .forName(exportPDFActionClassName);
-//                 Constructor exportPDFActionConstructor = exportPDFActionClass
-//                         .getDeclaredConstructor(BasicGraphFrame.class);
-//                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-//                         .newInstance(this);
-//             } catch (Throwable throwable) {
-//                 new InternalErrorException(null, throwable,
-//                         "Failed to construct export PDF class \""
-//                                 + exportPDFActionClassName
-//                                 + "\", which was read from the configuration.");
-//             }
-//         }
+        /*
+         if (_exportPDFAction == null) {
+             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+             try {
+                 Class exportPDFActionClass = Class
+                         .forName(exportPDFActionClassName);
+                 Constructor exportPDFActionConstructor = exportPDFActionClass
+                         .getDeclaredConstructor(BasicGraphFrame.class);
+                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                         .newInstance(this);
+             } catch (Throwable throwable) {
+                 new InternalErrorException(null, throwable,
+                         "Failed to construct export PDF class \""
+                                 + exportPDFActionClassName
+                                 + "\", which was read from the configuration.");
+             }
+         }
+         */
         // End of block to uncomment.
 
         if (_exportPDFAction != null) {
@@ -2088,10 +2094,32 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     newItems[i] = exportItem;
                     System.arraycopy(fileMenuItems, i, newItems, i + 1,
                             fileMenuItems.length - i);
-                    return newItems;
+                    fileMenuItems = newItems;
+                    break;
                 }
             }
         }
+        
+        // Next do the export PNG action.
+        if (_exportPNGAction == null) {
+            _exportPNGAction = new ExportPNGAction();
+        }
+        int i = 0;
+        for (JMenuItem item : fileMenuItems) {
+            i++;
+            if (item.getActionCommand().equals("Print")) {
+                // Add a Export PNG item here.
+                JMenuItem exportItem = new JMenuItem(_exportPNGAction);
+                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
+                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
+                newItems[i] = exportItem;
+                System.arraycopy(fileMenuItems, i, newItems, i + 1,
+                        fileMenuItems.length - i);
+                fileMenuItems = newItems;
+                break;
+            }
+        }
+
         return fileMenuItems;
     }
 
@@ -2633,6 +2661,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The export to PDF action. */
     protected Action _exportPDFAction;
+    
+    /** The export to PNG action. */
+    protected Action _exportPNGAction;
 
     /** The panner. Note that this variable
      *  can be null if the configuration does not have an entity named
@@ -2929,6 +2960,83 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// ExportPNGAction
+
+    public class ExportPNGAction extends AbstractAction {
+        /** Create a new action to export PDF.
+         *  @param frame The Frame which to which this action is added.
+         */
+        public ExportPNGAction() {
+            super("Export PNG");
+            putValue("tooltip", "Export PNG image to a file.");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                   ////
+
+        /** Export PNG. */
+        public void actionPerformed(ActionEvent e) {
+            JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+            Color background = null;
+            try {
+                background = jFileChooserBugFix.saveBackground();
+
+                JFileChooser fileDialog = new JFileChooser();
+                fileDialog.setDialogTitle("Specify a file to write to.");
+                LinkedList extensions = new LinkedList();
+                extensions.add("png");
+                fileDialog.addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
+                        extensions));
+
+                if (_directory != null) {
+                    fileDialog.setCurrentDirectory(_directory);
+                } else {
+                    // The default on Windows is to open at user.home, which is
+                    // typically an absurd directory inside the O/S installation.
+                    // So we use the current directory instead.
+                    // This will throw a security exception in an applet.
+                    // FIXME: we should support users under applets opening files
+                    // on the server.
+                    String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
+                    if (currentWorkingDirectory != null) {
+                        fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
+                    }
+                }
+
+                int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export PNG");
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    _directory = fileDialog.getCurrentDirectory();
+                    File file = fileDialog.getSelectedFile().getCanonicalFile();
+
+                    if (file.getName().indexOf(".") == -1) {
+                        // If the user has not given the file an extension, add it
+                        file = new File(file.getAbsolutePath() + ".png");
+                    }
+                    if (file.exists()) {
+                        if (!MessageHandler.yesNoQuestion("Overwrite " + file.getName() + "?")) {
+                            return;
+                        }
+                    }
+                    OutputStream out = new FileOutputStream(file);
+                    getJGraph().exportPNG(out);
+
+                    // Open the PNG file.
+                    // FIXME: We don't do the right thing with PNG files.
+                    // It just opens in a text editor.
+                    // _read(file.toURI().toURL());
+                    MessageHandler.message("Image file exported to " + file.getName());
+                }
+            } catch (Exception ex) {
+                MessageHandler.error("Export to PNG failed", ex);
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties
