@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/ontologies/lattice/adapters/unitSystem
 
-DIRS =      domains
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -49,11 +49,10 @@ PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS = \
-	domains/domains.jar
+PTCLASSALLJARS =
 
 JSRCS = 
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	unitSystem.xml \
 	UnitSystemSolverModel.xml
