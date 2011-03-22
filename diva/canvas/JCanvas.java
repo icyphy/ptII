@@ -32,6 +32,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -39,10 +40,14 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Iterator;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
@@ -116,6 +121,39 @@ public class JCanvas extends JComponent implements Printable {
         super.setToolTipText("");
     }
 
+    /** Export a PNG representation of the contents of this canvas
+     *  to the specified stream.
+     *  @param out The output stream to write to.
+     *  @throws PrinterException If printing to graphics object fails.
+     *  @throws IOException If conversion to PNG fails.
+     */
+    public void exportPNG(OutputStream out) throws PrinterException, IOException {
+        Dimension size = getSize();
+        BufferedImage bufferedImage =
+                new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = bufferedImage.createGraphics();
+        RenderingHints hints = new RenderingHints(null);
+        hints.put(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.addRenderingHints(hints);
+
+        // Could possibly export transparent PNG.
+        boolean transparent = false;
+        if (!transparent) {
+            graphics.setColor(Color.white); // set the background color
+            Rectangle2D rectangle = new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight());
+            graphics.fill(rectangle);
+        }
+        Paper paper = new Paper();
+        paper.setSize(size.width, size.height);
+        paper.setImageableArea(0.0, 0.0, size.width, size.height);
+        PageFormat format = new PageFormat();
+        format.setPaper(paper);
+        print(graphics, format, 0);
+        ImageIO.write(bufferedImage, "png", out);
+        graphics.dispose();
+    }
+    
     /** Get the canvas pane contained by this component.
      */
     public final CanvasPane getCanvasPane() {
