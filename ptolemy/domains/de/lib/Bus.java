@@ -36,6 +36,7 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -135,6 +136,8 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _receiversAndTokensToSendTo.clear();
+        _tokens.clear();
+        _nextTimeFree = null;
     }
 
     /** Send first token in the queue to the target receiver.
@@ -225,33 +228,30 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
-            if (_tokens.size() > 0) {
-                // Determine the time of the next firing.
-                _nextTimeFree = currentTime.add(_serviceTimeValue);
-                _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
-                _fireAt(_nextTimeFree);
-                refiringScheduled = true;
-                // FIXME:
-                // Not only does this bus need to be fired
-                // at the _nextTimeFree, but so does the destination
-                // actor. In particular, that actor may be under
-                // the control of a _different director_ than the
-                // bus, and the order in which that actor is fired
-                // vs. this Bus is important. How to control this?
-                // Maybe global scope of a QuantityManager is not
-                // a good idea, but we really do want to be able
-                // to share a QuantityManager across modes of a
-                // modal model. How to fix???
-            } else {
-                refiringScheduled = false;
-            }
+//            if (_tokens.size() > 0) { 
+//                _scheduleRefire();
+//                refiringScheduled = true;
+//                // FIXME:
+//                // Not only does this bus need to be fired
+//                // at the _nextTimeFree, but so does the destination
+//                // actor. In particular, that actor may be under
+//                // the control of a _different director_ than the
+//                // bus, and the order in which that actor is fired
+//                // vs. this Bus is important. How to control this?
+//                // Maybe global scope of a QuantityManager is not
+//                // a good idea, but we really do want to be able
+//                // to share a QuantityManager across modes of a
+//                // modal model. How to fix???
+//            } else {
+//                refiringScheduled = false;
+//            }
         }
         // If sendToken() was called in the current iteration,
         // then append the token to the queue. If this is the
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if (!(getDirector() instanceof DEDirector) &&  _receiversAndTokensToSendTo != null) {
+        if ((getDirector() instanceof FixedPointDirector) &&  _receiversAndTokensToSendTo != null) {
             for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
                 Token token = _receiversAndTokensToSendTo.get(receiver);
                 if (token != null) {
@@ -259,26 +259,24 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                 }
             }
             _receiversAndTokensToSendTo.clear();
-            
-            // if there was no token in the queue, schedule a refiring.
-            // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) { 
-            if (!refiringScheduled && _tokens.size() > 0) {
-                _nextTimeFree = currentTime.add(_serviceTimeValue);
-                _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
-                _fireAt(_nextTimeFree);
-                // FIXME:
-                // Not only does this bus need to be fired
-                // at the _nextTimeFree, but so does the destination
-                // actor. In particular, that actor may be under
-                // the control of a _different director_ than the
-                // bus, and the order in which that actor is fired
-                // vs. this Bus is important. How to control this?
-                // Maybe global scope of a QuantityManager is not
-                // a good idea, but we really do want to be able
-                // to share a QuantityManager across modes of a
-                // modal model. How to fix???
-            }
         }
+        // if there was no token in the queue, schedule a refiring.
+        // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) { 
+        if (_tokens.size() > 0 && (_nextTimeFree == null || currentTime.compareTo(_nextTimeFree) >= 0)) {
+            _scheduleRefire();
+            // FIXME:
+            // Not only does this bus need to be fired
+            // at the _nextTimeFree, but so does the destination
+            // actor. In particular, that actor may be under
+            // the control of a _different director_ than the
+            // bus, and the order in which that actor is fired
+            // vs. this Bus is important. How to control this?
+            // Maybe global scope of a QuantityManager is not
+            // a good idea, but we really do want to be able
+            // to share a QuantityManager across modes of a
+            // modal model. How to fix???
+        }
+        
         return super.postfire();
     }
 
@@ -322,18 +320,13 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
            
             // In the Continuous domain, this actor gets fired if tokens are available
             // or not. In the DE domain we need to schedule a refiring. 
-            if (getDirector() instanceof DEDirector) {
-                // FIXME: Can the token be null in DE?
-                if (token != null) {
-                    _tokens.put(new Object[] {receiver, token});
-                }
-                if (_tokens.size() == 1) { 
-                    _nextTimeFree = currentTime.add(_serviceTimeValue);
-                    _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
-                    _fireAt(_nextTimeFree);
-                }
-            } else {
+            if (getDirector() instanceof FixedPointDirector) {
                 _receiversAndTokensToSendTo.put(receiver, token);
+            } else {  
+                _tokens.put(new Object[] {receiver, token}); 
+                if (_tokens.size() == 1) { // no refiring has been scheduled
+                    _scheduleRefire();
+                }
             }
         }
 
@@ -347,6 +340,13 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                     + ", initiating send to "
                     + receiver.getContainer().getFullName() + ": " + token);
         }
+    }
+
+    private void _scheduleRefire() throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();  
+        _nextTimeFree = currentTime.add(_serviceTimeValue);
+        _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
+        _fireAt(_nextTimeFree); 
     }
 
     /**
