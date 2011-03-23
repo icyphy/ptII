@@ -194,7 +194,8 @@ public class PthalesCompositeActor extends TypedCompositeActor {
                 if (patternDims.get(dims[i]) != null) {
                     nb = (patternDims.get(dims[i])[0] - 1)
                             * patternDims.get(dims[i])[1] + 1;
-                    jump = patternDims.get(dims[i])[1];
+//                    jump = patternDims.get(dims[i])[1];
+                    jump = tilingDims.get(dims[i])[0]; //FIXME: Should be tiling jump instead of pattern jump
                 }
                 int val = (int) Math.floor((sizes.get(dims[i]) - nb) / jump) + 1;
 
