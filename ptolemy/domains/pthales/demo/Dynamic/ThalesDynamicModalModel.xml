@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.0323196758067">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{565.9840603752615, 223.0009765625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{565.9840603752614, 223.0009765625}">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example demonstrate how a PthalesDynamicCompositeActor &#10;could dynamically adapt to the changes of array sizes from &#10;an upstream actor based on the header information included before&#10;data a packet.&#10;&#10;The upstream actor has two states that produce arrays of different sizes.&#10;The array sizes are included in header information of each array and&#10;the downstream PthalesDynamicCompositeActor uses that information&#10;to autonomously compute its own repetitions.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example demonstrates how a PthalesDynamicCompositeActor &#10;could dynamically adapt to the changes of array sizes from &#10;an upstream actor based on the header information included before&#10;data a packet.&#10;&#10;The upstream actor has two states that produce arrays of different sizes.&#10;The array sizes are included in header information of each array and&#10;the downstream PthalesDynamicCompositeActor uses that information&#10;to autonomously compute its own repetitions.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 250.0]">
         </property>
