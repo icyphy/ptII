@@ -8,14 +8,14 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1227, 717]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9091086889651">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9663461538462">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{215.35415, 209.385527903423}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.0, 203.919410910758}">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 55.0]">
         </property>
     </property>
     <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[dim1 = {10,1}, dim2 = {5,1}]">
@@ -76,7 +76,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example demonstrates how &#10;a PthalesDynamicCompositeActor &#10;could compute its repetition vector itself&#10;based on the header information from &#10;an upstream add header actor">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example demonstrates how &#10;a PthalesDynamicCompositeActor &#10;could compute its repetition vector itself&#10;based on the header information from &#10;an upstream add header actor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 265.0]">
         </property>
@@ -97,14 +97,28 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 230.0]">
         </property>
     </property>
-    <port name="port" class="ptolemy.actor.TypedIOPort">
-        <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 210.0}">
+    <property name="consumeSize" class="ptolemy.data.expr.Parameter" value="[dim1=10,dim2=10]">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-    </port>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+                    <svg>
+                        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+                    </svg>
+                </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 245.0]">
+        </property>
+    </property>
     <entity name="PthalesDynamicCompositeActor" class="ptolemy.domains.pthales.lib.PthalesDynamicCompositeActor">
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -215,7 +229,7 @@
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={478, 346, 484, 208}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, 404, 484, 208}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
             </property>
@@ -297,13 +311,13 @@
     <entity name="PthalesAddHeaderActor" class="ptolemy.domains.pthales.lib.PthalesAddHeaderActor">
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 165.0]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="pattern" class="ptolemy.data.expr.Parameter" value="[dim1={10,1},dim2={10,1}]">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
             </property>
-            <property name="size" class="ptolemy.data.expr.Parameter" value="[dim1=10, dim2=10]">
+            <property name="size" class="ptolemy.data.expr.Parameter" value="consumeSize">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
