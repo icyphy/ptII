@@ -286,11 +286,13 @@ public class PthalesDirector extends SDFDirector {
             Firing firing = (Firing) firings.next();
             Actor actor = firing.getActor();
             int iterationCount = firing.getIterationCount();
-            
+
             //check if we need to compute the iteration for this actor
             //the actor will compute the iteration itself and return the value to the director.
-            if (iterationCount == 0 && actor instanceof PthalesDynamicCompositeActor) {
-                iterationCount = ((PthalesDynamicCompositeActor)actor).computeIterations();
+            if (iterationCount == 0
+                    && actor instanceof PthalesDynamicCompositeActor) {
+                iterationCount = ((PthalesDynamicCompositeActor) actor)
+                        .computeIterations();
             }
 
             if (_debugging) {
@@ -318,7 +320,7 @@ public class PthalesDirector extends SDFDirector {
             }
         }
     }
-    
+
     /** Get the name of the library to use.
      * @return the name of the library to use.
      * @exception IllegalActionException
@@ -408,59 +410,80 @@ public class PthalesDirector extends SDFDirector {
         // the schedule is valid.
         getScheduler().getSchedule();
 
-        int rate = DFUtilities.getTokenConsumptionRate(port);
         boolean wasTransferred = false;
 
-        for (int i = 0; i < port.getWidth(); i++) {
-            try {
-                if (i < port.getWidthInside()) {
-                    if (port.hasToken(i, rate)) {
-                        if (_debugging) {
-                            _debug(getName(), "transferring input from "
-                                    + port.getName());
+        if ((((Actor) (port.getContainer())).getExecutiveDirector() instanceof PNDirector)) {
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (i < port.getWidthInside()) {
+                        while (port.hasToken(i)) { //when to stop?
+                            Token t = port.get(i);
+                            port.sendInside(i, t);
+                            
+                            wasTransferred = true;
                         }
+                    }
 
-                        if (port.getRemoteReceivers().length > 0) {
-                            port.send(i, port.get(i, rate), rate);
-                        } else {
-                            CompositeActor compositeActor = ((CompositeActor) port
-                                    .getContainer());
-                            List<Actor> actors = compositeActor
-                                    .deepEntityList();
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
+            }
+        } else {
+            int rate = DFUtilities.getTokenConsumptionRate(port);
 
-                            // External ports
-                            List<TypedIOPort> externalPorts = compositeActor
-                                    .inputPortList();
-                            for (TypedIOPort externalPort : externalPorts) {
-                                Receiver recv = externalPort.getReceivers()[0][0];
-                                Token[] buffer = null;
-                                if (recv instanceof SDFReceiver) {
-                                    // Buffer acquisition
-                                    buffer = ((SDFReceiver) recv)
-                                            .getArray(DFUtilities
-                                                    .getRate(externalPort));
-                                }
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (i < port.getWidthInside()) {
+                        if (port.hasToken(i, rate)) {
+                            if (_debugging) {
+                                _debug(getName(), "transferring input from "
+                                        + port.getName());
+                            }
 
-                                // Dispatch to all input ports using output port
-                                for (Actor actor : actors) {
-                                    List<IOPort> ports = actor.inputPortList();
-                                    for (IOPort inputPort : ports) {
-                                        if (inputPort.connectedPortList()
-                                                .contains(externalPort)) {
-                                            Receiver[][] receivers = inputPort
-                                                    .getReceivers();
-                                            if (receivers != null
-                                                    && receivers.length > 0) {
-                                                for (Receiver[] receiverss : receivers) {
-                                                    if (receiverss != null
-                                                            && receiverss.length > 0) {
-                                                        for (Receiver receiver : receiverss) {
-                                                            if (receiver instanceof PthalesReceiver) {
-                                                                ((PthalesReceiver) receiver)
-                                                                        .setExternalBuffer(
-                                                                                compositeActor,
-                                                                                externalPort,
-                                                                                buffer);
+                            if (port.getRemoteReceivers().length > 0) {
+                                port.send(i, port.get(i, rate), rate);
+                            } else {
+                                CompositeActor compositeActor = ((CompositeActor) port
+                                        .getContainer());
+                                List<Actor> actors = compositeActor
+                                        .deepEntityList();
+
+                                // External ports
+                                List<TypedIOPort> externalPorts = compositeActor
+                                        .inputPortList();
+                                for (TypedIOPort externalPort : externalPorts) {
+                                    Receiver recv = externalPort.getReceivers()[0][0];
+                                    Token[] buffer = null;
+                                    if (recv instanceof SDFReceiver) {
+                                        // Buffer acquisition
+                                        buffer = ((SDFReceiver) recv)
+                                                .getArray(DFUtilities
+                                                        .getRate(externalPort));
+                                    }
+
+                                    // Dispatch to all input ports using output port
+                                    for (Actor actor : actors) {
+                                        List<IOPort> ports = actor
+                                                .inputPortList();
+                                        for (IOPort inputPort : ports) {
+                                            if (inputPort.connectedPortList()
+                                                    .contains(externalPort)) {
+                                                Receiver[][] receivers = inputPort
+                                                        .getReceivers();
+                                                if (receivers != null
+                                                        && receivers.length > 0) {
+                                                    for (Receiver[] receiverss : receivers) {
+                                                        if (receiverss != null
+                                                                && receiverss.length > 0) {
+                                                            for (Receiver receiver : receiverss) {
+                                                                if (receiver instanceof PthalesReceiver) {
+                                                                    ((PthalesReceiver) receiver)
+                                                                            .setExternalBuffer(
+                                                                                    compositeActor,
+                                                                                    externalPort,
+                                                                                    buffer);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -469,36 +492,36 @@ public class PthalesDirector extends SDFDirector {
                                         }
                                     }
                                 }
+
                             }
 
+                            wasTransferred = true;
+                        } else {
+                            throw new IllegalActionException(
+                                    this,
+                                    port,
+                                    "Port should consume "
+                                            + rate
+                                            + " tokens, but not enough tokens available.");
+                        }
+                    } else if (port.isKnown(i)) {
+                        // No inside connection to transfer tokens to.
+                        // Tolerate an unknown input, but if it is known, then
+                        // transfer the input token if there is one.
+                        // In this case, consume one input token if there is one.
+                        if (_debugging) {
+                            _debug(getName(), "Dropping single input from "
+                                    + port.getName());
                         }
 
-                        wasTransferred = true;
-                    } else {
-                        throw new IllegalActionException(
-                                this,
-                                port,
-                                "Port should consume "
-                                        + rate
-                                        + " tokens, but not enough tokens available.");
+                        if (port.hasToken(i)) {
+                            port.get(i);
+                        }
                     }
-                } else if (port.isKnown(i)) {
-                    // No inside connection to transfer tokens to.
-                    // Tolerate an unknown input, but if it is known, then
-                    // transfer the input token if there is one.
-                    // In this case, consume one input token if there is one.
-                    if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
-                    }
-
-                    if (port.hasToken(i)) {
-                        port.get(i);
-                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
                 }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
             }
         }
 
@@ -530,9 +553,7 @@ public class PthalesDirector extends SDFDirector {
 
         boolean wasTransferred = false;
 
-
-        if (!(((Actor)(port.getContainer())).getExecutiveDirector() 
-                instanceof PNDirector)) {
+        if (!(((Actor) (port.getContainer())).getExecutiveDirector() instanceof PNDirector)) {
             wasTransferred = super.transferOutputs(port);
         } else {
 

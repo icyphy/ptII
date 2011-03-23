@@ -71,7 +71,6 @@ public class PthalesScheduler extends SDFScheduler {
         super(container, name);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -90,9 +89,10 @@ public class PthalesScheduler extends SDFScheduler {
 
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
-                    DFUtilities.setTokenConsumptionRate(port, PthalesIOPort
-                            .getArraySize(port)
-                            * PthalesIOPort.getNbTokenPerData(port));
+                    DFUtilities.setTokenConsumptionRate(
+                            port,
+                            PthalesIOPort.getArraySize(port)
+                                    * PthalesIOPort.getNbTokenPerData(port));
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
                 }
@@ -151,6 +151,30 @@ public class PthalesScheduler extends SDFScheduler {
         CompositeActor model = (CompositeActor) director.getContainer();
         _checkDynamicRateVariables(model, _rateVariables);
 
+        List<IOPort> inPorts = model.inputPortList();
+        for (IOPort port : inPorts) {
+
+            // FIXME: The following method looks for a stride as well,
+            // which does not make sense for a tiling spec.
+
+            // Now we need to set capacities of each of the receivers.
+            // Notify the destination receivers of the write pattern.
+
+            Receiver[][] receivers = port.deepGetReceivers();
+            if (receivers != null && receivers.length > 0) {
+                for (Receiver[] receiverss : receivers) {
+                    if (receiverss != null && receiverss.length > 0) {
+                        for (Receiver receiver : receiverss) {
+                            //FIXME: Should we do this?
+                            if (receiver instanceof PthalesReceiver)
+                                ((PthalesReceiver) receiver).setOutputArray(
+                                        port, model);
+                        }
+                    }
+                }
+            }
+        }
+
         //FIXME Remove this part?
         // Iterate over the actors.
         for (Actor actor : actors) {
@@ -200,8 +224,9 @@ public class PthalesScheduler extends SDFScheduler {
                                 // FIXME: Is the cast to LinkedHashSet
                                 // safe?  Depends on the Java
                                 // implementation of LinkedHashMap.
-                                ((PthalesReceiver) receiver).setInputArray(
-                                        port, actor);
+                                if (receiver instanceof PthalesReceiver)
+                                    ((PthalesReceiver) receiver).setInputArray(
+                                            port, actor);
                             }
                         }
                     }
