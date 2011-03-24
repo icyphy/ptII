@@ -27,25 +27,23 @@
  */
 package ptolemy.vergil.basic;
 
-import java.util.Iterator;
-
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
+import javax.swing.JFrame;
+import javax.swing.SwingConstants;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.IGuiAction;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.Site;
@@ -69,7 +67,7 @@ model needs to be an input in the doAction() method.
 <p>The Ptolemy layout mechanism produces layouts that are not as
 good as the Kieler layout mechanism, so use the @see KielerLayoutMechanism.</p>
 
-@author  Christopher Brooks, based on KielerLayoutAction by Christian Motika
+@author  Christopher Brooks, based on KielerLayoutAction by Christian Motika and BasicGraphFrame by Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.1
 @Pt.ProposedRating Red (cmot)
@@ -99,7 +97,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
             JFrame frame = null;
             int tableauxCount = 0;
             Iterator tableaux = Configuration.findEffigy(model)
-                .entityList(Tableau.class).iterator();
+                    .entityList(Tableau.class).iterator();
             while (tableaux.hasNext()) {
                 Tableau tableau = (Tableau) (tableaux.next());
                 tableauxCount++;
@@ -112,42 +110,38 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                 String message = "";
                 if (tableauxCount == 0) {
                     message = "findEffigy() found no Tableaux?  There should have been one "
-                        + "ActorGraphFrame.";
+                            + "ActorGraphFrame.";
                 } else {
-                    JFrame firstFrame = ((Tableau) Configuration
-                            .findEffigy(model)
-                            .entityList(Tableau.class).get(0))
-                        .getFrame();
+                    JFrame firstFrame = (Configuration.findEffigy(model)
+                            .entityList(Tableau.class).get(0)).getFrame();
                     message = "The first frame of "
-                        + tableauxCount
-                        + " found by findEffigy() is "
-                        + (firstFrame == null ? "null" 
-                                : "a \"" + firstFrame.getClass().getName() + "\"")
-                        + ", which is not an instance of ActorGraphFrame."
-                        + " None of the other frames were ActorGraphFrames either.";
+                            + tableauxCount
+                            + " found by findEffigy() is "
+                            + (firstFrame == null ? "null" : "a \""
+                                    + firstFrame.getClass().getName() + "\"")
+                            + ", which is not an instance of ActorGraphFrame."
+                            + " None of the other frames were ActorGraphFrames either.";
                 }
                 throw new InternalErrorException(
                         model,
                         null,
                         "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                        + message
-                        + (frame != null ? " Details about the frame: "
-                                + StringUtilities.ellipsis(
-                                        frame.toString(), 80)
-                                : ""));
+                                + message
+                                + (frame != null ? " Details about the frame: "
+                                        + StringUtilities.ellipsis(
+                                                frame.toString(), 80) : ""));
             } else {
                 _graphFrame = (BasicGraphFrame) frame;
-                
+
                 // fetch everything needed to build the LayoutTarget
-                GraphController graphController = _graphFrame
-                    .getJGraph().getGraphPane()
-                    .getGraphController();
-                GraphModel graphModel = _graphFrame.getJGraph()
-                    .getGraphPane().getGraphController()
-                    .getGraphModel();
+                GraphController graphController = _graphFrame.getJGraph()
+                        .getGraphPane().getGraphController();
+                AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) _graphFrame
+                        .getJGraph().getGraphPane().getGraphController()
+                        .getGraphModel();
                 BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
                         graphController);
-                
+
                 // create Kieler layouter for this layout target
                 PtolemyLayout layout = new PtolemyLayout(layoutTarget);
                 // layout.setModel((CompositeActor) model);
@@ -155,17 +149,71 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                 // layout.setApplyEdgeLayoutBendPointAnnotation(true);
                 // layout.setBoxLayout(false);
                 // layout.setTop(graphFrame);
-                
+
+                layout.setOrientation(LevelLayout.HORIZONTAL);
+                layout.setRandomizedPlacement(false);
+
+                // Before doing the layout, need to take a copy of all the current
+                // node locations  which can be used to undo the effects of the move.
+                try {
+                    NamedObj composite = graphModel.getPtolemyModel();
+
+                    StringBuffer moml = new StringBuffer();
+                    moml.append("<group>\n");
+
+                    // NOTE: this gives at iteration over locations.
+                    Iterator<Location> nodes = graphModel.nodes(composite);
+
+                    while (nodes.hasNext()) {
+                        Location location = nodes.next();
+
+                        // Get the containing element.
+                        NamedObj element = location.getContainer();
+
+                        // Give default values in case the previous locations value
+                        // has not yet been set.
+                        String expression = location.getExpression();
+
+                        if (expression == null) {
+                            expression = "0, 0";
+                        }
+
+                        // Create the MoML, wrapping the location attribute
+                        // in an element referring to the container.
+                        String containingElementName = element.getElementName();
+                        moml.append("<" + containingElementName + " name=\""
+                                + element.getName() + "\" >\n");
+
+                        // NOTE: use the moml info element name here in case the
+                        // location is a vertex.
+                        moml.append("<" + location.getElementName()
+                                + " name=\"" + location.getName()
+                                + "\" value=\"" + expression + "\" />\n");
+                        moml.append("</" + containingElementName + ">\n");
+                    }
+
+                    moml.append("</group>\n");
+
+                    // Push the undo entry onto the stack.
+                    MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite,
+                            moml.toString());
+                    UndoStackAttribute undoInfo = UndoStackAttribute
+                            .getUndoInfo(composite);
+                    undoInfo.push(undoEntry);
+                } catch (Throwable throwable) {
+                    // Operation not undoable.
+                }
+
                 layout.layout(graphModel.getRoot());
             }
         } catch (Exception ex) {
             // If we do not catch exceptions here, then they
             // disappear to stdout, which is bad if we launched
             // where there is no stdout visible.
-            MessageHandler
-                .error("Failed to layout \""
-                        + (model == null ? "name not found"
-                                : (model.getFullName())) + "\"", ex);
+            MessageHandler.error(
+                    "Failed to layout \""
+                            + (model == null ? "name not found" : (model
+                                    .getFullName())) + "\"", ex);
         }
     }
 
@@ -246,7 +294,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                             int direction = CanvasUtilities
                                     .getDirection(normal);
 
-                            if (direction == SwingUtilities.WEST) {
+                            if (direction == SwingConstants.WEST) {
                                 Object temp = origTail;
                                 origTail = origHead;
                                 origHead = temp;
@@ -261,7 +309,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                             int direction = CanvasUtilities
                                     .getDirection(normal);
 
-                            if (direction == SwingUtilities.EAST) {
+                            if (direction == SwingConstants.EAST) {
                                 Object temp = origTail;
                                 origTail = origHead;
                                 origHead = temp;
@@ -309,70 +357,70 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
     ///////////////////////////////////////////////////////////////////
     //// PtolemyLayoutTarget
 
-    /** A layout target that translates locatable nodes. */
-    private/*static*/class PtolemyLayoutTarget extends BasicLayoutTarget {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-        // However, we call getVisibleCanvasRectangle(), which cannot
-        // be static.
-
-        /** Construct a new layout target that operates
-         *  in the given pane.
-         */
-        public PtolemyLayoutTarget(GraphController controller) {
-            super(controller);
-        }
-
-        /** Return the viewport of the given graph as a rectangle
-         *  in logical coordinates.
-         */
-        public Rectangle2D getViewport(Object composite) {
-            //GraphModel model = getController().getGraphModel();
-
-            if (composite == getRootGraph()) {
-                // Take into account the current zoom and pan.
-                Rectangle2D bounds = _graphFrame.getVisibleCanvasRectangle();
-
-                double width = bounds.getWidth();
-                double height = bounds.getHeight();
-
-                double borderPercentage = (1 - getLayoutPercentage()) / 2;
-                double x = (borderPercentage * width) + bounds.getX();
-                double y = (borderPercentage * height) + bounds.getY();
-                double w = getLayoutPercentage() * width;
-                double h = getLayoutPercentage() * height;
-                return new Rectangle2D.Double(x, y, w, h);
-            } else {
-                return super.getViewport(composite);
-            }
-        }
-
-        /** Translate the figure associated with the given node in the
-         *  target's view by the given delta.
-         */
-        public void translate(Object node, double dx, double dy) {
-            super.translate(node, dx, dy);
-
-            if (node instanceof Locatable) {
-                double[] location = ((Locatable) node).getLocation();
-
-                if (location == null) {
-                    location = new double[2];
-
-                    Figure figure = getController().getFigure(node);
-                    location[0] = figure.getBounds().getCenterX();
-                    location[1] = figure.getBounds().getCenterY();
-                } else {
-                    location[0] += dx;
-                    location[1] += dy;
-                }
-
-                try {
-                    ((Locatable) node).setLocation(location);
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(ex.getMessage());
-                }
-            }
-        }
-    }
+    //    /** A layout target that translates locatable nodes. */
+    //    private/*static*/class PtolemyLayoutTarget extends BasicLayoutTarget {
+    //        // FindBugs suggests making this class static so as to decrease
+    //        // the size of instances and avoid dangling references.
+    //        // However, we call getVisibleCanvasRectangle(), which cannot
+    //        // be static.
+    //
+    //        /** Construct a new layout target that operates
+    //         *  in the given pane.
+    //         */
+    //        public PtolemyLayoutTarget(GraphController controller) {
+    //            super(controller);
+    //        }
+    //
+    //        /** Return the viewport of the given graph as a rectangle
+    //         *  in logical coordinates.
+    //         */
+    //        public Rectangle2D getViewport(Object composite) {
+    //            //GraphModel model = getController().getGraphModel();
+    //
+    //            if (composite == getRootGraph()) {
+    //                // Take into account the current zoom and pan.
+    //                Rectangle2D bounds = _graphFrame.getVisibleCanvasRectangle();
+    //
+    //                double width = bounds.getWidth();
+    //                double height = bounds.getHeight();
+    //
+    //                double borderPercentage = (1 - getLayoutPercentage()) / 2;
+    //                double x = (borderPercentage * width) + bounds.getX();
+    //                double y = (borderPercentage * height) + bounds.getY();
+    //                double w = getLayoutPercentage() * width;
+    //                double h = getLayoutPercentage() * height;
+    //                return new Rectangle2D.Double(x, y, w, h);
+    //            } else {
+    //                return super.getViewport(composite);
+    //            }
+    //        }
+    //
+    //        /** Translate the figure associated with the given node in the
+    //         *  target's view by the given delta.
+    //         */
+    //        public void translate(Object node, double dx, double dy) {
+    //            super.translate(node, dx, dy);
+    //
+    //            if (node instanceof Locatable) {
+    //                double[] location = ((Locatable) node).getLocation();
+    //
+    //                if (location == null) {
+    //                    location = new double[2];
+    //
+    //                    Figure figure = getController().getFigure(node);
+    //                    location[0] = figure.getBounds().getCenterX();
+    //                    location[1] = figure.getBounds().getCenterY();
+    //                } else {
+    //                    location[0] += dx;
+    //                    location[1] += dy;
+    //                }
+    //
+    //                try {
+    //                    ((Locatable) node).setLocation(location);
+    //                } catch (IllegalActionException ex) {
+    //                    throw new InternalErrorException(ex.getMessage());
+    //                }
+    //            }
+    //        }
+    //    }
 }

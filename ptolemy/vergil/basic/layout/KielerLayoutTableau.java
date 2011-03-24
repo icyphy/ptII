@@ -177,7 +177,7 @@ public class KielerLayoutTableau extends Tableau {
             AbstractAction[] actions = new AbstractAction[] {
                     new PlaceAllAction(), new PlaceAction(),
                     new PlaceAndRouteAction(), new RemoveVerticesAction(),
-                    new HideVerticesAction(), new PtolemyLayoutAction() };
+                    new HideVerticesAction(), new KielerTableauPtolemyLayoutAction() };
 
             for (int i = 0; i < buttons.length; i++) {
                 JButton button;
@@ -357,7 +357,7 @@ public class KielerLayoutTableau extends Tableau {
     }
 
     /** Use the older layout algorithm. */
-    private class PtolemyLayoutAction extends AbstractAction {
+    private class KielerTableauPtolemyLayoutAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
             // Get the frame and the current model here.
             NamedObj model = _frame.getModel();
@@ -372,13 +372,13 @@ public class KielerLayoutTableau extends Tableau {
     /** New automatic layout option placing all connected nodes and annotating 
      * relations with bend point positions of connected links.
      */
-    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
-        /** Construct a HideAndRouteAction.
-         */
-        public PlaceAndRouteAnnotationAction() {
-            super(true, true, false, false, false);
-        }
-    }    
+//    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
+//        /** Construct a HideAndRouteAction.
+//         */
+//        public PlaceAndRouteAnnotationAction() {
+//            super(true, true, false, false, false);
+//        }
+//    }    
 
     /** Toggle between showing and hiding of unnecessary relation vertices.
      */

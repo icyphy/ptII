@@ -29,29 +29,26 @@
 package ptolemy.vergil.basic.layout.kieler.test.junit;
 
 import static org.junit.Assert.assertArrayEquals;
+
 import java.io.File;
 import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
+
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Manager;
-import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.moml.MoMLParser;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.ConfigurationApplication;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.kernel.undo.RedoChangeRequest;
 import ptolemy.kernel.undo.UndoChangeRequest;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.test.Diff;
-import ptolemy.vergil.basic.layout.KielerLayoutAction;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
-
-
+import ptolemy.vergil.basic.layout.KielerLayoutAction;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerJUnitTest
@@ -81,7 +78,7 @@ import ptolemy.vergil.basic.PtolemyLayoutAction;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
- */ 
+ */
 public class KielerJUnitTest {
 
     /** Test the Kieler layout facility.
@@ -97,7 +94,8 @@ public class KielerJUnitTest {
      *  @exception args Not used.
      */
     public static void main(String args[]) {
-        org.junit.runner.JUnitCore.main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
+        org.junit.runner.JUnitCore
+                .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
     /** 
@@ -107,28 +105,30 @@ public class KielerJUnitTest {
      * undo and redo.
      * @exception Exception If there is a problem reading or laying
      * out a model.
-     */ 
-    @org.junit.Test 
+     */
+    @org.junit.Test
     public void runConstDisplay() throws Exception {
-        _layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml",
-                   true);
+        _layoutTest(
+                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml",
+                true);
     }
 
     /* Test the layout of the ConstConstDisplay model.
      * @exception Exception If there is a problem reading or laying
      * out a model.
-     */ 
-    @org.junit.Test 
+     */
+    @org.junit.Test
     public void runConstConstDisplay() throws Exception {
-        _layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml",
-                   true);
+        _layoutTest(
+                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml",
+                true);
     }
 
     /* Test the layout of the modulation model.
      * @exception Exception If there is a problem reading or laying
      * out a model.
-     */ 
-    @org.junit.Test 
+     */
+    @org.junit.Test
     public void runModulation() throws Exception {
         _layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
     }
@@ -170,14 +170,14 @@ public class KielerJUnitTest {
         /////
         // Open the model.
         Runnable openModelAction = new Runnable() {
-                public void run() {
-                    try {
-                        model[0] = _openModel(modelFileName);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
+            public void run() {
+                try {
+                    model[0] = _openModel(modelFileName);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
-            };
+            }
+        };
         SwingUtilities.invokeAndWait(openModelAction);
         String baseMoML = model[0].exportMoML();
 
@@ -187,19 +187,19 @@ public class KielerJUnitTest {
         // Layout the model using either the Kieler layout mechanism
         // or the krufty Ptolemy Layout mechanism.
         Runnable layoutModelAction = new Runnable() {
-                public void run() {
-                    try {
-                        if (compareAgainstOriginal) {
-                            _layoutModelCompareAgainstFile(model[0], modelFileName);
-                        } else {
-                            // Invoke the crufty Ptolemy layout mechanism and export.
-                            new PtolemyLayoutAction().doAction(model[0]);
-                        }
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
+            public void run() {
+                try {
+                    if (compareAgainstOriginal) {
+                        _layoutModelCompareAgainstFile(model[0], modelFileName);
+                    } else {
+                        // Invoke the crufty Ptolemy layout mechanism and export.
+                        new PtolemyLayoutAction().doAction(model[0]);
                     }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
-            };
+            }
+        };
         SwingUtilities.invokeAndWait(layoutModelAction);
 
         /////
@@ -221,7 +221,7 @@ public class KielerJUnitTest {
                         throw new RuntimeException(ex);
                     }
                 }
-                };
+            };
             SwingUtilities.invokeAndWait(kielerLayoutModelAction);
             _sleep();
         }
@@ -229,51 +229,49 @@ public class KielerJUnitTest {
         /////
         // Loop through undo and redo
         String laidOutMoML = model[0].exportMoML();
-        for(int i = 1; i <= 2; i ++) {
+        for (int i = 1; i <= 2; i++) {
             Runnable undoAction = new Runnable() {
-                    public void run() {
-                        try {
-                            _undo(model[0]);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                public void run() {
+                    try {
+                        _undo(model[0]);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
                     }
-                };
+                }
+            };
             SwingUtilities.invokeAndWait(undoAction);
 
             _sleep();
 
             String undoMoML = model[0].exportMoML();
             if (_debug || !baseMoML.equals(undoMoML)) {
-                System.out.println("Difference between original MoML"
-                        + " and the exported MoML after Kieler Layout and then undo:");
-                System.out.println(Diff.diff(baseMoML,
-                                undoMoML));
+                System.out
+                        .println("Difference between original MoML"
+                                + " and the exported MoML after Kieler Layout and then undo:");
+                System.out.println(Diff.diff(baseMoML, undoMoML));
             }
 
-            assertArrayEquals(baseMoML.getBytes(),
-                    undoMoML.getBytes());
-
+            assertArrayEquals(baseMoML.getBytes(), undoMoML.getBytes());
 
             Runnable redoAction = new Runnable() {
-                    public void run() {
-                        try {
-                            _redo(model[0]);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                public void run() {
+                    try {
+                        _redo(model[0]);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
                     }
-                };
+                }
+            };
             SwingUtilities.invokeAndWait(redoAction);
             String redoMoML = model[0].exportMoML();
             if (_debug || !laidOutMoML.equals(redoMoML)) {
-                System.out.println("Difference between laid out MoML"
-                        + " and the exported MoML after Kieler Layout and then undo, then redo:");
+                System.out
+                        .println("Difference between laid out MoML"
+                                + " and the exported MoML after Kieler Layout and then undo, then redo:");
                 System.out.println(Diff.diff(laidOutMoML, redoMoML));
             }
 
-            assertArrayEquals(laidOutMoML.getBytes(),
-                    redoMoML.getBytes());
+            assertArrayEquals(laidOutMoML.getBytes(), redoMoML.getBytes());
 
             _sleep();
         }
@@ -281,32 +279,34 @@ public class KielerJUnitTest {
         /////
         // Close the model.
         Runnable closeAction = new Runnable() {
-                public void run() {
-                    try {
-                        if (_debug) {
-                            System.out.println("About to close " + model[0].getName());
-                        }
-                        Effigy effigy = Configuration.findEffigy(model[0].toplevel());
-
-                        // Avoid being prompted for save.
-                        effigy.setModified(false);
-
-                        // Avoid calling System.exit().
-                        System.setProperty("ptolemy.ptII.doNotExit", "true");
-
-                        // FIXME: are all these necessary?
-                        effigy.closeTableaux();
-                        ((TypedCompositeActor)model[0]).setContainer(null);
-                        MoMLParser.purgeAllModelRecords();
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
+            public void run() {
+                try {
+                    if (_debug) {
+                        System.out.println("About to close "
+                                + model[0].getName());
                     }
+                    Effigy effigy = Configuration.findEffigy(model[0]
+                            .toplevel());
+
+                    // Avoid being prompted for save.
+                    effigy.setModified(false);
+
+                    // Avoid calling System.exit().
+                    System.setProperty("ptolemy.ptII.doNotExit", "true");
+
+                    // FIXME: are all these necessary?
+                    effigy.closeTableaux();
+                    ((TypedCompositeActor) model[0]).setContainer(null);
+                    MoMLParser.purgeAllModelRecords();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
-            };
+            }
+        };
         SwingUtilities.invokeAndWait(closeAction);
         _sleep();
     }
-        
+
     /** Lay out the model and compare the results against the original
      *  model file name.
      *   
@@ -317,24 +317,29 @@ public class KielerJUnitTest {
      *  {@link openModel(String)}.
      *  @param modelFileName The pathname of the model, used for
      *  comparing.
-     */   
-    protected void _layoutModelCompareAgainstFile(NamedObj model, String modelFileName)
-            throws Exception {
+     */
+    protected void _layoutModelCompareAgainstFile(NamedObj model,
+            String modelFileName) throws Exception {
         try {
             // Invoke the Kieler layout mechanism.
             new KielerLayoutAction().doAction(model);
-            
+
             // Export the model and compare it with the original.
             String laidOutMoML = model.exportMoML();
-            File canonicalModelFile = FileUtilities.nameToFile(modelFileName, null);
-            String canonicalModelFileName = canonicalModelFile.getCanonicalPath();
-            byte [] baseMoMLBytes = FileUtilities.binaryReadURLToByteArray(canonicalModelFile.toURI().toURL());
+            File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
+                    null);
+            String canonicalModelFileName = canonicalModelFile
+                    .getCanonicalPath();
+            byte[] baseMoMLBytes = FileUtilities
+                    .binaryReadURLToByteArray(canonicalModelFile.toURI()
+                            .toURL());
 
             if (_debug || !new String(baseMoMLBytes).equals(laidOutMoML)) {
-                System.out.println("Difference between " + canonicalModelFileName
+                System.out.println("Difference between "
+                        + canonicalModelFileName
                         + " and the exported MoML after Kieler Layout:");
                 System.out.println(Diff.diff(new String(baseMoMLBytes),
-                                laidOutMoML));
+                        laidOutMoML));
             }
             assertArrayEquals(laidOutMoML.getBytes(), baseMoMLBytes);
 
@@ -361,17 +366,18 @@ public class KielerJUnitTest {
 
             // Convert the file name to a canonical file name so that
             // this test may be run from any directory or from within Eclipse.
-            File canonicalModelFile = FileUtilities.nameToFile(modelFileName, null);
-            String canonicalModelFileName = canonicalModelFile.getCanonicalPath();
+            File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
+                    null);
+            String canonicalModelFileName = canonicalModelFile
+                    .getCanonicalPath();
 
             // FIXME: are we in the right thread?
-            ConfigurationApplication application = 
-                new ConfigurationApplication( new String[] {
+            ConfigurationApplication application = new ConfigurationApplication(
+                    new String[] {
                             // Need to display a frame or Kieler fails.
                             //"ptolemy/actor/gui/test/testConfiguration.xml",
-                            "ptolemy/configs/full/configuration.xml", 
-                            canonicalModelFileName});
-            
+                            "ptolemy/configs/full/configuration.xml",
+                            canonicalModelFileName });
 
             // Find the first TypedCompositeActor, skipping the
             // Configuration etc.
@@ -391,9 +397,10 @@ public class KielerJUnitTest {
                     break;
                 }
             }
-            if ( !(model instanceof TypedCompositeActor)) {
-                throw new Exception("Failed to find a TypedComposite.  Models were: " 
-                        + names);
+            if (!(model instanceof TypedCompositeActor)) {
+                throw new Exception(
+                        "Failed to find a TypedComposite.  Models were: "
+                                + names);
             }
 
         } catch (Throwable throwable) {
@@ -401,7 +408,6 @@ public class KielerJUnitTest {
         }
         return model;
     }
-
 
     /** Redo the last operation on the model.
      *   
@@ -453,4 +459,3 @@ public class KielerJUnitTest {
     /** Set to true for debugging messages. */
     private final boolean _debug = false;
 }
-
