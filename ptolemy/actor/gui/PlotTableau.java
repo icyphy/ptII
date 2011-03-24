@@ -122,14 +122,16 @@ public class PlotTableau extends Tableau {
      *   of PlotTableauFrame.
      */
     public void setFrame(JFrame frame) throws IllegalActionException {
-        if (!(frame instanceof PlotTableauFrame)) {
+        if (frame != null && !(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
                     "Frame for PlotTableau must be an instance of "
                             + "PlotTableauFrame.");
         }
 
         super.setFrame(frame);
-        ((PlotTableauFrame) frame).setTableau(this);
+        if (frame != null) {
+            ((PlotTableauFrame) frame).setTableau(this);
+        }
     }
 
     /** Make this tableau visible by calling setVisible(true), and

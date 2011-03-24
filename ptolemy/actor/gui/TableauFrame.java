@@ -522,13 +522,13 @@ public class TableauFrame extends Top {
                                 KeyEvent.VK_N, Toolkit.getDefaultToolkit()
                                         .getMenuShortcutKeyMask()));
                     }
-                    ((JMenu) _fileMenuItems[2]).add(item);
+                    ((JMenu) _fileMenuItems[_NEW_MENU_INDEX]).add(item);
                 }
             }
 
             if (canCreateBlank) {
                 // Enable the "New" item in the File menu.
-                _fileMenuItems[2].setEnabled(true);
+                _fileMenuItems[_NEW_MENU_INDEX].setEnabled(true);
             }
 
             // Next do the View menu.

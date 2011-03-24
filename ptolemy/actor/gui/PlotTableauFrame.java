@@ -38,6 +38,8 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -48,9 +50,11 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFormatter;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -166,17 +170,26 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Edit menu for this frame. */
-    protected JMenu _editMenu;
-
-    /** Special menu for this frame. */
-    protected JMenu _specialMenu;
-
     /** Directory that contains the input file. */
     protected File _directory = null;
 
+    /** The export to PDF action. */
+    protected Action _exportPDFAction;
+    
+    /** Edit menu for this frame. */
+    protected JMenu _editMenu;
+
+    /** The export to GIF action. */
+    protected Action _exportGIFAction;
+
+    /** The export to PNG action. */
+    protected Action _exportPNGAction;
+
     /** The input file. */
     protected File _file = null;
+
+    /** Special menu for this frame. */
+    protected JMenu _specialMenu;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -237,6 +250,64 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         // The false argument prevents clearing decorations.
         plot.clear(false);
         return result;
+    }
+
+    /** Create the items in the File menu's Export section
+     *  This method adds a menu items to export images of the plot
+     *  in GIF, PNG, and possibly PDF.
+     *  @return The items in the File menu.
+     */
+    protected JMenuItem[] _createFileMenuItems() {
+        JMenuItem[] fileMenuItems = super._createFileMenuItems();
+        
+        JMenu exportMenu = (JMenu)fileMenuItems[_EXPORT_MENU_INDEX];
+        exportMenu.setEnabled(true);
+        
+        // Uncomment the next block to have Export PDF *ALWAYS* enabled.
+        // We don't want it always enabled because ptiny, the applets and
+        // Web Start should not included this AGPL'd piece of software
+        /*
+         if (_exportPDFAction == null) {
+             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+             try {
+                 Class exportPDFActionClass = Class
+                         .forName(exportPDFActionClassName);
+                 Constructor exportPDFActionConstructor = exportPDFActionClass
+                         .getDeclaredConstructor(Top.class);
+                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                         .newInstance(this);
+             } catch (Throwable throwable) {
+                 new InternalErrorException(null, throwable,
+                         "Failed to construct export PDF class \""
+                                 + exportPDFActionClassName
+                                 + "\", which was read from the configuration.");
+             }
+         }
+         */
+        // End of block to uncomment.
+
+        if (_exportPDFAction != null) {
+            // Insert the Export PDF item.
+            JMenuItem exportItem = new JMenuItem(_exportPDFAction);
+            exportMenu.add(exportItem);
+        }
+        
+        // Next do the export GIF action.
+        if (_exportGIFAction == null) {
+            _exportGIFAction = new ExportImageAction("GIF");
+        }
+        JMenuItem exportItem = new JMenuItem(_exportGIFAction);
+        exportMenu.add(exportItem);
+
+        // Next do the export PNG action.
+        if (_exportPNGAction == null) {
+            _exportPNGAction = new ExportImageAction("PNG");
+        }
+        exportItem = new JMenuItem(_exportPNGAction);
+        exportMenu.add(exportItem);
+
+        return fileMenuItems;
     }
 
     /** Interactively edit the file format in a modal dialog.
@@ -325,6 +396,87 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// ExportImageAction
+
+    public class ExportImageAction extends AbstractAction {
+        /** Create a new action to export PDF.
+         *  @param frame The Frame which to which this action is added.
+         */
+        public ExportImageAction(String formatName) {
+            super("Export " + formatName);
+            _formatName = formatName.toLowerCase();
+            putValue("tooltip", "Export " + formatName + " image to a file.");
+            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                   ////
+
+        /** Export image. */
+        public void actionPerformed(ActionEvent e) {
+            JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+            Color background = null;
+            try {
+                background = jFileChooserBugFix.saveBackground();
+
+                JFileChooser fileDialog = new JFileChooser();
+                fileDialog.setDialogTitle("Specify a file to write to.");
+                LinkedList extensions = new LinkedList();
+                extensions.add(_formatName);
+                fileDialog.addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
+                        extensions));
+
+                if (_directory != null) {
+                    fileDialog.setCurrentDirectory(_directory);
+                } else {
+                    // The default on Windows is to open at user.home, which is
+                    // typically an absurd directory inside the O/S installation.
+                    // So we use the current directory instead.
+                    // This will throw a security exception in an applet.
+                    // FIXME: we should support users under applets opening files
+                    // on the server.
+                    String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
+                    if (currentWorkingDirectory != null) {
+                        fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
+                    }
+                }
+
+                int returnVal = fileDialog.showDialog(PlotTableauFrame.this, "Export " 
+                        + _formatName.toUpperCase());
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    _directory = fileDialog.getCurrentDirectory();
+                    File file = fileDialog.getSelectedFile().getCanonicalFile();
+
+                    if (file.getName().indexOf(".") == -1) {
+                        // If the user has not given the file an extension, add it
+                        file = new File(file.getAbsolutePath() + "." + _formatName);
+                    }
+                    if (file.exists()) {
+                        if (!MessageHandler.yesNoQuestion("Overwrite " + file.getName() + "?")) {
+                            return;
+                        }
+                    }
+                    OutputStream out = new FileOutputStream(file);
+                    plot.exportImage(out, _formatName);
+
+                    // Open the PNG file.
+                    // FIXME: We don't do the right thing with PNG files.
+                    // It just opens in a text editor.
+                    // _read(file.toURI().toURL());
+                    MessageHandler.message("Image file exported to " + file.getName());
+                }
+            } catch (Exception ex) {
+                MessageHandler.error("Export to " + _formatName.toUpperCase() + " failed", ex);
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
+            }
+        }
+        
+        private String _formatName;
+    }
 
     /** Action to format the plot. */
     private class FormatAction extends AbstractAction {
