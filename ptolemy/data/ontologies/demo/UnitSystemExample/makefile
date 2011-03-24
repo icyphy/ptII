@@ -50,6 +50,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	DynamicsDimensionsOntology.xml \
+	DynamicsDimensionsSolver.xml \
+	FuelSystemUnitOntologyExample.xml \
+	FuelUnitDimensionsOntology.xml \
+	FuelUnitDimensionsSolverModel.xml \
+	MultiplyDivideUnits.xml \
+	TimeUnitIntegration.xml \
 	UnitSystemExample.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

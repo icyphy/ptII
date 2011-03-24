@@ -36,12 +36,11 @@ import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
+import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -84,7 +83,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         // Find the multiply and divide concept functions that
         // are needed for the PtProductNode monotonic function.        
         ConceptFunction multiplyFunction = null;
-        MultiplyConceptFunctionDefinition multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
+        ConceptFunctionDefinitionAttribute multiplyDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         if (multiplyDefinition != null) {
@@ -92,7 +91,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         }
 
         ConceptFunction divideFunction = null;
-        DivideConceptFunctionDefinition divideDefinition = (DivideConceptFunctionDefinition) (_solver
+        ConceptFunctionDefinitionAttribute divideDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {

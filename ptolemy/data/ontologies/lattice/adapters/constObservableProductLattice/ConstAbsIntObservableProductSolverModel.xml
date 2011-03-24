@@ -82,7 +82,7 @@
         <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
-    <property name="productZero" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+    <property name="productZero" class="ptolemy.data.ontologies.ExpressionConceptFunctionDefinitionAttribute">
         <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constObservableLattice">

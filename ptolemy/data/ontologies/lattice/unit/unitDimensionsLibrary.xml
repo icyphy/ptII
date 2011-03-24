@@ -4,6 +4,10 @@
 
 <group>
   
+  <entity name="Dimensionless" class="ptolemy.data.ontologies.lattice.unit.DimensionlessConcept">
+    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon"/>
+  </entity>
   <entity name="BaseDimension" class="ptolemy.data.ontologies.lattice.unit.BaseDimensionRepresentativeConcept">
     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.8,1.0}"/>
     <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>

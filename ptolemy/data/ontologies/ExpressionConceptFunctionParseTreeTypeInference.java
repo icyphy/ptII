@@ -56,7 +56,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
-        _setType(node, new ObjectType(FiniteConcept.class));
+        _setType(node, new ObjectType(Concept.class));
     }
     
     /** Set the type of the given node. Since the expression concept function
@@ -73,13 +73,13 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
         // reuse the normal expression parse tree type inference to evaluate
         // its type.  The scope of which java objects are valid
         // for concept functions is defined by the
-        // ExpressionConceptFunctionParserScope class that is a subclass
+        // ActorModelScope class that is a subclass
         // of ModelScope which implements the ParserScope interface.
         if (node.jjtGetParent() instanceof ASTPtMethodCallNode) {
             super.visitLeafNode(node);
             return;
         }
         
-        _setType(node, new ObjectType(FiniteConcept.class));        
+        _setType(node, new ObjectType(Concept.class));        
     }
 }

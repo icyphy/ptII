@@ -101,6 +101,8 @@ public abstract class DimensionRepresentativeConcept extends
                 for (int i = 0; i < unitTokenArray.length; i++) {
                     _userDefinedUnitRecords[i] = (RecordToken) unitTokenArray[i];
                 }
+            } else {
+                _userDefinedUnitRecords = null;
             }
         } else {
             super.attributeChanged(attribute);
@@ -134,8 +136,7 @@ public abstract class DimensionRepresentativeConcept extends
             return null;
         } else {
             for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
-                Token unitNameToken = ((RecordToken) unitRecordToken).
-                    get(UnitConcept.unitNameLabel);
+                Token unitNameToken = unitRecordToken.get(UnitConcept.unitNameLabel);
                 if (unitNameToken instanceof StringToken &&
                         unitName.equals(((StringToken) unitNameToken).stringValue())) {
                     return unitRecordToken;
@@ -143,7 +144,7 @@ public abstract class DimensionRepresentativeConcept extends
             }
             return null;
         }
-    }    
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -151,5 +152,5 @@ public abstract class DimensionRepresentativeConcept extends
     /** The array of record tokens specified by the user in the unitInfoRecords
      *  parameter.
      */
-    private RecordToken[] _userDefinedUnitRecords = null;
+    protected RecordToken[] _userDefinedUnitRecords = null;
 }

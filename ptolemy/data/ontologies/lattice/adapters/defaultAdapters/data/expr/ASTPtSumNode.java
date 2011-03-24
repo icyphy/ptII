@@ -36,12 +36,11 @@ import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
+import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -84,7 +83,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         // Find the add and subtract concept functions that
         // are needed for the PtSumNode monotonic function.        
         ConceptFunction addFunction = null;
-        AddConceptFunctionDefinition addDefinition = (AddConceptFunctionDefinition) (_solver
+        ConceptFunctionDefinitionAttribute addDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
         if (addDefinition != null) {
@@ -92,7 +91,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         }
 
         ConceptFunction subtractFunction = null;
-        SubtractConceptFunctionDefinition subtractDefinition = (SubtractConceptFunctionDefinition) (_solver
+        ConceptFunctionDefinitionAttribute subtractDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
         if (subtractDefinition != null) {

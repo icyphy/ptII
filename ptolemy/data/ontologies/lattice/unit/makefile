@@ -57,7 +57,9 @@ JSRCS = \
 	BaseUnitConcept.java \
 	DerivedDimensionRepresentativeConcept.java \
 	DerivedUnitConcept.java \
+	DimensionlessConcept.java \
 	DimensionRepresentativeConcept.java \
+	MultiplyOrDivideUnitConcepts.java \
 	UnitConcept.java
 	
 OTHER_FILES_TO_BE_JARED = \

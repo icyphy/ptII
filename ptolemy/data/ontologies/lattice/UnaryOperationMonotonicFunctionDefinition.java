@@ -32,7 +32,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
+import ptolemy.data.ontologies.ExpressionConceptFunctionDefinitionAttribute;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class UnaryOperationMonotonicFunctionDefinition extends
-        ConceptFunctionDefinitionAttribute {
+        ExpressionConceptFunctionDefinitionAttribute {
 
     /** Construct the UnaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.

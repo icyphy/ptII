@@ -28,6 +28,7 @@
  */
 package ptolemy.data.ontologies.lattice.unit;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,9 +112,44 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     /** Return the component dimensions map for this derived unit dimension.
      *  @return The map of component units and their exponents for this
      *   derived dimension.
+     *  @throws IllegalActionException Thrown if there is a problem getting
+     *   the component dimensions map.
      */
-    public Map<DimensionRepresentativeConcept, Integer> getComponentDimensions() {
-        return _componentDimensions;
+    public Map<DimensionRepresentativeConcept, Integer> getComponentDimensions()
+            throws IllegalActionException {
+        _updateDimensionInformation();
+        return new HashMap<DimensionRepresentativeConcept, Integer>(_componentDimensions);
+    }
+    
+    /** Return a list of all the possible units contained in this derived
+     *  dimension.
+     *  @return The list of all DerivedUnitConcepts that have this
+     *   DerivedDimensionRepresentativeConcept as a representative.
+     *  @throws IllegalActionException Thrown if there is a problem getting any
+     *   unit concepts from the ontology.
+     */
+    public List<DerivedUnitConcept> getAllUnits() throws IllegalActionException {
+        List<DerivedUnitConcept> result = _getAllUserDefinedUnits();
+        
+        // Find the given unitName in the list of pre-specified parameters.
+        List<Parameter> unitParameterList = attributeList(Parameter.class);
+        for (Parameter unitParameter : unitParameterList) {
+            Token unitConversionInfo = unitParameter.getToken();
+            if (unitConversionInfo instanceof RecordToken) {
+                try {
+                    String unitConceptString = getName() + "_" + unitParameter.getName();
+                    Concept unitConcept = getOntology().getConceptByString(unitConceptString);
+                    if (unitConcept instanceof DerivedUnitConcept) {
+                        result.add((DerivedUnitConcept) unitConcept);
+                    }                    
+                } catch (IllegalActionException ex) {
+                    throw new IllegalActionException(this, ex, "Error getting unit concepts.");
+                    // Do nothing since it was an invalid concept that should
+                    // not be added to the list.
+                }
+            }
+        }        
+        return result;
     }
     
     /** Return the reference name used by the unit specifications in this
@@ -152,8 +188,9 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
             return DerivedUnitConcept.createDerivedUnitConcept(getOntology(),
                     this, _findUnitRecordByName(unitName));           
         } else {
-            throw new IllegalActionException(this, "The given string cannot " +
-                        "be used to derive a valid infinite concept contained " +
+            throw new IllegalActionException(this, "The given string " +
+                        infiniteConceptString + " cannot " +
+                        "be used to derive a valid derived unit concept contained " +
                         "by this representative.");
         }
     }
@@ -228,6 +265,34 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         }
     }
     
+    /** Return the list of user defined unit concepts within this
+     *  DimensionRepresentativeConcept
+     *  @return The list of user defined unit concepts.
+     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *   list of units.
+     */
+    private List<DerivedUnitConcept> _getAllUserDefinedUnits() throws IllegalActionException {
+        List<DerivedUnitConcept> result = new ArrayList<DerivedUnitConcept>();
+        
+        // The array of user defined unit records is null, return an empty list.
+        if (_userDefinedUnitRecords == null) {
+            return result;
+        } else {
+            for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
+                Token unitNameToken = unitRecordToken.get(UnitConcept.unitNameLabel);
+                if (unitNameToken instanceof StringToken) {
+                    String unitName = ((StringToken) unitNameToken).stringValue();
+                    Concept unit = getOntology().getConceptByString(getName() + "_" + unitName);
+                    if (unit instanceof DerivedUnitConcept) {
+                        result.add((DerivedUnitConcept) unit);
+                    }
+                }
+            }
+            
+            return result;
+        }
+    }
+    
     /** Get the dimension concept from a dimensionRecord record token.
      *  @param dimensionRecord The record token that specifies the dimension
      *   and its exponent.
@@ -256,7 +321,7 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
                     return (DimensionRepresentativeConcept) dimensionConceptObject;
                 } else {
                     throw new IllegalActionException(this, "Invalid dimension " +
-                            "object: " + dimensionConceptObject);
+                            "concept: " + dimensionConceptObject);
                 }
                 
             // Next see if the name refers to a dimension name in the ontology.

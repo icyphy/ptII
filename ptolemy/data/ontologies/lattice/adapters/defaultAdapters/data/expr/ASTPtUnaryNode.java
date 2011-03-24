@@ -31,10 +31,10 @@ package ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr;
 import java.util.List;
 
 import ptolemy.data.ontologies.ConceptFunction;
+import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -85,8 +85,8 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
         
         if (node.isMinus()) {
             ConceptFunction negateFunction = null;
-            UnaryOperationMonotonicFunctionDefinition negateDefinition = 
-                (UnaryOperationMonotonicFunctionDefinition) (_solver
+            ConceptFunctionDefinitionAttribute negateDefinition = 
+                (ConceptFunctionDefinitionAttribute) (_solver
                         .getContainedModel())
                         .getAttribute(LatticeOntologySolver.NEGATE_FUNCTION_NAME);
             if (negateDefinition != null) {
@@ -98,8 +98,8 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
             }
         } else if (node.isNot()) {
             ConceptFunction notFunction = null;
-            UnaryOperationMonotonicFunctionDefinition notDefinition = 
-                (UnaryOperationMonotonicFunctionDefinition) (_solver
+            ConceptFunctionDefinitionAttribute notDefinition = 
+                (ConceptFunctionDefinitionAttribute) (_solver
                         .getContainedModel())
                         .getAttribute(LatticeOntologySolver.NOT_FUNCTION_NAME);
             if (notDefinition != null) {

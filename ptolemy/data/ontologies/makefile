@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
     ActorModelScope.java \
+    ClassConceptFunctionDefinitionAttribute.java \
 	Concept.java \
 	ConceptAttribute.java \
 	ConceptFromRecordField.java \
@@ -65,6 +66,7 @@ JSRCS = \
 	ConceptToken.java \
 	DAGConceptGraph.java \
 	ExpressionConceptFunction.java \
+	ExpressionConceptFunctionDefinitionAttribute.java \
 	ExpressionConceptFunctionParseTreeEvaluator.java \
 	ExpressionConceptFunctionParseTreeTypeInference.java \
 	ExpressionOperationsForInfiniteConcepts.java \

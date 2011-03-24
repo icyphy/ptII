@@ -83,6 +83,13 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
         }
     }
     
+    /** Return the the dimension concept for this unit concept.
+     *  @return The dimension concept to which this unit concept belongs.
+     */
+    public DimensionRepresentativeConcept getDimension() {
+        return (DimensionRepresentativeConcept) _representative;
+    }
+    
     /** Return the multiplication factor that converts a value in this unit to the
      *  SI unit for this dimension.
      *  @return The unit factor as a double value.

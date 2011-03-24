@@ -27,6 +27,7 @@
 package ptolemy.data.ontologies;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.PartiallyOrderedToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,13 +46,15 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (blickly)
  @Pt.AcceptedRating Red (blickly)
  */
-public class ConceptToken extends Token implements PartiallyOrderedToken {
+public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
 
     /** Create a ConceptToken from a given Concept.
      *  @param c The given Concept
+     *  @throws IllegalActionException Thrown if there is a problem creating
+     *   the ConceptTolen object.
      */
-    public ConceptToken(Concept c) {
-        _concept = c;
+    public ConceptToken(Concept c) throws IllegalActionException {
+        super(c, Concept.class);
         _operationsForInfiniteConcepts = null;
         if (c != null) {
             Ontology ontology = c.getOntology();
@@ -81,8 +84,8 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         }
         
         if (_operationsForInfiniteConcepts != null) {
-            Concept addend1 = _concept;
-            Concept addend2 = ((ConceptToken) rightArgument)._concept;
+            Concept addend1 = conceptValue();
+            Concept addend2 = ((ConceptToken) rightArgument).conceptValue();
             Concept result = _operationsForInfiniteConcepts.add(addend1, addend2);        
             return new ConceptToken(result);
         } else {
@@ -96,7 +99,7 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      *  @return The concept value.
      */
     public Concept conceptValue() {
-        return _concept;
+        return (Concept) getValue();
     }
     
     /** Perform the division operation on two ConceptTokens.  This operation
@@ -116,8 +119,8 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         }
         
         if (_operationsForInfiniteConcepts != null) {
-            Concept dividend = _concept;
-            Concept divisor = ((ConceptToken) rightArgument)._concept;
+            Concept dividend = conceptValue();
+            Concept divisor = ((ConceptToken) rightArgument).conceptValue();
             Concept result = _operationsForInfiniteConcepts.divide(dividend, divisor);        
             return new ConceptToken(result);
         } else {
@@ -137,9 +140,9 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
     public BooleanToken isEqualTo(Token rightArgument) {
         if (this != null && rightArgument != null 
                 && rightArgument instanceof ConceptToken
-                && ((ConceptToken) rightArgument)._concept != null 
-                && _concept != null 
-                && ((ConceptToken) rightArgument)._concept.equals(_concept)) {
+                && ((ConceptToken) rightArgument).conceptValue() != null 
+                && conceptValue() != null 
+                && ((ConceptToken) rightArgument).conceptValue().equals(conceptValue())) {
             return BooleanToken.TRUE;
         } else {
             return BooleanToken.FALSE;
@@ -204,8 +207,8 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         }
         
         if (_operationsForInfiniteConcepts != null) {
-            Concept factor1 = _concept;
-            Concept factor2 = ((ConceptToken) rightArgument)._concept;
+            Concept factor1 = conceptValue();
+            Concept factor2 = ((ConceptToken) rightArgument).conceptValue();
             Concept result = _operationsForInfiniteConcepts.multiply(factor1, factor2);        
             return new ConceptToken(result);
         } else {
@@ -225,7 +228,7 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      */
     public ConceptToken reciprocal() throws IllegalActionException {
         if (_operationsForInfiniteConcepts != null) {
-            Concept result = _operationsForInfiniteConcepts.reciprocal(_concept);        
+            Concept result = _operationsForInfiniteConcepts.reciprocal(conceptValue());        
             return new ConceptToken(result);
         } else {
             throw new IllegalActionException("The ontology that contains this " +
@@ -251,8 +254,8 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         }
         
         if (_operationsForInfiniteConcepts != null) {
-            Concept subtractor = _concept;
-            Concept subtractee = ((ConceptToken) rightArgument)._concept;
+            Concept subtractor = conceptValue();
+            Concept subtractee = ((ConceptToken) rightArgument).conceptValue();
             Concept result = _operationsForInfiniteConcepts.subtract(subtractor, subtractee);        
             return new ConceptToken(result);
         } else {
@@ -266,8 +269,8 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      *  @return The name of the concept contained by this token as a string value.
      */
     public String toString() {
-        if (_concept != null) {
-            return _concept.toString();
+        if (conceptValue() != null) {
+            return conceptValue().toString();
         } else {
             return super.toString();
         }
@@ -282,7 +285,7 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
      */
     public ConceptToken zero() throws IllegalActionException {
         if (_operationsForInfiniteConcepts != null) {
-            Concept result = _operationsForInfiniteConcepts.zero(_concept);        
+            Concept result = _operationsForInfiniteConcepts.zero(conceptValue());        
             return new ConceptToken(result);
         } else {
             throw new IllegalActionException("The ontology that contains this " +
@@ -293,9 +296,6 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-
-    /** The concept encapsulated by this token. */
-    private Concept _concept;
     
     /** The class that executes operations for infinite concepts that comes
      *  from the ontology of the concept contained in this token.

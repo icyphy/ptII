@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 325, 992, 631}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={224, 280, 992, 631}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 514]">
     </property>
@@ -136,7 +136,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 570.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity_mph">
+    <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity_mph">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -148,19 +148,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 545.0]">
-        </property>
-    </property>
-    <property name="UnitSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/unitSystem/UnitSystemSolverModel.xml">
-        </property>
-        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 410.0}">
-        </property>
-        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 560.0]">
         </property>
     </property>
     <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemSolver">
@@ -168,6 +156,18 @@
     <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
     </property>
     <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+    </property>
+    <property name="DynamicsDimensionsSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../UnitSystemExample/DynamicsDimensionsSolver.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 415.0]">
+        </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 195.0]">
@@ -247,7 +247,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 20.0]">
             </property>
         </property>
-        <property name="unitSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
+        <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -920,7 +920,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 20.0]">
                 </property>
             </property>
-            <property name="unitSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
+            <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1467,7 +1467,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={305, 48, 1096, 646}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={305, 48, 1165, 654}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[881, 529]">
         </property>
@@ -1540,7 +1540,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
             </property>
         </property>
-        <property name="unitSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time_sec">
+        <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time_sec">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1555,7 +1555,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 280.0]">
             </property>
         </property>
-        <property name="unitSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity_mph">
+        <property name="DynamicsDimensionsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity_mph">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1570,7 +1570,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 300.0]">
             </property>
         </property>
-        <property name="unitSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity_mph">
+        <property name="DynamicsDimensionsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity_mph">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1585,7 +1585,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 320.0]">
             </property>
         </property>
-        <property name="unitSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+        <property name="DynamicsDimensionsOntology::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1708,7 +1708,7 @@
             </property>
         </entity>
         <entity name="UnitsConverter" class="ptolemy.domains.ontologies.lib.UnitsConverter">
-            <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemSolver">
+            <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="DynamicsDimensionsSolver">
             </property>
             <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Velocity">
             </property>
@@ -2092,7 +2092,7 @@
         </property>
     </entity>
     <entity name="UnitsConverter" class="ptolemy.domains.ontologies.lib.UnitsConverter">
-        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemSolver">
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="DynamicsDimensionsSolver">
         </property>
         <property name="dimensionConcept" class="ptolemy.kernel.util.StringAttribute" value="Velocity">
         </property>
@@ -2121,8 +2121,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -2144,6 +2142,8 @@
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Car Model.desiredSpeed" relation="relation2"/>
     <link port="Car Model.acceleration" relation="relation"/>

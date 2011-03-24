@@ -156,11 +156,9 @@ public class ExpressionConceptFunction extends ConceptFunction {
         
         ConceptToken conceptToken = null;
         if (_functionScope != null) {
-            conceptToken = (ConceptToken) evaluator
-                .evaluateParseTree(parseTree, _functionScope);
+            conceptToken = evaluator.evaluateParseTree(parseTree, _functionScope);
         } else {
-            conceptToken = (ConceptToken) evaluator
-                .evaluateParseTree(parseTree);
+            conceptToken = evaluator.evaluateParseTree(parseTree);
         }        
         Concept output = conceptToken.conceptValue();
         

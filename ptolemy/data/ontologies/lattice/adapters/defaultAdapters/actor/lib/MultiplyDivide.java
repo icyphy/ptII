@@ -31,14 +31,12 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.data.ontologies.ConceptFunction;
+import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.lattice.ApplyBinaryFunctionToMultipleArguments;
-import ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
-import ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition;
-import ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,13 +64,13 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, actor, false);
         
-        _multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
+        _multiplyDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
-        _divideDefinition = (DivideConceptFunctionDefinition) (_solver
+        _divideDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
-        _reciprocalDefinition = (UnaryOperationMonotonicFunctionDefinition) (_solver
+        _reciprocalDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.RECIPROCAL_FUNCTION_NAME);
         
@@ -179,11 +177,11 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
     ////                     private variables                     ////
     
     /** The division concept function definition found in the solver model. */
-    private DivideConceptFunctionDefinition _divideDefinition;
+    private ConceptFunctionDefinitionAttribute _divideDefinition;
     
     /** The multiplication concept function definition found in the solver model. */
-    private MultiplyConceptFunctionDefinition _multiplyDefinition;
+    private ConceptFunctionDefinitionAttribute _multiplyDefinition;
     
     /** The reciprocal concept function definition found in the solver model. */
-    private UnaryOperationMonotonicFunctionDefinition _reciprocalDefinition;
+    private ConceptFunctionDefinitionAttribute _reciprocalDefinition;
 }
