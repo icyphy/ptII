@@ -181,6 +181,8 @@ public class PthalesCompositeActor extends TypedCompositeActor {
                 .getInternalPattern(portIn);
         LinkedHashMap<String, Integer[]> tilingDims = PthalesIOPort
                 .getTiling(portIn);
+        LinkedHashMap<String, Integer[]> baseDims = PthalesIOPort
+                .getBase(portIn);
 
         // Input array dimension
         Object[] dims = tilingDims.keySet().toArray();
@@ -189,13 +191,19 @@ public class PthalesCompositeActor extends TypedCompositeActor {
 
             // No tiling => no repetition on dimension => next dim
             if (tilingDims.get(dims[i]) != null) {
+
                 int nb = 1;
                 int jump = 1;
+
                 if (patternDims.get(dims[i]) != null) {
+
                     nb = (patternDims.get(dims[i])[0] - 1)
                             * patternDims.get(dims[i])[1] + 1;
-//                    jump = patternDims.get(dims[i])[1];
-                    jump = tilingDims.get(dims[i])[0]; //FIXME: Should be tiling jump instead of pattern jump
+
+                    if (baseDims != null && baseDims.containsKey(dims[i]))
+                        nb += baseDims.get(dims[i])[0];
+
+                    jump = tilingDims.get(dims[i])[0];
                 }
                 int val = (int) Math.floor((sizes.get(dims[i]) - nb) / jump) + 1;
 
