@@ -263,7 +263,6 @@ public class KielerJUnitTest {
             // System.out.println("Laid out MoML:");
             // System.out.println(new String(laidOutMoML));
 
-            // FIXME!!!! This fails, so we comment it out.
             assertArrayEquals(laidOutMoML.getBytes(), originalMoMLBytes);
 
             // TODO: Invoke the crufty Ptolemy layout mechanism and export.

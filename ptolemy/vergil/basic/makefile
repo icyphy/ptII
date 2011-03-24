@@ -80,6 +80,7 @@ JSRCS = \
 	OffsetMoMLChangeRequest.java \
 	ParameterizedNodeController.java \
 	PopupMouseFilter.java \
+	PtolemyLayoutAction.java \
 	RemoveCustomDocumentationAction.java \
 	RunnableGraphController.java \
 	WithIconGraphController.java
