@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.awt.print.Printable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
@@ -42,9 +43,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
 import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.BasicGraphFrame;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Rectangle;
@@ -88,7 +89,7 @@ public class ExportPDFAction extends AbstractAction {
     /** Create a new action to export PDF.
      *  @param frame The Frame which to which this action is added.
      */
-    public ExportPDFAction(BasicGraphFrame frame) {
+    public ExportPDFAction(Top frame) {
         super("Export PDF");
         _frame = frame;
         putValue("tooltip", "Export PDF to a file.");
@@ -100,6 +101,9 @@ public class ExportPDFAction extends AbstractAction {
 
     /** Export PDF. */
     public void actionPerformed(ActionEvent e) {
+        if (!(_frame instanceof Printable)) {
+            MessageHandler.error("Export PDF not supported.");
+        }
         _exportPDF();
     }
 
@@ -110,7 +114,7 @@ public class ExportPDFAction extends AbstractAction {
      *  This uses the iText library at http://itextpdf.com/.
      */
     private void _exportPDF() {
-        Dimension size = _frame.getJGraph().getSize();
+        Dimension size = _frame.getContentSize();
         Rectangle pageSize = null;
         try {
             pageSize = new Rectangle(size.width, size.height);
@@ -168,6 +172,12 @@ public class ExportPDFAction extends AbstractAction {
                     // If the user has not given the file an extension, add it
                     file = new File(file.getAbsolutePath() + ".pdf");
                 }
+                
+                if (file.exists()) {
+                    if (!MessageHandler.yesNoQuestion("Overwrite " + file.getName() + "?")) {
+                        return;
+                    }
+                }
 
                 PdfWriter writer = PdfWriter.getInstance(document,
                         new FileOutputStream(file));
@@ -188,13 +198,14 @@ public class ExportPDFAction extends AbstractAction {
                 paper.setImageableArea(0.0, 0.0, size.width, size.height);
                 PageFormat format = new PageFormat();
                 format.setPaper(paper);
-                _frame.print(graphics, format, 0);
+                ((Printable)_frame).print(graphics, format, 0);
                 graphics.dispose();
                 contentByte.addTemplate(template, 0, 0);
 
                 // Open the PDF file.
                 // FIXME: _read is protected in BasicGraphFrame
                 //_read(file.toURI().toURL());
+                MessageHandler.message("PDF file exported to " + file.getName());
             }
         } catch (Exception e) {
             MessageHandler.error("Export to PDF failed", e);
@@ -207,5 +218,6 @@ public class ExportPDFAction extends AbstractAction {
     ///////////////////////////////////////////////////////////////////
     ////                    private variables
 
-    BasicGraphFrame _frame;
+    /** The top-level window of the contents to be exported. */
+    Top _frame;
 }
