@@ -35,18 +35,17 @@ import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.kernel.undo.RedoChangeRequest;
-import ptolemy.kernel.undo.UndoChangeRequest;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.test.Diff;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
 import ptolemy.vergil.basic.layout.KielerLayoutAction;
 
@@ -180,6 +179,7 @@ public class KielerJUnitTest {
         };
         SwingUtilities.invokeAndWait(openModelAction);
         String baseMoML = model[0].exportMoML();
+        _basicGraphFrame = _getBasicGraphFrame(model[0]);
 
         _sleep();
 
@@ -194,6 +194,7 @@ public class KielerJUnitTest {
                     } else {
                         // Invoke the crufty Ptolemy layout mechanism and export.
                         new PtolemyLayoutAction().doAction(model[0]);
+                        _basicGraphFrame.report("Ptolemy Layout done");
                     }
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -201,6 +202,7 @@ public class KielerJUnitTest {
             }
         };
         SwingUtilities.invokeAndWait(layoutModelAction);
+        _sleep();
 
         /////
         // Optionally invoke the Ptolemy layout mechanism.
@@ -415,14 +417,9 @@ public class KielerJUnitTest {
      *  Thread.</p>
      */
     protected void _redo(NamedObj model) {
-        try {
-            Manager manager = new Manager(model.workspace(), "KJUT");
-            // Invoke redo and compare against the Kieler layout.
-            RedoChangeRequest redo = new RedoChangeRequest(model, model);
-            manager.requestChange(redo);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        _basicGraphFrame.report("About to redo");
+        _basicGraphFrame.redo();
+        _basicGraphFrame.report("Redo done");
     }
 
     /** Sleep the current thread, which is usually not the Swing Event
@@ -442,20 +439,44 @@ public class KielerJUnitTest {
      *  Thread.</p>
      */
     protected void _undo(NamedObj model) {
-        try {
-            Manager manager = new Manager(model.workspace(), "KJUT");
-            // Invoke undo and compare against the Ptolemy layout.
-            // See ptolemy/moml/test/UndoEntity.tcl
-            UndoChangeRequest undo = new UndoChangeRequest(model, model);
-            manager.requestChange(undo);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
+        _basicGraphFrame.report("About to undo");
+        _basicGraphFrame.undo();
+        _basicGraphFrame.report("Undo done");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static BasicGraphFrame _getBasicGraphFrame(NamedObj model) {
+        // See PtolemyLayoutAction for similar code.
+        BasicGraphFrame frame = null;
+        int tableauxCount = 0;
+        Iterator tableaux = Configuration.findEffigy(model)
+                .entityList(Tableau.class).iterator();
+        while (tableaux.hasNext()) {
+            Tableau tableau = (Tableau) (tableaux.next());
+            tableauxCount++;
+            if (tableau.getFrame() instanceof BasicGraphFrame) {
+                frame = (BasicGraphFrame) tableau.getFrame();
+                break;
+            }
         }
+        // Fetch everything needed to build the LayoutTarget.
+        //GraphController graphController = ((BasicGraphFrame)frame).getJGraph()
+        //    .getGraphPane().getGraphController();
+        //AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) ((BasicGraphFrame)frame)
+        //    .getJGraph().getGraphPane().getGraphController()
+        //    .getGraphModel();
+        return frame;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
+    /** The BasicGraphFrame of the model. */
+    private BasicGraphFrame _basicGraphFrame;
+
     /** Set to true for debugging messages. */
     private final boolean _debug = false;
+
 }
