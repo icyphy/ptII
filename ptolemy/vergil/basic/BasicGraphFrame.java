@@ -109,6 +109,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
 import ptolemy.gui.Query;
+import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -888,6 +889,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public Point2D getCenter() {
         Rectangle2D rect = getVisibleCanvasRectangle();
         return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
+    }
+
+    /** Return the size of the contents of this window.
+     *  @return The size of the contents.
+     */
+    public Dimension getContentSize() {
+        return getJGraph().getSize();
     }
 
     /** Return the JGraph instance that this view uses to represent the
@@ -1933,23 +1941,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Create the items in the File menu. A null element in the array
-     *  represents a separator in the menu.
-     *  In this class, if the configuration contains a StringParmeter
-     *  with the name "_exportPDFActionClassName", the then value of
-     *  that parameter is assumed to name a class that extends AbstractAction
-     *  and that exports PDF.
-     *  If there is no parameter by that name, then value returned
-     *  by super._createFileMenuItems is returned.
-     *  This method also adds a method to export a PNG file.
-     *  @return The items in the File menu, optionally include an "Export PDF"
-     *  menu choice.
+    /** Create the items in the File menu's Export section
+     *  This method adds a menu items to export images of the plot
+     *  in GIF, PNG, and possibly PDF.
+     *  @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
+        
+        JMenu exportMenu = (JMenu)fileMenuItems[_EXPORT_MENU_INDEX];
+        exportMenu.setEnabled(true);
+        
         try {
+            // Get the "export PDF" action classname from the configuration.
             // FIXME: this does not work because the configuration is
-            // not set when this method is called.
+            // not set when this method is called. Hence, the code below
+            // this has to be uncommented rather than using the configuration
+            // to enable export PDF.
             Configuration configuration = getConfiguration();
             if (configuration == null) {
                 //new Exception("BSF: configuration is null").printStackTrace();
@@ -1971,7 +1979,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         Class exportPDFActionClass = Class
                                 .forName(exportPDFActionClassName);
                         Constructor exportPDFActionConstructor = exportPDFActionClass
-                                .getDeclaredConstructor(BasicGraphFrame.class);
+                                .getDeclaredConstructor(Top.class);
                         _exportPDFAction = (AbstractAction) exportPDFActionConstructor
                                 .newInstance(this);
                         System.out.println("BGF: _exportPDFAction: "
@@ -2002,7 +2010,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                  Class exportPDFActionClass = Class
                          .forName(exportPDFActionClassName);
                  Constructor exportPDFActionConstructor = exportPDFActionClass
-                         .getDeclaredConstructor(BasicGraphFrame.class);
+                         .getDeclaredConstructor(Top.class);
                  _exportPDFAction = (AbstractAction) exportPDFActionConstructor
                          .newInstance(this);
              } catch (Throwable throwable) {
@@ -2016,43 +2024,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // End of block to uncomment.
 
         if (_exportPDFAction != null) {
-            // Insert the Export PDF item after the Print item in the menu.
-            int i = 0;
-            for (JMenuItem item : fileMenuItems) {
-                i++;
-                if (item.getActionCommand().equals("Print")) {
-                    // Add a Export PDF item here.
-                    JMenuItem exportItem = new JMenuItem(_exportPDFAction);
-                    JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
-                    System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                    newItems[i] = exportItem;
-                    System.arraycopy(fileMenuItems, i, newItems, i + 1,
-                            fileMenuItems.length - i);
-                    fileMenuItems = newItems;
-                    break;
-                }
-            }
+            // Insert the Export PDF item.
+            JMenuItem exportItem = new JMenuItem(_exportPDFAction);
+            exportMenu.add(exportItem);
         }
         
+        // Next do the export GIF action.
+        if (_exportGIFAction == null) {
+            _exportGIFAction = new ExportImageAction("GIF");
+        }
+        JMenuItem exportItem = new JMenuItem(_exportGIFAction);
+        exportMenu.add(exportItem);
+
         // Next do the export PNG action.
         if (_exportPNGAction == null) {
-            _exportPNGAction = new ExportPNGAction();
+            _exportPNGAction = new ExportImageAction("PNG");
         }
-        int i = 0;
-        for (JMenuItem item : fileMenuItems) {
-            i++;
-            if (item.getActionCommand().equals("Print")) {
-                // Add a Export PNG item here.
-                JMenuItem exportItem = new JMenuItem(_exportPNGAction);
-                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
-                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i] = exportItem;
-                System.arraycopy(fileMenuItems, i, newItems, i + 1,
-                        fileMenuItems.length - i);
-                fileMenuItems = newItems;
-                break;
-            }
-        }
+        exportItem = new JMenuItem(_exportPNGAction);
+        exportMenu.add(exportItem);
 
         return fileMenuItems;
     }
@@ -2596,6 +2585,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The export to PDF action. */
     protected Action _exportPDFAction;
     
+    /** The export to GIF action. */
+    protected Action _exportGIFAction;
+
     /** The export to PNG action. */
     protected Action _exportPNGAction;
 
@@ -2896,22 +2888,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //    }
     
     ///////////////////////////////////////////////////////////////////
-    //// ExportPNGAction
+    //// ExportImageAction
 
-    public class ExportPNGAction extends AbstractAction {
+    public class ExportImageAction extends AbstractAction {
         /** Create a new action to export PDF.
          *  @param frame The Frame which to which this action is added.
          */
-        public ExportPNGAction() {
-            super("Export PNG");
-            putValue("tooltip", "Export PNG image to a file.");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
+        public ExportImageAction(String formatName) {
+            super("Export " + formatName);
+            _formatName = formatName.toLowerCase();
+            putValue("tooltip", "Export " + formatName + " image to a file.");
+            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                   ////
 
-        /** Export PNG. */
+        /** Export image. */
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -2921,7 +2914,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 JFileChooser fileDialog = new JFileChooser();
                 fileDialog.setDialogTitle("Specify a file to write to.");
                 LinkedList extensions = new LinkedList();
-                extensions.add("png");
+                extensions.add(_formatName);
                 fileDialog.addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
                         extensions));
 
@@ -2940,7 +2933,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
 
-                int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export PNG");
+                int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export " 
+                        + _formatName.toUpperCase());
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = fileDialog.getCurrentDirectory();
@@ -2948,7 +2942,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                     if (file.getName().indexOf(".") == -1) {
                         // If the user has not given the file an extension, add it
-                        file = new File(file.getAbsolutePath() + ".png");
+                        file = new File(file.getAbsolutePath() + "." + _formatName);
                     }
                     if (file.exists()) {
                         if (!MessageHandler.yesNoQuestion("Overwrite " + file.getName() + "?")) {
@@ -2956,7 +2950,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         }
                     }
                     OutputStream out = new FileOutputStream(file);
-                    getJGraph().exportPNG(out);
+                    getJGraph().exportImage(out, _formatName);
 
                     // Open the PNG file.
                     // FIXME: We don't do the right thing with PNG files.
@@ -2965,11 +2959,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     MessageHandler.message("Image file exported to " + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to PNG failed", ex);
+                MessageHandler.error("Export to " + _formatName.toUpperCase() + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
         }
+        
+        private String _formatName;
     }
 
     ///////////////////////////////////////////////////////////////////
