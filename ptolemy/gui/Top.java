@@ -29,6 +29,7 @@ package ptolemy.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
@@ -299,6 +300,13 @@ public abstract class Top extends JFrame {
     public boolean getCentering() {
         return _centering;
     }
+    
+    /** Return the size of the contents of this window.
+     *  @return The size of the contents.
+     */
+    public Dimension getContentSize() {
+        return getContentPane().getSize();
+    }
 
     /** If called before the first time pack() is called, this
      *  method will prevent the appearance of a menu bar. This is
@@ -527,26 +535,29 @@ public abstract class Top extends JFrame {
      *  @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
-        JMenuItem[] fileMenuItems = new JMenuItem[11];
+        JMenuItem[] fileMenuItems = new JMenuItem[12];
 
         fileMenuItems[0] = new JMenuItem("Open File", KeyEvent.VK_O);
         fileMenuItems[1] = new JMenuItem("Open URL", KeyEvent.VK_U);
-        fileMenuItems[2] = new JMenu("New");
+        // The following assumes _NEW_MENU_INDEX = 2.
+        fileMenuItems[_NEW_MENU_INDEX] = new JMenu("New");
         fileMenuItems[3] = new JMenuItem("Save", KeyEvent.VK_S);
         fileMenuItems[4] = new JMenuItem("Save As", KeyEvent.VK_A);
-        fileMenuItems[5] = new JMenuItem("Print", KeyEvent.VK_P);
-        fileMenuItems[6] = new JMenuItem("Close", KeyEvent.VK_C);
+        // The following assumes _EXPORT_MENU_INDEX = 5.
+        fileMenuItems[_EXPORT_MENU_INDEX] = new JMenu("Export");
+        fileMenuItems[6] = new JMenuItem("Print", KeyEvent.VK_P);
+        fileMenuItems[7] = new JMenuItem("Close", KeyEvent.VK_C);
 
         // Separators
-        fileMenuItems[7] = null;
-        fileMenuItems[9] = null;
+        fileMenuItems[8] = null;
+        fileMenuItems[10] = null;
 
         // History submenu
         JMenu history = new JMenu("Recent Files");
-        fileMenuItems[8] = history;
+        fileMenuItems[9] = history;
 
         // Exit
-        fileMenuItems[10] = new JMenuItem("Exit", KeyEvent.VK_X);
+        fileMenuItems[11] = new JMenuItem("Exit", KeyEvent.VK_X);
 
         if (StringUtilities.inApplet()) {
             JMenuItem[] appletFileMenuItems = new JMenuItem[8];
@@ -560,6 +571,7 @@ public abstract class Top extends JFrame {
             fileMenuItems[3].setEnabled(false);
             fileMenuItems[4].setEnabled(false);
             fileMenuItems[5].setEnabled(false);
+            fileMenuItems[6].setEnabled(false);
             return fileMenuItems;
         }
 
@@ -571,28 +583,30 @@ public abstract class Top extends JFrame {
         // initializer because JMenu doesn't have an
         // appropriate constructor.
         fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
+        fileMenuItems[5].setMnemonic(KeyEvent.VK_E);
 
-        // New button disabled by default.
+        // New and Export buttons disabled by default.
         fileMenuItems[2].setEnabled(false);
+        fileMenuItems[5].setEnabled(false);
 
         // Save button = ctrl-s.
         fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         // Print button = ctrl-p.
-        fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+        fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         // Print button disabled by default, unless this class implements
         // one of the JDK1.2 printing interfaces.
         if (Top.this instanceof Printable || Top.this instanceof Pageable) {
-            fileMenuItems[5].setEnabled(true);
+            fileMenuItems[6].setEnabled(true);
         } else {
-            fileMenuItems[5].setEnabled(false);
+            fileMenuItems[6].setEnabled(false);
         }
 
         // Close button = ctrl-w.
-        fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+        fileMenuItems[7].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         return fileMenuItems;
@@ -1091,6 +1105,12 @@ public abstract class Top extends JFrame {
 
     /** Items in the file menu. A null element represents a separator. */
     protected JMenuItem[] _fileMenuItems = _createFileMenuItems();
+    
+    /** Index in the _fileMenuItems array of the New item. */
+    protected static int _NEW_MENU_INDEX = 2;
+
+    /** Index in the _fileMenuItems array of the Export item. */
+    protected static int _EXPORT_MENU_INDEX = 5;
 
     /** Help menu for this frame. */
     protected JMenu _helpMenu = new JMenu("Help");
