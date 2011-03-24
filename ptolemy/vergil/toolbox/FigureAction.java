@@ -31,6 +31,7 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
 import javax.swing.AbstractAction;
@@ -247,7 +248,7 @@ public class FigureAction extends AbstractAction {
         }
 
         if (parent instanceof Frame) {
-            _frame = (Frame) parent;
+            _frame = new WeakReference((Frame) parent);
         } else {
             _frame = null;
         }
@@ -270,7 +271,7 @@ public class FigureAction extends AbstractAction {
      *  @return The frame that triggered this action.
      */
     public Frame getFrame() {
-        return _frame;
+        return (Frame) _frame.get();
     }
 
     /** Return the source type of this action, which is one of
@@ -492,7 +493,7 @@ public class FigureAction extends AbstractAction {
     ////                         private variables                 ////
     private Figure _figure = null;
 
-    private Frame _frame = null;
+    private WeakReference _frame = null;
 
     private SourceType _sourceType = null;
 

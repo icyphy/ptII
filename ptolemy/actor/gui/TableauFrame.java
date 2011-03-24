@@ -42,7 +42,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -55,6 +57,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.gui.MemoryCleaner;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
@@ -160,6 +163,7 @@ public class TableauFrame extends Top {
         setTableau(tableau);
         setIconImage(_getDefaultIconImage());
         _placeable = placeable;
+        _newMenuItems = new Vector<AbstractButton>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -511,6 +515,7 @@ public class TableauFrame extends Top {
                     item.setActionCommand(name);
                     item.setMnemonic(name.charAt(0));
                     item.addActionListener(menuListener);
+                    _newMenuItems.addElement(item);
                     if (name.equals("Graph Editor")) {
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(KeyStroke.getKeyStroke(
@@ -688,11 +693,16 @@ public class TableauFrame extends Top {
      *  {@link ptolemy.actor.gui.Top}.
      */
     public void dispose() {
-        // release reference to this frame from the Tableau
-        try {
-            _tableau.setFrame(null);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
+
+        // Deal with view menu action listeners
+        /*int c =*/ MemoryCleaner.removeActionListeners(_viewMenu);
+        //System.out.println("_viewMenu: "+c);
+        
+        // Deal with new menu action listeners
+        //int i = 0;
+        for (AbstractButton newMenuButton : _newMenuItems) {
+            /*c =*/ MemoryCleaner.removeActionListeners(newMenuButton);
+            //System.out.println("newMenuButton["+(i++)+"]: "+c);
         }
         
         // The size attribute is holding a reference to this frame
@@ -1266,6 +1276,9 @@ public class TableauFrame extends Top {
 
     /** Set in pack() if an alternate topPack is used. */
     protected TopPack _topPack = null;
+    
+    /** A vector to keep track of ActionListeners on menu items. */
+    private Vector<AbstractButton> _newMenuItems;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

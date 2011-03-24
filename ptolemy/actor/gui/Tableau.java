@@ -27,11 +27,13 @@
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import ptolemy.gui.MemoryCleaner;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -295,24 +297,8 @@ public class Tableau extends CompositeEntity {
         frame.setTitle(getTitle());
 
         // Set up a listener for window closing events.
-        frame.addWindowListener(new WindowAdapter() {
-            // This is invoked if the window
-            // is disposed by the _close() method of Top.
-            public void windowClosed(WindowEvent e) {
-                try {
-                    (Tableau.this).setContainer(null);
-                } catch (KernelException ex) {
-                    try {
-                        MessageHandler.warning("Cannot remove tableau: " + ex);
-                    } catch (CancelException exception) {
-                    }
-                }
-            }
-
-            // NOTE: We do not want to do the same in windowClosing()
-            // because this will override saving if modified as implemented
-            // in Top.
-        });
+        _windowClosedAdapter = new WindowClosedAdapter();
+        frame.addWindowListener(_windowClosedAdapter);
     }
 
     /** Specify whether the window associated with this tableau
@@ -385,6 +371,34 @@ public class Tableau extends CompositeEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    class WindowClosedAdapter extends WindowAdapter {
+        // This is invoked if the window
+        // is disposed by the _close() method of Top.
+        public void windowClosed(WindowEvent e) {
+            Window frame = e.getWindow();
+            try {
+                (Tableau.this).setContainer(null);
+            } catch (KernelException ex) {
+                try {
+                    MessageHandler.warning("Cannot remove tableau: " + ex);
+                } catch (CancelException exception) {
+                }
+            }
+            // System.out.println(frame.getWindowListeners().length);
+            /*int removed =*/ MemoryCleaner.removeWindowListeners(frame);
+            //System.out.println("Window listeners removed: " + removed);
+            _windowClosedAdapter = null;
+            _frame = null;
+        }
+
+        // NOTE: We do not want to do the same in windowClosing()
+        // because this will override saving if modified as implemented
+        // in Top.
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Flag indicating whether the tableau is editable. */
@@ -393,6 +407,10 @@ public class Tableau extends CompositeEntity {
     /** The frame that the tableau is shown in.
      */
     private JFrame _frame;
+    
+    /** The adapter responsible for the windowClosed event.
+     */
+    private WindowClosedAdapter _windowClosedAdapter;
 
     /** True if this tableau is a master tableau.  Default value is false.
      */

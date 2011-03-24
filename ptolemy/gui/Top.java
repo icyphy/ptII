@@ -29,12 +29,10 @@ package ptolemy.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -164,6 +162,10 @@ public abstract class Top extends JFrame {
         addWindowListener(new CloseWindowAdapter());
 
         getContentPane().setLayout(new BorderLayout());
+        
+        _fileMenuListener = new FileMenuListener();
+        _helpMenuListener = new HelpMenuListener();
+        _historyMenuListener = new HistoryMenuListener();
 
         // Make this the default context for modal messages.
         UndeferredGraphicalMessageHandler.setContext(this);
@@ -244,26 +246,39 @@ public abstract class Top extends JFrame {
      *  {@link javax.swing.JFrame}.
      */
     public void dispose() {
-        MemoryCleaner.removeActionListeners(_menubar);
-        // Don't call removeWindowListeners here because Tableau.setFrame()
-        // adds a WindowListener to windowsClosed events and that listener
-        // handles closing the plots associated with a model.
-        // MemoryCleaner.removeWindowListeners(this);
-        MemoryCleaner.removeActionListeners(_historyMenu);
         
-        // Deal  with fileMenuItems
+        // Deal with help menu action listeners
+        /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
+        //System.out.println("_historyMenu: "+c);
+        _historyMenuListener = null;
+        
+        // Deal with file menu action listeners
+        /*c =*/ MemoryCleaner.removeActionListeners(_fileMenu);
+        //System.out.println("_fileMenu: "+c);
         for (int i = 0; i < _fileMenuItems.length; i++) {
             JMenuItem menuItem = _fileMenuItems[i];
-            if (menuItem instanceof JMenu) {
-                /*removed =*/ MemoryCleaner.removeActionListeners((JMenu)menuItem);
-            } else {
-                /*removed =*/ MemoryCleaner.removeActionListeners(menuItem);
-            }
-            //System.out.println("Top _fileMenuItems["+i+"] action listeners removed: " + removed);
+            /*c =*/ MemoryCleaner.removeActionListeners(menuItem);
+            //System.out.println("_fileMenuItems["+i+"]: "+c);
         }
+        _fileMenuListener = null;
+        
+        // Deal with help menu action listeners
+        /*c =*/ MemoryCleaner.removeActionListeners(_helpMenu);
+        //System.out.println("_helpMenu: "+c);
+        for (int i = 0; i < _helpMenuItems.length; i++) {
+            JMenuItem menuItem = _helpMenuItems[i];
+            /*c =*/ MemoryCleaner.removeActionListeners(menuItem);
+            //System.out.println("_helpMenuItems["+i+"]: "+c);
+        }
+        _helpMenuListener = null;
+
+        /*c =*/ MemoryCleaner.removeActionListeners(_menubar);
+        //System.out.println("_menubar: "+c);
+        _menubar.removeAll();
+        
         // ensure reference to this is removed
         UndeferredGraphicalMessageHandler.setContext(null);
-        
+
         // I'm not sure exactly why this works but it does!
         // I think it has to do with the KeyboardFocusManager
         // holding onto the last focused component, so clearing and
@@ -271,7 +286,7 @@ public abstract class Top extends JFrame {
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         focusManager.clearGlobalFocusOwner();
         focusManager.downFocusCycle();
-
+        
         getContentPane().removeAll();
         super.dispose();
     }
@@ -1290,26 +1305,34 @@ public abstract class Top extends JFrame {
      * menu item.
      */
     protected void _populateHistory(List historyList) {
-        Component[] components = _fileMenu.getMenuComponents();
-        _historyMenu = null;
-        for (Component component : components) {
-            if (component instanceof JMenu
-                    && ((JMenu) component).getText().equals("Recent Files")) {
-                _historyMenu = (JMenu) component;
+        //System.out.println("_populateHistory("+historyList.size()+")");
+        
+        // Make sure we have a reference to the Recent Files menu
+        if (_historyMenu == null) {
+            Component[] components = _fileMenu.getMenuComponents();
+            for (Component component : components) {
+                if (component instanceof JMenu) {
+                    JMenu menu = (JMenu) component;
+                    String menuText = menu.getText();
+                    if (menuText.equals("Recent Files")) {
+                        _historyMenu = (JMenu) component;
+                    }
+                }
             }
         }
-        if (_historyMenu == null) {
-            throw new RuntimeException(
-                    "Unexpected loss of Recent Files menu.");
-        }
-        HistoryMenuListener listener = new HistoryMenuListener();
 
-        _historyMenu.removeAll();
-
-        for (int i = 0; i < historyList.size(); i++) {
-            JMenuItem item = new JMenuItem((String) historyList.get(i));
-            item.addActionListener(listener);
-            _historyMenu.add(item);
+        /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
+        //System.out.println("_historyMenu: "+c);
+        
+        if (_historyMenu != null) {
+            _historyMenu.removeAll();
+    
+            for (int i = 0; i < historyList.size(); i++) {
+                String recentFileString = (String) historyList.get(i);
+                JMenuItem item = new JMenuItem(recentFileString);
+                item.addActionListener(_historyMenuListener);
+                _historyMenu.add(item);
+            }
         }
     }
 
@@ -1375,7 +1398,6 @@ public abstract class Top extends JFrame {
 
                 // Construct the File menu by adding action commands
                 // and action listeners.
-                FileMenuListener fileMenuListener = new FileMenuListener();
 
                 // Set the action command and listener for each menu item.
                 for (int i = 0; i < _fileMenuItems.length; i++) {
@@ -1386,7 +1408,7 @@ public abstract class Top extends JFrame {
                                 .setActionCommand(_fileMenuItems[i]
                                         .getText());
                         _fileMenuItems[i]
-                                .addActionListener(fileMenuListener);
+                                .addActionListener(_fileMenuListener);
                         _fileMenu.add(_fileMenuItems[i]);
                     }
                 }
@@ -1404,13 +1426,12 @@ public abstract class Top extends JFrame {
 
                 // Construct the Help menu by adding action commands
                 // and action listeners.
-                HelpMenuListener helpMenuListener = new HelpMenuListener();
 
                 // Set the action command and listener for each menu item.
                 for (int i = 0; i < _helpMenuItems.length; i++) {
                     _helpMenuItems[i].setActionCommand(_helpMenuItems[i]
                             .getText());
-                    _helpMenuItems[i].addActionListener(helpMenuListener);
+                    _helpMenuItems[i].addActionListener(_helpMenuListener);
                     _helpMenu.add(_helpMenuItems[i]);
                 }
 
@@ -1526,6 +1547,16 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /** An ActionListener for the menu items in the file menu. */
+    private FileMenuListener _fileMenuListener;
+    
+    /** An ActionListener for the menu items in the help menu. */
+    private HelpMenuListener _helpMenuListener;
+    
+    /** An ActionListener for the menu items in the history menu. */
+    private HistoryMenuListener _historyMenuListener;
+    
+    /** A reference to the history menu. */
     private JMenu _historyMenu;
     
     /** The background color of the status bar */

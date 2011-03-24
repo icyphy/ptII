@@ -31,10 +31,10 @@ import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 /**
@@ -84,67 +84,41 @@ public class MemoryCleaner {
         }
         return listenersRemoved;
     }
-
+    
     /**
-     * Remove ActionListeners from a JMenu.
+     * Remove ActionListeners from an AbstractButton (such as a JMenuItem.
+     * If the AbstractButton is a JMenu, the ActionListeners of all the
+     * child items get removed too.
      * 
-     * @param menu  The menu from which the ActionListeners
-     * are to be reemoved.
-     * @return The number of listeners removed.
+     * @param button
+     * @return
      */
-    public static int removeActionListeners(JMenu menu) {
+    public static int removeActionListeners(AbstractButton button) {
         int listenersRemoved = 0;
-
-        if (menu != null) {
-
-            int totalMenuItems = menu.getMenuComponentCount();
-            if (_isDebugging) {
-                System.out.println("menu component count: " + totalMenuItems);
-            }
-
-            for (int n = 0; n < totalMenuItems; n++) {
-                Component component = menu.getMenuComponent(n);
-                if (component instanceof JMenu) {
-                    JMenu jmenu = (JMenu) component;
-                    int removed = removeActionListeners(jmenu);
-                    listenersRemoved += removed;
-                } else if (component instanceof JMenuItem) {
-                    JMenuItem menuItem = (JMenuItem) component;
-                    int removed = removeActionListeners(menuItem);
-                    listenersRemoved += removed;
-                } else {
-                    if (_isDebugging) {
-                        System.out.println("Not a menu item but a "
-                                + component.getClass().getName());
-                    }
-                }
-            }
-        }
-        return listenersRemoved;
-    }
-
-    /**
-     * Remove ActionListeners from a JMenuItem.
-     * Experimental.
-     * 
-     * @param menuItem The menu item from which ActionListeners
-     * are to be removed.
-     * @return The number of listeners removed.
-     */
-    public static int removeActionListeners(JMenuItem menuItem) {
-        int listenersRemoved = 0;
-        if (menuItem != null) {
-            ActionListener[] listeners = menuItem.getActionListeners();
+        if (button != null) {
+            ActionListener[] listeners = button.getActionListeners();
             if (listeners != null) {
                 int count = listeners.length;
                 for (ActionListener listener : listeners) {
-                    menuItem.removeActionListener(listener);
+                    button.removeActionListener(listener);
                 }
-                int countAfter = menuItem.getActionListeners().length;
-                listenersRemoved = count - countAfter;
-            } else {
-                if (_isDebugging) {
-                    System.out.println("listeners is null");
+                int countAfter = button.getActionListeners().length;
+                listenersRemoved += count - countAfter;
+                //System.out.println("Removed "+listenersRemoved+" for "+button.getText());
+                if (countAfter != 0) { 
+                    //System.out.println("cOUNTaFTERrEMOVE: "+countAfter);
+                }
+            }
+            
+            if (button instanceof JMenu) {
+                JMenu jmenu = (JMenu) button;
+                int totalMenuItems = jmenu.getMenuComponentCount();
+                for (int n = 0; n < totalMenuItems; n++) {
+                    Component component = jmenu.getMenuComponent(n);
+                    if (component instanceof AbstractButton) {
+                        AbstractButton b = (AbstractButton) component;
+                        listenersRemoved += removeActionListeners(b);
+                    }
                 }
             }
         }
