@@ -48,6 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.test.Diff;
 import ptolemy.vergil.basic.layout.KielerLayoutAction;
+import ptolemy.vergil.basic.PtolemyLayoutAction;
 
 
 
@@ -72,9 +73,14 @@ public class KielerJUnitTest {
      * the new results with the known good results and then doing
      * undo and redo.
      * @param modelFileName The file name of the test model. 
+     * @param compareAgainstOriginal.  If true, then run the Kieler
+     * Layouter and compare against the original file.  If false, run
+     * the Ptolemy layouter, the Kieler layouter, then undo, redo,
+     * undo and compare against the output after the Ptolemy layouter.
      * @exception Exception If the file name cannot be read or laid out.
      */
-    public void layoutTest(final String modelFileName) throws Exception {
+    public void layoutTest(final String modelFileName,
+            final boolean compareAgainstOriginal) throws Exception {
 
         // FIXME: this seem wrong:  The inner classes are in different
         // threads and can only access final variables.  However, we
@@ -102,7 +108,11 @@ public class KielerJUnitTest {
         Runnable layoutModelAction = new Runnable() {
                 public void run() {
                     try {
-                        layoutModel(model[0], modelFileName);
+                        if (compareAgainstOriginal) {
+                            layoutModelCompareAgainstFile(model[0], modelFileName);
+                        } else {
+                            layoutModelPtolemyLayouter(model[0], modelFileName);
+                        }
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
@@ -186,6 +196,10 @@ public class KielerJUnitTest {
         sleep();
     }
         
+    /** Open a model and display it.
+     *  @param modelFileName The pathname to the model.  Usually the
+     *  pathname starts with "$CLASSPATH".
+     */
     public NamedObj openModel(String modelFileName) {
         NamedObj model = null;
         try {
@@ -237,7 +251,15 @@ public class KielerJUnitTest {
         return model;
     }
 
-    public void layoutModel(NamedObj model, String modelFileName) throws Exception {
+    /** Lay out the model and compare the results against the original
+     *  model file name.
+     *  @param model The model, which was read by
+     *  {@link openModel(String)}.
+     *  @param modelFileName The pathname of the model, used for
+     *  comparing.
+     */   
+    public void layoutModelCompareAgainstFile(NamedObj model, String modelFileName)
+            throws Exception {
         try {
             String nongraphicalMoML = model.exportMoML();
 
@@ -256,21 +278,44 @@ public class KielerJUnitTest {
                 System.out.println(Diff.diff(new String(originalMoMLBytes),
                                 laidOutMoML));
             }
-
-            // System.out.println("Original MoML:");
-            // System.out.println(new String(originalMoMLBytes));
-
-            // System.out.println("Laid out MoML:");
-            // System.out.println(new String(laidOutMoML));
-
             assertArrayEquals(laidOutMoML.getBytes(), originalMoMLBytes);
 
-            // TODO: Invoke the crufty Ptolemy layout mechanism and export.
-            // To do this, we need to either get the controller or refactor
-            // the krufty Ptolemy layout mechanism so we have a 
-            // KruftyPtolemyLayoutAction. 
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
 
-            // TODO: Invoke the Kieler layout mechanism again and export.
+
+    /** Lay out the model using the Ptolemy layouter and then the
+     *  Kieler layouter.
+     *  @param model The model, which was read by
+     *  {@link openModel(String)}.
+     *  @param modelFileName The pathname of the model, used for
+     *  comparing.
+     */   
+    public void layoutModelPtolemyLayouter(NamedObj model, String modelFileName)
+            throws Exception {
+        try {
+            // Invoke the crufty Ptolemy layout mechanism and export.
+            new PtolemyLayoutAction().doAction(model);
+
+            String ptolemyLaidOutMoML = model.exportMoML();
+
+            // Invoke the Kieler layout mechanism.
+            new KielerLayoutAction().doAction(model);
+            
+            undo(model);
+            redo(model);
+            undo(model);
+            // Export the model and compare it with the original.
+            String ptolemyLaidOutMoMLAfterUndo = model.exportMoML();
+
+            if (_debug || !ptolemyLaidOutMoML.equals(ptolemyLaidOutMoMLAfterUndo)) {
+                System.out.println("Difference between ptolemy laid out MoML"
+                        + " and MoML after Kieler layout, undo, redo, undo:");
+                System.out.println(Diff.diff(ptolemyLaidOutMoML, ptolemyLaidOutMoMLAfterUndo));
+            }
+            assertArrayEquals(ptolemyLaidOutMoML.getBytes(), ptolemyLaidOutMoMLAfterUndo.getBytes());
 
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -323,7 +368,8 @@ public class KielerJUnitTest {
      */ 
     @org.junit.Test 
     public void runConstDisplay() throws Exception {
-        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml");
+        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml",
+                   true);
     }
 
     /* Test the layout of the ConstConstDisplay model.
@@ -332,7 +378,8 @@ public class KielerJUnitTest {
      */ 
     @org.junit.Test 
     public void runConstConstDisplay() throws Exception {
-        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml");
+        layoutTest("$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml",
+                   true);
     }
 
     /* Test the layout of the modulation model.
@@ -341,7 +388,7 @@ public class KielerJUnitTest {
      */ 
     @org.junit.Test 
     public void runModulation() throws Exception {
-        layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml");
+        layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
     }
 
     /** Test the Kieler layout facility.
