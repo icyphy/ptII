@@ -121,13 +121,28 @@ public class JCanvas extends JComponent implements Printable {
         super.setToolTipText("");
     }
 
-    /** Export a PNG representation of the contents of this canvas
+    /** Export an image of the contents of this canvas
      *  to the specified stream.
      *  @param out The output stream to write to.
+     *  @param formatName The format name (such as "gif" or "png").
      *  @throws PrinterException If printing to graphics object fails.
-     *  @throws IOException If conversion to PNG fails.
+     *  @throws IOException If conversion to the specified format fails or is not supported
      */
-    public void exportPNG(OutputStream out) throws PrinterException, IOException {
+    public void exportImage(OutputStream out, String formatName) throws PrinterException, IOException {
+        
+        boolean match = false;
+        String[] supportedFormats = ImageIO.getWriterFormatNames();
+        for (int i=0; i < supportedFormats.length; i++) {
+            if (formatName.equalsIgnoreCase(supportedFormats[i])) {
+                match = true;
+                break;
+            }
+        }
+        if (!match) {
+            // This exception is caught and reported below.
+            throw new IOException("Format " + formatName + " not supported.");
+        }
+
         Dimension size = getSize();
         BufferedImage bufferedImage =
                 new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
@@ -150,7 +165,7 @@ public class JCanvas extends JComponent implements Printable {
         PageFormat format = new PageFormat();
         format.setPaper(paper);
         print(graphics, format, 0);
-        ImageIO.write(bufferedImage, "png", out);
+        ImageIO.write(bufferedImage, formatName, out);
         graphics.dispose();
     }
     
