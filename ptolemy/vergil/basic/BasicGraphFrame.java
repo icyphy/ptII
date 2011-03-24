@@ -1039,9 +1039,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         Constructor layoutGraphDialogConstructor = layoutGraphDialogClass
                                 .getDeclaredConstructor(NamedObj.class,
                                         String.class);
-                        tableauFactory = (TableauFactory) layoutGraphDialogConstructor
-                            .newInstance((PtolemyEffigy) getTableau().getContainer(),
-                                    "layoutGraphFactory");
+                        // Check to see if we already have a
+                        // tableauFactory in the container.  This
+                        // could happen if the user chooses the
+                        // Advanced Layout Dialog twice.
+                        tableauFactory = (TableauFactory) getTableau().getContainer().getAttribute("layoutGraphFactory", layoutGraphDialogClass);
+                        if (tableauFactory == null) {
+                            tableauFactory = (TableauFactory) layoutGraphDialogConstructor
+                                .newInstance((PtolemyEffigy) getTableau().getContainer(),
+                                        "layoutGraphFactory");
+                        }
                     }
                     Tableau kielerTableau = tableauFactory.createTableau(
                     //getModel(), this);
