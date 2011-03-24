@@ -37,6 +37,8 @@ import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -99,7 +101,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotFrame extends JFrame {
+public class PlotFrame extends JFrame implements PropertyChangeListener {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -226,6 +228,27 @@ public class PlotFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Respond to dialog action.
+     *  @param event The dialog event.
+     */
+    public void propertyChange(PropertyChangeEvent event) {
+        // System.out.println(event.paramString());
+        Object source = event.getSource();
+        if (source instanceof JFileChooser) {
+            FileFilter filter = ((JFileChooser)source).getFileFilter();
+            JFileChooser fileDialog = (JFileChooser)source;
+            if (filter instanceof EPSFileFilter) {
+                fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(), "plot.eps"));
+            } else if (filter instanceof FilterForGIF) {
+                fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(), "plot.gif"));
+            } else {
+                // FIXME: For some inexplicable reason, the following line does nothing if the
+                // directory already exists!!!!!!!!!!!!! Pretty lame...
+                fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(), "plot"));
+            }
+        }
+    }
+    
     /** Create a sample plot.
      */
     public void samplePlot() {
@@ -308,12 +331,14 @@ public class PlotFrame extends JFrame {
     }
 
     /** Query the user for a filename and export the plot to that file.
-     *  Currently, the only supported format is EPS.
+     *  Currently, the supported formats are EPS and GIF.
      */
     protected void _export() {
         JFileChooser fileDialog = new JFileChooser();
+        fileDialog.addChoosableFileFilter(new FolderForLatex());
         fileDialog.addChoosableFileFilter(new EPSFileFilter());
-        fileDialog.setDialogTitle("Export EPS to...");
+        fileDialog.addChoosableFileFilter(new FilterForGIF());
+        fileDialog.setDialogTitle("Export to...");
 
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -329,22 +354,43 @@ public class PlotFrame extends JFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                "plot.eps"));
+                "plot.gif"));
 
+        fileDialog.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, this);
+        
         int returnVal = fileDialog.showDialog(this, "Export");
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            // Determine which export format is selected.
             File file = fileDialog.getSelectedFile();
-
             try {
                 FileOutputStream fout = null;
 
                 try {
-                    fout = new FileOutputStream(file);
-                    plot.export(fout);
+                    // With no filename extension, do Latex export.
+                    // Otherwise, do EPS.
+                    String name = file.getName();
+                    int position = name.lastIndexOf('.');
+                    String extension = "";
+                    if (position > 0) {
+                        extension = name.substring(position + 1);
+                    }
+                    if (extension.equals("")) {
+                        // No extension. Assume Latex export.
+                        plot.exportLatex(file);
+                    } else if (extension.equalsIgnoreCase("eps")) {
+                        fout = new FileOutputStream(file);
+                        plot.export(fout);
+                    } else {
+                        // Default is GIF export.
+                        fout = new FileOutputStream(file);
+                        plot.exportImage(fout, "gif");
+                    }
                 } finally {
                     try {
-                        fout.close();
+                        if (fout != null) {
+                            fout.close();
+                        }
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
                                 + "on " + file);
@@ -748,6 +794,62 @@ public class PlotFrame extends JFrame {
         /**  The description of this filter */
         public String getDescription() {
             return "Encapsulated PostScript (.eps) files";
+        }
+    }
+
+    /** Display only folders for inserting latex files. */
+    static class FolderForLatex extends FileFilter {
+        /** Accept only folders.
+         *  @param fileOrDirectory The file or directory to be checked.
+         *  @return true if the file is a directory.
+         */
+        public boolean accept(File fileOrDirectory) {
+            if (fileOrDirectory.isDirectory()) {
+                return true;
+            }
+            return false;
+        }
+
+        /**  The description of this filter */
+        public String getDescription() {
+            return "Latex Export to a Folder";
+        }
+    }
+    
+    /** Display only .gif files */
+    static class FilterForGIF extends FileFilter {
+        /** Accept only .gif files.
+         *  @param fileOrDirectory The file or directory to be checked.
+         *  @return true if the file is a directory, a .eps file
+         */
+        public boolean accept(File fileOrDirectory) {
+            if (fileOrDirectory.isDirectory()) {
+                return true;
+            }
+
+            String fileOrDirectoryName = fileOrDirectory.getName();
+            int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+
+            if (dotIndex < 0) {
+                return false;
+            }
+
+            String extension = fileOrDirectoryName.substring(dotIndex);
+
+            if (extension != null) {
+                if (extension.equalsIgnoreCase(".gif")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        /**  The description of this filter */
+        public String getDescription() {
+            return "GIF Image File (.gif)";
         }
     }
 
