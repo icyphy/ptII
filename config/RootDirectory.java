@@ -86,25 +86,31 @@ public class RootDirectory {
             // We could call cygpath -m and pass in the results, but
             // cygpath -m does not work in the version of Cygwin that
             // we shipped with Ptolemy II 2.0.1
-            _checkForBin(fileInBinDirectory);
+            String binDirectory = _checkForBin(fileInBinDirectory);
             return fileInBinDirectory.substring(0,
-                fileInBinDirectory.lastIndexOf("/bin/"));
+                fileInBinDirectory.lastIndexOf(binDirectory));
         }
 
         // fileInBinDirectory might be a symbolic link, so dereference it.
         File file = new File(fileInBinDirectory);
         String CanonicalPath = file.getCanonicalPath();
 
-        _checkForBin(CanonicalPath);
+        String binDirectory = _checkForBin(CanonicalPath);
         return CanonicalPath.substring(0,
-            CanonicalPath.lastIndexOf("/bin/"));
+                CanonicalPath.lastIndexOf(binDirectory));
     }
 
     // Throw an exception if the path does not contain /bin/
-    private static void _checkForBin(String path) throws Exception {
+    private static String _checkForBin(String path) throws Exception {
         if (path.indexOf("/bin/") == -1) {
-            throw new Exception("Cannot determine directory: '" + path
-                + "' does not contain " + "/bin/");
+            if (path.indexOf("/Commands/") == -1) {
+                throw new Exception("Cannot determine directory: '" + path
+                        + "' does not contain " + "/bin/ or /Commands/");
+            } else {
+                return "/Commands/";
+            }
+        } else {
+            return "/bin/";
         }
     }
 }
