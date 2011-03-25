@@ -121,6 +121,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -144,6 +145,7 @@ import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
 import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.JCanvas;
@@ -2046,6 +2048,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         exportItem = new JMenuItem(_exportPNGAction);
         exportMenu.add(exportItem);
 
+        // Next do the export HTML action.
+        /* FIXME: Not yet working.
+        if (_exportHTMLAction == null) {
+            _exportHTMLAction = new ExportHTMLAction();
+        }
+        exportItem = new JMenuItem(_exportHTMLAction);
+        exportMenu.add(exportItem);
+        */
+
         return fileMenuItems;
     }
 
@@ -2217,6 +2228,104 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected JComponent _getRightComponent() {
         return _rightComponent;
+    }
+    
+    /** Return a list of data structures with one entry for each visible
+     *  entity. Each data structure contains
+     *  a reference to the entity and the coordinates
+     *  of the upper left corner and lower right corner of the main
+     *  part of its icon (not including decorations like the name
+     *  and any highlights it may have). The coordinates are relative
+     *  to the current visible rectangle, where the upper left corner
+     *  of the visible rectangle has coordinates (0,0), and the lower
+     *  right corner has coordinates (w,h), where w is the width
+     *  and h is the height (in pixels).
+     *  @return A list representing the space occupied by each
+     *   visible icon for the entities in the model, or an empty
+     *   list if no icons are visible.
+     */
+    protected List<IconVisibleLocation> _getIconVisibleLocations() {
+        List<IconVisibleLocation> result = new LinkedList<IconVisibleLocation>();
+        
+        Rectangle2D viewSize = getVisibleRectangle();
+        // System.out.println("Visible rectangle: " + viewSize);
+
+        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
+        AffineTransform transform = canvas.getCanvasPane().getTransformContext()
+                .getTransform();
+        double scaleX = transform.getScaleX();
+        double scaleY = transform.getScaleY();
+        double translateX = transform.getTranslateX();
+        double translateY = transform.getTranslateY();
+        
+        NamedObj model = getModel();
+        if (model instanceof CompositeEntity) {
+            List<Entity> entities = ((CompositeEntity)model).entityList();
+            for (Entity entity : entities) {
+                Locatable location = null;
+                try {
+                    location = (Locatable)entity.getAttribute("_location", Locatable.class);
+                } catch (IllegalActionException e1) {
+                    // FIXME: What to do here? For now, ignoring the node.
+                }
+                if (location != null) {
+                    GraphController controller = getJGraph().getGraphPane().getGraphController();
+                    Figure figure = controller.getFigure(location);
+                    if (figure != null) {
+                        Figure mainIcon = figure;
+                        Point2D origin = ((CompositeFigure)figure).getOrigin();
+                        double iconOriginX = origin.getX();
+                        double iconOriginY = origin.getY();
+                        
+                        if (figure instanceof CompositeFigure) {
+                            mainIcon = ((CompositeFigure)figure).getBackgroundFigure();
+                            origin = ((CompositeFigure)figure).getOrigin();
+                            iconOriginX = origin.getX();
+                            iconOriginY = origin.getY();
+                        }
+                        Rectangle2D iconBounds = mainIcon.getBounds();
+                        
+                        IconVisibleLocation i = new IconVisibleLocation();
+                        i.object = entity;
+                        
+                        // Calculate the location of the icon relative to the visible rectangle.
+                        i.topLeftX = (iconOriginX + iconBounds.getX())*scaleX + translateX;
+                        i.topLeftY = (iconOriginY + iconBounds.getY())*scaleY + translateY;
+                        
+                        i.bottomRightX 
+                                = (iconOriginX + iconBounds.getX() + iconBounds.getWidth())
+                                *scaleX + translateX;
+                        i.bottomRightY 
+                                = (iconOriginY + iconBounds.getY() + iconBounds.getHeight())
+                                *scaleY + translateY;
+                        
+                        if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
+                                || i.topLeftX > viewSize.getWidth() || i.topLeftY > viewSize.getHeight()) {
+                            // Icon is out of view.
+                            continue;
+                        } else {
+                            // Clip the rectangle so it does not include any portion
+                            // that is not in the visible rectangle.
+                            if (i.topLeftX < 0.0) {
+                                i.topLeftX = 0.0;
+                            }
+                            if (i.topLeftY < 0.0) {
+                                i.topLeftY = 0.0;
+                            }
+                            if (i.bottomRightX > viewSize.getWidth()) {
+                                i.bottomRightX = viewSize.getWidth();
+                            }
+                            if (i.bottomRightY > viewSize.getHeight()) {
+                                i.bottomRightY = viewSize.getHeight();
+                            }
+                            // Add the data to the result list.
+                            result.add(i);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /** Return a set of instances of NamedObj representing the objects
@@ -2590,6 +2699,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     
     /** The export to GIF action. */
     protected Action _exportGIFAction;
+
+    /** The export HTML action. */
+    protected Action _exportHTMLAction;
 
     /** The export to PNG action. */
     protected Action _exportPNGAction;
@@ -2969,6 +3081,70 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
         
         private String _formatName;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// ExportMapAction
+
+    /** Action to export a map of the locations of actors
+     *  relative to the image created by exporting to GIF or PNG.
+     */
+    public class ExportHTMLAction extends AbstractAction {
+        /** Create a new action to export PDF.
+         *  @param frame The Frame which to which this action is added.
+         */
+        public ExportHTMLAction() {
+            super("Export HTML");
+            putValue("tooltip", "Export HTML with a description of this model.");
+            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                   ////
+
+        /** Export map. */
+        public void actionPerformed(ActionEvent e) {
+            List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
+            // FIXME: Need to generate the HTML!
+            System.out.println(iconLocations);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// IconVisibleLocation
+    
+    /** A data structure consisting of a NamedObj and the coordinates
+     *  of the upper left corner and lower right corner of the main
+     *  part of its icon (not including decorations like the name
+     *  and any highlights it may have). The coordinates are relative
+     *  to the current visible rectangle, where the upper left corner
+     *  of the visible rectangle has coordinates (0,0), and the lower
+     *  right corner has coordinates (w,h), where w is the width
+     *  and h is the height (in pixels).
+     */
+    static private class IconVisibleLocation {
+        
+        /** The object with a visible icon. */
+        public NamedObj object;
+        
+        /** The top left X coordinate. */
+        public double topLeftX;
+        
+        /** The top left Y coordinate. */
+        public double topLeftY;
+
+        /** The bottom right X coordinate. */
+        public double bottomRightX;
+
+        /** The bottom right Y coordinate. */
+        public double bottomRightY;
+        
+        /** String representation. */
+        public String toString() {
+            return (object.getName() 
+                    + " from (" + topLeftX + ", " + topLeftY + ") to ("
+                    + bottomRightX + ", " + bottomRightY + ")");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
