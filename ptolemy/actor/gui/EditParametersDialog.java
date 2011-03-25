@@ -254,11 +254,8 @@ public class EditParametersDialog extends ComponentDialog implements
         // has been dismissed.
         // NOTE: Do this in the event thread, since this might be invoked
         // in whatever thread is processing mutations.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new EditParametersDialog(_owner, _target);
-            }
-        });
+        Runnable changeExecutedRunnable = new ChangeExecutedRunnable();
+        SwingUtilities.invokeLater(changeExecutedRunnable);
         _target.removeChangeListener(this);
     }
 
@@ -283,33 +280,8 @@ public class EditParametersDialog extends ComponentDialog implements
 
         // NOTE: Do this in the event thread, since this might be invoked
         // in whatever thread is processing mutations.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                // When a parameter is removed, and something depends on
-                // it, this gets called when _query is null.
-                // FIXME: Is this the right thing to do?
-                if (_query == null) {
-                    return;
-                }
-
-                String newName = _query.getStringValue("name");
-                ComponentDialog dialog = _openAddDialog(exception.getMessage()
-                        + "\n\nPlease enter a new default value:", newName,
-                        _query.getStringValue("default"), _query
-                                .getStringValue("class"));
-                _target.removeChangeListener(EditParametersDialog.this);
-
-                if (!dialog.buttonPressed().equals("OK")) {
-                    // Remove the parameter, since it seems to be erroneous
-                    // and the user hit cancel or close.
-                    String moml = "<deleteProperty name=\"" + newName + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            _target, moml);
-                    request.setUndoable(true);
-                    _target.requestChange(request);
-                }
-            }
-        });
+        Runnable changeFailedRunnable = new ChangeFailedRunnable(exception);
+        SwingUtilities.invokeLater(changeFailedRunnable);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -328,6 +300,49 @@ public class EditParametersDialog extends ComponentDialog implements
             // Restore original parameter values.
             ((Configurer) contents).restore();
         }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** A runnable for the change executed event. */
+    class ChangeExecutedRunnable implements Runnable {
+        public void run() {
+            new EditParametersDialog(_owner, _target);
+        }
+    }
+    
+    /** A runnable for the change failed event. */
+    class ChangeFailedRunnable implements Runnable {
+        public ChangeFailedRunnable(Exception exception) {
+            _exception = exception;
+        }
+        public void run() {
+            // When a parameter is removed, and something depends on
+            // it, this gets called when _query is null.
+            // FIXME: Is this the right thing to do?
+            if (_query == null) {
+                return;
+            }
+
+            String newName = _query.getStringValue("name");
+            ComponentDialog dialog = _openAddDialog(_exception.getMessage()
+                    + "\n\nPlease enter a new default value:", newName,
+                    _query.getStringValue("default"), _query
+                            .getStringValue("class"));
+            _target.removeChangeListener(EditParametersDialog.this);
+
+            if (!dialog.buttonPressed().equals("OK")) {
+                // Remove the parameter, since it seems to be erroneous
+                // and the user hit cancel or close.
+                String moml = "<deleteProperty name=\"" + newName + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        _target, moml);
+                request.setUndoable(true);
+                _target.requestChange(request);
+            }
+        }
+        private Exception _exception;
     }
 
     ///////////////////////////////////////////////////////////////////
