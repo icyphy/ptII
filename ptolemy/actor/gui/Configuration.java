@@ -991,8 +991,10 @@ public class Configuration extends CompositeEntity implements
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
         if (entity.getName().equals(_DIRECTORY_NAME)) {
-            // If the ptolemy.ptII.exitAfterWrapup property is set,
+            // If the ptolemy.ptII.doNotExit property or the
+            // ptolemy.ptII.exitAfterWrapup property is set
             // then we don't actually exit.
+            // 
             StringUtilities.exit(0);
         }
     }
