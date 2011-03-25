@@ -123,6 +123,7 @@ OPTIONAL_FILES = \
 	'Histogram$$4.class' \
 	'Histogram$$5.class' \
 	'PlotApplet$$1.class' \
+	'PlotApplet$$2.class' \
 	'PlotApplication$$1.class' \
 	'PlotApplication$$2.class' \
 	'PlotApplication$$3.class' \
@@ -265,6 +266,7 @@ BASECLASSFILES = \
 APPLETCLASSFILES = \
 		$(ME)/PlotApplet.class \
 		'$(ME)/PlotApplet$$1.class' \
+		'$(ME)/PlotApplet$$2.class' \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
 		$(ME)/PlotLive.class \
