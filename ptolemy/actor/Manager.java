@@ -428,6 +428,11 @@ public class Manager extends NamedObj implements Runnable {
                 // Handle throwable with exception handlers,
                 // if there are any.
                 if (initialThrowable != null) {
+                    if (_container == null) {
+                        throw new InternalErrorException(this, initialThrowable,
+                                "The container of the manager was null. "
+                                + "Try calling composite.setManager().");
+                    }
                     List<?> exceptionHandlersList = _container
                             .entityList(ExceptionHandler.class);
                     Iterator<?> exceptionHandlers = exceptionHandlersList
