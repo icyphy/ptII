@@ -44,6 +44,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
@@ -62,6 +63,7 @@ import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -306,6 +308,45 @@ public class ConfigurationApplication implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Close the model without saving or exiting.
+     *   
+     *  <p>The caller of this method should be in the Swing Event Thread.
+     *  Typically, this is done with code like:</p>
+     *  <pre>
+     *   Runnable openModelAction = new Runnable() {
+     *       public void run() {
+     *           try {
+     *               ConfigurationApplication.closeModel(model[0])
+     *           } catch (Exception ex) {
+     *               throw new RuntimeException(ex);
+     *           }
+     *       }
+     *   };
+     *   SwingUtilities.invokeAndWait(openModelAction);
+     *  </pre>
+     *  <p>This method is primarily used for testing.</p> 
+     *  @param model The TypedCompositeActor to be closed.
+     *  Typically, this comes from {@link #openModel(String)}.
+     *  @exception IllegalActionException If the model cannot be closed.
+     *  @see #openModel(String)
+     *  @exception NameDuplicationException If the model cannot be closed.
+     *  @see #openModel(String)
+     */   
+    public static void closeModelWithoutSavingOrExiting(TypedCompositeActor model)
+            throws IllegalActionException, NameDuplicationException {
+        Effigy effigy = Configuration.findEffigy(model.toplevel());
+        // Avoid being prompted for save.
+        effigy.setModified(false);
+
+        // Avoid calling System.exit().
+        System.setProperty("ptolemy.ptII.doNotExit", "true");
+
+        // FIXME: are all these necessary?
+        effigy.closeTableaux();
+        ((CompositeActor) model).setContainer(null);
+        MoMLParser.purgeAllModelRecords();
+    }
+
     /** Reduce the count of executing models by one.  If the number of
      *  executing models drops to zero, then notify threads that might
      *  be waiting for this event.
@@ -389,6 +430,91 @@ public class ConfigurationApplication implements ExecutionListener {
             }
         }
 
+        return result;
+    }
+
+    /** Open a model and display it.
+     *   
+     *  <p>The caller of this method should be in the Swing Event Thread.
+     *  Typically, this is done with code like:</p>
+     *  <pre>
+     *   Runnable openModelAction = new Runnable() {
+     *       public void run() {
+     *           try {
+     *               model[0] = ConfigurationApplication.openModel(modelFileName);
+     *           } catch (Exception ex) {
+     *               throw new RuntimeException(ex);
+     *           }
+     *       }
+     *   };
+     *   SwingUtilities.invokeAndWait(openModelAction);
+     *  </pre>
+     *  <p>This method is primarily used for testing.  To get the
+     *  ptolemy.vergil.basic.BasicGraphFrame from a model returned
+     *  by this method, see
+     *  ptolemy.vergil.basic.BasicGraphFrame.getBasicGraphFrame().</p>
+     *
+     *  @param modelFileName The pathname to the model.  Usually the
+     *  pathname starts with "$CLASSPATH".  The name of the top level
+     *  of the model must match the base name of the modelFileName.
+     *  Thus $CLASSPATH/Foo.xml should have a toplevel named "Foo".
+     *  If the name of the model and the name of the top level do
+     *  not match, then the last CompositeActor is returned.
+     *  @see #closeModel(NamedObj)
+     */
+    public static TypedCompositeActor openModel(String modelFileName) {
+        TypedCompositeActor result = null;
+        try {
+            // We set the list of MoMLFilters to handle Backward Compatibility.
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+            // Convert the file name to a canonical file name so that
+            // this test may be run from any directory or from within Eclipse.
+            File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
+                    null);
+            String canonicalModelFileName = canonicalModelFile
+                    .getCanonicalPath();
+
+            // FIXME: are we in the right thread?
+            ConfigurationApplication application = new ConfigurationApplication(
+                    new String[] {
+                            // Need to display a frame or Kieler fails.
+                            //"ptolemy/actor/gui/test/testConfiguration.xml",
+                            "ptolemy/configs/full/configuration.xml",
+                            canonicalModelFileName });
+
+            // Find the first CompositeActor whos name matches
+            // the basename of the file, skipping the
+            // Configuration etc.
+            // The basename of the model.
+            String baseName = modelFileName.substring(
+                    modelFileName.lastIndexOf(File.separator) + 1,
+                    modelFileName.lastIndexOf('.'));
+            StringBuffer names = new StringBuffer();
+            NamedObj model = null;
+            Iterator models = application.models().iterator();
+            while (models.hasNext()) {
+                model = (NamedObj) models.next();
+                if (names.length() > 0) {
+                    names.append(", ");
+                }
+                names.append(model.getFullName());
+                if (model instanceof TypedCompositeActor) {
+                    result = (TypedCompositeActor)model;
+                    if (model.getName().equals(baseName)) {
+                        break;
+                    }
+                }
+            }
+            if (!(model instanceof TypedCompositeActor)) {
+                throw new Exception(
+                        "Failed to find a CompositeActor.  Models were: "
+                                + names);
+            }
+
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
         return result;
     }
 

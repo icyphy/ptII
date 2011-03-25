@@ -159,7 +159,7 @@ public class KielerJUnitTest {
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
         // of the element of the array.  Is this thread safe?
-        final NamedObj[] model = new NamedObj[1];
+        final TypedCompositeActor[] model = new TypedCompositeActor[1];
 
         // The basic structure of this method is that we call
         // invokeAndWait() on operations that display graphics and
@@ -171,7 +171,8 @@ public class KielerJUnitTest {
         Runnable openModelAction = new Runnable() {
             public void run() {
                 try {
-                    model[0] = _openModel(modelFileName);
+                    System.out.print(" " + modelFileName + " ");
+                    model[0] = ConfigurationApplication.openModel(modelFileName);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -283,23 +284,7 @@ public class KielerJUnitTest {
         Runnable closeAction = new Runnable() {
             public void run() {
                 try {
-                    if (_debug) {
-                        System.out.println("About to close "
-                                + model[0].getName());
-                    }
-                    Effigy effigy = Configuration.findEffigy(model[0]
-                            .toplevel());
-
-                    // Avoid being prompted for save.
-                    effigy.setModified(false);
-
-                    // Avoid calling System.exit().
-                    System.setProperty("ptolemy.ptII.doNotExit", "true");
-
-                    // FIXME: are all these necessary?
-                    effigy.closeTableaux();
-                    ((TypedCompositeActor) model[0]).setContainer(null);
-                    MoMLParser.purgeAllModelRecords();
+                    ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -348,67 +333,6 @@ public class KielerJUnitTest {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-    }
-
-    /** Open a model and display it.
-     *   
-     *  <p>The caller of this method should be in the Swing Event Thread.</p>
-     *
-     *  @param modelFileName The pathname to the model.  Usually the
-     *  pathname starts with "$CLASSPATH".
-     */
-    protected NamedObj _openModel(String modelFileName) {
-        NamedObj model = null;
-        try {
-            // We set the list of MoMLFilters to handle Backward Compatibility.
-            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-
-            // Give the developer feedback about what model is being opened.
-            System.out.print(modelFileName + " ");
-
-            // Convert the file name to a canonical file name so that
-            // this test may be run from any directory or from within Eclipse.
-            File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
-                    null);
-            String canonicalModelFileName = canonicalModelFile
-                    .getCanonicalPath();
-
-            // FIXME: are we in the right thread?
-            ConfigurationApplication application = new ConfigurationApplication(
-                    new String[] {
-                            // Need to display a frame or Kieler fails.
-                            //"ptolemy/actor/gui/test/testConfiguration.xml",
-                            "ptolemy/configs/full/configuration.xml",
-                            canonicalModelFileName });
-
-            // Find the first TypedCompositeActor, skipping the
-            // Configuration etc.
-            StringBuffer names = new StringBuffer();
-            Iterator models = application.models().iterator();
-            while (models.hasNext()) {
-                model = (NamedObj) models.next();
-                if (names.length() > 0) {
-                    names.append(", ");
-                }
-                names.append(model.getFullName());
-                if (model instanceof TypedCompositeActor) {
-                    if (_debug) {
-                        System.out.println("openModel(" + modelFileName + ")\n"
-                                + model.getName());
-                    }
-                    break;
-                }
-            }
-            if (!(model instanceof TypedCompositeActor)) {
-                throw new Exception(
-                        "Failed to find a TypedComposite.  Models were: "
-                                + names);
-            }
-
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-        return model;
     }
 
     /** Redo the last operation on the model.

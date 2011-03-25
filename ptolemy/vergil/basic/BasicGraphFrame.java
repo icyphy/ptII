@@ -884,6 +884,29 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
+    /** Given a NamedObj, return the corresponding BasicGraphFrame.
+     *  @param model The NamedObj for the model.  See
+     *  {@link ptolemy.gui.ConfigurationApplication#openModel(String)
+     *  for a static method that returns the model
+     *  @return The BasicGraphFrame that corresponds with the model.
+     */
+    public static BasicGraphFrame getBasicGraphFrame(NamedObj model) {
+        // See PtolemyLayoutAction for similar code.
+        BasicGraphFrame frame = null;
+        int tableauxCount = 0;
+        Iterator tableaux = Configuration.findEffigy(model)
+                .entityList(Tableau.class).iterator();
+        while (tableaux.hasNext()) {
+            Tableau tableau = (Tableau) (tableaux.next());
+            tableauxCount++;
+            if (tableau.getFrame() instanceof BasicGraphFrame) {
+                frame = (BasicGraphFrame) tableau.getFrame();
+                break;
+            }
+        }
+        return frame;
+    }
+
     /** Return the center location of the visible part of the pane.
      *  @return The center of the visible part.
      *  @see #setCenter(Point2D)

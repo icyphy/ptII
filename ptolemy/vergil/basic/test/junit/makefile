@@ -1,10 +1,10 @@
-# Makefile for vergil basic classes
+# Makefile for the JUnit Vergil basic tests
 #
 # @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,63 +30,54 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/vergil/basic/test
-
-# PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		$(PTJUNIT_DIR)
+ME =		ptolemy/vergil/test/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+# KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(KIELER_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
-
-JSRCS =
+JSRCS = \
+	ExportImageJUnitTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	DocAttribute.tcl \
-	KeplerDocumentationAttribute.tcl
+	dummy.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS) 
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	\
-	alljtests.tcl \
-	alljsimpletests.tcl \
-	junit
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
+
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-# The test rule is the first rule so if the user runs make test, then
-# we get the graphical tests
-test: $(EXTRA_SRCS) jclass test_java test_jsimple #test_jgraphical
-
-# The nightly build runs make tests, so don't had graphical tests here
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.vergil.basic.test.junit.ExportImageJUnitTest
 
 test_java: jclass
 
@@ -94,12 +85,10 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
-	$(JTCLSH) alljsimpletests.tcl
-
-# These tests do require a graphics terminal, but do use Jacl and Java
-test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
+
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
