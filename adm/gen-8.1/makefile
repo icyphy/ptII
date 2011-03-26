@@ -1137,7 +1137,8 @@ bldmastrcoverage:
 		remote1doccheck \
 		remote1findbugs \
 		remote1jnlp \
-		test_setup
+		test_setup \
+		updateDOPCenterImage
 
 # Just build a distribution
 bldmastr_dist:
@@ -2541,6 +2542,9 @@ test_setup: setup setup_mac_app_tar
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
 	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+
+updateDOPCenterImage:
+	$(GENDIR)/updateDOPCenterImageX11
 
 # Echo the jars needed for the full package in izpack
 full_jars:
