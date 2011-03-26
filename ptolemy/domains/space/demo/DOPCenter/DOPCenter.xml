@@ -55,6 +55,8 @@
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
         <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://newton.eecs.berkeley.edu:3306/space">
         </property>
+        <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.spacecadet">
+        </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="spacecadet">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 65.0]">

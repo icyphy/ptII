@@ -51,7 +51,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DOPCenter.gif \
 	DOPCenter.xml \
 	expand-group.vbs \
-	Placard.xml
+	Placard.xml \
+	updateDOPCenterImage
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

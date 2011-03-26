@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib.database;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -49,6 +51,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
@@ -112,6 +115,9 @@ public class DatabaseManager extends TypedAtomicActor {
         database
                 .setExpression("jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
 
+        passwordFile = new FileParameter(this, "passwordFile");
+        passwordFile.setExpression("");
+
         userName = new StringParameter(this, "userName");
         userName.setExpression("ptolemy");
     }
@@ -137,6 +143,17 @@ public class DatabaseManager extends TypedAtomicActor {
      *  where "space" is the name of the database.
      */
     public StringParameter database;
+
+    /** The file that contains the password.  If this parameter is
+     *  non-empty, then it is assumed to refer to a file that contains
+     *  the password.  If this parameter is empty, or names a file
+     *  that cannot be read, then a dialog is displayed for the user
+     *  to enter the password.  It is up to the user to properly
+     *  protect the file from unauthorized readers by using the file
+     *  system permissions.  The default value is the empty string,
+     *  meaning that the dialog will be displayed.
+     */
+    public FileParameter passwordFile;
 
     /** User name. */
     public StringParameter userName;
@@ -452,37 +469,62 @@ public class DatabaseManager extends TypedAtomicActor {
             return _connection;
         }
         if (_password == null) {
-            // Open a dialog to get the password.
-            // First find a frame to "own" the dialog.
-            // Note that if we run in an applet, there may
-            // not be an effigy.
-            Effigy effigy = Configuration.findEffigy(toplevel());
-            JFrame frame = null;
-            if (effigy != null) {
-                Tableau tableau = effigy.showTableaux();
-                if (tableau != null) {
-                    frame = tableau.getFrame();
+            if (passwordFile.stringValue().length() > 0) {
+                // Read the password from a file.
+                BufferedReader reader = null;
+                try {
+                    reader = passwordFile.openForReading();
+                    _password = reader.readLine().toCharArray();
+                } catch (Exception ex) {
+                    System.out.println(getFullName()
+                            + ": Failed to read "
+                            + passwordFile.stringValue()
+                            + ex);
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "Failed to close "
+                                    + passwordFile.stringValue());
+                        }
+                    }
                 }
-            }
+            } 
+            if (_password == null) {
+                // Open a dialog to get the password.
+                // First find a frame to "own" the dialog.
+                // Note that if we run in an applet, there may
+                // not be an effigy.
+                Effigy effigy = Configuration.findEffigy(toplevel());
+                JFrame frame = null;
+                if (effigy != null) {
+                    Tableau tableau = effigy.showTableaux();
+                    if (tableau != null) {
+                        frame = tableau.getFrame();
+                    }
+                }
 
-            // Next construct a query for user name and password.
-            Query query = new Query();
-            query.setTextWidth(60);
-            query.addLine("database", "Database", database.stringValue());
-            query.addLine("userName", "User name", userName.stringValue());
-            query.addPassword("password", "Password", "");
-            ComponentDialog dialog = new ComponentDialog(frame,
-                    "Open Connection", query);
+                // Next construct a query for user name and password.
+                Query query = new Query();
+                query.setTextWidth(60);
+                query.addLine("database", "Database", database.stringValue());
+                query.addLine("userName", "User name", userName.stringValue());
+                query.addPassword("password", "Password", "");
+                ComponentDialog dialog = new ComponentDialog(frame,
+                        "Open Connection", query);
 
-            if (dialog.buttonPressed().equals("OK")) {
-                // Update the parameter values.
-                database.setExpression(query.getStringValue("database"));
-                userName.setExpression(query.getStringValue("userName"));
+                if (dialog.buttonPressed().equals("OK")) {
+                    // Update the parameter values.
+                    database.setExpression(query.getStringValue("database"));
+                    userName.setExpression(query.getStringValue("userName"));
 
-                // The password is not stored as a parameter.
-                _password = query.getCharArrayValue("password");
-            } else {
-                return null;
+                    // The password is not stored as a parameter.
+                    _password = query.getCharArrayValue("password");
+                } else {
+                    return null;
+                }
             }
         }
         if (_connection == null) {
