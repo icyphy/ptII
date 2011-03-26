@@ -196,7 +196,7 @@ public class ExportImageJUnitTest {
                            ImageReader imageReader = (ImageReader) ((CompositeEntity)imageDisplayModel[0]).getEntity("ImageReader");
                            
                            imageReader.fileOrURL.setExpression(imageFile.toURI().toURL().toString());
-                           Manager manager = imageReader.getManager();
+                           Manager manager = model[0].getManager();
                            if (manager == null) {
                                manager = new Manager(imageDisplayModel[0].workspace(), "MyManager");
                                ((TypedCompositeActor)imageDisplayModel[0]).setManager(manager);
