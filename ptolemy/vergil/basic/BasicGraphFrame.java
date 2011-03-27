@@ -61,6 +61,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
@@ -84,6 +85,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
@@ -1395,6 +1397,90 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             MessageHandler.error("Undo failed", ex);
         }
     }
+    
+    /** Write an HTML page based on the current view of the model
+     *  to the specified destination.
+     *  The generated page has a header with the name of the model,
+     *  a reference to a GIF image file with name equal to the name
+     *  of the model with a ".gif" extension appended, and a script
+     *  that reacts when the mouse is moved over an actor by
+     *  displaying a table with the parameter values of the actor.
+     *  The gif image is assumed to have been generated with the
+     *  current view using the {@link #writeImage(OutputStream, String)}
+     *  method.
+     *  @param destination The destination byte stream to write to.
+     */
+    public void writeHTML(Writer destination) {
+        PrintWriter writer = new PrintWriter(destination);
+        writer.println("<html><head>");
+        // FIXME: Need to parameterize the functions somehow.
+        writer.println("<script type=\"text/javascript\">");
+        writer.println("function writeText(text) {");
+        writer.println("  document.getElementById(\"actorName\").innerHTML = text;");
+        writer.println("}");
+        writer.println("</script>");
+        writer.println("</head><body>");
+        
+        // Put a header in.
+        writer.println("<h1>" + getModel().getName() + "</h1>");
+        
+        // Put the image in.
+        writer.println("<img src=\"" + getModel().getName()
+                + ".gif\" usemap=\"#actormap\"/>");
+
+        // Write the map next.
+        writer.println("<map name=\"actormap\">");
+        List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
+        for (IconVisibleLocation location : iconLocations) {
+            // Create a table with parameter values for the actor.
+            StringBuffer table = new StringBuffer("<table border=&quot;1&quot;>");
+            List<Settable> parameters = location.object.attributeList(Settable.class);
+            for (Settable parameter : parameters) {
+                if (parameter.getVisibility().equals(Settable.FULL)) {
+                    table.append("<tr><td>");
+                    table.append(parameter.getName());
+                    table.append("</td><td>");
+                    String value = parameter.getValueAsString();
+                    value = StringUtilities.escapeForXML(value);
+                    value = value.replaceAll("'", "\\\\'");
+                    table.append(value);
+                    table.append("</td></tr>");
+                }
+            }
+            table.append("</table>");
+            
+            // Write the name of the actor followed by the table.
+            writer.println("<area shape=\"rect\" coords=\""
+                    + (int)location.topLeftX + ","
+                    + (int)location.topLeftY + ","
+                    + (int)location.bottomRightX + ","
+                    + (int)location.bottomRightY + "\" onmouseover=\"writeText('<h2>"
+                    + location.object.getName()
+                    + "</h2>"
+                    + table.toString()
+                    + "')\"/>");
+
+        }
+        writer.println("</map>");
+        
+        // Section into which actor information is written.
+        writer.println("<p id=\"actorName\">Mouse over the actors to get a description</p>");
+
+        writer.close(); // Without this, the output file may be empty
+    }
+    
+    /** Write an image to the specified output stream in the specified format.
+     *  Supported formats include at least "gif" and "png", standard image file formats.
+     *  The image is a rendition of the current view of the model.
+     *  @param stream The output stream to write to.
+     *  @param format The image format to generate.
+     *  @see #writeHTML(Writer)
+     *  @throws IOException If writing to the stream fails.
+     *  @throws PrinterException  If the specified format is not supported.
+     */
+    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
+        getJGraph().exportImage(stream, format);
+    }
 
     /** Zoom in or out to magnify by the specified factor, from the current
      *  magnification.
@@ -2072,13 +2158,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         exportMenu.add(exportItem);
 
         // Next do the export HTML action.
-        /* FIXME: Not yet working.
         if (_exportHTMLAction == null) {
             _exportHTMLAction = new ExportHTMLAction();
         }
         exportItem = new JMenuItem(_exportHTMLAction);
         exportMenu.add(exportItem);
-        */
 
         return fileMenuItems;
     }
@@ -3126,10 +3210,104 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ////                         public methods                   ////
 
         /** Export map. */
-        public void actionPerformed(ActionEvent e) {
-            List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
-            // FIXME: Need to generate the HTML!
-            System.out.println(iconLocations);
+        public void actionPerformed(ActionEvent e) {            
+            // Open a file chooser to select a folder to write to.
+            JFileChooser fileDialog = new JFileChooser();
+            fileDialog.addChoosableFileFilter(new FolderFileFilter());
+            fileDialog.setDialogTitle("Choose a directory to write HTML...");
+            fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            if (_directory != null) {
+                fileDialog.setCurrentDirectory(_directory);
+            } else {
+                // The default on Windows is to open at user.home, which is
+                // typically an absurd directory inside the O/S installation.
+                // So we use the current directory instead.
+                String cwd = StringUtilities.getProperty("user.dir");
+
+                if (cwd != null) {
+                    fileDialog.setCurrentDirectory(new File(cwd));
+                }
+            }
+            int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export HTML");
+            
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileDialog.getSelectedFile();
+                if (file.exists()) {
+                    if (file.isDirectory()) {
+                        if (!MessageHandler.yesNoQuestion("Directory exists. Overwrite contents?")) {
+                            MessageHandler.message("HTML export canceled.");
+                            return;
+                        }
+                    } else {
+                        if (!MessageHandler.yesNoQuestion(
+                                "File exists with the same name. Overwrite file?")) {
+                            MessageHandler.message("HTML export canceled.");
+                            return;
+                        }
+                        if (!file.delete()) {
+                            MessageHandler.message("Unable to delete file.");
+                            return;                            
+                        }
+                        if (!file.mkdir()) {
+                            MessageHandler.message("Unable to create directory.");
+                            return;                            
+                        }
+                    }
+                } else {
+                    if (!file.mkdir()) {
+                        MessageHandler.message("Unable to create directory.");
+                        return;                            
+                    }
+                }
+                // At this point, file is a directory and we have permission
+                // to overwrite its contents.
+                
+                // First, create the gif file showing whatever the current
+                // view in this frame shows.
+                File gifFile = new File(file, getModel().getName() + ".gif");
+                try {
+                    OutputStream out = new FileOutputStream(gifFile);
+                    writeImage(out, "gif");
+                } catch (IOException ex) {
+                    MessageHandler.message("Unable to create image file.");
+                    return;  
+                } catch (PrinterException ex) {
+                    MessageHandler.message("Unable to write image file.");
+                    return;
+                }
+                
+                // Next, create an HTML file.
+                try {
+                    File indexFile = new File(file, "index.html");
+                    writeHTML(new FileWriter(indexFile));
+                } catch (IOException ex) {
+                    MessageHandler.message("Unable to create HTML file.");
+                    return;  
+                }
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// FolderFileFilter
+
+    /** Accept only folders in a file browser. */
+    static class FolderFileFilter extends FileFilter {
+        /** Accept only folders.
+         *  @param fileOrDirectory The file or directory to be checked.
+         *  @return true if the file is a directory.
+         */
+        public boolean accept(File fileOrDirectory) {
+            if (fileOrDirectory.isDirectory()) {
+                return true;
+            }
+            return false;
+        }
+
+        /**  The description of this filter */
+        public String getDescription() {
+            return "Choose a Folder";
         }
     }
 
