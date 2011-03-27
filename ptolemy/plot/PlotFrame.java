@@ -359,6 +359,8 @@ public class PlotFrame extends JFrame implements PropertyChangeListener {
         fileDialog.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, this);
         
         int returnVal = fileDialog.showDialog(this, "Export");
+        
+        fileDialog.removePropertyChangeListener(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             // Determine which export format is selected.
