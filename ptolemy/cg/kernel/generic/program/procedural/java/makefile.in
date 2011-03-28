@@ -21,8 +21,11 @@ ROOT = @ROOT@
 CLASSPATH = $(PTCGLIBRARIES)$(CLASSPATHSEPARATOR)$(ROOT)
 
 # If the user would like to add compile time options, run with
-# make -f @modelName@.mk USER_CC_FLAGS=xxx
-USER_JAVAC_FLAGS =
+# make -f @modelName@.mk USER_JAVAC_FLAGS=xxx
+# Or, set USER_JAVAC_FLAGS in your environment before executing
+# the code generator.  For example, under bash:
+# export USER_JAVAC_FLAGS=-J-Xmx2000M; $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/cg/lib/test/auto/Scale_java.xml 
+# USER_JAVAC_FLAGS =
 
 MODELCLASS = @MODELCLASS@
 
