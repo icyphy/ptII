@@ -223,118 +223,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 160.0]">
         </property>
     </entity>
-    <entity name="Volume" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
-        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 3} }">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
-        </property>
-        <property name="LengthConcept" class="ptolemy.data.expr.Parameter" value="Position">
-        </property>
-        <property name="mLFactor" class="ptolemy.data.expr.Parameter" value="1.0">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="LFactor" class="ptolemy.data.expr.Parameter" value="1000.0">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="galCanadianFactor" class="ptolemy.data.expr.Parameter" value="4546.09*mLFactor">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="galUSFactor" class="ptolemy.data.expr.Parameter" value="3785.412*mLFactor">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="barrelFactor" class="ptolemy.data.expr.Parameter" value="42*galUSFactor">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="ozFluidUSFactor" class="ptolemy.data.expr.Parameter" value="galUSFactor/128">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="TbspFactor" class="ptolemy.data.expr.Parameter" value="ozFluidUSFactor/2">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="tspFactor" class="ptolemy.data.expr.Parameter" value="ozFluidUSFactor/6">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="cupFactor" class="ptolemy.data.expr.Parameter" value="8*ozFluidUSFactor">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="pintFactor" class="ptolemy.data.expr.Parameter" value="2*cupFactor">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="quartFactor" class="ptolemy.data.expr.Parameter" value="2*pintFactor">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="cc" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;cm&quot;, &quot;cm&quot;, &quot;cm&quot;} }">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="mL" class="ptolemy.data.expr.Parameter" value="cc">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="L" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = LFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="galCanadian" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = galCanadianFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="galUS" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = galUSFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="barrel" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = barrelFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="ozFluidUS" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = ozFluidUSFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="Tbsp" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = TbspFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="tsp" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = tspFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="cup" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = cupFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="pint" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = pintFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="quart" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = quartFactor}, mL)">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="cord" class="ptolemy.data.expr.Parameter" value="{ Factor = 128.0, LengthConcept = {&quot;ft&quot;, &quot;ft&quot;, &quot;ft&quot;} }">
-            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 160.0]">
-        </property>
-    </entity>
     <entity name="Acceleration" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
         <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -2} }">
             <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -461,6 +349,114 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 240.0]">
         </property>
     </entity>
+    <entity name="Volume" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 3} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+        </property>
+        <property name="LengthConcept" class="ptolemy.data.expr.Parameter" value="Position">
+        </property>
+        <property name="mLFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="LFactor" class="ptolemy.data.expr.Parameter" value="1000.0">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="galCanadianFactor" class="ptolemy.data.expr.Parameter" value="4546.09*mLFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="galUSFactor" class="ptolemy.data.expr.Parameter" value="3785.412*mLFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="barrelFactor" class="ptolemy.data.expr.Parameter" value="42*galUSFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="ozFluidUSFactor" class="ptolemy.data.expr.Parameter" value="galUSFactor/128">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="TbspFactor" class="ptolemy.data.expr.Parameter" value="ozFluidUSFactor/2">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="tspFactor" class="ptolemy.data.expr.Parameter" value="ozFluidUSFactor/6">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="cupFactor" class="ptolemy.data.expr.Parameter" value="8*ozFluidUSFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="pintFactor" class="ptolemy.data.expr.Parameter" value="2*cupFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="quartFactor" class="ptolemy.data.expr.Parameter" value="2*pintFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="mL" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;cm&quot;, &quot;cm&quot;, &quot;cm&quot;} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="L" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = LFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="galCanadian" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = galCanadianFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="galUS" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = galUSFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="barrel" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = barrelFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="ozFluidUS" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = ozFluidUSFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="Tbsp" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = TbspFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="tsp" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = tspFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="cup" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = cupFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="pint" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = pintFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="quart" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = quartFactor}, mL)">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="cord" class="ptolemy.data.expr.Parameter" value="{ Factor = 128.0, LengthConcept = {&quot;ft&quot;, &quot;ft&quot;, &quot;ft&quot;} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{650.0, 155.0}">
+        </property>
+    </entity>
     <relation name="relation8" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
@@ -521,18 +517,6 @@
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.5673561678960195">
         </property>
     </relation>
-    <relation name="relation13" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
-        </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.565632290303992">
-        </property>
-    </relation>
-    <relation name="relation14" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
-        </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.727675885520055">
-        </property>
-    </relation>
     <relation name="relation6" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
@@ -571,24 +555,36 @@
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8090092623233905">
         </property>
     </relation>
+    <relation name="relation13" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7296732886714528">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.723472093316922">
+        </property>
+    </relation>
     <link port="Conflict.belowPort" relation="relation9"/>
     <link port="Conflict.belowPort" relation="relation10"/>
     <link port="Conflict.belowPort" relation="relation11"/>
     <link port="Conflict.belowPort" relation="relation12"/>
     <link port="Conflict.belowPort" relation="relation5"/>
-    <link port="Conflict.belowPort" relation="relation14"/>
     <link port="Conflict.belowPort" relation="relation7"/>
     <link port="Conflict.belowPort" relation="relation15"/>
     <link port="Conflict.belowPort" relation="relation18"/>
+    <link port="Conflict.belowPort" relation="relation14"/>
     <link port="Unknown.abovePort" relation="relation8"/>
     <link port="Unknown.abovePort" relation="relation"/>
     <link port="Unknown.abovePort" relation="relation2"/>
     <link port="Unknown.abovePort" relation="relation3"/>
     <link port="Unknown.abovePort" relation="relation4"/>
-    <link port="Unknown.abovePort" relation="relation13"/>
     <link port="Unknown.abovePort" relation="relation6"/>
     <link port="Unknown.abovePort" relation="relation16"/>
     <link port="Unknown.abovePort" relation="relation17"/>
+    <link port="Unknown.abovePort" relation="relation13"/>
     <link port="Dimensionless.belowPort" relation="relation8"/>
     <link port="Dimensionless.abovePort" relation="relation9"/>
     <link port="Position.belowPort" relation="relation"/>
@@ -599,12 +595,12 @@
     <link port="Temperature.abovePort" relation="relation10"/>
     <link port="Velocity.belowPort" relation="relation4"/>
     <link port="Velocity.abovePort" relation="relation5"/>
-    <link port="Volume.belowPort" relation="relation13"/>
-    <link port="Volume.abovePort" relation="relation14"/>
     <link port="Acceleration.belowPort" relation="relation6"/>
     <link port="Acceleration.abovePort" relation="relation7"/>
     <link port="Force.belowPort" relation="relation16"/>
     <link port="Force.abovePort" relation="relation15"/>
     <link port="Mass.belowPort" relation="relation17"/>
     <link port="Mass.abovePort" relation="relation18"/>
+    <link port="Volume.belowPort" relation="relation13"/>
+    <link port="Volume.abovePort" relation="relation14"/>
 </class>
