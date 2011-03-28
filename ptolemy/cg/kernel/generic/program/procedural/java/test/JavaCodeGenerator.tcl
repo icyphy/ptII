@@ -385,4 +385,13 @@ line 3;
 }
 }}
 
+#####
+test JavaCodeGenerator-4.0 {Token.java not being written to the write location} {
+    set args [java::new {String[]} 7  \
+		  {{-language} {java} \
+		       {-inline} {false} \
+		       {-maximumLinesPerBlock} {2} \
+		       {auto/Repeat.xml}} ]
+    java::call ptolemy.cg.kernel.generic.test.TestGenericCodeGenerator main $args
+} {}
 

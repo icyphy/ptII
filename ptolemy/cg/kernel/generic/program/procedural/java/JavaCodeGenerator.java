@@ -1888,7 +1888,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // Write out the second and successive elements.
 
-        //boolean sawTokenImport = false;
+        boolean sawTokenImport = false;
         File codeDirectoryFile = null;
         try {
             codeDirectoryFile = _codeDirectoryAsFile();
@@ -1924,9 +1924,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // The first import is of the form "import RepeatVariables.Token;"
                     // FIXME: This is weak, what happens if the format changes.
                     for (int i = 0; i < typesArray.length && importLine != null; i++) {
-                        //if (importLine.endsWith(".Token;")) {
-                        //    sawTokenImport = true;
-                        //}
+                        if (importLine.endsWith(".Token;")) {
+                            sawTokenImport = true;
+                        }
                         String typeName = typesArray[i].toString();
                         if (typeName.equals("Complex")) {
                             typeName = "ComplexCG";
@@ -2021,11 +2021,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         HashSet<String> typesAndToken = _getReferencedTypes(functions);
 //        CodeStream[] typeStreams = new CodeStream[typesAndToken.size()];
-//        if (sawTokenImport) {
-//            // Add Token to the set of types so that we only need one loop
-//            typesAndToken.add("Token");
+        if (sawTokenImport) {
+            // Add Token to the set of types so that we only need one loop
+            typesAndToken.add("Token");
 //            typeStreams = new CodeStream[typesAndToken.size()];
-//        }
+        }
 
         if (!((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
             Object[] typesAndTokenArray = typesAndToken.toArray();
