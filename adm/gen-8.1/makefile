@@ -2541,7 +2541,12 @@ test_setup: setup setup_mac_app_tar
 	@echo "`uptime`"
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
+	-pkill Xvfb
+	-pkill -9 Xvfb
+	Xvfb :1 -screen 0 1024x768x24 &
 	(cd test/installerTest; chmod a+x ./configure; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+	-pkill Xvfb
+	-pkill -9 Xvfb
 
 updateDOPCenterImage:
 	$(GENDIR)/updateDOPCenterImageX11
