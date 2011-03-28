@@ -200,8 +200,8 @@ PTOLEMYGUIFILES = \
 	'ptolemy/gui/Query$$QueryItemListener.class' \
 	'ptolemy/gui/SettableQueryChooser.class' \
 	'ptolemy/gui/ComponentDialog.class' \
-	'ptolemy/gui/ComponentDialog$$1.class' \
-	'ptolemy/gui/ComponentDialog$$2.class' \
+	'ptolemy/gui/ComponentDialog$$PropChangeListener.class' \
+	'ptolemy/gui/ComponentDialog$$WindowClosingAdapter.class' \
 	ptolemy/gui/CloseListener.class \
 	'ptolemy/gui/UndoListener$$RedoAction.class' \
 	'ptolemy/gui/UndoListener$$UndoAction.class' \
