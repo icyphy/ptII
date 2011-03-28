@@ -46,7 +46,8 @@ include $(CONFIG)
 PTPACKAGE = 	lattice
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	adapters/adapters.jar
+	adapters/adapters.jar \
+	unit/unit.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

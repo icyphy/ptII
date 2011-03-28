@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/ontologies/lattice/unit
 
-DIRS =      domains
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -44,13 +44,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     unit
-
-PTCLASSJAR =	
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-PTCLASSALLJARS = \
-	domains/domains.jar
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR = 
+#PTCLASSALLJARS =
 
 JSRCS = \
 	BaseDimensionRepresentativeConcept.java \
