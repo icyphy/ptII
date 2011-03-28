@@ -57,10 +57,10 @@
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
   	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
-  	<property name="mLFactor" class="ptolemy.data.expr.Parameter" value="1.0"> <!--APPROXIMATE-->
+  	<property name="mLFactor" class="ptolemy.data.expr.Parameter" value="1.0">
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
-  	<property name="LFactor" class="ptolemy.data.expr.Parameter" value="1000.0"> <!--APPROXIMATE-->
+  	<property name="LFactor" class="ptolemy.data.expr.Parameter" value="1000.0">
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
   	<property name="galCanadianFactor" class="ptolemy.data.expr.Parameter" value="4546.09*mLFactor"> <!--Canadian and UK-->
@@ -90,10 +90,7 @@
 	<property name="quartFactor" class="ptolemy.data.expr.Parameter" value="2*pintFactor"> <!--Liquid-->
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
-	<property name="cc" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;cm&quot;, &quot;cm&quot;, &quot;cm&quot;} }">
-		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
-  	</property>
-  	<property name="mL" class="ptolemy.data.expr.Parameter" value="cc">
+  	<property name="mL" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;cm&quot;, &quot;cm&quot;, &quot;cm&quot;} }">
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
   	<property name="L" class="ptolemy.data.expr.Parameter" value="mL.merge({Factor = LFactor}, mL)">

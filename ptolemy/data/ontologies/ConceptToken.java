@@ -54,7 +54,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *   the ConceptTolen object.
      */
     public ConceptToken(Concept c) throws IllegalActionException {
-        super(c, Concept.class);
+        super(c, c.getClass());
         _operationsForInfiniteConcepts = null;
         if (c != null) {
             Ontology ontology = c.getOntology();

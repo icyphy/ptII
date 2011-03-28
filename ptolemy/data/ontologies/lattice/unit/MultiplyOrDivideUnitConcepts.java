@@ -113,29 +113,9 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
                 return arg2;
             } else {
                 return _findInverseUnitConcept((UnitConcept) arg2);
-            }            
-        } else if (arg1 instanceof UnitConcept && arg2 instanceof UnitConcept) {
-            
-            // If the operation is division, and the if the first unit is from
-            // the same dimension as the second unit.
-            if (((UnitConcept) arg1).getDimension().equals(
-                    ((UnitConcept) arg2).getDimension()) && !_isMultiply) {
-
-                // If they are the same unit, return the dimensionless concept
-                // if one is specified in the units ontology. Return the top
-                // of the lattice if no dimensionless concept is specified.
-                if (arg1.equals(arg2)) {
-                    return _getDimensionlessConceptOrTop();
-                    
-                // If they are different units from the same dimension, there
-                // is a missing conversion factor, so output the top of
-                // the unit system lattice which indicates a conflict.
-                } else {
-                    return _topOfTheLattice;
-                }
-            } else {
-                return _findComposedUnitConcept((UnitConcept) arg1, (UnitConcept) arg2);
-            }            
+            }
+        } else if (arg1 instanceof UnitConcept && arg2 instanceof UnitConcept) {            
+            return _findComposedUnitConcept((UnitConcept) arg1, (UnitConcept) arg2);          
         } else {
             throw new IllegalActionException("Concept inputs must be" +
             		" UnitConcepts or DimensionlessConcepts. Input" +
@@ -180,6 +160,110 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         return componentUnitsMap;
     }
     
+    /** Find the UnitConcept that represents the composition of the two
+     *  input UnitConcepts which will be the result of either multiplication
+     *  or division of the two units depending on the value of the _isMultiply
+     *  class variable.
+     *  @param unit1 The first unit concept.
+     *  @param unit2 The second unit concept.
+     *  @return The unit concept that represents the multiplication or division
+     *   of the two input concepts, or the top of the lattice if that unit
+     *   does not exist in the ontology.
+     *  @throws IllegalActionException Thrown if either of the UnitConcep inputs
+     *   is invalid.
+     */
+    private Concept _findComposedUnitConcept(UnitConcept unit1, UnitConcept unit2) throws IllegalActionException {
+        int exponentValue = 0;
+        double newUnitFactor = 0.0;
+        if (_isMultiply) {
+            exponentValue = 1;
+            newUnitFactor = unit1.getUnitFactor() * unit2.getUnitFactor();
+        } else {
+            exponentValue = -1;
+            newUnitFactor = unit1.getUnitFactor() / unit2.getUnitFactor();
+        }        
+        
+        DimensionRepresentativeConcept unit1Dimension = unit1.getDimension();
+        DimensionRepresentativeConcept unit2Dimension = unit2.getDimension();        
+        Map<DimensionRepresentativeConcept, Integer> dimensionMap = null;
+        Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap = null;
+        
+        // Special case: If both units are from the same dimension.
+        if (unit1Dimension.equals(unit2Dimension)) {
+            
+            // If the operation is multiplication, then the dimension map has
+            // only a single dimension with exponent value 2.
+            if (_isMultiply) {
+                dimensionMap = new HashMap<DimensionRepresentativeConcept, Integer>();
+                componentUnitsMap = new HashMap<DimensionRepresentativeConcept, List<UnitConcept>>();
+                dimensionMap.put(unit1Dimension, new Integer(2));
+                List<UnitConcept> unitsList = new ArrayList<UnitConcept>();
+                unitsList.add(unit1);
+                unitsList.add(unit2);
+                componentUnitsMap.put(unit1Dimension, unitsList);
+                
+            // If the operation is division, then the result is either the
+            // Dimensionless concept (if specified in the ontology) if the
+            // units are the same or the top of the lattice if the units are
+            // different.
+            } else {
+                if (unit1.equals(unit2)) {
+                    return _getDimensionlessConceptOrTop();
+
+                // If they are different units from the same dimension, there
+                // is a missing conversion factor, so output the top of
+                // the unit system lattice which indicates a conflict.
+                } else {
+                    return _topOfTheLattice;
+                }
+            }
+        } else {
+            dimensionMap =
+                _createNewDimensionMap(unit2.getDimension(), exponentValue);
+            componentUnitsMap =
+                _createNewComponentUnitsMap(unit2);
+            dimensionMap.put(unit1Dimension, new Integer(1));
+            List<UnitConcept> unit1List = new ArrayList<UnitConcept>();
+            unit1List.add(unit1);
+            componentUnitsMap.put(unit1Dimension, unit1List);
+        }        
+        
+        // Get a list of potential concepts that match the dimension map and component units map.
+        List<UnitConcept> candidateConcepts = DerivedUnitConcept.findUnitByComponentMaps(dimensionMap, componentUnitsMap, _unitOntology);
+        
+        // To find the correct concept, the conversion factors must also be checked.
+        return _findCorrectUnitConcept(candidateConcepts, newUnitFactor);
+    }
+    
+    /** From the list of UnitConcepts return the least upper bound of all the
+     *  units that have the given unit conversion factor, or the top of the
+     *  lattice if the list is null or empty. Normally there should only be
+     *  one concept in the list that matches the conversion factor.
+     *  @param concepts The list of UnitConcepts to search.
+     *  @param unitFactor The conversion unit factor that must match the
+     *   UnitConcepts in the list.
+     *  @return The least upper bound of all the concepts in the list that
+     *   have the correct unit factor, or the top of the lattice if none
+     *   are found or the list is empty or null.
+     */
+    private Concept _findCorrectUnitConcept(List<UnitConcept> concepts, double unitFactor) {
+        if (concepts == null || concepts.isEmpty()) {
+            return _topOfTheLattice;
+        } else {
+            List<UnitConcept> resultConcepts = new ArrayList<UnitConcept>(concepts);
+            for (UnitConcept concept : concepts) {
+                if (concept.getUnitFactor() != unitFactor) {
+                    resultConcepts.remove(concept);
+                }
+            }
+            if (resultConcepts.isEmpty()) {
+                return _topOfTheLattice;
+            } else {
+                return _unitOntology.getConceptGraph().leastUpperBound(resultConcepts.toArray());
+            }
+        }
+    }
+    
     /** Find the UnitConcept that represents the multiplicative inverse of
      *  the given UnitConcept. If none exists, return the top of the lattice.
      *  @param unit The input UnitConcept.
@@ -195,59 +279,10 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         Map<DimensionRepresentativeConcept, List<UnitConcept>> inverseComponentUnitsMap =
             _createNewComponentUnitsMap(unit);
         
-        return DerivedUnitConcept.findUnitByComponentMaps(inverseDimensionMap,
+        List<UnitConcept> candidateConcepts = DerivedUnitConcept.findUnitByComponentMaps(inverseDimensionMap,
                 inverseComponentUnitsMap, _unitOntology);
-    }
-    
-    /** Find the UnitConcept that represents the composition of the two
-     *  input UnitConcepts which will be the result of either multiplication
-     *  or division of the two units depending on the value of the _isMultiply
-     *  class variable.
-     *  @param unit1 The first unit concept.
-     *  @param unit2 The second unit concept.
-     *  @return The unit concept that represents the multiplication or division
-     *   of the two input concepts, or the top of the lattice if that unit
-     *   does not exist in the ontology.
-     *  @throws IllegalActionException Thrown if either of the UnitConcep inputs
-     *   is invalid.
-     */
-    private Concept _findComposedUnitConcept(UnitConcept unit1, UnitConcept unit2) throws IllegalActionException {
-        int exponentValue = 0;
-        if (_isMultiply) {
-            exponentValue = 1;
-        } else {
-            exponentValue = -1;
-        }
-        
-        DimensionRepresentativeConcept unit1Dimension = unit1.getDimension();
-        DimensionRepresentativeConcept unit2Dimension = unit2.getDimension();        
-        Map<DimensionRepresentativeConcept, Integer> dimensionMap = null;
-        Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap = null;
-        
-        if (unit1 instanceof BaseUnitConcept) {
-            dimensionMap = _createNewDimensionMap(unit2.getDimension(), exponentValue);
-            dimensionMap.put(unit1Dimension, new Integer(1));
-            componentUnitsMap = _createNewComponentUnitsMap(unit2);
-            List<UnitConcept> unitList = new ArrayList<UnitConcept>();
-            unitList.add(unit1);
-            componentUnitsMap.put(unit1Dimension, unitList);            
-        } else if (unit1 instanceof DerivedUnitConcept) {
-            dimensionMap = _getNewDimensionMap(
-                    (DerivedDimensionRepresentativeConcept) unit1Dimension,
-                    unit2Dimension, exponentValue);
-            componentUnitsMap = _getNewComponentUnitsMap(dimensionMap,
-                    (DerivedUnitConcept) unit1, unit2, exponentValue);
-            if (componentUnitsMap == null) {
-                return _topOfTheLattice;
-            }
-        } else {
-            throw new IllegalActionException("UnitConcept must be either a " +
-            		"BaseUnitConcept or a DerivedUnitConcept. First input " +
-            		"concept " + unit1 + " was of type " +
-            		unit1.getClass() + ".'");
-        }
-        
-        return DerivedUnitConcept.findUnitByComponentMaps(dimensionMap, componentUnitsMap, _unitOntology);
+        double inverseFactor = 1.0/unit.getUnitFactor();
+        return _findCorrectUnitConcept(candidateConcepts, inverseFactor);
     }
     
     /** Return the least upper bound of all the dimensionless concepts in the
@@ -271,124 +306,6 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
             }
             return conceptGraph.leastUpperBound(allDimensionlessConcepts.toArray());
         }
-    }
-    
-    /** Return a new dimension map that contains the dimensions from the given
-     *  input dimensions.
-     *  @param unit1Dimension The dimension of the first unit concept.
-     *  @param unit2Dimension The dimension of the second unit concept
-     *  @param exponentValue The exponent value for the second unit concept
-     *   (1 if the operation is multiplication, -1 if it is division)
-     *  @return A new dimension map that contains the component dimensions
-     *   of the first unit dimension, and the second unit dimension.
-     *  @throws IllegalActionException Thrown if there is a problem getting
-     *   the component dimensions from the unit dimension.
-     */
-    private Map<DimensionRepresentativeConcept, Integer> _getNewDimensionMap(
-            DerivedDimensionRepresentativeConcept unit1Dimension,
-            DimensionRepresentativeConcept unit2Dimension, int exponentValue) throws IllegalActionException {
-        Map<DimensionRepresentativeConcept, Integer> newDimensionMap = unit1Dimension.getComponentDimensions();
-        
-        Integer currentExponent = newDimensionMap.get(unit2Dimension);
-        if (currentExponent == null) {
-            newDimensionMap.put(unit2Dimension, new Integer(exponentValue));
-        } else {
-            int newExponentValue = currentExponent.intValue() + exponentValue;
-            if (newExponentValue == 0) {
-                newDimensionMap.remove(unit2Dimension);
-            } else {
-                newDimensionMap.put(unit2Dimension, new Integer(newExponentValue));
-            }
-        }
-        
-        return newDimensionMap;
-    }
-    
-    /** Return a new component units map that contains the component units from
-     *  the given input dimensions.
-     *  @param newDimensionMap The new dimension map for the composed result
-     *   of the two input unit concepts.
-     *  @param unit1 The first unit concept.
-     *  @param unit2 The second unit concept.
-     *  @param exponentValue The exponent value for the second unit concept
-     *   (1 if the operation is multiplication, -1 if it is division)
-     *  @return The new component units map that contains the component
-     *   units of the first unit concept and the second unit concept.
-     *  @throws IllegalActionException Thrown if the exponent for unit2's
-     *   dimension in the newDimensionMap is null.
-     */
-    private Map<DimensionRepresentativeConcept, List<UnitConcept>> _getNewComponentUnitsMap(
-            Map<DimensionRepresentativeConcept, Integer> newDimensionMap,
-            DerivedUnitConcept unit1, UnitConcept unit2, int exponentValue)
-                throws IllegalActionException {
-        Map<DimensionRepresentativeConcept, List<UnitConcept>>
-            newComponentUnitsMap = unit1.getComponentUnits();
-            
-        if (newDimensionMap.get(unit2.getDimension()) == null) {
-            newComponentUnitsMap.remove(unit2.getDimension());
-        } else {
-            List<UnitConcept> oldUnitsList = newComponentUnitsMap.get(unit2.getDimension());
-            if (oldUnitsList == null) {
-                List<UnitConcept> newUnitList = new ArrayList<UnitConcept>();
-                newUnitList.add(unit2);
-                newComponentUnitsMap.put(unit2.getDimension(), newUnitList);
-            } else {
-                Integer newExponent = newDimensionMap.get(unit2.getDimension());
-                if (newExponent == null) {
-                    throw new IllegalActionException("The second input unit " +
-                            "concept's dimension does not have a valid " +
-                            "value in the dimension map for the composed " +
-                    "unit concept result.");
-                } else {
-                    int newExponentValue = newExponent.intValue();
-                    List<UnitConcept> newUnitsList = _getNewUnitsList(unit2,
-                            oldUnitsList, newExponentValue, exponentValue);
-                    if (newUnitsList == null) {
-                        return null;
-                    }
-                    newComponentUnitsMap.put(unit2.getDimension(), newUnitsList);
-                }
-            }
-        }
-        
-        return newComponentUnitsMap;
-    }
-    
-    /** Return the new units list for the given unit based on whether the
-     *  array should be increased or shortened based on the new exponent
-     *  value.
-     *  @param unitToBeModified The unit concept being added or removed from
-     *   the units array
-     *  @param oldUnitsList The old units list being modified.
-     *  @param newExponentValue The new exponent value for the dimension
-     *   represented by this units array.
-     *  @param unitExponentValue The exponent value for the unit being modified.
-     *   Should be either -1 or 1.
-     *  @return The new units array after being modified.
-     *  @throws IllegalActionException Thrown if the old units array should
-     *   be shortened, but the unitToBeModified is not contained in the old
-     *   units array.
-     */
-    public List<UnitConcept> _getNewUnitsList(UnitConcept unitToBeModified,
-            List<UnitConcept> oldUnitsList, int newExponentValue,
-            int unitExponentValue) throws IllegalActionException {
-        List<UnitConcept> newUnitsList = new ArrayList<UnitConcept>(oldUnitsList);
-        
-        boolean _newArrayIsBigger = (newExponentValue > 0 &&
-                unitExponentValue > 0) || (newExponentValue < 0 &&
-                        unitExponentValue < 0);
-        if (_newArrayIsBigger) {
-            newUnitsList.add(unitToBeModified);
-        } else {
-            for (int i = newUnitsList.size() - 1; i >= 0; i--) {
-                if (newUnitsList.get(i).equals(unitToBeModified)) {
-                    newUnitsList.remove(i);
-                    return newUnitsList;
-                }
-            }
-            return null;
-        }
-        return newUnitsList;
     }
 
     ///////////////////////////////////////////////////////////////////
