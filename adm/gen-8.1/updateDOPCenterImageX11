@@ -20,3 +20,4 @@ ls -l $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
 echo "Killing Xvfb"
 pkill Xvfb
 pkill -9 Xvfb
+exit 0
