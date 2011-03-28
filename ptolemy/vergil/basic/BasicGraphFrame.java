@@ -802,23 +802,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
         
         _mousePressedLayerAdapter = null;
-        _redoAction = null;
-        _moveToBackAction = null;
-        _cutAction = null;
-        _editPreferencesAction = null;
-        _copyAction = null;
-        _openContainerAction = null;
-        _undoAction = null;
-        _zoomOutAction = null;
-        _zoomInAction = null;
-        _moveToFrontAction = null;
-        _zoomFitAction = null;
-        _printAction = null;
-        _zoomResetAction = null;
-        _saveAction = null;
-        _pasteAction = null;
         
-        _exportPDFAction = null;
+        // Top.dispose() sets all the AbstractAction to null.
         disposeSuper();
     }
 
@@ -2786,14 +2771,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The default Library. **/
-    protected LibraryAttribute _defaultLibrary;
+    /** The copy action. */
+    protected Action _copyAction;
 
     /** The cut action. */
     protected Action _cutAction;
 
-    /** The copy action. */
-    protected Action _copyAction;
+    /** The default Library. **/
+    protected LibraryAttribute _defaultLibrary;
+
+    /** The instance of EditorDropTarget associated with the JGraph. */
+    protected EditorDropTarget _dropTarget;
 
     /** The edit menu. */
     protected JMenu _editMenu;
@@ -2801,15 +2789,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
 
-    /** The export to PDF action. */
-    protected Action _exportPDFAction;
-    
     /** The export to GIF action. */
     protected Action _exportGIFAction;
 
     /** The export HTML action. */
     protected Action _exportHTMLAction;
 
+    /** The export to PDF action. */
+    protected Action _exportPDFAction;
+    
     /** The export to PNG action. */
     protected Action _exportPNGAction;
 
@@ -2818,6 +2806,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  "actor library".  For example, see $PTII/bin/vergil -ptinyViewer.
      */
     protected JCanvasPanner _graphPanner;
+
+    /** The instance of JGraph for this editor. */
+    protected JGraph _jgraph;
 
     /** The library display widget. */
     protected JTree _library;
@@ -2837,11 +2828,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action to move to the front. */
     protected MoveToFrontAction _moveToFrontAction;
 
+    /** List of references to graph frames that are open. */
+    protected static LinkedList<BasicGraphFrame> _openGraphFrames = new LinkedList<BasicGraphFrame>();
+
     /** The library display panel. */
     protected JPanel _palettePane;
 
     /** The paste action. */
     protected Action _pasteAction;
+
+    /** The right component for this editor. */
+    protected JComponent _rightComponent;
 
     /** The split pane for library and editor. Note that this variable
      *  can be null if the configuration does not have an entity named
@@ -2855,25 +2852,28 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The library. */
     protected CompositeEntity _topLibrary;
 
+    /** Action for zoom fitting. */
+    protected Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
+
+    /** Action for zooming in. */
+    protected Action _zoomInAction = new ZoomInAction("Zoom In");
+
+    /** Action for zooming out. */
+    protected Action _zoomOutAction = new ZoomOutAction("Zoom Out");
+
+    /** Action for zoom reset. */
+    protected Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The instance of EditorDropTarget associated with the JGraph. */
-    protected EditorDropTarget _dropTarget;
-
-    /** The instance of JGraph for this editor. */
-    protected JGraph _jgraph;
+    /** A layer adapter to handle the mousePressed event. */
+    private MousePressedLayerAdapter _mousePressedLayerAdapter;
 
     /** Action for opening the container, moving uplevel. */
     private Action _openContainerAction = new OpenContainerAction(
             "Open the container");
     
-    /** A layer adapter to handle the mousePressed event. */
-    private MousePressedLayerAdapter _mousePressedLayerAdapter;
-
-    /** List of references to graph frames that are open. */
-    protected static LinkedList<BasicGraphFrame> _openGraphFrames = new LinkedList<BasicGraphFrame>();
-
     /** X coordinate of where we last processed a press or drag of the
      *  middle mouse button.
      */
@@ -2890,29 +2890,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
-    /** The right component for this editor. */
-    protected JComponent _rightComponent;
-
     /**  Action to save the model. */
     private Action _saveAction = new SaveAction("Save");
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
 
-    /** Action for zooming in. */
-    protected Action _zoomInAction = new ZoomInAction("Zoom In");
-
-    /** Action for zoom reset. */
-    protected Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
-
-    /** Action for zoom fitting. */
-    protected Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
-
-    /** Action for zooming out. */
-    protected Action _zoomOutAction = new ZoomOutAction("Zoom Out");
-
     ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
+    ////                     inner classes                         ////
 
     /** A Layer Adapter to handle the mousePressed layer event. */
     protected class MousePressedLayerAdapter extends LayerAdapter {
@@ -3113,8 +3098,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// ExportImageAction
 
     public class ExportImageAction extends AbstractAction {
-        /** Create a new action to export PDF.
-         *  @param frame The Frame which to which this action is added.
+        /** Create a new action to export an image
+         *  @param formatName The image format to be exported.
          */
         public ExportImageAction(String formatName) {
             super("Export " + formatName);
@@ -3126,7 +3111,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                   ////
 
-        /** Export image. */
+        /** Export an image.
+         *  @param ActionEvent e  The event that triggered this action.
+         */
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -3197,7 +3184,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  relative to the image created by exporting to GIF or PNG.
      */
     public class ExportHTMLAction extends AbstractAction {
-        /** Create a new action to export PDF.
+        /** Create a new action to export HTML
          *  @param frame The Frame which to which this action is added.
          */
         public ExportHTMLAction() {
@@ -3209,7 +3196,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                   ////
 
-        /** Export map. */
+        /** Export HTML image map.
+         *  @param ActionEvent e  The event that triggered this action.
+         */
         public void actionPerformed(ActionEvent e) {            
             // Open a file chooser to select a folder to write to.
             JFileChooser fileDialog = new JFileChooser();

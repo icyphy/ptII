@@ -49,6 +49,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,6 +60,7 @@ import javax.print.PrintService;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Destination;
+import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -253,6 +255,11 @@ public abstract class Top extends JFrame {
         //System.out.println("_historyMenu: "+c);
         _historyMenuListener = null;
         
+        // Don't call removeWindowListeners here because Tableau.setFrame()
+        // adds a WindowListener to windowsClosed events and that listener
+        // handles closing the plots associated with a model.
+        //MemoryCleaner.removeWindowListeners(this);
+
         // Deal with file menu action listeners
         /*c =*/ MemoryCleaner.removeActionListeners(_fileMenu);
         //System.out.println("_fileMenu: "+c);
@@ -288,6 +295,35 @@ public abstract class Top extends JFrame {
         focusManager.clearGlobalFocusOwner();
         focusManager.downFocusCycle();
         
+        // Set any AbstractActions to null.  This is not strictly necessary,
+        // but it helps free up memory more quickly.  By doing this here,
+        // we no longer require people to update dispose() by hand.
+        Class myClass = getClass();
+        // Loop through classes up to the parent class of Top.
+        while (myClass != JFrame.class) {
+            Field[] fields = myClass.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    // Loop through the class hierarchy of each field.
+                    // If the class is assignable from AbstractAction, then
+                    // set it to null.
+                    Class superclass = fields[i].getType();
+                    while (superclass != null && superclass != Object.class) {
+                        if (superclass.isAssignableFrom(AbstractAction.class)) {
+                            fields[i].setAccessible(true);
+                            fields[i].set(this, null);
+                            break;
+                        }
+                        superclass = superclass.getSuperclass();
+                    }
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException("Failed to get or set field "
+                            + fields[i], ex);
+                }
+            }
+            myClass = myClass.getSuperclass();
+        }
+
         getContentPane().removeAll();
         super.dispose();
     }
