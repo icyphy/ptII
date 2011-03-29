@@ -1116,6 +1116,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
         result.append(_childCode);
 
+        Type resultType = ((ASTPtRootNode) node.jjtGetChild(0)).getType();
+
         for (int i = 1; i < numChildren; i++) {
             //int times = 1;
             //_fireCode.insert(startIndex, "pow(");
@@ -1124,7 +1126,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
             //ptolemy.data.Token token = tokens[i];
             /*ptolemy.data.Token token =*/_evaluateChild(node, i);
 
-            result = new StringBuffer("Math.pow((double)" + result.toString()
+            result = new StringBuffer("(" + _targetType(resultType) + ")"
+                    + "Math.pow((double)" + result.toString()
                     + ", (double)" + _childCode);
 
             // Note that we check for ScalarTokens because anything
@@ -1916,6 +1919,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         cFunctionMap.put("log1p", "Math.log1p");
         cFunctionMap.put("max", "Math.max");
         cFunctionMap.put("min", "Math.min");
+        cFunctionMap.put("pow", "Math.pow");
         cFunctionMap.put("rint", "Math.rint");
         cFunctionMap.put("round", "Math.round");
         cFunctionMap.put("signum", "Math.signum");
