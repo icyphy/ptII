@@ -1988,8 +1988,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         boolean result = super._close();
 
         if (result) {
-            getModel().removeChangeListener(this);
-
             AbstractBasicGraphModel graphModel = _getGraphModel();
             graphModel.removeListeners();
         }

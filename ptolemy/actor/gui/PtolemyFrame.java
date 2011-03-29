@@ -196,17 +196,24 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @see #getModel()
      */
     public void setModel(NamedObj model) {
-        _model = model;
-        _model.setModelErrorHandler(new BasicModelErrorHandler());
-
-        List attrList = _model.attributeList(UndoStackAttribute.class);
-
-        if (attrList.size() == 0) {
-            // Create and attach a new instance
-            try {
-                new UndoStackAttribute(_model, "_undoInfo");
-            } catch (KernelException e) {
-                throw new InternalErrorException(e);
+        if (model == null) {
+            if (_model != null) {
+                _model.setModelErrorHandler(null);
+                _model = null;
+            }
+        } else {
+            _model = model;
+            _model.setModelErrorHandler(new BasicModelErrorHandler());
+    
+            List attrList = _model.attributeList(UndoStackAttribute.class);
+    
+            if (attrList.size() == 0) {
+                // Create and attach a new instance
+                try {
+                    new UndoStackAttribute(_model, "_undoInfo");
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e);
+                }
             }
         }
     }
@@ -266,6 +273,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
     public void dispose() {
+        setModel(null);
         super.dispose();
     }
 

@@ -33,6 +33,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.lang.ref.WeakReference;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -110,7 +111,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  @param event The component event.
      */
     public void componentMoved(ComponentEvent event) {
-        recordProperties(_listeningTo);
+        recordProperties(_listeningTo.get());
     }
 
     /** Record the new size. This method is
@@ -118,7 +119,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  @param event The component event.
      */
     public void componentResized(ComponentEvent event) {
-        recordProperties(_listeningTo);
+        recordProperties(_listeningTo.get());
     }
 
     /** Do nothing. This method is
@@ -163,13 +164,15 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  @return True if successful.
      */
     public boolean setProperties(Frame frame) {
-        if (_listeningTo != frame) {
-            if (_listeningTo != null) {
-                _listeningTo.removeComponentListener(this);
+        Frame listeningTo = _listeningTo.get();
+        if (listeningTo != frame) {
+            if (listeningTo != null) {
+                listeningTo.removeComponentListener(this);
             }
 
             frame.addComponentListener(this);
-            _listeningTo = frame;
+            _listeningTo.clear();
+            _listeningTo = new WeakReference<Frame>(frame);
         }
 
         try {
@@ -279,5 +282,5 @@ public class WindowPropertiesAttribute extends Parameter implements
     ////                         private variables                 ////
 
     /** The frame we are listening to. */
-    private Frame _listeningTo;
+    private WeakReference<Frame> _listeningTo = new WeakReference<Frame>(null);
 }

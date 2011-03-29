@@ -162,6 +162,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _advancedLayoutDialogAction = null;
         _createHierarchyAction = null;
         _controller.setFrame(null);
+        _debugMenuListener = null;
         super.dispose();
     }
 
@@ -243,12 +244,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _debugMenu = new JMenu("Debug");
         _debugMenu.setMnemonic(KeyEvent.VK_D);
 
-        DebugMenuListener debugMenuListener = new DebugMenuListener();
+        _debugMenuListener = new DebugMenuListener();
 
         // Set the action command and listener for each menu item.
         for (int i = 0; i < debugMenuItems.length; i++) {
             debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(debugMenuListener);
+            debugMenuItems[i].addActionListener(_debugMenuListener);
             _debugMenu.add(debugMenuItems[i]);
         }
 
@@ -366,6 +367,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
+    
+    /** Listener for debug menu commands. */
+    protected DebugMenuListener _debugMenuListener;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
