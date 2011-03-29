@@ -268,7 +268,7 @@ public class LinkController extends BasicEdgeController {
                 try {
                     // FIXME: This isn't quite right for relation groups.
                     ColorAttribute colorAttribute = (ColorAttribute) (relation
-                            .getAttribute("color", ColorAttribute.class));
+                            .getAttribute("_color", ColorAttribute.class));
 
                     if (colorAttribute != null) {
                         Color color = colorAttribute.asColor();

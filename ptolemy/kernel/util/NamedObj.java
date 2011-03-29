@@ -2757,6 +2757,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _workspace.doneWriting();
         }
     }
+    
+    /** Remove attribute from list of attributes. 
+     *  @param param Attribute to remove.
+     */
+    public void removeAttribute(Attribute param) {
+        _removeAttribute(param);
+    }
 
     /** Split the specified name at the first period and return the
      *  two parts as a two-element array.  If there is no period, the second

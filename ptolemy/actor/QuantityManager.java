@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor;
 
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** An interface for objects that can intervene in communication between actors.
@@ -73,4 +74,11 @@ public interface QuantityManager {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void sendToken(Receiver receiver, Token token) throws IllegalActionException;
+
+
+    /** Return the color that is associated with this quantity manager. This color
+     *  is used for highlighting ports or connections. 
+     * @return
+     */
+    public abstract Variable getColor();
 }

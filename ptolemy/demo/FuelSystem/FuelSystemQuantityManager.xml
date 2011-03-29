@@ -108,12 +108,16 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
         </port>
         <port name="tank1Full" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
@@ -354,7 +358,7 @@
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
     </entity>
-    <entity name="Bus" class="ptolemy.domains.de.lib.Bus">
+    <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[268.40087890625, 17.25]">
@@ -402,7 +406,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={297, 322, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={297, 253, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -435,6 +439,8 @@
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[103.40087890625, 212.25]">
@@ -450,6 +456,8 @@
         <vertex name="vertex1" value="[168.40087890625, 67.25]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

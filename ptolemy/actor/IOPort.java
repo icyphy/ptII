@@ -48,9 +48,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
@@ -58,11 +60,13 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -239,6 +243,58 @@ public class IOPort extends ComponentPort {
 
             _hasPortEventListeners = true;
         }
+    }
+    
+    
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+       
+        if (attribute instanceof Parameter) {
+            Token parameterToken = ((Parameter)attribute).getToken();
+            if (parameterToken != null) {
+                if (parameterToken instanceof ObjectToken) {
+                    Object quantityManagerObject
+                                = ((ObjectToken)parameterToken).getValue();
+                    if (quantityManagerObject instanceof QuantityManager) {
+                        
+                        QuantityManager quantityManager = ((QuantityManager)quantityManagerObject); 
+                        _removeColorAttribute(this);
+                        
+                        try {
+                            ColorAttribute colorAttribute = new ColorAttribute(this, "_color"); 
+                            colorAttribute.setExpression(quantityManager.getColor().getExpression());
+                            int i = 0;
+                            while (i < _relationsList.size()) {
+                                Relation relation = ((Relation) this._relationsList.get(i));
+                                _removeColorAttribute(relation);
+                                ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
+                                colorAttribute2.setExpression(quantityManager.getColor().getExpression());
+                                i++;
+                            }
+                                                             
+                        } catch (NameDuplicationException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        super.attributeChanged(attribute);
+    }
+    
+    private void _removeColorAttribute(NamedObj obj) {
+        Parameter color = null;
+        List<Parameter> parameters = obj.attributeList(Parameter.class);
+        for (Parameter parameter : parameters) {
+            if (parameter.getName().equals("_color")) {
+                color = parameter;
+                break;
+            }
+        }
+        obj.removeAttribute(color);
     }
 
     /** Send a token to all connected receivers.

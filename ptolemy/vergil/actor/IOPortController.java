@@ -384,13 +384,28 @@ public class IOPortController extends AttributeController {
                 fill = Color.black;
             }
 
-            StringAttribute _colorAttr = (StringAttribute) (port
-                    .getAttribute("_color"));
-
-            if (_colorAttr != null) {
-                String _color = _colorAttr.getExpression();
-                fill = SVGUtilities.getColor(_color);
+            ColorAttribute colorAttribute;
+            try {
+                colorAttribute = (ColorAttribute) (port
+                        .getAttribute("_color", ColorAttribute.class));
+                if (colorAttribute != null) {
+                    Color color = colorAttribute.asColor();
+                    fill = color;
+                }
+            } catch (IllegalActionException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
             }
+
+            
+           
+//            StringAttribute _colorAttr = (StringAttribute) (port
+//                    .getAttribute("_color"));
+//
+//            if (_colorAttr != null) {
+//                String _color = _colorAttr.getExpression();
+//                fill = SVGUtilities.getColor(_color);
+//            }
 
             //ActorGraphModel model = (ActorGraphModel) getController()
             //        .getGraphModel();
