@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -40,6 +41,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
@@ -433,6 +435,62 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public String generatePackageStatement() throws IllegalActionException {
         return "";
+    }
+
+    /**
+     * Generate sanitized name for the given named object. Remove all
+     * underscores to avoid conflicts with systems functions.
+     * @param port The port for which the name is generated.
+     * @param portName The name of the port.
+     * @return The sanitized name.
+     */
+    public String generatePortName(TypedIOPort port, String portName) {
+
+        // Generate the port name as an element in array.
+        // This is done to make the generate java file easier to compile.
+
+        // There is similar code in JavaCodeGenerator.
+
+        // The idea is that for each type, we have an array
+        // that contain the variables for that type.
+        // This means that we will have many less variables, which will
+        // get around javac's "too many constants" message
+        // (See http://marxsoftware.blogspot.com/2010/01/reproducing-too-many-constants-problem.html)
+
+        // However, we don't want to search the arrays while
+        // generating code, so we have a separate HashMap that
+        // that is used at code generation time to map from
+        // names to the index in the corresponding type array.
+        
+        if (_portTypeMap == null) {
+            // A map from String type name to a HashMap of port name to Array Index.
+            _portTypeMap = new HashMap<String, HashMap<String, Integer>>();
+            _portTypeMaxIndex = new HashMap<String, Integer>();
+        }
+
+        // Get the type.
+        String typeName = targetType(port.getType());
+
+        // Look up the type in our HashTable of types.
+        HashMap<String,Integer> portMap = null;
+        if ((portMap = _portTypeMap.get(typeName)) == null ) {
+            // A type that is not in our map of types.
+            portMap = new HashMap<String,Integer>();
+            _portTypeMap.put(typeName, portMap);
+            _portTypeMaxIndex.put(typeName, 0);
+        }
+
+        // Look up the attribute by name in the HashTable.
+        Integer portIndex = null;
+        if ((portIndex = portMap.get(portName)) == null) {
+            // FIXME: is there a better way to update an element in a HashMap?
+            portIndex = _portTypeMaxIndex.get(typeName);
+            _portTypeMaxIndex.put(typeName, portIndex + 1);
+            portMap.put(portName, portIndex);
+        }
+
+        String results = "ports_" + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
+        return results;
     }
 
     /** Generate into the specified code stream the code associated with
@@ -1422,6 +1480,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * generator package. (e.g. Int, Double, Array, and etc.)
      */
     protected HashSet<String> _newTypesUsed = new HashSet<String>();
+
+    /** A map from String type name to a HashMap of variable name to
+     * Array index.  Used for large models to reduce the number
+     * of variables.
+     */   
+    protected HashMap<String, HashMap<String,Integer>> _portTypeMap;
+
+    /** A map from String type name to a HashMap of variable name to
+     * Array Index.  Used for large models to reduce the number
+     * of variables.
+     */   
+    protected HashMap<String, Integer> _portTypeMaxIndex;
 
     /** A list of the primitive types supported by the code generator.
      */

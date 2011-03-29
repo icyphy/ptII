@@ -360,10 +360,11 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
             NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(actor);
             if (actor instanceof CompositeActor
-                    && ((CompositeActor) actor).isOpaque())
+                    && ((CompositeActor) actor).isOpaque()) {
                 code.append(adapterObject.generateVariableDeclaration());
-            else
+            } else {
                 code.append(_generateVariableDeclaration(adapterObject));
+            }
         }
 
         return code.toString();

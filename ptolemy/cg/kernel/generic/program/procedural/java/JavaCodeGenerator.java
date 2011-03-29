@@ -813,6 +813,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     + (_typeDeclarations != null ? _typeDeclarations : "") + _eol
                     + "public class TypeResolution {" + _eol + "*/");
             code.append("// }" + _eol);
+        }
+        if (_variablesAsArrays) {
             code.append(comment(1, "Arrays that contain variables."));
             if (_variableTypeMaxIndex != null) {
                 for (Map.Entry<String, Integer> entry : _variableTypeMaxIndex.entrySet()) {
@@ -822,8 +824,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + "[] = new " + typeName + "[" + entry.getValue() + "];" + _eol);
                 }
             }
-        }
 
+            if (_portTypeMaxIndex != null) {
+                code.append(comment(1, "Arrays that contain ports."));
+                for (Map.Entry<String, Integer> entry : _portTypeMaxIndex.entrySet()) {
+                    String typeName = entry.getKey();
+                    code.append(typeName + " ports_"
+                            + StringUtilities.sanitizeName(typeName)
+                            + "[][] = new " + typeName + "[" + entry.getValue() + "][];" + _eol);
+                }
+            }
+        }
         return code.toString();
     }
 
