@@ -31,34 +31,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.qm;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 /** This actor is an {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Token)} method is called, delays
@@ -84,7 +72,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class Bus extends TypedAtomicActor implements QuantityManager {
+public class Bus extends ColoredQuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
@@ -103,9 +91,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tokens = new FIFOQueue();
-        _receiversAndTokensToSendTo = new HashMap();
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
+        _receiversAndTokensToSendTo = new HashMap(); 
         
         serviceTime = new Parameter(this, "serviceTime");
         serviceTime.setExpression("0.1");
@@ -114,11 +100,6 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return color associated with this quantity manager. */
-    public Variable getColor() {
-        return color;
-    }
 
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
@@ -144,9 +125,8 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
                         "Cannot have negative or zero serviceTime: " + value);
             }
             _serviceTimeValue = value;
-        } else if (attribute == color) {
-            // FIXME notify listeners.
-        }
+        } 
+        super.attributeChanged(attribute);
     }
     
     /** Initialize the actor.
@@ -382,12 +362,7 @@ public class Bus extends TypedAtomicActor implements QuantityManager {
     /** The service time. This is a double with default 0.1.
      *  It is required to be positive.
      */
-    public Parameter serviceTime;
-    
-    /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager.
-     */
-    public ColorAttribute color;
+    public Parameter serviceTime; 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

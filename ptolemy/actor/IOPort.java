@@ -49,6 +49,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.lib.qm.ColoredQuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -245,7 +246,13 @@ public class IOPort extends ComponentPort {
         }
     }
     
-    
+    /** If the quantity manager attribute of the port is changed and the new
+     *  quantity manager is a {@link ColoredQuantityManager} then update 
+     *  the port color and the color of the relation.
+     *  @param attribute The attribute that changed. 
+     *  @exception IllegalActionException Thrown if the new color attribute cannot
+     *      be created. 
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
        
@@ -255,28 +262,43 @@ public class IOPort extends ComponentPort {
                 if (parameterToken instanceof ObjectToken) {
                     Object quantityManagerObject
                                 = ((ObjectToken)parameterToken).getValue();
-                    if (quantityManagerObject instanceof QuantityManager) {
+                    if (quantityManagerObject instanceof ColoredQuantityManager) {
+                        ColoredQuantityManager quantityManager = ((ColoredQuantityManager)quantityManagerObject); 
+                        // The color of the port should be the color of the first parameter
+                        // that is a {@link ColoredQuantityManager}. This is the quantity
+                        // manager that this port is directly connected to. 
+                        for (int i = 0; i < attributeList().size(); i++) {
+                            Object attr = attributeList().get(i);
+                            if (attr instanceof Parameter) { 
+                                Token paramToken = ((Parameter) attr).getToken(); 
+                                if (paramToken instanceof ObjectToken) {
+                                    Object paramObject = ((ObjectToken)paramToken).getValue();
+                                    if (paramObject instanceof ColoredQuantityManager) {
+                                        quantityManager = (ColoredQuantityManager)paramObject;
+                                        break;
+                                    }
+                                }
+                            }
+                        } 
                         
-                        QuantityManager quantityManager = ((QuantityManager)quantityManagerObject); 
                         _removeColorAttribute(this);
                         
                         try {
                             ColorAttribute colorAttribute = new ColorAttribute(this, "_color"); 
-                            colorAttribute.setExpression(quantityManager.getColor().getExpression());
+                            colorAttribute.setExpression(quantityManager.color.getExpression());
                             int i = 0;
                             while (i < _relationsList.size()) {
                                 Relation relation = ((Relation) this._relationsList.get(i));
                                 _removeColorAttribute(relation);
                                 ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
-                                colorAttribute2.setExpression(quantityManager.getColor().getExpression());
+                                colorAttribute2.setExpression(quantityManager.color.getExpression());
                                 i++;
-                            }
-                                                             
+                            }         
                         } catch (NameDuplicationException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        
+                            // Ignore. This exception should be thrown because before adding the
+                            // new ColorAttribute any previous attribute with the same name is
+                            // removed.
+                        } 
                     }
                 }
             }
@@ -285,6 +307,9 @@ public class IOPort extends ComponentPort {
         super.attributeChanged(attribute);
     }
     
+    /** Remove the _color attribute of a {@link NamedObj}.
+     *  @param obj Object that has an attribute _color.
+     */
     private void _removeColorAttribute(NamedObj obj) {
         Parameter color = null;
         List<Parameter> parameters = obj.attributeList(Parameter.class);

@@ -81,7 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class TTESwitch extends TypedAtomicActor implements QuantityManager {
+public class TTESwitch extends ColoredQuantityManager {
 
     /** Construct a TTESwitch with a name and a container.
      *  The container argument must not be null, or a
@@ -273,11 +273,5 @@ public class TTESwitch extends TypedAtomicActor implements QuantityManager {
      * Next time a token is sent and the next token can be processed.
      */
     private Time _nextTimeFree;
-
-    @Override
-    public Variable getColor() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
 }
