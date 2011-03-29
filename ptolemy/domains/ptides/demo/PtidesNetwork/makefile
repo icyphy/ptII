@@ -44,8 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	PtidesNetwork
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	TTESwitch.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	2Bus.xml \

@@ -65,7 +65,7 @@ ME =		ptolemy/actor/lib
 #
 DIRS = 		conversions embeddedJava gui logic hoc image \
 		javasound jni jopio net io xslt \
-		test comm security string tutorial vhdl video \
+		test comm qm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
@@ -109,6 +109,7 @@ PTCLASSALLJARS = \
 	jni/jni.jar \
 	jopio/jopio.jar \
 	net/net.jar \
+	qm/qm.jar \
 	security/security.jar \
 	vhdl/vhdl.jar \
 	video/video.jar \

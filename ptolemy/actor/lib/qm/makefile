@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/qm
 
-DIRS = 		test demo
+DIRS = 		test #demo
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -47,10 +47,12 @@ include $(CONFIG)
 PTPACKAGE =     qm
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-
-
-OTHER_FILES_TO_BE_JARED = \ 
+OTHER_FILES_TO_BE_JARED = \
 	qm.xml
+
+JSRCS = \
+	Bus.java \
+	TTESwitch.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -1346,6 +1346,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/mail \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/net \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/python \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/qm \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/vhdl \
