@@ -233,6 +233,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             // before proceeding.
             _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
             if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                _generateInSubdirectory = true;
                 if (!codeDirectory.asFile().toString().endsWith(_sanitizedModelName)) {
                     // Add the sanitized model name as a directory
                     codeDirectory.setExpression(codeDirectory.asFile().toString()
@@ -240,6 +241,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
                 }
             } else {
+                _generateInSubdirectory = false;
                 // Dragging a GenericCodeGenerator into an empty model
                 // was resulting in a NullPointerException.
                 // See test GenericCodeGenerator-1.1
@@ -1409,6 +1411,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** Execute commands to run the generated code.
      */
     protected ExecuteCommands _executeCommands;
+
+    /** The value of the generateInSubdirectory parameter. */
+    protected boolean _generateInSubdirectory;
 
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;

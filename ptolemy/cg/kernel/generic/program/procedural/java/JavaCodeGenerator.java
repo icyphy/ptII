@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -520,7 +521,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  cannot be read.
      */
     public String generatePackageStatement() throws IllegalActionException {
-        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+        if (_generateInSubdirectory) {
             return "package " + _sanitizedModelName + ";" + _eol;
         } 
         return "";
@@ -641,7 +642,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             StringBuffer declareBlock = new StringBuffer();
             declareBlock.append(typeStreams[i].getCodeBlock("declareBlock"));
             if (declareBlock.length() > 0) {
-                if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                if (_generateInSubdirectory) {
                     declareBlock.insert(0, generatePackageStatement());
                 }
                 String typeName = typesArray[i].toString();
@@ -658,7 +659,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             sharedStream.clear();
             StringBuffer declareTokenBlock = new StringBuffer();
-            if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            if (_generateInSubdirectory) {
                 declareTokenBlock.append("package "
                         + _sanitizedModelName + ";" + _eol);
             }
@@ -807,11 +808,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         code.append(_overloadedFunctions.toString());
 
-        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+        if (_generateInSubdirectory) {
             code.insert(0, "/*" + generatePackageStatement()
                     + (_typeDeclarations != null ? _typeDeclarations : "") + _eol
                     + "public class TypeResolution {" + _eol + "*/");
             code.append("// }" + _eol);
+            code.append(comment(1, "Arrays that contain variables."));
+            if (_variableTypeMaxIndex != null) {
+                for (Map.Entry<String, Integer> entry : _variableTypeMaxIndex.entrySet()) {
+                    String typeName = entry.getKey();
+                    code.append(typeName + " variables_"
+                            + StringUtilities.sanitizeName(typeName)
+                            + "[] = new " + typeName + "[" + entry.getValue() + "];" + _eol);
+                }
+            }
         }
 
         return code.toString();
@@ -838,8 +848,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
                         .getContainer());
-                code.append("public static " + adapter.targetType(variable.getType())
+                if (!_generateInSubdirectory) {
+                    code.append("public static " + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
+                }
             }
         }
 
@@ -856,10 +868,22 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableInitialization());
 
+        // if (_generateInSubdirectory) {
+        //     code.append(comment(1, "Arrays that contain variables."));
+        //     for (Map.Entry<String, Integer> entry : _variableTypeMaxIndex.entrySet()) {
+        //         String typeName = entry.getKey();
+        //         code.append("variables_"
+        //                 + StringUtilities.sanitizeName(typeName)
+        //                 + " = new " + typeName
+        //                 + "[" + (((Integer)(entry.getValue())).intValue()) + "];" + _eol);
+        //     }
+        // }
+
         // Generate variable initialization for modified variables.
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment(1, "Generate variable initialization for "
-                    + "modified parameters"));
+                            + "modified parameters"));
+        
             Iterator<?> modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
@@ -877,16 +901,79 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + containerAdapter + " which is a "
                             + containerAdapter.getClass().getName());
                 }
-                code.append(INDENT1
-                        + generateVariableName(variable)
-                        + " = "
-                        + containerAdapter.getParameterValue(
-                                variable.getName(), variable.getContainer())
-                        + ";" + _eol);
+                code.append(
+                    generateVariableName(variable)
+                    + " = "
+                    + containerAdapter.getParameterValue(
+                            variable.getName(), variable.getContainer())
+                    + ";" + _eol);
             }
         }
-
         return code.toString();
+    }
+
+    /** Generate variable name for the given attribute. The reason to append
+     *  underscore is to avoid conflict with the names of other objects. For
+     *  example, the paired PortParameter and ParameterPort have the same name.
+     *  @param attribute The attribute to for which to generate a variable name.
+     *  @return The generated variable name.
+     */
+    public String generateVariableName(NamedObj attribute) {
+        if ( !_generateInSubdirectory
+                || !(attribute instanceof Variable)) {
+            return NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
+        }
+
+        Variable variable = (Variable) attribute;
+        // The idea is that for each type, we have an array
+        // that contain the variables for that type.
+        // This means that we will have many less variables, which will
+        // get around javac's "too many constants" message
+        // (See http://marxsoftware.blogspot.com/2010/01/reproducing-too-many-constants-problem.html)
+
+        // However, we don't want to search the arrays while
+        // generating code, so we have a separate HashMap that
+        // that is used at code generation time to map from
+        // names to the index in the corresponding type array.
+        
+        if (_variableTypeMap == null) {
+            // A map from String type name to a HashMap of variable name to Array Index.
+            _variableTypeMap = new HashMap<String, HashMap<String, Integer>>();
+            _variableTypeMaxIndex = new HashMap<String, Integer>();
+        }
+
+        // Get the type.
+        NamedProgramCodeGeneratorAdapter adapter = null;
+        try {
+            adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
+                        .getContainer());
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(variable, ex,
+                    "Failed to get the adapter of " + variable);
+        }
+        String typeName = adapter.targetType(variable.getType());
+
+        // Look up the type in our HashTable of types.
+        HashMap<String,Integer> variableMap = null;
+        if ((variableMap = _variableTypeMap.get(typeName)) == null ) {
+            // A type that is not in our map of types.
+            variableMap = new HashMap<String,Integer>();
+            _variableTypeMap.put(typeName, variableMap);
+            _variableTypeMaxIndex.put(typeName, 0);
+        }
+
+        // Look up the attribute by name in the HashTable.
+        String variableName = NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
+        Integer variableIndex = null;
+        if ((variableIndex = variableMap.get(variableName)) == null) {
+            // FIXME: is there a better way to update an element in a HashMap?
+            variableIndex = _variableTypeMaxIndex.get(typeName);
+            _variableTypeMaxIndex.put(typeName, variableIndex + 1);
+            variableMap.put(variableName, variableIndex);
+        }
+
+        return "variables_" + StringUtilities.sanitizeName(typeName) + "[" + variableIndex + "]";
+
     }
 
     /** Generate the wrapup procedure entry point.
@@ -1202,17 +1289,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // so that we know whether we've reached the linesPerMethod
             // Note that we don't reset lineNumer in the while loop.
             int lineNumber = 0;
-            boolean _generateInSubdirectory = false;
             String topPackageName = prefix + ".";
-            try {
-                if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
-                    _generateInSubdirectory = true;
-                    topPackageName = _sanitizedModelName + ".";
-                }
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(getComponent(), ex,
-                        "Failed to get the value of the generateInSubdirectory "
-                        + "parameter: " + generateInSubdirectory);
+            if (_generateInSubdirectory) {
+                topPackageName = _sanitizedModelName + ".";
             }
             _typeDeclarations = new StringBuffer("import "
                         + topPackageName + "Token;" + _eol);
@@ -2180,6 +2259,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /** Java import statements for Token, Array, etc.
      */   
     private StringBuffer _typeDeclarations;
+
+    /** A map from String type name to a HashMap of variable name to
+     * Array Index.  Used for large models to reduce the number
+     * of variables
+     */   
+    private HashMap<String, HashMap<String,Integer>> _variableTypeMap;
+
+    /** A map from String type name to a HashMap of variable name to
+     * Array Index.  Used for large models to reduce the number
+     * of variables
+     */   
+    private HashMap<String, Integer> _variableTypeMaxIndex;
 
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
