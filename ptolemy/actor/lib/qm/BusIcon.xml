@@ -52,12 +52,4 @@
             </property>
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="BUS">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -9.0]">
-        </property>
-    </property>
 </property>
