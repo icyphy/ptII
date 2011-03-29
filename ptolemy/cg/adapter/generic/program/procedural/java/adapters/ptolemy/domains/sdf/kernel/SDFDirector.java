@@ -382,8 +382,8 @@ public class SDFDirector
         String name = NamedProgramCodeGeneratorAdapter.generateName(target
                 .getComponent());
         // Generate variable declarations for referenced parameters.
-        if (((BooleanToken) codeGenerator.generateInSubdirectory.getToken()).booleanValue()) {
-            code.append(codeGenerator.comment("Java SDFDirector: generateInSubdirectory is true, skipping "
+        if (((BooleanToken) codeGenerator.variablesAsArrays.getToken()).booleanValue()) {
+            code.append(codeGenerator.comment("Java SDFDirector: variablesAsArrays is true, skipping "
                             + "generating " + name + "'s referenced parameter declarations."));
         } else {
             String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);

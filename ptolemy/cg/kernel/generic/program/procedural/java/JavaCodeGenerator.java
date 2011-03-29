@@ -848,7 +848,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
                         .getContainer());
-                if (!_generateInSubdirectory) {
+                if (!_variablesAsArrays) {
                     code.append("public static " + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
                 }
@@ -919,7 +919,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        if ( !_generateInSubdirectory
+        if ( !_variablesAsArrays
                 || !(attribute instanceof Variable)) {
             return NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
         }

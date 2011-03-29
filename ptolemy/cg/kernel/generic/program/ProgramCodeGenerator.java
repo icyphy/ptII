@@ -114,6 +114,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
 
+        variablesAsArrays = new Parameter(this, "variablesAsArrays");
+        variablesAsArrays.setTypeEquals(BaseType.BOOLEAN);
+        variablesAsArrays.setExpression("false");
+
         verbosity = new Parameter(this, "verbosity");
         verbosity.setTypeEquals(BaseType.INT);
         verbosity.setExpression("0");
@@ -158,6 +162,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public Parameter run;
 
+    /** If true, then generate code that puts variables into arrays;
+     *  otherwise, use standalone variables.  This parameter is used
+     *  for very large models that would otherwise generate code that
+     *  cannot be compiled by the Java compiler.  If this is the case,
+     *  then javac will produce an error message like "too many
+     *  constants". The default value is a parameter with the value
+     *  false.
+     */
+    public Parameter variablesAsArrays;
+
     /** Level of verbosity in comments and other output.  Levels
      *  greater than 0 will cause the code generator to generate more
      *  detailed information about the operation of the code
@@ -181,7 +195,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == verbosity) {
+        if (attribute == variablesAsArrays) {
+            if (((BooleanToken) variablesAsArrays.getToken()).booleanValue()) {
+                _variablesAsArrays = true;
+            } else {
+                _variablesAsArrays = false;
+            }
+        } else if (attribute == verbosity) {
             int verbosityLevel = ((IntToken) verbosity.getToken()).intValue();
             if (verbosityLevel == 1) {
                 addDebugListener(new StreamListener());
@@ -736,6 +756,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             { "-maximumLinesPerBlock", "<an integer, default: 2500)"}, 
             { "-measureTime", "       true|false (default: false)" },
             { "-run", "               true|false (default: true)" },
+            { "-variablesAsArrays", " true|false (default:false)"},
             { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
 
         String[][] parentOptions = super.updateCommandOptions();
@@ -1420,6 +1441,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  to this set will be included in the generated code.
      */
     protected Set<String> _typeFuncUsed = new HashSet<String>();
+
+    /** The value of the variableAsArrays parameter. */
+    protected boolean _variablesAsArrays;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
