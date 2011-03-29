@@ -636,6 +636,7 @@ ALLPACKAGES = \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
+	ptolemy.actor.lib.qm \
 	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \
 	ptolemy.caltrop \

@@ -325,7 +325,7 @@
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
     </entity>
-    <entity name="Bus" class="ptolemy.domains.de.lib.Bus">
+    <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[268.40087890625, 17.25]">
