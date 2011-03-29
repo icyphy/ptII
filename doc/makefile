@@ -221,6 +221,7 @@ COREPACKAGES = \
 	ptolemy.vergil.basic.layout \
 	ptolemy.vergil.basic.layout.kieler \
 	ptolemy.vergil.basic.layout.kieler.test.junit \
+	ptolemy.vergil.basic.test.junit \
 	ptolemy.vergil.debugger \
 	ptolemy.vergil.icon \
 	ptolemy.vergil.modal \
