@@ -30,8 +30,8 @@ package ptolemy.domains.ontologies.lib;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
@@ -175,10 +175,10 @@ public class UnitsConverter extends Transformer {
                 // not modify the values.
                 result = in;
             } else {
-                DoubleToken inputFactor = new DoubleToken(_inputUnitConcept.getUnitFactor());
-                DoubleToken inputOffset = new DoubleToken(_inputUnitConcept.getUnitOffset());
-                DoubleToken outputFactor = new DoubleToken(_outputUnitConcept.getUnitFactor());
-                DoubleToken outputOffset = new DoubleToken(_outputUnitConcept.getUnitOffset());
+                ScalarToken inputFactor = _inputUnitConcept.getUnitFactor();
+                ScalarToken inputOffset = _inputUnitConcept.getUnitOffset();
+                ScalarToken outputFactor = _outputUnitConcept.getUnitFactor();
+                ScalarToken outputOffset = _outputUnitConcept.getUnitOffset();
                 
                 Token valueSIUnits = null;
 

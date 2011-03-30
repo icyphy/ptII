@@ -28,8 +28,8 @@
  */
 package ptolemy.data.ontologies.lattice.unit;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
@@ -143,20 +143,20 @@ public class BaseUnitConcept extends UnitConcept {
         super(ontology, representative, unitInfo);
         
         Token unitFactor = unitInfo.get(unitFactorLabel);
-        if (unitFactor instanceof DoubleToken) {
-            _unitFactor = ((DoubleToken) unitFactor).doubleValue();
+        if (unitFactor instanceof ScalarToken) {
+            _unitFactor = (ScalarToken) unitFactor;
         } else {
             throw new IllegalActionException(this,
-                    "Invalid unit factor value (must be a double value): " +
+                    "Invalid unit factor value (must be a scalar value): " +
                     unitFactor);
         }
         
         Token unitOffset = unitInfo.get(unitOffsetLabel);
-        if (unitFactor instanceof DoubleToken) {
-            _unitOffset = ((DoubleToken) unitOffset).doubleValue();
+        if (unitFactor instanceof ScalarToken) {
+            _unitOffset = (ScalarToken) unitOffset;
         } else {
             throw new IllegalActionException(this,
-                    "Invalid unit offset value (must be a double value): " +
+                    "Invalid unit offset value (must be a scalar value): " +
                     unitOffset);
         }
     }

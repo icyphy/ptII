@@ -47,8 +47,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** A representative concept in the unitSystem ontology for a set of units for
  *  a specific physical dimension that is one of the 7 base dimensions.
  *  
- *  There are 7 base dimensions from which all other unit dimensions are derived. These are
- *  specified in the unitSystem ontology by 7 BaseUnitRepresentativeConcepts: 
+ *  There are 7 base dimensions from which all other unit dimensions are
+ *  derived. These can be specified in a units system ontology by 7
+ *  BaseUnitRepresentativeConcepts: 
  *  <ul>
  *  <li>Mass - SI unit kilograms (kg)
  *  <li>Position - SI unit meters (m)

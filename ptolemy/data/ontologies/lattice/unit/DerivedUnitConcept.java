@@ -38,6 +38,7 @@ import java.util.Map;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.ontologies.Concept;
@@ -267,9 +268,9 @@ public class DerivedUnitConcept extends UnitConcept {
             List<UnitConcept> unitsList = _componentUnits.get(dimension);
             for (UnitConcept unit : unitsList) {
                 if (dimensionExponent > 0) {
-                    _unitFactor *= unit._unitFactor;
+                    _unitFactor = (ScalarToken) _unitFactor.multiply(unit._unitFactor);
                 } else if (dimensionExponent < 0) {
-                    _unitFactor /= unit._unitFactor;
+                    _unitFactor = (ScalarToken) _unitFactor.divide(unit._unitFactor);
                 }
                 
                 // FIXME: What do we do for units that have an offset as well as a factor?
@@ -381,9 +382,9 @@ public class DerivedUnitConcept extends UnitConcept {
             throws IllegalActionException {
         Token unitFactorToken = derivedUnitRecord.get(unitFactorLabel);
         if (unitFactorToken == null) {
-            _unitFactor = 1.0;
-        } else if (unitFactorToken instanceof DoubleToken) {
-            _unitFactor = ((DoubleToken) unitFactorToken).doubleValue();
+            _unitFactor = DoubleToken.ONE;
+        } else if (unitFactorToken instanceof ScalarToken) {
+            _unitFactor = (ScalarToken) unitFactorToken;
         } else {
             throw new IllegalActionException (this, "Invalid unit conversion " +
             		"factor: " + unitFactorToken);
@@ -391,9 +392,9 @@ public class DerivedUnitConcept extends UnitConcept {
         
         Token unitOffsetToken = derivedUnitRecord.get(unitOffsetLabel);
         if (unitOffsetToken == null) {
-            _unitOffset = 0.0;
+            _unitOffset = DoubleToken.ZERO;
         } else if (unitOffsetToken instanceof DoubleToken) {
-            _unitOffset = ((DoubleToken) unitOffsetToken).doubleValue();
+            _unitOffset = (ScalarToken) unitOffsetToken;
         } else {
             throw new IllegalActionException (this, "Invalid unit conversion " +
             		"offset: " + unitOffsetToken);

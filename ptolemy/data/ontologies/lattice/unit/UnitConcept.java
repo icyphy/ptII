@@ -29,6 +29,7 @@
 package ptolemy.data.ontologies.lattice.unit;
 
 import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.ontologies.FlatTokenInfiniteConcept;
@@ -92,9 +93,9 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
     
     /** Return the multiplication factor that converts a value in this unit to the
      *  SI unit for this dimension.
-     *  @return The unit factor as a double value.
+     *  @return The unit factor as a scalar token.
      */
-    public double getUnitFactor() {
+    public ScalarToken getUnitFactor() {
         return _unitFactor;
     }
     
@@ -108,9 +109,9 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
     /** Return the offset factor that converts a value in this unit to the SI
      *  unit for this dimension. Currently this is only used for temperature
      *  unit conversions.
-     *  @return The unit offset as a double value.
+     *  @return The unit offset as a scalar token.
      */
-    public double getUnitOffset() {
+    public ScalarToken getUnitOffset() {
         return _unitOffset;
     }
     
@@ -161,12 +162,12 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
     /** The multiplication factor for converting this unit to the SI
      *  unit for this physical dimension.
      */
-    protected double _unitFactor;
+    protected ScalarToken _unitFactor;
     
     /** The offset factor for converting this unit to the SI
      *  unit for this physical dimension.
      */
-    protected double _unitOffset;
+    protected ScalarToken _unitOffset;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

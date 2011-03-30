@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ptolemy.data.ScalarToken;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptGraph;
@@ -174,13 +175,13 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
      */
     private Concept _findComposedUnitConcept(UnitConcept unit1, UnitConcept unit2) throws IllegalActionException {
         int exponentValue = 0;
-        double newUnitFactor = 0.0;
+        ScalarToken newUnitFactor = null;
         if (_isMultiply) {
             exponentValue = 1;
-            newUnitFactor = unit1.getUnitFactor() * unit2.getUnitFactor();
+            newUnitFactor = (ScalarToken) unit1.getUnitFactor().multiply(unit2.getUnitFactor());
         } else {
             exponentValue = -1;
-            newUnitFactor = unit1.getUnitFactor() / unit2.getUnitFactor();
+            newUnitFactor = (ScalarToken) unit1.getUnitFactor().divide(unit2.getUnitFactor());
         }        
         
         DimensionRepresentativeConcept unit1Dimension = unit1.getDimension();
@@ -245,14 +246,18 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
      *  @return The least upper bound of all the concepts in the list that
      *   have the correct unit factor, or the top of the lattice if none
      *   are found or the list is empty or null.
+     *  @throws IllegalActionException Thrown if there is a problem testing
+     *   whether the unit factors are sufficiently close to be considered
+     *   equal.
      */
-    private Concept _findCorrectUnitConcept(List<UnitConcept> concepts, double unitFactor) {
+    private Concept _findCorrectUnitConcept(List<UnitConcept> concepts,
+            ScalarToken unitFactor) throws IllegalActionException {
         if (concepts == null || concepts.isEmpty()) {
             return _topOfTheLattice;
         } else {
             List<UnitConcept> resultConcepts = new ArrayList<UnitConcept>(concepts);
             for (UnitConcept concept : concepts) {
-                if (concept.getUnitFactor() != unitFactor) {
+                if (!concept.getUnitFactor().isCloseTo(unitFactor).booleanValue()) {
                     resultConcepts.remove(concept);
                 }
             }
@@ -281,7 +286,7 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         
         List<UnitConcept> candidateConcepts = DerivedUnitConcept.findUnitByComponentMaps(inverseDimensionMap,
                 inverseComponentUnitsMap, _unitOntology);
-        double inverseFactor = 1.0/unit.getUnitFactor();
+        ScalarToken inverseFactor = (ScalarToken) unit.getUnitFactor().one().divide(unit.getUnitFactor());
         return _findCorrectUnitConcept(candidateConcepts, inverseFactor);
     }
     
