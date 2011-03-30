@@ -101,10 +101,16 @@ $(RAMP_CLASS):
 	    echo "Building cg/adapter classes so tests work"; \
 	    cd $(ROOT)/ptolemy/cg/adapter; $(MAKE) fast; \
         fi
+TESTGENERATOR_CLASS = $(ROOT)/ptolemy/cg/kernel/generic/test/TestGenericCodeGenerator.class
+$(TESTGENERATOR_CLASS):
+	if [ ! -f $(TESTGENERATOR_CLASS) ]; then \
+	    echo "Building cg/kernel/generic/test classes so tests work"; \
+	    cd $(ROOT)/ptolemy/cg/kernel/generic/test; $(MAKE) fast; \
+        fi
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) \
-		alljtests.tcl test_auto test_java_cg
+	$(TESTGENERATOR_CLASS) alljtests.tcl test_auto test_java_cg
 	$(JTCLSH) alljtests.tcl
 	-(cd $(ROOT)/ptolemy/actor/lib/test; $(MAKE) cleanFileWriter cleanRunCompositeActor)
 
