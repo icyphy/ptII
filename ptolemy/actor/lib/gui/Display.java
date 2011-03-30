@@ -29,6 +29,7 @@ package ptolemy.actor.lib.gui;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.lang.ref.WeakReference;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -516,7 +517,7 @@ public class Display extends AbstractPlaceableActor {
                 textEffigy.identifier.setExpression(getFullName());
 
                 _tableau = new DisplayWindowTableau(this, textEffigy, "tableau");
-                _frame = _tableau.frame;
+                _frame = _tableau.frame.get();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
                         "Error creating effigy and tableau");
@@ -648,18 +649,19 @@ public class Display extends AbstractPlaceableActor {
                 title = display.getFullName();
             }
 
-            frame = new TextEditor(title, null, display);
+            TextEditor editor = new TextEditor(title, null, display);
+            frame = new WeakReference<TextEditor>(editor);
 
             // Also need to set the title of this Tableau.
             setTitle(title);
 
             // Make sure that the effigy and the text area use the same
             // Document (so that they contain the same data).
-            frame.text.setDocument(container.getDocument());
-            setFrame(frame);
-            frame.setTableau(this);
+            editor.text.setDocument(container.getDocument());
+            setFrame(editor);
+            editor.setTableau(this);
         }
 
-        public TextEditor frame;
+        public WeakReference<TextEditor> frame;
     }
 }
