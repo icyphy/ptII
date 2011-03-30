@@ -208,6 +208,7 @@ Options that take values:
  -maximumLinesPerBlock <an integer, default: 2500)
  -measureTime        true|false (default: false)
  -run                true|false (default: true)
+ -variablesAsArrays  true|false (default:false)
  -verbosity          <an integer, try 1 or 10>, (default: 0)
 
 Boolean flags:
