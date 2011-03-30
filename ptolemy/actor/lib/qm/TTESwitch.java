@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import ptolemy.actor.IntermediateReceiver;
@@ -48,6 +49,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Token)} method is called, delays
@@ -150,6 +152,30 @@ public class TTESwitch extends ColoredQuantityManager {
             _receiverType.put(receiver, timeTriggered);
         }
         return intermediateReceiver;
+    }
+    
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new TTESwitch.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TTESwitch newObject = (TTESwitch) super.clone(workspace);
+        newObject._etTokens = new FIFOQueue();
+        newObject._ttTokens = new FIFOQueue();
+        newObject._nextTimeFree = null;
+        newObject._receivers = new Hashtable();
+        newObject._serviceTimeValue = 0.1;
+        newObject._receiverType = new Hashtable();
+        return newObject;
     }
 
     /** If the attribute is <i>serviceTime</i>, then ensure that the value
