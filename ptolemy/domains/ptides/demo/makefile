@@ -42,8 +42,7 @@ DIRS =		PtidesAirplaneFuelControl \
 		PtidesClockSynchronizationError \
 		PtidesNetworkLatencyTest \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
-		PowerManagementUnitSamplingWithoutCurrentLocalTime \
-		PtidesNetwork
+		PowerManagementUnitSamplingWithoutCurrentLocalTime
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -70,8 +69,7 @@ PTCLASSALLJARS = \
 	PtidesClockSynchronizationError/PtidesClockSynchronizationError.jar \
 	PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
-	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
-	PtidesNetwork/PtidesNetwork.jar
+	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
