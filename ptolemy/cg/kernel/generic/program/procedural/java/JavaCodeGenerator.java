@@ -825,13 +825,24 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
 
+            if (_multiportTypeMaxIndex != null) {
+                // See ProgramCodeGenerator.generatePortName() for where we set up the
+                // maps.
+                code.append(comment(1, "Arrays that contain multiports."));
+                for (Map.Entry<String, Integer> entry : _multiportTypeMaxIndex.entrySet()) {
+                    String typeName = entry.getKey();
+                    code.append(typeName + " multiports_"
+                            + StringUtilities.sanitizeName(typeName)
+                            + "[][] = new " + typeName + "[" + entry.getValue() + "][];" + _eol);
+                }
+            }
             if (_portTypeMaxIndex != null) {
                 code.append(comment(1, "Arrays that contain ports."));
                 for (Map.Entry<String, Integer> entry : _portTypeMaxIndex.entrySet()) {
                     String typeName = entry.getKey();
                     code.append(typeName + " ports_"
                             + StringUtilities.sanitizeName(typeName)
-                            + "[][] = new " + typeName + "[" + entry.getValue() + "][];" + _eol);
+                            + "[] = new " + typeName + "[" + entry.getValue() + "];" + _eol);
                 }
             }
         }
@@ -1172,15 +1183,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     line = bufferedReader.readLine();
                     //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
 
-                    if (i > 10000000) {
-                        new InternalErrorException("Internal Error: looped more than 10000000 lines?"
+                    if (i > 100000000) {
+                        throw new InternalErrorException("Internal Error: looped more than 10000000 lines?"
                                 + " This can happen if curly brackets are not on lines"
-                                + " by themselves."
+                                + " by themselves or if there /* */ comments that are not"
+                                + " on lines by themselves."
                                 + " ifCount: " + ifCount
                                 + " openBracketCount: " + openBracketCount
                                 + " commentCount: " + commentCount
                                 + " tryCount: " + tryCount
-			        + " line:\n" + line).printStackTrace();
+			        + " line:\n" + line);
                     }
                     if (line != null) {
                         body.append(line + _eol);

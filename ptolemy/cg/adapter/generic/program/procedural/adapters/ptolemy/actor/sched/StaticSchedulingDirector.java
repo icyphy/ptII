@@ -564,8 +564,7 @@ public class StaticSchedulingDirector extends Director {
                         if (i != 0) {
                             result.append(" = ");
                         }
-                        result.append("/* SSD getReference1 */"
-                                + getTypeConvertReference(sourceChannel));
+                        result.append(getTypeConvertReference(sourceChannel));
 
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
@@ -598,8 +597,7 @@ public class StaticSchedulingDirector extends Director {
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append("/* SSD getReference2 */"
-                            + generatePortName((TypedIOPort)sinkPort));
+                    result.append(generatePortName((TypedIOPort)sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");

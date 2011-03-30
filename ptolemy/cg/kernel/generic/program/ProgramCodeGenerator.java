@@ -438,11 +438,15 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /**
-     * Generate sanitized name for the given named object. Remove all
-     * underscores to avoid conflicts with systems functions.
+     * Generate sanitized name for the given port.
+     * This method is used when the {@link #variablesAsArrays} 
+     * parameter is true.
+     * See {@link ptolemy/cg/kernel/generic/program/procedural/java/JavaCodeGenerator#applyTypeConvertCode()}
+     * for where we generate the declarations the use the maps.
+     * See {@link ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector#generateInitializeCode()} for where the arrays are initialized.
      * @param port The port for which the name is generated.
-     * @param portName The name of the port.
-     * @return The sanitized name.
+     * @param portName The sanitized name of the port.
+     * @return The name of the port as an array element.
      */
     public String generatePortName(TypedIOPort port, String portName) {
 
@@ -462,8 +466,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // that is used at code generation time to map from
         // names to the index in the corresponding type array.
         
-        if (_portTypeMap == null) {
-            // A map from String type name to a HashMap of port name to Array Index.
+        if (_multiportTypeMap == null) {
+            // Initialize the maps.
+
+            // A map from String type name to a HashMap of multiport
+            // name to array index.
+            _multiportTypeMap = new HashMap<String, HashMap<String, Integer>>();
+            _multiportTypeMaxIndex = new HashMap<String, Integer>();
+
+            // A map from String type name to a HashMap of port name
+            // to array index.
             _portTypeMap = new HashMap<String, HashMap<String, Integer>>();
             _portTypeMaxIndex = new HashMap<String, Integer>();
         }
@@ -471,25 +483,40 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // Get the type.
         String typeName = targetType(port.getType());
 
+        // Use one set of maps for multiports, the other for ports.
+        // The reason is that the types are different
+        HashMap<String, HashMap<String, Integer>> typeMap = _multiportTypeMap;
+        HashMap<String, Integer> typeMaxIndex = _multiportTypeMaxIndex;
+        if (!port.isMultiport()) {
+            typeMap = _portTypeMap;
+            typeMaxIndex = _portTypeMaxIndex;
+        }
+
         // Look up the type in our HashTable of types.
         HashMap<String,Integer> portMap = null;
-        if ((portMap = _portTypeMap.get(typeName)) == null ) {
+        if ((portMap = typeMap.get(typeName)) == null ) {
             // A type that is not in our map of types.
             portMap = new HashMap<String,Integer>();
-            _portTypeMap.put(typeName, portMap);
-            _portTypeMaxIndex.put(typeName, 0);
+            typeMap.put(typeName, portMap);
+            typeMaxIndex.put(typeName, 0);
         }
 
         // Look up the attribute by name in the HashTable.
         Integer portIndex = null;
         if ((portIndex = portMap.get(portName)) == null) {
             // FIXME: is there a better way to update an element in a HashMap?
-            portIndex = _portTypeMaxIndex.get(typeName);
-            _portTypeMaxIndex.put(typeName, portIndex + 1);
+            portIndex = typeMaxIndex.get(typeName);
+            typeMaxIndex.put(typeName, portIndex + 1);
             portMap.put(portName, portIndex);
         }
 
-        String results = "ports_" + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
+        String results = null;
+        if (port.isMultiport()) {
+            results = "multiports_" + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
+        } else {
+            results = "ports_" + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
+
+        }
         return results;
     }
 
@@ -1474,6 +1501,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected Set<Parameter> _modifiedVariables = new HashSet<Parameter>();
 
+    /** A map from String type name to a HashMap of multiport name to
+     * Array index.  Used for large models to reduce the number
+     * of variables.
+     */   
+    protected HashMap<String, HashMap<String,Integer>> _multiportTypeMap;
+
+    /** A map from String type name to a HashMap of multiport name to
+     * Array Index.  Used for large models to reduce the number
+     * of variables.
+     */   
+    protected HashMap<String, Integer> _multiportTypeMaxIndex;
+
     /** A HashSet that contains all codegen types referenced in the model.
      * When the codegen kernel processes a $new() macro, it would add the
      * codegen type to this set. Codegen types are supported by the code
@@ -1481,13 +1520,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected HashSet<String> _newTypesUsed = new HashSet<String>();
 
-    /** A map from String type name to a HashMap of variable name to
+    /** A map from String type name to a HashMap of port name to
      * Array index.  Used for large models to reduce the number
      * of variables.
      */   
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap;
 
-    /** A map from String type name to a HashMap of variable name to
+    /** A map from String type name to a HashMap of port name to
      * Array Index.  Used for large models to reduce the number
      * of variables.
      */   
