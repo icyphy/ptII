@@ -29,6 +29,7 @@ package ptolemy.kernel;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -819,7 +820,10 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.getReadAccess();
 
             if (_workspace.getVersion() == _entityListVersion) {
-                return _entityListCache;
+                List entityList = _entityListCache.get();
+                if (entityList != null) {
+                    return entityList;
+                }
             }
 
             List result = new LinkedList();
@@ -837,7 +841,7 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
 
-                _entityListCache = result;
+                _entityListCache = new WeakReference<List>(result);
                 _entityListVersion = _workspace.getVersion();
             }
 
@@ -2802,7 +2806,7 @@ public class CompositeEntity extends ComponentEntity {
             + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n";
 
     /** Cache of entity list. */
-    private transient List _entityListCache;
+    private transient WeakReference<List> _entityListCache;
 
     /** Workspace version for cache. */
     private transient long _entityListVersion = -1L;
