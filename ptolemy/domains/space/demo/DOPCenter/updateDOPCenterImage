@@ -22,7 +22,9 @@
 
 $PTII/bin/ptinvoke ptolemy.vergil.basic.ExportImage png -run $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 
+# Don't add a last updated line because it changes the
+# file every time which ends up with a commit and generating email.
 # Add a "Last Update Line"
-mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
+#mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
 
 svn commit -m "Automatic update" DOPCenter.png
