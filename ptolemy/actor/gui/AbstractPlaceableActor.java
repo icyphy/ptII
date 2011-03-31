@@ -30,6 +30,8 @@ package ptolemy.actor.gui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -98,7 +100,21 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
      *  @param frame The associated frame.
      */
     public void setFrame(JFrame frame) {
+        
+        if (_frame != null) {
+            _frame.removeWindowListener(_windowClosingAdapter);
+        }
+        
+        if (frame == null) {
+            _frame = null;
+            return;
+        }
+        
         _frame = frame;
+
+        _windowClosingAdapter = new WindowClosingAdapter();
+        frame.addWindowListener(_windowClosingAdapter);
+    
         _windowProperties.setProperties(_frame);
 
         // Regrettably, since setSize() in swing doesn't actually
@@ -113,6 +129,11 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /** Free up memory when closing. */
+    protected void cleanUp() {
+        setFrame(null);
+    }
 
     /** Write a MoML description of the contents of this object. This
      *  overrides the base class to make sure that the current frame
@@ -152,4 +173,17 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
 
     /** A specification for the window properties of the frame. */
     protected WindowPropertiesAttribute _windowProperties;
+    
+    /** A reference to the listener for removal purposes. */
+    protected WindowClosingAdapter _windowClosingAdapter;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** Listener for windowClosing action. */
+    class WindowClosingAdapter extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
+            cleanUp();
+        }
+    }
 }

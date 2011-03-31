@@ -489,6 +489,13 @@ public class Display extends AbstractPlaceableActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /** Free up memory when closing. */
+    protected void cleanUp() {
+        _tableau = null;
+        place(null);
+        super.cleanUp();
+    }
 
     /** Open the display window if it has not been opened.
      *  @exception IllegalActionException If there is a problem creating
