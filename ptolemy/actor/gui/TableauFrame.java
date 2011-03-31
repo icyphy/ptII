@@ -707,8 +707,12 @@ public class TableauFrame extends Top {
         
         // The size attribute is holding a reference to this frame
         // with an attached listener.  Free the reference so this
-        // frame can be garbage collected.
-        _tableau.size.setSize(null);
+        // frame can be garbage collected.  Also, null the reference
+        // to the tableau that created this frame
+        if (_tableau != null) {
+            _tableau.size.setSize(null);
+            setTableau(null);
+        }
         
         super.dispose();
     }
