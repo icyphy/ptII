@@ -352,7 +352,7 @@ public class Entity extends InstantiableNamedObj {
     }
 
     /** Get all relations that are linked to ports contained by this
-     *  entity. Note that a relation may be listed more once.
+     *  entity. Note that a relation may be listed more than once.
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of Relation objects.
      */
@@ -383,7 +383,7 @@ public class Entity extends InstantiableNamedObj {
     }
 
     /** Enumerate relations that are linked to ports contained by this
-     *  entity. Note that a relation may be listed more once.
+     *  entity. Note that a relation may be listed more than once.
      *  This method is read-synchronized on the workspace.
      *  @deprecated Use linkedRelationList() instead.
      *  @return An enumeration of Relation objects.
