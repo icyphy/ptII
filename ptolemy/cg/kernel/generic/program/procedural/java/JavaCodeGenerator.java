@@ -825,18 +825,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
 
-            if (_multiportTypeMaxIndex != null) {
+            if (_portTypeMaxIndex != null) {
                 // See ProgramCodeGenerator.generatePortName() for where we set up the
                 // maps.
-                code.append(comment(1, "Arrays that contain multiports."));
-                for (Map.Entry<String, Integer> entry : _multiportTypeMaxIndex.entrySet()) {
-                    String typeName = entry.getKey();
-                    code.append(typeName + " multiports_"
-                            + StringUtilities.sanitizeName(typeName)
-                            + "[][] = new " + typeName + "[" + entry.getValue() + "][];" + _eol);
-                }
-            }
-            if (_portTypeMaxIndex != null) {
                 code.append(comment(1, "Arrays that contain ports."));
                 for (Map.Entry<String, Integer> entry : _portTypeMaxIndex.entrySet()) {
                     String typeName = entry.getKey();
@@ -845,6 +836,27 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + "[] = new " + typeName + "[" + entry.getValue() + "];" + _eol);
                 }
             }
+
+            if (_portTypeMaxIndex2 != null) {
+                code.append(comment(1, "Arrays that contain multiports w/ buffer == 1 or ports with buffers > 1."));
+                for (Map.Entry<String, Integer> entry : _portTypeMaxIndex2.entrySet()) {
+                    String typeName = entry.getKey();
+                    code.append(typeName + " ports2_"
+                            + StringUtilities.sanitizeName(typeName)
+                            + "[][] = new " + typeName + "[" + entry.getValue() + "][];" + _eol);
+                }
+            }
+
+            if (_portTypeMaxIndex3 != null) {
+                code.append(comment(1, "Arrays that contain multiports with buffers > 1."));
+                for (Map.Entry<String, Integer> entry : _portTypeMaxIndex3.entrySet()) {
+                    String typeName = entry.getKey();
+                    code.append(typeName + " ports3_"
+                            + StringUtilities.sanitizeName(typeName)
+                            + "[][][] = new " + typeName + "[" + entry.getValue() + "][][];" + _eol);
+                }
+            }
+
         }
         return code.toString();
     }

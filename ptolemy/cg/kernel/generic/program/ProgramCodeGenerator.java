@@ -446,9 +446,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * See {@link ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector#generateInitializeCode()} for where the arrays are initialized.
      * @param port The port for which the name is generated.
      * @param portName The sanitized name of the port.
+     * @param bufferSize The size of the port buffer.
      * @return The name of the port as an array element.
      */
-    public String generatePortName(TypedIOPort port, String portName) {
+    public String generatePortName(TypedIOPort port, String portName, int bufferSize) {
 
         // Generate the port name as an element in array.
         // This is done to make the generate java file easier to compile.
@@ -466,30 +467,59 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // that is used at code generation time to map from
         // names to the index in the corresponding type array.
         
-        if (_multiportTypeMap == null) {
-            // Initialize the maps.
 
-            // A map from String type name to a HashMap of multiport
-            // name to array index.
-            _multiportTypeMap = new HashMap<String, HashMap<String, Integer>>();
-            _multiportTypeMaxIndex = new HashMap<String, Integer>();
-
-            // A map from String type name to a HashMap of port name
-            // to array index.
-            _portTypeMap = new HashMap<String, HashMap<String, Integer>>();
-            _portTypeMaxIndex = new HashMap<String, Integer>();
-        }
-
-        // Get the type.
         String typeName = targetType(port.getType());
 
-        // Use one set of maps for multiports, the other for ports.
-        // The reason is that the types are different
-        HashMap<String, HashMap<String, Integer>> typeMap = _multiportTypeMap;
-        HashMap<String, Integer> typeMaxIndex = _multiportTypeMaxIndex;
-        if (!port.isMultiport()) {
+        // We will generate code that uses three different arrays.
+        // The arrays differ in the number of dimensions.
+        // Here, the arrays are represented as maps.
+        // Determine which map to use.  We delay instantiation
+        // until we need the map so that we don't generate unnecessary
+        // code.
+
+        HashMap<String, HashMap<String, Integer>> typeMap = null;
+        HashMap<String, Integer> typeMaxIndex = null;
+        String arrayName = null;
+
+        if (!port.isMultiport() && bufferSize <= 1) {
+            if (_portTypeMap == null) {
+                // A map from String type name to a HashMap of port
+                // name to array index.
+                _portTypeMap = new HashMap<String, HashMap<String, Integer>>();
+                _portTypeMaxIndex = new HashMap<String, Integer>();
+            }
+            arrayName = "ports_";
             typeMap = _portTypeMap;
             typeMaxIndex = _portTypeMaxIndex;
+        } else if ((port.isMultiport() && bufferSize <= 1) 
+                || (!port.isMultiport() && bufferSize > 1)) {
+            // A 2D array is needed.
+            if (_portTypeMap2 == null) {
+                // A map from String type name to a HashMap of multiport name
+                // or port with a buffersize greater than 1 to array index.
+                _portTypeMap2 = new HashMap<String, HashMap<String, Integer>>();
+                _portTypeMaxIndex2 = new HashMap<String, Integer>();
+            }
+            arrayName = "ports2_";
+            typeMap = _portTypeMap2;
+            typeMaxIndex = _portTypeMaxIndex2;
+        } else if (port.isMultiport() && bufferSize > 1) {
+            // A 3D array is needed.
+            if (_portTypeMap3 == null) {
+                // A map from String type name to a HashMap of multiport name
+                // with a buffersize greater than 1 to array index.
+                _portTypeMap3 = new HashMap<String, HashMap<String, Integer>>();
+                _portTypeMaxIndex3 = new HashMap<String, Integer>();
+            }
+            arrayName = "ports3_";
+            typeMap = _portTypeMap3;
+            typeMaxIndex = _portTypeMaxIndex3;
+        } else {
+            throw new InternalErrorException(this, null,
+                    "This should not be happening. "
+                    + "Port " + port.getFullName()
+                    + " isMultiport(): " + port.isMultiport()
+                    + " buffer size: " + bufferSize);
         }
 
         // Look up the type in our HashTable of types.
@@ -510,14 +540,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             portMap.put(portName, portIndex);
         }
 
-        String results = null;
-        if (port.isMultiport()) {
-            results = "multiports_" + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
-        } else {
-            results = "ports_" + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
-
-        }
-        return results;
+        return arrayName + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -1501,18 +1524,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected Set<Parameter> _modifiedVariables = new HashSet<Parameter>();
 
-    /** A map from String type name to a HashMap of multiport name to
-     * Array index.  Used for large models to reduce the number
-     * of variables.
-     */   
-    protected HashMap<String, HashMap<String,Integer>> _multiportTypeMap;
-
-    /** A map from String type name to a HashMap of multiport name to
-     * Array Index.  Used for large models to reduce the number
-     * of variables.
-     */   
-    protected HashMap<String, Integer> _multiportTypeMaxIndex;
-
     /** A HashSet that contains all codegen types referenced in the model.
      * When the codegen kernel processes a $new() macro, it would add the
      * codegen type to this set. Codegen types are supported by the code
@@ -1520,17 +1531,53 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected HashSet<String> _newTypesUsed = new HashSet<String>();
 
-    /** A map from String type name to a HashMap of port name to
-     * Array index.  Used for large models to reduce the number
-     * of variables.
+    /** A map from String type name to a HashMap of port name to an
+     *  array index.  Ports with a buffer size of 1 end up in this
+     *  array.  The {@see #variablesAsArray} parameter enables use of
+     *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, HashMap<String,Integer>> _portTypeMap;
 
-    /** A map from String type name to a HashMap of port name to
-     * Array Index.  Used for large models to reduce the number
-     * of variables.
+    /** A map from String type name to a HashMap of port name to Array
+     *  Index.  The {@see #variablesAsArray} parameter enables use of
+     *  this map to reduce the number of variables generated.
      */   
     protected HashMap<String, Integer> _portTypeMaxIndex;
+
+
+    /** A map from String type name to a HashMap of multiport or port
+     *  to an array index.  Multiports with a buffersize of 1 or
+     *  ports with a buffer size greater than 1 end up in this array.
+     *  The {@see #variablesAsArray} parameter enables use of
+     *  this map to reduce the number of variables generated.
+     */   
+    protected HashMap<String, HashMap<String,Integer>> _portTypeMap2;
+
+    /** A map from String type name to a HashMap of multiport or port
+     *  to the maximum number in the corresponding array.
+     *  Multiports with a buffersize of 1 or ports with a buffer size
+     *  greater than 1 end up in this array.  
+     *  The {@see #variablesAsArray} parameter enables use of
+     *  this map to reduce the number of variables generated.
+     */   
+    protected HashMap<String, Integer> _portTypeMaxIndex2;
+
+    /** A map from String type name to a HashMap of multiports to an
+     *  array index.  Multiports with a buffer size greater than 1 end
+     *  up in this array.  
+     *  The {@see #variablesAsArray} parameter enables use of
+     *  this map to reduce the number of variables generated.
+     */   
+    protected HashMap<String, HashMap<String,Integer>> _portTypeMap3;
+
+    /** A map from String type name to a HashMap of multiports to an
+     *  to the maximum number in the corresponding array.
+     *  Multiports with a buffer size greater than 1 end up in this
+     *  array.  
+     *  The {@see #variablesAsArray} parameter enables use of
+     *  this map to reduce the number of variables generated.
+     */   
+    protected HashMap<String, Integer> _portTypeMaxIndex3;
 
     /** A list of the primitive types supported by the code generator.
      */

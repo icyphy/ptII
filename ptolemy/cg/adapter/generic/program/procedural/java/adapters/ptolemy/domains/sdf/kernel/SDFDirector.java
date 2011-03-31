@@ -564,14 +564,16 @@ public class SDFDirector
         if (port.isMultiport()) {
             if (!variablesAsArrays) {
                 code.append("[]");
-            }
-            if (bufferSize > 1) {
-                code.append("[]");
+                if (bufferSize > 1) {
+                    code.append("[]");
+                }
             }
             code.append(" = new " + targetType(port.getType()));
         } else {
             if (bufferSize > 1) {
-                code.append("[]");
+                if (!variablesAsArrays) {
+                    code.append("[]");
+                }
                 code.append(" = new " + targetType(port.getType()));
             } else {
                 //code.append(" = ");

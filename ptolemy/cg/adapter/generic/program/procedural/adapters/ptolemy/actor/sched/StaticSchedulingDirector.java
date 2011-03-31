@@ -331,7 +331,7 @@ public class StaticSchedulingDirector extends Director {
      * @param port The port for which the name is generated.
      * @return The sanitized name.
      */
-    public String generatePortName(TypedIOPort port) {
+    public String generatePortName(TypedIOPort port) throws IllegalActionException {
 
         // FIXME: note that if we have a port that has a character that
         // is santized away, then we will run into problems if we try to
@@ -350,15 +350,13 @@ public class StaticSchedulingDirector extends Director {
             portName = portName.substring(1, portName.length());
         }
         portName = TemplateParser.escapePortName(portName);
-        try {
-            if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
-                return portName;
-            }
-        } catch (IllegalActionException ex) {
-             throw new InternalErrorException(port, ex, "Failed to read variablesAsArray.");
+
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
+            return portName;
         }
+
         // Get the name of the port that refers to the array of all ports.
-        return getCodeGenerator().generatePortName(port, portName);
+        return getCodeGenerator().generatePortName(port, portName, _ports.getBufferSize(port));
     }
 
     /** Generate the preinitialize code for this director.
@@ -815,7 +813,7 @@ public class StaticSchedulingDirector extends Director {
      *  dynamically in the generated code.
      */
     private /*static*/ String _generateChannelOffset(IOPort port, boolean isWrite,
-            String channelString) {
+            String channelString) throws IllegalActionException {
         // By default, return the channel offset for the first channel.
         if (channelString.equals("")) {
             channelString = "0";
@@ -829,7 +827,8 @@ public class StaticSchedulingDirector extends Director {
     }
 
     private /*static*/ String _generatePortReference(TypedIOPort port,
-            String[] channelAndOffset, boolean isWrite) {
+            String[] channelAndOffset, boolean isWrite)
+            throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         String channelOffset;
