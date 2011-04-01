@@ -93,6 +93,7 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         
         _componentDimensions = new HashMap<DimensionRepresentativeConcept,
                                             Integer>();
+        _componentBaseDimensions = null;
         _dimensionNameToReferenceName = new HashMap<String, String>();
     }
     
@@ -107,8 +108,19 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Return the component base dimensions map for this derived unit dimension.
+     *  @return The map of component base dimensions and their exponents for this
+     *   derived dimension.
+     *  @throws IllegalActionException Thrown if there is a problem getting
+     *   the component base dimensions map.
+     */
+    public Map<BaseDimensionRepresentativeConcept, Integer> getComponentBaseDimensions() throws IllegalActionException {
+        _updateDimensionInformation();
+        return new HashMap<BaseDimensionRepresentativeConcept, Integer>(_componentBaseDimensions);
+    }
+    
     /** Return the component dimensions map for this derived unit dimension.
-     *  @return The map of component units and their exponents for this
+     *  @return The map of component dimensions and their exponents for this
      *   derived dimension.
      *  @throws IllegalActionException Thrown if there is a problem getting
      *   the component dimensions map.
@@ -118,7 +130,7 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         _updateDimensionInformation();
         return new HashMap<DimensionRepresentativeConcept, Integer>(_componentDimensions);
     }
-    
+
     /** Return a list of all the possible units contained in this derived
      *  dimension.
      *  @return The list of all DerivedUnitConcepts that have this
@@ -137,13 +149,12 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
                 try {
                     String unitConceptString = getName() + "_" + unitParameter.getName();
                     Concept unitConcept = getOntology().getConceptByString(unitConceptString);
-                    if (unitConcept instanceof DerivedUnitConcept) {
+                    if (unitConcept instanceof DerivedUnitConcept &&
+                            this.equals(((DerivedUnitConcept) unitConcept).getDimension())) {
                         result.add((DerivedUnitConcept) unitConcept);
                     }                    
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex, "Error getting unit concepts.");
-                    // Do nothing since it was an invalid concept that should
-                    // not be added to the list.
                 }
             }
         }        
@@ -488,6 +499,8 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
             ArrayToken dimensionArrayToken = (ArrayToken) dimensionArray.getToken();
             if (dimensionArrayToken != null) {
                 _setUnitDimensions(dimensionArrayToken);
+                _componentBaseDimensions =
+                    deriveComponentBaseDimensionsMap(_componentDimensions);
                 _dimensionVersion = workspace().getVersion();
             }
         }
@@ -495,6 +508,12 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The map of base component dimensions to the exponents that comprises
+     *  this derived dimension which is derived from the map of component
+     *  dimensions.
+     */
+    private Map<BaseDimensionRepresentativeConcept, Integer> _componentBaseDimensions;
     
     /** The map of component dimensions to the exponents that comprises
      *  this derived dimension.

@@ -227,47 +227,14 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
             List<UnitConcept> unit1List = new ArrayList<UnitConcept>();
             unit1List.add(unit1);
             componentUnitsMap.put(unit1Dimension, unit1List);
-        }        
+        }
         
-        // Get a list of potential concepts that match the dimension map and component units map.
-        List<UnitConcept> candidateConcepts = DerivedUnitConcept.findUnitByComponentMaps(dimensionMap, componentUnitsMap, _unitOntology);
-        
-        // To find the correct concept, the conversion factors must also be checked.
-        return _findCorrectUnitConcept(candidateConcepts, newUnitFactor);
+        return DerivedUnitConcept.findUnitByComponentMapsAndUnitFactor(
+                dimensionMap, componentUnitsMap, newUnitFactor,
+                _unitOntology);
     }
     
-    /** From the list of UnitConcepts return the least upper bound of all the
-     *  units that have the given unit conversion factor, or the top of the
-     *  lattice if the list is null or empty. Normally there should only be
-     *  one concept in the list that matches the conversion factor.
-     *  @param concepts The list of UnitConcepts to search.
-     *  @param unitFactor The conversion unit factor that must match the
-     *   UnitConcepts in the list.
-     *  @return The least upper bound of all the concepts in the list that
-     *   have the correct unit factor, or the top of the lattice if none
-     *   are found or the list is empty or null.
-     *  @throws IllegalActionException Thrown if there is a problem testing
-     *   whether the unit factors are sufficiently close to be considered
-     *   equal.
-     */
-    private Concept _findCorrectUnitConcept(List<UnitConcept> concepts,
-            ScalarToken unitFactor) throws IllegalActionException {
-        if (concepts == null || concepts.isEmpty()) {
-            return _topOfTheLattice;
-        } else {
-            List<UnitConcept> resultConcepts = new ArrayList<UnitConcept>(concepts);
-            for (UnitConcept concept : concepts) {
-                if (!concept.getUnitFactor().isCloseTo(unitFactor).booleanValue()) {
-                    resultConcepts.remove(concept);
-                }
-            }
-            if (resultConcepts.isEmpty()) {
-                return _topOfTheLattice;
-            } else {
-                return _unitOntology.getConceptGraph().leastUpperBound(resultConcepts.toArray());
-            }
-        }
-    }
+
     
     /** Find the UnitConcept that represents the multiplicative inverse of
      *  the given UnitConcept. If none exists, return the top of the lattice.
@@ -284,10 +251,10 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         Map<DimensionRepresentativeConcept, List<UnitConcept>> inverseComponentUnitsMap =
             _createNewComponentUnitsMap(unit);
         
-        List<UnitConcept> candidateConcepts = DerivedUnitConcept.findUnitByComponentMaps(inverseDimensionMap,
-                inverseComponentUnitsMap, _unitOntology);
         ScalarToken inverseFactor = (ScalarToken) unit.getUnitFactor().one().divide(unit.getUnitFactor());
-        return _findCorrectUnitConcept(candidateConcepts, inverseFactor);
+        return DerivedUnitConcept.findUnitByComponentMapsAndUnitFactor(
+                inverseDimensionMap, inverseComponentUnitsMap, inverseFactor,
+                _unitOntology);
     }
     
     /** Return the least upper bound of all the dimensionless concepts in the
