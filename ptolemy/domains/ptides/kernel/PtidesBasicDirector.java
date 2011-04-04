@@ -616,6 +616,18 @@ public class PtidesBasicDirector extends DEDirector {
         return new Tag(_currentTime, _microstep);
     }
 
+    /** Return the assumed platform synchronization error bound of this platform.
+     *  @see #assumedPlatformTimeSynchronizationErrorBound
+     *  @return the assumed synchronization error bound.
+     *  @exception IllegalActionException If assumedPlatformTimeSynchronizationErrorBound
+     *   parameter does not contain a valid token.
+     */
+    public double getAssumedSynchronizationErrorBound()
+            throws IllegalActionException {
+        return ((DoubleToken) assumedPlatformTimeSynchronizationErrorBound
+                .getToken()).doubleValue();
+    }
+
     /** Get the simulaed platform physical time of the environment, which is the oracle
      *  physical time offset by the clock synchronization error due to clock
      *  drift.
@@ -669,18 +681,6 @@ public class PtidesBasicDirector extends DEDirector {
                     + "time at the current oracle time cannot be retrieved.");
         }
         return tag;
-    }
-
-    /** Return the assumed platform synchronization error bound of this platform.
-     *  @see #assumedPlatformTimeSynchronizationErrorBound
-     *  @return the assumed synchronization error bound.
-     *  @exception IllegalActionException If assumedPlatformTimeSynchronizationErrorBound
-     *   parameter does not contain a valid token.
-     */
-    public double getAssumedSynchronizationErrorBound()
-            throws IllegalActionException {
-        return ((DoubleToken) assumedPlatformTimeSynchronizationErrorBound
-                .getToken()).doubleValue();
     }
 
     /** Print out debugging information if we are in debugging mode and call
