@@ -425,10 +425,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  <p> Note this
      *  parameter is specially used for the Ptides directors, and
      *  is different from the animateExecution parameter in the
-     *  Ptolemy debug menu. While the animateExeuction parameter
+     *  Ptolemy debug menu. While the animateExecution parameter
      *  in the debug menu animates for the duration of an actor
      *  firing in wall clock time, this parameter causes the
-     *  director to animate for the during of simulated physical
+     *  director to animate for the duration of simulated physical
      *  time, which is the time of the enclosing DE director.</p>
      *  <p> Also note this parameter must be set with conjunction
      *  of the <i>synchronizedToRealTime</i> parameter of the
@@ -438,7 +438,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Store the estimated platform time synchronization error bound in the
      *  platform governed by
-     *  this Ptides director.  In a distributed Ptides environment,
+     *  this Ptides director. In a distributed Ptides environment,
      *  each distributed platform is modeled by a composite actor that
      *  is governed by a Ptides director (or its subclass). In
      *  reality, these platforms will have (physical) time
@@ -454,7 +454,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public static final int EXECUTION_TIMER = 0;
 
-    /** The initial clock drift of the execution clock. The type of this
+    /** The initial clock drift rate of the execution clock. The type of this
      *  clock drift is a double, and the default value is 1.0, indicating the
      *  execution clock runs at the same rate as the oracle clock. The oracle
      *  clock is modeled by the model time of the enclosing DE director.
@@ -467,7 +467,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  affecting the deterministic behavior of the system. This
      *  could make the safe-to-process analysis simpler, while
      *  sacrificing concurrency of event execution in other parts
-     *  of the system.
+     *  of the model.
      */
     public Parameter forceActorsToProcessEventsInTimestampOrder;
 
@@ -481,7 +481,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** The initial platform time synchronization error. This parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
-     *  in that the other parameter parameter is the estimated bound, while
+     *  in that the other parameter is the estimated bound, while
      *  this parameter stores the current synchronization error. This error
      *  could be greater than the assumed error bound. If this happens, the
      *  safe-to-process analysis could result in the processing of an unsafe
@@ -499,7 +499,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter initialPlatformSynchronizationError;
 
-    /** The initial clock drift of the platform clock. The type of this
+    /** The initial clock drift rate of the platform clock. The type of this
      *  clock drift is a double, and the default value is 1.0, indicating the
      *  platform clock runs at the same rate as the oracle clock. The oracle
      *  clock is modeled by the model time of the enclosing DE director.
@@ -513,11 +513,14 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public static final int PLATFORM_TIMER = 1;
 
-    /** A Parameter representing the bound on the simulated scheduling overhead time.
-     *  In real-time programs, it takes time for the scheduler to
-     *  schedule a particular event processing. While simulating the
+    /** A Parameter representing the bound on the simulated scheduling
+     *  overhead time. In real-time programs, it takes time for the scheduler
+     *  to schedule a particular event processing. While simulating the
      *  passage of physical time, this Parameter
-     *  is used to capture that scheduling overhead.
+     *  is used to capture that scheduling overhead. Note, though this
+     *  parameter gives the bound on scheduling overhead, in simulation,
+     *  we use the value of this parameter to simulate the actual
+     *  scheduling overhead.
      */
     public Parameter schedulerExecutionTimeBound;
 
@@ -751,13 +754,6 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** Return whether this director is at the top level.
-     *  @return true if this director is at the top level.
-     */
-    public boolean isTopLevel() {
-        return !isEmbedded();
-    }
-
     /** Return a new receiver of the type {@link PtidesBasicReceiver}.
      *  @return A new PtidesBasicReceiver.
      */
@@ -811,10 +807,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  Call the preinitialize() method in the super class. The superclass
      *  instantiates an event queue structure, however, here a
      *  PtidesListEventQueue structure is instantiated in its place.
-     *  We do this because a Ptides scheduler not only need to access the
-     *  first event in the event queue, but all other events, in sorted order.
-     *  Also, the delayOffset used in the
-     *  safe-to-process analysis is calculated. This is followed by a check
+     *  We do this because a Ptides scheduler not only needs to access the
+     *  first event in the event queue, but all other events, in tag order.
+     *  Also, the delayOffsets used in the
+     *  safe-to-process analysis are calculated. This is followed by a check
      *  to see if sensors, actuators, and networks ports are annotated with
      *  the corresponding parameters, and whether they are connected to the
      *  corresponding sensor/actuator/network actors.
@@ -822,7 +818,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  In general, Ptides
      *  models should never stop when the event queue is empty, because
      *  it can wait and react to future sensor input events.
-     *  @see #_calculateDelayOffsets
+     *  @see #_calculateDelayOffsets()
      *  @exception IllegalActionException If the enclosing director does
      *  not exist or is not a DEDirector, delayOffset cannot be calculated,
      *  sensor/actuator/network consistency cannot be checked, or if the
@@ -851,8 +847,8 @@ public class PtidesBasicDirector extends DEDirector {
                     .getAttribute("synchronizeToRealTime");
             if (parameter == null) {
                 throw new IllegalActionException(executiveDirector, "The "
-                        + "enclosing DE director is expected to have a"
-                        + "synchronizedToRealTime parameter, but it"
+                        + "enclosing DE director is expected to have a "
+                        + "synchronizedToRealTime parameter, but it "
                         + "could not be found.");
             }
             if (!((BooleanToken) parameter.getToken()).booleanValue()) {
@@ -861,7 +857,7 @@ public class PtidesBasicDirector extends DEDirector {
                         + "director is set. To get a realistic view "
                         + "of the actor execution, set the "
                         + "enclosing DE director's "
-                        + "synchronizedToRealTime parameter " + "to true.");
+                        + "synchronizedToRealTime parameter to true.");
             }
         }
 
