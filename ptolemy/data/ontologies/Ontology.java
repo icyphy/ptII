@@ -25,8 +25,6 @@
  */
 package ptolemy.data.ontologies;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,10 +32,8 @@ import java.util.Set;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -69,8 +65,6 @@ public class Ontology extends CompositeEntity {
     public Ontology(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        infiniteConceptExpressionOperationsClass = new StringAttribute(this,
-                "infiniteConceptExpressionOperationsClass");
         _attachText("_iconDescription", _ICON);
     }
 
@@ -80,62 +74,11 @@ public class Ontology extends CompositeEntity {
      */
     public Ontology(Workspace workspace) throws IllegalActionException {
         super(workspace);
-        try {
-            infiniteConceptExpressionOperationsClass = new StringAttribute(
-                    this, "infiniteConceptExpressionOperationsClass");
-        } catch (NameDuplicationException nameDupEx) {
-            throw new IllegalActionException(this, nameDupEx, "");
-        }
         _attachText("_iconDescription", _ICON);
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Name of the class that provides the expression operations for
-     *  any infinite concepts contained in this ontology.
-     */
-    public StringAttribute infiniteConceptExpressionOperationsClass;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** React to a change in an attribute. If the
-     *  infiniteConceptExpressionOperationsClass attribute changes, update
-     *  the internal object reference for the expression operations for infinite
-     *  concepts by instantiating a new object from the specified class.
-     *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If the class specified for the
-     *   infiniteConceptExpressionOperationsClass is not valid or an object
-     *   for that class cannot be instantiated.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == infiniteConceptExpressionOperationsClass) {
-            String operationsClassName = infiniteConceptExpressionOperationsClass
-                    .getValueAsString();
-            if (operationsClassName != null && !operationsClassName.equals("")) {
-                Class<?> operationsClass = null;
-                try {
-                    operationsClass = Class.forName(operationsClassName);
-                } catch (ClassNotFoundException ex) {
-                    try {
-                        operationsClassName = _addPackagePrefix(operationsClassName);
-                        operationsClass = Class.forName(operationsClassName);
-                    } catch (ClassNotFoundException ex2) {
-                        throw new IllegalActionException(this, ex2,
-                                "Expression operations for infinite concepts class "
-                                        + "named " + operationsClassName
-                                        + " not found.");
-                    }
-                }
-                _createOperationsClassInstance(operationsClass
-                        .asSubclass(ExpressionOperationsForInfiniteConcepts.class));
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
 
     /** Return the concept in the ontology represented by the given string, or
      *  null if no such concept exists.
@@ -188,14 +131,6 @@ public class Ontology extends CompositeEntity {
      */
     public ConceptGraph getConceptGraph() {
         return _buildConceptGraph();
-    }
-
-    /** Return the expression operations for infinite concepts object
-     *  contained in this ontology.
-     *  @return The expression operations object.
-     */
-    public ExpressionOperationsForInfiniteConcepts getExpressionOperations() {
-        return _operationsForInfiniteConcepts;
     }
 
     /** Return a set of finite concepts which are unacceptable solutions in all situations.
@@ -301,72 +236,6 @@ public class Ontology extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a string composed of the ontology java package prefix and the
-     *  specified name of the class.
-     *  @param operationsClassName The name of the expression operations for
-     *   infinite concepts class provided by the user in a string attribute.
-     *  @return The composed string.
-     */
-    private String _addPackagePrefix(String operationsClassName) {
-        String ontologyClassName = getClassName();
-        int ontologyPrefixLength = ontologyClassName.lastIndexOf(getName());
-        String operationsClass = ontologyClassName.substring(0,
-                ontologyPrefixLength).concat(operationsClassName);
-        return operationsClass;
-    }
-
-    /** Create an expression operations for infinite concepts object from
-     *  the given class.
-     * 
-     *  @param operationsClass The specified class for the expression operations
-     *   object. It must be a subclass of ExpressionOperationsForInfiniteConcepts.
-     *  @throws IllegalActionException Thrown if the class is not a subclass
-     *   of ExpressionOperationsForInfiniteConcepts, or an object cannot be
-     *   instantiated from the given class.
-     */
-    // FIXME: This code is very similar to the method _createTempActorInstance()
-    // in the class ActorConstraintsDefinitionAttribute.
-    // Maybe we should pull this method out into a generic utility class that
-    // can return an object instance when passed a class and an array of objects
-    // for inputs to the constructor.
-    private void _createOperationsClassInstance(
-            Class<? extends ExpressionOperationsForInfiniteConcepts> operationsClass)
-            throws IllegalActionException {
-
-        Constructor<? extends ExpressionOperationsForInfiniteConcepts> operationsConstructor = null;
-        try {
-            operationsConstructor = operationsClass
-                    .getConstructor(new Class[] { Ontology.class });
-        } catch (NoSuchMethodException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Could not find the constructor"
-                            + " method for the expression operations class "
-                            + operationsClass + ".");
-        }
-
-        try {
-            _operationsForInfiniteConcepts = (ExpressionOperationsForInfiniteConcepts) operationsConstructor
-                    .newInstance(new Object[] { this });
-        } catch (InvocationTargetException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Exception thrown when trying to call"
-                            + " the constructor for the operations class "
-                            + operationsClass + ".");
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Invalid argument passed to"
-                            + " the constructor for the operations class "
-                            + operationsClass + ".");
-        } catch (InstantiationException ex) {
-            throw new IllegalActionException(this, ex, "Unable to instantiate"
-                    + " the operations class " + operationsClass + ".");
-        } catch (IllegalAccessException ex) {
-            throw new IllegalActionException(this, ex, "Do not have access "
-                    + " the constructor for the operations class "
-                    + operationsClass + " within this method.");
-        }
-    }
-
     /** Find the concept in the ontology whose toString() method returns the
      *  given string.
      *  @param conceptString The string that represents the concept to be found.
@@ -408,9 +277,4 @@ public class Ontology extends CompositeEntity {
             + "  style=\"stroke:#303030; stroke-width:2\"/>"
             + "<line x1=\"9\" y1=\"42\" x2=\"15\" y2=\"42\""
             + "  style=\"stroke:#303030; stroke-width:2\"/>" + "</svg>";
-
-    /** The object that provides mathematical operations for infinite concepts
-     *  within this ontology for constructing concept functions.
-     */
-    private ExpressionOperationsForInfiniteConcepts _operationsForInfiniteConcepts = null;
 }

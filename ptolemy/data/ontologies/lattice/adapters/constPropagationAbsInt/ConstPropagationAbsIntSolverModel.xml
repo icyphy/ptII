@@ -4,16 +4,16 @@
 <entity name="ConstPropagationAbsIntSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 263, 847, 608}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={478, 305, 963, 590}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[632, 491]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 473]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.8906249999999, 242.0203598484849}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.3420608108108, 229.3817567567568}">
     </property>
     <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= Unknown || factor2 &lt;= Unknown ? Unknown :&#10; (factor1 &lt;= Zero || factor2 &lt;= Zero) &amp;&amp; factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? Zero :&#10;  (factor1 &lt; Positive || factor1 &lt; Negative) &amp;&amp; (factor2 &lt; Positive || factor2 &lt; Negative) ? factor1 * factor2 :&#10;   (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Positive) || (factor1 &lt;= Negative &amp;&amp; factor2 &lt;= Negative) ? Positive :&#10;    (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Negative) || (factor2 &lt;= Positive &amp;&amp; factor1 &lt;= Negative) ? Negative :&#10;     factor1 &lt;= ScalarConst &amp;&amp; factor2 &lt;= ScalarConst ? ScalarConst :&#10;      factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? ScalarNonConst :&#10;       Undefined">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= Unknown || factor2 &lt;= Unknown ? Unknown :&#10; (factor1 &lt;= Zero || factor2 &lt;= Zero) &amp;&amp; factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? Zero :&#10;  (factor1 &lt; Positive || factor1 &lt; Negative) &amp;&amp; (factor2 &lt; Positive || factor2 &lt; Negative) ? tokenMultiplyFunction(factor1, factor2) :&#10;   (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Positive) || (factor1 &lt;= Negative &amp;&amp; factor2 &lt;= Negative) ? Positive :&#10;    (factor1 &lt;= Positive &amp;&amp; factor2 &lt;= Negative) || (factor2 &lt;= Positive &amp;&amp; factor1 &lt;= Negative) ? Negative :&#10;     factor1 &lt;= ScalarConst &amp;&amp; factor2 &lt;= ScalarConst ? ScalarConst :&#10;      factor1 &lt;= ScalarNonConst &amp;&amp; factor2 &lt;= ScalarNonConst ? ScalarNonConst :&#10;       Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagationAbsInt">
         </property>
@@ -101,7 +101,7 @@
         </property>
     </property>
     <property name="lessThan" class="ptolemy.data.ontologies.lattice.InequalityConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt; Positive &amp;&amp; right &lt; Positive &amp;&amp; left &lt; right ? BooleanTrue :&#10;  left &lt; Positive &amp;&amp; right &lt; Positive ? BooleanFalse :&#10;   left &lt; Negative &amp;&amp; right &lt; Negative &amp;&amp; left &lt; right ? BooleanTrue :&#10;    left &lt; Negative &amp;&amp; right &lt; Negative ? BooleanFalse :&#10;     left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;      left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanFalse :&#10;       (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanTrue :&#10;        left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanTrue :&#10;         left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;          left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;           left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;            Undefined">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="left &lt;= Unknown || right &lt;= Unknown ? Unknown :&#10; left &lt; Positive &amp;&amp; right &lt; Positive &amp;&amp; tokenLessThanFunction(left, right) == BooleanTrue ? BooleanTrue :&#10;  left &lt; Positive &amp;&amp; right &lt; Positive ? BooleanFalse :&#10;   left &lt; Negative &amp;&amp; right &lt; Negative &amp;&amp; tokenLessThanFunction(left, right) == BooleanTrue ? BooleanTrue :&#10;    left &lt; Negative &amp;&amp; right &lt; Negative ? BooleanFalse :&#10;     left &lt;= Positive &amp;&amp; (right &lt;= Zero || right &lt;= Negative) ? BooleanFalse :&#10;      left &lt;= Zero &amp;&amp; right &lt;= Negative ? BooleanFalse :&#10;       (left &lt;= Zero || left &lt;= Negative) &amp;&amp; right &lt;= Positive ? BooleanTrue :&#10;        left &lt;= Negative &amp;&amp; (right &lt;= Zero || right &lt;= Positive) ? BooleanTrue :&#10;         left &lt;= Zero &amp;&amp; right &lt;= Zero ? BooleanFalse :&#10;          left &lt;= ScalarConst &amp;&amp; right &lt;= ScalarConst ? BooleanConst :&#10;           left &lt;= ScalarNonConst &amp;&amp; right &lt;= ScalarNonConst ? BooleanNonConst :&#10;            Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagationAbsInt">
         </property>
@@ -117,7 +117,7 @@
         </property>
     </property>
     <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= Unknown || addend2 &lt;= Unknown ? Unknown :&#10; (addend1 &lt; Positive || addend1 &lt; Negative) &amp;&amp; (addend2 &lt; Positive || addend2 &lt; Negative) ? addend1 + addend2 :&#10;  addend1 &lt;= Positive &amp;&amp; (addend2 &lt;= Positive || addend2 &lt;= Zero) ? Positive :&#10;   addend1 &lt;= Negative &amp;&amp; (addend2 &lt;= Negative || addend2 &lt;= Zero) ? Negative :&#10;    addend2 &lt;= Positive &amp;&amp; (addend1 &lt;= Positive || addend1 &lt;= Zero) ? Positive :&#10;     addend2 &lt;= Negative &amp;&amp; (addend1 &lt;= Negative || addend1 &lt;= Zero) ? Negative :&#10;      addend1 &lt;= Zero &amp;&amp; addend2 &lt;= Zero ? Zero :&#10;       addend1 &lt;= ScalarNonConst &amp;&amp; addend2 &lt;= ScalarNonConst : ScalarNonConst :&#10;        Undefined">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 &lt;= Unknown || addend2 &lt;= Unknown ? Unknown :&#10; (addend1 &lt; Positive || addend1 &lt; Negative) &amp;&amp; (addend2 &lt; Positive || addend2 &lt; Negative) ? tokenAddFunction(addend1, addend2) :&#10;  addend1 &lt;= Positive &amp;&amp; (addend2 &lt;= Positive || addend2 &lt;= Zero) ? Positive :&#10;   addend1 &lt;= Negative &amp;&amp; (addend2 &lt;= Negative || addend2 &lt;= Zero) ? Negative :&#10;    addend2 &lt;= Positive &amp;&amp; (addend1 &lt;= Positive || addend1 &lt;= Zero) ? Positive :&#10;     addend2 &lt;= Negative &amp;&amp; (addend1 &lt;= Negative || addend1 &lt;= Zero) ? Negative :&#10;      addend1 &lt;= Zero &amp;&amp; addend2 &lt;= Zero ? Zero :&#10;       addend1 &lt;= ScalarNonConst &amp;&amp; addend2 &lt;= ScalarNonConst : ScalarNonConst :&#10;        Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagationAbsInt">
         </property>
@@ -133,11 +133,11 @@
         </property>
     </property>
     <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt; Positive || arg &lt; Negative ? -arg :&#10;  arg &lt;= Positive ? Negative :&#10;   arg &lt;= Negative ? Positive :&#10;    arg &lt;= Zero ? Zero :&#10;     arg &lt;= ScalarConst ? ScalarConst :&#10;      arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;       Undefined">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt; Positive || arg &lt; Negative ? tokenSubtractFunction(Zero, arg) :&#10;  arg &lt;= Positive ? Negative :&#10;   arg &lt;= Negative ? Positive :&#10;    arg &lt;= Zero ? Zero :&#10;     arg &lt;= ScalarConst ? ScalarConst :&#10;      arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;       Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagationAbsInt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 425.0]">
         </property>
     </property>
     <property name="notFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
@@ -586,16 +586,56 @@
         </property>
     </property>
     <property name="reciprocalFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Zero ? Unknown :&#10;  arg &lt; Positive || arg &lt; Negative ? PositiveValue_1 / arg :&#10;   arg &lt;= Positive ? Positive :&#10;    arg &lt;= Negative ? Negative :&#10;     arg &lt;= ScalarConst ? ScalarConst :&#10;      arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;       Undefined">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unknown ? Unknown :&#10; arg &lt;= Zero ? Unknown :&#10;  arg &lt; Positive || arg &lt; Negative ? tokenDivideFunction(PositiveValue_1, arg) :&#10;   arg &lt;= Positive ? Positive :&#10;    arg &lt;= Negative ? Negative :&#10;     arg &lt;= ScalarConst ? ScalarConst :&#10;      arg &lt;= ScalarNonConst ? ScalarNonConst :&#10;       Undefined">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagationAbsInt">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 270.0]">
         </property>
     </property>
-    <entity name="constPropagationAbsInt" class="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.constPropagationAbsInt">
-        <property name="infiniteConceptExpressionOperationsClass" class="ptolemy.kernel.util.StringAttribute" value="ConstPropagationAbsIntInfiniteConceptsOperations">
+    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;+&quot;}">
+    </property>
+    <property name="tokenDivideFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.ConstPropagationAbsIntMathFunctions">
         </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagationAbsInt, &quot;/&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 335.0]">
+        </property>
+    </property>
+    <property name="tokenSubtractFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.ConstPropagationAbsIntMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagationAbsInt, &quot;-&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 220.0]">
+        </property>
+    </property>
+    <property name="tokenMultiplyFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.ConstPropagationAbsIntMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagationAbsInt, &quot;*&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 280.0]">
+        </property>
+    </property>
+    <property name="tokenAddFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.ConstPropagationAbsIntMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagationAbsInt, &quot;+&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 165.0]">
+        </property>
+    </property>
+    <property name="tokenLessThanFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.ConstPropagationAbsIntLessThan">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagationAbsInt}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 390.0]">
+        </property>
+    </property>
+    <entity name="constPropagationAbsInt" class="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.constPropagationAbsInt">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 60.0]">
         </property>
     </entity>

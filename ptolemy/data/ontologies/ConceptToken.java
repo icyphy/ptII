@@ -55,79 +55,16 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      */
     public ConceptToken(Concept c) throws IllegalActionException {
         super(c, c.getClass());
-        _operationsForInfiniteConcepts = null;
-        if (c != null) {
-            Ontology ontology = c.getOntology();
-            if (ontology != null) {
-                _operationsForInfiniteConcepts = ontology.getExpressionOperations();
-            }
-        }    
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Perform the addition operation on two ConceptTokens.  This operation
-     *  is only valid for FlatTokenInfiniteConcepts that contain ScalarToken
-     *  values.
-     *  @param rightArgument The second addend ConceptToken.
-     *  @return The ConceptToken that represents the result of the addition
-     *   of the two ConceptTokens.
-     *  @throws IllegalActionException Thrown if the ontology that contains
-     *   the concept in this concept token does not provide an object instance
-     *   that provides expression operation methods.
-     */
-    public ConceptToken add(Token rightArgument) throws IllegalActionException {
-        if (!(rightArgument instanceof ConceptToken)) {
-            throw new IllegalActionException("Both arguments must be instances " +
-            		"of ConceptToken.");
-        }
-        
-        if (_operationsForInfiniteConcepts != null) {
-            Concept addend1 = conceptValue();
-            Concept addend2 = ((ConceptToken) rightArgument).conceptValue();
-            Concept result = _operationsForInfiniteConcepts.add(addend1, addend2);        
-            return new ConceptToken(result);
-        } else {
-            throw new IllegalActionException("The ontology that contains this " +
-            		"concept does not define expression operations for " +
-            		"infinite concepts.");
-        }
-    }
 
     /** Return the concept encapsulated by this token.
      *  @return The concept value.
      */
     public Concept conceptValue() {
         return (Concept) getValue();
-    }
-    
-    /** Perform the division operation on two ConceptTokens.  This operation
-     *  is only valid for FlatTokenInfiniteConcepts that contain ScalarToken
-     *  values.
-     *  @param rightArgument The divisor ConceptToken.
-     *  @return The ConceptToken that represents the result of the division
-     *   between the two ConceptTokens.
-     *  @throws IllegalActionException Thrown if the ontology that contains
-     *   the concept in this concept token does not provide an object instance
-     *   that provides expression operation methods.
-     */
-    public ConceptToken divide(Token rightArgument) throws IllegalActionException {
-        if (!(rightArgument instanceof ConceptToken)) {
-            throw new IllegalActionException("Both arguments must be instances " +
-                        "of ConceptToken.");
-        }
-        
-        if (_operationsForInfiniteConcepts != null) {
-            Concept dividend = conceptValue();
-            Concept divisor = ((ConceptToken) rightArgument).conceptValue();
-            Concept result = _operationsForInfiniteConcepts.divide(dividend, divisor);        
-            return new ConceptToken(result);
-        } else {
-            throw new IllegalActionException("The ontology that contains this " +
-                        "concept does not define expression operations for " +
-                        "infinite concepts.");
-        }
     }
 
     /** Compare this ConceptToken to the given argument, and return true if
@@ -172,97 +109,9 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
         }
         Concept rightConcept = ((ConceptToken) rightArgument).conceptValue();
         Concept leftConcept = this.conceptValue();
-        
-        // FIXME: This is a hack for tokenized infinite concepts. In certain
-        // situations you want to know if the token value of one infinite concept
-        // is less than the token value of the other.  This is different than
-        // the conventional "lower in the lattice" less than operation for 
-        // ontology concepts, and should only be used when both concepts are
-        // instances of FlatTokenInfiniteConcept, and their token values can be compared.
-        if (leftConcept instanceof FlatTokenInfiniteConcept &&
-                rightConcept instanceof FlatTokenInfiniteConcept &&
-                    _operationsForInfiniteConcepts != null) {
-            return _operationsForInfiniteConcepts.isLessThan(leftConcept, rightConcept);            
-        } else {
-            boolean lessThanOrEqual = rightConcept != null && rightConcept.isAboveOrEqualTo(leftConcept);
-            boolean equal = leftConcept != null && rightConcept != null && leftConcept.equals(rightConcept);
-            return new BooleanToken(lessThanOrEqual && !equal);
-        }
-    }
-
-    /** Perform the multiplication operation on two ConceptTokens.  This operation
-     *  is only valid for FlatTokenInfiniteConcepts that contain ScalarToken
-     *  values.
-     *  @param rightArgument The divisor ConceptToken.
-     *  @return The ConceptToken that represents the result of the multiplication
-     *   between the two ConceptTokens.
-     *  @throws IllegalActionException Thrown if the ontology that contains
-     *   the concept in this concept token does not provide an object instance
-     *   that provides expression operation methods.
-     */
-    public ConceptToken multiply(Token rightArgument) throws IllegalActionException {
-        if (!(rightArgument instanceof ConceptToken)) {
-            throw new IllegalActionException("Both arguments must be instances " +
-                        "of ConceptToken.");
-        }
-        
-        if (_operationsForInfiniteConcepts != null) {
-            Concept factor1 = conceptValue();
-            Concept factor2 = ((ConceptToken) rightArgument).conceptValue();
-            Concept result = _operationsForInfiniteConcepts.multiply(factor1, factor2);        
-            return new ConceptToken(result);
-        } else {
-            throw new IllegalActionException("The ontology that contains this " +
-                        "concept does not define expression operations for " +
-                        "infinite concepts.");
-        }
-    }
-    
-    /** Return the ConceptToken that has a concept that represents the
-     *  reciprocal for the flat token infinite concept in this concept token.
-     *  @return The ConceptToken that has a concept that represents the
-     *   reciprocal of the concept in this concept token.
-     *  @throws IllegalActionException Thrown if the ontology that contains
-     *   the concept in this concept token does not provide an object instance
-     *   that provides expression operation methods.
-     */
-    public ConceptToken reciprocal() throws IllegalActionException {
-        if (_operationsForInfiniteConcepts != null) {
-            Concept result = _operationsForInfiniteConcepts.reciprocal(conceptValue());        
-            return new ConceptToken(result);
-        } else {
-            throw new IllegalActionException("The ontology that contains this " +
-                        "concept does not define expression operations for " +
-                        "infinite concepts.");
-        }
-    }
-    
-    /** Perform the subtraction operation on two ConceptTokens.  This operation
-     *  is only valid for FlatTokenInfiniteConcepts that contain ScalarToken
-     *  values.
-     *  @param rightArgument The subtractee ConceptToken.
-     *  @return The ConceptToken that represents the result of the subtraction
-     *   between the two ConceptTokens.
-     *  @throws IllegalActionException Thrown if the ontology that contains
-     *   the concept in this concept token does not provide an object instance
-     *   that provides expression operation methods.
-     */
-    public ConceptToken subtract(Token rightArgument) throws IllegalActionException {
-        if (!(rightArgument instanceof ConceptToken)) {
-            throw new IllegalActionException("Both arguments must be instances " +
-                        "of ConceptToken.");
-        }
-        
-        if (_operationsForInfiniteConcepts != null) {
-            Concept subtractor = conceptValue();
-            Concept subtractee = ((ConceptToken) rightArgument).conceptValue();
-            Concept result = _operationsForInfiniteConcepts.subtract(subtractor, subtractee);        
-            return new ConceptToken(result);
-        } else {
-            throw new IllegalActionException("The ontology that contains this " +
-                        "concept does not define expression operations for " +
-                        "infinite concepts.");
-        }
+        boolean lessThanOrEqual = rightConcept != null && rightConcept.isAboveOrEqualTo(leftConcept);
+        boolean equal = leftConcept != null && rightConcept != null && leftConcept.equals(rightConcept);
+        return new BooleanToken(lessThanOrEqual && !equal);
     }
 
     /** Return the value of this concept token as a string.
@@ -275,30 +124,4 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
             return super.toString();
         }
     }
-    
-    /** Return the ConceptToken that has a concept that represents zero for
-     *  the flat token infinite concepts for that ontology.
-     *  @return The ConceptToken that has a concept that represents zero.
-     *  @throws IllegalActionException Thrown if the ontology that contains
-     *   the concept in this concept token does not provide an object instance
-     *   that provides expression operation methods.
-     */
-    public ConceptToken zero() throws IllegalActionException {
-        if (_operationsForInfiniteConcepts != null) {
-            Concept result = _operationsForInfiniteConcepts.zero(conceptValue());        
-            return new ConceptToken(result);
-        } else {
-            throw new IllegalActionException("The ontology that contains this " +
-                        "concept does not define expression operations for " +
-                        "infinite concepts.");
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
-    
-    /** The class that executes operations for infinite concepts that comes
-     *  from the ontology of the concept contained in this token.
-     */
-    private ExpressionOperationsForInfiniteConcepts _operationsForInfiniteConcepts;
 }

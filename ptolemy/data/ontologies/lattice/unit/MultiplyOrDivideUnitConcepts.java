@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MultiplyOrDivideUnitConcepts
 
 /** A concept function that returns the UnitConcept result of a multiplication
- * or division operation between two UnitConcepts in a unit system ontology.
+ *  or division operation between two UnitConcepts in a unit system ontology.
  * 
  *  @author Charles Shelton
  *  @version $Id$
@@ -63,7 +63,8 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         _unitOntology = ontology;
         ConceptGraph ontologyGraph = _unitOntology.getConceptGraph();
         if (ontologyGraph == null) {
-            throw new IllegalActionException("The Ontology " + _unitOntology + " has a null concept graph.");
+            throw new IllegalActionException("The Ontology " + _unitOntology +
+                    " has a null concept graph.");
         } else {
             _topOfTheLattice = ontologyGraph.top();
             _bottomOfTheLattice = ontologyGraph.bottom();

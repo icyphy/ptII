@@ -4,7 +4,7 @@
 <entity name="ConstPropagationSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 53, 1089, 667}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={415, 266, 1089, 667}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[874, 550]">
     </property>
@@ -185,32 +185,8 @@
         <property name="stepAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
-    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unused || divisor == Unused ? Unused :&#10; divisor &lt;= ConstantValue_0 || divisor &lt;= 'ConstantValue_0.0' ? Unused :&#10;  dividend &lt; Constant &amp;&amp; divisor &lt; Constant ? dividend / divisor :&#10;   dividend &lt;= Constant &amp;&amp; divisor &lt;= Constant ? Constant :&#10;    Nonconstant">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 360.0}">
-        </property>
-    </property>
-    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == Unused || factor2 == Unused ? Unused :&#10; factor1 &lt; Constant &amp;&amp; factor2 &lt; Constant ? factor1 * factor2 :&#10;  factor1 &lt;= Constant &amp;&amp; factor2 &lt;= Constant ? Constant :&#10;   Nonconstant">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 310.0]">
-        </property>
-    </property>
-    <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 == Unused || addend2 == Unused ? Unused :&#10; addend1 &lt; Constant &amp;&amp; addend2 &lt; Constant ? addend1 + addend2 :&#10;  addend1 &lt;= Constant &amp;&amp; addend2 &lt;= Constant ? Constant :&#10;   Nonconstant">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 310.0]">
-        </property>
-    </property>
     <property name="negateFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? -arg :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? tokenSubtractFunction(ConstantValue_0, arg) :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
         </property>
@@ -218,24 +194,80 @@
         </property>
     </property>
     <property name="reciprocalFunction" class="ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt;= ConstantValue_0 || arg &lt;= 'ConstantValue_0.0' ? Unused :&#10;  arg &lt; Constant ? ConstantValue_1 / arg :&#10;   arg &lt;= Constant ? Constant :&#10;    Nonconstant">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="arg &lt;= Unused ? Unused :&#10; arg &lt; Constant ? tokenDivideFunction(ConstantValue_1, arg) :&#10;  arg &lt;= Constant ? Constant :&#10;   Nonconstant">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 415.0]">
+        </property>
+    </property>
+    <property name="tokenAddFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;+&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 310.0]">
+        </property>
+    </property>
+    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;+&quot;}">
+    </property>
+    <property name="tokenSubtractFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;-&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 360.0]">
+        </property>
+    </property>
+    <property name="tokenMultiplyFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;*&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 310.0]">
+        </property>
+    </property>
+    <property name="tokenDivideFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagation.ConstPropagationMathFunctions">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;/&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 360.0]">
         </property>
     </property>
     <property name="subtractFunction" class="ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="subtractor == Unused || subtractee == Unused ? Unused :&#10; subtractor &lt; Constant &amp;&amp; subtractee &lt; Constant ? subtractor - subtractee :&#10;  subtractor &lt;= Constant &amp;&amp; subtractee &lt;= Constant ? Constant :&#10;   Nonconstant">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="subtractor == Unused || subtractee == Unused ? Unused :&#10; subtractor &lt; Constant &amp;&amp; subtractee &lt; Constant ? tokenSubtractFunction(subtractor, subtractee) :&#10;  subtractor &lt;= Constant &amp;&amp; subtractee &lt;= Constant ? Constant :&#10;   Nonconstant">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 360.0]">
         </property>
     </property>
-    <entity name="constPropagation" class="ptolemy.data.ontologies.lattice.adapters.constPropagation.constPropagation">
-        <property name="infiniteConceptExpressionOperationsClass" class="ptolemy.kernel.util.StringAttribute" value="ConstPropagationInfiniteConceptsOperations">
+    <property name="addFunction" class="ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="addend1 == Unused || addend2 == Unused ? Unused :&#10; addend1 &lt; Constant &amp;&amp; addend2 &lt; Constant ? tokenAddFunction(addend1, addend2) :&#10;  addend1 &lt;= Constant &amp;&amp; addend2 &lt;= Constant ? Constant :&#10;   Nonconstant">
         </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 310.0]">
+        </property>
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == Unused || factor2 == Unused ? Unused :&#10; factor1 &lt; Constant &amp;&amp; factor2 &lt; Constant ? tokenMultiplyFunction(factor1, factor2) :&#10;  factor1 &lt;= Constant &amp;&amp; factor2 &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 310.0]">
+        </property>
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unused || divisor == Unused ? Unused :&#10; dividend &lt; Constant &amp;&amp; divisor &lt; Constant ? dividend / divisor :&#10;  dividend &lt;= Constant &amp;&amp; divisor &lt;= Constant ? Constant :&#10;   Nonconstant">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 360.0}">
+        </property>
+    </property>
+    <entity name="constPropagation" class="ptolemy.data.ontologies.lattice.adapters.constPropagation.constPropagation">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 40.0]">
         </property>
     </entity>

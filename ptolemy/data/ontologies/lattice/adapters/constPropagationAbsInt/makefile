@@ -51,7 +51,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =  \
-	ConstPropagationAbsIntInfiniteConceptsOperations.java
+	ConstPropagationAbsIntLessThan.java \
+	ConstPropagationAbsIntMathFunctions.java	
 
 OTHER_FILES_TO_BE_JARED = \
 	ConstPropagationAbsIntSolverModel.xml \
