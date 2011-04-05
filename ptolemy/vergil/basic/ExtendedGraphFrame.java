@@ -201,6 +201,10 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      *  {@link ptolemy.vergil.basic.BasicGraphFrame}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("ExtendedGraphFrame.dispose() : " + this.getName());
+        }
+
         _fullScreenAction = null;
         super.dispose();
     }
@@ -225,6 +229,18 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _viewMenu.addSeparator();
         GUIUtilities.addHotKey(_getRightComponent(), _fullScreenAction);
         GUIUtilities.addMenuItem(_viewMenu, _fullScreenAction);
+    }
+    
+    /** This method invokes the _close() method of the superclass,
+     *  {@link ptolemy.vergil.basic.BasicGraphFrame}
+     *  @return True if the close completes, and false otherwise.
+     */
+    protected boolean _close() {
+        if (_debugClosing) {
+            System.out.println("ExtendedGraphFrame._close() : " + this.getName());
+        }
+
+        return super._close();
     }
 
     ///////////////////////////////////////////////////////////////////

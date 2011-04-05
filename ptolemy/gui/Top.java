@@ -196,6 +196,10 @@ public abstract class Top extends JFrame {
      *  so that it is executed in the swing thread.
      */
     public final void close() {
+        if (_debugClosing) {
+            System.out.println("Top.close() : " + this.getName());
+        }
+
         Runnable doClose = new CloseWindowRunnable();
 
         deferIfNecessary(doClose);
@@ -249,6 +253,9 @@ public abstract class Top extends JFrame {
      *  {@link javax.swing.JFrame}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("Top.dispose() : " + this.getName());
+        }
         
         // Deal with help menu action listeners
         /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
@@ -325,6 +332,8 @@ public abstract class Top extends JFrame {
         }
 
         getContentPane().removeAll();
+        _disposed = true;
+        
         super.dispose();
     }
 
@@ -485,6 +494,18 @@ public abstract class Top extends JFrame {
 
         deferIfNecessary(doShow);
     }
+    
+    /** Returns true if this frame has been disposed. 
+     * It is possible for the dispose() method to be called directly.
+     * This may conflict with another dispose call
+     * in a window listener or somewhere else.  Before Top
+     * calls super.dispose() (and thus triggering listeners) this
+     * boolean is set to true so listeners can check and make sure
+     * they aren't calling dispose for a second (or third) time.
+     */
+    public boolean isDisposed() {
+        return _disposed;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -545,6 +566,10 @@ public abstract class Top extends JFrame {
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
+        if (_debugClosing) {
+            System.out.println("Top._close() : " + this.getName());
+        }
+  
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
@@ -1533,6 +1558,7 @@ public abstract class Top extends JFrame {
     /** A runnable for closing the window. */
     class CloseWindowRunnable implements Runnable {
         public void run() {
+            System.out.println("Top$CloseWindowRunnable.run() " + (Top.this).getName());
             _close();
         }
     }
@@ -1566,6 +1592,10 @@ public abstract class Top extends JFrame {
     /** Listener for windowClosing action. */
     class CloseWindowAdapter extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
+            if (_debugClosing) {
+                System.out.println("Top$CloseWindowAdapter.windowClosing() : " + (Top.this).getName());
+            }
+            
             _close();
         }
     }
@@ -1644,4 +1674,10 @@ public abstract class Top extends JFrame {
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
+    
+    // Set to true to print closing sequence information to standard out
+    protected boolean _debugClosing = false;
+    
+    // True if this frame has been disposed
+    private boolean _disposed = false;
 }

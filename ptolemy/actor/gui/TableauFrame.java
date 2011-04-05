@@ -576,6 +576,10 @@ public class TableauFrame extends Top {
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
+        if (_debugClosing) {
+            System.out.println("TableauFrame._close() : " + this.getName());
+        }
+
         // Record window properties, if appropriate.
         if (_placeable instanceof NamedObj) {
             Iterator properties = ((NamedObj) _placeable).attributeList(
@@ -693,6 +697,9 @@ public class TableauFrame extends Top {
      *  {@link ptolemy.actor.gui.Top}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("TableauFrame.dispose() : " + this.getName());
+        }
 
         // Deal with view menu action listeners
         /*int c =*/ MemoryCleaner.removeActionListeners(_viewMenu);
@@ -712,6 +719,10 @@ public class TableauFrame extends Top {
         if (_tableau != null) {
             _tableau.size.setSize(null);
             setTableau(null);
+        }
+        
+        if (_placeable != null) {
+            _placeable = null;
         }
         
         super.dispose();

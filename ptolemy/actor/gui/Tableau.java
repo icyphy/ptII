@@ -143,6 +143,10 @@ public class Tableau extends CompositeEntity {
      *  @return False if the user cancels on a save query.
      */
     public boolean close() {
+        if (_debugClosing) {
+            System.out.println("Tableau.close() : " + getFrame().getName());
+        }
+
         JFrame frame = getFrame();
 
         if (frame instanceof TableauFrame) {
@@ -377,6 +381,10 @@ public class Tableau extends CompositeEntity {
         // This is invoked if the window
         // is disposed by the _close() method of Top.
         public void windowClosed(WindowEvent e) {
+            if (_debugClosing) {
+                System.out.println("Tableau$WindowClosedAdapter.windowClosed("+e.getWindow().getName()+")");
+            }
+
             Window frame = e.getWindow();
             try {
                 (Tableau.this).setContainer(null);
@@ -418,4 +426,7 @@ public class Tableau extends CompositeEntity {
 
     /** The title set by setTitle(). */
     private String _title;
+    
+    /* Set to true to print closing sequence information to standard out */
+    protected boolean _debugClosing = false;
 }

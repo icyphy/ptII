@@ -254,6 +254,10 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("TextEditor.dispose() : " + this.getName());
+        }
+
         super.dispose();
     }
 

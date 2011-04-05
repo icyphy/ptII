@@ -148,6 +148,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      *  {@link ptolemy.vergil.basic.ExtendedGraphFrame}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("ActorGraphFrame.dispose() : " + this.getName());
+        }
+
         KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
         int count = keyStroke.length;
         for (int i = 0; i < count; i++) {
@@ -265,6 +269,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      * @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
+        if (_debugClosing) {
+            System.out.println("ActorGraphFrame._close() : " + this.getName());
+        }
+
         NamedObj ptModel = getModel();
 
         if (ptModel instanceof CompositeActor

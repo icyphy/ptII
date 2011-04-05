@@ -242,6 +242,10 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
+        if (_debugClosing) {
+            System.out.println("PtolemyFrame._close() : " + this.getName());
+        }
+
         PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) getEffigy();
 
         // The effigy should not be null, but if the window has
@@ -273,6 +277,10 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("PtolemyFrame.dispose() : " + this.getName());
+        }
+
         setModel(null);
         super.dispose();
     }

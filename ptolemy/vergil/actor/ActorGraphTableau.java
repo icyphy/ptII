@@ -110,6 +110,18 @@ public class ActorGraphTableau extends Tableau {
         setFrame(frame);
         frame.setBackground(BACKGROUND_COLOR);
     }
+    
+    /** This method invokes the close() method of the superclass,
+     *  {@link ptolemy.actor.gui.Tableau}
+     *  @return False if the user cancels on a save query.
+     */
+    public boolean close() {
+        if (_debugClosing) {
+            System.out.println("ActorGraphTableau.close() : " + getFrame().getName());
+        }
+        
+        return super.close();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

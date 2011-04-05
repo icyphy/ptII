@@ -776,6 +776,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  {@link #disposeSuper()}.
      */
     public void dispose() {
+        if (_debugClosing) {
+            System.out.println("BasicGraphFrame.dispose() : " + this.getName());
+        }
+
         // Remove the association with the library. This is necessary to allow
         // this frame, and the rest of the model to be properly garbage
         // collected
@@ -811,6 +815,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  {@link ptolemy.actor.gui.PtolemyFrame}.
      */
     public void disposeSuper() {
+        if (_debugClosing) {
+            System.out.println("BasicGraphFrame.disposeSuper() : " + this.getName());
+        }
+        
         // This method is used by Kepler for the tabbed pane interface.
         super.dispose();
     }
@@ -1985,6 +1993,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
+        if (_debugClosing) {
+            System.out.println("BasicGraphFrame._close() : " + this.getName());
+        }
+
         boolean result = super._close();
 
         if (result) {
