@@ -239,7 +239,7 @@ public final class Workspace implements Nameable, Serializable {
      *  in the order in which they were added.
      *  @return A list of instances of NamedObj.
      */
-    public synchronized List directoryList() {
+    public synchronized List<NamedObj> directoryList() {
         return Collections.unmodifiableList(_directory);
     }
 
@@ -821,10 +821,8 @@ public final class Workspace implements Nameable, Serializable {
 
             result.append("directory {\n");
 
-            Enumeration enumeration = directory();
-
-            while (enumeration.hasMoreElements()) {
-                NamedObj obj = (NamedObj) enumeration.nextElement();
+            List<NamedObj> directoryList = directoryList();
+            for (NamedObj obj : directoryList) {
 
                 // If deep is not set, then zero-out the contents flag
                 // for the next round.
@@ -832,7 +830,8 @@ public final class Workspace implements Nameable, Serializable {
                     detail &= ~NamedObj.CONTENTS;
                 }
 
-                result.append((obj._description(detail, indent + 1, 2) + "\n"));
+                String description = obj._description(detail, indent + 1, 2) + "\n";
+                result.append(description);
             }
 
             result.append("}");
