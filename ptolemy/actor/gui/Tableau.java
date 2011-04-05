@@ -34,6 +34,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 import ptolemy.gui.MemoryCleaner;
+import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -247,6 +248,16 @@ public class Tableau extends CompositeEntity {
                 // The windowListener set in setFrame()
                 // will trigger dispose() to get called.
                 _frame.setVisible(false);
+                /* experimental: replaces _frame.setVisible(false);
+                if (!isMaster()) {
+                    if (_frame instanceof Top) {
+                        Top top = (Top) _frame;
+                        if (!top.isDisposed()) {
+                            top.dispose();
+                        }
+                    }
+                }
+                */
             }
 
             if (isMaster() && (oldContainer != null)) {

@@ -34,6 +34,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -1597,6 +1598,15 @@ public abstract class Top extends JFrame {
             }
             
             _close();
+            /* experimental: replaces _close();
+            Window window = e.getWindow();
+            if (window instanceof Top) {
+                Top top = (Top) window;
+                if (!top.isDisposed()) {
+                    _close();
+                }
+            }
+            */
         }
     }
     

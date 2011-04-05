@@ -53,6 +53,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -297,6 +298,16 @@ public class Display extends AbstractPlaceableActor {
             // NOTE: _remove() doesn't work here.  Why?
             if (_frame != null) {
                 _frame.dispose();
+                /* experimental: replaces _frame.dispose();
+                if (_frame instanceof Top) {
+                    Top top = (Top) _frame;
+                    if (!top.isDisposed()) {
+                        top.dispose();
+                    }
+                } else {
+                    _frame.dispose();
+                }
+                */
             }
 
             _frame = null;
@@ -494,6 +505,17 @@ public class Display extends AbstractPlaceableActor {
     protected void cleanUp() {
         _tableau = null;
         place(null);
+        /* experimental: replaces place(null);
+        if (_scrollPane != null) {
+            _scrollPane.removeAll();
+            _scrollPane = null;
+        }
+        if (textArea != null) {
+            textArea.removeAll();
+            textArea = null;
+        }
+        _frame = null;
+        */
         super.cleanUp();
     }
 
