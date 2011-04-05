@@ -106,7 +106,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *  a new DerivedUnitConcept.
      */
     public static final String[] derivedUnitRecordLabelArray = new String[]{
-                            unitNameLabel, derivedUnitConversionLabel};
+        UnitConversionInfo.unitNameLabel, derivedUnitConversionLabel};
     
     ///////////////////////////////////////////////////////////////////
     ////                    public methods                         ////
@@ -141,7 +141,7 @@ public class DerivedUnitConcept extends UnitConcept {
                 _deriveComponentBaseUnitsSeparateExponentsMap(
                         componentUnitsMap, dimensionMap, baseDimensionMap);
             
-        for (BaseDimensionRepresentativeConcept baseDimension: baseDimensionMap.keySet()) {
+        for (BaseDimensionRepresentativeConcept baseDimension : baseDimensionMap.keySet()) {
             int exponent = baseDimensionMap.get(baseDimension).intValue();
             List<BaseUnitConcept> positiveExponentUnitList = baseComponentUnitsSeparateExponents.get(baseDimension)[POSITIVE_EXPONENT_INDEX];
             List<BaseUnitConcept> negativeExponentUnitList = baseComponentUnitsSeparateExponents.get(baseDimension)[NEGATIVE_EXPONENT_INDEX];
@@ -156,11 +156,18 @@ public class DerivedUnitConcept extends UnitConcept {
                 		"zero because then it would not have an entry " +
                 		"in the map.");
             }
-            if (!composedUnitList.isEmpty()) {
+            if (composedUnitList.size() == Math.abs(exponent)) {
                 // Sort the base component units lists so that we can compare the
                 // lists for equality when trying to find the correct unit concepts.
                 Collections.sort(composedUnitList, new BaseUnitComparator());
                 baseComponentUnits.put(baseDimension, composedUnitList);
+            } else {
+                throw new IllegalActionException("Base component unit list " +
+                                "for the base dimension " + baseDimension +
+                		" must be the same length as the absolute " +
+                		"value of the dimension map exponent: list " +
+                		"size: " + composedUnitList.size() +
+                		", exponent value: " + exponent);
             }
         }
         
@@ -390,7 +397,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private void _setConversionFactors(RecordToken derivedUnitRecord)
             throws IllegalActionException {
-        Token unitFactorToken = derivedUnitRecord.get(unitFactorLabel);
+        Token unitFactorToken = derivedUnitRecord.get(UnitConversionInfo.unitFactorLabel);
         if (unitFactorToken == null) {
             _unitFactor = DoubleToken.ONE;
         } else if (unitFactorToken instanceof ScalarToken) {
@@ -400,7 +407,7 @@ public class DerivedUnitConcept extends UnitConcept {
             		"factor: " + unitFactorToken);
         }
         
-        Token unitOffsetToken = derivedUnitRecord.get(unitOffsetLabel);
+        Token unitOffsetToken = derivedUnitRecord.get(UnitConversionInfo.unitOffsetLabel);
         if (unitOffsetToken == null) {
             _unitOffset = DoubleToken.ZERO;
         } else if (unitOffsetToken instanceof DoubleToken) {

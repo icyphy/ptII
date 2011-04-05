@@ -119,7 +119,8 @@ public class BaseUnitConcept extends UnitConcept {
      *  a new BaseUnitConcept.
      */
     public static final String[] unitRecordLabelArray = new String[]{
-                            unitNameLabel, unitFactorLabel, unitOffsetLabel};
+        UnitConversionInfo.unitNameLabel, UnitConversionInfo.unitFactorLabel,
+        UnitConversionInfo.unitOffsetLabel};
 
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
@@ -142,7 +143,7 @@ public class BaseUnitConcept extends UnitConcept {
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
         
-        Token unitFactor = unitInfo.get(unitFactorLabel);
+        Token unitFactor = unitInfo.get(UnitConversionInfo.unitFactorLabel);
         if (unitFactor instanceof ScalarToken) {
             _unitFactor = (ScalarToken) unitFactor;
         } else {
@@ -151,7 +152,7 @@ public class BaseUnitConcept extends UnitConcept {
                     unitFactor);
         }
         
-        Token unitOffset = unitInfo.get(unitOffsetLabel);
+        Token unitOffset = unitInfo.get(UnitConversionInfo.unitOffsetLabel);
         if (unitFactor instanceof ScalarToken) {
             _unitOffset = (ScalarToken) unitOffset;
         } else {

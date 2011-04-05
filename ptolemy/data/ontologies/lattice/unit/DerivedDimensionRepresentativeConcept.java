@@ -28,7 +28,6 @@
  */
 package ptolemy.data.ontologies.lattice.unit;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,36 +129,6 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         _updateDimensionInformation();
         return new HashMap<DimensionRepresentativeConcept, Integer>(_componentDimensions);
     }
-
-    /** Return a list of all the possible units contained in this derived
-     *  dimension.
-     *  @return The list of all DerivedUnitConcepts that have this
-     *   DerivedDimensionRepresentativeConcept as a representative.
-     *  @throws IllegalActionException Thrown if there is a problem getting any
-     *   unit concepts from the ontology.
-     */
-    public List<DerivedUnitConcept> getAllUnits() throws IllegalActionException {
-        List<DerivedUnitConcept> result = _getAllUserDefinedUnits();
-        
-        // Find the given unitName in the list of pre-specified parameters.
-        List<Parameter> unitParameterList = attributeList(Parameter.class);
-        for (Parameter unitParameter : unitParameterList) {
-            Token unitConversionInfo = unitParameter.getToken();
-            if (unitConversionInfo instanceof RecordToken) {
-                try {
-                    String unitConceptString = getName() + "_" + unitParameter.getName();
-                    Concept unitConcept = getOntology().getConceptByString(unitConceptString);
-                    if (unitConcept instanceof DerivedUnitConcept &&
-                            this.equals(((DerivedUnitConcept) unitConcept).getDimension())) {
-                        result.add((DerivedUnitConcept) unitConcept);
-                    }                    
-                } catch (IllegalActionException ex) {
-                    throw new IllegalActionException(this, ex, "Error getting unit concepts.");
-                }
-            }
-        }        
-        return result;
-    }
     
     /** Derive a map of base dimensions to exponents that represents the given
      *  dimension map.
@@ -195,6 +164,17 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         }
         
         return baseComponentDimensions;
+    }
+    
+    /** Return a list of all the possible units contained in this derived
+     *  dimension.
+     *  @return The list of all DerivedUnitConcepts that have this
+     *   DerivedDimensionRepresentativeConcept as a representative.
+     *  @throws IllegalActionException Thrown if there is a problem getting any
+     *   unit concepts from the ontology.
+     */
+    public List<DerivedUnitConcept> getAllUnits() throws IllegalActionException {
+        return (List<DerivedUnitConcept>) super.getAllUnits();
     }
     
     /** Return the reference name used by the unit specifications in this
@@ -259,21 +239,20 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
         if (userDefinedRecord == null) {
             
             // Find the given unitName in the list of pre-specified parameters.
-            List<Parameter> unitParameterList = attributeList(Parameter.class);
-            for (Parameter unitParameter : unitParameterList) {
+            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
+            for (UnitConversionInfo unitParameter : unitParameterList) {
                 if (unitName.equals(unitParameter.getName())) {
-                    Token unitConversionInfo = unitParameter.getToken();
-                    if (unitConversionInfo instanceof RecordToken) {
-                        RecordToken unitNameRecord = new RecordToken(
-                                new String[]{UnitConcept.unitNameLabel},
-                                new Token[]{new StringToken(unitName)});
-                        return RecordToken.merge(unitNameRecord,
-                                (RecordToken) unitConversionInfo);
-                        
-                    } else {
+                    RecordToken unitConversionInfoRecord = (RecordToken) unitParameter.getToken();
+                    if (unitConversionInfoRecord == null) {
                         throw new IllegalActionException(this,
                                 "Invalid unit specification parameter: " +
                                 unitParameter);
+                    } else {
+                        RecordToken unitNameRecord = new RecordToken(
+                                new String[]{UnitConversionInfo.unitNameLabel},
+                                new Token[]{new StringToken(unitName)});
+                        return RecordToken.merge(unitNameRecord,
+                                unitConversionInfoRecord);
                     }
                 }
             }
@@ -281,34 +260,6 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
                     + " for the " + this + " dimension.");
         } else {
             return userDefinedRecord;
-        }
-    }
-    
-    /** Return the list of user defined unit concepts within this
-     *  DimensionRepresentativeConcept
-     *  @return The list of user defined unit concepts.
-     *  @throws IllegalActionException Thrown if there is a problem getting the
-     *   list of units.
-     */
-    private List<DerivedUnitConcept> _getAllUserDefinedUnits() throws IllegalActionException {
-        List<DerivedUnitConcept> result = new ArrayList<DerivedUnitConcept>();
-        
-        // The array of user defined unit records is null, return an empty list.
-        if (_userDefinedUnitRecords == null) {
-            return result;
-        } else {
-            for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
-                Token unitNameToken = unitRecordToken.get(UnitConcept.unitNameLabel);
-                if (unitNameToken instanceof StringToken) {
-                    String unitName = ((StringToken) unitNameToken).stringValue();
-                    Concept unit = getOntology().getConceptByString(getName() + "_" + unitName);
-                    if (unit instanceof DerivedUnitConcept) {
-                        result.add((DerivedUnitConcept) unit);
-                    }
-                }
-            }
-            
-            return result;
         }
     }
     

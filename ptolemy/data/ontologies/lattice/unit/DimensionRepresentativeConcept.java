@@ -28,11 +28,15 @@
  */
 package ptolemy.data.ontologies.lattice.unit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -73,6 +77,7 @@ public abstract class DimensionRepresentativeConcept extends
         super(ontology, name);
         unitInfoRecords = new Parameter(this, "unitInfoRecords");
         unitInfoRecords.setTypeEquals(new ArrayType(BaseType.RECORD));
+        _unitList = new ArrayList<UnitConcept>();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -107,7 +112,37 @@ public abstract class DimensionRepresentativeConcept extends
         } else {
             super.attributeChanged(attribute);
         }
-    }   
+    }
+    
+    /** Return a list of all the possible units contained in this
+     *  dimension representative concept.
+     *  @return The list of all UnitConcepts that have this
+     *   DimensionRepresentativeConcept as a representative.
+     *  @throws IllegalActionException Thrown if there is a problem getting any
+     *   unit concepts from the ontology.
+     */
+    public List<? extends UnitConcept> getAllUnits() throws IllegalActionException {
+        if (_unitListVersion != workspace().getVersion()) {
+            _unitList = _getAllUserDefinedUnits();
+
+            // Find the given unitName in the list of pre-specified parameters.
+            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
+            for (UnitConversionInfo unitParameter : unitParameterList) {
+                try {
+                    String unitConceptString = getName() + "_" + unitParameter.getName();
+                    Concept unitConcept = getOntology().getConceptByString(unitConceptString);
+                    if (unitConcept instanceof DerivedUnitConcept &&
+                            this.equals(((DerivedUnitConcept) unitConcept).getDimension())) {
+                        _unitList.add((DerivedUnitConcept) unitConcept);
+                    }                    
+                } catch (IllegalActionException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Error getting unit concepts.");
+                }
+            }
+        }
+        return _unitList;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -136,13 +171,41 @@ public abstract class DimensionRepresentativeConcept extends
             return null;
         } else {
             for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
-                Token unitNameToken = unitRecordToken.get(UnitConcept.unitNameLabel);
+                Token unitNameToken = unitRecordToken.get(UnitConversionInfo.unitNameLabel);
                 if (unitNameToken instanceof StringToken &&
                         unitName.equals(((StringToken) unitNameToken).stringValue())) {
                     return unitRecordToken;
                 }
             }
             return null;
+        }
+    }
+    
+    /** Return the list of user defined unit concepts within this
+     *  DimensionRepresentativeConcept
+     *  @return The list of user defined unit concepts.
+     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *   list of units.
+     */
+    private List<UnitConcept> _getAllUserDefinedUnits() throws IllegalActionException {
+        List<UnitConcept> result = new ArrayList<UnitConcept>();
+        
+        // The array of user defined unit records is null, return an empty list.
+        if (_userDefinedUnitRecords == null) {
+            return result;
+        } else {
+            for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
+                Token unitNameToken = unitRecordToken.get(UnitConversionInfo.unitNameLabel);
+                if (unitNameToken instanceof StringToken) {
+                    String unitName = ((StringToken) unitNameToken).stringValue();
+                    Concept unit = getOntology().getConceptByString(getName() + "_" + unitName);
+                    if (unit instanceof DerivedUnitConcept) {
+                        result.add((DerivedUnitConcept) unit);
+                    }
+                }
+            }
+            
+            return result;
         }
     }
     
@@ -153,4 +216,12 @@ public abstract class DimensionRepresentativeConcept extends
      *  parameter.
      */
     protected RecordToken[] _userDefinedUnitRecords = null;
+    
+    /** The list of valid units for this dimension representative concept. */
+    private List<UnitConcept> _unitList;
+    
+    /** The last workspace version at which the cached list of unit concepts
+     *  was valid.
+     */
+    private long _unitListVersion = -1L;
 }

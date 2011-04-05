@@ -30,13 +30,10 @@ package ptolemy.data.ontologies.lattice.unit;
 
 import java.util.List;
 
-import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -80,6 +77,20 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
     public BaseDimensionRepresentativeConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return a list of all the possible units contained in this base
+     *  dimension.
+     *  @return The list of all BaseUnitConcepts that have this
+     *   BaseDimensionRepresentativeConcept as a representative.
+     *  @throws IllegalActionException Thrown if there is a problem getting any
+     *   unit concepts from the ontology.
+     */
+    public List<BaseUnitConcept> getAllUnits() throws IllegalActionException {
+        return (List<BaseUnitConcept>) super.getAllUnits();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -129,25 +140,36 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
         if (userDefinedRecord == null) {
             
             // Find the given unitName in the list of pre-specified parameters.
-            List<Parameter> unitParameterList = attributeList(Parameter.class);
-            for (Parameter unitParameter : unitParameterList) {
+            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
+            for (UnitConversionInfo unitParameter : unitParameterList) {
                 if (unitName.equals(unitParameter.getName())) {
                     Token[] unitRecordArray = new Token[3];
                     unitRecordArray[0] = new StringToken(unitName);
 
-                    Token unitConversionInfo = unitParameter.getToken();
-                    if (unitConversionInfo instanceof DoubleToken) {
-                        unitRecordArray[1] = unitConversionInfo;
-                        unitRecordArray[2] = DoubleToken.ZERO;
-                    } else if (unitConversionInfo instanceof ArrayToken &&
-                            ((ArrayToken) unitConversionInfo).length() == 2 &&
-                            ((ArrayToken) unitConversionInfo).getElementType().equals(BaseType.DOUBLE)) {
-                        unitRecordArray[1] = ((ArrayToken) unitConversionInfo).getElement(0);
-                        unitRecordArray[2] = ((ArrayToken) unitConversionInfo).getElement(1);
-                    } else {
+                    RecordToken unitConversionInfo = (RecordToken) unitParameter.getToken();
+                    if (unitConversionInfo == null) {
                         throw new IllegalActionException(this,
-                                "Invalid unit specification parameter: " +
+                                "Unit specification parameter has no value: " +
                                 unitParameter);
+                    } else {
+                        Token unitConversionFactor =
+                            unitConversionInfo.get(UnitConversionInfo.unitFactorLabel);
+                        if (unitConversionFactor == null) {
+                            throw new IllegalActionException(this,
+                                    "Unit conversion factor in the unit " +
+                                    "specification parameter has no value: " +
+                                    unitParameter);
+                        } else {
+                            unitRecordArray[1] = unitConversionFactor;
+                        }
+                        
+                        Token unitConversionOffset =
+                            unitConversionInfo.get(UnitConversionInfo.unitOffsetLabel);
+                        if (unitConversionOffset == null) {
+                            unitRecordArray[2] = DoubleToken.ZERO;
+                        } else {
+                            unitRecordArray[2] = unitConversionOffset;
+                        }                        
                     }
                     return new RecordToken(BaseUnitConcept.unitRecordLabelArray,
                             unitRecordArray);

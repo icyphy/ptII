@@ -56,7 +56,8 @@ JSRCS = \
 	DimensionlessConcept.java \
 	DimensionRepresentativeConcept.java \
 	MultiplyOrDivideUnitConcepts.java \
-	UnitConcept.java
+	UnitConcept.java \
+	UnitConversionInfo.java
 	
 OTHER_FILES_TO_BE_JARED = \
 	baseDimensionsLibrary.xml \

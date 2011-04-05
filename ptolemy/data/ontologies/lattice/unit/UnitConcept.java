@@ -52,24 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 public abstract class UnitConcept extends FlatTokenInfiniteConcept {
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-    
-    /** The name label for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String unitNameLabel = "Name";
-    
-    /** The factor label for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String unitFactorLabel = "Factor";
-    
-    /** The offset label for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String unitOffsetLabel = "Offset";
-    
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
     /** Return true if this unit can be converted to the specified unit. 
@@ -146,7 +128,7 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
                 throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
         
-        Token unitName = unitInfo.get(unitNameLabel);            
+        Token unitName = unitInfo.get(UnitConversionInfo.unitNameLabel);            
         if (unitName instanceof StringToken) {
             _unitName = ((StringToken) unitName).stringValue();
         } else {
