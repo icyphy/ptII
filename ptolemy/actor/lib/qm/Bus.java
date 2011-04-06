@@ -33,6 +33,7 @@ package ptolemy.actor.lib.qm;
 import java.util.HashMap;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
@@ -308,14 +309,14 @@ public class Bus extends ColoredQuantityManager {
     
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
-     *  if there is not one already scheduled.
+     *  if there is not one already scheduled. 
      *  @param receiver The receiver to send to.
      *  @param token The token to send.
      *  @throws IllegalActionException If the refiring request fails.
      */
-    public void sendToken(Receiver receiver, Token token)
+    public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
+        Time currentTime = getDirector().getModelTime(); 
         // FIXME: Why is the following needed?
         if (_nextTimeFree == null || _tokens.size() == 0
                 || currentTime.compareTo(_nextTimeFree) != 0

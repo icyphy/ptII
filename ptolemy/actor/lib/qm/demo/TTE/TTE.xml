@@ -77,6 +77,8 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
             </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: TTESwitch1">
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -146,6 +148,8 @@
             <property name="type" class="ptolemy.data.expr.StringParameter" value="time-triggered">
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: TTESwitch1">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -251,6 +255,8 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
             </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: TTESwitch1">
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -277,69 +283,7 @@
     <entity name="TTESwitch1" class="ptolemy.actor.lib.qm.TTESwitch">
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 60.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="2.0, -10.0">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="64.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="22.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="_color">
-                </property>
-            </property>
-            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-19.0, -10.0">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="14.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="13.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -10.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="14.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="13.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, -10.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="14.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="13.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[23.0, -10.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="14.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="13.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 60.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

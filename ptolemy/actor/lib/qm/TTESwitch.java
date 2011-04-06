@@ -228,7 +228,7 @@ public class TTESwitch extends ColoredQuantityManager {
 
     /** Receive a token and store it in the queue. Schedule a refiring.
      */
-    public void sendToken(Receiver receiver, Token token)
+    public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         if (_receiverType.get(receiver)) { // time-triggered
             _ttTokens.put(new Object[] { receiver, token });

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  tokens to the original receiver (that created by the director) until the
  *  resources become available for the transport to occur.
  *
- *  @author Patricia Derler
+ *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cxh)
@@ -57,7 +57,7 @@ public interface QuantityManager {
      *  @return A new receiver.
      *  @exception IllegalActionException If the receiver cannot be created.
      */
-    public abstract Receiver getReceiver(Receiver receiver) throws IllegalActionException;
+    public abstract Receiver getReceiver(Receiver receiver)  throws IllegalActionException;
 
     /** Reset the QuantityManager.
      */
@@ -66,12 +66,12 @@ public interface QuantityManager {
     /** Take the specified token and mediate communication to the specified
      *  receiver. An implementer could, for example, delay the communication
      *  to account for resource contention. Or, it could make a record of the
-     *  energy consumed by the communication.
+     *  energy consumed by the communication. 
      *  @param receiver The receiver for which this quantity manager is mediating
      *   communication.
      *  @param token The token for the communication to mediate.
      *  @exception IllegalActionException If the token cannot be sent.
      */
-    public void sendToken(Receiver receiver, Token token) throws IllegalActionException;
+    public void sendToken(Receiver source, Receiver receiver, Token token) throws IllegalActionException;
 
 }

@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy actor.lib.net demos
+# Makefile for Ptolemy II actor.lib.net Datagram demo 
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/qm/demo
+ME =		ptolemy/actor/lib/qm/demo/Switch
 
-DIRS =		Datagram
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,21 +43,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	qm/Bus.jar \
-	qm/TTE.jar \
-	qm/Switch.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE =	Bus
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = 
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Switch.xml \
+	BasicSwitch.xml \
+	CrossbarSwitch.xml 
+
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,7 +75,8 @@ all: jclass
 
 install: jclass jars
 
-demo: subdemo
+demo:
+	vergil Switch.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

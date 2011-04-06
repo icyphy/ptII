@@ -31,6 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import ptolemy.actor.IOPort;
+import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
@@ -92,16 +94,5 @@ public abstract class ColoredQuantityManager extends TypedAtomicActor implements
         } 
         super.attributeChanged(attribute);
     }
-
-    /** This method is only used in derived classes */
-    public abstract Receiver getReceiver(Receiver receiver)
-            throws IllegalActionException;
-
-    /** This method is only used in derived classes */
-    public abstract void reset();
-
-    /** This method is only used in derived classes */
-    public abstract void sendToken(Receiver receiver, Token token)
-            throws IllegalActionException;
     
 }

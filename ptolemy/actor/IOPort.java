@@ -38,6 +38,7 @@ package ptolemy.actor;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -68,6 +69,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -258,68 +260,67 @@ public class IOPort extends ComponentPort {
        
         if (attribute instanceof Parameter) {
             Token parameterToken = ((Parameter)attribute).getToken();
+            
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken) {
                     Object quantityManagerObject
                                 = ((ObjectToken)parameterToken).getValue();
                     if (quantityManagerObject instanceof ColoredQuantityManager) {
-                        ColoredQuantityManager quantityManager = ((ColoredQuantityManager)quantityManagerObject); 
-                        // The color of the port should be the color of the first parameter
+                        
+                        // The color of an input port should be the color of the last parameter
                         // that is a {@link ColoredQuantityManager}. This is the quantity
-                        // manager that this port is directly connected to. 
-                        for (int i = 0; i < attributeList().size(); i++) {
-                            Object attr = attributeList().get(i);
-                            if (attr instanceof Parameter) { 
-                                Token paramToken = ((Parameter) attr).getToken(); 
-                                if (paramToken instanceof ObjectToken) {
-                                    Object paramObject = ((ObjectToken)paramToken).getValue();
-                                    if (paramObject instanceof ColoredQuantityManager) {
-                                        quantityManager = (ColoredQuantityManager)paramObject;
-                                        break;
-                                    }
+                        // manager that this port is directly connected to.
+                        // The color of an output port should be the color of the first parameter.
+                        
+                       
+                        List<ColoredQuantityManager> qmList = new ArrayList(_getQuantityManagers());
+                        if (qmList.size() > 0) {
+                            ColorAttribute colorAttribute = (ColorAttribute) getAttribute("_color");
+                            
+                            try { 
+                                if (colorAttribute == null) { 
+                                    colorAttribute = new ColorAttribute(this, "_color");
                                 }
-                            }
-                        } 
-                        
-                        _removeColorAttribute(this);
-                        
-                        try {
-                            ColorAttribute colorAttribute = new ColorAttribute(this, "_color"); 
-                            colorAttribute.setExpression(quantityManager.color.getExpression());
-                            int i = 0;
-                            while (i < _relationsList.size()) {
-                                Relation relation = ((Relation) this._relationsList.get(i));
-                                _removeColorAttribute(relation);
-                                ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
-                                colorAttribute2.setExpression(quantityManager.color.getExpression());
-                                i++;
-                            }         
-                        } catch (NameDuplicationException e) {
-                            // Ignore. This exception should be thrown because before adding the
-                            // new ColorAttribute any previous attribute with the same name is
-                            // removed.
-                        } 
+                                if (this.isOutput()) {
+                                    colorAttribute.setExpression(qmList.get(0).color.getExpression());
+                                } else {
+                                    colorAttribute.setExpression(qmList.get(qmList.size() - 1).color.getExpression());
+                                }
+                                
+    //                            int i = 0;
+    //                            while (i < _relationsList.size()) {
+    //                                Relation relation = ((Relation) this._relationsList.get(i));
+    //                                _removeAttribute(relation, "_color");
+    //                                ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
+    //                                if (this.isInput()) {
+    //                                    colorAttribute2.setExpression(qmList.get(0).color.getExpression());
+    //                                } else {
+    //                                    colorAttribute2.setExpression(qmList.get(qmList.size() - 1).color.getExpression());
+    //                                }
+    //                                i++;
+    //                            } 
+                                StringAttribute info = (StringAttribute) getAttribute("_showInfo");
+                                String qmString = "";
+                                if (info == null) { 
+                                    info = new StringAttribute(this, "_showInfo");
+                                }
+                                
+                                for (int j = 0; j < qmList.size(); j++) {
+                                    qmString = qmString + qmList.get(j).getName() + ", ";
+                                }
+                                info.setExpression("QM: " + qmString.substring(0, qmString.length() - 2));
+                            } catch (NameDuplicationException e) {
+                                // Ignore. This exception should be thrown because before adding the
+                                // new ColorAttribute any previous attribute with the same name is
+                                // removed.
+                            } 
+                        }
                     }
                 }
             }
         }
         
         super.attributeChanged(attribute);
-    }
-    
-    /** Remove the _color attribute of a {@link NamedObj}.
-     *  @param obj Object that has an attribute _color.
-     */
-    private void _removeColorAttribute(NamedObj obj) {
-        Parameter color = null;
-        List<Parameter> parameters = obj.attributeList(Parameter.class);
-        for (Parameter parameter : parameters) {
-            if (parameter.getName().equals("_color")) {
-                color = parameter;
-                break;
-            }
-        }
-        obj.removeAttribute(color);
     }
 
     /** Send a token to all connected receivers.
@@ -4284,6 +4285,25 @@ public class IOPort extends ComponentPort {
             }
         }
     }
+    
+    private List<QuantityManager> _getQuantityManagers() throws IllegalActionException {
+        List<QuantityManager> qmList = new ArrayList();
+        if (attributeList().size() > 0) {
+            for (int i = 0; i < attributeList().size(); i++) {
+                Object attr = attributeList().get(i);
+                if (attr instanceof Parameter) { 
+                    Token paramToken = ((Parameter) attr).getToken(); 
+                    if (paramToken instanceof ObjectToken) {
+                        Object paramObject = ((ObjectToken)paramToken).getValue();
+                        if (paramObject instanceof QuantityManager) { 
+                            qmList.add((QuantityManager)paramObject);
+                        }
+                    }
+                }
+            } 
+        }
+        return qmList;
+    }
 
     /** If this port has parameters whose values are tokens that contain
      *  an object implementing {@link QuantityManager}, then wrap the
@@ -4304,17 +4324,21 @@ public class IOPort extends ComponentPort {
     protected Receiver _wrapReceiver(Receiver receiver)
             throws IllegalActionException {
         Receiver result = receiver;
-        List<Parameter> parameters = attributeList(Parameter.class);
-        for (Parameter parameter : parameters) {
-            Token parameterToken = parameter.getToken();
-            if (parameterToken instanceof ObjectToken) {
-                Object quantityManager
-                            = ((ObjectToken)parameterToken).getValue();
-                if (quantityManager instanceof QuantityManager) {
-                    result = ((QuantityManager)quantityManager).getReceiver(result);                    
-                }
+        List<QuantityManager> qmList = _getQuantityManagers();
+        if (isInput()) { 
+            for (int i = qmList.size() - 1; i >= 0 ; i--) {
+                result = qmList.get(i).getReceiver(result);                    
             }
-        }
+            if (result instanceof IntermediateReceiver) {
+                IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
+                intermediateReceiver.source = (Actor) ((IOPort) this.sourcePortList().get(0)).getContainer();
+            }
+        } else {
+            for (int i = 0; i < qmList.size(); i++) {
+                result = qmList.get(i).getReceiver(result);                    
+            }
+        } // TODO what if isInput && isOutput??
+        
         return result;
     }
 
