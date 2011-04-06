@@ -260,7 +260,7 @@
         </property>
     </property>
     <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unused || divisor == Unused ? Unused :&#10; dividend &lt; Constant &amp;&amp; divisor &lt; Constant ? dividend / divisor :&#10;  dividend &lt;= Constant &amp;&amp; divisor &lt;= Constant ? Constant :&#10;   Nonconstant">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unused || divisor == Unused ? Unused :&#10; dividend &lt; Constant &amp;&amp; divisor &lt; Constant ? tokenDivideFunction(dividend, divisor) :&#10;  dividend &lt;= Constant &amp;&amp; divisor &lt;= Constant ? Constant :&#10;   Nonconstant">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constPropagation">
         </property>

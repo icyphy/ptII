@@ -30,6 +30,7 @@ import java.util.Set;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// InfiniteConceptRepresentative
@@ -62,6 +63,23 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
+    
+    /** Clone the InfiniteConceptRepresentative into the specified workspace.
+     *  The result is a new InfiniteConceptRepresentative that is cloned normally
+     *  with the superclass ComponentEntity clone() method with the exception
+     *  that its private set of instantiated infinite concepts is not copied to
+     *  the new object.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return A new instance of InfiniteConceptRepresentative.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        InfiniteConceptRepresentative newObject =
+            (InfiniteConceptRepresentative) super.clone(workspace);
+        newObject._instantiatedInfiniteConcepts = new HashSet<InfiniteConcept>();        
+        return newObject;
+    }
     
     /** Return the InfiniteConcept that is represented by the given string.
      *  If the infinite concept has already been instantiated, return it.

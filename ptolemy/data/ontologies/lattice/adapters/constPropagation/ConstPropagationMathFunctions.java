@@ -135,8 +135,7 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
             Token token2 = concept2.getTokenValue();
             Token resultToken = _getMathOperationResultToken(token1, token2);
             FlatTokenRepresentativeConcept representative = concept1.getRepresentative();
-            return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
-                    _constPropagationOntology, representative, resultToken);            
+            return representative.getFlatTokenInfiniteConceptByToken(resultToken);            
         } else {
             throw new IllegalActionException("Cannot perform a math " +
             		"operation on two FlatTokenInfiniteConcepts with " +

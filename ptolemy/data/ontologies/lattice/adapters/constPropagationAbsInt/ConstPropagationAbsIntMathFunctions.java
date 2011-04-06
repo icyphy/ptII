@@ -131,13 +131,9 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
         if (value.isEqualTo(value.zero()).booleanValue()) {
             return _zeroConcept;
         } else if (value.isLessThan((ScalarToken) value.zero()).booleanValue()) {
-            return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(
-                    _negativeRepresentative.getOntology(),
-                    _negativeRepresentative, value);
+            return _negativeRepresentative.getFlatTokenInfiniteConceptByToken(value);
         } else {
-            return FlatScalarTokenInfiniteConcept.createFlatScalarTokenInfiniteConcept(
-                    _positiveRepresentative.getOntology(),
-                    _positiveRepresentative, value);
+            return _positiveRepresentative.getFlatTokenInfiniteConceptByToken(value);
         } 
     }
     

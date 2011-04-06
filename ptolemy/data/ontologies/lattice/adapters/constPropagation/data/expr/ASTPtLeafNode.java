@@ -31,7 +31,6 @@ package ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr;
 import java.util.List;
 
 import ptolemy.data.Token;
-import ptolemy.data.ontologies.FlatTokenInfiniteConcept;
 import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
@@ -81,10 +80,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                 FlatTokenRepresentativeConcept constantValueConcept =
                     (FlatTokenRepresentativeConcept) _solver.getOntology().
                         getConceptByString("ConstantValue");
-                setAtLeast(node, FlatTokenInfiniteConcept.
-                        createFlatTokenInfiniteConcept(
-                                _solver.getOntology(), constantValueConcept,
-                                nodeToken));
+                setAtLeast(node, constantValueConcept.
+                        getFlatTokenInfiniteConceptByToken(nodeToken));
             } else {
                 setAtLeast(node, _solver.getOntology().getConceptByString("Constant"));
             }

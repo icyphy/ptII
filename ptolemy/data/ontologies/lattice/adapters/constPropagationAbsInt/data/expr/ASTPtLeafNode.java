@@ -33,7 +33,6 @@ import java.util.List;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
-import ptolemy.data.ontologies.FlatScalarTokenInfiniteConcept;
 import ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
@@ -92,13 +91,11 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                     } else if (((ScalarToken) nodeToken).isGreaterThan((ScalarToken) nodeToken.zero()).booleanValue()) {
                         FlatScalarTokenRepresentativeConcept positiveRepresentative =
                             (FlatScalarTokenRepresentativeConcept) getSolver().getOntology().getConceptByString("PositiveValue");
-                        setAtLeast(node, FlatScalarTokenInfiniteConcept.
-                                createFlatScalarTokenInfiniteConcept(getSolver().getOntology(), positiveRepresentative, (ScalarToken) nodeToken));
+                        setAtLeast(node, positiveRepresentative.getFlatTokenInfiniteConceptByToken(nodeToken));
                     } else {
                         FlatScalarTokenRepresentativeConcept negativeRepresentative =
                             (FlatScalarTokenRepresentativeConcept) getSolver().getOntology().getConceptByString("NegativeValue");
-                        setAtLeast(node, FlatScalarTokenInfiniteConcept.
-                                createFlatScalarTokenInfiniteConcept(getSolver().getOntology(), negativeRepresentative, (ScalarToken) nodeToken));
+                        setAtLeast(node, negativeRepresentative.getFlatTokenInfiniteConceptByToken(nodeToken));
                     }
                 } else {
                     setAtLeast(node, getSolver().getOntology().getConceptByString("Undefined"));

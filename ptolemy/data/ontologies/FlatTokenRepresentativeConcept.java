@@ -77,6 +77,26 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
         }
     }
     
+    /** Return the FlatTokenInfiniteConcept with the given token that is
+     *  contained by this representative.
+     *  If the FlatTokenInfiniteConcept has already been instantiated, return it.
+     *  If not, instantiate a new FlatTokenInfiniteConcept with the given token
+     *  and return it.
+     *  @param tokenValue The token value that is used to get a
+     *   FlatTokenInfiniteConcept.
+     *  @return The FlatTokenInfiniteConcept that has the given token and this
+     *   representative.
+     *  @throws IllegalActionException Thrown if there is an error finding or
+     *   creating the FlatTokenInfiniteConcept from the given token.
+     */
+    public FlatTokenInfiniteConcept getFlatTokenInfiniteConceptByToken(
+            Token tokenValue)
+        throws IllegalActionException {
+        
+        String conceptString = getName() + "_" + tokenValue.toString();        
+        return (FlatTokenInfiniteConcept) getInfiniteConceptByString(conceptString);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
     
