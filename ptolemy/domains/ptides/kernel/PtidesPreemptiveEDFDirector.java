@@ -391,8 +391,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             if (_debugging) {
                 _debug("We decided not to do preemption in this round, "
                         + "but to keep executing " + executingEvent.actor()
-                        + " at physical time " + getPlatformPhysicalTag(EXECUTION_TIMER).timestamp
-                        + "." + getPlatformPhysicalTag(EXECUTION_TIMER).microstep);
+                        + " at physical time " + getPlatformPhysicalTag(_executionTimeClock).timestamp
+                        + "." + getPlatformPhysicalTag(_executionTimeClock).microstep);
             }
             return false;
         } else {
@@ -403,8 +403,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         + " with another event at actor: "
                         + _eventToProcess.actor()
                         + ". This preemption happened at physical time "
-                        + getPlatformPhysicalTag(EXECUTION_TIMER).timestamp + "."
-                        + getPlatformPhysicalTag(EXECUTION_TIMER).microstep);
+                        + getPlatformPhysicalTag(_executionTimeClock).timestamp + "."
+                        + getPlatformPhysicalTag(_executionTimeClock).microstep);
             }
 
             return true;

@@ -104,7 +104,7 @@ public class MasterClock extends TypedAtomicActor {
         if (trigger.hasToken(0)) {
             trigger.get(0);
             Tag tag = ((PtidesBasicDirector)getDirector())
-            .getPlatformPhysicalTag(PtidesBasicDirector.PLATFORM_TIMER);
+            .getPlatformPhysicalTag(((PtidesBasicDirector)getDirector()).platformTimeClock);
             Token token = new DoubleToken(tag.timestamp.getDoubleValue());
             output.send(0, token);
         }

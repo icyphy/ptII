@@ -78,7 +78,7 @@ public class SimulatedPlatformPhysicalTime extends TimedSource {
         PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
 
         output.send(0, new DoubleToken((director.getPlatformPhysicalTag(
-                PtidesBasicDirector.PLATFORM_TIMER).timestamp
+                ((PtidesBasicDirector)getDirector()).platformTimeClock).timestamp
         .getDoubleValue())));
         
         super.fire();

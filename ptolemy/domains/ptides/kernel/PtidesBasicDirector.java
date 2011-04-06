@@ -390,23 +390,23 @@ public class PtidesBasicDirector extends DEDirector {
         highlightModelTimeDelay.setTypeEquals(BaseType.BOOLEAN);
         highlightModelTimeDelay.setExpression("false");
 
-        initialExecutionSynchronizationError = new Parameter(this,
+        initialExecutionClockTime = new Parameter(this,
                 "initialExecutionSynchronizationError");
-        initialExecutionSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initialExecutionSynchronizationError.setExpression("0.0");
+        initialExecutionClockTime.setTypeEquals(BaseType.DOUBLE);
+        initialExecutionClockTime.setExpression("0.0");
 
-        executionClockDrift = new Parameter(this, "executionClockDrift");
-        executionClockDrift.setTypeEquals(BaseType.DOUBLE);
-        executionClockDrift.setExpression("1.0");
+        initialExecutionClockDrift = new Parameter(this, "executionClockDrift");
+        initialExecutionClockDrift.setTypeEquals(BaseType.DOUBLE);
+        initialExecutionClockDrift.setExpression("1.0");
 
-        initialPlatformSynchronizationError = new Parameter(this,
+        initialPlatformClockTime = new Parameter(this,
                 "initialPlatformSynchronizationError");
-        initialPlatformSynchronizationError.setTypeEquals(BaseType.DOUBLE);
-        initialPlatformSynchronizationError.setExpression("0.0");
+        initialPlatformClockTime.setTypeEquals(BaseType.DOUBLE);
+        initialPlatformClockTime.setExpression("0.0");
 
-        platformClockDrift = new Parameter(this, "platformClockDrift");
-        platformClockDrift.setTypeEquals(BaseType.DOUBLE);
-        platformClockDrift.setExpression("1.0");
+        initialPlatformClockDrift = new Parameter(this, "platformClockDrift");
+        initialPlatformClockDrift.setTypeEquals(BaseType.DOUBLE);
+        initialPlatformClockDrift.setExpression("1.0");
 
         schedulerExecutionTimeBound = new Parameter(this, "schedulerExecutionTime");
         schedulerExecutionTimeBound.setTypeEquals(BaseType.DOUBLE);
@@ -452,14 +452,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  reference this ID in order to access a timer in the Ptides director.
      *  @see #PLATFORM_TIMER
      */
-    public static final int EXECUTION_TIMER = 0;
-
-    /** The initial clock drift rate of the execution clock. The type of this
-     *  clock drift is a double, and the default value is 1.0, indicating the
-     *  execution clock runs at the same rate as the oracle clock. The oracle
-     *  clock is modeled by the model time of the enclosing DE director.
-     */
-    public Parameter executionClockDrift;
+    //public static final int EXECUTION_TIMER = 0;
 
     /** If true, force all actors to process events in timestamp
      *  order, even though some actors (in particular those without
@@ -479,39 +472,41 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter highlightModelTimeDelay;
 
-    /** The initial platform time synchronization error. This parameter is
-     *  different from the assumedPlatformTimeSynchronizationErrorBound
-     *  in that the other parameter is the estimated bound, while
-     *  this parameter stores the current synchronization error. This error
-     *  could be greater than the assumed error bound. If this happens, the
-     *  safe-to-process analysis could result in the processing of an unsafe
-     *  event, in which case an exception is thrown.
+    /** The initial clock drift rate of the execution clock. The type of this
+     *  clock drift is a double, and the default value is 1.0, indicating the
+     *  execution clock runs at the same rate as the oracle clock. The oracle
+     *  clock is modeled by the model time of the enclosing DE director.
      */
-    public Parameter initialExecutionSynchronizationError;
+    public Parameter initialExecutionClockDrift;
 
-    /** The initial platform time synchronization error. This parameter is
-     *  different from the assumedPlatformTimeSynchronizationErrorBound
-     *  in that the other parameter is the estimated bound, while
-     *  this parameter stores the current synchronization error. This error
-     *  could be greater than the assumed error bound. If this happens, the
-     *  safe-to-process analysis could result in the processing of an unsafe
-     *  event, in which case an exception is thrown.
+    /** The initial execution time clock time. The initial oracle clock time
+     *  zero. If the initial execution clock time differs from that time, then
+     *  that time is captured in this parameter. 
      */
-    public Parameter initialPlatformSynchronizationError;
+    public Parameter initialExecutionClockTime;
 
     /** The initial clock drift rate of the platform clock. The type of this
      *  clock drift is a double, and the default value is 1.0, indicating the
      *  platform clock runs at the same rate as the oracle clock. The oracle
      *  clock is modeled by the model time of the enclosing DE director.
      */
-    public Parameter platformClockDrift;
+    public Parameter initialPlatformClockDrift;
+
+    /** The initial platform time clock time. The initial oracle clock time
+     *  zero. If the initial platform         clock time differs from that time, then
+     *  that time is captured in this parameter. Note this parameter is
+     *  different from the assumedPlatformTimeSynchronizationErrorBound
+     *  in that the other parameter is the estimated bound, while
+     *  this parameter stores the initial difference.
+     */
+    public Parameter initialPlatformClockTime;
 
     /** An ID for the platform timer in this director. There are two timers
      *  in a Ptides director: platform timer and execution timer. Actors
      *  reference this ID in order to access a timer in the Ptides director.
      *  @see #EXECUTION_TIMER
      */
-    public static final int PLATFORM_TIMER = 1;
+    //public static final int PLATFORM_TIMER = 1;
 
     /** A Parameter representing the bound on the simulated scheduling
      *  overhead time. In real-time programs, it takes time for the scheduler
@@ -523,6 +518,14 @@ public class PtidesBasicDirector extends DEDirector {
      *  scheduling overhead.
      */
     public Parameter schedulerExecutionTimeBound;
+
+    /** The clock that keeps track of the execution time on this platform.
+     */
+    public RealTimeClock _executionTimeClock;
+
+    /** The clock that keeps track of the platform time on this platform.
+     */
+    public RealTimeClock platformTimeClock;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -585,24 +588,13 @@ public class PtidesBasicDirector extends DEDirector {
         return SuperdenseDependency.valueOf(delay, index);
     }
 
-    /** Return the current clock drift associated with the clock ID.
-     *  Possible clock ID's are:
-     *  {@link #PLATFORM_TIMER} and {@link #EXECUTION_TIMER}.
-     *  @param clock Clock ID.
+    /** Return the current clock drift associated with the real
+     *  time clock.
+     *  @param clock The real time clock.
      *  @return the current clock drift associated with the clock ID.
      *  @exception IllegalActionException If clock ID is not recognized.
      */
-    public double getClockDrift(int clock) throws IllegalActionException {
-        RealTimeClock realTimeClock = null;
-        if (clock == PtidesBasicDirector.PLATFORM_TIMER) {
-            realTimeClock = _platformTimeClock;
-        } else if (clock == PtidesBasicDirector.EXECUTION_TIMER) {
-            realTimeClock = _executionTimeClock;
-        } else {
-            throw new IllegalActionException(this, "Trying to update a clock "
-                    + "with an ID that is neither platform time clock or "
-                    + "execution time clock.");
-        }
+    public double getClockDrift(RealTimeClock realTimeClock) throws IllegalActionException {
         return realTimeClock._clockDrift;
     }
 
@@ -628,28 +620,6 @@ public class PtidesBasicDirector extends DEDirector {
                 .getToken()).doubleValue();
     }
 
-    /** Get the simulaed platform physical time of the environment, which is the oracle
-     *  physical time offset by the clock synchronization error due to clock
-     *  drift.
-     *  @param clockId Clock ID.
-     *  @return the platform physical time.
-     *  @exception IllegalActionException If director cannot get token for the
-     *  parameter platformTimeSynchronizationError.
-     *  @exception InternalErrorException If the platform physical time of the
-     *  corresponding current oracle time cannot be retrieved.
-     */
-    public Tag getPlatformPhysicalTag(int clockId)
-            throws IllegalActionException {
-        Tag tag = _getOraclePhysicalTag();
-        tag.timestamp = _getPlatformPhysicalTimeForOraclePhysicalTime(
-                tag.timestamp, clockId);
-        if (tag.timestamp == null) {
-            throw new InternalErrorException("The platform physical "
-                    + "time at the current oracle time cannot be retrieved.");
-        }
-        return tag;
-    }
-
     /** Get the simulated platform physical time of the environment, which is the oracle
      *  physical time offset by the clock synchronization error due to clock
      *  drift.
@@ -664,7 +634,7 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         Tag tag = _getOraclePhysicalTag();
         HashMap<Time, Time> timeCachePair;
-        if (realTimeClock == _platformTimeClock) {
+        if (realTimeClock == platformTimeClock) {
             timeCachePair = _oraclePlatformTimePair;
         } else if (realTimeClock == _executionTimeClock) {
             timeCachePair = _oracleExecutionTimePair;
@@ -673,9 +643,7 @@ public class PtidesBasicDirector extends DEDirector {
                     "The real time clock is not recognized");
         }
         tag.timestamp = _getPlatformPhysicalTimeForOraclePhysicalTime(
-                tag.timestamp, realTimeClock._lastOracleTime,
-                realTimeClock._clockDrift, realTimeClock._lastPlatformTime,
-                timeCachePair);
+                tag.timestamp, realTimeClock, timeCachePair);
         if (tag.timestamp == null) {
             throw new InternalErrorException("The platform physical "
                     + "time at the current oracle time cannot be retrieved.");
@@ -727,13 +695,15 @@ public class PtidesBasicDirector extends DEDirector {
         _ignoredPlatformFireAtTimes = new LinkedList<Time>();
         _lastExecutingActor = null;
         _executionTimeClock = new RealTimeClock(
-                ((DoubleToken) initialExecutionSynchronizationError.getToken())
+                ((DoubleToken) initialExecutionClockTime.getToken())
                         .doubleValue(),
-                ((DoubleToken) executionClockDrift.getToken()).doubleValue());
-        _platformTimeClock = new RealTimeClock(
-                ((DoubleToken) initialPlatformSynchronizationError.getToken())
+                ((DoubleToken) initialExecutionClockDrift.getToken()).doubleValue(),
+                this);
+        platformTimeClock = new RealTimeClock(
+                ((DoubleToken) initialPlatformClockTime.getToken())
                         .doubleValue(),
-                ((DoubleToken) platformClockDrift.getToken()).doubleValue());
+                ((DoubleToken) initialPlatformClockDrift.getToken()).doubleValue(),
+                this);
         _oraclePlatformTimePair = new HashMap<Time, Time>();
         _oracleExecutionTimePair = new HashMap<Time, Time>();
 
@@ -922,88 +892,6 @@ public class PtidesBasicDirector extends DEDirector {
         setMicrostep(microstep);
     }
 
-    /** Update the clock drift of the particular realTimeClock, based on the
-     *  clock ID. Checks if the new clock drift is less than zero. If so, throw
-     *  an exception. If the new clock drift is different from the old one,
-     *  update all future oracle fireAt times. Also keep track of
-     *  the list of ignored future fireAt times, so that this director will not
-     *  fire when when it wakes up at those times.
-     *  @see #_updateFireAtTimes
-     *  Also, upon updating the clock drift, the cached oracle time/platform time
-     *  pair should also be updated. the old cache should be thrown away, while
-     *  a new cache should be made for each pair.
-     *  @see {@link #_oracleExecutionTimePair}, {@link #_oraclePlatformTimePair}
-     *  All parameters of the realTimeClock are also updated in the process.
-     *  @param clockID an int specifying the ID of the clock.
-     *  @param newClockDrift a Time object that indicates the new drift of that
-     *  particular clock.
-     *  @exception IllegalActionException If either the original or updated fireAt
-     *  time is in the past, or if the new clock drift is less than zero.
-     */
-    public void updateClockDrift(int clockID, double newClockDrift)
-            throws IllegalActionException {
-        if (newClockDrift < 0.0) {
-            throw new IllegalActionException(
-                    PtidesBasicDirector.this,
-                    "The new "
-                            + "clock drift is of value < 0, this means for every "
-                            + "cycle the clock advances in oracle time, the platform "
-                            + "cycle decreases, i.e, time goes backwards. This is not "
-                            + "allowed.");
-        }
-        RealTimeClock realTimeClock = null;
-        HashMap<Time, Time> timeCachePair = null;
-        if (clockID == PtidesBasicDirector.PLATFORM_TIMER) {
-            realTimeClock = _platformTimeClock;
-            timeCachePair = _oraclePlatformTimePair;
-        } else if (clockID == PtidesBasicDirector.EXECUTION_TIMER) {
-            realTimeClock = _executionTimeClock;
-            timeCachePair = _oracleExecutionTimePair;
-        } else {
-            throw new IllegalActionException(this, "Trying to update a clock "
-                    + "with an ID that is neither platform time clock or "
-                    + "execution time clock.");
-        }
-        // FIXME: FindBugs: Test for floating point equality.
-        if (realTimeClock._clockDrift != newClockDrift) {
-            // First update all the parameters in realTimeClock.
-            Time newOracleTime = _getOraclePhysicalTag().timestamp;
-            realTimeClock._lastPlatformTime = _getPlatformPhysicalTimeForOraclePhysicalTime(
-                    newOracleTime, realTimeClock._lastOracleTime,
-                    realTimeClock._clockDrift, realTimeClock._lastPlatformTime,
-                    timeCachePair);
-            realTimeClock._lastOracleTime = newOracleTime;
-            realTimeClock._clockDrift = newClockDrift;
-            // Based on the above information, update the future fireAt times.
-            if (realTimeClock == _executionTimeClock) {
-                _futureExecutionFireAtTimes = (List<Time>) _updateFireAtTimes(
-                        _futureExecutionFireAtTimes,
-                        _ignoredExecutionFireAtTimes, realTimeClock,
-                        timeCachePair);
-            } else if (realTimeClock == _platformTimeClock) {
-                _futurePlatformFireAtTimes = (List<Time>) _updateFireAtTimes(
-                        _futurePlatformFireAtTimes,
-                        _ignoredPlatformFireAtTimes, realTimeClock,
-                        timeCachePair);
-                // If the clock is a platform clock, we also need to
-                // update the timed interrupt times. However,
-                // ignore fireAt time is not needed, since a timed
-                // interrupt time is part of a platform fireAt time.
-                _timedInterruptTimes = (List<TimedEvent>) _updateFireAtTimes(
-                        _timedInterruptTimes, null, realTimeClock,
-                        timeCachePair);
-            } else {
-                // FIMXE: should we ignore this case, or should we throw
-                // an exception?
-                throw new InternalErrorException(this, null, "The real time "
-                        + "clock that's trying to update fireAtTimes "
-                        + "is neither a execution time clock nor a "
-                        + "platform time clock. The Ptides director "
-                        + "doesn't know how to deal with it.");
-            }
-        }
-    }
-
     /** Reset the icon idle if the animation for actor firing is
      *  turned on.
      *  @exception IllegalActionException If the wrapup() method of
@@ -1154,7 +1042,7 @@ public class PtidesBasicDirector extends DEDirector {
             // ports.
             for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
                     .inputPortList())) {
-                _traverseToCalcMinDelay(startPort);
+                _traverseToCalculateDelayOffset(startPort);
             }
 
             // For all unvisited actors, the sink port that's connected to its output ports
@@ -1856,7 +1744,7 @@ public class PtidesBasicDirector extends DEDirector {
         // This means that this director cannot be used inside a director that
         // does a fixed point iteration, which includes (currently), Continuous
         // and CT and SR, but in the future may also include DE.
-        Tag executionPhysicalTag = getPlatformPhysicalTag(EXECUTION_TIMER);
+        Tag executionPhysicalTag = getPlatformPhysicalTag(_executionTimeClock);
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
 
@@ -1978,7 +1866,7 @@ public class PtidesBasicDirector extends DEDirector {
 
                 return _lastActorFired;
             } else {
-                _fireAtPlatformTime(finishTime, EXECUTION_TIMER);
+                _fireAtPlatformTime(finishTime, _executionTimeClock);
                 // Currently executing actor needs more execution time.
                 // Decide whether to preempt it.
                 if (_eventQueue.isEmpty() || !_preemptExecutingActor()) {
@@ -2072,7 +1960,7 @@ public class PtidesBasicDirector extends DEDirector {
             // and return null.
             Time expectedCompletionTime = executionPhysicalTag.timestamp
                     .add(executionTime);
-            _fireAtPlatformTime(expectedCompletionTime, EXECUTION_TIMER);
+            _fireAtPlatformTime(expectedCompletionTime, _executionTimeClock);
 
             // If we are preempting a current execution, then
             // update information of the preempted event.
@@ -2183,24 +2071,20 @@ public class PtidesBasicDirector extends DEDirector {
      *  continuous. If the platform time of interest is less than the last
      *  saved platform time of the corresponding clock, throw an exception.
      *  @param platformTime The platform time.
-     *  @param clockId The ID of the corresponding platform clock.
+     *  @param realTimeClock The real time clock for which we are converting
+     *  oracle platform time to.
      *  @return The oracle tag associated with the platform tag. Returns null
      *  if the platform time of interest is less than the last
      *  saved platform time of the corresponding clock.
      *  @exception IllegalActionException If the clock ID is not recognized.
      */
     protected Time _getOraclePhysicalTimeForPlatformPhysicalTime(
-            Time platformTime, int clockId) throws IllegalActionException {
-        RealTimeClock realTimeClock;
+            Time platformTime, RealTimeClock realTimeClock) throws IllegalActionException {
         HashMap<Time, Time> timeCachePair = null;
-        if (clockId == EXECUTION_TIMER) {
-            realTimeClock = _executionTimeClock;
-            timeCachePair = _oracleExecutionTimePair;
-        } else if (clockId == PLATFORM_TIMER) {
-            realTimeClock = _platformTimeClock;
+        if (realTimeClock == platformTimeClock) {
             timeCachePair = _oraclePlatformTimePair;
-        } else {
-            throw new IllegalActionException(this, "Unrecognized clock ID.");
+        } else if (realTimeClock == _executionTimeClock) {
+            timeCachePair = _oracleExecutionTimePair;
         }
         Time timeDifference = platformTime
                 .subtract(realTimeClock._lastPlatformTime);
@@ -2223,33 +2107,38 @@ public class PtidesBasicDirector extends DEDirector {
         return result;
     }
 
-    /** Given an oracle physical time, get the corresonding platform physical time.
-     *  If the oracle time of interest is less than the last
-     *  saved oracle time of the corresponding clock, throw an exception.
-     *  @param oracleTime a Time object that tracks the current oracle time.
-     *  @param clockId an int specifying the ID of the clock.
-     *  @return The oracle tag associated with the platform tag. Return null
-     *  if the oracle time of interest is less than the last
-     *  saved oracle time of the corresponding clock.
-     *  @exception IllegalActionException If the input clock ID cannot be identified.
+    /** Get the platform time associated with the current oracle time.
+     *  If the current oracle time is stored in the time cache pair (which
+     *  may be either an oracle-platform or an oracle-execution time
+     *  pair), then simply return the platform time saved in that cache.
+     *  Otherwise calculate the platform time based on the last saved oracle time,
+     *  current oracle time, old platfrom time, and the clock drift.
+     *  @param currentOracleTime The current oracle time.
+     *  @param realTimeClock The real time clock for which we are getting the
+     *  platform physical time from.
+     *  @return the platform time associated with the current oracle time.
+     *  @exception IllegalActionException If the last oracle time is greater
+     *  than the current oracle time.
      */
     protected Time _getPlatformPhysicalTimeForOraclePhysicalTime(
-            Time oracleTime, int clockId) throws IllegalActionException {
-        RealTimeClock realTimeClock;
-        HashMap<Time, Time> timeCachePair;
-        if (clockId == EXECUTION_TIMER) {
-            realTimeClock = _executionTimeClock;
-            timeCachePair = _oracleExecutionTimePair;
-        } else if (clockId == PLATFORM_TIMER) {
-            realTimeClock = _platformTimeClock;
-            timeCachePair = _oraclePlatformTimePair;
+            Time currentOracleTime, RealTimeClock realTimeClock,
+            HashMap<Time, Time> timeCachePair)
+            throws IllegalActionException {
+        Time result = timeCachePair.get(currentOracleTime);
+        if (result != null) {
+            return result;
         } else {
-            throw new IllegalActionException(this, "Unrecognized clock "
-                    + "ID.");
+            Time timeDifference = currentOracleTime.subtract(realTimeClock._lastOracleTime);
+            if (timeDifference.compareTo(_zero) < 0) {
+                throw new IllegalActionException(
+                        "While getting the platform time "
+                                + "for a oracle time, the last oracle time saved "
+                                + "was in the past, which makes it impossible to get "
+                                + "the oracle time.");
+            }
+            return realTimeClock._lastPlatformTime.add(timeDifference.getDoubleValue()
+                    * realTimeClock._clockDrift);
         }
-        return _getPlatformPhysicalTimeForOraclePhysicalTime(oracleTime,
-                realTimeClock._lastOracleTime, realTimeClock._clockDrift,
-                realTimeClock._lastPlatformTime, timeCachePair);
     }
 
     /** Highlight the specified actor with the specified color.
@@ -2331,7 +2220,7 @@ public class PtidesBasicDirector extends DEDirector {
         double delayOffset = _getMininumDelayOffset(port,
                 ((PtidesEvent) event).channel(), event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(delayOffset);
-        Tag platformPhysicalTag = getPlatformPhysicalTag(PLATFORM_TIMER);
+        Tag platformPhysicalTag = getPlatformPhysicalTag(platformTimeClock);
         int compare = platformPhysicalTag.timestamp.subtract(
                 waitUntilPhysicalTime).compareTo(_zero);
         int microstep = platformPhysicalTag.microstep;
@@ -2347,7 +2236,7 @@ public class PtidesBasicDirector extends DEDirector {
                         event);
                 _timedInterruptTimes.add(timedEvent);
                 Collections.sort(_timedInterruptTimes);
-                _fireAtPlatformTime(waitUntilPhysicalTime, PLATFORM_TIMER);
+                _fireAtPlatformTime(waitUntilPhysicalTime, platformTimeClock);
             }
             return false;
         }
@@ -2384,17 +2273,17 @@ public class PtidesBasicDirector extends DEDirector {
      *  that is used. Call fireAt() of the executive director, which is in
      *  charge of keeping track of the simulated physical time.
      *  @param platformTime a Time object indicate the future platform time to fire.
-     *  @param clockId an int specifying the ID of the clock.
+     *  @param realTimeClock The real time clock that requested the fireAt.
      *  @exception IllegalActionException If cannot call fireAt of enclosing
      *  director, or if the oracle time is in the past, or cannot get the oracle
      *  time.
      */
-    protected void _fireAtPlatformTime(Time platformTime, int clockId)
+    protected void _fireAtPlatformTime(Time platformTime, RealTimeClock realTimeClock)
             throws IllegalActionException {
         Actor container = (Actor) getContainer();
         Director executiveDirector = ((Actor) container).getExecutiveDirector();
         Time fireAtTime = _getOraclePhysicalTimeForPlatformPhysicalTime(
-                platformTime, clockId);
+                platformTime, realTimeClock);
         if (fireAtTime == null) {
             throw new IllegalActionException(
                     this,
@@ -2403,7 +2292,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + "happen because the oracle time should be in the future.");
         }
         // Add this fireAt time to the list of future fireAt times to expect.
-        if (clockId == PLATFORM_TIMER) {
+        if (realTimeClock == platformTimeClock) {
             boolean fireAtTimeExists = false;
             if (_futurePlatformFireAtTimes.contains(fireAtTime)) {
                 fireAtTimeExists = true;
@@ -2412,7 +2301,7 @@ public class PtidesBasicDirector extends DEDirector {
                 _futurePlatformFireAtTimes.add(fireAtTime);
                 Collections.sort(_futurePlatformFireAtTimes);
             }
-        } else if (clockId == EXECUTION_TIMER) {
+        } else if (realTimeClock == _executionTimeClock) {
             boolean fireAtTimeExists = false;
             if (_futureExecutionFireAtTimes.contains(fireAtTime)) {
                 fireAtTimeExists = true;
@@ -2575,8 +2464,8 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         boolean result = false;
-        Tag platformPhysicalTag = getPlatformPhysicalTag(PLATFORM_TIMER);
-        Tag executionPhysicalTag = getPlatformPhysicalTag(EXECUTION_TIMER);
+        Tag platformPhysicalTag = getPlatformPhysicalTag(platformTimeClock);
+        Tag executionPhysicalTag = getPlatformPhysicalTag(_executionTimeClock);
         // First transfer all tokens that are already in the event queue for the sensor.
         // Notice this is done NOT for the specific port
         // in question. Instead, we do it for ALL events that can be transferred out of
@@ -2693,7 +2582,7 @@ public class PtidesBasicDirector extends DEDirector {
                             // be the # of clock cycles? What does it mean
                             // that the realTimeDelay is in a notion of time?
                             // What does this time mean?
-                            _fireAtPlatformTime(waitUntilTime, EXECUTION_TIMER);
+                            _fireAtPlatformTime(waitUntilTime, _executionTimeClock);
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -2747,7 +2636,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         // First check for current time, and transfer any tokens that are already ready to output.
         boolean result = false;
-        Tag platformPhysicalTag = getPlatformPhysicalTag(PLATFORM_TIMER);
+        Tag platformPhysicalTag = getPlatformPhysicalTag(platformTimeClock);
         int compare = 0;
         // The following code does not transfer output tokens specifically for "port", the
         // input of this method. Instead, for all events in _realTimeOutputEventQueue,
@@ -2833,7 +2722,7 @@ public class PtidesBasicDirector extends DEDirector {
                         _realTimeOutputEventQueue.add(tokenEvent);
                         // Wait until platform physical time to transfer the
                         // output to the actuator
-                        _fireAtPlatformTime(_currentTime, PLATFORM_TIMER);
+                        _fireAtPlatformTime(_currentTime, platformTimeClock);
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -3118,41 +3007,6 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
-    /** Get the platform time associated with the current oracle time.
-     *  If the current oracle time is stored in the time cache pair (which
-     *  may be either an oracle-platform or an oracle-execution time
-     *  pair), then simply return the platform time saved in that cache.
-     *  Otherwise calculate the platform time based on the last saved oracle time,
-     *  current oracle time, old platfrom time, and the clock drift.
-     *  @param currentOracleTime The current oracle time.
-     *  @param lastOracleTime The last oracle time.
-     *  @param clockDrift the clock drift.
-     *  @param lastPlatformTime The last platform time.
-     *  @return the platform time associated with the current oracle time.
-     *  @exception IllegalActionException If the last oracle time is greater
-     *  than the current oracle time.
-     */
-    private Time _getPlatformPhysicalTimeForOraclePhysicalTime(
-            Time currentOracleTime, Time lastOracleTime, double clockDrift,
-            Time lastPlatformTime, HashMap<Time, Time> timeCachePair)
-            throws IllegalActionException {
-        Time result = timeCachePair.get(currentOracleTime);
-        if (result != null) {
-            return result;
-        } else {
-            Time timeDifference = currentOracleTime.subtract(lastOracleTime);
-            if (timeDifference.compareTo(_zero) < 0) {
-                throw new IllegalActionException(
-                        "While getting the platform time "
-                                + "for a oracle time, the last oracle time saved "
-                                + "was in the past, which makes it impossible to get "
-                                + "the oracle time.");
-            }
-            return lastPlatformTime.add(timeDifference.getDoubleValue()
-                    * clockDrift);
-        }
-    }
-
     /** Return the value stored in realTimeDelay parameter.
      *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
@@ -3407,7 +3261,7 @@ public class PtidesBasicDirector extends DEDirector {
         if (!_currentlyExecutingStack.isEmpty()) {
             // We are preempting a current execution.
             DoubleTimedEvent currentEventList = _currentlyExecutingStack.peek();
-            Time elapsedTime = getPlatformPhysicalTag(EXECUTION_TIMER).timestamp
+            Time elapsedTime = getPlatformPhysicalTag(_executionTimeClock).timestamp
                     .subtract(_physicalTimeExecutionStarted);
             currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
                     .subtract(elapsedTime);
@@ -3424,7 +3278,7 @@ public class PtidesBasicDirector extends DEDirector {
                                 (List<PtidesEvent>) currentEventList.contents)
                                 .getName((NamedObj) getContainer())
                         + " at physical time "
-                        + getPlatformPhysicalTag(EXECUTION_TIMER).timestamp
+                        + getPlatformPhysicalTag(_executionTimeClock).timestamp
                         + ", which has remaining execution time "
                         + currentEventList.remainingExecutionTime);
             }
@@ -3498,7 +3352,7 @@ public class PtidesBasicDirector extends DEDirector {
     private boolean _schedulerStillRunning() throws IllegalActionException {
         // If the overhead time has not finished, return true.
         if (_schedulerFinishTime
-                .compareTo(getPlatformPhysicalTag(EXECUTION_TIMER).timestamp) <= 0) {
+                .compareTo(getPlatformPhysicalTag(_executionTimeClock).timestamp) <= 0) {
             return false;
         } else {
             return true;
@@ -3543,7 +3397,7 @@ public class PtidesBasicDirector extends DEDirector {
         TimedEvent timedEvent = _timedInterruptTimes.get(0);
         Time topTimedInterruptWakeUpTime = timedEvent.timeStamp;
         int result = topTimedInterruptWakeUpTime
-                .compareTo(getPlatformPhysicalTag(PLATFORM_TIMER).timestamp);
+                .compareTo(getPlatformPhysicalTag(platformTimeClock).timestamp);
         if (result < 0) {
             throw new IllegalActionException(
                     this,
@@ -3551,7 +3405,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + "occurred at time: "
                             + topTimedInterruptWakeUpTime.toString()
                             + ", but the current simulated physical time is already: "
-                            + getPlatformPhysicalTag(PLATFORM_TIMER).timestamp
+                            + getPlatformPhysicalTag(platformTimeClock).timestamp
                             + ".");
         } else if (result == 0) {
             // FIXME: FindBugs: Unchecked type in generic call 
@@ -3586,15 +3440,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  failed to get a token from the schedulerExecutionTime parameter.
      */
     private boolean _startScheduler() throws IllegalActionException {
-        _schedulerFinishTime = getPlatformPhysicalTag(EXECUTION_TIMER).timestamp;
+        _schedulerFinishTime = getPlatformPhysicalTag(_executionTimeClock).timestamp;
         Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
         if (parameter == null
                 || ((DoubleToken) parameter.getToken()).doubleValue() == 0) {
             return false;
         }
-        _schedulerFinishTime = getPlatformPhysicalTag(EXECUTION_TIMER).timestamp
+        _schedulerFinishTime = getPlatformPhysicalTag(_executionTimeClock).timestamp
                 .add(((DoubleToken) parameter.getToken()).doubleValue());
-        _fireAtPlatformTime(_schedulerFinishTime, EXECUTION_TIMER);
+        _fireAtPlatformTime(_schedulerFinishTime, _executionTimeClock);
         return true;
     }
 
@@ -3621,7 +3475,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If there are ports that are both input
      *  and output ports.
      */
-    private void _traverseToCalcMinDelay(IOPort startPort)
+    private void _traverseToCalculateDelayOffset(IOPort startPort)
             throws IllegalActionException {
         // Setup a local priority queue to store all reached ports
         HashMap localPortDelays = new HashMap<IOPort, SuperdenseDependency>(
@@ -3854,20 +3708,6 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Keep track of the last platform time. The last time a change in clock
-     *  drift occurred should have happened before this time. If this assumption
-     *  holds, then the current platform time can be calculated using the clock
-     *  drift, the current oracle time, and {@link #_lastPlatformTime}. To make
-     *  sure this assumption hold, this parameter should be updated every time
-     *  clock drift occurs. At initialization, this parameter should be set
-     *  to the initial clock platform time synchronization erros between this
-     *  platform's time and the oracle time.
-     *  FIXME: Instead of execution times, maybe we should use execution clock
-     *  cycles coupled with clock frequency instead. And the clock drift of
-     *  the execution clock can be replaced by the frequency drift of the CPU.
-     */
-    private RealTimeClock _executionTimeClock;
-
     /** A list that keeps track of future fireAt oracle times for execution time
      *  simulation. When the cock drift
      *  changes, all times in this list should be updated to fire at a new
@@ -3924,6 +3764,12 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Actor _lastExecutingActor;
 
+    /** Keep track of a set of input ports to the composite actor governed by this director.
+     *  These input ports are network input ports, which are input ports that are directly
+     *  connected to NetworkInputDevice's.
+     */
+    private HashSet<IOPort> _networkInputPorts;
+
     /** Pairs of "simultaneous" future oracle and execution time. This map
      *  serves as a cache to help simplify the conversion from oracle
      *  time to execution time. Also, since the conversions between these
@@ -3944,20 +3790,10 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private HashMap<Time, Time> _oraclePlatformTimePair;
 
-    /** Keep track of a set of input ports to the composite actor governed by this director.
-     *  These input ports are network input ports, which are input ports that are directly
-     *  connected to NetworkInputDevice's.
-     */
-    private HashSet<IOPort> _networkInputPorts;
-
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
      */
     private Time _physicalTimeExecutionStarted;
-
-    /** The clock that keeps track of the platform time on this platform.
-     */
-    private RealTimeClock _platformTimeClock;
 
     /** Maps ports to dependencies. Used to determine delayOffset parameter
      */
@@ -4123,21 +3959,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  an oracle time of zero.
      *  @author jiazou
      */
-    private class RealTimeClock {
-        // FIXME: Findbugs: "SIC: Could be refactored into a static
-        // inner class (SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS)" 
-
-        // "This
-        // class is an inner class, but does not use its embedded
-        // reference to the object which created it except during
-        // construction of the inner object.  This reference makes the
-        // instances of the class larger, and may keep the reference
-        // to the creator object alive longer than necessary.  If
-        // possible, the class should be made into a static inner
-        // class. Since the reference to the outer object is required
-        // during construction of the inner instance, the inner class
-        // will need to be refactored so as to pass a reference to the
-        // outer instance to the constructor for the inner class."
+    public class RealTimeClock {
 
         /** Construct a real time clock, with all the times and clock drifts
          *  set to default values: All clock drifts are initialized to Time 1.0,
@@ -4155,11 +3977,88 @@ public class PtidesBasicDirector extends DEDirector {
          *   oracle time.
          */
         private RealTimeClock(double platformTimeAtOracleTimeZero,
-                double clockDrift) throws IllegalActionException {
+                double clockDrift, Director ptidesDirector) throws IllegalActionException {
             _lastPlatformTime = new Time(PtidesBasicDirector.this,
                     platformTimeAtOracleTimeZero);
             _clockDrift = clockDrift;
             _lastOracleTime = new Time(PtidesBasicDirector.this);
+            _PtidesDirector = ptidesDirector;
+        }
+
+        /** Update the clock drift of the realTimeClock, specified by the
+         *  clock ID. Check whether the new clock drift is less than zero. If so, throw
+         *  an exception. If the new clock drift is different from the old one,
+         *  update all future oracle fireAt times. Also keep track of
+         *  the list of ignored future fireAt times, so that this director will not
+         *  fire when it wakes up at those times.
+         *  See {@link #_updateFireAtTimes}
+         *  Also, upon updating the clock drift, the cached oracle time/platform time
+         *  pair should also be updated. The old cache should be thrown away, while
+         *  a new cache should be made for each pair.
+         *  See {@link #_oracleExecutionTimePair}, {@link #_oraclePlatformTimePair}
+         *  All parameters of the realTimeClock are also updated in the process.
+         *  @param realTimeClock The real time clock that is updating its clock drift.
+         *  @param newClockDrift a Time object that indicates the new drift of that
+         *  particular clock.
+         *  @exception IllegalActionException If either the original or updated fireAt
+         *  time is in the past, or if the new clock drift is less than or equal to zero.
+         */
+        public void updateClockDrift(double newClockDrift)
+                throws IllegalActionException {
+            if (newClockDrift <= 0.0) {
+                throw new IllegalActionException(
+                        PtidesBasicDirector.this,
+                        "The new clock drift is of value <= 0, this means for every " +
+                        "cycle the clock advances in oracle time, the platform " +
+                        "cycle decreases to stays put, i.e, time goes backwards " +
+                        "or stays put. This is not allowed.");
+            }
+            HashMap<Time, Time> timeCachePair = null;
+            if (this == platformTimeClock) {
+                timeCachePair = _oraclePlatformTimePair;
+            } else if (this == _executionTimeClock) {
+                timeCachePair = _oracleExecutionTimePair;
+            } else {
+                throw new IllegalActionException(this._PtidesDirector, "Trying to update a clock "
+                        + "with an ID that is neither platform time clock or "
+                        + "execution time clock.");
+            }
+            // FIXME: FindBugs: Test for floating point equality.
+            if (_clockDrift != newClockDrift) {
+                // First update all the parameters in realTimeClock.
+                Time newOracleTime = _getOraclePhysicalTag().timestamp;
+                _lastPlatformTime = _getPlatformPhysicalTimeForOraclePhysicalTime(
+                        newOracleTime, this, timeCachePair);
+                _lastOracleTime = newOracleTime;
+                _clockDrift = newClockDrift;
+                // Based on the above information, update the future fireAt times.
+                if (this == _executionTimeClock) {
+                    _futureExecutionFireAtTimes = (List<Time>) _updateFireAtTimes(
+                            _futureExecutionFireAtTimes,
+                            _ignoredExecutionFireAtTimes, this,
+                            timeCachePair);
+                } else if (this == platformTimeClock) {
+                    _futurePlatformFireAtTimes = (List<Time>) _updateFireAtTimes(
+                            _futurePlatformFireAtTimes,
+                            _ignoredPlatformFireAtTimes, this,
+                            timeCachePair);
+                    // If the clock is a platform clock, we also need to
+                    // update the timed interrupt times. However,
+                    // ignore fireAt time is not needed, since a timed
+                    // interrupt time is part of a platform fireAt time.
+                    _timedInterruptTimes = (List<TimedEvent>) _updateFireAtTimes(
+                            _timedInterruptTimes, null, this,
+                            timeCachePair);
+                } else {
+                    // FIMXE: should we ignore this case, or should we throw
+                    // an exception?
+                    throw new InternalErrorException(this._PtidesDirector, null, "The real time "
+                            + "clock that's trying to update fireAtTimes "
+                            + "is neither a execution time clock nor a "
+                            + "platform time clock. The Ptides director "
+                            + "doesn't know how to deal with it.");
+                }
+            }
         }
 
         /** The last saved platform time. This time is interpreted as being
@@ -4176,6 +4075,8 @@ public class PtidesBasicDirector extends DEDirector {
          *  as the oracle clock changes.
          */
         private double _clockDrift;
+        
+        private Director _PtidesDirector;
     }
 
     /** A structure that holds a token with the port and channel it's
@@ -4227,26 +4128,9 @@ public class PtidesBasicDirector extends DEDirector {
         public int compareTo(Object other) {
             return deliveryTag.compareTo(((RealTimeEvent) other).deliveryTag);
         }
-        //  FIXME: FindBugs: "Eq: Class defines compareTo(...) and                                           
-        //  uses Object.equals() (EQ_COMPARETO_USE_OBJECT_EQUALS)"                                           
-
-        //  "This class defines a compareTo(...) method but inherits its                                     
-        //  equals() method from java.lang.Object. Generally, the value of                                   
-        //  compareTo should return zero if and only if equals returns                                       
-        //  true. If this is violated, weird and unpredictable failures                                      
-        //  will occur in classes such as PriorityQueue. In Java 5 the                                       
-        //  PriorityQueue.remove method uses the compareTo method, while                                     
-        //  in Java 6 it uses the equals method."                                                            
-
-        //  "From the JavaDoc for the compareTo method in the Comparable interface:"                         
-
-        //      "It is strongly recommended, but not strictly                                                
-        //      required that (x.compareTo(y)==0) ==                                                         
-        //      (x.equals(y)). Generally speaking, any class that                                            
-        //      implements the Comparable interface and violates                                             
-        //      this condition should clearly indicate this                                                  
-        //      fact. The recommended language is "Note: this                                                
-        //      class has a natural ordering that is inconsistent                                            
-        //      with equals."" 
+        
+        public boolean equals(Object other) {
+            return deliveryTag.equals(((RealTimeEvent) other).deliveryTag);
+        }
     }
 }

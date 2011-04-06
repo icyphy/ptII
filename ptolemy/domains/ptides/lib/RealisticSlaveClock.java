@@ -108,16 +108,13 @@ public class RealisticSlaveClock extends TypedAtomicActor {
             return;
         }
         PtidesBasicDirector director = (PtidesBasicDirector)getDirector();
+        PtidesBasicDirector.RealTimeClock realTimeClock = director.platformTimeClock;
         Tag platformTag = director
-            .getPlatformPhysicalTag(PtidesBasicDirector.PLATFORM_TIMER);
+            .getPlatformPhysicalTag(realTimeClock);
         if (token.doubleValue() > platformTag.timestamp.getDoubleValue()) {
-            director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
-                    director.getClockDrift(PtidesBasicDirector.PLATFORM_TIMER)
-                    * 1.3);
+            realTimeClock.updateClockDrift(director.getClockDrift(realTimeClock) * 1.3);
         } else if (token.doubleValue() < platformTag.timestamp.getDoubleValue()) {
-            director.updateClockDrift(PtidesBasicDirector.PLATFORM_TIMER,
-                    director.getClockDrift(PtidesBasicDirector.PLATFORM_TIMER)
-                    * 0.7);
+            realTimeClock.updateClockDrift(director.getClockDrift(realTimeClock) * 0.7);
         } else {
             // Do nothing.
         }
