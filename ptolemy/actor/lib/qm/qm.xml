@@ -12,6 +12,12 @@
   
   <entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
   </entity>
+  
+  <entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch"> 
+  </entity>
+  
+  <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
+  </entity>
 
       </group>
     ?>

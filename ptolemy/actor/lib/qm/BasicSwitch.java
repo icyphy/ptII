@@ -105,12 +105,7 @@ public class BasicSwitch extends ColoredQuantityManager {
     public BasicSwitch(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        if (!(getDirector() instanceof DEDirector)) {
-            throw new IllegalActionException(this,
-                    "This quantity manager is currently only supported in the DE domain.");
-        }
-
+        
         _inputTokens = new HashMap();
         _outputTokens = new HashMap();
         _switchFabricQueue = new TreeSet();
@@ -143,13 +138,28 @@ public class BasicSwitch extends ColoredQuantityManager {
 
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
-     *  @return A new intermediate receiver.
-     * @throws IllegalActionException 
+     *  @return A new intermediate receiver. 
      */
     public IntermediateReceiver getReceiver(Receiver receiver) {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
+    }
+    
+    /** Make sure that this quantity manager is only used in the DE domain. 
+     *  FIXME: this actor should be used in other domains later as well. 
+     *  @param container The container of this actor.
+     *  @exception IllegalActionException Thrown by the super class or if the 
+     *  director of this actor is not a DEDirector.
+     *  @exception NameDuplicationException Thrown by the super class.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (getDirector() != null && !(getDirector() instanceof DEDirector)) {
+            throw new IllegalActionException(this,
+                    "This quantity manager is currently only supported in the DE domain.");
+        }
     }
 
     /** If the attribute is <i>serviceTime</i>, then ensure that the value
