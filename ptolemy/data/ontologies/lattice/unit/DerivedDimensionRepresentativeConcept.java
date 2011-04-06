@@ -326,7 +326,7 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
                                 "cannot be zero because that means the derived " +
                                 "dimension is not derived from it.");
             } else {
-                return new Integer(exponentValue);
+                return Integer.valueOf(exponentValue);
             }
         } else {
             throw new IllegalActionException(this, "Invalid dimension record " +
@@ -368,12 +368,14 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
             BaseDimensionRepresentativeConcept dimension, int exponentValue)
                 throws IllegalActionException {        
         Integer currentExponent = baseDimensionsMap.get(dimension);
-        if (currentExponent == null && exponentValue != 0) {
-            baseDimensionsMap.put(dimension, new Integer(exponentValue));
+        if (currentExponent == null) {
+            if (exponentValue != 0) {
+                baseDimensionsMap.put(dimension, Integer.valueOf(exponentValue));
+            }
         } else {
             int newExponentValue = currentExponent.intValue() + exponentValue;
             if (newExponentValue != 0) {
-                baseDimensionsMap.put(dimension, new Integer(newExponentValue));
+                baseDimensionsMap.put(dimension, Integer.valueOf(newExponentValue));
             } else {
                 baseDimensionsMap.remove(dimension);
             }

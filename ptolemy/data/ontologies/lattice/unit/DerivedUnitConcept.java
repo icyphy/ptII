@@ -28,6 +28,7 @@
  */
 package ptolemy.data.ontologies.lattice.unit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -95,20 +96,6 @@ public class DerivedUnitConcept extends UnitConcept {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                    public variables                       ////
-    
-    /** The conversion information label for the unit record token information
-     *  when constructing a new DerivedUnitConcept.
-     */
-    private static final String derivedUnitConversionLabel = "DerivedConversion";
-    
-    /** The array of labels for the unit record token information when constructing
-     *  a new DerivedUnitConcept.
-     */
-    public static final String[] derivedUnitRecordLabelArray = new String[]{
-        UnitConversionInfo.unitNameLabel, derivedUnitConversionLabel};
-    
-    ///////////////////////////////////////////////////////////////////
     ////                    public methods                         ////
     
     /** Derive a map of base dimensions to lists of units that represents the
@@ -141,8 +128,11 @@ public class DerivedUnitConcept extends UnitConcept {
                 _deriveComponentBaseUnitsSeparateExponentsMap(
                         componentUnitsMap, dimensionMap, baseDimensionMap);
             
-        for (BaseDimensionRepresentativeConcept baseDimension : baseDimensionMap.keySet()) {
-            int exponent = baseDimensionMap.get(baseDimension).intValue();
+        for (Map.Entry<BaseDimensionRepresentativeConcept, Integer>
+            baseDimensionMapEntry : baseDimensionMap.entrySet()) {
+            BaseDimensionRepresentativeConcept baseDimension =
+                baseDimensionMapEntry.getKey();
+            int exponent = baseDimensionMapEntry.getValue().intValue();
             List<BaseUnitConcept> positiveExponentUnitList = baseComponentUnitsSeparateExponents.get(baseDimension)[POSITIVE_EXPONENT_INDEX];
             List<BaseUnitConcept> negativeExponentUnitList = baseComponentUnitsSeparateExponents.get(baseDimension)[NEGATIVE_EXPONENT_INDEX];
             List<BaseUnitConcept> composedUnitList = null;
@@ -265,6 +255,20 @@ public class DerivedUnitConcept extends UnitConcept {
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                    package protected variables            ////
+    
+    /** The conversion information label for the unit record token information
+     *  when constructing a new DerivedUnitConcept.
+     */
+    static final String derivedUnitConversionLabel = "DerivedConversion";
+    
+    /** The array of labels for the unit record token information when constructing
+     *  a new DerivedUnitConcept.
+     */
+    static final String[] derivedUnitRecordLabelArray = new String[]{
+        UnitConversionInfo.unitNameLabel, derivedUnitConversionLabel};
+    
+    ///////////////////////////////////////////////////////////////////
     ////                    private methods                        ////
     
     /** Apply the individual unit conversion factors and offsets for each
@@ -276,8 +280,9 @@ public class DerivedUnitConcept extends UnitConcept {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions =
             ((DerivedDimensionRepresentativeConcept) _representative).getComponentDimensions();
         
-        for (DimensionRepresentativeConcept dimension : componentDimensions.keySet()) {
-            int dimensionExponent = componentDimensions.get(dimension).intValue();
+        for (Map.Entry<DimensionRepresentativeConcept, Integer> componentDimensionsMapEntry : componentDimensions.entrySet()) {
+            DimensionRepresentativeConcept dimension = componentDimensionsMapEntry.getKey();
+            int dimensionExponent = componentDimensionsMapEntry.getValue().intValue();
             List<UnitConcept> unitsList = _componentUnits.get(dimension);
             for (UnitConcept unit : unitsList) {
                 if (dimensionExponent > 0) {
@@ -350,10 +355,15 @@ public class DerivedUnitConcept extends UnitConcept {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions =
             unitDimensionRepresentative.getComponentDimensions();
         
-        for (DimensionRepresentativeConcept dimension : componentDimensions.keySet()) {
+        for (Map.Entry<DimensionRepresentativeConcept, Integer>
+            componentDimensionsMapEntry : componentDimensions.entrySet()) {
+            DimensionRepresentativeConcept dimension =
+                componentDimensionsMapEntry.getKey();
             String dimensionName = dimension.getName();
-            Token[] unitsStringTokens = _getUnitsArray(derivedUnitRecord, dimensionName);
-            int dimensionExponent = componentDimensions.get(dimension).intValue();
+            Token[] unitsStringTokens = _getUnitsArray(derivedUnitRecord,
+                    dimensionName);
+            int dimensionExponent = componentDimensionsMapEntry.getValue().
+                intValue();
             int dimensionExponentAbsValue = Math.abs(dimensionExponent);
 
             if (unitsStringTokens.length == dimensionExponentAbsValue) {
@@ -474,9 +484,13 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<BaseDimensionRepresentativeConcept,
             List<BaseUnitConcept>[]> baseUnitsMapFromDerivedUnit) {
         
-        for (BaseDimensionRepresentativeConcept baseDimension : baseUnitsMapFromDerivedUnit.keySet()) {
+        for (Map.Entry<BaseDimensionRepresentativeConcept,
+                List<BaseUnitConcept>[]> baseUnitsMapEntry :
+                    baseUnitsMapFromDerivedUnit.entrySet()) {
+            BaseDimensionRepresentativeConcept baseDimension =
+                baseUnitsMapEntry.getKey();
             List<BaseUnitConcept>[] arrayOfBaseUnitsListsFromDerivedUnit =
-                baseUnitsMapFromDerivedUnit.get(baseDimension);
+                baseUnitsMapEntry.getValue();
             List<BaseUnitConcept>[] arrayOfBaseUnitsLists =
                 baseUnitsMap.get(baseDimension);
             
@@ -519,8 +533,9 @@ public class DerivedUnitConcept extends UnitConcept {
                 new HashMap<BaseDimensionRepresentativeConcept,
                     List<BaseUnitConcept>[]>();
         
-        for (DimensionRepresentativeConcept dimension : componentUnitsMap.keySet()) {
-            List<UnitConcept> unitsList = componentUnitsMap.get(dimension);
+        for (Map.Entry<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMapEntry : componentUnitsMap.entrySet()) {
+            DimensionRepresentativeConcept dimension = componentUnitsMapEntry.getKey();
+            List<UnitConcept> unitsList = componentUnitsMapEntry.getValue();
             int exponent = dimensionMap.get(dimension).intValue();
             for (UnitConcept unit : unitsList) {
                 if (unit instanceof BaseUnitConcept) {
@@ -734,12 +749,12 @@ public class DerivedUnitConcept extends UnitConcept {
         if (originalList == null) {
             throw new IllegalActionException("Original list is null so no " +
             		"elements can be removed from it.");
+        } else if (elementsToBeRemoved == null || elementsToBeRemoved.isEmpty()) {
+            return new ArrayList<BaseUnitConcept>(originalList);
         } else if (originalList.size() < elementsToBeRemoved.size()) {
             throw new IllegalActionException("Original list has fewer " +
             		"elements that the number of elements to be removed, " +
             		"so all elements cannot be successfully removed.");
-        } else if (elementsToBeRemoved == null || elementsToBeRemoved.isEmpty()) {
-            return new ArrayList<BaseUnitConcept>(originalList);
         } else {
             List<BaseUnitConcept> resultList =
                 new ArrayList<BaseUnitConcept>(originalList);
@@ -782,7 +797,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *  by their Concept string representations.
      * 
      */
-    private static class BaseUnitComparator implements Comparator {
+    private static class BaseUnitComparator implements Comparator, Serializable {
         
         /** Compare two BaseUnitConcept objects by their string
          *  representations.

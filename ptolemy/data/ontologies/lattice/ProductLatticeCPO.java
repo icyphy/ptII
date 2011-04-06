@@ -224,7 +224,7 @@ public class ProductLatticeCPO extends ConceptGraph {
                     + " arg = " + e + ", CPO = " + this, ex);
         }
        }
-       return result.toArray(new ProductLatticeConcept[0]);
+       return result.toArray(new ProductLatticeConcept[result.size()]);
    }
 
     /** Compute the greatest lower bound (GLB) of two elements.

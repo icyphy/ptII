@@ -111,16 +111,6 @@ public class BaseUnitConcept extends UnitConcept {
                     + "Original exception:" + e.toString());
         }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                    public variables                       ////
-    
-    /** The array of labels for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    public static final String[] unitRecordLabelArray = new String[]{
-        UnitConversionInfo.unitNameLabel, UnitConversionInfo.unitFactorLabel,
-        UnitConversionInfo.unitOffsetLabel};
 
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
@@ -153,7 +143,7 @@ public class BaseUnitConcept extends UnitConcept {
         }
         
         Token unitOffset = unitInfo.get(UnitConversionInfo.unitOffsetLabel);
-        if (unitFactor instanceof ScalarToken) {
+        if (unitOffset instanceof ScalarToken) {
             _unitOffset = (ScalarToken) unitOffset;
         } else {
             throw new IllegalActionException(this,
@@ -161,4 +151,14 @@ public class BaseUnitConcept extends UnitConcept {
                     unitOffset);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                    package protected variables            ////
+    
+    /** The array of labels for the unit record token information when constructing
+     *  a new BaseUnitConcept.
+     */
+    static final String[] unitRecordLabelArray = new String[]{
+        UnitConversionInfo.unitNameLabel, UnitConversionInfo.unitFactorLabel,
+        UnitConversionInfo.unitOffsetLabel};
 }

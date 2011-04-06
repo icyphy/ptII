@@ -141,7 +141,7 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         
         Map<DimensionRepresentativeConcept, Integer> dimensionMap =
             new HashMap<DimensionRepresentativeConcept, Integer>();
-        dimensionMap.put(dimension, new Integer(exponentValue));
+        dimensionMap.put(dimension, Integer.valueOf(exponentValue));
         return dimensionMap;
     }
     
@@ -198,7 +198,7 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
             if (_isMultiply) {
                 dimensionMap = new HashMap<DimensionRepresentativeConcept, Integer>();
                 componentUnitsMap = new HashMap<DimensionRepresentativeConcept, List<UnitConcept>>();
-                dimensionMap.put(unit1Dimension, new Integer(2));
+                dimensionMap.put(unit1Dimension, Integer.valueOf(2));
                 List<UnitConcept> unitsList = new ArrayList<UnitConcept>();
                 unitsList.add(unit1);
                 unitsList.add(unit2);
@@ -224,7 +224,7 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
                 _createNewDimensionMap(unit2.getDimension(), exponentValue);
             componentUnitsMap =
                 _createNewComponentUnitsMap(unit2);
-            dimensionMap.put(unit1Dimension, new Integer(1));
+            dimensionMap.put(unit1Dimension, Integer.valueOf(1));
             List<UnitConcept> unit1List = new ArrayList<UnitConcept>();
             unit1List.add(unit1);
             componentUnitsMap.put(unit1Dimension, unit1List);
