@@ -159,6 +159,49 @@ public abstract class DimensionRepresentativeConcept extends
     protected abstract UnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException;
     
+    /** Return the unit info record token with the given Name field. First
+     *  look in the array of user defined record tokens, and if it is not
+     *  found there then look in the list of pre-specified unit
+     *  parameters.
+     *  @param unitName The value of the Name field of the unit record token to
+     *   be found.
+     *  @return The unit info RecordToken with the given Name field.
+     *  @throws IllegalActionException Thrown if the unit cannot be found, or
+     *   if the unit specification parameter is invalid.
+     */
+    protected RecordToken _findUnitRecordByName(String unitName)
+            throws IllegalActionException {
+        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
+        if (userDefinedRecord == null) {
+            
+            // Find the given unitName in the list of pre-specified parameters.
+            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
+            for (UnitConversionInfo unitParameter : unitParameterList) {
+                if (unitName.equals(unitParameter.getName())) {
+                    RecordToken unitConversionInfoRecord = (RecordToken) unitParameter.getToken();
+                    if (unitConversionInfoRecord == null) {
+                        throw new IllegalActionException(this,
+                                "Invalid unit specification parameter: " +
+                                unitParameter);
+                    } else {
+                        RecordToken unitNameRecord = new RecordToken(
+                                new String[]{UnitConversionInfo.unitNameLabel},
+                                new Token[]{new StringToken(unitName)});
+                        return RecordToken.merge(unitNameRecord,
+                                unitConversionInfoRecord);
+                    }
+                }
+            }
+            throw new IllegalActionException(this, "No unit named " + unitName
+                    + " for the " + this + " dimension.");
+        } else {
+            return userDefinedRecord;
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
     /** Return the user defined unit record with the given Name field that was
      *  specified by the user in the unitInfoRecords parameter. 
      *  @param unitName The value of the Name field of the unit record token to
@@ -166,7 +209,7 @@ public abstract class DimensionRepresentativeConcept extends
      *  @return The unit info RecordToken with the given Name field, or null if
      *   it is not found.
      */
-    protected RecordToken _findUserDefinedUnitRecordByName(String unitName) {
+    private RecordToken _findUserDefinedUnitRecordByName(String unitName) {
         if (_userDefinedUnitRecords == null) {
             return null;
         } else {

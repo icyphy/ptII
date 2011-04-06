@@ -121,40 +121,40 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
             return CPO.HIGHER;
         } else if (concept.equals(getOntology().getConceptGraph().top())) {
             return CPO.LOWER;
-        } else if (concept instanceof FiniteConcept) {
-            return CPO.INCOMPARABLE;
-        }
+        } else if (concept instanceof MonotonicityConcept) {
+            MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
+            CPO graph = getOntology().getConceptGraph();
+            Set<String> keys = this._commonKeys(righthandSide);
 
-        MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
-        CPO graph = getOntology().getConceptGraph();
-        Set<String> keys = this._commonKeys(righthandSide);
-        
-        boolean seenHigher = false;
-        boolean seenLower = false;
-        boolean seenIncomparable = false;
-        for (String key : keys) {
-            int result = graph.compare(getMonotonicity(key),
-                    righthandSide.getMonotonicity(key));
-            switch (result) {
-            case CPO.HIGHER:       seenHigher = true; break;
-            case CPO.LOWER:        seenLower = true; break;
-            case CPO.INCOMPARABLE: seenIncomparable = true; break;
-            case CPO.SAME:         break;
-            default:
-                throw new IllegalActionException(this, "ConceptGraph compare " +
-                                "did not return one of the defined CPO values. " +
-                                "Return value was " + result + ". This should " +
-                                "never happen.");
+            boolean seenHigher = false;
+            boolean seenLower = false;
+            boolean seenIncomparable = false;
+            for (String key : keys) {
+                int result = graph.compare(getMonotonicity(key),
+                        righthandSide.getMonotonicity(key));
+                switch (result) {
+                case CPO.HIGHER:       seenHigher = true; break;
+                case CPO.LOWER:        seenLower = true; break;
+                case CPO.INCOMPARABLE: seenIncomparable = true; break;
+                case CPO.SAME:         break;
+                default:
+                    throw new IllegalActionException(this, "ConceptGraph compare " +
+                            "did not return one of the defined CPO values. " +
+                            "Return value was " + result + ". This should " +
+                    "never happen.");
+                }
             }
-        }
-        if (!seenHigher && !seenLower && !seenIncomparable) {
-            return CPO.SAME;
-        } else if (seenHigher && !seenLower && !seenIncomparable) {
-            return CPO.HIGHER;
-        } else if (seenLower && !seenHigher && !seenIncomparable) {
-            return CPO.LOWER;
+            if (!seenHigher && !seenLower && !seenIncomparable) {
+                return CPO.SAME;
+            } else if (seenHigher && !seenLower && !seenIncomparable) {
+                return CPO.HIGHER;
+            } else if (seenLower && !seenHigher && !seenIncomparable) {
+                return CPO.LOWER;
+            } else {
+                return CPO.INCOMPARABLE;            
+            }
         } else {
-            return CPO.INCOMPARABLE;            
+            return CPO.INCOMPARABLE;
         }
     }
 

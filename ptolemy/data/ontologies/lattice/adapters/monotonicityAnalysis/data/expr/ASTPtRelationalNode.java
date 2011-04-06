@@ -187,13 +187,13 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
             }
             boolean monotonicAntimonotonic = _monotonicConcept.isAboveOrEqualTo(lhs) && _antimonotonicConcept.isAboveOrEqualTo(rhs);
             boolean antimonotonicMonotonic = _antimonotonicConcept.isAboveOrEqualTo(lhs) && _monotonicConcept.isAboveOrEqualTo(rhs);
-            if (_operator == "<=" || _operator == "<") {
+            if (_operator.equals("<=") || _operator.equals("<")) {
                 if (monotonicAntimonotonic) {
                     return _monotonicConcept;
                 } else if (antimonotonicMonotonic) {
                     return _antimonotonicConcept;
                 }
-            } else if (_operator == ">=" || _operator == ">") {
+            } else if (_operator.equals(">=") || _operator.equals(">")) {
                 if (monotonicAntimonotonic) {
                     return _antimonotonicConcept;
                 } else if (antimonotonicMonotonic) {

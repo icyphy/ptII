@@ -28,6 +28,7 @@
  */
 package ptolemy.data.ontologies.lattice.unit;
 
+import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
@@ -143,7 +144,9 @@ public class BaseUnitConcept extends UnitConcept {
         }
         
         Token unitOffset = unitInfo.get(UnitConversionInfo.unitOffsetLabel);
-        if (unitOffset instanceof ScalarToken) {
+        if (unitOffset == null) {
+            _unitOffset = DoubleToken.ZERO;
+        } else if (unitOffset instanceof ScalarToken) {
             _unitOffset = (ScalarToken) unitOffset;
         } else {
             throw new IllegalActionException(this,
@@ -151,14 +154,4 @@ public class BaseUnitConcept extends UnitConcept {
                     unitOffset);
         }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                    package protected variables            ////
-    
-    /** The array of labels for the unit record token information when constructing
-     *  a new BaseUnitConcept.
-     */
-    static final String[] unitRecordLabelArray = new String[]{
-        UnitConversionInfo.unitNameLabel, UnitConversionInfo.unitFactorLabel,
-        UnitConversionInfo.unitOffsetLabel};
 }

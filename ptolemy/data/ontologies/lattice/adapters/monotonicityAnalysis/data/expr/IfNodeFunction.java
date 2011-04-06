@@ -187,7 +187,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition
                 .jjtGetChild(1);
         String conditionalType = condition.getOperator().toString();
-        if (conditionalType != "<="
+        if (!conditionalType.equals("<=")
                 || !(rhs instanceof ptolemy.data.expr.ASTPtLeafNode)) {
             return false;
         }

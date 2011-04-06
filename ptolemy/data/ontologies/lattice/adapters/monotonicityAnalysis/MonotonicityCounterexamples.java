@@ -95,11 +95,15 @@ public class MonotonicityCounterexamples {
      *  @see java.lang.Object#toString()
      */
     public String toString() {
-        String result = "{";
+        StringBuffer resultBuffer = new StringBuffer();
+        
+        resultBuffer.append("{");
         for (Entry<Concept, Concept> pair : entrySet()) {
-            result += "(" + pair.getKey().toString() + "," + pair.getValue() + ")";
+            resultBuffer.append("(" + pair.getKey().toString() + "," + pair.getValue() + ")");
         }
-        return result  + "}";
+        resultBuffer.append("}");
+        
+        return resultBuffer.toString();
     }
     
     /** A multimap to keep track of the mapping of lesser concepts

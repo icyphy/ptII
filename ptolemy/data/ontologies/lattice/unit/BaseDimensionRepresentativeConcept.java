@@ -30,10 +30,6 @@ package ptolemy.data.ontologies.lattice.unit;
 
 import java.util.List;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -118,67 +114,6 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
             throw new IllegalActionException(this, "The given string cannot " +
                         "be used to derive a valid infinite concept contained " +
                         "by this representative.");
-        }
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-    /** Return the unit info record token with the given Name field. First
-     *  look in the array of user defined record tokens, and if it is not
-     *  found there then look in the list of pre-specified unit
-     *  parameters.
-     *  @param unitName The value of the Name field of the unit record token to
-     *   be found.
-     *  @return The unit info RecordToken with the given Name field.
-     *  @throws IllegalActionException Thrown if the unit cannot be found, or
-     *   if the unit specification parameter is invalid.
-     */
-    private RecordToken _findUnitRecordByName(String unitName)
-            throws IllegalActionException {
-        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
-        if (userDefinedRecord == null) {
-            
-            // Find the given unitName in the list of pre-specified parameters.
-            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
-            for (UnitConversionInfo unitParameter : unitParameterList) {
-                if (unitName.equals(unitParameter.getName())) {
-                    Token[] unitRecordArray = new Token[3];
-                    unitRecordArray[0] = new StringToken(unitName);
-
-                    RecordToken unitConversionInfo = (RecordToken) unitParameter.getToken();
-                    if (unitConversionInfo == null) {
-                        throw new IllegalActionException(this,
-                                "Unit specification parameter has no value: " +
-                                unitParameter);
-                    } else {
-                        Token unitConversionFactor =
-                            unitConversionInfo.get(UnitConversionInfo.unitFactorLabel);
-                        if (unitConversionFactor == null) {
-                            throw new IllegalActionException(this,
-                                    "Unit conversion factor in the unit " +
-                                    "specification parameter has no value: " +
-                                    unitParameter);
-                        } else {
-                            unitRecordArray[1] = unitConversionFactor;
-                        }
-                        
-                        Token unitConversionOffset =
-                            unitConversionInfo.get(UnitConversionInfo.unitOffsetLabel);
-                        if (unitConversionOffset == null) {
-                            unitRecordArray[2] = DoubleToken.ZERO;
-                        } else {
-                            unitRecordArray[2] = unitConversionOffset;
-                        }                        
-                    }
-                    return new RecordToken(BaseUnitConcept.unitRecordLabelArray,
-                            unitRecordArray);
-                }
-            }
-            throw new IllegalActionException(this, "No unit named " + unitName
-                    + " for the " + this + " dimension.");
-        } else {
-            return userDefinedRecord;
         }
     }
 }

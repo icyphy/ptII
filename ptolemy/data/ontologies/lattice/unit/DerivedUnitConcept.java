@@ -255,20 +255,6 @@ public class DerivedUnitConcept extends UnitConcept {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                    package protected variables            ////
-    
-    /** The conversion information label for the unit record token information
-     *  when constructing a new DerivedUnitConcept.
-     */
-    static final String derivedUnitConversionLabel = "DerivedConversion";
-    
-    /** The array of labels for the unit record token information when constructing
-     *  a new DerivedUnitConcept.
-     */
-    static final String[] derivedUnitRecordLabelArray = new String[]{
-        UnitConversionInfo.unitNameLabel, derivedUnitConversionLabel};
-    
-    ///////////////////////////////////////////////////////////////////
     ////                    private methods                        ////
     
     /** Apply the individual unit conversion factors and offsets for each

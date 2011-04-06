@@ -223,46 +223,6 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
-    /** Return the unit info record token with the given Name field. First
-     *  look in the array of user defined record tokens, and if it is not
-     *  found there then look in the list of pre-specified unit
-     *  parameters.
-     *  @param unitName The value of the Name field of the unit record token to
-     *   be found.
-     *  @return The unit info RecordToken with the given Name field.
-     *  @throws IllegalActionException Thrown if the unit cannot be found, or
-     *   if the unit specification parameter is invalid.
-     */
-    private RecordToken _findUnitRecordByName(String unitName)
-            throws IllegalActionException {
-        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
-        if (userDefinedRecord == null) {
-            
-            // Find the given unitName in the list of pre-specified parameters.
-            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
-            for (UnitConversionInfo unitParameter : unitParameterList) {
-                if (unitName.equals(unitParameter.getName())) {
-                    RecordToken unitConversionInfoRecord = (RecordToken) unitParameter.getToken();
-                    if (unitConversionInfoRecord == null) {
-                        throw new IllegalActionException(this,
-                                "Invalid unit specification parameter: " +
-                                unitParameter);
-                    } else {
-                        RecordToken unitNameRecord = new RecordToken(
-                                new String[]{UnitConversionInfo.unitNameLabel},
-                                new Token[]{new StringToken(unitName)});
-                        return RecordToken.merge(unitNameRecord,
-                                unitConversionInfoRecord);
-                    }
-                }
-            }
-            throw new IllegalActionException(this, "No unit named " + unitName
-                    + " for the " + this + " dimension.");
-        } else {
-            return userDefinedRecord;
-        }
-    }
-    
     /** Get the dimension concept from a dimensionRecord record token.
      *  @param dimensionRecord The record token that specifies the dimension
      *   and its exponent.
