@@ -52,6 +52,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
@@ -373,7 +374,7 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
         animateExecution.setExpression("false");
 
-        assumedPlatformTimeSynchronizationErrorBound = new Parameter(this,
+        assumedPlatformTimeSynchronizationErrorBound = new SharedParameter(this,
                 "assumedPlatformTimeSynchronizationErrorBound");
         assumedPlatformTimeSynchronizationErrorBound
                 .setTypeEquals(BaseType.DOUBLE);
@@ -445,7 +446,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  synchronization errors between them. This error is captured
      *  within this parameter.
      */
-    public Parameter assumedPlatformTimeSynchronizationErrorBound;
+    public SharedParameter assumedPlatformTimeSynchronizationErrorBound;
 
     /** An ID for the execution timer in this director. There are two timers
      *  in a Ptides director: platform timer and execution timer. Actors
@@ -908,7 +909,8 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The list of currently executing actors and their remaining execution time.
+    /** The list of currently executing events (including value and
+     *  timestamp) and their remaining execution times.
      */
     protected Stack<DoubleTimedEvent> _currentlyExecutingStack;
 
@@ -919,15 +921,15 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Perform book keeping after actor firing. This procedure consist of
+    /** Perform bookkeeping after actor firing. This procedure consist of
      *  two actions:
      *  <ol>
-     *  <li>An actor has just been fired. A token destined to the outside of
-     *  the Ptides platform could have been produced. If so, the corresponding
-     *  event is taken out of event queue, and the token
+     *  <li>An actor has just been fired. A token with destination to the
+     *  outside of the Ptides platform could have been produced. If so,
+     *  the corresponding event is taken out of event queue, and the token
      *  is placed at the actuator/network port, ready to be transferred
      *  to the outside.</li>
-     *  <li> Bookkeeping structures that keeps track of which actor
+     *  <li> Bookkeeping structures that keep track of which actor
      *  has just fired are cleared.</li>
      *  </ol>
      *  @exception IllegalActionException If unable to get the next actuation event.
@@ -946,7 +948,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Calculate the delayOffset for each input port in the model, and
      *  annotate the ports with these offsets.
-     *  This causality analysis usually happens at the preinitialize phase.
+     *  This causality analysis is called during the preinitialize phase.
      *  <p>
      *  Start from each input port that is connected to the outside of the platform
      *  (These input ports indicate sensors and network interfaces, call them startPorts),
@@ -954,12 +956,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  the platform (actuators/network ports). For each input port in between,
      *  annotate it with
      *  a delayOffset parameter. This parameter is an array of doubles, where each double
-     *  corresponds to the minimum delay offset for a particular channel of that port.
-     *  This minimum delay offset is used for the safe to process analysis.
+     *  corresponds to the delay offset for a particular channel of that port.
+     *  This delay offset is used for the safe to process analysis.
      *  <p>
      *  Note: for all transparent composite actors, the delayOffsets are not
      *  calculated for their input ports. Instead, the offsets are calculated and
-     *  annotated for input ports that are inside of these actors.
+     *  annotated for input ports that are inside these actors.
      *  @exception IllegalActionException If failed to clear or calculate delayOffset,
      *  cannot check whether the current port is a network port, cannot get the
      *  network delay of the current port, cannot get the real time delay of the
@@ -968,10 +970,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _calculateDelayOffsets() throws IllegalActionException {
 
-        // A set that keeps track of all the actors that have been traversed to. At the end of
-        // the traversal, if some actor is not visited, that means that actor is a source in
-        // the ptides director. Since we currently do not support sources within PTIDES directors,
-        // we throw an exception if sources are found.
+        // A set that keeps track of all the actors that have been traversed to.
         _visitedActors = new HashSet<Actor>();
 
         _clearDelayOffsets();
@@ -1038,7 +1037,7 @@ public class PtidesBasicDirector extends DEDirector {
                 startDelay = SuperdenseDependency.valueOf(-start, 0);
                 _portDelays.put(inputPort, startDelay);
             }
-            // Now start from each sensor (input port at the top level), traverse through all
+            // Now start from each sensor (input port at the Ptides level), traverse through all
             // ports.
             for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
                     .inputPortList())) {
@@ -1080,14 +1079,11 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        // The inputModelTimeDelays hashset is the delays as calculated through shortest path algorithm. Now we
-        // need to use these delays to calculate the delayOffset, which is calculated as follows:
-        // For each port, get all finite equivalent ports except itself. Now for a particular port
-        // channel pair, Find the smallest model time delay among all of the channels on all these
-        // ports, if they exist. that smallest delay is  the delayOffset for that port channel pair.
-        // If this smallest value does not exist, then the event arriving at this port channel pair
-        // is always safe to process, thus delayOffset does not change (it was by default set to
-        // double.POSITIVE_INFINITY.
+        // The inputModelTimeDelays hashset is the delays as calculated through
+        // shortest path algorithm. Now we need to use these delays to calculate
+        // the delayOffset, which is simply the minimum delay among all the
+        // input model time delays.
+        
         for (IOPort inputPort : (Set<IOPort>) _inputModelTimeDelays.keySet()) {
             Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
                     .get(inputPort);
@@ -2782,7 +2778,7 @@ public class PtidesBasicDirector extends DEDirector {
         return lastAbsoluteDeadline.add(timeDiff);
     }
 
-    /** For a particular input port channel pair, find the delay offset.
+    /** For a particular input port channel pair, calculate the delay offset.
      *  @param inputPort The input port to find min delay for.
      *  @param channel The channel at this input port.
      *  @return The min delay associated with this port channel pair.
@@ -2797,11 +2793,6 @@ public class PtidesBasicDirector extends DEDirector {
             Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
                     .get(port);
             if (channelDependency != null) {
-                // FIXME: FindBugs "WMI: Inefficient use of keySet iterator instead of
-                // entrySet iterator (WMI_WRONG_MAP_ITERATOR)" "This method accesses
-                // the value of a Map entry, using a key that was retrieved from a
-                // keySet iterator. It is more efficient to use an iterator on the
-                // entrySet of the map, to avoid the Map.get(key) lookup."
                 for (Integer integer : channelDependency.keySet()) {
                     if (((BooleanToken) forceActorsToProcessEventsInTimestampOrder
                             .getToken()).booleanValue()) {
@@ -3408,18 +3399,6 @@ public class PtidesBasicDirector extends DEDirector {
                             + getPlatformPhysicalTag(platformTimeClock).timestamp
                             + ".");
         } else if (result == 0) {
-            // FIXME: FindBugs: Unchecked type in generic call 
-            // GC: In class ptolemy.domains.ptides.kernel.PtidesBasicDirector
-            // In class ptolemy.domains.ptides.kernel.PtidesBasicDirector
-            // In method ptolemy.domains.ptides.kernel.PtidesBasicDirector._timedInterruptOccurred()
-            // Actual type Object
-            // Expected ptolemy.domains.ptides.kernel.PtidesEvent
-            // Called method java.util.Set.remove(Object)
-            // Invoked on ptolemy.domains.ptides.kernel.PtidesBasicDirector._eventsWithTimedInterrupt
-            // ptolemy.actor.util.TimedEvent.contents passed as argument
-            // Object.equals(Object) used to determine equality
-            // At PtidesBasicDirector.java:[line 3552]
-            // Unchecked argument of type Object provided where type PtidesEvent is expected in ptolemy.domains.ptides.kernel.PtidesBasicDirector._timedInterruptOccurred()
             _timedInterruptTimes.remove(0);
             _eventsWithTimedInterrupt.remove(timedEvent.contents);
             return true;
@@ -3866,7 +3845,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the remaining execution time (in physical time) for processing
      *  the event.
      */
-    public static class DoubleTimedEvent extends TimedEvent {
+    protected static class DoubleTimedEvent extends TimedEvent {
 
         /** Construct a new event with the specified time stamp,
          *  destination actor, and execution time.
@@ -3990,7 +3969,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  an exception. If the new clock drift is different from the old one,
          *  update all future oracle fireAt times. Also keep track of
          *  the list of ignored future fireAt times, so that this director will not
-         *  fire when it wakes up at those times.
+         *  fire at these times.
          *  See {@link #_updateFireAtTimes}
          *  Also, upon updating the clock drift, the cached oracle time/platform time
          *  pair should also be updated. The old cache should be thrown away, while
@@ -4008,7 +3987,7 @@ public class PtidesBasicDirector extends DEDirector {
             if (newClockDrift <= 0.0) {
                 throw new IllegalActionException(
                         PtidesBasicDirector.this,
-                        "The new clock drift is of value <= 0, this means for every " +
+                        "The new clock drift is of value <= 0.0, this means for every " +
                         "cycle the clock advances in oracle time, the platform " +
                         "cycle decreases to stays put, i.e, time goes backwards " +
                         "or stays put. This is not allowed.");
@@ -4061,6 +4040,11 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
+        /** The ratio between how much the platform clock changes each unit time
+         *  as the oracle clock changes.
+         */
+        private double _clockDrift;
+        
         /** The last saved platform time. This time is interpreted as being
          *  simultaneous with the value of _lastOracleTime.
          */
@@ -4071,11 +4055,8 @@ public class PtidesBasicDirector extends DEDirector {
          */
         private Time _lastOracleTime;
 
-        /** The ratio between how much the platform clock changes each unit time
-         *  as the oracle clock changes.
+        /** The enclosing Ptides director.
          */
-        private double _clockDrift;
-        
         private Director _PtidesDirector;
     }
 
