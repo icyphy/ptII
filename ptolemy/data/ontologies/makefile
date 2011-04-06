@@ -69,7 +69,6 @@ JSRCS = \
 	ExpressionConceptFunctionDefinitionAttribute.java \
 	ExpressionConceptFunctionParseTreeEvaluator.java \
 	ExpressionConceptFunctionParseTreeTypeInference.java \
-	ExpressionOperationsForInfiniteConcepts.java \
 	FiniteConcept.java \
 	FlatScalarTokenInfiniteConcept.java \
 	FlatScalarTokenRepresentativeConcept.java \
