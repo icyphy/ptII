@@ -168,10 +168,10 @@
 	<property name="Amp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = AmpFactor }">
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
-  	<property name="mAmp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 0.001*Amp }">
+  	<property name="mAmp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 0.001*AmpFactor }">
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
-  	<property name="uAmp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 1E-06*Amp }">
+  	<property name="uAmp" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 1E-06*AmpFactor }">
 		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
   	</property>
     <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
