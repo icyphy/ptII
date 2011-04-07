@@ -134,9 +134,9 @@
         </property>
         <property name="rightEndPoint" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
-        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,0.3}">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
         </property>
-        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -148,9 +148,9 @@
         </property>
         <property name="rightEndPoint" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,0.3}">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.9,0.9,1.0}">
         </property>
-        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -224,7 +224,7 @@
     <relation name="relation8" class="ptolemy.data.ontologies.ConceptRelation">
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.620532985629918">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4985488760171786">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.data.ontologies.ConceptRelation">
