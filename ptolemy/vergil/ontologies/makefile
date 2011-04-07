@@ -50,8 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ConceptController.java \
 	ConceptIcon.java \
-	OntologyGraphFrame.java \
+	MultipleConceptIcon.java \
 	OntologyGraphController.java \
+	OntologyGraphFrame.java \	
 	OntologyGraphModel.java \
 	OntologyGraphTableau.java \
 	OntologySolverTableau.java \
@@ -72,13 +73,6 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ConceptController$$CheckIsLatticeAction.class' \
 	'ConceptController$$ToggleAcceptabilityAction.class' \
-	'LatticeElementController$$CheckIsLatticeAction.class' \
-	'LatticeElementController$$ToggleAcceptabilityAction.class' \
-	'LatticeGraphFrame$$DebugMenuListener.class' \
-	'LatticeGraphFrameController$$CheckIsLatticeAction.class' \
-	'LatticeGraphTableau$$Factory.class' \
-	'ModelAttributeController$$Factory.class' \
-	'ModelAttributeController$$LookInsideAction.class' \
 	'OntologyGraphController$$CheckIsLatticeAction.class' \
 	'OntologyGraphFrame$$DebugMenuListener.class' \
 	'OntologyGraphTableau$$Factory.class' \
