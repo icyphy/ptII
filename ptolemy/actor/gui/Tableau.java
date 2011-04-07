@@ -244,11 +244,6 @@ public class Tableau extends CompositeEntity {
 
             // Blow away the frame.
             if (_frame != null) {
-                // Note that we call hide instead of dispose . . .
-                // The windowListener set in setFrame()
-                // will trigger dispose() to get called.
-                _frame.setVisible(false);
-                /* experimental: replaces _frame.setVisible(false);
                 if (!isMaster()) {
                     if (_frame instanceof Top) {
                         Top top = (Top) _frame;
@@ -257,7 +252,6 @@ public class Tableau extends CompositeEntity {
                         }
                     }
                 }
-                */
             }
 
             if (isMaster() && (oldContainer != null)) {

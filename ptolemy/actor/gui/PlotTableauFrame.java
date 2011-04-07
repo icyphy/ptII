@@ -160,6 +160,19 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         _directory = null;
         plot.samplePlot();
     }
+    
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the 
+     *  dispose() method of the superclass,
+     *  {@link ptolemy.actor.gui.Top}.
+     */
+    public void dispose() {
+        if (_debugClosing) {
+            System.out.println("TableauFrame.dispose() : " + this.getName());
+        }
+        super.dispose();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

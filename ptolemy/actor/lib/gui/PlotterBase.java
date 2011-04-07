@@ -28,6 +28,8 @@
 package ptolemy.actor.lib.gui;
 
 import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -585,6 +587,28 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     protected PlotBox _newPlot() {
         return new Plot();
     }
+    
+    /** Specify the associated frame and set its properties (size, etc.)
+     *  to match those stored in the _windowProperties attribute.
+     *  @param frame The associated frame.
+     */
+    public void setFrame(PlotTableauFrame frame) {
+        if (_frame != null) {
+            _frame.removeWindowListener(_windowClosingAdapter);
+        }
+        
+        if (frame == null) {
+            _frame = null;
+            return;
+        }
+        
+        _frame = frame;
+
+        _windowClosingAdapter = new WindowClosingAdapter();
+        frame.addWindowListener(_windowClosingAdapter);
+        
+        _windowProperties.setProperties(_frame);
+    }
 
     /** Propagate the value of this object to the
      *  specified object. The specified object is required
@@ -602,6 +626,14 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Propagation failed.");
         }
+    }
+    
+    /** Free up memory when closing. */
+    protected void cleanUp() {
+        System.out.println("PlotterBase.cleanUp()");
+        plot = null;
+        setFrame(null);
+        _tableau = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -631,6 +663,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     /** A specification for the window properties of the frame.
      */
     protected WindowPropertiesAttribute _windowProperties;
+
+    /** A reference to the listener for removal purposes. */
+    protected WindowClosingAdapter _windowClosingAdapter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -666,7 +701,14 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
+    
+    /** Listener for windowClosing action. */
+    class WindowClosingAdapter extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
+            cleanUp();
+        }
+    }
+    
     /** Tableau that creates a PlotterPlotFrame.
      */
     protected class PlotWindowTableau extends PlotTableau {

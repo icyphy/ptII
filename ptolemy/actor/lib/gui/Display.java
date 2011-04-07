@@ -297,8 +297,6 @@ public class Display extends AbstractPlaceableActor {
             // Reset everything.
             // NOTE: _remove() doesn't work here.  Why?
             if (_frame != null) {
-                _frame.dispose();
-                /* experimental: replaces _frame.dispose();
                 if (_frame instanceof Top) {
                     Top top = (Top) _frame;
                     if (!top.isDisposed()) {
@@ -307,7 +305,6 @@ public class Display extends AbstractPlaceableActor {
                 } else {
                     _frame.dispose();
                 }
-                */
             }
 
             _frame = null;
@@ -504,8 +501,7 @@ public class Display extends AbstractPlaceableActor {
     /** Free up memory when closing. */
     protected void cleanUp() {
         _tableau = null;
-        place(null);
-        /* experimental: replaces place(null);
+
         if (_scrollPane != null) {
             _scrollPane.removeAll();
             _scrollPane = null;
@@ -515,7 +511,7 @@ public class Display extends AbstractPlaceableActor {
             textArea = null;
         }
         _frame = null;
-        */
+
         super.cleanUp();
     }
 

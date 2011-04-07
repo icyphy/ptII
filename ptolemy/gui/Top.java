@@ -1597,8 +1597,6 @@ public abstract class Top extends JFrame {
                 System.out.println("Top$CloseWindowAdapter.windowClosing() : " + (Top.this).getName());
             }
             
-            _close();
-            /* experimental: replaces _close();
             Window window = e.getWindow();
             if (window instanceof Top) {
                 Top top = (Top) window;
@@ -1606,7 +1604,6 @@ public abstract class Top extends JFrame {
                     _close();
                 }
             }
-            */
         }
     }
     
