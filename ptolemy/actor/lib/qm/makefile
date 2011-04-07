@@ -48,10 +48,17 @@ PTPACKAGE =     qm
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	qm.xml
+	qm.xml \
+	BasicSwitchIcon.xml \
+	BusIcon.xml \
+	CrossbarSwitchIcon.xml \
+	TTESwitchIcon.xml
 
 JSRCS = \
+	BasicSwitch.java \
 	Bus.java \
+	ColoredQuantityManager.java  \
+	CrossbarSwitch.java \
 	TTESwitch.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
