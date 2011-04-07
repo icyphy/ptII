@@ -230,9 +230,14 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
             componentUnitsMap.put(unit1Dimension, unit1List);
         }
         
-        return DerivedUnitConcept.findUnitByComponentMapsAndUnitFactor(
-                dimensionMap, componentUnitsMap, newUnitFactor,
-                _unitOntology);
+        Concept result = DerivedUnitConcept.
+            findUnitByComponentMapsAndUnitFactor(dimensionMap,
+                    componentUnitsMap, newUnitFactor, _unitOntology);        
+        if (result == null) {
+            return _topOfTheLattice;
+        } else {
+            return result;
+        }
     }
     
 

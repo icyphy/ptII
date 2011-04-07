@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DynamicsDimensionsSolver" class="ptolemy.data.ontologies.OntologySolverModel">
+<entity name="TestUnitsSolver" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -12,7 +12,7 @@
     <property name="multiplyFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
         <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.unit.MultiplyOrDivideUnitConcepts">
         </property>
-        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{DynamicsDimensionsOntology, true}">
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{TestUnitsOntology, true}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 200.0]">
         </property>
@@ -68,7 +68,7 @@ Constraints</text></svg></configure>
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={657, 196, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 341, 815, 517}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -87,7 +87,7 @@ Constraints</text></svg></configure>
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 60.0]">
         </property>
         <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
         </property>
@@ -105,7 +105,7 @@ Constraints</text></svg></configure>
     <property name="divideFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
         <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.unit.MultiplyOrDivideUnitConcepts">
         </property>
-        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{DynamicsDimensionsOntology, false}">
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{TestUnitsOntology, false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
         </property>
@@ -271,8 +271,8 @@ Constraints</text></svg></configure>
         <property name="toleranceAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
-    <entity name="DynamicsDimensionsOntology" class="ptolemy.data.ontologies.demo.UnitSystemExample.DynamicsDimensionsOntology">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 85.0]">
+    <entity name="TestUnitsOntology" class="ptolemy.data.ontologies.test.auto.solvers.TestUnitsOntology">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
         </property>
     </entity>
 </entity>
