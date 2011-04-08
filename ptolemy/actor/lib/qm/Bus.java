@@ -30,13 +30,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.Actor;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
@@ -48,7 +50,7 @@ import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NameDuplicationException; 
 import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
@@ -75,7 +77,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class Bus extends ColoredQuantityManager {
+public class Bus extends ColoredQuantityManager implements
+        MonitoredQuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
@@ -94,8 +97,8 @@ public class Bus extends ColoredQuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tokens = new FIFOQueue();
-        _receiversAndTokensToSendTo = new HashMap(); 
-        
+        _receiversAndTokensToSendTo = new HashMap();
+
         serviceTime = new Parameter(this, "serviceTime");
         serviceTime.setExpression("0.1");
         serviceTime.setTypeEquals(BaseType.DOUBLE);
@@ -128,10 +131,10 @@ public class Bus extends ColoredQuantityManager {
                         "Cannot have negative or zero serviceTime: " + value);
             }
             _serviceTimeValue = value;
-        } 
+        }
         super.attributeChanged(attribute);
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -151,11 +154,10 @@ public class Bus extends ColoredQuantityManager {
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
         newObject._serviceTimeValue = 0.1;
-        newObject._tokens = new FIFOQueue(); 
+        newObject._tokens = new FIFOQueue();
         return newObject;
     }
-    
-    
+
     /** Initialize the actor.
      *  @throws IllegalActionException If the superclass throws it.
      */
@@ -177,8 +179,8 @@ public class Bus extends ColoredQuantityManager {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
-            receiver.put(token);
-
+            //receiver.put(token);
+            
             // FIXME: See the FIXME's below. The commented
             // out code below is an attempt to address it, but a
             // questionable one.
@@ -202,7 +204,7 @@ public class Bus extends ColoredQuantityManager {
             // but there is no assurance that the director's
             // container will fire to handle that token.
             // We handle this by requesting a firing of the composite.
-            /*
+
             if (!(receiver instanceof IntermediateReceiver)) {
                 Actor container = (Actor) receiver.getContainer()
                         .getContainer();
@@ -211,24 +213,28 @@ public class Bus extends ColoredQuantityManager {
                     // The fire that results from the following fireAt()
                     // call, at a minimum, will result in a
                     // transfer outputs to the outside of the composite.
-                    Actor containerOfComposite = (Actor) container.getContainer();
+                    Actor containerOfComposite = (Actor) container
+                            .getContainer();
                     if (containerOfComposite != null) {
-                        containerOfComposite.getDirector().fireAt(container, currentTime);
+                        containerOfComposite.getDirector().fireAt(container,
+                                currentTime);
                     }
                 } else {
                     // If the recipient is an input, then 
-                    if (receiver.getContainer().isInput()) { 
+                    if (receiver.getContainer().isInput()) {
                         // the container must have the correct model time before putting the token
-                        ((Actor) container.getContainer()).getDirector().fireAt(container,
-                                currentTime);
-                        receiver.put(token); 
+                        ((Actor) container.getContainer()).getDirector()
+                                .fireAt(container, currentTime);
+                        receiver.put(token);
                         // making sure the input is transferred inside.
-                        ((Actor) container.getContainer()).getDirector().fireAt(container,
-                                currentTime);
+                        ((Actor) container.getContainer()).getDirector()
+                                .fireAt(container, currentTime);
                     }
                 }
+            } else {
+                receiver.put(token);
             }
-            */
+
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to "
                         + receiver.getContainer().getFullName() + ": " + token);
@@ -241,10 +247,9 @@ public class Bus extends ColoredQuantityManager {
      */
     public boolean postfire() throws IllegalActionException {
         // This method contains two places where refirings can be
-        // scheduled. We only want to schedule a refiring once.
-        boolean refiringScheduled = false;
+        // scheduled. We only want to schedule a refiring once. 
         Time currentTime = getDirector().getModelTime();
-        
+
         // If a token was actually sent to a delegated receiver
         // by the fire() method, then remove that token from
         // the queue and, if there are still tokens in the queue,
@@ -254,41 +259,45 @@ public class Bus extends ColoredQuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
-//            if (_tokens.size() > 0) { 
-//                _scheduleRefire();
-//                refiringScheduled = true;
-//                // FIXME:
-//                // Not only does this bus need to be fired
-//                // at the _nextTimeFree, but so does the destination
-//                // actor. In particular, that actor may be under
-//                // the control of a _different director_ than the
-//                // bus, and the order in which that actor is fired
-//                // vs. this Bus is important. How to control this?
-//                // Maybe global scope of a QuantityManager is not
-//                // a good idea, but we really do want to be able
-//                // to share a QuantityManager across modes of a
-//                // modal model. How to fix???
-//            } else {
-//                refiringScheduled = false;
-//            }
+            sendTaskExecutionEvent((Actor) null, 0, _tokens.size(), EventType.SENT);
+            //            if (_tokens.size() > 0) { 
+            //                _scheduleRefire();
+            //                refiringScheduled = true;
+            //                // FIXME:
+            //                // Not only does this bus need to be fired
+            //                // at the _nextTimeFree, but so does the destination
+            //                // actor. In particular, that actor may be under
+            //                // the control of a _different director_ than the
+            //                // bus, and the order in which that actor is fired
+            //                // vs. this Bus is important. How to control this?
+            //                // Maybe global scope of a QuantityManager is not
+            //                // a good idea, but we really do want to be able
+            //                // to share a QuantityManager across modes of a
+            //                // modal model. How to fix???
+            //            } else {
+            //                refiringScheduled = false;
+            //            }
         }
         // If sendToken() was called in the current iteration,
         // then append the token to the queue. If this is the
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if ((getDirector() instanceof FixedPointDirector) &&  _receiversAndTokensToSendTo != null) {
+        if ((getDirector() instanceof FixedPointDirector)
+                && _receiversAndTokensToSendTo != null) {
             for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
                 Token token = _receiversAndTokensToSendTo.get(receiver);
                 if (token != null) {
-                    _tokens.put(new Object[] {receiver, token});
+                    _tokens.put(new Object[] { receiver, token });
                 }
             }
             _receiversAndTokensToSendTo.clear();
         }
         // if there was no token in the queue, schedule a refiring.
         // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) { 
-        if (_tokens.size() > 0 && (_nextTimeFree == null || currentTime.compareTo(_nextTimeFree) >= 0)) {
+        if (_tokens.size() > 0
+                && (_nextTimeFree == null || currentTime
+                        .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
             // FIXME:
             // Not only does this bus need to be fired
@@ -302,11 +311,10 @@ public class Bus extends ColoredQuantityManager {
             // to share a QuantityManager across modes of a
             // modal model. How to fix???
         }
-        
+
         return super.postfire();
     }
-    
-    
+
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
      *  if there is not one already scheduled. 
@@ -316,7 +324,7 @@ public class Bus extends ColoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime(); 
+        Time currentTime = getDirector().getModelTime();
         // FIXME: Why is the following needed?
         if (_nextTimeFree == null || _tokens.size() == 0
                 || currentTime.compareTo(_nextTimeFree) != 0
@@ -325,9 +333,12 @@ public class Bus extends ColoredQuantityManager {
             // At least in the Continuous domain, we need to make sure
             // the delegated receiver knows this so that it becomes
             // known and absent.
-            receiver.put(null);
+
+            if (getDirector() instanceof FixedPointDirector) {
+                receiver.put(null);
+            }
         }
-        
+
         // If previously in the current iteration we have
         // sent a token, then we require the token to have the
         // same value. Thus, this Bus can be used only in domains
@@ -338,19 +349,20 @@ public class Bus extends ColoredQuantityManager {
             if (!tokenToSend.equals(token)) {
                 throw new IllegalActionException(this, receiver.getContainer(),
                         "Previously initiated a transmission with value "
-                        + tokenToSend
-                        + ", but now trying to send value "
-                        + token
-                        + " in the same iteration.");
+                                + tokenToSend
+                                + ", but now trying to send value " + token
+                                + " in the same iteration.");
             }
         } else {
-           
+
             // In the Continuous domain, this actor gets fired if tokens are available
             // or not. In the DE domain we need to schedule a refiring. 
             if (getDirector() instanceof FixedPointDirector) {
                 _receiversAndTokensToSendTo.put(receiver, token);
-            } else {  
-                _tokens.put(new Object[] {receiver, token}); 
+            } else {
+                _tokens.put(new Object[] { receiver, token });
+                sendTaskExecutionEvent((Actor) source.getContainer()
+                        .getContainer(), 0, _tokens.size(), EventType.RECEIVED);
                 if (_tokens.size() == 1) { // no refiring has been scheduled
                     _scheduleRefire();
                 }
@@ -369,38 +381,75 @@ public class Bus extends ColoredQuantityManager {
         }
     }
 
-    private void _scheduleRefire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();  
-        _nextTimeFree = currentTime.add(_serviceTimeValue);
-        _nextReceiver = (Receiver) ((Object[])_tokens.get(0))[0];
-        _fireAt(_nextTimeFree); 
-    }
-
     /**
      * Reset the quantity manager and clear the tokens.
      */
     public void reset() {
         _tokens.clear();
     }
+    
+    /** Add a quantity manager monitor to the list of listeners.
+     *  @param monitor The quantity manager monitor.
+     */
+    public void registerListener(QuantityManagerMonitor monitor) {
+        if (_listeners == null) {
+            _listeners = new ArrayList<QuantityManagerListener>();
+        }
+        _listeners.add(monitor);
+    }
+
+    /** Notify the monitor that an event happened.
+     *  @param source The source actor that caused the event in the 
+     *      quantity manager. 
+     *  @param messageId The ID of the message that caused the event in 
+     *      the quantity manager.
+     *  @param messageCnt The amount of messages currently being processed
+     *      by the quantity manager.
+     *  @param time The time when the event happened.
+     *  @param event The type of the event. e.g. message received, message sent, ... 
+     */
+    public void sendTaskExecutionEvent(Actor source, int messageId,
+            int messageCnt, EventType eventType) {
+        if (_listeners != null) {
+            Iterator listeners = _listeners.iterator(); 
+            while (listeners.hasNext()) {
+                ((QuantityManagerListener) listeners.next()).event(this,
+                        source, messageId, messageCnt, getDirector().getModelTime()
+                                .getDoubleValue(), eventType);
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                    ////
+    //                          public variables                     //
 
     /** The service time. This is a double with default 0.1.
      *  It is required to be positive.
      */
-    public Parameter serviceTime; 
+    public Parameter serviceTime;
+    
+    ///////////////////////////////////////////////////////////////////
+    //                          protected methods                    //
+    
+    /** Schedule a refiring of the actor.
+     *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
+     */
+    protected void _scheduleRefire() throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        _nextTimeFree = currentTime.add(_serviceTimeValue);
+        _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
+        _fireAt(_nextTimeFree);
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    //                           private variables                   //
 
-    
     /** Next receiver to which the next token to be sent is destined. */
     private Receiver _nextReceiver;
 
     /** Next time a token is sent and the next token can be processed. */
     private Time _nextTimeFree;
-    
+
     /** Map of receivers and tokens to which the token provided via sendToken() should
      *  be sent to.
      */
@@ -412,5 +461,7 @@ public class Bus extends ColoredQuantityManager {
     /** Tokens stored for processing. */
     private FIFOQueue _tokens;
 
-    
+    /** Listeners registered to receive events from this object. */
+    private ArrayList<QuantityManagerListener> _listeners;
+
 }

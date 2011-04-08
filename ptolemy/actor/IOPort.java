@@ -247,7 +247,7 @@ public class IOPort extends ComponentPort {
             _hasPortEventListeners = true;
         }
     }
-    
+
     /** If the quantity manager attribute of the port is changed and the new
      *  quantity manager is a {@link ColoredQuantityManager} then update 
      *  the port color and the color of the relation.
@@ -257,69 +257,78 @@ public class IOPort extends ComponentPort {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-       
+
         if (attribute instanceof Parameter) {
-            Token parameterToken = ((Parameter)attribute).getToken();
-            
+            Token parameterToken = ((Parameter) attribute).getToken();
+
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken) {
-                    Object quantityManagerObject
-                                = ((ObjectToken)parameterToken).getValue();
+                    Object quantityManagerObject = ((ObjectToken) parameterToken)
+                            .getValue();
                     if (quantityManagerObject instanceof ColoredQuantityManager) {
-                        
+
                         // The color of an input port should be the color of the last parameter
                         // that is a {@link ColoredQuantityManager}. This is the quantity
                         // manager that this port is directly connected to.
                         // The color of an output port should be the color of the first parameter.
-                        
-                       
-                        List<ColoredQuantityManager> qmList = new ArrayList(_getQuantityManagers());
+
+                        List<ColoredQuantityManager> qmList = new ArrayList(
+                                _getQuantityManagers());
                         if (qmList.size() > 0) {
                             ColorAttribute colorAttribute = (ColorAttribute) getAttribute("_color");
-                            
-                            try { 
-                                if (colorAttribute == null) { 
-                                    colorAttribute = new ColorAttribute(this, "_color");
+
+                            try {
+                                if (colorAttribute == null) {
+                                    colorAttribute = new ColorAttribute(this,
+                                            "_color");
                                 }
                                 if (this.isOutput()) {
-                                    colorAttribute.setExpression(qmList.get(0).color.getExpression());
+                                    colorAttribute
+                                            .setExpression(qmList.get(0).color
+                                                    .getExpression());
                                 } else {
-                                    colorAttribute.setExpression(qmList.get(qmList.size() - 1).color.getExpression());
+                                    colorAttribute.setExpression(qmList
+                                            .get(qmList.size() - 1).color
+                                            .getExpression());
                                 }
-                                
-    //                            int i = 0;
-    //                            while (i < _relationsList.size()) {
-    //                                Relation relation = ((Relation) this._relationsList.get(i));
-    //                                _removeAttribute(relation, "_color");
-    //                                ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
-    //                                if (this.isInput()) {
-    //                                    colorAttribute2.setExpression(qmList.get(0).color.getExpression());
-    //                                } else {
-    //                                    colorAttribute2.setExpression(qmList.get(qmList.size() - 1).color.getExpression());
-    //                                }
-    //                                i++;
-    //                            } 
+
+                                //                            int i = 0;
+                                //                            while (i < _relationsList.size()) {
+                                //                                Relation relation = ((Relation) this._relationsList.get(i));
+                                //                                _removeAttribute(relation, "_color");
+                                //                                ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
+                                //                                if (this.isInput()) {
+                                //                                    colorAttribute2.setExpression(qmList.get(0).color.getExpression());
+                                //                                } else {
+                                //                                    colorAttribute2.setExpression(qmList.get(qmList.size() - 1).color.getExpression());
+                                //                                }
+                                //                                i++;
+                                //                            } 
                                 StringAttribute info = (StringAttribute) getAttribute("_showInfo");
                                 String qmString = "";
-                                if (info == null) { 
-                                    info = new StringAttribute(this, "_showInfo");
+                                if (info == null) {
+                                    info = new StringAttribute(this,
+                                            "_showInfo");
                                 }
-                                
+
                                 for (int j = 0; j < qmList.size(); j++) {
-                                    qmString = qmString + qmList.get(j).getName() + ", ";
+                                    qmString = qmString
+                                            + qmList.get(j).getName() + ", ";
                                 }
-                                info.setExpression("QM: " + qmString.substring(0, qmString.length() - 2));
+                                info.setExpression("QM: "
+                                        + qmString.substring(0,
+                                                qmString.length() - 2));
                             } catch (NameDuplicationException e) {
                                 // Ignore. This exception should be thrown because before adding the
                                 // new ColorAttribute any previous attribute with the same name is
                                 // removed.
-                            } 
+                            }
                         }
                     }
                 }
             }
         }
-        
+
         super.attributeChanged(attribute);
     }
 
@@ -4285,22 +4294,24 @@ public class IOPort extends ComponentPort {
             }
         }
     }
-    
-    private List<QuantityManager> _getQuantityManagers() throws IllegalActionException {
+
+    private List<QuantityManager> _getQuantityManagers()
+            throws IllegalActionException {
         List<QuantityManager> qmList = new ArrayList();
         if (attributeList().size() > 0) {
             for (int i = 0; i < attributeList().size(); i++) {
                 Object attr = attributeList().get(i);
-                if (attr instanceof Parameter) { 
-                    Token paramToken = ((Parameter) attr).getToken(); 
+                if (attr instanceof Parameter) {
+                    Token paramToken = ((Parameter) attr).getToken();
                     if (paramToken instanceof ObjectToken) {
-                        Object paramObject = ((ObjectToken)paramToken).getValue();
-                        if (paramObject instanceof QuantityManager) { 
-                            qmList.add((QuantityManager)paramObject);
+                        Object paramObject = ((ObjectToken) paramToken)
+                                .getValue();
+                        if (paramObject instanceof QuantityManager) {
+                            qmList.add((QuantityManager) paramObject);
                         }
                     }
                 }
-            } 
+            }
         }
         return qmList;
     }
@@ -4325,20 +4336,22 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         Receiver result = receiver;
         List<QuantityManager> qmList = _getQuantityManagers();
-        if (isInput()) { 
-            for (int i = qmList.size() - 1; i >= 0 ; i--) {
-                result = qmList.get(i).getReceiver(result);                    
+        if (isInput()) {
+            for (int i = qmList.size() - 1; i >= 0; i--) {
+                result = qmList.get(i).getReceiver(result);
             }
             if (result instanceof IntermediateReceiver) {
                 IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
-                intermediateReceiver.source = (Actor) ((IOPort) this.sourcePortList().get(0)).getContainer();
+                intermediateReceiver.source = (Actor) ((IOPort) this
+                        .sourcePortList().get(0)).getContainer();
             }
         } else {
             for (int i = 0; i < qmList.size(); i++) {
-                result = qmList.get(i).getReceiver(result);                    
+                result = qmList.get(i).getReceiver(result);
             }
-        } // TODO what if isInput && isOutput??
-        
+        }
+        // TODO what if isInput && isOutput??
+
         return result;
     }
 

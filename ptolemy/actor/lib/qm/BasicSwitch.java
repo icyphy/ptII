@@ -30,32 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.sched.FixedPointDirector;
-import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.de.kernel.DEEventQueue;
-import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -105,7 +96,7 @@ public class BasicSwitch extends ColoredQuantityManager {
     public BasicSwitch(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _inputTokens = new HashMap();
         _outputTokens = new HashMap();
         _switchFabricQueue = new TreeSet();
@@ -137,15 +128,25 @@ public class BasicSwitch extends ColoredQuantityManager {
     ////                         public methods                    ////
 
     /** Create an intermediate receiver that wraps a given receiver.
+     *  For now, we only support wrapping input ports. 
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver. 
+     *  @throws IllegalActionException Thrown if the receiver is an 
+     *  ouptut port. 
      */
-    public IntermediateReceiver getReceiver(Receiver receiver) {
+    public IntermediateReceiver getReceiver(Receiver receiver)
+            throws IllegalActionException {
+        if (receiver.getContainer().isOutput()) {
+            throw new IllegalActionException(receiver.getContainer(),
+                    "This quantity manager cannot be " + "used on port "
+                            + receiver.getContainer()
+                            + ", it only be specified on input port.");
+        }
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
     }
-    
+
     /** Make sure that this quantity manager is only used in the DE domain. 
      *  FIXME: this actor should be used in other domains later as well. 
      *  @param container The container of this actor.
@@ -162,10 +163,10 @@ public class BasicSwitch extends ColoredQuantityManager {
         }
     }
 
-    /** If the attribute is <i>serviceTime</i>, then ensure that the value
-     *  is non-negative.
+    /** If the attribute for the input, switch fabric or output delay is
+     *  changed, then ensure that the value is non-negative.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
+     *  @exception IllegalActionException If the buffer delays are negative.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -388,22 +389,22 @@ public class BasicSwitch extends ColoredQuantityManager {
 
     /** Time it takes for a token to be put into the input queue.
      *  This parameter must contain a DoubleToken. The value defaults 
-     *  to 0.1. */ 
+     *  to 0.1. */
     public Parameter inputBufferDelay;
 
     /** Time it takes for a token to be put into the output queue.
      *  This parameter must contain a DoubleToken. The value defaults 
-     *  to 0.1. */ 
+     *  to 0.1. */
     public Parameter outputBufferDelay;
 
     /** Time it takes for a token to be processed by the switch fabric.
      *  This parameter must contain a DoubleToken. The value defaults 
-     *  to 0.1. */ 
+     *  to 0.1. */
     public Parameter switchFabricDelay;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Get next fire time for a set of tokens which is either the minimum 
      *  next fire time passed as an argument or the smallest timestamp of
      *  the tokens in the set.
@@ -437,18 +438,16 @@ public class BasicSwitch extends ColoredQuantityManager {
         _nextFireTime = _getNextFireTime(_nextFireTime, _switchFabricQueue);
         _fireAt(_nextFireTime);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////    
-    
+
     /** Time it takes for a token to be put into the input queue. */
     protected double _inputBufferDelay;
 
-    
     /** Time it takes for a token to be put into the output queue. */
     protected double _outputBufferDelay;
 
-    
     /** Time it takes for a token to be processed by the switch fabric. */
     protected double _switchFabricDelay;
 
@@ -463,16 +462,16 @@ public class BasicSwitch extends ColoredQuantityManager {
 
     /** Tokens received by the switch. */
     protected HashMap<Integer, TreeSet<TimedEvent>> _inputTokens;
-    
+
     /** Tokens to be sent to outputs. */
     protected HashMap<Integer, TreeSet<TimedEvent>> _outputTokens;
 
     /** Number of switch ports. */
     protected int _numberOfPorts;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////    
-    
+
     /** Tokens processed by the switch fabric. */
     private TreeSet<TimedEvent> _switchFabricQueue;
 }

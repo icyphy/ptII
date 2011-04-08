@@ -31,15 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -78,7 +72,8 @@ public abstract class ColoredQuantityManager extends TypedAtomicActor implements
     }
     
     /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager.
+     *  actors or connections that use this quantity manager. The default value
+     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
      */
     public ColorAttribute color;
     

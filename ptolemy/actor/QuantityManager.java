@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 package ptolemy.actor;
-
+ 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -73,5 +73,6 @@ public interface QuantityManager {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token) throws IllegalActionException;
+
 
 }

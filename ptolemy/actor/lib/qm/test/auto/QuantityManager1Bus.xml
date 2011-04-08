@@ -162,7 +162,7 @@
         <link port="Scale.input" relation="relation"/>
         <link port="Scale.output" relation="relation2"/>
     </entity>
-    <entity name="ptolemy.actor.lib.qm.Bus" class="ptolemy.actor.lib.qm.Bus">
+    <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 330.0]">

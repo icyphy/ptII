@@ -59,7 +59,10 @@ JSRCS = \
 	Bus.java \
 	ColoredQuantityManager.java  \
 	CrossbarSwitch.java \
-	TTESwitch.java
+	TTESwitch.java \
+	MonitoredQuantityManger.java \
+	QuantityManagerListener.java \
+	QuantityManagerMonitor.java 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
