@@ -1,0 +1,211 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Simple" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="PtidesTopLevelDirector" class="ptolemy.domains.ptides.kernel.PtidesTopLevelDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, 55.0}">
+        </property>
+        <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 142, 814, 515}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{112.6642992424242, 216.0232007575758}">
+    </property>
+    <entity name="Tunnelling Ball Device Controller" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 190.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 151, 998, 465}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[784, 350]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0900941281936">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.6008522727272, 188.6378962320558}">
+        </property>
+        <property name="PtidyOSCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.ptidyos.PtidyOSCodeGenerator">
+            <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.luminary">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 85.0}">
+            </property>
+        </property>
+        <property name="PtidesPreemptiveEDFDirector" class="ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 85.0]">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 165.0}">
+            </property>
+            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 195.0]">
+            </property>
+            <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 225.0}">
+            </property>
+            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </port>
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.001">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 195.0]">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+            </port>
+        </entity>
+        <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 195.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+            </port>
+            <port name="reset" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+            </port>
+        </entity>
+        <entity name="InputSensor" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 165.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+            </port>
+        </entity>
+        <entity name="ResetSensor" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
+            <property name="pin" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+            <property name="pad" class="ptolemy.data.expr.StringParameter" value="B">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 225.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+            </port>
+        </entity>
+        <entity name="GPOutputDevice" class="ptolemy.domains.ptides.lib.luminary.GPOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 195.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{1.0E-3}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation4"/>
+        <link port="port3" relation="relation6"/>
+        <link port="port2" relation="relation"/>
+        <link port="TimeDelay.input" relation="relation7"/>
+        <link port="TimeDelay.output" relation="relation5"/>
+        <link port="Accumulator.input" relation="relation3"/>
+        <link port="Accumulator.output" relation="relation7"/>
+        <link port="Accumulator.reset" relation="relation2"/>
+        <link port="InputSensor.input" relation="relation4"/>
+        <link port="InputSensor.output" relation="relation3"/>
+        <link port="ResetSensor.input" relation="relation"/>
+        <link port="ResetSensor.output" relation="relation2"/>
+        <link port="GPOutputDevice.input" relation="relation5"/>
+        <link port="GPOutputDevice.output" relation="relation6"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.003">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.02">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={406, 305, 468, 189}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[460, 142]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 190.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Tunnelling Ball Device Controller.port" relation="relation"/>
+    <link port="Tunnelling Ball Device Controller.port3" relation="relation3"/>
+    <link port="Tunnelling Ball Device Controller.port2" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="DiscreteClock2.output" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
+</entity>

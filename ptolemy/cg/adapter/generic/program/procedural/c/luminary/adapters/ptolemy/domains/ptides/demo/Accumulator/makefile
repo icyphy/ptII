@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen sdf kernel
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/Accumulator
 
-DIRS =		Accumulator Speaker TunnelingBallDevice TimeTriggeredTunnelingBallDevice
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,30 +45,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	Accumulator.jar \
-	Speaker/Speaker.jar \
-	TimeTriggeredTunnelingBallDevice/TimeTriggeredTunnelingBallDevice.jar \
-	TunnelingBallDevice/TunnelingBallDevice.jar
+PTPACKAGE = 	Accumulator
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	Accumulator.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = $(DIRS)	
+#MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

@@ -108,7 +108,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
             for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
                     .deepEntityList()) {
                 Director insideDirector = actor.getDirector();
-                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                 if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
                     directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
                     _writeCode(directorAdapter.generateAsseblyFile());
                 }
