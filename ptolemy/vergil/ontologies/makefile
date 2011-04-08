@@ -52,7 +52,7 @@ JSRCS = \
 	ConceptIcon.java \
 	MultipleConceptIcon.java \
 	OntologyGraphController.java \
-	OntologyGraphFrame.java \	
+	OntologyGraphFrame.java \
 	OntologyGraphModel.java \
 	OntologyGraphTableau.java \
 	OntologySolverTableau.java \
