@@ -630,7 +630,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     
     /** Free up memory when closing. */
     protected void cleanUp() {
-        System.out.println("PlotterBase.cleanUp()");
         plot = null;
         setFrame(null);
         _tableau = null;
