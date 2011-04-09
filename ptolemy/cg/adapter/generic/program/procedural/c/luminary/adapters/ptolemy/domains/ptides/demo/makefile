@@ -53,7 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	Accumulator.jar \
+	Accumulator/Accumulator.jar \
 	Speaker/Speaker.jar \
 	TimeTriggeredTunnelingBallDevice/TimeTriggeredTunnelingBallDevice.jar \
 	TunnelingBallDevice/TunnelingBallDevice.jar
