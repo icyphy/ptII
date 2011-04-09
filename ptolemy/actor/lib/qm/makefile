@@ -60,7 +60,7 @@ JSRCS = \
 	ColoredQuantityManager.java  \
 	CrossbarSwitch.java \
 	TTESwitch.java \
-	MonitoredQuantityManger.java \
+	MonitoredQuantityManager.java \
 	QuantityManagerListener.java \
 	QuantityManagerMonitor.java 
 
