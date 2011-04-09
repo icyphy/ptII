@@ -427,6 +427,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         _graphicalClasses.put(
                 "ptolemy.vergil.ontologies.ConceptIcon", null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.ontologies.MultipleConceptIcon", null);
 
         _graphicalClasses.put(
                 "ptolemy.domains.petrinet.lib.gui.PetriNetDisplay",
