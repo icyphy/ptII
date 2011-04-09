@@ -274,13 +274,12 @@ public class HistogramPlotter extends PlotterBase {
                 plotEffigy.identifier.setExpression(getFullName());
 
                 _tableau = new PlotWindowTableau(plotEffigy, "tableau");
-                _frame = _tableau.frame;
+                setFrame(_tableau.frame);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
                         "Error creating effigy and tableau");
             }
 
-            _windowProperties.setProperties(_frame);
             _implementDeferredConfigurations();
 
             // The SizeAttribute property is used to specify the size
