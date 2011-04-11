@@ -66,8 +66,8 @@ if {[info procs testJavaCG] == "" } then {
 # $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanCoder.xml  Fails to compile, uses DDF
 # $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanDecoder.xml  Fails to compile, uses DDF
 # $PTII/ptolemy/actor/lib/comm/test/auto/LempelZivCoder.xml  Fails to compile, uses DDF
-# $PTII/ptolemy/actor/lib/comm/test/auto/Slicer.xml  Fails to compile, uses Complex
-# $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml  Fails to compile, uses Complex
+# $PTII/ptolemy/actor/lib/comm/test/auto/Slicer.xml  Runs, but gets "Cannot put a token in a full mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml  Runs, but gets "Cannot put a token in a full mailbox."
 
 # $PTII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml   Fails to compile, needs function types
 # $PTII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml  Fails to compile, uses DE
