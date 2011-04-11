@@ -49,8 +49,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.qm.ColoredQuantityManager;
+import ptolemy.actor.gui.ColorAttribute; 
+import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -265,14 +265,14 @@ public class IOPort extends ComponentPort {
                 if (parameterToken instanceof ObjectToken) {
                     Object quantityManagerObject = ((ObjectToken) parameterToken)
                             .getValue();
-                    if (quantityManagerObject instanceof ColoredQuantityManager) {
+                    if (quantityManagerObject instanceof MonitoredQuantityManager) {
 
                         // The color of an input port should be the color of the last parameter
                         // that is a {@link ColoredQuantityManager}. This is the quantity
                         // manager that this port is directly connected to.
                         // The color of an output port should be the color of the first parameter.
 
-                        List<ColoredQuantityManager> qmList = new ArrayList(
+                        List<MonitoredQuantityManager> qmList = new ArrayList(
                                 _getQuantityManagers());
                         if (qmList.size() > 0) {
                             ColorAttribute colorAttribute = (ColorAttribute) getAttribute("_color");

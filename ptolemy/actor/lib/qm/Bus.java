@@ -77,8 +77,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class Bus extends ColoredQuantityManager implements
-        MonitoredQuantityManager {
+public class Bus extends MonitoredQuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
@@ -154,7 +153,7 @@ public class Bus extends ColoredQuantityManager implements
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
         newObject._serviceTimeValue = 0.1;
-        newObject._tokens = new FIFOQueue();
+        newObject._tokens = new FIFOQueue(); 
         return newObject;
     }
 
@@ -209,7 +208,7 @@ public class Bus extends ColoredQuantityManager implements
                 Actor container = (Actor) receiver.getContainer()
                         .getContainer();
                 if (receiver.getContainer().isOutput()) {
-                    receiver.put(token);
+                    _putToReceiver(receiver, token);
                     // The fire that results from the following fireAt()
                     // call, at a minimum, will result in a
                     // transfer outputs to the outside of the composite.
@@ -225,14 +224,14 @@ public class Bus extends ColoredQuantityManager implements
                         // the container must have the correct model time before putting the token
                         ((Actor) container.getContainer()).getDirector()
                                 .fireAt(container, currentTime);
-                        receiver.put(token);
+                        _putToReceiver(receiver, token);
                         // making sure the input is transferred inside.
                         ((Actor) container.getContainer()).getDirector()
                                 .fireAt(container, currentTime);
                     }
                 }
             } else {
-                receiver.put(token);
+                _putToReceiver(receiver, token);
             }
 
             if (_debugging) {
@@ -259,7 +258,7 @@ public class Bus extends ColoredQuantityManager implements
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
-            sendTaskExecutionEvent((Actor) null, 0, _tokens.size(), EventType.SENT);
+            
             //            if (_tokens.size() > 0) { 
             //                _scheduleRefire();
             //                refiringScheduled = true;
@@ -360,9 +359,10 @@ public class Bus extends ColoredQuantityManager implements
             if (getDirector() instanceof FixedPointDirector) {
                 _receiversAndTokensToSendTo.put(receiver, token);
             } else {
-                _tokens.put(new Object[] { receiver, token });
-                sendTaskExecutionEvent((Actor) source.getContainer()
-                        .getContainer(), 0, _tokens.size(), EventType.RECEIVED);
+                _tokens.put(new Object[] { receiver, token }); 
+                _tokenCount++;
+                sendQMTokenEvent((Actor) source.getContainer()
+                        .getContainer(), 0, _tokenCount, EventType.RECEIVED);
                 if (_tokens.size() == 1) { // no refiring has been scheduled
                     _scheduleRefire();
                 }
@@ -386,38 +386,6 @@ public class Bus extends ColoredQuantityManager implements
      */
     public void reset() {
         _tokens.clear();
-    }
-    
-    /** Add a quantity manager monitor to the list of listeners.
-     *  @param monitor The quantity manager monitor.
-     */
-    public void registerListener(QuantityManagerMonitor monitor) {
-        if (_listeners == null) {
-            _listeners = new ArrayList<QuantityManagerListener>();
-        }
-        _listeners.add(monitor);
-    }
-
-    /** Notify the monitor that an event happened.
-     *  @param source The source actor that caused the event in the 
-     *      quantity manager. 
-     *  @param messageId The ID of the message that caused the event in 
-     *      the quantity manager.
-     *  @param messageCnt The amount of messages currently being processed
-     *      by the quantity manager.
-     *  @param time The time when the event happened.
-     *  @param event The type of the event. e.g. message received, message sent, ... 
-     */
-    public void sendTaskExecutionEvent(Actor source, int messageId,
-            int messageCnt, EventType eventType) {
-        if (_listeners != null) {
-            Iterator listeners = _listeners.iterator(); 
-            while (listeners.hasNext()) {
-                ((QuantityManagerListener) listeners.next()).event(this,
-                        source, messageId, messageCnt, getDirector().getModelTime()
-                                .getDoubleValue(), eventType);
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -460,8 +428,5 @@ public class Bus extends ColoredQuantityManager implements
 
     /** Tokens stored for processing. */
     private FIFOQueue _tokens;
-
-    /** Listeners registered to receive events from this object. */
-    private ArrayList<QuantityManagerListener> _listeners;
 
 }

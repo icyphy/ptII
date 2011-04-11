@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class TTESwitch extends ColoredQuantityManager {
+public class TTESwitch extends MonitoredQuantityManager {
 
     /** Construct a TTESwitch with a name and a container.
      *  The container argument must not be null, or a

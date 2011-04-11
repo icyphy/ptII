@@ -56,11 +56,10 @@ OTHER_FILES_TO_BE_JARED = \
 
 JSRCS = \
 	BasicSwitch.java \
-	Bus.java \
-	ColoredQuantityManager.java  \
+	Bus.java \ 
 	CrossbarSwitch.java \
 	TTESwitch.java \
-	MonitoredQuantityManager.java \
+	MonitoredQuantityManger.java \
 	QuantityManagerListener.java \
 	QuantityManagerMonitor.java 
 

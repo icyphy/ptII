@@ -1,6 +1,7 @@
 package ptolemy.actor.lib.qm;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
@@ -14,6 +15,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Token)} method is called, delays
@@ -50,6 +52,30 @@ public class CrossbarSwitch extends BasicSwitch {
         super(container, name);
         _switchFabricQueue = new HashMap<Integer, TreeSet<TimedEvent>>();
         _waitingOnSwitchFabricQueue = new HashMap<Integer, FIFOQueue>();
+    }
+    
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new Bus.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CrossbarSwitch newObject = (CrossbarSwitch) super.clone(workspace);
+        newObject._actorPorts = new HashMap();
+        newObject._receivers = new Hashtable();
+        newObject._nextFireTime = null;
+        newObject._inputTokens = new HashMap();
+        newObject._outputTokens = new HashMap();
+        newObject._switchFabricQueue = new HashMap();
+        return newObject;
     }
 
     /** Initialize actor variables.
@@ -163,10 +189,7 @@ public class CrossbarSwitch extends BasicSwitch {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
                     Token token = (Token) output[1];
-                    if (receiver instanceof IntermediateReceiver) {
-                        ((IntermediateReceiver) receiver).source = this;
-                    }
-                    receiver.put(token);
+                    _putToReceiver(receiver, token);
                     _outputTokens.get(i).remove(event);
                 }
             }

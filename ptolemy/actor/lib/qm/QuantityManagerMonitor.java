@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,6 +99,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
 
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,6 +128,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         if (plot == null) {
             return;
         }
+        
         double x = time;
         double y = (double) (((double) _quantityManagers.indexOf(qm)));
         int actorDataset = (_quantityManagers.indexOf(qm));
@@ -141,6 +144,8 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         plot.fillPlot();
         plot.repaint();
     }
+    
+    Color[] colors;
     
     /** Initialize the plot and the legend with the list of quantity managers used
      *  in this model
@@ -162,13 +167,19 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         if (plot != null) {
             plot.clear(false);
             plot.clearLegends();
-
+            colors = new Color[_quantityManagers.size()];
             for (QuantityManager qm : _quantityManagers) {
-                plot.addLegend(_quantityManagers.indexOf(qm),
+                int idx = _quantityManagers.indexOf(qm);
+                plot.addLegend(idx,
                         ((NamedObj) qm).getName());
+                plot.addPoint(idx, 0.0, idx, false);
+                colors[idx] = ((MonitoredQuantityManager)qm).color.asColor();
             }
+            
             plot.doLayout();
         }
+        // FIXME: This affects all plots in the model:
+        // plot.setColors(colors);
     }
 
     ///////////////////////////////////////////////////////////////////
