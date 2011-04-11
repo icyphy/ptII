@@ -4,13 +4,13 @@
 <entity name="BasicSwitch" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={363, 174, 796, 544}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 60, 892, 637}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 434]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[679, 527]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 217.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.5, 263.5}">
     </property>
     <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
     </property>
@@ -116,7 +116,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.4" max="10.0"/>
+<xRange min="0.2" max="9.5"/>
 <yRange min="2.0" max="4.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -229,7 +229,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.6" max="10.0"/>
+<xRange min="0.3" max="9.5"/>
 <yRange min="1.0" max="4.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -253,6 +253,12 @@
         <link port="TimedPlotter.input" relation="relation4"/>
     </entity>
     <entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch">
+        <property name="inputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="outputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="switchFabricDelay" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 45.0]">
         </property>
         <property name="1" class="ptolemy.data.expr.Parameter" value="A">
@@ -266,6 +272,12 @@
     </entity>
     <entity name="BasicSwitch2" class="ptolemy.actor.lib.qm.BasicSwitch">
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+        </property>
+        <property name="inputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="outputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="switchFabricDelay" class="ptolemy.data.expr.Parameter" value="0.05">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 120.0]">
         </property>
@@ -364,7 +376,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.5" max="9.5"/>
+<xRange min="0.25" max="9.6"/>
 <yRange min="1.0" max="4.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -479,7 +491,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.7000000000000001" max="9.700000000000001"/>
+<xRange min="0.35000000000000003" max="9.6"/>
 <yRange min="1.0" max="3.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -501,6 +513,10 @@
         <link port="TimedPlotter.input" relation="relation"/>
         <link port="TimedPlotter.input" relation="relation2"/>
         <link port="TimedPlotter.input" relation="relation3"/>
+    </entity>
+    <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 100.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
