@@ -1,6 +1,6 @@
 /* A code generator adapter that is auto generated and calls actor code.
 
- Copyright (c) 2010 The Regents of the University of California.
+ Copyright (c) 2010-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,10 +28,12 @@
 package ptolemy.cg.kernel.generic.program.procedural.java;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -112,6 +114,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
                 + "try {\n"
                 + "    $actorSymbol(container) = new TypedCompositeActor();\n"
+                // Some custom actors such as ElectricalOverlord
+                // want to be in a container with a particular name.
+                + "    $actorSymbol(container).setName(\""
+                + getComponent().getContainer().getName()
+                + "\");\n"
                 + "    $actorSymbol(actor) = new " + actorClassName + "($actorSymbol(container), \"$actorSymbol(actor)\");\n");
 
         // Generate code that creates and connects each port.
@@ -119,6 +126,29 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         while (entityPorts.hasNext()) {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof IOPort) {
+                List<TypeAttribute> typeAttributes = insidePort.attributeList(TypeAttribute.class);
+                if (typeAttributes.size() > 0) {
+                    if (typeAttributes.size() > 1) {
+                        new Exception("Warning, " + insidePort.getFullName()
+                                + " has more than one typeAttribute."
+                                      ).printStackTrace();
+                    }
+                    // only get the first element of the list.
+                    TypeAttribute typeAttribute = typeAttributes.get(0);
+                    // The port has a type attribute, which means the
+                    // type was set via the UI.
+                    // This is needed by:
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
+                    code.append("{\n"
+                            + "ptolemy.actor.TypeAttribute _type = "
+                            + "new ptolemy.actor.TypeAttribute((("
+                            + actorClassName + ")$actorSymbol(actor))." 
+                            + insidePort.getName() + ", \"inputType\");\n"
+                            + "_type.setExpression(\""
+                            + typeAttribute.getExpression()
+                            + "\");\n"
+                            + "}\n");
+                }
                 IOPort castPort = (IOPort) insidePort;
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
