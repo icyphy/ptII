@@ -38,6 +38,7 @@ import javax.swing.SwingUtilities;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ConfigurationApplication;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -63,10 +64,12 @@ public class ExportImage {
      *  The string may start with $CLASSPATH, $HOME or other formats
      *  suitable for {@link ptolemy.util.FileUtilities.nameToFile(String, URI)}.
      *  @param run True if the model should be run first.
+     *  @param save True if the model should be saved after being run.
      *  @exception Exception Thrown if there is a problem reading the model
      *  or exporting the image.
      */
-    public void exportImage(final String formatName, final String modelFileName, final boolean run)
+    public void exportImage(final String formatName, final String modelFileName,
+            final boolean run, final boolean save)
             throws Exception {
        // FIXME: this seem wrong:  The inner classes are in different
         // threads and can only access final variables.  However, we
@@ -83,6 +86,7 @@ public class ExportImage {
                 try {
                     model[0] = ConfigurationApplication.openModel(modelFileName);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     throw new RuntimeException(ex);
                 }
             }
@@ -98,6 +102,7 @@ public class ExportImage {
            Runnable runAction = new Runnable() {
                    public void run() {
                        try {
+                           System.out.println("Running " + model[0].getFullName());
                            Manager manager = model[0].getManager();
                            if (manager == null) {
                                manager = new Manager(model[0].workspace(), "MyManager");
@@ -115,6 +120,25 @@ public class ExportImage {
            _sleep();
        }
 
+       if (save) {
+           // Optionally save the model.
+           // Sadly, running the DOPCenter.xml model does not seem to update the
+           // graph.  So, we run it and save it and then open it again.
+           Runnable saveAction = new Runnable() {
+                   public void run() {
+                       try {
+                           System.out.println("Saving " + model[0].getFullName());
+                           ((PtolemyEffigy)(_basicGraphFrame.getTableau().getContainer())).writeFile(new File(modelFileName));
+                       } catch (Exception ex) {
+                           ex.printStackTrace();
+                           throw new RuntimeException(ex);
+                       }
+                   }
+               };
+           SwingUtilities.invokeAndWait(saveAction);
+           _sleep();
+       }
+
        // Export images
        Runnable exportImageAction = new Runnable() {
                public void run() {
@@ -126,6 +150,7 @@ public class ExportImage {
                            out = new FileOutputStream(imageFile);
                            // Export the image.
                            _basicGraphFrame.getJGraph().exportImage(out, formatName);
+                           System.out.println("Exported " + imageFile.getCanonicalPath());
                        } finally {
                            if (out != null) {
                                try {
@@ -151,6 +176,7 @@ public class ExportImage {
                 try {
                     ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     throw new RuntimeException(ex);
                 }
             }
@@ -188,8 +214,8 @@ public class ExportImage {
     public static void main(String args[]) {
         String usage ="Usage: java -classpath $PTII "
                     + "ptolemy.vergil.basic.ExportImage "
-                    + "[-run] [GIF|gif|PNG|png] model.xml";
-        if (args.length == 0 || args.length > 3) {
+                    + "[-run] [-save] [GIF|gif|PNG|png] model.xml";
+        if (args.length == 0 || args.length > 4) {
             // FIXME: we should get the list of acceptable format names from
             // BasicGraphFrame
             System.err.println("Wrong number of arguments");
@@ -198,39 +224,27 @@ public class ExportImage {
         }
         String formatName = "GIF";
         boolean run = false;
+        boolean save = false;
         String modelFileName = null;
         if (args.length == 1) {
             modelFileName = args[0];
         } else {
-            if (args.length == 2) {
-                if (args[0].equals("-run")) {
+            // FIXME: this is a lame way to process arguments.
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("-run")) {
                     run = true;
+                } else if (args[i].equals("-save")) {
+                    save = true;
+                } else if (args[i].toUpperCase().equals("GIF")
+                        || args[i].toUpperCase().equals("PNG")) {
+                    formatName = args[i].toUpperCase();
                 } else {
-                    formatName = args[0].toUpperCase();
+                    modelFileName = args[i];
                 }
-                modelFileName = args[1];
-            } else {
-                if (args[0].equals("-run")) {
-                    run = true;
-                    formatName = args[1].toUpperCase();
-                } else {
-                    formatName = args[0].toUpperCase();
-                    if (args[1].equals("-run")) {
-                        run = true;
-                    } else {
-                        System.err.println("Don't understand "
-                                + args[0] + " "
-                                + args[1] + " "
-                                + args[2] + " ");
-                        System.err.println(usage);
-                        System.exit(4);
-                    }
-                }
-                modelFileName = args[2];
             }
-        }
+        }                        
         try {
-            new ExportImage().exportImage(formatName, modelFileName, run);
+            new ExportImage().exportImage(formatName, modelFileName, run, save);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(5);
