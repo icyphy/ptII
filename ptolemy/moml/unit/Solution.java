@@ -26,6 +26,7 @@
  */
 package ptolemy.moml.unit;
 
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.Vector;
@@ -34,6 +35,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -207,23 +209,24 @@ public class Solution {
             trace();
         }
 
-        String color;
+        String colorString;
         StringBuffer moml = new StringBuffer();
 
         for (int j = 0; j < _numVariables; j++) {
             String explanation = _varBindings[j];
-            color = null;
+            Color colorValue = null;
 
             if (_varState[j] == _CONSISTENT) {
-                color = "green";
+                colorValue = Color.GREEN;
             } else if (_varState[j] == _INCONSISTENT) {
-                color = "red";
+                colorValue = Color.RED;
             }
-
+            
+            colorString = _getColorString(colorValue);
             moml.append("<port name=\"" + _variables[j] + "\">"
                     + " <property name=\"_color\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \"" + color + "\"/>"
+                    + "class = \"ptolemy.actor.gui.ColorAttribute\" "
+                    + "value = \"" + colorString + "\"/>"
                     + "<property name=\"_explanation\" "
                     + "class = \"ptolemy.kernel.util.StringAttribute\" "
                     + "value = \"" + explanation + "\"/>" + "</port>");
@@ -232,26 +235,26 @@ public class Solution {
         for (int constraintNum = 0; constraintNum < _numConstraints; constraintNum++) {
             NamedObj source = _source[constraintNum];
             String expression = _constraintExplanations[constraintNum];
-
-            color = null;
+            Color colorValue = null;
 
             if (_constraintState[constraintNum] == _CONSISTENT) {
-                color = "green";
+                colorValue = Color.GREEN;
             } else if (_constraintState[constraintNum] == _INCONSISTENT) {
-                color = "red";
+                colorValue = Color.RED;
             }
-
+            
+            colorString = _getColorString(colorValue);
             if (source instanceof IOPort) {
                 IOPort port = (IOPort) source;
                 ComponentEntity actor = (ComponentEntity) (port.getContainer());
                 moml.append("<entity name=\"" + actor.getName() + "\">"
-                        + _momlAnnotate(port, color, expression) + "</entity>");
+                        + _momlAnnotate(port, colorString, expression) + "</entity>");
             } else if (source instanceof IORelation) {
                 IORelation relation = (IORelation) source;
-                moml.append(_momlAnnotate(relation, color, expression));
+                moml.append(_momlAnnotate(relation, colorString, expression));
             } else if (source instanceof ComponentEntity) {
                 ComponentEntity componentEntity = (ComponentEntity) source;
-                moml.append(_momlAnnotate(componentEntity, color, expression));
+                moml.append(_momlAnnotate(componentEntity, colorString, expression));
             }
         }
 
@@ -831,18 +834,34 @@ public class Solution {
 
         return (new Index(k, l));
     }
+    
+    /** Return the string representation of the color value.
+     *  @param colorValue The input color value.
+     *  @return The string representation of the color as a Ptolemy expression
+     *   string array of double values.
+     */
+    private String _getColorString(Color colorValue) {
+        if (colorValue == null) {
+            return "";
+        } else {
+            float[] colorArray = colorValue.getRGBComponents(null);
+            return new String("{ " + colorArray[0] + ", " + colorArray[1] +
+                              ", " + colorArray[2] + ", " + colorArray[3] +
+                              " }");
+        }
+    }
 
     private String _momlAnnotate(NamedObj entity, String color,
             String expression) {
         String colorProperty = null;
-        StringAttribute currentColor = (StringAttribute) (entity
+        ColorAttribute currentColor = (ColorAttribute) (entity
                 .getAttribute("_color"));
 
         if ((currentColor != null) && (color == null)) {
             colorProperty = "<deleteProperty _name=_color/>";
         } else if (color != null) {
             colorProperty = "<property name=\"_color\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                    + "class = \"ptolemy.actor.gui.ColorAttribute\" "
                     + "value = \"" + color + "\"/>";
         }
 
