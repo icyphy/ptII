@@ -2,6 +2,11 @@
 # $Id$
 # Start Xvfb, save the DOPCenter image, stop Xvfb
 
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X1-lock
+
 echo "Starting Xvfb"
 Xvfb :1 -screen 0 1024x768x24 &
 export DISPLAY=localhost:1.0
@@ -20,4 +25,5 @@ ls -l $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
 echo "Killing Xvfb"
 pkill Xvfb
 pkill -9 Xvfb
+rm -f /tmp/.X1-lock
 exit 0
