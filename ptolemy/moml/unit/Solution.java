@@ -39,7 +39,6 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
