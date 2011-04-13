@@ -75,6 +75,7 @@ public class CrossbarSwitch extends BasicSwitch {
         newObject._inputTokens = new HashMap();
         newObject._outputTokens = new HashMap();
         newObject._switchFabricQueue = new HashMap();
+        newObject._waitingOnSwitchFabricQueue = (HashMap)newObject._waitingOnSwitchFabricQueue;
         return newObject;
     }
 
