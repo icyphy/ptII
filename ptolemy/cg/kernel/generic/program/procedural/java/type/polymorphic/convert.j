@@ -137,6 +137,33 @@ String convert_String_Boolean(String a) {
 }
 /**/
 
+/*** convert_String_Complex() ***/
+String convert_String_Complex(String a) {
+       Double real = 0.0;
+       Double imag = 0.0;
+       a = a.trim();
+       int plusIndex, minusIndex;
+       if (plusIndex = a.indexOf("+") == -1 && minusIndex = a.indexOf("-") == -1) {
+           real = Double.toString(a);
+       } else {
+       	   if (plusIndex > 0) {
+	       // We have an imaginary part that is positive.
+	       real = Double.toString(a.substring(0, plusIndex - 1));
+	       imag = Double.toString(a.substring(0, plusIndex ));
+	   } else if (minusIndex > 0) {
+	       // We have an imaginary part that is negative.
+	       real = Double.toString(a.substring(0, minusIndex - 1));
+	       imag = Double.toString(a.substring(0, minusIndex ));
+           } else {
+	       // We have only a real part that has a sign
+	       real = Double.toString(a);
+	   }
+       } 
+       
+       return $Complex_new(real, imag);
+}
+/**/
+
 /*** convert_String_Double() ***/
 String convert_String_Double(String a) {
        return Double.toString(a);
