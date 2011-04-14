@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CGException;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -374,7 +375,6 @@ public class TemplateParser {
 
         Attribute attribute = ModelScope.getScopedVariable(null, container,
                 attributeName);
-
         if (attribute == null) {
             attribute = container.getAttribute(attributeName);
             if (attribute == null) {
@@ -385,6 +385,21 @@ public class TemplateParser {
 
         if (offset == null) {
             if (attribute instanceof Variable) {
+                if (attribute instanceof PortParameter) {
+                    PortParameter portParameter = (PortParameter)attribute;
+                    TypedIOPort port = portParameter.getPort();
+                    // FIXME: Not sure if we check for both inside and outside connections here.
+                    if (port.isInsideConnected() || port.isOutsideConnected()) {
+                        // FIXME: Is this the correct way to get the channel?
+                        String[] portChannel = _parsePortChannel(name);
+                        String channel = portChannel[1];
+                        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
+                            .getAdapter(port);
+                        // FIXME: What about the offset?
+                        return processCode(portAdapter.generateGetCode(channel,
+                                        /*offset*/ "0"));
+                    }
+                }
                 // FIXME: need to ensure that the returned string
                 // is correct syntax for the target language.
                 Variable variable = (Variable) attribute;

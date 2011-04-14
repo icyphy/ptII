@@ -35,6 +35,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 ////IOPort
@@ -110,20 +111,30 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                 return receivers[channelIndex][0].generateGetCode(offset);
             }
         }
-        Type type = ((TypedIOPort) getComponent()).getType();
-        if (((TypedIOPort) getComponent()) instanceof ParameterPort) {
+        TypedIOPort port = (TypedIOPort)getComponent();
+        Type type = port.getType();
+        if (port instanceof ParameterPort) {
             Parameter parameter = ((ParameterPort)getComponent()).getParameter();
-            if (parameter.isStringMode()) {
-                // FIXME: we need to escape other characters here.
-                // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
-                return "\""  
-                    + parameter.getExpression().replace("\\d", "\\\\d")
-                    .replace("\\D", "\\\\D")
-                    .replace("\"", "\\\"")
-                    .replace("\\b", "\\\\b")
-                    + "\"";
+            // FIXME: Should this be isConnected() instead of numLinks()?
+            if (port.numLinks() <= 0) {
+                // Then use the parameter (attribute) instead.
+                // FIXME: this seems wrong, why are we doing substitution only here?
+                if (parameter.isStringMode()) {
+                    // FIXME: Why do we need to escape other characters here?
+                    // FIXME: Shouldn't this happen every where?
+                    // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
+                    return "\""  
+                        + parameter.getExpression().replace("\\d", "\\\\d")
+                        .replace("\\D", "\\\\D")
+                        .replace("\"", "\\\"")
+                        .replace("\\b", "\\\\b")
+                        + "\"";
+                } else {
+                    return parameter.getValueAsString();
+                }
             } else {
-                return parameter.getValueAsString();
+                throw new InternalErrorException(port, null, "Should not be happening, "
+                        + "a ParameterPort is connected, but not handled earlier?");
             }
         }
         
@@ -131,6 +142,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         // The component port is not connected to anything, so get should
         // always return something trivial;
 
+        System.err.println("cg IOPort: Warning: component port is not connected, returning 0?");
         // FIXME: This is wrong, this could be a PortParameter.
         return "$convert_" + getCodeGenerator().codeGenType(BaseType.INT) + "_"
                 + typeString + "(0)";
