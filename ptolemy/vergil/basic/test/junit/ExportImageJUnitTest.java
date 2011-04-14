@@ -92,11 +92,11 @@ public class ExportImageJUnitTest {
      * out the graphical elements, laying out the models, comparing
      * the new results with the known good results and then doing
      * undo and redo.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
+     * @exception Throwable If there is a problem reading or exporting
+     * the image.
      */
     @org.junit.Test
-    public void runModulation() throws Exception {
+    public void runModulation() throws Throwable {
         _exportImageTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml");
     }
 
@@ -113,10 +113,10 @@ public class ExportImageJUnitTest {
      * Event Thread.</p>
      *
      * @param modelFileName The file name of the test model. 
-     * @exception Exception If the file name cannot be read or laid out.
+     * @exception Throwable If the file name cannot be read or laid out.
      */
     protected void _exportImageTest(final String modelFileName)
-            throws Exception {
+            throws Throwable {
 
         // Give the developer feedback about what model is being opened.
         System.out.print(modelFileName + " ");
@@ -134,8 +134,8 @@ public class ExportImageJUnitTest {
             public void run() {
                 try {
                     model[0] = ConfigurationApplication.openModel(modelFileName);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                } catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
                 }
             }
         };
@@ -157,8 +157,8 @@ public class ExportImageJUnitTest {
             public void run() {
                 try {
                     imageDisplayModel[0] = ConfigurationApplication.openModel("$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                } catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
                 }
             }
         };
