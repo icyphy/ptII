@@ -130,6 +130,11 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());
 
+            // Uncomment the next lines to see how parsing works.
+            //System.out.println(_javaParseTreeCodeGenerator
+            //        .traceParseTreeEvaluation(parseTree,
+            //                new VariableScope(actor)));
+
             _javaParseTreeCodeGenerator.evaluateParseTree(parseTree,
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
