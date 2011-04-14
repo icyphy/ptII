@@ -419,6 +419,11 @@ public class ConfigurationApplication implements ExecutionListener {
 
         ModelDirectory directory = (ModelDirectory) _configuration
                 .getEntity(Configuration._DIRECTORY_NAME);
+	if (directory == null) {
+	    throw new InternalErrorException("Failed to get the "
+					     + "model directory? This can happen"
+					     + " in a headless environment?");
+	}
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {
