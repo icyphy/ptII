@@ -462,7 +462,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  not match, then the last CompositeActor is returned.
      *  @see #closeModel(NamedObj)
      */
-    public static TypedCompositeActor openModel(String modelFileName) {
+    public static TypedCompositeActor openModel(String modelFileName) throws Throwable {
         TypedCompositeActor result = null;
         try {
             // We set the list of MoMLFilters to handle Backward Compatibility.
@@ -514,6 +514,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
         } catch (Throwable throwable) {
             throwable.printStackTrace();
+            throw throwable;
         }
         return result;
     }

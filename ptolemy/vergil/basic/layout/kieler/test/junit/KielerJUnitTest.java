@@ -161,6 +161,9 @@ public class KielerJUnitTest {
         // of the element of the array.  Is this thread safe?
         final TypedCompositeActor[] model = new TypedCompositeActor[1];
 
+        final Throwable[] throwable = new Throwable[1];
+        throwable[0] = null;
+
         // The basic structure of this method is that we call
         // invokeAndWait() on operations that display graphics and
         // then sleep this thread.  This gives us a way to see the
@@ -173,12 +176,17 @@ public class KielerJUnitTest {
                 try {
                     System.out.print(" " + modelFileName + " ");
                     model[0] = ConfigurationApplication.openModel(modelFileName);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                } catch (Throwable throwableCause) {
+                    throwable[0] = throwableCause;
+                    throw new RuntimeException(throwableCause);
                 }
             }
         };
         SwingUtilities.invokeAndWait(openModelAction);
+        if (throwable[0] != null || model[0] == null) {
+            throw new Exception("Failed to open " + modelFileName
+                    + throwable[0]);
+        }
         String baseMoML = model[0].exportMoML();
         _basicGraphFrame = _getBasicGraphFrame(model[0]);
 
@@ -197,13 +205,18 @@ public class KielerJUnitTest {
                         new PtolemyLayoutAction().doAction(model[0]);
                         _basicGraphFrame.report("Ptolemy Layout done");
                     }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                } catch (Throwable throwableCause) {
+                    throwable[0] = throwableCause;
+                    throw new RuntimeException(throwableCause);
                 }
             }
         };
         SwingUtilities.invokeAndWait(layoutModelAction);
         _sleep();
+        if (throwable[0] != null || model[0] == null) {
+            throw new Exception("Failed to layout " + modelFileName
+                    + throwable[0]);
+        }
 
         /////
         // Optionally invoke the Ptolemy layout mechanism.
@@ -220,13 +233,18 @@ public class KielerJUnitTest {
                     try {
                         // Invoke the Kieler layout mechanism.
                         new KielerLayoutAction().doAction(model[0]);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
+                    } catch (Throwable throwableCause) {
+                        throwable[0] = throwableCause;
+                        throw new RuntimeException(throwableCause);
                     }
                 }
             };
             SwingUtilities.invokeAndWait(kielerLayoutModelAction);
             _sleep();
+            if (throwable[0] != null || model[0] == null) {
+                throw new Exception("Failed to layout " + modelFileName
+                        + throwable[0]);
+            }
         }
 
         /////
@@ -237,14 +255,18 @@ public class KielerJUnitTest {
                 public void run() {
                     try {
                         _undo(model[0]);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
+                    } catch (Throwable throwableCause) {
+                        throwable[0] = throwableCause;
+                        throw new RuntimeException(throwableCause);
                     }
                 }
             };
             SwingUtilities.invokeAndWait(undoAction);
-
             _sleep();
+            if (throwable[0] != null || model[0] == null) {
+                throw new Exception("Failed to undo " + modelFileName
+                        + throwable[0]);
+            }
 
             String undoMoML = model[0].exportMoML();
             if (_debug || !baseMoML.equals(undoMoML)) {
@@ -260,8 +282,9 @@ public class KielerJUnitTest {
                 public void run() {
                     try {
                         _redo(model[0]);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
+                    } catch (Throwable throwableCause) {
+                        throwable[0] = throwableCause;
+                        throw new RuntimeException(throwableCause);
                     }
                 }
             };
@@ -275,8 +298,12 @@ public class KielerJUnitTest {
             }
 
             assertArrayEquals(laidOutMoML.getBytes(), redoMoML.getBytes());
-
             _sleep();
+            if (throwable[0] != null || model[0] == null) {
+                throw new Exception("Failed to redo " + modelFileName
+                        + throwable[0]);
+            }
+
         }
 
         /////
@@ -285,13 +312,18 @@ public class KielerJUnitTest {
             public void run() {
                 try {
                     ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                } catch (Throwable throwableCause) {
+                    throwable[0] = throwableCause;
+                    throw new RuntimeException(throwableCause);
                 }
             }
         };
         SwingUtilities.invokeAndWait(closeAction);
         _sleep();
+        if (throwable[0] != null || model[0] == null) {
+            throw new Exception("Failed to close " + modelFileName
+                    + throwable[0]);
+        }
     }
 
     /** Lay out the model and compare the results against the original
