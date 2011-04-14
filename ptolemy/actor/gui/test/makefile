@@ -32,6 +32,9 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/actor/gui/test
 
+# PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
+DIRS =		$(PTJUNIT_DIR)
+
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
@@ -87,6 +90,7 @@ MISC_FILES =	alljtests.tcl \
 	badMoML.moml \
 	hideNameTestModel.xml \
 	hideNameTestSinewave.xml \
+	junit \
 	model.xml \
 	testCheckModelSize.xml \
 	testConfiguration.xml \
