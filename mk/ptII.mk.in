@@ -313,6 +313,9 @@ JOYSTICK_JAR =	@JOYSTICK_JAR@
 # Used in many test/makefiles
 JUNIT_JAR =	@JUNIT_JAR@
 
+# Arguments passed to Java when we run the JUnit tests.
+JUNIT_JAVA_ARGS = -Dptolemy.ptII.doNotExit=true
+
 # Jython home directory that contains jython.jar, see http://www.jython.org
 JYTHON_DIR =    @JYTHON_DIR@
 

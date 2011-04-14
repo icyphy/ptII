@@ -76,8 +76,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
+# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest
 
 test_java: jclass
 
