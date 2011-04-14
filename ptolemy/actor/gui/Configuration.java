@@ -616,6 +616,7 @@ public class Configuration extends CompositeEntity implements
                             // if a .htm file is not found because the
                             // MessageHandler pops up before we return
                             // from the exception.
+			    // In addition, we cannot catch HeadlessExceptions.
 
                             MessageHandler.error("Failed to open "
                                     + effigy.identifier.getExpression(), ex);
@@ -623,6 +624,8 @@ public class Configuration extends CompositeEntity implements
                         }
                     }
 
+		    // This eventually calls Configuration._removeEntity()
+		    // which calls System.exit();
                     effigy.setContainer(null);
                 } catch (Throwable throwable) {
                     calledMessageHandler = false;
@@ -993,7 +996,7 @@ public class Configuration extends CompositeEntity implements
         if (entity.getName().equals(_DIRECTORY_NAME)) {
             // If the ptolemy.ptII.doNotExit property or the
             // ptolemy.ptII.exitAfterWrapup property is set
-            // then we don't actually exit.
+            // then we don't actually call System.exit().
             // 
             StringUtilities.exit(0);
         }
