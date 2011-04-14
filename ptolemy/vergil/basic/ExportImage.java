@@ -85,9 +85,9 @@ public class ExportImage {
             public void run() {
                 try {
                     model[0] = ConfigurationApplication.openModel(modelFileName);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new RuntimeException(ex);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    throw new RuntimeException(throwable);
                 }
             }
         };
