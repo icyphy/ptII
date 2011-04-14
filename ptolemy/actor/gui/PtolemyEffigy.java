@@ -26,6 +26,8 @@
  */
 package ptolemy.actor.gui;
 
+import javax.swing.event.HyperlinkEvent;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -376,6 +378,24 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 return effigy;
             } else {
                 String extension = getExtension(input).toLowerCase();
+
+                // Handle about:
+                String path = input.getPath();
+                int slashIndex = path.lastIndexOf("/");
+                if (slashIndex != -1 && path.substring(slashIndex + 1).startsWith("about:")) {
+                    Configuration configuration = (Configuration) toplevel();
+                    // FIXME: This is a hack, HTMLAbout should be refactored
+                    // to expose the functionality we need.
+                    try {
+                        HyperlinkEvent event = new HyperlinkEvent(this,
+                                HyperlinkEvent.EventType.ACTIVATED,
+                                null /*URL*/,
+                                path.substring(slashIndex + 1));
+                        HTMLAbout.hyperlinkUpdate(event, configuration);
+                    } catch (Throwable throwable) {
+                        throw new Exception("Failed to open " + input, throwable);
+                    }
+                }
 
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     if (extension.equals("hsif")) {
