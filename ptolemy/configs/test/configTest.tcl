@@ -35,7 +35,7 @@ if {[string compare test [info procs test]] == 1} then {
     $inputFileNamesToSkip add "TOSIndex.xml"
     $inputFileNamesToSkip add "/quicktime.xml"
     $inputFileNamesToSkip add "/matlab.xml"
-    $inputFileNamesToSkip add "/x10/x10.xml"
+    #$inputFileNamesToSkip add "/x10/x10.xml"
     $inputFileNamesToSkip add "utilityIDAttribute.xml"
 
     # Tell the parser to skip inputting the above files
