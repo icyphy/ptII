@@ -2443,7 +2443,7 @@ $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
 	fi
 
 
-src/ptII$(VERSION)/bin/vergil:
+src/ptII$(VERSION)/bin/vergil: $(PTII_SRC)
 	cp $(PTII)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
@@ -2534,7 +2534,7 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup: setup setup_mac_app_tar
+test_setup: setup_jar #setup setup_mac_app_tar
 	@echo "#"
 	@echo "# Now testing the setup file" 
 	@echo "#"
@@ -2546,7 +2546,7 @@ test_setup: setup setup_mac_app_tar
 	-pkill -9 Xvfb
 	rm -f /tmp/.X1-lock
 	Xvfb :1 -screen 0 1024x768x24 &
-	(cd test/installerTest; chmod a+x ./configure; DISPLAY=localhost:1.0 PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:1.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 	-pkill Xvfb
 	-pkill -9 Xvfb
 	rm -f /tmp/.X1-lock
