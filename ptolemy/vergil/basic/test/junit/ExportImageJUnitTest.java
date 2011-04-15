@@ -80,7 +80,7 @@ public class ExportImageJUnitTest {
      *      ptolemy.vergil.basic.test.junit.ExportImageJUnitTest
      *  </pre>
      * 
-     *  @exception args Not used.
+     *  @param args Not used.
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore

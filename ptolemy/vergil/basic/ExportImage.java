@@ -191,8 +191,8 @@ public class ExportImage {
      *  code displays the model and executes.  To use in a headless
      *  environment under Linux, install Xvfb.</p>
      *
-     *  <p>Usage:
-     *  <br/> To save a gif:</p>
+     *  <p>Usage:</p>
+     *  <p> To save a gif:</p>
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage model.xml
      *  </pre>
@@ -205,6 +205,10 @@ public class ExportImage {
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run png model.xml
      *  </pre>
      * 
+     *  @param args The arguments for the export image operation.
+     *  The arguments should be in the format: 
+     *  [-run] [-save] [GIF|gif|PNG|png] model.xml.
+     *
      *  @exception args If there is 1 argument, then it names a 
      *  Ptolemy MoML file and the model is exported as a .gif file.
      *  If there are two arguments, then the first argument names

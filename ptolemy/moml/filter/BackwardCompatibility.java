@@ -54,7 +54,9 @@ import ptolemy.moml.MoMLFilter;
  */
 public class BackwardCompatibility {
     
-    /** Add a MoMLFilter to the list of filters. */
+    /** Add a MoMLFilter to the list of filters.
+     *  @param filter The filter to be added.
+     */
     public static void addFilter(MoMLFilter filter) {
         _filterList.add(filter);
     }

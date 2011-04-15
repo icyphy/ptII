@@ -90,8 +90,9 @@ public class MemoryCleaner {
      * If the AbstractButton is a JMenu, the ActionListeners of all the
      * child items get removed too.
      * 
-     * @param button
-     * @return
+     * @param button The button fomr which the ActionListeners
+     * are to be removed.
+     * @return The number of listeners removed.
      */
     public static int removeActionListeners(AbstractButton button) {
         int listenersRemoved = 0;

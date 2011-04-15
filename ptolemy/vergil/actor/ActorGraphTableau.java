@@ -111,9 +111,14 @@ public class ActorGraphTableau extends Tableau {
         frame.setBackground(BACKGROUND_COLOR);
     }
     
-    /** This method invokes the close() method of the superclass,
-     *  {@link ptolemy.actor.gui.Tableau}
-     *  @return False if the user cancels on a save query.
+    /** Invoke the close() method of the superclass,
+     *  {@link ptolemy.actor.gui.Tableau}.
+     *  If {@link ptolemy.actor.gui.Tableau._debugClosing} is
+     *  true, then a message is printed to standard out.
+     *  This method is used for debugging memory leaks.
+     *  @return True if the close completes, and false otherwise.
+     *  False is returned if the user cancels on a save query in the
+     *  super class.
      */
     public boolean close() {
         if (_debugClosing) {

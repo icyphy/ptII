@@ -231,8 +231,11 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         GUIUtilities.addMenuItem(_viewMenu, _fullScreenAction);
     }
     
-    /** This method invokes the _close() method of the superclass,
-     *  {@link ptolemy.vergil.basic.BasicGraphFrame}
+    /** Invoke the close() method of the superclass,
+     *  {@link ptolemy.vergil.basic.BasicGraphFrame}.
+     *  If {@link ptolemy.actor.gui.Tableau._debugClosing} is
+     *  true, then a message is printed to standard out.
+     *  This method is used for debugging memory leaks.
      *  @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {

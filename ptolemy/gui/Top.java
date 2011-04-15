@@ -366,6 +366,20 @@ public abstract class Top extends JFrame {
         _hideMenuBar = true;
     }
 
+    /** Return true if this frame has been disposed. 
+     *  It is possible for the dispose() method to be called directly.
+     *  This may conflict with another dispose call
+     *  in a window listener or somewhere else.  Before Top
+     *  calls super.dispose() (and thus triggering listeners) this
+     *  boolean is set to true so listeners can check and make sure
+     *  they aren't calling dispose for a second (or third) time.
+     *  @return true if this frame has been disposed.
+     */
+    public boolean isDisposed() {
+        return _disposed;
+    }
+
+
     /** Return true if the menu of this window has been populated.
      *  The menu is populated as a side effect of the first invocation to
      *  the pack() method.
@@ -496,18 +510,6 @@ public abstract class Top extends JFrame {
         deferIfNecessary(doShow);
     }
     
-    /** Returns true if this frame has been disposed. 
-     * It is possible for the dispose() method to be called directly.
-     * This may conflict with another dispose call
-     * in a window listener or somewhere else.  Before Top
-     * calls super.dispose() (and thus triggering listeners) this
-     * boolean is set to true so listeners can check and make sure
-     * they aren't calling dispose for a second (or third) time.
-     */
-    public boolean isDisposed() {
-        return _disposed;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1419,6 +1421,15 @@ public abstract class Top extends JFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Set to true to print closing sequence information to standard
+     * out.
+     */
+    protected boolean _debugClosing = false;
+    
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** A runnable for showing the window. */
@@ -1681,9 +1692,6 @@ public abstract class Top extends JFrame {
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
-    
-    // Set to true to print closing sequence information to standard out
-    protected boolean _debugClosing = false;
     
     // True if this frame has been disposed
     private boolean _disposed = false;

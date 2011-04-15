@@ -3107,9 +3107,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ExportImageAction
 
+    /** Export an image of the model. */ 
     public class ExportImageAction extends AbstractAction {
-        /** Create a new action to export an image
-         *  @param formatName The image format to be exported.
+        /** Create a new action to export an image.
+         *  @param formatName The image format to be exported,
+         *  currently, "GIF" and "PNG" are supported.
          */
         public ExportImageAction(String formatName) {
             super("Export " + formatName);
@@ -3194,7 +3196,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  relative to the image created by exporting to GIF or PNG.
      */
     public class ExportHTMLAction extends AbstractAction {
-        /** Create a new action to export HTML
+        /** Create a new action to export HTML.
          *  @param frame The Frame which to which this action is added.
          */
         public ExportHTMLAction() {

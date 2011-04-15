@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import static ptolemy.cg.kernel.generic.GenericCodeGenerator.*;
@@ -86,6 +87,7 @@ public class CaseDirector extends Director {
             useIf = true;
             code.append(_eol + INDENT2 + " if ("
                     + codeGenerator.generateVariableName(container.control)
+                    //+ ((NamedProgramCodeGeneratorAdapter)codeGenerator.getAdapter(container)).processCode("$get(" + container.control.getPort().getName() + ")")
                     + ") {" + _eol);
         } else if (container.control.getType() == BaseType.INT) {
             // We have a boolean or integer, so we can use a C switch.

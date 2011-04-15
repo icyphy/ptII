@@ -90,7 +90,7 @@ public class KielerJUnitTest {
      *      ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest   
      *  </pre>
      * 
-     *  @exception args Not used.
+     *  @param args Not used.
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
@@ -112,7 +112,7 @@ public class KielerJUnitTest {
                 true);
     }
 
-    /* Test the layout of the ConstConstDisplay model.
+    /** Test the layout of the ConstConstDisplay model.
      * @exception Exception If there is a problem reading or laying
      * out a model.
      */
@@ -123,7 +123,7 @@ public class KielerJUnitTest {
                 true);
     }
 
-    /* Test the layout of the modulation model.
+    /** Test the layout of the modulation model.
      * @exception Exception If there is a problem reading or laying
      * out a model.
      */
@@ -146,7 +146,7 @@ public class KielerJUnitTest {
      * Event Thread.</p>
      *
      * @param modelFileName The file name of the test model. 
-     * @param compareAgainstOriginal.  If true, then run the Kieler
+     * @param compareAgainstOriginal  If true, then run the Kieler
      * Layouter and compare against the original file.  If false, run
      * the Ptolemy layouter, the Kieler layouter, then undo, redo,
      * undo and compare against the output after the Ptolemy layouter.
@@ -336,6 +336,8 @@ public class KielerJUnitTest {
      *  {@link openModel(String)}.
      *  @param modelFileName The pathname of the model, used for
      *  comparing.
+     *  @exception Exception If thrown while opening or laying
+     *  out the model.
      */
     protected void _layoutModelCompareAgainstFile(NamedObj model,
             String modelFileName) throws Exception {
@@ -371,6 +373,8 @@ public class KielerJUnitTest {
      *   
      *  <p>The caller of this method should be in the Swing Event
      *  Thread.</p>
+     *  @param model The model upon which the last operation
+     *  should be redone.
      */
     protected void _redo(NamedObj model) {
         _basicGraphFrame.report("About to redo");
@@ -393,6 +397,8 @@ public class KielerJUnitTest {
      *   
      *  <p>The caller of this method should be in the Swing Event
      *  Thread.</p>
+     *  @param model The model upon which the last operation
+     *  should be redone.
      */
     protected void _undo(NamedObj model) {
         _basicGraphFrame.report("About to undo");

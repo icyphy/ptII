@@ -413,9 +413,12 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
     ///////////////////////////////////////////////////////////////////
     //// ExportImageAction
 
+    /** Export an image of a plot. */ 
     public class ExportImageAction extends AbstractAction {
-        /** Create a new action to export PDF.
-         *  @param frame The Frame which to which this action is added.
+
+        /** Create a new action to export an image.
+         *  @param formatName The name of the format, currently PNG and
+         *  GIF are supported.
          */
         public ExportImageAction(String formatName) {
             super("Export " + formatName);
@@ -427,7 +430,9 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                   ////
 
-        /** Export image. */
+        /** Export an image.
+         *  @param e The ActionEvent that invoked this action.
+         */
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -491,7 +496,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         private String _formatName;
     }
 
-    /** Action to format the plot. */
+    /** Format the plot. */
     private class FormatAction extends AbstractAction {
         /** Create a new action to format the plot. */
         public FormatAction() {

@@ -412,6 +412,14 @@ public class Tableau extends CompositeEntity {
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Set to true to print closing sequence information to standard
+     * out.
+     */
+    protected boolean _debugClosing = false;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Flag indicating whether the tableau is editable. */
@@ -431,7 +439,4 @@ public class Tableau extends CompositeEntity {
 
     /** The title set by setTitle(). */
     private String _title;
-    
-    /* Set to true to print closing sequence information to standard out */
-    protected boolean _debugClosing = false;
 }
