@@ -270,7 +270,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={461, 103, 877, 612}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={461, 103, 1007, 690}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 495]">
         </property>
@@ -381,10 +381,10 @@
             </property>
             <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 310.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
             </property>
         </property>
-        <property name="MechanicsUnitsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="initialTheta &gt;= Dimensionless">
+        <property name="MechanicsUnitsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Acceleration_m_per_sec2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -396,10 +396,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 540.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 440.0]">
             </property>
         </property>
-        <property name="MechanicsUnitsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="initialTheta_dot &gt;= AngularVelocity_radians_per_sec">
+        <property name="MechanicsUnitsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="length &gt;= PendulumLength_m">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -411,10 +411,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 560.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 460.0]">
             </property>
         </property>
-        <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Acceleration_m_per_sec2">
+        <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -426,67 +426,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 500.0}">
-            </property>
-        </property>
-        <property name="MechanicsUnitsOntology::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="length &gt;= PendulumLength_m">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 520.0}">
-            </property>
-        </property>
-        <property name="MechanicsUnitsOntology::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="x_offset &gt;= XPos">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 580.0}">
-            </property>
-        </property>
-        <property name="MechanicsUnitsOntology::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="y_offset &gt;= YPos">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 600.0}">
-            </property>
-        </property>
-        <property name="MechanicsUnitsOntology::constraint7" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 620.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 480.0]">
             </property>
         </property>
         <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
@@ -971,6 +911,10 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="theta_dot_initial">
                 </property>
                 <property name="x_offset" class="ptolemy.data.expr.Parameter" value="x_offset">
+                </property>
+                <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 480.0]">
+                    </property>
                 </property>
                 <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
@@ -1697,8 +1641,6 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 310.0]">
                     </property>
-                </property>
-                <property name="MechanicsUnitsOntology::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="x_offset &gt;= XPos">
                 </property>
                 <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
