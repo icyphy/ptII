@@ -330,6 +330,8 @@ public class StaticSchedulingDirector extends Director {
      * underscores to avoid conflicts with systems functions.
      * @param port The port for which the name is generated.
      * @return The sanitized name.
+     * @exception IllegalActionException If the variablesAsArrays parameter
+     * cannot be read or if the buffer size of the port cannot be read.
      */
     public String generatePortName(TypedIOPort port) throws IllegalActionException {
 
