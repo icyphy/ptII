@@ -68,7 +68,9 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      *  The result is a new InfiniteConceptRepresentative that is cloned normally
      *  with the superclass ComponentEntity clone() method with the exception
      *  that its private set of instantiated infinite concepts is not copied to
-     *  the new object.
+     *  the new object. This is necessary to prevent the cloned
+     *  InfiniteConceptRepresentative from having references to the original
+     *  representative's set of instantiated infinite concepts.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
@@ -127,6 +129,25 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
     
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
+    
+    /** Clear the set of instantiated infinite concepts for this
+     *  representative.
+     *  @throws IllegalActionException Thrown if there is a problem setting
+     *   the containers of the infinite concepts to null.
+     */
+    protected void _clearInstantiatedInfiniteConcepts()
+            throws IllegalActionException {
+        for (InfiniteConcept infiniteConcept : _instantiatedInfiniteConcepts) {
+            try {
+                infiniteConcept.setContainer(null);
+            } catch (NameDuplicationException ex) {
+                throw new IllegalActionException(this, ex, "Could not set " +
+                		"the container for infinite concept " +
+                		infiniteConcept + " to null.");
+            }
+        }
+        _instantiatedInfiniteConcepts.clear();
+    }
     
     /** Create a new infinite concept for the given infinite concept string.
      *  Derived classes must implement this method to enable new infinite

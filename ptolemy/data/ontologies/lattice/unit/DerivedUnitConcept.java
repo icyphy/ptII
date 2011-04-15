@@ -40,6 +40,7 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -115,6 +116,10 @@ public class DerivedUnitConcept extends UnitConcept {
             ScalarToken newUnitFactor,
             Ontology unitOntology) throws IllegalActionException {
 
+        if (_isDimensionMapEmpty(dimensionMap)) {
+            return _getDimensionlessConcept(unitOntology);
+        }
+        
         // If the dimension map has only one dimension with an exponent of
         // one, just return the corresponding unit in the component units map.
         if (_hasSingleDimensionWithExponentOne(dimensionMap)) {
@@ -132,6 +137,9 @@ public class DerivedUnitConcept extends UnitConcept {
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>> baseUnitsMap =
             _deriveComponentBaseUnitsMap(componentUnitsMap, dimensionMap, baseDimensionMap);
         
+        if (_isDimensionMapEmpty(baseDimensionMap)) {
+            return _getDimensionlessConcept(unitOntology);
+        }        
         if (_hasSingleDimensionWithExponentOne(baseDimensionMap)) {
             return _getSingleUnitConceptInComponentUnitsMap(baseUnitsMap,
                     newUnitFactor);
@@ -648,6 +656,32 @@ public class DerivedUnitConcept extends UnitConcept {
         return foundDimensions;
     }
     
+    /** Return the least upper bound of all the dimensionless concepts in the
+     *  ontology, or null if there are no dimensionless
+     *  concepts in the ontology.
+     *  @param unitOntology The ontology from which to get the Dimensionless
+     *   concept.
+     *  @return The dimensionless concept, or the top of the lattice if none
+     *   are in the ontology.
+     *  @throws IllegalActionException Thrown if the ontology's concept graph
+     *   is null.
+     */
+    private static Concept _getDimensionlessConcept(Ontology unitOntology)
+            throws IllegalActionException {        
+        List<DimensionlessConcept> allDimensionlessConcepts =
+            unitOntology.entityList(DimensionlessConcept.class);
+        if (allDimensionlessConcepts.isEmpty()) {
+            return null;
+        } else {
+            ConceptGraph conceptGraph = unitOntology.getConceptGraph();
+            if (conceptGraph == null) {
+                throw new IllegalActionException("The ontology " + unitOntology +
+                            " has a null concept graph.");
+            }
+            return conceptGraph.leastUpperBound(allDimensionlessConcepts.toArray());
+        }
+    }
+    
     /** Given a component units map that is known to have one entry in the map
      *  with a list of unit concepts that has a single element, return that unit
      *  concept if its unit factor matches the given unit factor, or another
@@ -717,22 +751,35 @@ public class DerivedUnitConcept extends UnitConcept {
         }
     }
     
-    /** Return true if the input base dimension map has a single dimension with
+    /** Return true if the input dimension map has a single dimension with
      *  an exponent value of 1, or false otherwise.
-     *  @param baseDimensionMap The base dimension map to be tested.
+     *  @param dimensionMap The dimension map to be tested.
      *  @return True if the map has one entry with an exponent of 1, false
      *   otherwise.
      */    
     private static boolean _hasSingleDimensionWithExponentOne(
-            Map<? extends DimensionRepresentativeConcept, Integer> baseDimensionMap) {
-        if (baseDimensionMap.size() == 1) {
-            for (Integer exponent : baseDimensionMap.values()) {
+            Map<? extends DimensionRepresentativeConcept, Integer> dimensionMap) {
+        if (dimensionMap.size() == 1) {
+            for (Integer exponent : dimensionMap.values()) {
                 if (exponent.intValue() == 1) {
                     return true;
                 }
             }
         }        
         return false;
+    }
+    
+    /** Return true if the input dimension map is empty, and false otherwise.
+     *  @param dimensionMap The input dimension map.
+     *  @return true if the input dimension map is empty, and false otherwise.
+     */
+    private static boolean _isDimensionMapEmpty(
+            Map<? extends DimensionRepresentativeConcept, Integer> dimensionMap) {
+        if (dimensionMap.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /** Return a new list of BaseUnitConcepts that removes all the elements
