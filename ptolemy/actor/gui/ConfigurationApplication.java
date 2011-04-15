@@ -466,6 +466,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  If the name of the model and the name of the top level do
      *  not match, then the last CompositeActor is returned.
      *  @see #closeModel(NamedObj)
+     *  @return The model that was opened.
+     *  @exception Throwable If the model cannot be opened.
      */
     public static TypedCompositeActor openModel(String modelFileName) throws Throwable {
         TypedCompositeActor result = null;

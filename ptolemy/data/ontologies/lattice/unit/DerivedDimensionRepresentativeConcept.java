@@ -55,10 +55,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  example, the Force dimension is derived from:<BR>
  *  <code>Force = Mass * Position / (Time ^ 2)</code>
  *  </p>
+ *
  *  <p>And its SI unit Newtons (N) is derived from:<BR>
  *  <code>N = kg * m / (s ^ 2)</code>
  *  </p>
- *  Dimensions can be composed of other derived dimensions hierarchically. For
+ *
+ *  <p>Dimensions can be composed of other derived dimensions hierarchically. For
  *  example, the force dimension can also be derived as:<BR>
  *  <code>Velocity = Position / Time<BR>
  *  Acceleration = Velocity / Time<BR>

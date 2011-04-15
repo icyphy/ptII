@@ -1300,6 +1300,14 @@ public class TableauFrame extends Top {
 
     /** A Listener for menu items. */
     protected class MenuItemListener implements ActionListener {
+        /**
+         * Constructs a MenuItemListener object.
+         *
+         * @param factory  The factor for the Effigy.
+         * @param directory The directory of all the models.
+         * @param configuration The Configuration for this instance
+         * of Ptolemy.
+         */
         public MenuItemListener (EffigyFactory factory,
                 ModelDirectory directory, Configuration configuration) {
             _factory = factory;
