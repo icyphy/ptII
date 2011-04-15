@@ -241,6 +241,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.hoc \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
