@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="NewtonsCradle" class="ptolemy.actor.TypedCompositeActor">
+<entity name="NewtonsCradleMoreConstraints" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="acceleration" class="ptolemy.data.expr.Parameter" value="9.8">
@@ -270,7 +270,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={461, 103, 834, 656}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={461, 103, 1007, 690}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 495]">
         </property>
@@ -381,7 +381,52 @@
             </property>
             <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
+            </property>
+        </property>
+        <property name="MechanicsUnitsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Acceleration_m_per_sec2">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 440.0]">
+            </property>
+        </property>
+        <property name="MechanicsUnitsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="length &gt;= PendulumLength_m">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 460.0]">
+            </property>
+        </property>
+        <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 480.0]">
             </property>
         </property>
         <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
@@ -433,6 +478,21 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.486328125, 249.501953125]">
             </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1*sin(theta)">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 250.0]">
+            </property>
+            <port name="theta" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
         </entity>
         <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 130.0]">
@@ -486,20 +546,15 @@
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1*sin(theta)*acceleration/length">
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="acceleration/length">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 250.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 250.0]">
             </property>
-            <port name="theta" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[165.486328125, 249.501953125]">
@@ -523,6 +578,8 @@
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="x" relation="relation5"/>
         <link port="y" relation="relation6"/>
         <link port="theta" relation="relation7"/>
@@ -531,6 +588,8 @@
         <link port="theta_dot.state" relation="relation"/>
         <link port="theta.derivative" relation="relation"/>
         <link port="theta.state" relation="relation7"/>
+        <link port="Expression.output" relation="relation4"/>
+        <link port="Expression.theta" relation="relation7"/>
         <link port="PolarToCartesian.magnitude" relation="relation2"/>
         <link port="PolarToCartesian.angle" relation="relation7"/>
         <link port="PolarToCartesian.x" relation="relation9"/>
@@ -540,8 +599,8 @@
         <link port="x position.in" relation="relation10"/>
         <link port="y position.output" relation="relation6"/>
         <link port="y position.in" relation="relation9"/>
-        <link port="Expression2.output" relation="relation3"/>
-        <link port="Expression2.theta" relation="relation7"/>
+        <link port="Scale.input" relation="relation4"/>
+        <link port="Scale.output" relation="relation3"/>
     </class>
     <entity name="ball 1" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -852,6 +911,10 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="theta_dot_initial">
                 </property>
                 <property name="x_offset" class="ptolemy.data.expr.Parameter" value="x_offset">
+                </property>
+                <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 480.0]">
+                    </property>
                 </property>
                 <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
