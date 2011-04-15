@@ -216,7 +216,7 @@ public class HTMLAbout {
                     StringToken demoToken = (StringToken) demoTokens
                             .getElement(i);
                     htmlBuffer.append(_aboutHTML(demoToken.stringValue()));
-                    _demosURLs.add(demoToken.stringValue());
+                    System.out.println("HTMLAbout: adding " + demoToken.stringValue());
                 }
             }
         } catch (Exception ex) {
@@ -645,7 +645,13 @@ public class HTMLAbout {
             demosFileName = "ptolemy/configs/doc/completeDemos.htm";
         }
 
-        return MoMLApplication.specToURL(demosFileName);
+        URL url = null;
+        try {
+            url = MoMLApplication.specToURL(demosFileName);
+        } catch (Exception ex) {
+            System.out.println("Warning: " + demosFileName + " not found: " + ex);
+        }
+        return url;
     }
 
     /** Check that all the demos in otherDemos are in complete Demos
@@ -667,21 +673,22 @@ public class HTMLAbout {
         while (demosFileNames.hasNext()) {
             String demosFileName = (String) demosFileNames.next();
             URL demoURL = _getDemoURL(demosFileName);
-            results.append("<h2><a href=\"" + demoURL + "\"><code>" + demoURL
-                    + "</code></a></h2>\n<ul>\n");
+            if (demoURL != null) {
+                results.append("<h2><a href=\"" + demoURL + "\"><code>" + demoURL
+                        + "</code></a></h2>\n<ul>\n");
 
-            List demosList = _getURLs(demoURL, ".*.xml$", true, 0);
-            Iterator demos = demosList.iterator();
-            while (demos.hasNext()) {
-                String demo = (String) demos.next();
-                if (!completeDemosList.contains(demo)) {
-                    URL missingDemoURL = MoMLApplication.specToURL(demo);
-                    results.append(" <li><a href=\"" + missingDemoURL + "\">"
-                            + missingDemoURL + "</a>\n");
+                List demosList = _getURLs(demoURL, ".*.xml$", true, 0);
+                Iterator demos = demosList.iterator();
+                while (demos.hasNext()) {
+                    String demo = (String) demos.next();
+                    if (!completeDemosList.contains(demo)) {
+                        URL missingDemoURL = MoMLApplication.specToURL(demo);
+                        results.append(" <li><a href=\"" + missingDemoURL + "\">"
+                                + missingDemoURL + "</a>\n");
+                    }
                 }
+                results.append("</ul>\n");
             }
-            results.append("</ul>\n");
-
         }
         return results.toString();
     }

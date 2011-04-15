@@ -493,10 +493,17 @@ public class ConfigurationApplication implements ExecutionListener {
             // Find the first CompositeActor whos name matches
             // the basename of the file, skipping the
             // Configuration etc.
+
+            // Not all modelFileNames have dots in them?
+            int indexOfDot = modelFileName.lastIndexOf('.');
+            if (indexOfDot == -1) {
+                indexOfDot = modelFileName.length() - 1;
+            }
+
             // The basename of the model.
             String baseName = modelFileName.substring(
                     modelFileName.lastIndexOf(File.separator) + 1,
-                    modelFileName.lastIndexOf('.'));
+                    indexOfDot);
             StringBuffer names = new StringBuffer();
             NamedObj model = null;
             Iterator models = application.models().iterator();
@@ -514,9 +521,10 @@ public class ConfigurationApplication implements ExecutionListener {
                 }
             }
             if (!(model instanceof TypedCompositeActor)) {
-                throw new Exception(
-                        "Failed to find a CompositeActor.  Models were: "
-                                + names);
+                System.out.println("Failed to find a CompositeActor. "
+                        + "This can happen when opening a HTML or text file. "
+                        + "Models were: " + names);
+                return null;
             }
 
         } catch (Throwable throwable) {

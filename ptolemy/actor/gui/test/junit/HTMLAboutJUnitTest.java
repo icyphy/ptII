@@ -46,8 +46,6 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.test.Diff;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.PtolemyLayoutAction;
-import ptolemy.vergil.basic.layout.KielerLayoutAction;
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLAboutJUnitTest
@@ -61,6 +59,39 @@ import ptolemy.vergil.basic.layout.KielerLayoutAction;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class HTMLAboutJUnitTest {
+
+    /** 
+     * Invoke about:allcopyrights, which pops up a window that lists
+     * the copyrights.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
+    @org.junit.Test
+    public void aboutAllCopyrights() throws Exception {
+        _openModel("about:allcopyrights");
+    }
+
+    /** 
+     * Invoke about:configuration, which expands the actor tree on
+     * the left.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
+    @org.junit.Test
+    public void aboutConfiguration() throws Exception {
+        _openModel("about:configuration");
+    }
+
+    /** 
+     * Invoke about:copyrights, which pops up a window that lists
+     * the copyrights.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
+    @org.junit.Test
+    public void aboutCopyrights() throws Exception {
+        _openModel("about:copyrights");
+    }
 
     /** Test the HTMLAbout
      *   
@@ -77,19 +108,6 @@ public class HTMLAboutJUnitTest {
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
             .main("ptolemy.actor.gui.test.junit.HTMLAboutJUnitTest");
-    }
-
-    /** 
-     * Test the layout facility by reading in a models, stripping
-     * out the graphical elements, laying out the models, comparing
-     * the new results with the known good results and then doing
-     * undo and redo.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
-     */
-    @org.junit.Test
-    public void aboutConfiguration() throws Exception {
-        _openModel("about:configuration");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,7 +148,7 @@ public class HTMLAboutJUnitTest {
         };
         SwingUtilities.invokeAndWait(openModelAction);
         _sleep();
-        if (throwable[0] != null || model[0] == null) {
+        if (throwable[0] != null /*|| model[0] == null*/) {
             throw new Exception("Failed to open " + modelFileName
                     + throwable[0]);
         }
@@ -140,7 +158,10 @@ public class HTMLAboutJUnitTest {
         Runnable closeAction = new Runnable() {
             public void run() {
                 try {
-                    ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
+                    // FIXME: handle cases where model[0] is null.
+                    if (model[0] != null) {
+                        ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
+                    }
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

@@ -26,6 +26,8 @@
  */
 package ptolemy.actor.gui;
 
+import javax.swing.event.HyperlinkEvent;
+
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -88,19 +90,19 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.  This is ignored in this
      *   class.
-     *  @param in The input URL.
+     *  @param input The input URL.
      *  @return A new instance of HTMLEffigy, or null if one cannot
      *   be created.
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
-    public Effigy createEffigy(CompositeEntity container, URL base, URL in)
+    public Effigy createEffigy(CompositeEntity container, URL base, URL input)
             throws Exception {
-        if (in == null) {
+        if (input == null) {
             return null;
         }
 
-        String extension = getExtension(in);
+        String extension = getExtension(input);
 
         // Here, if it has an "http" protocol, we agree to
         // open it.  The reason is that many main HTML pages are
@@ -110,8 +112,32 @@ public class HTMLEffigyFactory extends EffigyFactory {
         // PDF files or images, their factories should be listed before
         // this one.
         if (!extension.equals("htm") && !extension.equals("html")) {
+
+            // Handle about:
+            String path = input.getPath();
+            int slashIndex = path.lastIndexOf("/");
+            if (slashIndex != -1 && path.substring(slashIndex + 1).startsWith("about:")) {
+                Configuration configuration = (Configuration) toplevel();
+                // FIXME: This is a hack, HTMLAbout should be refactored
+                // to expose the functionality we need.
+                try {
+                    HyperlinkEvent event = new HyperlinkEvent(this,
+                            HyperlinkEvent.EventType.ACTIVATED,
+                            null /*URL*/,
+                            path.substring(slashIndex + 1));
+                    URL url = HTMLAbout.hyperlinkUpdate(event, configuration);
+                    
+                    EffigyFactory factory = (EffigyFactory)((Configuration)toplevel()).getEntity("effigyFactory");
+                    return factory.createEffigy(container, base, url);
+
+                } catch (Throwable throwable) {
+                    throw new Exception("Failed to open " + input, throwable);
+                }
+            }
+
+
             // The extension doesn't match.  Try the content type.
-            URLConnection connection = in.openConnection();
+            URLConnection connection = input.openConnection();
 
             if (connection == null) {
                 return null;
@@ -122,7 +148,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
                 contentType = connection.getContentType();
             } catch (SecurityException ex) {
                 throw new SecurityException(
-                        "Failed to open " + base + " " + in, ex);
+                        "Failed to open " + base + " " + input, ex);
             }
 
             if (contentType == null) {
@@ -138,7 +164,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
         // Create a new effigy.
         HTMLEffigy effigy = new HTMLEffigy(container, container
                 .uniqueName("effigy"));
-        effigy.uri.setURL(in);
+        effigy.uri.setURL(input);
 
         // FIXME: What to do about the base?
         return effigy;
