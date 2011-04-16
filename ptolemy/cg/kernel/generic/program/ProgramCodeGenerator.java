@@ -1217,8 +1217,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[] splitVariableInitCode = _splitBody("_varinit_",
                 variableInitCode);
         code.append(comment("Before appending splitVariableInitCode[0]."));
-        code.append(splitVariableInitCode[0]);
-        code.append(comment("After appending splitVariableInitCode[0]."));
+        code.append(splitVariableInitCode[0] + "\n");
+        code.append(comment("\nAfter appending splitVariableInitCode[0].\n"));
         String[] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
         code.append(comment("Before appending splitInitializeCode[0]."));
@@ -1227,10 +1227,14 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         code.append(comment("Before appending initializeEntryCode"));
         code.append(initializeEntryCode);
-        code.append(comment("Before appending splitVariableInitCode[0]."));
+        code.append(comment("After appending initializeEntryCode"));
+        code.append(comment("Before appending splitVariableInitCode[1]."));
         code.append(splitVariableInitCode[1]);
+        code.append(comment("After appending splitVariableInitCode[1]."));
         code.append(comment("Before appending splitInitializeCode[1]."));
         code.append(splitInitializeCode[1]);
+        code.append(comment("After appending splitInitializeCode[1]."));
+        code.append(comment("Before appending initializeExitCode."));
         code.append(initializeExitCode);
 
         /* FIXME: Postfire code should be invisible to the code generator.
