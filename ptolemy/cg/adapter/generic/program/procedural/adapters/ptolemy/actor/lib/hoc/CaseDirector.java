@@ -30,8 +30,10 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import static ptolemy.cg.kernel.generic.GenericCodeGenerator.*;
@@ -72,7 +74,7 @@ public class CaseDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        new Exception("CaseDirector.generateFireCode()").printStackTrace();
+        //new Exception("CaseDirector.generateFireCode()").printStackTrace();
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = ((ProgramCodeGenerator)getCodeGenerator());
@@ -167,4 +169,97 @@ public class CaseDirector extends Director {
 
         return code.toString();
     }
+
+    /** Generate code for transferring enough tokens to complete an internal
+     *  iteration.
+     *  @param inputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    final public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+            throws IllegalActionException {
+        generateTransferInputsCode(inputPort, code, true);
+    }
+
+    /** Generate code for transferring enough tokens to fulfill the output
+     *  production rate.
+     *  @param outputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+            throws IllegalActionException {
+        generateTransferOutputsCode(outputPort, code, true);
+    }
+
+//     /** Generate code for transferring enough tokens to complete an internal
+//      *  iteration.
+//      *  @param inputPort The port to transfer tokens.
+//      *  @param code The string buffer that the generated code is appended to.
+//      *  @exception IllegalActionException If thrown while transferring tokens.
+//      */
+//     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+//             throws IllegalActionException {
+//         code.append(CodeStream.indent(getCodeGenerator().comment(
+//                 "Transfer tokens to the inside")));
+
+//         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//                 .getAdapter(_director.getContainer());
+
+//         for (int i = 0; i < inputPort.getWidth(); i++) {
+//             if (i < inputPort.getWidthInside()) {
+//                 String name = inputPort.getName();
+
+//                 if (inputPort.isMultiport()) {
+//                     name = name + '#' + i;
+//                 }
+
+//                 //FIXME: What should be the director? Executive or local?
+//                 code.append(CodeStream.indent(_compositeActorAdapter
+//                                 .getReference("@" + name, false, true)));
+//                 code.append(" = ");
+//                 code.append(_compositeActorAdapter.getReference(name, false, true));
+//                 code.append(";" + _eol);
+//             }
+//         }
+
+//         // Generate the type conversion code before fire code.
+//         code.append(_compositeActorAdapter.generateTypeConvertFireCode(true));
+//     }
+
+//     /** Generate code for transferring enough tokens to fulfill the output
+//      *  production rate.
+//      *  @param outputPort The port to transfer tokens.
+//      *  @param code The string buffer that the generated code is appended to.
+//      *  @exception IllegalActionException If thrown while transferring tokens.
+//      */
+//     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+//             throws IllegalActionException {
+//         // FIXME: This is like Director.generatePortName(),
+//         // except the left hand side reference is obtained from the container.
+
+//         code.append(getCodeGenerator()
+//                 .comment("Case Director Transfer tokens to the outside"));
+
+//         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//                 .getAdapter(_director.getContainer());
+
+//         for (int i = 0; i < outputPort.getWidthInside(); i++) {
+//             if (i < outputPort.getWidth()) {
+//                 String name = outputPort.getName();
+
+//                 if (outputPort.isMultiport()) {
+//                     name = name + '#' + i;
+//                 }
+//                 System.out.println("-->CaseDirector.generateTransferOutputsCode(" + outputPort +",\n<<<<" + code + "\n>>>>");
+//                 // Get the references from the Executive Director.
+//                 code.append(_compositeActorAdapter.getReference(name, false, true)
+//                         + " = ");
+//                 code.append(_compositeActorAdapter.getReference("@" + name,
+//                                 false, true));
+//                 code.append(";" + _eol);
+//             }
+//         }
+//     }
+
 }

@@ -271,13 +271,30 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate code for transferring enough tokens to complete an internal
-     *  iteration.
+     *  iteration.  The reference is looked for in the director
+     *  not in the executive director (the director of the container).
      *  @param inputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
+        generateTransferInputsCode(inputPort, code, false);
+    }
+
+    /** Generate code for transferring enough tokens to complete an internal
+     *  iteration.
+     *  @param inputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param executive If true, then look for the reference in the
+     *  executive director (the director of the container).  The
+     *  CaseDirector calls this with executive == true, most (all?)
+     *  other Directors call this with executive == false.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code,
+            boolean executive)  throws IllegalActionException {
+
         code.append(CodeStream.indent(getCodeGenerator().comment(
                 "Transfer tokens to the inside")));
 
@@ -294,9 +311,9 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
                 //FIXME: What should be the director? Executive or local?
                 code.append(CodeStream.indent(_compositeActorAdapter
-                        .getReference("@" + name, false)));
+                        .getReference("@" + name, executive)));
                 code.append(" = ");
-                code.append(_compositeActorAdapter.getReference(name, false));
+                code.append(_compositeActorAdapter.getReference(name, executive));
                 code.append(";" + _eol);
             }
         }
@@ -306,13 +323,29 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate code for transferring enough tokens to fulfill the output
-     *  production rate.
+     *  production rate.  The reference is looked for in the director
+     *  not in the executive director (the director of the container).
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
+        generateTransferOutputsCode(outputPort, code, false);
+    }
+
+    /** Generate code for transferring enough tokens to fulfill the output
+     *  production rate.
+     *  @param outputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param executive If true, then look for the reference in the
+     *  executive director (the director of the container).  The
+     *  CaseDirector calls this with executive == true, most (all?)
+     *  other Directors call this with executive == false.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code,
+            boolean executive) throws IllegalActionException {
         code.append(getCodeGenerator()
                 .comment("Transfer tokens to the outside"));
 
@@ -327,10 +360,10 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     name = name + '#' + i;
                 }
 
-                code.append(_compositeActorAdapter.getReference(name, false)
+                code.append(_compositeActorAdapter.getReference(name, false, executive)
                         + " = ");
                 code.append(_compositeActorAdapter.getReference("@" + name,
-                        false));
+                                false, executive));
                 code.append(";" + _eol);
             }
         }

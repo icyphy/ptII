@@ -34,8 +34,8 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor;
-//import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+//import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
@@ -69,7 +69,6 @@ public class MultiCompositeActor extends TypedCompositeActor {
      */
     @Override
     public String generateVariableDeclaration() throws IllegalActionException {
-        new Exception("MultiCompositeActor.generateVariableDeclaration()").printStackTrace();
         StringBuffer code = new StringBuffer(super.generateVariableDeclaration());
         //ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
         //        .getContainer();
@@ -81,7 +80,7 @@ public class MultiCompositeActor extends TypedCompositeActor {
 //             NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(director);
 //             code.append(refinementAdapter.generateVariableDeclaration());
             NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(refinement);
-            code.append(refinementAdapter.generateVariableDeclaration());
+            //code.append(refinementAdapter.generateVariableDeclaration());
         }
 //         code.append(((NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(
 //                                 ((CompositeActor)getComponent()).getDirector()))
@@ -105,7 +104,6 @@ public class MultiCompositeActor extends TypedCompositeActor {
      * @return The sanitized name.
      */
     public  String generatePortName(TypedIOPort port) throws IllegalActionException {
-
         // FIXME: note that if we have a port that has a character that
         // is santized away, then we will run into problems if we try to
         // refer to the port by the sanitized name.

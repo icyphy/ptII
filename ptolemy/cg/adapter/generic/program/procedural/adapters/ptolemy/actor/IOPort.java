@@ -27,15 +27,19 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 ////IOPort
@@ -108,7 +112,34 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                                 + "has more than one receiver");
             }
             if (receivers[channelIndex].length > 0) {
-                return receivers[channelIndex][0].generateGetCode(offset);
+                TypedIOPort port = (TypedIOPort)getComponent();
+                try {
+                    if ( port.getContainer() != null && ((Actor)port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
+                        return receivers[channelIndex][0].generateGetCode(offset);
+                    } else {
+                        // Used by CaseDirector.
+                        // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
+                        // extends actor.Director.  However, in cg, we end up needing a SDFDirector.
+                        String portName = StringUtilities.sanitizeName(port.getFullName());
+                        if (portName.startsWith("_")) {
+                            portName = portName.substring(1, portName.length());
+                        }
+                        portName = TemplateParser.escapePortName(portName);
+                        // See ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector.java
+                        //    _portVariableDeclaration(StringBuffer codeResult, TypedIOPort port)
+                        if (port.isMultiport()) {
+                            return portName + "[" + offset + "]";
+                        } else {
+                            return portName;
+                        }
+                        //return "";
+                    }
+                } catch (Exception ex) {
+                    throw new IllegalActionException(getComponent(), ex,
+                            " Failed to generate code for receiver " 
+                            + receivers[channelIndex][0] + " on channel "
+                            + channelIndex);
+                }
             }
         }
         TypedIOPort port = (TypedIOPort)getComponent();

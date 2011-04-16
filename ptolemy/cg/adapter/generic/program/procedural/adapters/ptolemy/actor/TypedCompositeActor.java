@@ -190,7 +190,7 @@ public class TypedCompositeActor extends
      *   the actor.
      */
     @Override
-    final public String generateVariableDeclaration()
+    public String generateVariableDeclaration()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
