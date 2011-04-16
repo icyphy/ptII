@@ -46,9 +46,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.ptides.lib.ActuationDevice;
-import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
+import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.domains.ptides.lib.OutputDevice;
-import ptolemy.domains.ptides.lib.SensorInputDevice;
+import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -493,12 +493,12 @@ public class PtidesPreemptiveEDFDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-            if (actor instanceof ActuatorOutputDevice) {
+            if (actor instanceof ActuatorSetup) {
                 actuators.put(actor, new Integer(actuatorIndex));
                 actuatorIndex++;
             }
 
-            if (actor instanceof SensorInputDevice) {
+            if (actor instanceof SensorHandler) {
                 sensors.put(actor, new Integer(sensorIndex));
                 sensorIndex++;
             }
@@ -535,7 +535,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 code.append("}" + _eol);
             }
 
-            if (actor instanceof SensorInputDevice) {
+            if (actor instanceof SensorHandler) {
                 code
                         .append("void Sensing_"
                                 + NamedProgramCodeGeneratorAdapter

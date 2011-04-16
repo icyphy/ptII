@@ -67,10 +67,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.modal.modal.RefinementPort;
-import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
-import ptolemy.domains.ptides.lib.NetworkInputDevice;
-import ptolemy.domains.ptides.lib.NetworkOutputDevice;
-import ptolemy.domains.ptides.lib.SensorInputDevice;
+import ptolemy.domains.ptides.lib.ActuatorSetup;
+import ptolemy.domains.ptides.lib.NetworkReceiver;
+import ptolemy.domains.ptides.lib.NetworkTransmitter;
+import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -1186,7 +1186,7 @@ public class PtidesBasicDirector extends DEDirector {
                             && (((DoubleToken) parameter.getToken())
                                     .doubleValue() != 0.0)
                             && sinkPort.isInput()
-                            && !(sinkPort.getContainer() instanceof SensorInputDevice)) {
+                            && !(sinkPort.getContainer() instanceof SensorHandler)) {
                         throw new IllegalActionException(
                                 port,
                                 sinkPort.getContainer(),
@@ -1210,8 +1210,8 @@ public class PtidesBasicDirector extends DEDirector {
                 if ((parameter != null)
                         && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
                         && sourcePort.isOutput()
-                        && !((sourcePort.getContainer() instanceof ActuatorOutputDevice) || (sourcePort
-                                .getContainer() instanceof NetworkOutputDevice))) {
+                        && !((sourcePort.getContainer() instanceof ActuatorSetup) || (sourcePort
+                                .getContainer() instanceof NetworkTransmitter))) {
                     throw new IllegalActionException(
                             port,
                             sourcePort.getContainer(),
@@ -1856,7 +1856,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // other input events (other than those created through sensor interrupts)
                 // then the following code is wrong. Instead, we simulate a scheduling
                 // overhead for the next run.
-                if (!(_lastActorFired instanceof SensorInputDevice)) {
+                if (!(_lastActorFired instanceof SensorHandler)) {
                     _scheduleNewEvent = true;
                 }
 
@@ -1945,7 +1945,7 @@ public class PtidesBasicDirector extends DEDirector {
             // other input events (other than those created through sensor interrupts)
             // then the following code is wrong. Instead, we simulate a scheduling
             // overhead for the next run.
-            if (!(_lastActorFired instanceof SensorInputDevice)) {
+            if (!(_lastActorFired instanceof SensorHandler)) {
                 _scheduleNewEvent = true;
             }
 
@@ -2376,7 +2376,7 @@ public class PtidesBasicDirector extends DEDirector {
         // many events at the same physical time, but then they will decode the incoming token
         // to produce events of (hopefully) different timestamps. Thus here we do not need to
         // check if safe to process was correct if the actor is a NetworkInputDevice.
-        if (obj.getContainer() instanceof NetworkInputDevice) {
+        if (obj.getContainer() instanceof NetworkReceiver) {
             return;
         }
 
@@ -2672,7 +2672,14 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        compare = _currentTime.compareTo(platformPhysicalTag.timestamp);
+        // Deadline of an actuation event is the timestamp subtracted by the
+        // realTimeDelay (d_a) at the actuators.
+        Double actuatorRealTimeDelay = _getRealTimeDelay(port);
+        Time deadline = _currentTime;
+        if (actuatorRealTimeDelay != null) {
+            deadline = deadline.subtract(actuatorRealTimeDelay);
+        }
+        compare = deadline.compareTo(platformPhysicalTag.timestamp);
 
         // FIXME: since ports that are annotated with ignoreDeadline
         // are not checked for deadline violations, do they still count
@@ -2716,8 +2723,11 @@ public class PtidesBasicDirector extends DEDirector {
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i,
                                 t, new Tag(_currentTime, _microstep), null);
                         _realTimeOutputEventQueue.add(tokenEvent);
-                        // Wait until platform physical time to transfer the
-                        // output to the actuator
+                        // Wait until platform physical time is equal to the timestamp
+                        // of the event to transfer the output to the actuator. Notice
+                        // even though the deadline of the event is timestamp - d_a,
+                        // the time of actuation occurs at physical time equal to
+                        // the timestamp.
                         _fireAtPlatformTime(_currentTime, platformTimeClock);
                     }
                 } catch (NoTokenException ex) {
@@ -2840,7 +2850,7 @@ public class PtidesBasicDirector extends DEDirector {
         boolean networkPort = false;
         for (IOPort sinkPort : (List<IOPort>) port.deepInsidePortList()) {
             if (sinkPort.isInput()) {
-                if (sinkPort.getContainer() instanceof NetworkInputDevice) {
+                if (sinkPort.getContainer() instanceof NetworkReceiver) {
                     networkPort = true;
                     _networkInputPorts.add(port);
                 } else {
