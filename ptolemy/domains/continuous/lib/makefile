@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	BandlimitedNoise.java \
+	Derivative.java \
 	DifferentialSystem.java \
 	DiscreteClock.java \
 	EventSource.java \

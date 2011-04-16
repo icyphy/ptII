@@ -30,6 +30,8 @@
   <entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
         <entity name="ContinuousTransferFunction"
                 class="ptolemy.domains.continuous.lib.ContinuousTransferFunction"/>
+        <entity name="Derivative"
+                class="ptolemy.domains.continuous.lib.Derivative"/>
         <entity name="DifferentialSystem"
                 class="ptolemy.domains.continuous.lib.DifferentialSystem"/>
         <entity name="Integrator"
