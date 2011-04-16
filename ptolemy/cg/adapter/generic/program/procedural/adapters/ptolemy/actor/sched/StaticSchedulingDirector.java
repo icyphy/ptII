@@ -391,7 +391,19 @@ public class StaticSchedulingDirector extends Director {
      *  is in the form "fullName_portName[channelNumber][offset]", if
      *  any channel number or offset is given.
      *
-     *  FIXME: need documentation on the input string format.
+     * <p>Usually given the name of an input port, getReference(String
+     * name) returns a target language variable name representing the
+     * input port. Given the name of an output port,
+     * getReference(String name) returns variable names representing
+     * the input ports connected to the output port.  However, if the
+     * name of an input port starts with '@', getReference(String
+     * name) returns variable names representing the input ports
+     * connected to the given input port on the inside.  If the name
+     * of an output port starts with '@', getReference(String name)
+     * returns variable name representing the the given output port
+     * which has inside receivers.  The special use of '@' is for
+     * composite actor when tokens are transferred into or out of the
+     * composite actor.</p>
      *
      *  @param name The name of the parameter or port
      *  @param isWrite Whether to generate the write or read offset.
@@ -409,18 +421,6 @@ public class StaticSchedulingDirector extends Director {
         String refName = _getRefName(name);
         String[] channelAndOffset = _getChannelAndOffset(name);
 
-        // Usually given the name of an input port, getReference(String name)
-        // returns variable name representing the input port. Given the name
-        // of an output port, getReference(String name) returns variable names
-        // representing the input ports connected to the output port.
-        // However, if the name of an input port starts with '@',
-        // getReference(String name) returns variable names representing the
-        // input ports connected to the given input port on the inside.
-        // If the name of an output port starts with '@',
-        // getReference(String name) returns variable name representing the
-        // the given output port which has inside receivers.
-        // The special use of '@' is for composite actor when
-        // tokens are transferred into or out of the composite actor.
         boolean forComposite = false;
         if (refName.charAt(0) == '@') {
             forComposite = true;
