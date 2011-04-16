@@ -94,7 +94,12 @@ public class SDFDirector
      *   an actor throws it while generating initialize code for the actor.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(super.generateInitializeCode());
+        // If variablesAsArrays is true, then initialize arrays before 
+        // calling super.generateInitializeCode() so that the arrays are
+        // initialized.  To illustrate the problem, run:
+        // $PTII/bin/ptcg -language java -variablesAsArrays true $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/Commutator.xml
+
+        StringBuffer code = new StringBuffer();
         if (((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
             code.append(getCodeGenerator().comment("Java SDFDirector: variablesAsArrays is true, initializing "
                             + "ports."));
@@ -129,6 +134,7 @@ public class SDFDirector
                 }
             }
         }
+        code.append(super.generateInitializeCode());
         return code.toString();
     }
 
