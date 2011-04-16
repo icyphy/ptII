@@ -254,10 +254,12 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 _debug("-- impulse input received with value " + impulseValue);
             }
             if (impulseValue != 0.0) {
+                /* NOTE: To work with the Derivative actor, have to allow this.
                 if (microstep == 0) {
                     throw new IllegalActionException(this,
                             "Signal at the impulse port is not purely discrete.");
                 }
+                */
                 double currentState = getState() + impulseValue;
                 setTentativeState(currentState);
                 if (_debugging) {
