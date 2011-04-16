@@ -185,6 +185,12 @@ COMPACKAGES = \
 	com.JLex \
 	com.microstar.xml
 
+# JUnit tests
+PTJUNITTESTS = \
+	ptolemy.actor.gui.test.junit \
+	ptolemy.vergil.basic.layout.kieler.test.junit \
+	ptolemy.vergil.basic.test.junit
+
 COREPACKAGES = \
 	ptolemy.kernel \
 	ptolemy.kernel.attributes \
@@ -220,8 +226,6 @@ COREPACKAGES = \
 	ptolemy.vergil.basic \
 	ptolemy.vergil.basic.layout \
 	ptolemy.vergil.basic.layout.kieler \
-	ptolemy.vergil.basic.layout.kieler.test.junit \
-	ptolemy.vergil.basic.test.junit \
 	ptolemy.vergil.debugger \
 	ptolemy.vergil.icon \
 	ptolemy.vergil.modal \
@@ -623,6 +627,7 @@ ALLPACKAGES = \
 	$(PTJOYSTICK_PACKAGES) \
 	$(PTJSON_PACKAGES) \
 	$(PTJUNIT_PACKAGES) \
+	$(PTJUNITTESTS) \
 	$(PTLBNL_PACKAGES) \
 	$(PTOPENCV_PACKAGES) \
 	$(PTQUICKTIME_PACKAGES) \
