@@ -1,3 +1,33 @@
+/* A crossbar switch with a service rule.
+
+@Copyright (c) 2011 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
+
+
+ */
+
 package ptolemy.actor.lib.qm;
 
 import java.util.HashMap;
@@ -28,13 +58,13 @@ import ptolemy.kernel.util.Workspace;
  *  
  *  @author Patricia Derler
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
 public class CrossbarSwitch extends BasicSwitch {
 
-    /** Construct a Bus with a name and a container.
+    /** Construct a CrossbarSwitch  with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -54,6 +84,9 @@ public class CrossbarSwitch extends BasicSwitch {
         _waitingOnSwitchFabricQueue = new HashMap<Integer, FIFOQueue>();
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -69,31 +102,11 @@ public class CrossbarSwitch extends BasicSwitch {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CrossbarSwitch newObject = (CrossbarSwitch) super.clone(workspace);
-        newObject._actorPorts = new HashMap();
-        newObject._receivers = new Hashtable();
-        newObject._nextFireTime = null;
-        newObject._inputTokens = new HashMap();
-        newObject._outputTokens = new HashMap();
-        newObject._switchFabricQueue = new HashMap();
-        newObject._waitingOnSwitchFabricQueue = (HashMap)newObject._waitingOnSwitchFabricQueue;
+	// This is confusing.  The parent class has a private variable named _switchFabricQueue?
+	newObject._switchFabricQueue = new HashMap<Integer, TreeSet<TimedEvent>>();
+        newObject._waitingOnSwitchFabricQueue = new HashMap<Integer, FIFOQueue>();
+        newObject._crossbarSwitchStates = new boolean[_numberOfPorts][_numberOfPorts];
         return newObject;
-    }
-
-    /** Initialize actor variables.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        for (int i = 0; i < _numberOfPorts; i++) {
-            _switchFabricQueue.put(i, new TreeSet<TimedEvent>());
-            _waitingOnSwitchFabricQueue.put(i, new FIFOQueue());
-        }
-        _crossbarSwitchStates = new boolean[_numberOfPorts][_numberOfPorts];
-        for (int i = 0; i < _numberOfPorts; i++) {
-            for (int j = 0; j < _numberOfPorts; j++) {
-                _crossbarSwitchStates[i][j] = true;
-            }
-        }
-
     }
 
     /** Move tokens from the input queue to the switch fabric, move tokens
@@ -201,6 +214,25 @@ public class CrossbarSwitch extends BasicSwitch {
         }
     }
 
+    /** Initialize actor variables.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        for (int i = 0; i < _numberOfPorts; i++) {
+            _switchFabricQueue.put(i, new TreeSet<TimedEvent>());
+            _waitingOnSwitchFabricQueue.put(i, new FIFOQueue());
+        }
+        _crossbarSwitchStates = new boolean[_numberOfPorts][_numberOfPorts];
+        for (int i = 0; i < _numberOfPorts; i++) {
+            for (int j = 0; j < _numberOfPorts; j++) {
+                _crossbarSwitchStates[i][j] = true;
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Schedule a refiring of the actor at the current or a future time. 
      *  The actor is refired at current time if there are tokens waiting
      *  to be processed by the switch fabric and the state of the crossbar
@@ -239,6 +271,9 @@ public class CrossbarSwitch extends BasicSwitch {
         _fireAt(_nextFireTime);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
     /** Switch fabric queues for every output port. A token is in the 
      *  switch fabric queue if it can be processed and for the amount of time
      *  defined by the delay.
@@ -252,6 +287,9 @@ public class CrossbarSwitch extends BasicSwitch {
     protected HashMap<Integer, FIFOQueue> _waitingOnSwitchFabricQueue;
 
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Return the actor that contains this receiver. If the receiver is an
      *  IntermediateReceiver the actor is the quantity manager which manages
      *  this receiver, otherwise it is the actor containing this receiver.
@@ -285,6 +323,9 @@ public class CrossbarSwitch extends BasicSwitch {
         return null;
     } 
     
+    ///////////////////////////////////////////////////////////////////
+    ////                        privateVariables                   ////
+
     /** Status of the crossbar switches */
     private boolean[][] _crossbarSwitchStates;
 }
