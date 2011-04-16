@@ -1532,6 +1532,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
         } else if (platform.equals("Mac OS X")) {
+            // Why does Apple insist on changing the names of things?
+            jvmLoaderDirective = "-ljvmlinkage";
             if (javaHome != null) {
                 libjvmAbsoluteDirectory = javaHome + "/../Libraries";
             }
