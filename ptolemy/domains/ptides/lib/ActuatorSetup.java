@@ -1,5 +1,4 @@
-/* SensorInputDevice simulates a hardware device that senses data from the environment.
-
+/* ActuatorOutputDevice simulates a hardware device that sends actuation data to the environment.
 @Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
 
@@ -41,9 +40,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////SensorInputDevice
+////ActuatorOutputDevice
 
-/** A model of sensor hardware on a target platform.
+/** A model of actuator hardware on a target platform.
  *  This base class copies inputs unchanged to the outputs,
  *  but subclasses will model specific properties of physical
  *  hardware on a target platform.  This base class also
@@ -57,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
  */
-public class SensorInputDevice extends InputDevice {
+public class ActuatorSetup extends OutputDevice {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -71,7 +70,7 @@ public class SensorInputDevice extends InputDevice {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public SensorInputDevice(CompositeEntity container, String name)
+    public ActuatorSetup(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
@@ -93,7 +92,7 @@ public class SensorInputDevice extends InputDevice {
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public  methods                   ////
+    ////                         public  variables                 ////
     /** Read one token from the input. Send out an identical token.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
@@ -118,12 +117,12 @@ public class SensorInputDevice extends InputDevice {
     /** Perform a check to see if this device is connected to a network
      *  port on the outside. If so, throw an exception. Also call
      *  preinitialize of the super class.
-     *  @exception IllegalActionException If there are no outside source
-     *  ports, or if any of the outside source ports is a network
+     *  @exception IllegalActionException If there are no outside sink
+     *  ports, or if any of the outside sink ports is a network
      *  port.
      */
     public void preinitialize() throws IllegalActionException {
-
+        
         super.preinitialize();
         
         // Perform port consistency check if the schedulerExecutionTime
@@ -132,20 +131,19 @@ public class SensorInputDevice extends InputDevice {
         if ((parameter != null)
                 && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
             boolean flag = false;
-            for (IOPort input : (List<IOPort>)inputPortList()) {
-                for (IOPort sourcePort : (List<IOPort>)input.sourcePortList()) {
-                    if (sourcePort.getContainer() == getContainer()) {
+            for (IOPort output : (List<IOPort>)outputPortList()) {
+                for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
+                    if (sinkPort.getContainer() == getContainer()) {
                         flag = true;
+                        break;
                     }
                 }
             }
             if (!flag) {
                 throw new IllegalActionException(
                         this,
-                        "A SensorInputDevice must be connected to a port " +
-                        "on the outside, and that port should not be a network " +
-                        "port (should not have a port with the parameter " +
-                        "networkPort).");
+                        "A ActuatorOutputDevice must be connected to a port " +
+                        "on the outside.");
             }
         }
     }

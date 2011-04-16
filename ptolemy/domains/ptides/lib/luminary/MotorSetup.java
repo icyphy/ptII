@@ -28,57 +28,35 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.luminary;
 
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptides.lib.ActuationDevice;
-import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
+import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * This is a class for GPIO pins on the Luminary Micro.
- * This actor will have no effect in model simulations, but
- * allows for code generators to generate the actors.
+ * This is a class for generating motor outputs on the Luminary Micro.
  *
- * @author Jia Zou, Jeff C. Jensen
+ * @author Jia Zou
  * @version $ld$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)
- * @Pt.AcceptedRating
+ * @Pt.AcceptedRating Red (jiazou)
  *
  */
-public class GPOutputDevice extends ActuatorOutputDevice implements
+public class MotorSetup extends ActuatorSetup implements
         ActuationDevice {
 
     /**
-     * Constructs a GPOutputDevice object.
+     * Constructs a MotorOutputDevice  object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException if the super constructor throws it.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public GPOutputDevice(CompositeEntity container, String name)
+    public MotorSetup(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        pin = new Parameter(this, "pin");
-        //FIXME: GPIO A7 is an easy-to-use output, but should it be default?
-        pin.setExpression("7");
-        pad = new StringParameter(this, "pad");
-        pad.setExpression("A");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       parameters                          ////
-
-    /** Which pad (A-G) and pin (0-7) of GPIO to use.
-     * FIXME: Verify user has set value between 0 and 7
-     */
-    public Parameter pin;
-
-    /** Which pad (A-G) of GPIO to use.
-     *  FIXME: Verify user has set value between A and H.
-     */
-    public StringParameter pad;
 }

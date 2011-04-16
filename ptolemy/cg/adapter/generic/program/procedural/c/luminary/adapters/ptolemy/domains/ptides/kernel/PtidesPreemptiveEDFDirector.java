@@ -38,8 +38,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.domains.ptides.lib.luminary.GPInputDevice;
-import ptolemy.domains.ptides.lib.luminary.LuminarySensorInputDevice;
+import ptolemy.domains.ptides.lib.luminary.GPInputHandler;
+import ptolemy.domains.ptides.lib.luminary.LuminarySensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -109,7 +109,7 @@ public class PtidesPreemptiveEDFDirector
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent()
                 .getContainer()).deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
-            if (actor instanceof LuminarySensorInputDevice) {
+            if (actor instanceof LuminarySensorHandler) {
                 devices.put(actor, new String("Sensing_"
                         + NamedProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor)));
@@ -132,10 +132,10 @@ public class PtidesPreemptiveEDFDirector
         // a particular configuration, add it into the array associated with the device, 
         // and the index of this actor should equal to the index of the configuration in
         // supportedConfigurations().
-        int configurationSize = LuminarySensorInputDevice.numberOfSupportedInputDeviceConfigurations;
+        int configurationSize = LuminarySensorHandler.numberOfSupportedInputDeviceConfigurations;
         String[] GPHandlers = new String[configurationSize];
         boolean foundConfig = false;
-        for (LuminarySensorInputDevice actor : (Set<LuminarySensorInputDevice>) devices
+        for (LuminarySensorHandler actor : (Set<LuminarySensorHandler>) devices
                 .keySet()) {
             for (int i = 0; i < actor.supportedConfigurations().size(); i++) {
                 if (actor.configuration().compareTo(
@@ -324,9 +324,9 @@ public class PtidesPreemptiveEDFDirector
         // the only supported sensor inputs are GPIO inputs.
         List args = new LinkedList();
         for (Actor sensor : sensors.keySet()) {
-            if (sensor instanceof GPInputDevice) {
+            if (sensor instanceof GPInputHandler) {
                 args.add("IntDisable(INT_GPIO" + 
-                        ((GPInputDevice)sensor).pad.stringValue() + ");" + _eol);
+                        ((GPInputHandler)sensor).pad.stringValue() + ");" + _eol);
             } else {
                 throw new IllegalActionException("Only GPIO inputs are supported " +
                 		"as sensors.");
@@ -336,9 +336,9 @@ public class PtidesPreemptiveEDFDirector
             args.add("");
         }
         for (Actor sensor : sensors.keySet()) {
-            if (sensor instanceof GPInputDevice) {
+            if (sensor instanceof GPInputHandler) {
                 args.add("IntEnable(INT_GPIO" + 
-                        ((GPInputDevice)sensor).pad.stringValue() + ");" + _eol);
+                        ((GPInputHandler)sensor).pad.stringValue() + ");" + _eol);
             } else {
                 throw new IllegalActionException("Only GPIO inputs are supported " +
                                 "as sensors.");

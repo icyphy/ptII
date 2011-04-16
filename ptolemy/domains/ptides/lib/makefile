@@ -56,14 +56,14 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbsoluteDelay.java \
 	ActuationDevice.java \
-	ActuatorOutputDevice.java \
+	ActuatorSetup.java \
 	InputDevice.java \
 	MasterClock.java \
-	NetworkInputDevice.java \
-	NetworkOutputDevice.java \
+	NetworkReceiver.java \
+	NetworkTransmitter.java \
 	OutputDevice.java \
 	RealisticSlaveClock.java \
-	SensorInputDevice.java \
+	SensorHandler.java \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \
 	VariableDelayCounter.java
@@ -81,8 +81,8 @@ MISC_FILES =	luminary test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'NetworkInputDevice$$1.class' \
-	'NetworkInputDevice$$PortFunction.class' \
+	'NetworkReceiver$$1.class' \
+	'NetworkReceiver$$PortFunction.class' \
 	'ScheduleListener$$ScheduleEventType.class' \
 	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
 

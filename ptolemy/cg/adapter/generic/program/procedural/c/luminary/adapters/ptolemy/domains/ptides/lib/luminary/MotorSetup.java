@@ -25,14 +25,13 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary;
 
+import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class for 
- * ptolemy.domains.ptides.lib.targets.luminary.TimeTriggeredEncoderInputDevice. This actor
- * is basically the same as GPInputDevice, only the C template includes more
- * calculations.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.MotorOutputDevice.
+ * This actor is the same as ActuatorOutputDevice, however the C template is different.
  * @author Jia Zou
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -40,16 +39,18 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (jiazou)
  */
 
-public class TimeTriggeredEncoderInputDevice extends GPInputDevice {
+public class MotorSetup extends ActuatorSetup {
+    
     /** Construct an adapter with the given
-     *  ptolemy.domains.ptides.lib.TimeTriggeredEncoderInputDevice actor.
-     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.TimeTriggeredEncoderInputDevice actor.
+     *  ptolemy.domains.ptides.lib.MotorOutputDevice actor.
+     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.MotorOutputDevice actor.
      *  @exception IllegalActionException 
      *  @exception NameDuplicationException 
      */
-    public TimeTriggeredEncoderInputDevice(
-            ptolemy.domains.ptides.lib.luminary.TimeTriggeredEncoderInputDevice actor)
+    public MotorSetup(
+            ptolemy.domains.ptides.lib.luminary.MotorSetup actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
+
 }

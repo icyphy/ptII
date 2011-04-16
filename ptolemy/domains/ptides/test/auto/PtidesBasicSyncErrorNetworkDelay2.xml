@@ -49,7 +49,7 @@
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
-        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 200.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -64,8 +64,8 @@
         </relation>
         <link port="port" relation="relation"/>
         <link port="port2" relation="relation2"/>
-        <link port="NetworkOutputDevice.input" relation="relation"/>
-        <link port="NetworkOutputDevice.output" relation="relation2"/>
+        <link port="NetworkTransmitter.input" relation="relation"/>
+        <link port="NetworkTransmitter.output" relation="relation2"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -138,7 +138,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+        <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 240.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -180,8 +180,8 @@
         <link port="AddSubtract.plus" relation="relation"/>
         <link port="AddSubtract.minus" relation="relation4"/>
         <link port="AddSubtract.output" relation="relation5"/>
-        <link port="NetworkInputDevice.input" relation="relation2"/>
-        <link port="NetworkInputDevice.output" relation="relation4"/>
+        <link port="NetworkReceiver.input" relation="relation2"/>
+        <link port="NetworkReceiver.output" relation="relation4"/>
         <link port="TimeDelay.input" relation="relation5"/>
         <link port="TimeDelay.output" relation="relation3"/>
     </entity>

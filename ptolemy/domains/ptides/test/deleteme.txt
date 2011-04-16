@@ -1,0 +1,1498 @@
+CLASSPATH="../../../..:/home/jiazou/workspace/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-6-openjdk/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/jiazou/workspace/workspace/ptII"  tcl.lang.Shell ../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicMixedSimulator.xml (Known Failure) 
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicMixedSimulator.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicVariableDelay.xml (Known Failure) 
+48 ms. Memory: 38080K Free: 29914K (79%)
+Exception in thread "Thread-2" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$1.run(MoMLSimpleApplication.java:117)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: 3.556047687. Should have been: 4.5209009103
+  in .PtidesBasicVariableDelay.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1571)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:417)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:460)
+	at ptolemy.actor.Manager.iterate(Manager.java:754)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1169)
+	at ptolemy.actor.Manager$3.run(Manager.java:1222)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicVariableDelay.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicContinuous.xml (Known Failure) 
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicContinuous2.xml (Known Failure) 
+496 ms. Memory: 48064K Free: 29034K (60%)
+40 ms. Memory: 48064K Free: 28235K (59%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicSafeToProcessInsideOpaque.xml (Known Failure) 
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicSafeToProcessInsideOpaque.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesPreemptEDFMixedSimulator.xml (Known Failure) 
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesPreemptEDFMixedSimulator.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkDelaySensor.xml (Known Failure) 
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkDelaySensor.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesPreemptEDFFeedback2.xml (Known Failure) 
+Warning: '.PtidesPreemptEDFFeedback2.CompositeActor.Test' is in training mode, set the trainingMode parameter to false before checking in
+Warning: '.PtidesPreemptEDFFeedback2.Test' is in training mode, set the trainingMode parameter to false before checking in
+Warning: '.PtidesPreemptEDFFeedback2.Test2' is in training mode, set the trainingMode parameter to false before checking in
+313 ms. Memory: 48064K Free: 34536K (72%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkSensor.xml (Known Failure) 
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkSensor.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsEventDifferByMicrostep.xml (Known Failure) 
+4031 ms. Memory: 68032K Free: 57491K (85%)
+Exception in thread "Thread-6" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$1.run(MoMLSimpleApplication.java:117)
+Caused by: ptolemy.kernel.util.IllegalActionException: missed deadline at the actuator. The deadline is 3.0, and the platform physical time is 4.0
+  in .PtidesBasicTwoPlatformsEventDifferByMicrostep.CompositeActor3.port2
+	at ptolemy.domains.ptides.kernel.PtidesBasicDirector._transferOutputs(PtidesBasicDirector.java:2684)
+	at ptolemy.actor.Director.transferOutputs(Director.java:1326)
+	at ptolemy.domains.de.kernel.DEDirector.transferOutputs(DEDirector.java:1198)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:471)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1571)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:417)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:460)
+	at ptolemy.actor.Manager.iterate(Manager.java:754)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1169)
+	at ptolemy.actor.Manager$3.run(Manager.java:1222)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsEventDifferByMicrostep.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicAbsoluteDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:51 PDT 2011
+132 ms. Memory: 68032K Free: 49646K (73%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:51 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:51 PDT 2011
+45 ms. Memory: 68032K Free: 49044K (72%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:51 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicActuator.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicActuator.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicActuator.xml at line 68 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicActuator.xml at line 68 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+32 ms. Memory: 68032K Free: 47249K (69%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicCausalityInterface.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+22 ms. Memory: 68032K Free: 38892K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+19 ms. Memory: 68032K Free: 37695K (55%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicCausalityInterface2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+27 ms. Memory: 68032K Free: 28740K (42%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+21 ms. Memory: 68032K Free: 27544K (40%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicCausalityInterface3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+31 ms. Memory: 65984K Free: 57718K (87%)
+28 ms. Memory: 65984K Free: 56599K (86%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicContinuous.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicContinuous.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicContinuous.xml at line 246 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicContinuous.xml at line 246 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+22 ms. Memory: 65984K Free: 53788K (82%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicFeedback.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+88 ms. Memory: 65984K Free: 44387K (67%)
+37 ms. Memory: 65984K Free: 41592K (63%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicFeedback2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+63 ms. Memory: 65984K Free: 30705K (47%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+133 ms. Memory: 65984K Free: 26520K (40%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicFeedbackminDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:52 PDT 2011
+33 ms. Memory: 64000K Free: 53380K (83%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:52 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+58 ms. Memory: 64000K Free: 50652K (79%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMicrostep.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+25 ms. Memory: 64000K Free: 44326K (69%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+8 ms. Memory: 64000K Free: 44326K (69%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMixedSimulator.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMixedSimulator.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicMixedSimulator.xml at line 121 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicMixedSimulator.xml at line 121 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+8 ms. Memory: 64000K Free: 42690K (67%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicModelDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+8 ms. Memory: 64000K Free: 38046K (59%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+5 ms. Memory: 64000K Free: 37500K (59%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMultiPlatformTDMA.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMultiPlatformTDMA.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicMultiPlatformTDMA.xml at line 86 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicMultiPlatformTDMA.xml at line 86 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+6 ms. Memory: 64000K Free: 36410K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+30 ms. Memory: 63040K Free: 60955K (97%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+53 ms. Memory: 63040K Free: 59855K (95%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform1.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+21 ms. Memory: 63040K Free: 51672K (82%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+12 ms. Memory: 63040K Free: 50572K (80%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+13 ms. Memory: 63040K Free: 41790K (66%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+18 ms. Memory: 63040K Free: 41240K (65%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+14 ms. Memory: 63040K Free: 32515K (52%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+12 ms. Memory: 63040K Free: 31415K (50%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform4.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+16 ms. Memory: 61568K Free: 55417K (90%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+30 ms. Memory: 61568K Free: 53763K (87%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform5.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+24 ms. Memory: 61568K Free: 44498K (72%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+12 ms. Memory: 61568K Free: 43395K (70%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:53 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform6.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:53 PDT 2011
+12 ms. Memory: 61568K Free: 33540K (54%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+10 ms. Memory: 61568K Free: 32988K (54%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform7.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+17 ms. Memory: 66304K Free: 63216K (95%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+22 ms. Memory: 66304K Free: 61947K (93%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform8.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+31 ms. Memory: 66304K Free: 49888K (75%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+53 ms. Memory: 66304K Free: 47349K (71%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformCausalLoop.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+14 ms. Memory: 66304K Free: 37843K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+64 ms. Memory: 66304K Free: 37209K (56%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformRealTime.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+17 ms. Memory: 66304K Free: 29954K (45%)
+64 ms. Memory: 66304K Free: 29319K (44%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformThreePathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+53 ms. Memory: 82496K Free: 72326K (88%)
+15 ms. Memory: 82496K Free: 70498K (85%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformminDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+13 ms. Memory: 82496K Free: 61989K (75%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+8 ms. Memory: 82496K Free: 61989K (75%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptEDFDeadline.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+14 ms. Memory: 82496K Free: 53477K (65%)
+15 ms. Memory: 82496K Free: 52563K (64%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptEDFOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+13 ms. Memory: 82496K Free: 44075K (53%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+12 ms. Memory: 82496K Free: 43161K (52%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:54 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptEDFOnePlatformThreePathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:54 PDT 2011
+20 ms. Memory: 82496K Free: 33514K (41%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+16 ms. Memory: 82496K Free: 31685K (38%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptEDFOnePlatformTwoPaths.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+11 ms. Memory: 82496K Free: 78592K (95%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+42 ms. Memory: 82496K Free: 76751K (93%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptEDFOnePlatformTwoPathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+46 ms. Memory: 82496K Free: 70084K (85%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+10 ms. Memory: 82496K Free: 69163K (84%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessInsideTransparent.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessInsideTransparent.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessInsideTransparent.xml at line 68 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessInsideTransparent.xml at line 68 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+9 ms. Memory: 82496K Free: 67306K (82%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessTwoPaths.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessTwoPaths.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessTwoPaths.xml at line 82 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessTwoPaths.xml at line 82 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+9 ms. Memory: 82496K Free: 65465K (79%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSchedulingOverhead.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSchedulingOverhead.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSchedulingOverhead.xml at line 120 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSchedulingOverhead.xml at line 120 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+10 ms. Memory: 82496K Free: 63623K (77%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensor.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensor.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensor.xml at line 61 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensor.xml at line 61 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+9 ms. Memory: 82496K Free: 62703K (76%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorModelDelayOnly.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorModelDelayOnly.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorModelDelayOnly.xml at line 68 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorModelDelayOnly.xml at line 68 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+9 ms. Memory: 82496K Free: 60861K (74%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorNoDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:55 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorNoDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorNoDelay.xml at line 68 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorNoDelay.xml at line 68 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:55 PDT 2011
+9 ms. Memory: 82496K Free: 59012K (72%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorPhysicalDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorPhysicalDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorPhysicalDelay.xml at line 68 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorPhysicalDelay.xml at line 68 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+9 ms. Memory: 82496K Free: 57167K (69%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorRealTimeDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorRealTimeDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorRealTimeDelay.xml at line 68 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorRealTimeDelay.xml at line 68 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+9 ms. Memory: 82496K Free: 56247K (68%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncError.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+17 ms. Memory: 82496K Free: 47684K (58%)
+28 ms. Memory: 82496K Free: 46763K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncError2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+34 ms. Memory: 82496K Free: 38050K (46%)
+13 ms. Memory: 82496K Free: 36209K (44%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncError3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+27 ms. Memory: 82496K Free: 28598K (35%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+10 ms. Memory: 82496K Free: 26741K (32%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncErrorNetworkDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+12 ms. Memory: 79616K Free: 67714K (85%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+12 ms. Memory: 79616K Free: 66819K (84%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncErrorNetworkDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+14 ms. Memory: 79616K Free: 56547K (71%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+14 ms. Memory: 79616K Free: 55653K (70%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncErrorNetworkDelay3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+10 ms. Memory: 79616K Free: 49175K (62%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+4 ms. Memory: 79616K Free: 49175K (62%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkSensorEvent.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkSensorEvent.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkSensorEvent.xml at line 88 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkSensorEvent.xml at line 88 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+6 ms. Memory: 79616K Free: 47387K (60%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingFeedbackNoDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingFeedbackNoDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingFeedbackNoDelay.xml at line 259 and column 84
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.SensorInputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/SensorInputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/SensorInputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingFeedbackNoDelay.xml at line 259 and column 84
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+5 ms. Memory: 79616K Free: 45598K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay.xml at line 103 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay.xml at line 103 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+6 ms. Memory: 79616K Free: 43810K (55%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay2.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay2.xml at line 134 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay2.xml at line 134 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+5 ms. Memory: 79616K Free: 42005K (53%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay3.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay3.xml at line 128 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay3.xml at line 128 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+5 ms. Memory: 79616K Free: 41110K (52%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingWithDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingWithDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingWithDelay.xml at line 103 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingWithDelay.xml at line 103 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+6 ms. Memory: 79616K Free: 39322K (49%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicVariableDelayAndRamp.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+16 ms. Memory: 79616K Free: 30917K (39%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+13 ms. Memory: 79616K Free: 30023K (38%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicVariableDelayCounter.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+16 ms. Memory: 77440K Free: 71636K (93%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+9 ms. Memory: 77440K Free: 70779K (91%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesClockSynchronizationError.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+7 ms. Memory: 77440K Free: 64536K (83%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+8 ms. Memory: 77440K Free: 63647K (82%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesClockSynchronizationError2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+7 ms. Memory: 77440K Free: 56569K (73%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+7 ms. Memory: 77440K Free: 55711K (72%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesClockSynchronizationError3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+8 ms. Memory: 77440K Free: 48611K (63%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+8 ms. Memory: 77440K Free: 47754K (62%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:56 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesDistributedBasicPowerPlant.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:56 PDT 2011
+784 ms. Memory: 108224K Free: 39695K (37%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:58 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:58 PDT 2011
+713 ms. Memory: 103808K Free: 71895K (69%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:58 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesNetworkLatencyTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:58 PDT 2011
+54 ms. Memory: 103808K Free: 61874K (60%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:58 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:58 PDT 2011
+19 ms. Memory: 103808K Free: 59593K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:58 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFDeadline.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:58 PDT 2011
+11 ms. Memory: 103808K Free: 51133K (49%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+10 ms. Memory: 103808K Free: 49993K (48%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFDeadline2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+42 ms. Memory: 103808K Free: 36567K (35%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+20 ms. Memory: 103808K Free: 34286K (33%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFDeadline3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+11 ms. Memory: 103808K Free: 24678K (24%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+10 ms. Memory: 103808K Free: 23537K (23%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFFeedback.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+47 ms. Memory: 100608K Free: 85371K (85%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+55 ms. Memory: 100608K Free: 81895K (81%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:42:59 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:42:59 PDT 2011
+8 ms. Memory: 100608K Free: 74583K (74%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+8 ms. Memory: 100608K Free: 73424K (73%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatform2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+10 ms. Memory: 100608K Free: 63762K (63%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+11 ms. Memory: 100608K Free: 62604K (62%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatform3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+9 ms. Memory: 100608K Free: 52943K (53%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+38 ms. Memory: 100608K Free: 51784K (51%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatformThreePathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+14 ms. Memory: 100608K Free: 40686K (40%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+13 ms. Memory: 100608K Free: 38368K (38%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:00 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatformTwoPaths.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:00 PDT 2011
+8 ms. Memory: 100608K Free: 29882K (30%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+7 ms. Memory: 100608K Free: 29882K (30%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatformTwoPathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+7 ms. Memory: 100608K Free: 21356K (21%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+10 ms. Memory: 97152K Free: 89703K (92%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFPrempt.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+7 ms. Memory: 97152K Free: 82678K (85%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+5 ms. Memory: 97152K Free: 82678K (85%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFTwoAddSub.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+215 ms. Memory: 97152K Free: 30398K (31%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+231 ms. Memory: 94464K Free: 61039K (65%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFTwoAddSub2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+23 ms. Memory: 94464K Free: 40968K (43%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+25 ms. Memory: 94464K Free: 36416K (39%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+10 ms. Memory: 94464K Free: 27700K (29%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+8 ms. Memory: 94464K Free: 26790K (28%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:01 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform10.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:01 PDT 2011
+28 ms. Memory: 91776K Free: 74794K (81%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+27 ms. Memory: 91776K Free: 69919K (76%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform2.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+12 ms. Memory: 91776K Free: 57515K (63%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+12 ms. Memory: 91776K Free: 55565K (61%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform3.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+12 ms. Memory: 91776K Free: 42122K (46%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+12 ms. Memory: 91776K Free: 40172K (44%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform4.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+13 ms. Memory: 91776K Free: 27745K (30%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+13 ms. Memory: 91776K Free: 25795K (28%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform5.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+11 ms. Memory: 89024K Free: 73078K (82%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+14 ms. Memory: 89024K Free: 71172K (80%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform6.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+38 ms. Memory: 89024K Free: 55685K (63%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+26 ms. Memory: 89024K Free: 50920K (57%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform7.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+12 ms. Memory: 89024K Free: 38816K (44%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+11 ms. Memory: 89024K Free: 35957K (40%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform8.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+11 ms. Memory: 89024K Free: 23861K (27%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+15 ms. Memory: 89024K Free: 21955K (25%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform9.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+95 ms. Memory: 108672K Free: 70925K (65%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+91 ms. Memory: 108672K Free: 53207K (49%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFTwoAddSub.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+23 ms. Memory: 108672K Free: 34311K (32%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+23 ms. Memory: 108672K Free: 29233K (27%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicModalExample.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicModalExample.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicModalExample.xml at line 120 and column 90
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicModalExample.xml at line 120 and column 90
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+23 ms. Memory: 108672K Free: 22905K (21%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicMultiPlatformPowerSupply.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicMultiPlatformPowerSupply.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    
+==== Test generated error:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicMultiPlatformPowerSupply.xml at line 223 and column 94
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptides.lib.ActuatorOutputDevice
+Because:
+-- no protocol: ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+-- XML file not found relative to classpath.
+-- /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml
+/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/ptolemy/domains/ptides/lib/ActuatorOutputDevice.xml (No such file or directory)
+ in file:/home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicMultiPlatformPowerSupply.xml at line 223 and column 94
+    while executing
+"error $errMsg"
+    invoked from within
+"if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+40 ms. Memory: 114304K Free: 102822K (90%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:02 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicPowerPlant.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:02 PDT 2011
+372 ms. Memory: 114304K Free: 18811K (16%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:03 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:03 PDT 2011
+266 ms. Memory: 114240K Free: 61119K (54%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:03 PDT 2011
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicPowerPlantHeartbeat.xml
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:03 PDT 2011
+144 ms. Memory: 148800K Free: 133442K (90%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:04 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Fri Apr 15 21:43:04 PDT 2011
+100 ms. Memory: 148800K Free: 108316K (73%)
+util.testsuite.WatchDog.cancel(): canceling Fri Apr 15 21:43:04 PDT 2011
+Failed: 20  Total Tests: 182  ((Passed: 155, Newly Passed: 3)  Known Failed: 7) /home/jiazou/workspace/workspace/ptII/ptolemy/domains/ptides/test
+CLASSPATH="../../../..:/home/jiazou/workspace/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-6-openjdk/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/jiazou/workspace/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+dummy.tcl

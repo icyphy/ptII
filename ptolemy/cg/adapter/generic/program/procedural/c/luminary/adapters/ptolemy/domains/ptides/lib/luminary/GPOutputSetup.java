@@ -1,4 +1,4 @@
-/* A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice
+/* A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -31,9 +31,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice;
+import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -41,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -49,14 +48,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (jiazou)
  */
 
-public class GPInputDevice extends InputDevice {
+public class GPOutputSetup extends ActuatorSetup {
     /** Construct an adapter with the given
-     *  ptolemy.domains.ptides.lib.GPInputDevice actor.
-     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor.
+     *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
+     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
      *  @exception IllegalActionException 
-     * @exception NameDuplicationException 
+     *  @exception NameDuplicationException 
      */
-    public GPInputDevice(ptolemy.domains.ptides.lib.luminary.GPInputDevice actor)
+    public GPOutputSetup(
+            ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 
@@ -69,13 +69,13 @@ public class GPInputDevice extends InputDevice {
             _pinID = ((IntToken) pinParameter.getToken()).toString();
         } else {
             throw new IllegalActionException(
-                    "does not know to which pin this output device is associated.");
+                    "does not know what pin this output device is associated to.");
         }
         if (padParameter != null) {
             _padID = padParameter.stringValue();
         } else {
             throw new IllegalActionException(
-                    "does not know to which pin this output device is associated.");
+                    "does not know what pin this output device is associated to.");
         }
 
     }
@@ -84,29 +84,30 @@ public class GPInputDevice extends InputDevice {
     ////                         public methods                    ////
 
     /**
-     * Return the code for the sensing function.
+     * Return the code for the actuator actuation function.
      * @return the code for the sensing function, which is read from the
-     * "sensingBlock" 
+     * "actuationBlock". 
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */
-    public String generateSensorSensingFuncCode() throws IllegalActionException {
+    public String generateActuatorActuationFuncCode()
+            throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        args.add(NamedProgramCodeGeneratorAdapter.generateName(getComponent()));
         args.add(_padID);
         args.add(_pinID);
 
         _codeStream.clear();
-        _codeStream.appendCodeBlock("sensingBlock", args);
+        _codeStream.appendCodeBlock("actuationBlock", args);
 
         return processCode(_codeStream.toString());
     }
 
     /**
-     * Return the code for the hardware initialization function.
-     * @return the code for the hardare initialization function.
+     * Return the hardware initialization code.
+     * @return the hardware initialization code, which is read from the
+     * "initializeGPOutput" block.
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */
@@ -117,7 +118,7 @@ public class GPInputDevice extends InputDevice {
         args.add(_padID);
         args.add(_pinID);
         code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
-                "initializeGPInput", args)));
+                "initializeGPOutput", args)));
         return code.toString();
     }
 

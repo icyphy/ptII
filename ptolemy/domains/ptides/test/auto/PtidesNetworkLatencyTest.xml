@@ -77,7 +77,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
             </property>
         </port>
-        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -105,8 +105,8 @@
         </relation>
         <link port="port" relation="relation"/>
         <link port="port2" relation="relation2"/>
-        <link port="NetworkOutputDevice.input" relation="relation3"/>
-        <link port="NetworkOutputDevice.output" relation="relation2"/>
+        <link port="NetworkTransmitter.input" relation="relation3"/>
+        <link port="NetworkTransmitter.output" relation="relation2"/>
         <link port="TimeDelay.input" relation="relation"/>
         <link port="TimeDelay.output" relation="relation3"/>
     </entity>
@@ -185,7 +185,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 200.0]">
             </property>
         </port>
-        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+        <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 300.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -288,8 +288,8 @@
         <link port="port2" relation="relation6"/>
         <link port="port3" relation="relation7"/>
         <link port="port" relation="relation3"/>
-        <link port="NetworkInputDevice.input" relation="relation7"/>
-        <link port="NetworkInputDevice.output" relation="relation"/>
+        <link port="NetworkReceiver.input" relation="relation7"/>
+        <link port="NetworkReceiver.output" relation="relation"/>
         <link port="CurrentTime.output" relation="relation2"/>
         <link port="CurrentTime.trigger" relation="relation"/>
         <link port="CurrentTime2.output" relation="relation8"/>

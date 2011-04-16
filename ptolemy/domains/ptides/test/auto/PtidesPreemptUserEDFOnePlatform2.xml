@@ -191,7 +191,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 115.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -204,7 +204,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="NetworkOutputDevice2" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter2" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 60.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -217,7 +217,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="NetworkOutputDevice3" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter3" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 365.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -305,12 +305,12 @@
         <link port="Scale2.output" relation="relation2"/>
         <link port="TimedDelay2.input" relation="relation2"/>
         <link port="TimedDelay2.output" relation="relation10"/>
-        <link port="NetworkOutputDevice.input" relation="relation8"/>
-        <link port="NetworkOutputDevice.output" relation="relation3"/>
-        <link port="NetworkOutputDevice2.input" relation="relation2"/>
-        <link port="NetworkOutputDevice2.output" relation="relation"/>
-        <link port="NetworkOutputDevice3.input" relation="relation7"/>
-        <link port="NetworkOutputDevice3.output" relation="relation4"/>
+        <link port="NetworkTransmitter.input" relation="relation8"/>
+        <link port="NetworkTransmitter.output" relation="relation3"/>
+        <link port="NetworkTransmitter2.input" relation="relation2"/>
+        <link port="NetworkTransmitter2.output" relation="relation"/>
+        <link port="NetworkTransmitter3.input" relation="relation7"/>
+        <link port="NetworkTransmitter3.output" relation="relation4"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">

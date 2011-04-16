@@ -76,7 +76,7 @@
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
-        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+        <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 185.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -85,7 +85,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 115.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -114,7 +114,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 125.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -165,15 +165,15 @@
         <link port="sensor" relation="relation2"/>
         <link port="actuator" relation="relation"/>
         <link port="networkIn" relation="relation4"/>
-        <link port="NetworkInputDevice.input" relation="relation4"/>
-        <link port="NetworkInputDevice.output" relation="relation6"/>
-        <link port="SensorInputDevice.input" relation="relation2"/>
-        <link port="SensorInputDevice.output" relation="relation5"/>
+        <link port="NetworkReceiver.input" relation="relation4"/>
+        <link port="NetworkReceiver.output" relation="relation6"/>
+        <link port="SensorHandler.input" relation="relation2"/>
+        <link port="SensorHandler.output" relation="relation5"/>
         <link port="AddSubtract.plus" relation="relation7"/>
         <link port="AddSubtract.minus" relation="relation6"/>
         <link port="AddSubtract.output" relation="relation3"/>
-        <link port="ActuatorOutputDevice.input" relation="relation3"/>
-        <link port="ActuatorOutputDevice.output" relation="relation"/>
+        <link port="ActuatorSetup.input" relation="relation3"/>
+        <link port="ActuatorSetup.output" relation="relation"/>
         <link port="TimedDelay.input" relation="relation5"/>
         <link port="TimedDelay.output" relation="relation7"/>
     </entity>
@@ -269,7 +269,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 180.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -278,7 +278,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 160.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -313,10 +313,10 @@
         <link port="TimedDelay.output" relation="relation"/>
         <link port="Scale.input" relation="relation3"/>
         <link port="Scale.output" relation="relation2"/>
-        <link port="NetworkOutputDevice.input" relation="relation"/>
-        <link port="NetworkOutputDevice.output" relation="relation5"/>
-        <link port="SensorInputDevice.input" relation="relation6"/>
-        <link port="SensorInputDevice.output" relation="relation3"/>
+        <link port="NetworkTransmitter.input" relation="relation"/>
+        <link port="NetworkTransmitter.output" relation="relation5"/>
+        <link port="SensorHandler.input" relation="relation6"/>
+        <link port="SensorHandler.output" relation="relation3"/>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">

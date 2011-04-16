@@ -78,7 +78,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+        <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 240.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -125,8 +125,8 @@
         <link port="AddSubtract.plus" relation="relation"/>
         <link port="AddSubtract.minus" relation="relation4"/>
         <link port="AddSubtract.output" relation="relation5"/>
-        <link port="NetworkInputDevice.input" relation="relation2"/>
-        <link port="NetworkInputDevice.output" relation="relation4"/>
+        <link port="NetworkReceiver.input" relation="relation2"/>
+        <link port="NetworkReceiver.output" relation="relation4"/>
         <link port="TimeDelay.input" relation="relation5"/>
         <link port="TimeDelay.output" relation="relation3"/>
     </entity>

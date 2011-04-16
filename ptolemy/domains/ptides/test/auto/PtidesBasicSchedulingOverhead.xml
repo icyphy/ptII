@@ -117,7 +117,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 195.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -126,7 +126,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 195.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -151,10 +151,10 @@
         <link port="Computation1.output" relation="relation4"/>
         <link port="TimedDelay1.input" relation="relation4"/>
         <link port="TimedDelay1.output" relation="relation5"/>
-        <link port="SensorInputDevice.input" relation="relation2"/>
-        <link port="SensorInputDevice.output" relation="relation3"/>
-        <link port="ActuatorOutputDevice.input" relation="relation5"/>
-        <link port="ActuatorOutputDevice.output" relation="relation"/>
+        <link port="SensorHandler.input" relation="relation2"/>
+        <link port="SensorHandler.output" relation="relation3"/>
+        <link port="ActuatorSetup.input" relation="relation5"/>
+        <link port="ActuatorSetup.output" relation="relation"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">

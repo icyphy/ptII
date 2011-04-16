@@ -51,24 +51,24 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 JSRCS = \
-	DropSensorInputDevice.java \
-	EncoderInputDevice.java \
-	GPInputDevice.java \
-	GPOutputDevice.java \
-	MotorOutputDevice.java \
+	DropSensorInputHandler.java \
+	EncoderHandler.java \
+	GPInputHandler.java \
+	GPOutputSetup.java \
+	MotorSetup.java \
 	SongWrapper.java \
 	SpeakerOutputDevice.java \
-	TimeTriggeredEncoderInputDevice.java
+	TimeTriggeredEncoderHandler.java
 
 OTHER_FILES_TO_BE_JARED = \
-	DropSensorInputDevice.c \
-	EncoderInputDevice.c \
-	GPInputDevice.c \
-	GPOutputDevice.c \
-	MotorOutputDevice.c \
+	DropSensorInputHandler.c \
+	EncoderHandler.c \
+	GPInputHandler.c \
+	GPOutputSetup.c \
+	MotorSetup.c \
 	SongWrapper.c \
 	SpeakerOutputDevice.c \
-	TimeTriggeredEncoderInputDevice.c
+	TimeTriggeredEncoderHandler.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class TimeTriggeredEncoderInputDevice extends GPInputDevice {
+public class TimeTriggeredEncoderHandler extends GPInputHandler {
 
     /**
      * Construct a TimeTriggeredEncoderInputDevice object, with an additional input port
@@ -59,7 +59,7 @@ public class TimeTriggeredEncoderInputDevice extends GPInputDevice {
      * or if setting the pin and pad expressions fails.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public TimeTriggeredEncoderInputDevice(CompositeEntity container, String name)
+    public TimeTriggeredEncoderHandler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         trigger = new TypedIOPort(this, "trigger", true, false);

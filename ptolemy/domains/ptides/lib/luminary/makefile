@@ -48,15 +48,15 @@ PTPACKAGE = 	luminary
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	DropSensorInputDevice.java \
-	EncoderInputDevice.java \
-	GPInputDevice.java \
-	GPOutputDevice.java \
-	LuminarySensorInputDevice.java \
-	MotorOutputDevice.java \
+	DropSensorHandler.java \
+	EncoderHandler.java \
+	GPInputHander.java \
+	GPOutputSetup.java \
+	LuminarySensorHandler.java \
+	MotorSetup.java \
 	SongWrapper.java \
 	SpeakerOutputDevice.java \
-	TimeTriggeredEncoderInputDevice.java
+	TimeTriggeredEncoderHandler.java
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

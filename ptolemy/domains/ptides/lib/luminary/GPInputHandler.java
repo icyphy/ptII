@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class GPInputDevice extends LuminarySensorInputDevice {
+public class GPInputHandler extends LuminarySensorHandler {
 
     /**
      * Construct a GPInputDevice object.
@@ -60,7 +60,7 @@ public class GPInputDevice extends LuminarySensorInputDevice {
      * or if setting the pin and pad expressions fails.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public GPInputDevice(CompositeEntity container, String name)
+    public GPInputHandler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         pin = new Parameter(this, "pin");

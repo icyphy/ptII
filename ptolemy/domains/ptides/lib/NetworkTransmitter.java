@@ -62,9 +62,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  should be governed by a Ptides director, and
  *  abstracts a computation platform in the Ptides domain.
  *  </p><p>
- *  This actor is expected to be used in pairs with the {@link NetworkInputDevice}.
+ *  This actor is expected to be used in pairs with the {@link NetworkReceiver}.
  *  This actor produces network packages from the source
- *  platform, and the {@link NetworkInputDevice} consumes those packages 
+ *  platform, and the {@link NetworkReceiver} consumes those packages 
  *  in the sink platform.
  *  Unlike SensorOutputDevice for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
@@ -79,7 +79,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
 */
-public class NetworkOutputDevice extends OutputDevice {
+public class NetworkTransmitter extends OutputDevice {
 
     /**
      * Constructs a NetworkOutputDevice object.
@@ -88,7 +88,7 @@ public class NetworkOutputDevice extends OutputDevice {
      * @exception IllegalActionException if the super constructor throws it.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public NetworkOutputDevice(CompositeEntity container, String name)
+    public NetworkTransmitter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);

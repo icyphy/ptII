@@ -36,13 +36,13 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */
-public class SensorInputDevice extends InputDevice {
+public class SensorHandler extends InputDevice {
     /**
      * Construct a SensorInputDevice adapter.
      * @param actor The associated actor.
      * 
      */
-    public SensorInputDevice(ptolemy.domains.ptides.lib.SensorInputDevice actor) {
+    public SensorHandler(ptolemy.domains.ptides.lib.SensorHandler actor) {
         super(actor);
     }
 }

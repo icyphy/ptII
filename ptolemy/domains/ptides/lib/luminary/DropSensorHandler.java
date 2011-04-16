@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 2008-2009 The Regents of the University of California.
+@Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -24,38 +24,40 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.ptides.lib.luminary;
 
-import ptolemy.domains.ptides.lib.ActuationDevice;
-import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * This is a class for generating motor outputs on the Luminary Micro.
+ * A class for GPIO pins on the Luminary board.
+ * <p>This actor will have no effect in model simulations, but
+ * allows for code generators to generate the actors.
+ * FIXME: the logic of this actor should be implemented for model
+ * simulation also.
  *
  * @author Jia Zou
  * @version $ld$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)
- * @Pt.AcceptedRating Red (jiazou)
+ * @Pt.AcceptedRating
  *
  */
-public class MotorOutputDevice extends ActuatorOutputDevice implements
-        ActuationDevice {
+public class DropSensorHandler extends GPInputHandler {
 
     /**
-     * Constructs a MotorOutputDevice  object.
+     * Construct a DropSensorInputDevice object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.
-     * @exception IllegalActionException if the super constructor throws it.
+     * @exception IllegalActionException if the super constructor throws it
+     * or if setting the pin and pad expressions fails.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public MotorOutputDevice(CompositeEntity container, String name)
+    public DropSensorHandler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

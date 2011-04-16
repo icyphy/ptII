@@ -58,7 +58,7 @@
             <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 105.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -121,8 +121,8 @@
             </property>
         </relation>
         <link port="sensor" relation="relation2"/>
-        <link port="SensorInputDevice.input" relation="relation2"/>
-        <link port="SensorInputDevice.output" relation="relation3"/>
+        <link port="SensorHandler.input" relation="relation2"/>
+        <link port="SensorHandler.output" relation="relation3"/>
         <link port="Test.input" relation="relation3"/>
         <link port="CurrentTime.output" relation="relation"/>
         <link port="CurrentTime.trigger" relation="relation3"/>

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class EncoderInputDevice extends GPInputDevice {
+public class EncoderHandler extends GPInputHandler {
 
     /**
      * Construct a EncoderInputDevice object.
@@ -57,7 +57,7 @@ public class EncoderInputDevice extends GPInputDevice {
      * or if setting the pin and pad expressions fails.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public EncoderInputDevice(CompositeEntity container, String name)
+    public EncoderHandler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

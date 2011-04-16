@@ -117,7 +117,7 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 200.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -126,7 +126,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 250.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -135,7 +135,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice2" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler2" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 175.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -486,7 +486,7 @@
             <link port="state3.signalOut" relation="signalOutRelation"/>
             <link port="state3.flag" relation="flagRelation"/>
         </entity>
-        <entity name="ActuatorOutputDevice2" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup2" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 260.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -515,18 +515,18 @@
         <link port="Sensor" relation="relation"/>
         <link port="Sig-O" relation="relation6"/>
         <link port="Flag" relation="relation7"/>
-        <link port="ActuatorOutputDevice.input" relation="relation2"/>
-        <link port="ActuatorOutputDevice.output" relation="relation6"/>
-        <link port="SensorInputDevice.input" relation="relation"/>
-        <link port="SensorInputDevice.output" relation="relation5"/>
-        <link port="SensorInputDevice2.input" relation="relation3"/>
-        <link port="SensorInputDevice2.output" relation="relation4"/>
+        <link port="ActuatorSetup.input" relation="relation2"/>
+        <link port="ActuatorSetup.output" relation="relation6"/>
+        <link port="SensorHandler.input" relation="relation"/>
+        <link port="SensorHandler.output" relation="relation5"/>
+        <link port="SensorHandler2.input" relation="relation3"/>
+        <link port="SensorHandler2.output" relation="relation4"/>
         <link port="ModalModel.mode" relation="relation4"/>
         <link port="ModalModel.sensor" relation="relation5"/>
         <link port="ModalModel.signalOut" relation="relation2"/>
         <link port="ModalModel.flag" relation="relation8"/>
-        <link port="ActuatorOutputDevice2.input" relation="relation8"/>
-        <link port="ActuatorOutputDevice2.output" relation="relation7"/>
+        <link port="ActuatorSetup2.input" relation="relation8"/>
+        <link port="ActuatorSetup2.output" relation="relation7"/>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1000">

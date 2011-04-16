@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 2009-2010 The Regents of the University of California.
+@Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -24,72 +24,61 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
- */
+*/
 
 package ptolemy.domains.ptides.lib.luminary;
 
-import java.util.List;
-
-import ptolemy.domains.ptides.lib.SensorInputDevice;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.ptides.lib.ActuationDevice;
+import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * All input devices for Luminary should extend this class. This class
- * saves the total number of configurations of interrupts.
- * For example, if we only support GPInputDevice, i.e., the only subclass
- * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports 8
- * configurations, then numberOfSupportedInputDeviceConfigurations is set to
- * 8. If more devices are implemented, numberOfSupportedInputDeviceConfigurations
- * should be updated.
+ * This is a class for GPIO pins on the Luminary Micro.
+ * This actor will have no effect in model simulations, but
+ * allows for code generators to generate the actors.
  *
- * @author Jia Zou
- * @version $Id$
+ * @author Jia Zou, Jeff C. Jensen
+ * @version $ld$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating
  *
  */
-public abstract class LuminarySensorInputDevice extends SensorInputDevice {
+public class GPOutputSetup extends ActuatorSetup implements
+        ActuationDevice {
 
     /**
-     * Constructs a LuminarySensorInputDevice object.
+     * Constructs a GPOutputDevice object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException if the super constructor throws it.
      * @exception NameDuplicationException if the super constructor throws it.
      */
-    public LuminarySensorInputDevice(CompositeEntity container, String name)
+    public GPOutputSetup(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        pin = new Parameter(this, "pin");
+        //FIXME: GPIO A7 is an easy-to-use output, but should it be default?
+        pin.setExpression("7");
+        pad = new StringParameter(this, "pad");
+        pad.setExpression("A");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
 
-    /** The total number of supported configurations for all Luminary
-     *  sensor input devices. A sensor device could have multiple access
-     *  pin and pads (configurations), this number keeps track of the
-     *  total number of configurations available.
+    /** Which pad (A-G) and pin (0-7) of GPIO to use.
+     * FIXME: Verify user has set value between 0 and 7
      */
-    public static int numberOfSupportedInputDeviceConfigurations = 8;
+    public Parameter pin;
 
-    /** A sensor device could have multiple access pin and pads 
-     *  (configurations), This method returns the current configuration.
-     *  @return The current configuration captured in a string.
-     *  @exception IllegalActionException
+    /** Which pad (A-G) of GPIO to use.
+     *  FIXME: Verify user has set value between A and H.
      */
-    abstract public String configuration() throws IllegalActionException;
-
-    /** The set of supported configurations.
-     *  @return The set of supported configurations.
-     */
-    abstract public List<String> supportedConfigurations();
-
-    /** There is a default configuration, which is returned.
-     *  @return The default configuration.
-     */
-    abstract public String startingConfiguration();
+    public StringParameter pad;
 }

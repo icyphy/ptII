@@ -42,14 +42,14 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */
-public class ActuatorOutputDevice extends OutputDevice {
+public class ActuatorSetup extends OutputDevice {
     /**
      * Construct a ActuatorOutputDevice adapter.
      * @param actor The associated actor.
      * 
      */
-    public ActuatorOutputDevice(
-            ptolemy.domains.ptides.lib.ActuatorOutputDevice actor) {
+    public ActuatorSetup(
+            ptolemy.domains.ptides.lib.ActuatorSetup actor) {
         super(actor);
     }
 
@@ -82,8 +82,8 @@ public class ActuatorOutputDevice extends OutputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        ptolemy.domains.ptides.lib.ActuatorOutputDevice actor = 
-            (ptolemy.domains.ptides.lib.ActuatorOutputDevice) getComponent();
+        ptolemy.domains.ptides.lib.ActuatorSetup actor = 
+            (ptolemy.domains.ptides.lib.ActuatorSetup) getComponent();
         PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
                 .getDirector());
 
