@@ -1,0 +1,139 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Derivative2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 40}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 22, 796, 555}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 445]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 222.5}">
+    </property>
+    <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.125, 336.875]">
+        </property>
+    </entity>
+    <entity name="Derivative2" class="ptolemy.domains.continuous.lib.Derivative">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.5, 285.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Derivative" class="ptolemy.domains.continuous.lib.Derivative">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 155.0}">
+        </property>
+    </entity>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.5, 155.0}">
+        </property>
+    </entity>
+    <entity name="ContinuousSinewave2" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0 / (2 * PI)">
+        </property>
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="PI/2.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 210.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 200.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="createSequence(0.0, 0.0, 100)">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="createSequence(0.0, 0.0, 100)">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 330.0]">
+        </property>
+    </entity>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[255.0, 285.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[250.0, 325.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[140.0, 340.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{270.0, 155.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{265.0, 195.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{155.0, 210.0}">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ContinuousClock.output" relation="relation8"/>
+    <link port="Derivative2.input" relation="relation8"/>
+    <link port="Derivative2.derivative" relation="relation6"/>
+    <link port="Derivative2.impulse" relation="relation7"/>
+    <link port="Integrator2.impulse" relation="relation7"/>
+    <link port="Integrator2.derivative" relation="relation6"/>
+    <link port="Integrator2.state" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.minus" relation="relation8"/>
+    <link port="AddSubtract.output" relation="relation9"/>
+    <link port="Derivative.input" relation="relation4"/>
+    <link port="Derivative.derivative" relation="relation"/>
+    <link port="Derivative.impulse" relation="relation2"/>
+    <link port="Integrator.impulse" relation="relation2"/>
+    <link port="Integrator.derivative" relation="relation"/>
+    <link port="Integrator.state" relation="relation5"/>
+    <link port="ContinuousSinewave2.output" relation="relation4"/>
+    <link port="AddSubtract2.plus" relation="relation5"/>
+    <link port="AddSubtract2.minus" relation="relation4"/>
+    <link port="AddSubtract2.output" relation="relation10"/>
+    <link port="NonStrictTest.input" relation="relation10"/>
+    <link port="NonStrictTest2.input" relation="relation9"/>
+</entity>
