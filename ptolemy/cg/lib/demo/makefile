@@ -31,7 +31,7 @@
 ME =		ptolemy/cg/lib/demo
 
 # Keep these alphabetical please.
-DIRS = 		CompiledCompositeActor ModularCodeGen Scale
+DIRS = 		CompiledCompositeActor ModularCG ModularCGPubSub Scale
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -46,7 +46,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	ModularCodeGen/ModularCodeGen.jar \
+	CompiledCompositeActor/CompiledCompositeActor.jar \
+	ModularCG/ModularCG.jar \
+	ModularCGPubSub/ModularCGPubSub.jar \
 	Scale/Scale.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

@@ -13,37 +13,79 @@ code generator where actors have template files consisting
 of code blocks.  The code blocks are stitched together to create
 the resulting file.
 
+<p>Ptolemy II includes two code generators, one in
+$PTII/ptolemy/codegen that is no longer being developed and
+$PTII/ptolemy/cg, which is under active development.
+
 <ul>
 <li><a href="#Simple Demo">Simple Demo</a>
+<li><a href="#Java Command Line Demo">Java Command Line Demo</a>
+<li><a href="#Package Overview">Package Overview</a>
 <li><a href="#Limitations">Limitations</a>
 <li><a href="#FAQ">FAQ</a>
 </ul>
 
 <h2><a name="Simple Demo">Simple Demo</a></h2>
 <ol>
-<li>
-Open <a href="adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xmll"><code>$PTII/ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml</code></a>
-<li> Click on the HTMLCodeGenerator icon.
-<li> A dialog box will appear, click on "Generate"
-<li> An HTML description of the model will be generated and displayed
+<li>Generate HTML code that describes a model.
+  <br/>If you are viewing this page from within vergil, 
+open <a href="adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml"><code>$PTII/ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml</code></a>
+  <br/>If you are viewing this page from a browser, start vergil with:
+  <code>$PTII/bin/vergil /Users/cxh/ptII/ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml</code></li> 
+<li> Click on the HTMLCodeGenerator icon.</li>
+<li> A dialog box will appear, click on "Generate"</li>
+<li> An HTML description of the model will be generated and displayed.</li>
 </ol>
 
 <h2><a name="Java Command Line Demo">Java Command Line Demo</a></h2>
 To generate Java code for a simple model, run:
 <pre>
-ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.java /Users/cxh/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/Display.xml 
+$PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml 
 </pre>
 or
 <pre>
-java -classpath $PTII ptolemy.cg.kernel.generic.GenericCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.program.procedural.java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/Display.xml
+java -classpath $PTII ptolemy.cg.kernel.generic.GenericCodeGenerator -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml
 </pre>
 
+<h2><a name="Package Overview">Package overview</a></h2>
+The cg facility uses an adapter pattern where classes in a regular
+Ptolemy II model have corresponding classes in the cg facility.
+
+<p>The cg subpackages are structured so that language specific code
+is separate from generic code.</p>   
+
+<p>The main entry point is
+$PTII/ptolemy/cg/kernel/generic/GenericCodeGenerator.java.
+This file is invoked by <code>$PTII/bin/ptcg</code>.  To get the complete list
+of options, run <code>$PTII/bin/ptcg -help</code>.</p>
+
+<p>To invoke the cg code generator from the GUI, drag in
+a code generator attribute from More Libraries -&gt;
+CodeGenerators -&gt;CGCodegen.</p>
+
+<p>The ptolemy/cg directory has these subdirectories:</p>
+<dl>
+  <dt> ptolemy/cg/adapter</dt>
+  <dd> Language specific adapters classes that correspond with
+regular Ptolemy II classes.
+  <dt> ptolemy/cg/gui</dt>
+  <dd>Graphical User Interface (gui) code.  If a model has a
+  ptolemy.cg.gui.CodeGeneratorGUIFactory attribute in it, then
+  double clicking on that attribute brings up the code generator gui.
+  </dd>
+  <dt> ptolemy/cg/kernel</dt>
+  <dd>Non-language specific code generation classes and language-specific
+    type information.</dd>
+  <dt>ptolemy/cg/lib</dt>
+  <dd>Modular code generation work and syntactic code generation
+work</dd>
+</dl>
 
 <p>
 <br><b>FIXME: Not updated below here</b>
 <br><b>FIXME: Not updated below here</b>
 <br><b>FIXME: Not updated below here</b>
-
+<p>
 <a href="../configs/codegen/demos.htm">Other Codegen Demonstrations</a>
 
 
@@ -53,9 +95,9 @@ limitations.  It is best viewed as a concept demonstration.
 
 <ul>
 <li> Only SDF, FSM and HDF domains are supported
-<li> Only IntToken, DoubleToken, StringToken and ArrayToken are supported.
+<li> Only IntToken, DoubleToken, StringToken, ComplexToken and ArrayToken are supported.
 Other tokens are not supported at this time.
-<li> A limited number of actors have supporting helper code.
+<li> A limited number of actors have supporting adapters code.
 The easiest way to build models that only the actors that have
 code generation support is to run
 <pre>
@@ -101,7 +143,7 @@ make: *** [Ramp] Error 1
 
 </dl>
 
-<h3><a name="ProblemsRunninge">Problems Running</a></h3>
+<h3><a name="ProblemsRunning">Problems Running</a></h3>
 <dl>
 
 <dt> Models that use the plotter require setup
@@ -175,6 +217,28 @@ clock_getres(CLOCK_REALTIME, &res);
 printf(" time resolution: %ld ns\n", res.tv_nsec);
 </pre>
 
+<dt>A test is failing, the output code is confusing, what do I do?</dt>
+<dd>
+  <p>Try creating the smallest possible test case and run it using
+  <code>$PTII/bin/ptcg</code>.</p>
+  <p>Try using the <code>-verbosity 10</code> command line argument
+  option to <code>$PTII/bin/ptcg</code>.  This will cause the comments
+  to include the classname where the comment() method was called.</p>
+  <p>By hand, modify the output code so that it works and then change
+  the code generator.  For example, if the command is
+  <code>$PTII/bin/ptcg -language java Foo.xml</code>, then the file
+  to modify will be <code>~/cg/Foo.java</code>.  To compile the file,
+  run <code>(cd ~/cg; make -f Foo.mk run)</code>.
+  </dd>
+
+  <dt>Porting from ptolemy/codegen</dt>
+  <dd>When porting code from ptolemy/codegen, the primary issue is
+finding where to put the classes.  Looking at the mapping for
+c and java files from codegen to cg can be helpful.  In general,
+files that generate language-specific code for actors ends up
+in ptolemy.cg.adapater.  Language-specific type code ends up
+in ptolemy.cg.kernel.</dd>
+
 </dl>
 
 <h3>Compiling Large C Files</h3>
@@ -201,8 +265,6 @@ Each of the options above:
 <dd> print out summary information.
 
 </dl>
-
-
 
 </body>
 </html>

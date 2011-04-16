@@ -1,9 +1,10 @@
-# Makefile for Ptolemy Classic style Codegen ModularCGPubSub
+# Makefile for Ptolemy II JNI ModularCG Demo
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
 #
-# @Copyright (c) 2010 The Regents of the University of California
+# @Copyright (c) 2009-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -12,31 +13,26 @@
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
 #
-# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA  OR RESEARCH IN MOTION
-# LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL,
-# OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND
-# ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA OR
-# RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-# CALIFORNIA  AND RESEARCH IN MOTION LIMITED
-# HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/cg/demo/ModularCGPubSub
-
-DIRS =
+ME =		ptolemy/cg/lib/demo/ModularCG
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,38 +41,40 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ModularCGPubSub
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	ModularCG
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ModularCGPubSub.xml
+	$(JSRCS) \
+	ModularCG.xml
 
-EXTRA_SRCS =	$(JSRCS) \
+EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
-
-#	ModularCGPubSub.htm 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run the demo, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
-demo:
-	"$(PTII)/bin/vergil" ModularCGPubSub.xml
+install: all jars
 
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+demo: demo_vergil
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ModularCG.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
