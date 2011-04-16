@@ -69,7 +69,7 @@ proc testJavaCGInline {model inline {maximumLinesPerBlock 2500} {generateInSubdi
 	$parser purgeAllModelRecords
 
 	set args [java::new {String[]} 11 \
-		  [list "-language" "java" "-generateInSubdirectory" $generateInSubdirectory "-inline" $inline "-maximumLinesPerBlock" $maximumLinesPerBlock "-variablesAsArray" $variablesAsArrays $model]]
+		  [list "-language" "java" "-generateInSubdirectory" $generateInSubdirectory "-inline" $inline "-maximumLinesPerBlock" $maximumLinesPerBlock "-variablesAsArrays" $variablesAsArrays $model]]
 
 	set timeout 500000
 	puts "testJavaCG.tcl: Setting watchdog for [expr {$timeout / 1000}]\
