@@ -955,7 +955,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String generateVariableName(NamedObj attribute) {
         if ( !_variablesAsArrays
                 || !(attribute instanceof Variable)) {
-            return NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
+            return super.generateVariableName(attribute);
         }
 
         Variable variable = (Variable) attribute;
@@ -997,7 +997,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         // Look up the attribute by name in the HashTable.
-        String variableName = NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
+        String variableName = super.generateVariableName(attribute);
         Integer variableIndex = null;
         if ((variableIndex = variableMap.get(variableName)) == null) {
             // FIXME: is there a better way to update an element in a HashMap?
