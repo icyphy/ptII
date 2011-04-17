@@ -34,6 +34,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sche
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -120,6 +121,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                         // Used by CaseDirector.
                         // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
                         // extends actor.Director.  However, in cg, we end up needing a SDFDirector.
+                        // This code is duplicated from StaticSchedulingDirector.generatePortName()
                         String portName = StringUtilities.sanitizeName(port.getFullName());
                         if (portName.startsWith("_")) {
                             portName = portName.substring(1, portName.length());
@@ -130,7 +132,13 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                         if (port.isMultiport()) {
                             return portName + "[" + offset + "]";
                         } else {
-                            return portName;
+                            if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
+                                return portName;
+                            }
+
+                            // Get the name of the port that refers to the array of all ports.
+                            // FIXME: we don't handle ports that have a BufferSize > 1.
+                            return getCodeGenerator().generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
                         }
                         //return "";
                     }
