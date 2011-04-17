@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg
 
-DIRS =		adapter gui kernel lib demo
+DIRS =		adapter gui kernel lib
 
 # Root of the Java directory
 ROOT =		../..
