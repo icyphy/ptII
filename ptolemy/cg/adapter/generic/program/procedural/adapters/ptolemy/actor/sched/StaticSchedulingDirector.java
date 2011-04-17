@@ -452,8 +452,10 @@ public class StaticSchedulingDirector extends Director {
 
             String result = _getParameter(target, attribute, channelAndOffset);
 
-            return _templateParser.generateTypeConvertMethod(result, castType,
+            result = _templateParser.generateTypeConvertMethod(result, castType,
                     refType);
+
+            return result;
         }
 
         throw new IllegalActionException(target.getComponent(),
@@ -506,7 +508,6 @@ public class StaticSchedulingDirector extends Director {
                         "Variable channel reference not supported"
                                 + " for output ports");
             } else {
-
                 String returnValue = _generatePortReference(port, channelAndOffset, isWrite);
                 return returnValue;
             }
@@ -531,11 +532,10 @@ public class StaticSchedulingDirector extends Director {
             }
 
             if (remoteReceivers.length == 0) {
-                // The channel of this output port doesn't have any sink.
-                String returnValue = NamedProgramCodeGeneratorAdapter
-                        .generateName(target.getComponent())
-                        + "_"
-                        + TemplateParser.escapePortName(port.getName());
+                // The channel of this output port doesn't have any
+                // sink or is a PortParameter.
+                // Needed by $PTII/bin/ptcg -language java -variablesAsArrays true $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterOpaque.xml
+                String returnValue = generatePortName(port);
                 return returnValue;
             }
 
@@ -630,7 +630,6 @@ public class StaticSchedulingDirector extends Director {
 
             result.append(_ports.generateOffset(port, channelAndOffset[1],
                     channelNumber, isWrite));
-
             return result.toString();
         }
 
