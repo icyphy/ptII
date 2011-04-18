@@ -814,7 +814,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     + "public class TypeResolution {" + _eol + "*/");
             code.append("// }" + _eol);
         }
+
+        
         if (_variablesAsArrays) {
+            // If variablesAsArrays is true, then use arrays of variables instead
+            // of individual variables and save space.
+
+            // Generate the declarations for the arrays that contain variables.
+            // See also generateInitializeCode() in
+            // $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector.java 
+            
             code.append(comment(1, "Arrays that contain variables."));
             if (_variableTypeMaxIndex != null) {
                 for (Map.Entry<String, Integer> entry : _variableTypeMaxIndex.entrySet()) {
