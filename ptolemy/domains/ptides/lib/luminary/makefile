@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	DropSensorHandler.java \
 	EncoderHandler.java \
+	GPInputHandler.java \
 	GPOutputSetup.java \
 	LuminarySensorHandler.java \
 	MotorSetup.java \
