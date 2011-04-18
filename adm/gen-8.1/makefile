@@ -2444,7 +2444,7 @@ $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
 	fi
 
 
-src/ptII$(VERSION)/bin/vergil: $(PTII_SRC)
+src/ptII$(VERSION)/bin/vergil: #$(PTII_SRC)
 	cp $(PTII)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
