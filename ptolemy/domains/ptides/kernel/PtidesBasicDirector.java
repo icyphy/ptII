@@ -591,7 +591,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the current clock drift associated with the real
      *  time clock.
-     *  @param clock The real time clock.
+     *  @param realTimeClock The real time clock.
      *  @return the current clock drift associated with the clock ID.
      *  @exception IllegalActionException If clock ID is not recognized.
      */
@@ -2111,6 +2111,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  current oracle time, old platfrom time, and the clock drift.
      *  @param currentOracleTime The current oracle time.
      *  @param realTimeClock The real time clock for which we are getting the
+     *  @param timeCachePair A map between the oracle time and platform time.
      *  platform physical time from.
      *  @return the platform time associated with the current oracle time.
      *  @exception IllegalActionException If the last oracle time is greater
@@ -3986,7 +3987,6 @@ public class PtidesBasicDirector extends DEDirector {
          *  a new cache should be made for each pair.
          *  See {@link #_oracleExecutionTimePair}, {@link #_oraclePlatformTimePair}
          *  All parameters of the realTimeClock are also updated in the process.
-         *  @param realTimeClock The real time clock that is updating its clock drift.
          *  @param newClockDrift a Time object that indicates the new drift of that
          *  particular clock.
          *  @exception IllegalActionException If either the original or updated fireAt
