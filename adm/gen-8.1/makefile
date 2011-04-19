@@ -2444,7 +2444,7 @@ $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
 	fi
 
 
-src/ptII$(VERSION)/bin/vergil: #$(PTII_SRC)
+src/ptII$(VERSION)/bin/vergil:
 	cp $(PTII)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
@@ -2535,7 +2535,7 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup: setup_jar #setup setup_mac_app_tar
+test_setup: setup_jar setup setup_mac_app_tar
 	@echo "#"
 	@echo "# Now testing the setup file" 
 	@echo "#"
