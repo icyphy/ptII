@@ -35,7 +35,7 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation adapter class for ptolemy.domains.ptides.lib.ActuatorOutputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.ActuatorSetup.
  * @author Jia Zou, Isaac Liu
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ActuatorSetup extends OutputDevice {
     /**
-     * Construct a ActuatorOutputDevice adapter.
+     * Construct a ActuatorSetup adapter.
      * @param actor The associated actor.
      * 
      */

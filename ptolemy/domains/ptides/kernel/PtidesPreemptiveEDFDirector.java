@@ -455,7 +455,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
                     .get(eventIndex);
             if (nextEvent.hasTheSameTagAs(event)) {
-                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                if (_sameEquivalenceClass(event, nextEvent)) {
                     eventList.add(((PtidesListEventQueue) _eventQueue)
                             .take(eventIndex));
                 } else {
@@ -469,7 +469,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
                     .get(_peekingIndex - 1);
             if (nextEvent.hasTheSameTagAs(event)) {
-                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                if (_sameEquivalenceClass(event, nextEvent)) {
                     eventList.add(((PtidesListEventQueue) _eventQueue)
                             .take(_peekingIndex - 1));
                 }

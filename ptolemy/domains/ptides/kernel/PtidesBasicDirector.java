@@ -229,17 +229,17 @@ import ptolemy.moml.MoMLChangeRequest;
  *  
  *  <p> Since sensors, actuators, and network devices are important
  *  in the context of Ptides, special actors such as {@link
- *  SensorInputDevice, ActuatorOutputDevice, NetworkInputDevice,
- *  NetworkOutputDevice} are used in Ptides models. These actors
+ *  SensorHandler, ActuatorSetup, NetworkReceiver,
+ *  NetworkTransmitter} are used in Ptides models. These actors
  *  must only be connected to input and output ports of the composite
  *  actor governed by the Ptides director. In addition, input
  *  ports to the Ptides director hold information about
  *  real time delays (see paper reference above)
  *  at sensors and network inputs. If an input port is connected to a
- *  SensorInputDevice, the port is considered a sensor port, and it
+ *  SensorHandler, the port is considered a sensor port, and it
  *  could be annotated with parameter <i>realTimeDelay</i>, which is of
  *  type double. If an input port is
- *  connected to a NetworkInputDevice, the port is considered a network
+ *  connected to a NetworkReceiver, the port is considered a network
  *  port, and could be annotated with <i>networkDelay</i> and
  *  <i>networkDriverDelay</i>
  *  parameters (the difference between these parameters are explained in
@@ -247,14 +247,14 @@ import ptolemy.moml.MoMLChangeRequest;
  *  Note a port can be either a sensor, network input, network output, or
  *  actuator port, but it cannot be more than one of these all at once.
  *  If an input port is not annotated and
- *  if it is not connected to either a SensorInputDevice or a
- *  NetworkInputDevice, the port is assumed to be a sensor port. We make
- *  this assumption because the SensorInputDevice is not necessarily
+ *  if it is not connected to either a SensorHandler or a
+ *  NetworkReceiver, the port is assumed to be a sensor port. We make
+ *  this assumption because the SensorHandler is not necessarily
  *  needed to simulate the functionality of the Ptides model, while
- *  NetworkInputDevice is. The same reasoning applies to actuator ports
+ *  NetworkReceiver is. The same reasoning applies to actuator ports
  *  as well. However, if the {@link #schedulerExecutionTimeBound}
  *  parameter of the director is set to a non-zero value, sensor and actuator
- *  ports must be connected to SensorInputDevice and ActuationOutputDevice,
+ *  ports must be connected to SensorHandler and ActuationOutputDevice,
  *  respectively, in order
  *  to correctly simulate the scheduling overhead after each interrupt
  *  event.</p>
@@ -994,8 +994,6 @@ public class PtidesBasicDirector extends DEDirector {
         // initialize all port model delays to infinity.
         _portDelays = new HashMap<IOPort, SuperdenseDependency>();
         if (getContainer() instanceof TypedCompositeActor) {
-            // If we are expanding the configuration, then the container might
-            // be an EntityLibrary.  See ptolemy/configs/test/
             for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
                     .deepEntityList())) {
                 for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
@@ -1116,7 +1114,6 @@ public class PtidesBasicDirector extends DEDirector {
         // DE director only handles events with the same tag.
         // If the earliest event in the event queue is in the future,
         // this code terminates the current iteration.
-        // This code is applied on both embedded and top-level directors.
         synchronized (_eventQueue) {
             if (!_eventQueue.isEmpty()) {
                 PtidesEvent next = (PtidesEvent) _eventQueue.get();
@@ -1148,17 +1145,19 @@ public class PtidesBasicDirector extends DEDirector {
         return true;
     }
 
-    /** Check the consistency of input/output ports. The following things are checked.
+    /** Check the consistency of input/output ports. The following things are
+     *  checked.
      *  <p>
-     *  If an input port is a sensor port (no annotation), then it should not be connected
-     *  to a NetworkInputDevice. Also, it should not have a networkDelay attribute.
+     *  If an input port is a sensor port (no annotation), then it should not
+     *  be connected to a NetworkReceiver. Also, it should not have a
+     *  networkDelay attribute.
      *  </p><p>
-     *  If an input port is a network port (annotated networkPort), then it should always
-     *  be connected to a NetworkInputDeivce. Also, it should not have a realTimeDelay
-     *  attribute.
+     *  If an input port is a network port (annotated networkPort), then it 
+     *  should always be connected to a NetworkInputDeivce. Also, it should not
+     *  have a realTimeDelay attribute.
      *  </p>
      *  @exception IllegalActionException If sensor ports are connected to
-     *  NetworkInputDevice or have a networkDelay attribute; Or if a
+     *  NetworkReceiver or have a networkDelay attribute; Or if a
      *  network port is not connected to a NetworkInputDeivce, or it has a
      *  realTimeDelay attribute.
      */
@@ -1166,22 +1165,22 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
 
         _networkInputPorts = new HashSet<IOPort>();
-        // If we are expanding the configuration, then the container might
-        // be an EntityLibrary.  See ptolemy/configs/test/
-        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .inputPortList())) {
-            // for each input port of the composite actor, make sure it's not
+        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor)
+                getContainer()).inputPortList())) {
+            // For each input port of the composite actor, make sure it's not
             // both a sensor port and a network port.
             _checkSensorNetworkInputConsistency(port);
 
             for (TypedIOPort sinkPort : (List<TypedIOPort>) port
                     .deepInsidePortList()) {
                 if (!_isNetworkPort(port)) {
-                    // port is a sensor port.
-                    // If the schedulerExecutionTime is non-zero, then to simulate the correct
-                    // behavior, sensors must be connected to SensorInputDevices, and actuators
-                    // must be connected to ActuatorOutputDevices.
-                    Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+                    // The port is a sensor port.
+                    // If the schedulerExecutionTime is non-zero, then to
+                    // simulate the correct behavior, sensors must be connected
+                    // to SensorHandlers, and actuators
+                    // must be connected to ActuatorSetups.
+                    Parameter parameter = (Parameter)
+                    getAttribute("schedulerExecutionTime");
                     if ((parameter != null)
                             && (((DoubleToken) parameter.getToken())
                                     .doubleValue() != 0.0)
@@ -1190,36 +1189,70 @@ public class PtidesBasicDirector extends DEDirector {
                         throw new IllegalActionException(
                                 port,
                                 sinkPort.getContainer(),
-                                "The schedulerExecutionTime parameter is not 0.0. "
-                                        + "In this case to get the correct simulated physical "
-                                        + "time behavior, an input sensor "
-                                        + "port must be connected to a SensorInputDevice.");
+                                "The schedulerExecutionTime parameter is not " +
+                                "0.0. In this case to get the correct simulated " +
+                                "physical time behavior, an input sensor " +
+                                "port must be connected to a SensorHandler.");
                     }
                 }
             }
         }
         // Check consistency for all output ports of this director.
-        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .outputPortList())) {
+        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor)
+                getContainer()).outputPortList())) {
             for (TypedIOPort sourcePort : (List<TypedIOPort>) port
                     .deepInsidePortList()) {
-                // If the schedulerExecutionTime is non-zero, then to simulate the correct
-                // behavior, sensors must be connected to SensorInputDevices, and actuators
-                // must be connected to ActuatorOutputDevices or a NetworkOutputDevice.
-                Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
+                // If the schedulerExecutionTime is non-zero, then to simulate
+                // the correct behavior, sensors must be connected to
+                // SensorHandlers, and actuators must be connected to
+                // ActuatorSetups or a NetworkTransmitter.
+                Parameter parameter = (Parameter)
+                getAttribute("schedulerExecutionTime");
                 if ((parameter != null)
-                        && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
+                        && (((DoubleToken) parameter.getToken())
+                                .doubleValue() != 0.0)
                         && sourcePort.isOutput()
-                        && !((sourcePort.getContainer() instanceof ActuatorSetup) || (sourcePort
-                                .getContainer() instanceof NetworkTransmitter))) {
+                        && !((sourcePort.getContainer() instanceof ActuatorSetup)
+                                || (sourcePort.getContainer() instanceof 
+                                        NetworkTransmitter))) {
                     throw new IllegalActionException(
-                            port,
-                            sourcePort.getContainer(),
-                            "The schedulerExecutionTime parameter is not 0.0. "
-                                    + "In this case to get the correct simulated physical "
-                                    + "time behavior, an output actuator "
-                                    + "port must be connected to a "
-                                    + "ActuatorOutputDevice or a NetworkOutputDevice.");
+                            port, sourcePort.getContainer(),
+                            "The schedulerExecutionTime parameter is not " +
+                            "0.0. In this case to get the correct simulated " +
+                            "physical time behavior, an output actuator " +
+                            "port must be connected to a ActuatorSetup or a" +
+                            "NetworkTransmitter.");
+                }
+            }
+        }
+    }
+
+    /** For each input port within the composite actor where this director
+     *  resides. If the input port has a delayOffset parameter, set the value
+     *  of that parameter to Infinity (meaning events arriving at this port
+     *  will always be safe to process).
+     *  @exception IllegalActionException If cannot evaluate the width of an
+     *  input port, or if token of the parameter delayOffset cannot be evaluated.
+     */
+    protected void _clearDelayOffsets() throws IllegalActionException {
+        if (getContainer() instanceof TypedCompositeActor) {
+            for (Actor actor : (List<Actor>) (((TypedCompositeActor)
+                    getContainer()).deepEntityList())) {
+                for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+                        .inputPortList())) {
+                    Parameter parameter = (Parameter) (inputPort)
+                            .getAttribute("delayOffset");
+                    if (parameter != null) {
+                        int channels = inputPort.getWidth();
+                        if (channels > 0) {
+                            Token[] tokens = new Token[channels];
+                            for (int i = 0; i < channels; i++) {
+                                tokens[i] = new DoubleToken(
+                                        Double.POSITIVE_INFINITY);
+                            }
+                            parameter.setToken(new ArrayToken(tokens));
+                        }
+                    }
                 }
             }
         }
@@ -1245,58 +1278,6 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** For each input port within the composite actor where this director resides.
-     *  If the input port has a delayOffset parameter, set the value of that parameter
-     *  to Infinity (meaning events arriving at this port will always be safe to
-     *  process). If it does not have a delayOffset parameter.
-     *  @exception IllegalActionException If cannot evaluate the width of an input
-     *  port, or if token of the parameter delayOffset cannot be evaluated.
-     */
-    protected void _clearDelayOffsets() throws IllegalActionException {
-        if (getContainer() instanceof TypedCompositeActor) {
-            // If we are expanding the configuration, then the container might
-            // be an EntityLibrary.  See ptolemy/configs/test/
-            for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
-                    .deepEntityList())) {
-                for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
-                        .inputPortList())) {
-                    Parameter parameter = (Parameter) (inputPort)
-                            .getAttribute("delayOffset");
-                    if (parameter != null) {
-                        int channels = inputPort.getWidth();
-                        if (channels > 0) {
-                            Token[] tokens = new Token[channels];
-                            for (int i = 0; i < channels; i++) {
-                                tokens[i] = new DoubleToken(
-                                        Double.POSITIVE_INFINITY);
-                            }
-                            parameter.setToken(new ArrayToken(tokens));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /** Return whether the two input events are destined to the same equivalence class.
-     *  @param refEvent The reference event.
-     *  @param event The event to be compared to the refEvent.
-     *  @return whether the two input events are destined to the same equivalence class.
-     *  @exception IllegalActionException If _finiteEquivalentPorts() throws it.
-     */
-    protected boolean _destinedToSameEquivalenceClass(PtidesEvent refEvent,
-            PtidesEvent event) throws IllegalActionException {
-        if (refEvent.ioPort() == null || event.ioPort() == null) {
-            return false;
-        }
-        Collection<IOPort> equivalenceClass = _finiteEquivalentPorts(refEvent
-                .ioPort());
-        if (equivalenceClass.contains(event.ioPort())) {
-            return true;
-        }
-        return false;
-    }
-
     /** Put a pure event into the event queue to schedule the given actor to
      *  fire at the specified timestamp.
      *  <p>
@@ -1305,7 +1286,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  will be the current microstep plus one.
      *  </p><p>
      *  The depth for the queued event is the minimum of the depths of
-     *  all the ports of the destination actor.
+     *  all the ports of the destination equivalence class. This depth
+     *  is also stored in the actor.
      *  </p><p>
      *  If there is no event queue or the given actor is disabled, then
      *  this method does nothing.
@@ -1369,15 +1351,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  The trigger event has the same timestamp as that of the director.
      *  The microstep of this event is always equal to the current microstep
      *  of this director. The depth for the queued event is the
-     *  depth of the destination IO port. Finally, the token and the receiver
-     *  this token is destined for are also stored in the event.
+     *  depth of the destination IO port. Finally, the token and the
+     *  destination receiver are also stored in the event.
      *  </p><p>
-     *  If the event queue is not ready or the actor contains the destination
-     *  port is disabled, do nothing.</p>
+     *  If the event queue is not ready or the actor that contains the
+     *  destination port is disabled, do nothing.</p>
      *
      *  @param ioPort The destination IO port.
      *  @param token The token associated with this event.
-     *  @param receiver The receiver the event is destined to.
+     *  @param receiver The destination receiver.
      *  @exception IllegalActionException If the time argument is not the
      *  current time, or the depth of the given IO port has not be calculated,
      *  or the new event can not be enqueued.
@@ -1415,8 +1397,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  returns a dependency not equal to the oPlusIdentity, then the associated
      *  port is added to the Collection.
      *  The returned Collection has no duplicate entries.
-     *  @see #_finiteDependentPorts(IOPort)
-     *
      *  @param port The given port to find finite dependent ports.
      *  @return Collection of finite dependent ports.
      *  @exception IllegalActionException If Actor's getCausalityInterface()
@@ -1459,9 +1439,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  of the input port.
      *  <p>
      *  A finite equivalence class is defined as follows.
+     *  If there exists an output port, which both p....
      *  If input ports X and Y each have a dependency not equal to the
      *  default depenency's oPlusIdentity() on any common port
-     *  or on two equivalent ports
      *  or on the state of the associated actor, then they
      *  are in a finite equivalence class.
      *  The returned Collection has no duplicate entries.
@@ -1981,8 +1961,8 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the actor associated with the events. All events within the
      *  input list of events should have the same destination actor.
-     *  @param events list of events that are destined for the
-     *  same actor and of the same tag.
+     *  @param events list of events that share the
+     *  same destination actor and of the same tag.
      *  @return Actor Destination actor of the input events.
      *  @exception IllegalActionException If input list of events do not
      *  share the same actor as their destination.
@@ -1996,10 +1976,9 @@ public class PtidesBasicDirector extends DEDirector {
                         events.get(i).actor(),
                         eventInList.actor(),
                         new IllegalActionException(
-                                "Multiple "
-                                        + "events are processed at the same time. These events "
-                                        + "should "
-                                        + "be destined to the same actor"), "");
+                                "Multiple events are processed at the same " +
+                                "time. These events should share the same " +
+                                "destination be destined to the same actor"), "");
             }
         }
         return eventInList.actor();
@@ -2239,6 +2218,25 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    /** Return whether the two input events share the same equivalence class.
+     *  @param refEvent The reference event.
+     *  @param event The event to be compared to the refEvent.
+     *  @return whether the two input events share the same equivalence class.
+     *  @exception IllegalActionException If _finiteEquivalentPorts() throws it.
+     */
+    protected boolean _sameEquivalenceClass(PtidesEvent refEvent,
+            PtidesEvent event) throws IllegalActionException {
+        if (refEvent.ioPort() == null || event.ioPort() == null) {
+            return false;
+        }
+        Collection<IOPort> equivalenceClass = _finiteEquivalentPorts(refEvent
+                .ioPort());
+        if (equivalenceClass.contains(event.ioPort())) {
+            return true;
+        }
+        return false;
+    }
+
     /** Set the icon for this director if the <i>animateExecution</i>
      *  parameter is set to true.
      *  @param moml A MoML string describing the contents of the icon.
@@ -2337,7 +2335,7 @@ public class PtidesBasicDirector extends DEDirector {
                         .take(eventIndex));
             } else {
                 if (nextEvent.hasTheSameTagAs(event)) {
-                    if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                    if (_sameEquivalenceClass(event, nextEvent)) {
                         eventList.add(((PtidesListEventQueue) _eventQueue)
                                 .take(eventIndex));
                     } else {
@@ -2376,7 +2374,7 @@ public class PtidesBasicDirector extends DEDirector {
         // FIXME: This is a hack. We have this because the network inteface may receive
         // many events at the same physical time, but then they will decode the incoming token
         // to produce events of (hopefully) different timestamps. Thus here we do not need to
-        // check if safe to process was correct if the actor is a NetworkInputDevice.
+        // check if safe to process was correct if the actor is a NetworkReceiver.
         if (obj.getContainer() instanceof NetworkReceiver) {
             return;
         }
@@ -2831,16 +2829,16 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Check whether an input port is a network port or a sensor port by
      *  checking what actor this input port is connected to. If it's connected
-     *  to a NetworkInputDevice actor, it's assumed to be a network port. If
-     *  it's not connected to a NetworkInputDevice actor, then it's assumed
+     *  to a NetworkReceiver actor, it's assumed to be a network port. If
+     *  it's not connected to a NetworkReceiver actor, then it's assumed
      *  to be a sensor port. However, this port cannot be connected to
-     *  NetworkInputDevice and SensorInputDevice actors at the same time.
+     *  NetworkReceiver and SensorHandler actors at the same time.
      *  Also, add all network ports into a set for future reference. Finally,
      *  make sure all sensor ports are not annotated with either networkDelay
      *  or networkDriverDelay parameters, while all network ports are not
      *  annotated with realTimeDelay parameters.
      *  @exception IllegalActionException If port is connected to both a
-     *  SensorInputDevice and a NetworkInputDevice, a network port is annotated
+     *  SensorHandler and a NetworkReceiver, a network port is annotated
      *  with networkDelay or networkDriverDelay parameter, or a sensor port is
      *  annotated with realTimeDelay paramter.
      */
@@ -2855,7 +2853,7 @@ public class PtidesBasicDirector extends DEDirector {
                     networkPort = true;
                     _networkInputPorts.add(port);
                 } else {
-                    // If a port is not connected to a NetworkInputDevice, it is
+                    // If a port is not connected to a NetworkReceiver, it is
                     // assumed to be a sensorPort.
                     sensorPort = true;
                 }
@@ -2865,7 +2863,7 @@ public class PtidesBasicDirector extends DEDirector {
             throw new IllegalActionException(
                     port,
                     "This port has been connected to "
-                            + "both a SensorInputDevice and a NetworkInputDevice, which is  "
+                            + "both a SensorHandler and a NetworkReceiver, which is  "
                             + "disallowed. A port must be either a sensor port or a network port.");
         }
         // If both sensorPort and networkPort are false, this port is assumed to be a
@@ -2875,21 +2873,21 @@ public class PtidesBasicDirector extends DEDirector {
             throw new IllegalActionException(
                     port,
                     "A port that is not connected to a "
-                            + "NetworkInputDevice is considered to be a sensor port, "
+                            + "NetworkReceiver is considered to be a sensor port, "
                             + "and a sensor port should not have networkDelay or "
                             + "networkDriverDelay parameters annotated on it.");
         } else if (networkPort && _getRealTimeDelay(port) != null) {
             throw new IllegalActionException(
                     port,
                     "A port that is connected to a "
-                            + "NetworkInputDevice is considered to be a network port, "
+                            + "NetworkReceiver is considered to be a network port, "
                             + "and a network port should not have realTimeDelay "
                             + "parameter annotated on it.");
         }
     }
 
     /** Return the actor associated with the events in the list. All events
-     *  within the list should be destined for the same actor.
+     *  within the list should share the same destination actor.
      *  @param currentEventList A list of events.
      *  @return Actor associated with events in the list.
      */
@@ -3756,7 +3754,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Keep track of a set of input ports to the composite actor governed by this director.
      *  These input ports are network input ports, which are input ports that are directly
-     *  connected to NetworkInputDevice's.
+     *  connected to NetworkReceiver's.
      */
     private HashSet<IOPort> _networkInputPorts;
 
@@ -3981,7 +3979,9 @@ public class PtidesBasicDirector extends DEDirector {
          *  update all future oracle fireAt times. Also keep track of
          *  the list of ignored future fireAt times, so that this director will not
          *  fire at these times.
+         *  <p>
          *  See {@link #_updateFireAtTimes}
+         *  </p>
          *  Also, upon updating the clock drift, the cached oracle time/platform time
          *  pair should also be updated. The old cache should be thrown away, while
          *  a new cache should be made for each pair.

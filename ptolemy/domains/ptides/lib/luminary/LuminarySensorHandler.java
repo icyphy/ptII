@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public abstract class LuminarySensorHandler extends SensorHandler {
 
     /**
-     * Constructs a LuminarySensorInputDevice object.
+     * Constructs a LuminarySensorHandler object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.

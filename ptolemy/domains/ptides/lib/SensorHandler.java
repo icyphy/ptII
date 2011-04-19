@@ -1,4 +1,4 @@
-/* SensorInputDevice simulates a hardware device that senses data from the environment.
+/* SensorHandler simulates a hardware device that senses data from the environment.
 
 @Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////SensorInputDevice
+////SensorHandler
 
 /** A model of sensor hardware on a target platform.
  *  This base class copies inputs unchanged to the outputs,
@@ -142,7 +142,7 @@ public class SensorHandler extends InputDevice {
             if (!flag) {
                 throw new IllegalActionException(
                         this,
-                        "A SensorInputDevice must be connected to a port " +
+                        "A SensorHandler must be connected to a port " +
                         "on the outside, and that port should not be a network " +
                         "port (should not have a port with the parameter " +
                         "networkPort).");

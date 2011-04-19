@@ -136,7 +136,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 115.0]">
             </property>
         </port>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 230.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -145,7 +145,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 125.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -202,7 +202,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice2" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler2" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 115.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -249,10 +249,10 @@
         <link port="sensor" relation="relation2"/>
         <link port="actuator" relation="relation5"/>
         <link port="reference" relation="relation7"/>
-        <link port="SensorInputDevice.input" relation="relation2"/>
-        <link port="SensorInputDevice.output" relation="relation3"/>
-        <link port="ActuatorOutputDevice.input" relation="relation4"/>
-        <link port="ActuatorOutputDevice.output" relation="relation5"/>
+        <link port="SensorHandler.input" relation="relation2"/>
+        <link port="SensorHandler.output" relation="relation3"/>
+        <link port="ActuatorSetup.input" relation="relation4"/>
+        <link port="ActuatorSetup.output" relation="relation5"/>
         <link port="Scale.input" relation="relation3"/>
         <link port="Scale.output" relation="relation8"/>
         <link port="TimedDelay.input" relation="relation"/>
@@ -260,8 +260,8 @@
         <link port="AddSubtract.plus" relation="relation9"/>
         <link port="AddSubtract.minus" relation="relation8"/>
         <link port="AddSubtract.output" relation="relation"/>
-        <link port="SensorInputDevice2.input" relation="relation7"/>
-        <link port="SensorInputDevice2.output" relation="relation6"/>
+        <link port="SensorHandler2.input" relation="relation7"/>
+        <link port="SensorHandler2.output" relation="relation6"/>
         <link port="TimedDelay2.input" relation="relation6"/>
         <link port="TimedDelay2.output" relation="relation9"/>
     </entity>

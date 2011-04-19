@@ -29,7 +29,7 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib;
 
 /**
- * A code generation adapter class for ptolemy.domains.ptides.lib.SensorInputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.SensorHandler.
  * @author Jia Zou, Isaac Liu
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -38,7 +38,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
  */
 public class SensorHandler extends InputDevice {
     /**
-     * Construct a SensorInputDevice adapter.
+     * Construct a SensorHandler adapter.
      * @param actor The associated actor.
      * 
      */

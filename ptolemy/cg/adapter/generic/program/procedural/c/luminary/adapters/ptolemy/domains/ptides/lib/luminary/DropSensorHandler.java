@@ -30,7 +30,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * A code generation adapter class for 
- * ptolemy.domains.ptides.lib.targets.luminary.DropSensorInputDevice. This actor
+ * ptolemy.domains.ptides.lib.targets.luminary.DropSensorHandler. This actor
  * is basically the same as GPInputDevice, only the C template includes more
  * calculations.
  * @author Jia Zou
@@ -40,14 +40,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (jiazou)
  */
 
-public class DropSensorInputHandler extends GPInputHandler {
+public class DropSensorHandler extends GPInputHandler {
     /** Construct an adapter with the given
-     *  ptolemy.domains.ptides.lib.DropSensorInputDevice actor.
-     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.DropSensorInputDevice actor.
+     *  ptolemy.domains.ptides.lib.DropSensorHandler actor.
+     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.DropSensorHandler actor.
      *  @exception IllegalActionException 
      *  @exception NameDuplicationException 
      */
-    public DropSensorInputHandler(
+    public DropSensorHandler(
             ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
@@ -70,8 +70,8 @@ public class DropSensorInputHandler extends GPInputHandler {
 //        List args = new LinkedList();
 //        CodeStream _codeStream = _templateParser.getCodeStream();
 //
-//        ptolemy.domains.ptides.lib.luminary.DropSensorInputDevice actor = 
-//            (ptolemy.domains.ptides.lib.luminary.DropSensorInputDevice) getComponent();
+//        ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor = 
+//            (ptolemy.domains.ptides.lib.luminary.DropSensorHandler) getComponent();
 //        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
 //                .getDirector());
 //

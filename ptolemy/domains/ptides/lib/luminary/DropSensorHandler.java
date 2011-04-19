@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class DropSensorHandler extends GPInputHandler {
 
     /**
-     * Construct a DropSensorInputDevice object.
+     * Construct a DropSensorHandler object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.

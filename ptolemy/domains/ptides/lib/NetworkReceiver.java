@@ -1,4 +1,4 @@
-/* NetworkInputDevice simulates a hardware device that reads data from the network.
+/* NetworkReceiver simulates a hardware device that reads data from the network.
 
 @Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////NetworkInputDevice
+////NetworkReceiver
 
 /** This actor abstracts the network component that receives network packages
  *  to other platforms.
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This actor is expected to be used in pairs with the {@link NetworkTransmitter}.
  *  The {@link NetworkTransmitter} produces network packages from the source
  *  platform, and this actor consumes those packages in the sink platform.
- *  Unlike SensorInputDevice for example, this actor is necessarily needed for
+ *  Unlike SensorHandler for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
  *  </p><p>
  *  This actor assumes the incoming token is a RecordToken, and includes a
@@ -86,7 +86,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class NetworkReceiver extends InputDevice {
 
     /**
-     * Constructs a NetworkInputDevice object.
+     * Constructs a NetworkReceiver object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.
@@ -162,7 +162,7 @@ public class NetworkReceiver extends InputDevice {
             int recordMicrostep = ((IntToken) (record.get(microstep)))
                     .intValue();
 
-            // The NetworkInputDevice parses the incoming token from
+            // The NetworkReceiver parses the incoming token from
             // the network, which is a 3 element RecordToken, and
             // produces an event of the token value equal to the payload,
             // and tag equal to the tag as stored in the RecordToken.
@@ -196,7 +196,7 @@ public class NetworkReceiver extends InputDevice {
         if (!flag) {
             throw new IllegalActionException(
                     this,
-                    "A NetworkInputDevice must be connected to a port " +
+                    "A NetworkReceiver must be connected to a port " +
                     "on the outside, and that port should be a network port " +
                     "(a port with the parameter networkPort).");
         }

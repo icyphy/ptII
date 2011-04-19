@@ -1,4 +1,4 @@
-/* ActuatorOutputDevice simulates a hardware device that sends actuation data to the environment.
+/* ActuatorSetup simulates a hardware device that sends actuation data to the environment.
 @Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
 
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////ActuatorOutputDevice
+////ActuatorSetup
 
 /** A model of actuator hardware on a target platform.
  *  This base class copies inputs unchanged to the outputs,
@@ -142,7 +142,7 @@ public class ActuatorSetup extends OutputDevice {
             if (!flag) {
                 throw new IllegalActionException(
                         this,
-                        "A ActuatorOutputDevice must be connected to a port " +
+                        "A ActuatorSetup must be connected to a port " +
                         "on the outside.");
             }
         }

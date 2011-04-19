@@ -12,13 +12,13 @@
         <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 195, 823, 530}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 195, 863, 465}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 416]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8393075712537">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{132.7746212121212, 190.9135101010101}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{161.9653503787884, 151.5953851010094}">
     </property>
     <property name="discDefaultRate" class="ptolemy.data.expr.Parameter" value="4 * encoderTicksPerRevolution">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -175,51 +175,64 @@
     <entity name="Tunnelling Ball Device Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 215.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 151, 945, 549}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 151, 984, 440}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 435]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 360]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0428581100905">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.7051592797788, 203.6569602272727}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.2222827740704, 206.391981514417}">
         </property>
         <property name="PtidyOSCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.ptidyos.PtidyOSCodeGenerator">
             <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.luminary">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 85.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 95.0]">
             </property>
         </property>
         <property name="PtidesPreemptiveEDFDirector" class="ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 80.0]">
+            <property name="highlightModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 90.0]">
             </property>
         </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
+        <port name="DropSensor" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 165.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 165.0]">
             </property>
             <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.00000">
             </property>
         </port>
-        <port name="port3" class="ptolemy.actor.TypedIOPort">
+        <port name="MotorActuator" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 195.0]">
             </property>
             <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
             </property>
         </port>
-        <port name="port2" class="ptolemy.actor.TypedIOPort">
+        <port name="EncoderSensor" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 225.0]">
             </property>
             <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.00000">
             </property>
         </port>
-        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0004">
+        <port name="UserInputSensor" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 195.0}">
+            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.00000">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
+        </port>
+        <entity name="ModelTimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value=".0072">
+            </property>
+            <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -1.0]">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -240,8 +253,36 @@
                 </property>
             </port>
         </entity>
-        <entity name="DropSensorInputDevice" class="ptolemy.domains.ptides.lib.luminary.DropSensorInputDevice">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 165.0}">
+        <entity name="DropHandler" class="ptolemy.domains.ptides.lib.luminary.DropSensorHandler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 165.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 1.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="24.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="17.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 0.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="28.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                    <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 10.0, 10.0, 0.0, 20.0}">
+                    </property>
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -269,7 +310,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 195.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 195.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
@@ -326,11 +367,11 @@
                 </property>
                 <property name="highlightModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="schedulerExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="synchronizationError" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="schedulerExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </property>
             <port name="dropSensor" class="ptolemy.actor.TypedIOPort">
@@ -366,7 +407,7 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="4.0E-4">
                 </property>
             </port>
-            <port name="controlStart" class="ptolemy.actor.TypedIOPort">
+            <port name="controlTrigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -380,8 +421,36 @@
                 </property>
             </port>
         </entity>
-        <entity name="MotorOutputDevice" class="ptolemy.domains.ptides.lib.luminary.MotorOutputDevice">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 195.0]">
+        <entity name="MotorOutput" class="ptolemy.domains.ptides.lib.luminary.MotorOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 195.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 11.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="24.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="17.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 10.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="28.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                    <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 10.0, 10.0, 0.0, 20.0}">
+                    </property>
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -398,12 +467,16 @@
                 </property>
             </port>
         </entity>
-        <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0036">
+        <entity name="ModelTimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.005">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 275.0]">
+            <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -1.0]">
+                    </property>
+                </property>
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 275.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -417,12 +490,40 @@
                 </property>
             </port>
         </entity>
-        <entity name="EncoderInputDevice" class="ptolemy.domains.ptides.lib.luminary.EncoderInputDevice">
+        <entity name="EncoderHandler" class="ptolemy.domains.ptides.lib.luminary.EncoderInputDevice">
             <property name="pin" class="ptolemy.data.expr.Parameter" value="4">
             </property>
             <property name="pad" class="ptolemy.data.expr.StringParameter" value="B">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 225.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 11.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="24.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="17.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 10.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="28.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                    <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 10.0, 10.0, 0.0, 20.0}">
+                    </property>
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -439,14 +540,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-            <property name="time" class="ptolemy.data.expr.Parameter" value="0.02">
-            </property>
-            <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 335.0]">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -455,7 +548,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 335.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 330.0]">
             </property>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -466,14 +559,56 @@
                 </property>
             </port>
         </entity>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        <entity name="UserInputHandler" class="ptolemy.domains.ptides.lib.luminary.EncoderInputDevice">
+            <property name="pin" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+            <property name="pad" class="ptolemy.data.expr.StringParameter" value="B">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 330.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 11.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="24.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="17.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 10.0}">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="28.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                    <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 10.0, 10.0, 0.0, 20.0}">
+                    </property>
                 </property>
             </property>
-            <vertex name="vertex1" value="[525.0, 195.0]">
-            </vertex>
-        </relation>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="4.0E-4">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+            </port>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -485,38 +620,44 @@
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[260.0, 275.0]">
+            <vertex name="vertex1" value="[325.0, 275.0]">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation"/>
-        <link port="port3" relation="relation9"/>
-        <link port="port2" relation="relation10"/>
-        <link port="TimeDelay.input" relation="relation5"/>
-        <link port="TimeDelay.output" relation="relation8"/>
-        <link port="DropSensorInputDevice.input" relation="relation"/>
-        <link port="DropSensorInputDevice.output" relation="relation6"/>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="DropSensor" relation="relation"/>
+        <link port="MotorActuator" relation="relation9"/>
+        <link port="EncoderSensor" relation="relation10"/>
+        <link port="UserInputSensor" relation="relation11"/>
+        <link port="ModelTimeDelay.input" relation="relation5"/>
+        <link port="ModelTimeDelay.output" relation="relation8"/>
+        <link port="DropHandler.input" relation="relation"/>
+        <link port="DropHandler.output" relation="relation6"/>
         <link port="Control.dropSensor" relation="relation6"/>
         <link port="Control.actuation" relation="relation5"/>
         <link port="Control.encoderTicks" relation="relation2"/>
-        <link port="Control.controlStart" relation="relation7"/>
-        <link port="MotorOutputDevice.input" relation="relation8"/>
-        <link port="MotorOutputDevice.output" relation="relation9"/>
-        <link port="TimeDelay2.input" relation="relation7"/>
-        <link port="TimeDelay2.output" relation="relation3"/>
-        <link port="EncoderInputDevice.input" relation="relation10"/>
-        <link port="EncoderInputDevice.output" relation="relation2"/>
-        <link port="SingleEvent.output" relation="relation4"/>
+        <link port="Control.controlTrigger" relation="relation7"/>
+        <link port="MotorOutput.input" relation="relation8"/>
+        <link port="MotorOutput.output" relation="relation9"/>
+        <link port="ModelTimeDelay2.input" relation="relation7"/>
+        <link port="ModelTimeDelay2.output" relation="relation3"/>
+        <link port="EncoderHandler.input" relation="relation10"/>
+        <link port="EncoderHandler.output" relation="relation2"/>
         <link port="Const.output" relation="relation7"/>
         <link port="Const.trigger" relation="relation3"/>
         <link port="Const.trigger" relation="relation4"/>
+        <link port="UserInputHandler.input" relation="relation11"/>
+        <link port="UserInputHandler.output" relation="relation4"/>
     </entity>
     <entity name="Dynamics Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 215.0}">
@@ -998,9 +1139,9 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Tunnelling Ball Device Controller.port" relation="relation"/>
-    <link port="Tunnelling Ball Device Controller.port3" relation="relation6"/>
-    <link port="Tunnelling Ball Device Controller.port2" relation="relation2"/>
+    <link port="Tunnelling Ball Device Controller.DropSensor" relation="relation"/>
+    <link port="Tunnelling Ball Device Controller.MotorActuator" relation="relation6"/>
+    <link port="Tunnelling Ball Device Controller.EncoderSensor" relation="relation2"/>
     <link port="Dynamics Model.photoPulse" relation="relation"/>
     <link port="Dynamics Model.encoderPulse" relation="relation2"/>
     <link port="Dynamics Model.ballTrigger" relation="relation7"/>

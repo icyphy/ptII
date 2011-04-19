@@ -71,11 +71,11 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 115.0]">
             </property>
         </port>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 105.0]">
             </property>
         </entity>
-        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 115.0]">
             </property>
         </entity>
@@ -174,10 +174,10 @@
         </relation>
         <link port="sensor" relation="relation2"/>
         <link port="actuator" relation="relation5"/>
-        <link port="SensorInputDevice.input" relation="relation2"/>
-        <link port="SensorInputDevice.output" relation="relation"/>
-        <link port="ActuatorOutputDevice.input" relation="relation6"/>
-        <link port="ActuatorOutputDevice.output" relation="relation5"/>
+        <link port="SensorHandler.input" relation="relation2"/>
+        <link port="SensorHandler.output" relation="relation"/>
+        <link port="ActuatorSetup.input" relation="relation6"/>
+        <link port="ActuatorSetup.output" relation="relation5"/>
         <link port="CompositeActor.port" relation="relation"/>
         <link port="CompositeActor.port3" relation="relation6"/>
     </entity>

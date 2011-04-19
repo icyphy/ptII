@@ -871,7 +871,7 @@ same time stamp as the input event.</text></svg></configure>
             <link port="running.UTCClock" relation="UTCClockRelation"/>
             <link port="running.UTCSample" relation="UTCSampleRelation"/>
         </entity>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 140.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -882,7 +882,7 @@ same time stamp as the input event.</text></svg></configure>
                 </property>
             </port>
         </entity>
-        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 180.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -891,7 +891,7 @@ same time stamp as the input event.</text></svg></configure>
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice2" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler2" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 205.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -902,7 +902,7 @@ same time stamp as the input event.</text></svg></configure>
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice3" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler3" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 270.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -913,7 +913,7 @@ same time stamp as the input event.</text></svg></configure>
                 </property>
             </port>
         </entity>
-        <entity name="SensorInputDevice4" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+        <entity name="SensorHandler4" class="ptolemy.domains.ptides.lib.SensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 335.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -924,7 +924,7 @@ same time stamp as the input event.</text></svg></configure>
                 </property>
             </port>
         </entity>
-        <entity name="ActuatorOutputDevice2" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+        <entity name="ActuatorSetup2" class="ptolemy.domains.ptides.lib.ActuatorSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 270.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -969,18 +969,18 @@ same time stamp as the input event.</text></svg></configure>
         <link port="ModalModel.resume" relation="relation11"/>
         <link port="ModalModel.UTCClock" relation="relation12"/>
         <link port="ModalModel.UTCSample" relation="relation8"/>
-        <link port="SensorInputDevice.input" relation="relation5"/>
-        <link port="SensorInputDevice.output" relation="relation9"/>
-        <link port="ActuatorOutputDevice.input" relation="relation7"/>
-        <link port="ActuatorOutputDevice.output" relation="relation2"/>
-        <link port="SensorInputDevice2.input" relation="relation"/>
-        <link port="SensorInputDevice2.output" relation="relation10"/>
-        <link port="SensorInputDevice3.input" relation="relation3"/>
-        <link port="SensorInputDevice3.output" relation="relation11"/>
-        <link port="SensorInputDevice4.input" relation="relation4"/>
-        <link port="SensorInputDevice4.output" relation="relation12"/>
-        <link port="ActuatorOutputDevice2.input" relation="relation8"/>
-        <link port="ActuatorOutputDevice2.output" relation="relation6"/>
+        <link port="SensorHandler.input" relation="relation5"/>
+        <link port="SensorHandler.output" relation="relation9"/>
+        <link port="ActuatorSetup.input" relation="relation7"/>
+        <link port="ActuatorSetup.output" relation="relation2"/>
+        <link port="SensorHandler2.input" relation="relation"/>
+        <link port="SensorHandler2.output" relation="relation10"/>
+        <link port="SensorHandler3.input" relation="relation3"/>
+        <link port="SensorHandler3.output" relation="relation11"/>
+        <link port="SensorHandler4.input" relation="relation4"/>
+        <link port="SensorHandler4.output" relation="relation12"/>
+        <link port="ActuatorSetup2.input" relation="relation8"/>
+        <link port="ActuatorSetup2.output" relation="relation6"/>
     </entity>
     <entity name="Supervisor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 230.0]">

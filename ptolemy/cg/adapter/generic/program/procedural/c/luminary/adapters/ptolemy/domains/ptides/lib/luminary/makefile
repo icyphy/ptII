@@ -51,7 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 JSRCS = \
-	DropSensorInputHandler.java \
+	DropSensorHandler.java \
 	EncoderHandler.java \
 	GPInputHandler.java \
 	GPOutputSetup.java \
@@ -61,7 +61,7 @@ JSRCS = \
 	TimeTriggeredEncoderHandler.java
 
 OTHER_FILES_TO_BE_JARED = \
-	DropSensorInputHandler.c \
+	DropSensorHandler.c \
 	EncoderHandler.c \
 	GPInputHandler.c \
 	GPOutputSetup.c \

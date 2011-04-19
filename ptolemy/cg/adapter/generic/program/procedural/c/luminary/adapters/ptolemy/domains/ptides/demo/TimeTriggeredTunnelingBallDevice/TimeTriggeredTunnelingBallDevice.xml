@@ -238,7 +238,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="DropSensorInputDevice" class="ptolemy.domains.ptides.lib.luminary.DropSensorInputDevice">
+        <entity name="DropSensorHandler" class="ptolemy.domains.ptides.lib.luminary.DropSensorHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 165.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -452,8 +452,8 @@
         <link port="port2" relation="relation2"/>
         <link port="TimeDelay.input" relation="relation3"/>
         <link port="TimeDelay.output" relation="relation8"/>
-        <link port="DropSensorInputDevice.input" relation="relation"/>
-        <link port="DropSensorInputDevice.output" relation="relation5"/>
+        <link port="DropSensorHandler.input" relation="relation"/>
+        <link port="DropSensorHandler.output" relation="relation5"/>
         <link port="MotorOutputDevice.input" relation="relation8"/>
         <link port="MotorOutputDevice.output" relation="relation9"/>
         <link port="TimeDelay2.input" relation="relation7"/>

@@ -85,7 +85,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 280.0]">
             </property>
         </port>
-        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+        <entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 200.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -155,8 +155,8 @@
         <link port="port2" relation="relation2"/>
         <link port="port3" relation="relation5"/>
         <link port="port4" relation="relation6"/>
-        <link port="NetworkOutputDevice.input" relation="relation"/>
-        <link port="NetworkOutputDevice.output" relation="relation2"/>
+        <link port="NetworkTransmitter.input" relation="relation"/>
+        <link port="NetworkTransmitter.output" relation="relation2"/>
         <link port="MasterClock.output" relation="relation"/>
         <link port="MasterClock.input" relation="relation3"/>
         <link port="Scale.input" relation="relation5"/>
@@ -248,7 +248,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 290.0}">
             </property>
         </port>
-        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+        <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 240.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -320,8 +320,8 @@
         <link port="port3" relation="relation2"/>
         <link port="port" relation="relation5"/>
         <link port="port4" relation="relation6"/>
-        <link port="NetworkInputDevice.input" relation="relation2"/>
-        <link port="NetworkInputDevice.output" relation="relation"/>
+        <link port="NetworkReceiver.input" relation="relation2"/>
+        <link port="NetworkReceiver.output" relation="relation"/>
         <link port="SlaveClock.input" relation="relation"/>
         <link port="SlaveClock.output" relation="relation3"/>
         <link port="Scale.input" relation="relation5"/>

@@ -1,4 +1,4 @@
-/* NetworkInputDevice simulates a hardware device that sends data to the network.
+/* NetworkTransmitter simulates a hardware device that sends data to the network.
 
 @Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////NetworkOutputDevice
+////NetworkTransmitter
 
 /** This actor abstracts the network component that sends network packages
  *  to other platforms.
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This actor produces network packages from the source
  *  platform, and the {@link NetworkReceiver} consumes those packages 
  *  in the sink platform.
- *  Unlike SensorOutputDevice for example, this actor is necessarily needed for
+ *  Unlike {@link ActuatorSetup} for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
  *  </p><p>
  *  This actor consumes the input token, and creates a RecordToken, with three
@@ -82,7 +82,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class NetworkTransmitter extends OutputDevice {
 
     /**
-     * Constructs a NetworkOutputDevice object.
+     * Constructs a NetworkTransmitter object.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException if the super constructor throws it.
@@ -176,7 +176,7 @@ public class NetworkTransmitter extends OutputDevice {
         if (!flag) {
             throw new IllegalActionException(
                     this,
-                    "A NetworkOutputDevice must be connected to a port " +
+                    "A NetworkTransmitter must be connected to a port " +
                     "on the outside, and that port should be a network port " +
                     "(a port with the parameter networkPort).");
         }

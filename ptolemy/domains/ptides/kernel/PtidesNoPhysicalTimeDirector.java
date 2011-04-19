@@ -210,7 +210,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
             PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
                     .get(eventIndex);
             if (nextEvent.hasTheSameTagAs(event)) {
-                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                if (_sameEquivalenceClass(event, nextEvent)) {
                     eventList.add(((PtidesListEventQueue) _eventQueue)
                             .take(eventIndex));
                 } else {
