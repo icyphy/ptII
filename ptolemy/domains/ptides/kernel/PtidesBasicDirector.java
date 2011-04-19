@@ -1534,9 +1534,10 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Get the dependency between the input and output ports. If the
-     *  ports does not belong to the same actor, an exception is thrown.
-     *  Depending on the actor, the corresponding getDependency() method in
+    /** Get the dependency between an input and an output ports. If the
+     *  ports do not belong to the same actor, an exception is thrown.
+     *  Depending on the type of the actor (atomic or composite),
+     *  the corresponding getDependency() method in
      *  the actor's causality interface is called.
      *  @param input The input port.
      *  @param output The output port.
@@ -1548,6 +1549,8 @@ public class PtidesBasicDirector extends DEDirector {
     protected static Dependency _getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
         Actor actor = (Actor) input.getContainer();
+        // If the output is null, getDependency() of the causality interface
+        // would still ensure the current dependency is returned.
         if (output != null) {
             Actor outputActor = (Actor) output.getContainer();
             if (actor != outputActor) {

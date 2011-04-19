@@ -341,9 +341,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      *  the trigger event's relative deadline is the relativeDeadline
      *  parameter of this event's destination port. The absolute deadline of this
      *  event is the timestamp of the event plus the relative deadline.
-     *  @param event Event to find deadline for.
-     *  @return deadline of this event.
-     *  @exception IllegalActionException If relative deadline of the event
+     *  @param event Reference event whose deadline we are interested in.
+     *  @return deadline The deadline of this event.
+     *  @exception IllegalActionException If the relative deadline of the event
      *  cannot be obtained.
      */
     protected Time _getAbsoluteDeadline(PtidesEvent event)
