@@ -52,7 +52,8 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      *  @param ontology The domain and range unit system ontology for this
      *   concept function. 
      *  @param mathOperation Indicates whether this concept function will perform
-     *   multiplication or division for the unit system concepts.
+     *   addition, subtraction, multiplication or division for the
+     *   FlatTokenInfiniteConcepts.
      *  @throws IllegalActionException Thrown if the concept function cannot be created.
      */
     public ConstPropagationMathFunctions(Ontology ontology, String mathOperation)
@@ -76,14 +77,13 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
     ////                         protected methods                 ////
     
     /** Return the function output from the given input arguments. The output
-     *  concept is a UnitConcept that is the result of multiplication or division
-     *  of the two input UnitConcepts, or the top of the ontology lattice if there
-     *  is no UnitConcept in the ontology that represents the product or quotient
-     *  of the two input concepts.
-     *  @param argValues The 2 UnitConcept input arguments.
-     *  @return The output UnitConcept.
+     *  concept is a FlatTokenInfiniteConcept that is the result of the
+     *  addition, subtraction, multiplication or division of the two input
+     *  FlatTokenInfiniteConcepts.
+     *  @param argValues The 2 FlatTokenInfiniteConcept input arguments.
+     *  @return The output FlatTokenInfiniteConcept.
      *  @throws IllegalActionException Thrown if there is a problem creating
-     *   the output RecordConcept.
+     *   the output FlatTokenInfiniteConcept.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
         throws IllegalActionException {

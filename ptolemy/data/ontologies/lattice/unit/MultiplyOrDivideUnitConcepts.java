@@ -82,7 +82,7 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
      *  @param argValues The 2 UnitConcept input arguments.
      *  @return The output UnitConcept.
      *  @throws IllegalActionException Thrown if there is a problem creating
-     *   the output RecordConcept.
+     *   the output UnitConcept.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
         throws IllegalActionException {
