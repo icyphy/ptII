@@ -17,30 +17,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.2170138888889, 191.6371527777778}">
     </property>
-    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
-        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
-        </property>
-        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg>
-<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
-</svg>
-</configure>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 165.0]">
-        </property>
-        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
-        </property>
-        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
-        </property>
-        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
-        </property>
-        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
-        </property>
-        <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-        </property>
-    </property>
     <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{FuelUnitDimensionsOntology, true}">
     </property>
     <property name="IntegratorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">

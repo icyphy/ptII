@@ -503,7 +503,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_1.9705882352941">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_1.9705882352953">
             </property>
         </port>
     </entity>
@@ -524,7 +524,7 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_1.9705882352941">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_1.9705882352953">
             </property>
         </port>
     </entity>
@@ -597,7 +597,7 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_1.9705882352941">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_1.9705882352953">
             </property>
         </port>
     </entity>
@@ -675,7 +675,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-0.1492537313433">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-0.149253731343">
             </property>
         </port>
     </entity>
@@ -696,7 +696,7 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-0.1492537313433">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-0.149253731343">
             </property>
         </port>
     </entity>
@@ -769,7 +769,7 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-0.1492537313433">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-0.149253731343">
             </property>
         </port>
     </entity>

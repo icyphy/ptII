@@ -1,6 +1,6 @@
 /* The default adapter class for ptolemy.actor.lib.Const.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,6 +32,7 @@ import java.util.List;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.graph.Inequality;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,6 +56,7 @@ public class Const extends LatticeOntologyAdapter {
     public Const(LatticeOntologySolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
         super(solver, actor, false);
+        _constActor = (ptolemy.actor.lib.Const) getComponent();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -69,8 +71,43 @@ public class Const extends LatticeOntologyAdapter {
      *   the constraint list.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Const actor = (ptolemy.actor.lib.Const) getComponent();
-        setAtLeast(actor.output, actor.value);
+        setAtLeast(_constActor.output, _constActor.value);
         return super.constraintList();
     }
+    
+    /** Return a list of property-able NamedObj contained by the component. All
+     *  ports and parameters are considered property-able. For the Const actor,
+     *  remove the trigger port since it by default they should not be
+     *  evaluated by the ontology solver.
+     *  @return The list of property-able named object.
+     */
+    public List<Object> getPropertyables() {
+        List<Object> result = super.getPropertyables();
+        result.remove(_constActor.trigger);
+        
+        return result;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /** Return the list of property-able Attributes by calling the super
+     *  class method. For the Const actor, remove the firingCountLimit
+     *  and NONE attributes since by default they should not be evaluated by
+     *  the ontology solver. 
+     *  @return The list of property-able Attributes.
+     */
+    protected List<Attribute> _getPropertyableAttributes() {
+        List<Attribute> result = super._getPropertyableAttributes();
+        result.remove(_constActor.firingCountLimit);
+        result.remove(_constActor.getAttribute("NONE"));
+        
+        return result;        
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+    
+    /** The Const actor referred to by this lattice ontology adapter. */
+    private ptolemy.actor.lib.Const _constActor;
 }
