@@ -44,7 +44,7 @@ import ptolemy.kernel.util.StringAttribute;
  The derivative in the continuous domain.
  In continuous-time modeling, one should generally avoid taking derivatives
  directly. It is better to use an {@see Integrator} actor in a feedback loop.
- The input to the Integrator is the derivative its output.
+ The input to the Integrator is the derivative of its output.
  The reason is that small amounts of noise on the input of
  a derivative actor result in large output fluctuations.
  Since continuous-time simulation involves choosing step sizes,
@@ -84,7 +84,7 @@ import ptolemy.kernel.util.StringAttribute;
  If upon any firing the input is absent, then both outputs
  will be absent, and the actor will reinitialize. Hence, on
  the next firing where the input is present, this actor will
- behave as if that firing is very first firing.
+ behave as if that firing is a first firing.
  <p>
  Note that this actor exercises no control at all over step sizes.
  It simply works with whatever step sizes are provided. Thus,
