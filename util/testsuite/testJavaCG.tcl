@@ -39,7 +39,8 @@ if {[string compare test [info procs test]] == 1} then {
 proc testJavaCG {model} {
     testJavaCGInline $model true
     testJavaCGInline $model false
-    testJavaCGInline $model true 1 true true
+    # Below are the settings used to generate code for very large models.
+    testJavaCGInline $model false 1 true true
 }
 
 proc testJavaCGInline {model inline {maximumLinesPerBlock 2500} {generateInSubdirectory false} {variablesAsArrays false}} {
