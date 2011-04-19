@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -48,6 +49,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 /**
  *  This director implements preemptive PTIDES scheduling algorithm, and uses
@@ -85,6 +87,14 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Call super's initialize method, and then 
+     *  initialize saved deadline variable.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _pureEventDeadlines = new HashMap<NamedObj, Time>();
+    }
+
     /** Clear what's stored in _eventToProcess, and call the super method
      *  of preinitialize.
      *  @exception IllegalActionException If the superclass throws
@@ -100,6 +110,72 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Calculate the absolute deadline for the pure event. This uses
+     *  information stored earlier. The exact calculation is done as follows:
+     *  <p>
+     *  If the new event(e') is produced due to the processing of a trigger
+     *  event(e), then the absolute deadline of the new event
+     *  AD(e') = AD(e) + (tau(e') - tau(e) - delta). Here, tau(e') and
+     *  tau(e) are the timestamps of e' and e, while delta is the minimum
+     *  dependency between the destination port of the trigger event and any
+     *  of the output ports.
+     *  </p><p>
+     *  If the new event (e') is produced due to the processing of a earlier
+     *  pure event, then the formula is the same, only delta == 0;
+     *  FIXME: this above reasoning and equations only work in the case where
+     *  a pure event will lead to an output event of the same timestamp.
+     *  This is true for actors such as VariableDelayCounter, but it's not
+     *  true in general.s
+     *  @see #_saveEventInformation(List)
+     */
+    protected Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
+
+        Time timeDiff = (Time) _pureEventDelays.get(actor);
+        Time lastAbsoluteDeadline = (Time) _pureEventDeadlines.get(actor);
+        // This could happen during initialization, and a modal model calls fireAt() in order
+        // to be initialized. In which case we give it the highest priority because it is
+        // an initialization event.
+        if (timeDiff == null) {
+            return Time.NEGATIVE_INFINITY;
+        }
+        timeDiff = nextTimestamp.subtract(timeDiff);
+        // If the difference between the new timestamp and the old timestamp is
+        // less than the minimum model time delay, then the absolute deadline is
+        // simply that of the trigger event.
+        // This case could happen if a pure event
+        // is produced, which later triggers another firing of the actor, and produces
+        // an event that is of timestamp greater than or equal to the minimum model
+        // time delay.
+        if (timeDiff.compareTo(_zero) < 0) {
+            return lastAbsoluteDeadline;
+            //            throw new InternalErrorException("While computing the absolute deadline" +
+            //                            "of a new pure event, the difference between the new " +
+            //                            "timestamp and the old timestamp is less than the minimum" +
+            //                            "model time delay");
+        }
+        return lastAbsoluteDeadline.add(timeDiff);
+    }
+
+    /** Perform bookkeeping after actor firing. This procedure consist of
+     *  two actions:
+     *  <ol>
+     *  <li>An actor has just been fired. A token with destination to the
+     *  outside of the Ptides platform could have been produced. If so,
+     *  the corresponding event is taken out of event queue, and the token
+     *  is placed at the actuator/network port, ready to be transferred
+     *  to the outside.</li>
+     *  <li> Bookkeeping structures that keep track of which actor
+     *  has just fired are cleared.</li>
+     *  </ol>
+     *  @exception IllegalActionException If unable to get the next actuation event.
+     */
+    protected void _actorFired() throws IllegalActionException {
+        super._actorFired();
+        if (_lastActorFired != null) {
+            _pureEventDelays.remove(_lastActorFired);
+        }
+    }
 
     /** Calculate the deadline for each channel in each input port within the
      *  composite actor governed by this Ptides director. Deadlines are calculated
@@ -260,6 +336,24 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         return false;
     }
 
+    /** Return the absolute deadline of this event. If this event is a pure event,
+     *  then the relative deadline should be stored in the event itself. Otherwise
+     *  the trigger event's relative deadline is the relativeDeadline
+     *  parameter of this event's destination port. The absolute deadline of this
+     *  event is the timestamp of the event plus the relative deadline.
+     *  @param event Event to find deadline for.
+     *  @return deadline of this event.
+     *  @exception IllegalActionException If relative deadline of the event
+     *  cannot be obtained.
+     */
+    protected Time _getAbsoluteDeadline(PtidesEvent event)
+            throws IllegalActionException {
+        if (event.isPureEvent()) {
+            return event.absoluteDeadline();
+        }
+        return event.timeStamp().add(_getRelativeDeadline(event.ioPort()));
+    }
+
     /** Return the event that was selected to preempt in _preemptExecutingActor.
      *  If no event was selected, return the event of smallest deadline that is
      *  safe to process.
@@ -411,6 +505,29 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
     }
 
+    /** Call this moethod from the super class, then save the absolute
+     *  deadline for the last executing event.
+     */
+    protected void _saveEventInformation(List<PtidesEvent> eventsToProcess)
+    throws IllegalActionException {
+        super._saveEventInformation(eventsToProcess);
+        Actor actorToFire = eventsToProcess.get(0).actor();
+        Time lastAbsoluteDeadline = Time.POSITIVE_INFINITY;
+        List<IOPort> inputPorts = new ArrayList<IOPort>();
+
+        for (PtidesEvent event : eventsToProcess) {
+            Time absoluateDeadline = _getAbsoluteDeadline(event);
+            if (absoluateDeadline.compareTo(lastAbsoluteDeadline) < 0) {
+                lastAbsoluteDeadline = absoluateDeadline;
+            }
+            IOPort port = event.ioPort();
+            if (port != null) {
+                inputPorts.add(port);
+            }
+        }
+        _pureEventDeadlines.put(actorToFire, lastAbsoluteDeadline);
+    }
+
     /** Set the relativeDeadline parameter for an input port.
      *  @param inputPort The port to set the parameter.
      *  @param dependency The value of the relativeDeadline to be set.
@@ -489,5 +606,33 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private method                 ////
+
+    /** Returns the relativeDeadline parameter.
+     *  @param port The port the relativeDeadline is associated with.
+     *  @return relativeDeadline parameter
+     *  @exception IllegalActionException If token of relativeDeadline
+     *  parameter cannot be evaluated.
+     */
+    private static double _getRelativeDeadline(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("relativeDeadline");
+        if (parameter != null) {
+            return ((DoubleToken) parameter.getToken()).doubleValue();
+        } else {
+            return Double.NEGATIVE_INFINITY;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Store absolute deadline information for pure events that will be produced
+     *  in the future.
+     */
+    private Map _pureEventDeadlines;
 
 }

@@ -32,14 +32,13 @@ package ptolemy.domains.ptides.kernel;
 
 import java.util.List;
 
-import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  *  This director implements preemptive PTIDES scheduling algorithm, and uses
- *  EDF as the foundation to determine whether we should preempt executing events.
+ *  model timestamps to determine whether we should preempt executing events.
  *  Notice this does not implement EDF because the event queue is ordered in timestamp
  *  order but not deadline order. Also only the first event from the event queue
  *  is analyzed for safe to process.
@@ -86,21 +85,18 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
             // if the input event already processed, so should the pure event.
             return true;
         }
-        Time absNextDeadline = _getAbsoluteDeadline(event);
-        DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
-        List eventList = (List<PtidesEvent>) (doubleTimedEvent.contents);
-        for (int i = 0; i < eventList.size(); i++) {
-            Time absExecutingDeadline = _getAbsoluteDeadline((PtidesEvent) eventList
-                    .get(i));
-            if (absExecutingDeadline.compareTo(absNextDeadline) <= 0) {
-                return false;
-            }
+        PtidesEvent lastEvent = ((List<PtidesEvent>)_currentlyExecutingStack.peek()
+                .contents).get(0);
+        // If last event has smaller or equal the timestamp of the new event,
+        // do not preempt.
+        if (lastEvent.compareTo(event) <= 0) {
+            return false;
         }
         if (_debugging) {
             _debug("We decided to preempt the current "
-                    + "executing event at actor: "
-                    + ((PtidesEvent) eventList.get(0)).actor()
-                    + " with another event at actor: " + event.actor()
+                    + "executing event: "
+                    + lastEvent.toString()
+                    + " with another event: " + event.toString()
                     + ". This preemption happened at platform execution " +
                     		"physical time "
                     + getPlatformPhysicalTag(_executionTimeClock).timestamp + "."

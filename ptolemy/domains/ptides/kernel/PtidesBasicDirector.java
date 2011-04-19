@@ -681,7 +681,6 @@ public class PtidesBasicDirector extends DEDirector {
         _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
         _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         _lastConsumedTag = new HashMap<NamedObj, Tag>();
-        _pureEventDeadlines = new HashMap<NamedObj, Time>();
         _pureEventDelays = new HashMap<NamedObj, Time>();
         _pureEventSourcePorts = new HashMap<NamedObj, IOPort>();
         _physicalTimeExecutionStarted = null;
@@ -914,6 +913,16 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected Stack<DoubleTimedEvent> _currentlyExecutingStack;
 
+    /** The last actor that was fired by this director. If null, then after
+     *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
+     *  _pureEventSourcePorts that are associated with this actor should be removed.
+     */
+    protected Actor _lastActorFired;
+
+    /** Store delays of pure events for the calculation of absolute deadline.
+     */
+    protected Map _pureEventDelays;
+
     /** Zero time.
      */
     protected static Time _zero;
@@ -940,7 +949,6 @@ public class PtidesBasicDirector extends DEDirector {
 
         // Now clear _pureEvent* since an actor has finished firing.
         if (_lastActorFired != null) {
-            _pureEventDeadlines.remove(_lastActorFired);
             _pureEventDelays.remove(_lastActorFired);
             _pureEventSourcePorts.remove(_lastActorFired);
         }
@@ -1096,7 +1104,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
             double[] delayOffsets = new double[size];
             for (Integer portChannelMinDelay : channelDependency.keySet()) {
-                delayOffsets[portChannelMinDelay.intValue()] = _calculateMinDelayForPortChannel(
+                delayOffsets[portChannelMinDelay.intValue()] = _calculateDelayOffsetsForPortChannel(
                         inputPort, portChannelMinDelay);
             }
             _setDelayOffset(inputPort, delayOffsets);
@@ -1464,24 +1472,6 @@ public class PtidesBasicDirector extends DEDirector {
             result.addAll(_finiteDependentPorts(output));
         }
         return result;
-    }
-
-    /** Return the absolute deadline of this event. If this event is a pure event,
-     *  then the relative deadline should be stored in the event itself. Otherwise
-     *  the trigger event's relative deadline is the relativeDeadline
-     *  parameter of this event's destination port. The absolute deadline of this
-     *  event is the timestamp of the event plus the relative deadline.
-     *  @param event Event to find deadline for.
-     *  @return deadline of this event.
-     *  @exception IllegalActionException If relative deadline of the event
-     *  cannot be obtained.
-     */
-    protected Time _getAbsoluteDeadline(PtidesEvent event)
-            throws IllegalActionException {
-        if (event.isPureEvent()) {
-            return event.absoluteDeadline();
-        }
-        return event.timeStamp().add(_getRelativeDeadline(event.ioPort()));
     }
 
     /** Get the dependency between the input and output ports. If the
@@ -2316,6 +2306,60 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    /** Save the information of the events ready to be processed. This includes
+     *  the source port of the last firing event, the timestamp,
+     *  and the minimum model time delay of the last executing event. These information
+     *  is used to calculate the absolute deadline of the produced pure event.
+     *  @param eventsToProcess The list of events to be processed.
+     *  @exception IllegalActionException If abslute deadline of an event,
+     *  finite dependent ports of a port, or dependency between two ports
+     *  cannot be evaluated.
+     */
+    protected void _saveEventInformation(List<PtidesEvent> eventsToProcess)
+            throws IllegalActionException {
+
+        // The firing of this event is from this port. If the firing resulted in the production
+        // of a pure event, then that pure event is causally related to all events coming from
+        // this input port (and those in its equivalence class).
+        Actor actorToFire = eventsToProcess.get(0).actor();
+
+        // If the firing of this event triggered another pure event, we need to calculate the
+        // deadline of the pure event through the use of the last timestamp, the (smallest)
+        // deadline of the last event(s), and the (smallest) \delta of the causality delays.
+        // which we save here.
+        Time lastTimestamp = eventsToProcess.get(0).timeStamp();
+        List<IOPort> inputPorts = new ArrayList<IOPort>();
+        for (PtidesEvent event : eventsToProcess) {
+            IOPort port = event.ioPort();
+            if (port != null) {
+                inputPorts.add(port);
+            }
+        }
+
+        // Now get the minimum dependency of all output ports. If the last executing event
+        // is a pure event, then the last dependency is 0.
+        // @see #_absoluteDeadlineForPureEvent()
+        SuperdenseDependency lastDependency;
+        if (eventsToProcess.get(0).isPureEvent()) {
+            lastDependency = SuperdenseDependency.OTIMES_IDENTITY;
+        } else {
+            lastDependency = SuperdenseDependency.OPLUS_IDENTITY;
+            for (IOPort inputPort : inputPorts) {
+                Collection<IOPort> finiteDependentPorts = _finiteDependentPorts(inputPort);
+                for (IOPort outputPort : finiteDependentPorts) {
+                    SuperdenseDependency newDependency = (SuperdenseDependency) _getDependency(
+                            inputPort, outputPort);
+                    if (newDependency.compareTo(lastDependency) < 0) {
+                        lastDependency = newDependency;
+                    }
+                }
+            }
+        }
+        _pureEventSourcePorts.put(actorToFire, eventsToProcess.get(0).ioPort());
+        _pureEventDelays.put(actorToFire,
+                lastTimestamp.add(lastDependency.timeValue()));
+    }
+
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in, AND are destined to the same finite equivalence class. These events
      *  should be removed from the event queue in the process.
@@ -2741,50 +2785,12 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Calculate the absolute deadline for the pure event. This uses
-     *  information stored earlier. The exact calculation is done as follows:
-     *  <p>
-     *  If the new event(e') is produced due to the processing of a trigger
-     *  event(e), then the absolute deadline of the new event
-     *  AD(e') = AD(e) + (tau(e') - tau(e) - delta). Here, tau(e') and
-     *  tau(e) are the timestamps of e' and e, while delta is the minimum
-     *  dependency between the destination port of the trigger event and any
-     *  of the output ports.
-     *  </p><p>
-     *  If the new event (e') is produced due to the processing of a earlier
-     *  pure event, then the formula is the same, only delta == 0;
-     *  FIXME: this above reasoning and equations only work in the case where
-     *  a pure event will lead to an output event of the same timestamp.
-     *  This is true for actors such as VariableDelayCounter, but it's not
-     *  true in general.s
-     *  @see #_saveEventInformation(List)
+    /** Calculate the absolute deadline for the pure event. This class
+     *  does not use deadline to perform scheduling, thus this method
+     *  is not used. Instead it is a placeholder for subclasses to override.
      */
-    private Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
-
-        Time timeDiff = (Time) _pureEventDelays.get(actor);
-        Time lastAbsoluteDeadline = (Time) _pureEventDeadlines.get(actor);
-        // This could happen during initialization, and a modal model calls fireAt() in order
-        // to be initialized. In which case we give it the highest priority because it is
-        // an initialization event.
-        if (timeDiff == null) {
-            return Time.NEGATIVE_INFINITY;
-        }
-        timeDiff = nextTimestamp.subtract(timeDiff);
-        // If the difference between the new timestamp and the old timestamp is
-        // less than the minimum model time delay, then the absolute deadline is
-        // simply that of the trigger event.
-        // This case could happen if a pure event
-        // is produced, which later triggers another firing of the actor, and produces
-        // an event that is of timestamp greater than or equal to the minimum model
-        // time delay.
-        if (timeDiff.compareTo(_zero) < 0) {
-            return lastAbsoluteDeadline;
-            //            throw new InternalErrorException("While computing the absolute deadline" +
-            //                            "of a new pure event, the difference between the new " +
-            //                            "timestamp and the old timestamp is less than the minimum" +
-            //                            "model time delay");
-        }
-        return lastAbsoluteDeadline.add(timeDiff);
+    protected Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
+        return null;
     }
 
     /** For a particular input port channel pair, calculate the delay offset.
@@ -2795,7 +2801,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  be evaluated, or token of actorsReceiveEventsInTimestampOrder
      *  parameter cannot be evaluated.
      */
-    private double _calculateMinDelayForPortChannel(IOPort inputPort,
+    private double _calculateDelayOffsetsForPortChannel(IOPort inputPort,
             Integer channel) throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
         for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
@@ -3022,23 +3028,6 @@ public class PtidesBasicDirector extends DEDirector {
                     .doubleValue());
         }
         return null;
-    }
-
-    /** Returns the relativeDeadline parameter.
-     *  @param port The port the relativeDeadline is associated with.
-     *  @return relativeDeadline parameter
-     *  @exception IllegalActionException If token of relativeDeadline
-     *  parameter cannot be evaluated.
-     */
-    private static double _getRelativeDeadline(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("relativeDeadline");
-        if (parameter != null) {
-            return ((DoubleToken) parameter.getToken()).doubleValue();
-        } else {
-            return Double.NEGATIVE_INFINITY;
-        }
     }
 
     /** For all deeply contained actors, if annotateModelDelay is true,
@@ -3283,66 +3272,6 @@ public class PtidesBasicDirector extends DEDirector {
                         + currentEventList.remainingExecutionTime);
             }
         }
-    }
-
-    /** Save the information of the events ready to be processed. This includes
-     *  the source port of the last firing event, the timestamp, absolute deadline,
-     *  and the minimum model time delay of the last executing event. These information
-     *  is used to calculate the absolute deadline of the produced pure event.
-     *  @param eventsToProcess The list of events to be processed.
-     *  @exception IllegalActionException If abslute deadline of an event,
-     *  finite dependent ports of a port, or dependency between two ports
-     *  cannot be evaluated.
-     */
-    private void _saveEventInformation(List<PtidesEvent> eventsToProcess)
-            throws IllegalActionException {
-
-        // The firing of this event is from this port. If the firing resulted in the production
-        // of a pure event, then that pure event is causally related to all events coming from
-        // this input port (and those in its equivalence class).
-        Actor actorToFire = eventsToProcess.get(0).actor();
-
-        // If the firing of this event triggered another pure event, we need to calculate the
-        // deadline of the pure event through the use of the last timestamp, the (smallest)
-        // deadline of the last event(s), and the (smallest) \delta of the causality delays.
-        // which we save here.
-        Time lastTimestamp = eventsToProcess.get(0).timeStamp();
-        Time lastAbsoluteDeadline = Time.POSITIVE_INFINITY;
-        List<IOPort> inputPorts = new ArrayList<IOPort>();
-        for (PtidesEvent event : eventsToProcess) {
-            Time absoluateDeadline = _getAbsoluteDeadline(event);
-            if (absoluateDeadline.compareTo(lastAbsoluteDeadline) < 0) {
-                lastAbsoluteDeadline = absoluateDeadline;
-            }
-            IOPort port = event.ioPort();
-            if (port != null) {
-                inputPorts.add(port);
-            }
-        }
-
-        // Now get the minimum dependency of all output ports. If the last executing event
-        // is a pure event, then the last dependency is 0.
-        // @see #_absoluteDeadlineForPureEvent()
-        SuperdenseDependency lastDependency;
-        if (eventsToProcess.get(0).isPureEvent()) {
-            lastDependency = SuperdenseDependency.OTIMES_IDENTITY;
-        } else {
-            lastDependency = SuperdenseDependency.OPLUS_IDENTITY;
-            for (IOPort inputPort : inputPorts) {
-                Collection<IOPort> finiteDependentPorts = _finiteDependentPorts(inputPort);
-                for (IOPort outputPort : finiteDependentPorts) {
-                    SuperdenseDependency newDependency = (SuperdenseDependency) _getDependency(
-                            inputPort, outputPort);
-                    if (newDependency.compareTo(lastDependency) < 0) {
-                        lastDependency = newDependency;
-                    }
-                }
-            }
-        }
-        _pureEventSourcePorts.put(actorToFire, eventsToProcess.get(0).ioPort());
-        _pureEventDelays.put(actorToFire,
-                lastTimestamp.add(lastDependency.timeValue()));
-        _pureEventDeadlines.put(actorToFire, lastAbsoluteDeadline);
     }
 
     /** Check if the scheduler has finished running.
@@ -3734,12 +3663,6 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Map _inputModelTimeDelays;
 
-    /** The last actor that was fired by this director. If null, then after
-     *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
-     *  _pureEventSourcePorts that are associated with this actor should be removed.
-     */
-    private Actor _lastActorFired;
-
     /** Map actors to tags.
      *  Each actor keeps track of the tag of the last event that was consumed when this
      *  actor fired. This helps to identify cases where safe-to-process analysis failed
@@ -3786,15 +3709,6 @@ public class PtidesBasicDirector extends DEDirector {
     /** Maps ports to dependencies. Used to determine delayOffset parameter
      */
     private Map _portDelays;
-
-    /** Store absolute deadline information for pure events that will be produced
-     *  in the future.
-     */
-    private Map _pureEventDeadlines;
-
-    /** Store delays of pure events for the calculation of absolute deadline.
-     */
-    private Map _pureEventDelays;
 
     /** Store source port information for pure events that will be produced
      *  in the future.

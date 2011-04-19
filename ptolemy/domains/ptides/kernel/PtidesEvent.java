@@ -176,8 +176,15 @@ public class PtidesEvent extends DEEvent {
         if (!event.isPureEvent()) {
             result = result && event.token().equals(_token);
         } else {
-            result = result
+            if (event.absoluteDeadline() == null && _absoluteDeadline == null) {
+                // Not needed: result = result && true;
+            } else if (event.absoluteDeadline() == null ||
+                    _absoluteDeadline == null) {
+                return false;
+            } else {
+                result = result
                     && event.absoluteDeadline().equals(_absoluteDeadline);
+            }
         }
         return result && event.isPureEvent() == _isPureEvent
                 && event.receiver() == _receiver && event.channel() == _channel;
@@ -189,7 +196,9 @@ public class PtidesEvent extends DEEvent {
      */
     public int hashCode() {
         int primitiveFieldHash = super.hashCode() >>> _channel;
-        int objectFieldHash = (isPureEvent() ? _absoluteDeadline.hashCode()
+        int absoluteDeadlineHash = _absoluteDeadline == null ? 0 :
+            _absoluteDeadline.hashCode();
+        int objectFieldHash = (isPureEvent() ? absoluteDeadlineHash
                 : (_token.hashCode()) >>> _receiver.hashCode());
         return primitiveFieldHash >>> objectFieldHash;
     }
