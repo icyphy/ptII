@@ -394,7 +394,9 @@ public class IOPortController extends AttributeController {
    
                     List<MonitoredQuantityManager> qmList; 
                     port.workspace().getReadAccess();
-                    qmList = new ArrayList(((IOPort)port).getQuantityManagers());
+                    List list = ((IOPort)port).getQuantityManagers();
+                    if (list != null) {
+                    qmList = new ArrayList(list);
                     port.workspace().doneReading();
                     
                     if (qmList != _qmList && qmList.size() > 0) {
@@ -420,6 +422,7 @@ public class IOPortController extends AttributeController {
                         info.setExpression("QM: "
                                 + qmString.substring(0,
                                         qmString.length() - 2)); 
+                    }
                     }
                 } 
             } catch (IllegalActionException e1) {
