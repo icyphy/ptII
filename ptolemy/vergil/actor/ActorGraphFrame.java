@@ -165,8 +165,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _layoutAction = null;
         _advancedLayoutDialogAction = null;
         _createHierarchyAction = null;
-        _controller.setFrame(null);
         _debugMenuListener = null;
+
+        // This causes problems...  comment out for now.
+        //_controller.setFrame(null);
+        
         super.dispose();
     }
 
