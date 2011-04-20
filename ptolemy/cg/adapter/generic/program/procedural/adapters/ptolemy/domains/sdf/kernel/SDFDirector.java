@@ -135,7 +135,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             });
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
-        code.append(codeGenerator.comment("SDFDirector.generateFireFunctionCode()");
+        code.append(codeGenerator.comment("SDFDirector.generateFireFunctionCode()"));
 
         boolean inline = ((BooleanToken) codeGenerator.inline.getToken())
                 .booleanValue();
