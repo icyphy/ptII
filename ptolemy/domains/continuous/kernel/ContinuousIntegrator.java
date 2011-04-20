@@ -254,12 +254,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 _debug("-- impulse input received with value " + impulseValue);
             }
             if (impulseValue != 0.0) {
-                /* NOTE: To work with the Derivative actor, have to allow this.
-                if (microstep == 0) {
+                if (microstep == 0 && !_firstFiring) {
                     throw new IllegalActionException(this,
                             "Signal at the impulse port is not purely discrete.");
                 }
-                */
                 double currentState = getState() + impulseValue;
                 setTentativeState(currentState);
                 if (_debugging) {
@@ -421,6 +419,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         _lastRound = -1;
         _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
         _state = _tentativeState;
+        _firstFiring = true;
 
         if (_debugging) {
             _debug("Initialize: initial state = " + _tentativeState);
@@ -462,6 +461,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public boolean postfire() throws IllegalActionException {
         _lastRound = -1;
+        _firstFiring = false;
 
         if (_debugging) {
             _debug("Postfire called");
@@ -567,6 +567,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The custom causality interface. */
     private CausalityInterface _causalityInterface;
+    
+    /** Indicator that this is the first firing after initialize(). */
+    private boolean _firstFiring;
 
     /** The last output produced in the same round. */
     private double _lastOutput;
