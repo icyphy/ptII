@@ -108,7 +108,7 @@ public class ZeroOrderHold extends Transformer {
         if (input.hasToken(0)) {
             ContinuousDirector dir = (ContinuousDirector) getDirector();
             double stepSize = dir.getCurrentStepSize();
-            if (stepSize != 0.0) {
+            if (stepSize != 0.0 && !_firstFiring) {
                 throw new IllegalActionException(this,
                         "Signal at the input port is not purely discrete.");
             }
@@ -137,6 +137,17 @@ public class ZeroOrderHold extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastToken = defaultValue.getToken();
+        _firstFiring = true;
+    }
+
+    /** Override the base class to record that the first firing
+     *  has completed.
+     *  @return True if execution can continue into the next iteration.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _firstFiring = false;
+        return super.postfire();
     }
 
     /** Override the method in the base class so that the type
@@ -170,6 +181,10 @@ public class ZeroOrderHold extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Saved token.
+
+    /** Saved token. */
     private Token _lastToken;
+    
+    /** Indicator that this is the first firing after initialize(). */
+    private boolean _firstFiring;
 }
