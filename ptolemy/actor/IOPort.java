@@ -49,12 +49,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ptolemy.actor.gui.ColorAttribute; 
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.ObjectToken; 
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
@@ -71,6 +69,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
 //// IOPort
@@ -275,35 +274,30 @@ public class IOPort extends ComponentPort {
                         List<MonitoredQuantityManager> qmList = new ArrayList(
                                 _getQuantityManagers());
                         if (qmList.size() > 0) {
-                            ColorAttribute colorAttribute = (ColorAttribute) getAttribute("_color");
 
                             try {
-                                if (colorAttribute == null) {
-                                    colorAttribute = new ColorAttribute(this,
-                                            "_color");
-                                }
                                 if (this.isOutput()) {
-                                    colorAttribute
-                                            .setExpression(qmList.get(0).color
-                                                    .getExpression());
+                                    
+                                    String colorString = qmList.get(0).color.getExpression();
+                                    String completeMoML = "<property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                                        + colorString + "\"/>";
+                                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                            (NamedObj) this, completeMoML);
+                                    request.setPersistent(false);
+                                    Actor container = (Actor) getContainer();
+                                    ((TypedCompositeActor) container).requestChange(request);
                                 } else {
-                                    colorAttribute.setExpression(qmList
-                                            .get(qmList.size() - 1).color
-                                            .getExpression());
+                                    
+                                    String colorString = qmList.get(qmList.size() - 1).color.getExpression();
+                                    String completeMoML = "<property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                                        + colorString + "\"/>";
+                                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                            (NamedObj) this, completeMoML);
+                                    request.setPersistent(false);
+                                    Actor container = (Actor) getContainer();
+                                    ((TypedCompositeActor) container).requestChange(request);
                                 }
 
-                                //                            int i = 0;
-                                //                            while (i < _relationsList.size()) {
-                                //                                Relation relation = ((Relation) this._relationsList.get(i));
-                                //                                _removeAttribute(relation, "_color");
-                                //                                ColorAttribute colorAttribute2 = new ColorAttribute(relation, "_color"); 
-                                //                                if (this.isInput()) {
-                                //                                    colorAttribute2.setExpression(qmList.get(0).color.getExpression());
-                                //                                } else {
-                                //                                    colorAttribute2.setExpression(qmList.get(qmList.size() - 1).color.getExpression());
-                                //                                }
-                                //                                i++;
-                                //                            } 
                                 StringAttribute info = (StringAttribute) getAttribute("_showInfo");
                                 String qmString = "";
                                 if (info == null) {
