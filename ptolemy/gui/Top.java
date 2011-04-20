@@ -1211,7 +1211,13 @@ public abstract class Top extends JFrame {
                 } else if (actionCommand.equals("Print")) {
                     _print();
                 } else if (actionCommand.equals("Close")) {
-                    _close();
+                    if (!isDisposed()) {
+                        Window thisWindow = (Window) Top.this;
+                        WindowEvent wev = new WindowEvent(thisWindow, WindowEvent.WINDOW_CLOSING);
+                        Toolkit toolkit = Toolkit.getDefaultToolkit();
+                        EventQueue queue = toolkit.getSystemEventQueue();
+                        queue.postEvent(wev);
+                    }
                 } else if (actionCommand.equals("Exit")) {
                     _exit();
                 }
