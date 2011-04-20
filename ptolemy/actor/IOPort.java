@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken; 
@@ -66,10 +65,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
 //// IOPort
@@ -247,9 +243,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** If the quantity manager attribute of the port is changed and the new
-     *  quantity manager is a {@link ColoredQuantityManager} then update 
-     *  the port color and the color of the relation.
+    /** If a quantity manager is added, removed or modified update the list of
+     *  quantity managers. 
      *  @param attribute The attribute that changed. 
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created. 
@@ -264,61 +259,7 @@ public class IOPort extends ComponentPort {
                 if (parameterToken instanceof ObjectToken) {
                     Object quantityManagerObject = ((ObjectToken) parameterToken)
                             .getValue();
-                    if (quantityManagerObject instanceof MonitoredQuantityManager) {
-
-                        // The color of an input port should be the color of the last parameter
-                        // that is a {@link ColoredQuantityManager}. This is the quantity
-                        // manager that this port is directly connected to.
-                        // The color of an output port should be the color of the first parameter.
-
-                        List<MonitoredQuantityManager> qmList = new ArrayList(
-                                _getQuantityManagers());
-                        if (qmList.size() > 0) {
-
-                            try {
-                                if (this.isOutput()) {
-                                    
-                                    String colorString = qmList.get(0).color.getExpression();
-                                    String completeMoML = "<property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                                        + colorString + "\"/>";
-                                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                            (NamedObj) this, completeMoML);
-                                    request.setPersistent(false);
-                                    Actor container = (Actor) getContainer();
-                                    ((TypedCompositeActor) container).requestChange(request);
-                                } else {
-                                    
-                                    String colorString = qmList.get(qmList.size() - 1).color.getExpression();
-                                    String completeMoML = "<property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                                        + colorString + "\"/>";
-                                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                            (NamedObj) this, completeMoML);
-                                    request.setPersistent(false);
-                                    Actor container = (Actor) getContainer();
-                                    ((TypedCompositeActor) container).requestChange(request);
-                                }
-
-                                StringAttribute info = (StringAttribute) getAttribute("_showInfo");
-                                String qmString = "";
-                                if (info == null) {
-                                    info = new StringAttribute(this,
-                                            "_showInfo");
-                                }
-
-                                for (int j = 0; j < qmList.size(); j++) {
-                                    qmString = qmString
-                                            + qmList.get(j).getName() + ", ";
-                                }
-                                info.setExpression("QM: "
-                                        + qmString.substring(0,
-                                                qmString.length() - 2));
-                            } catch (NameDuplicationException e) {
-                                // Ignore. This exception should be thrown because before adding the
-                                // new ColorAttribute any previous attribute with the same name is
-                                // removed.
-                            }
-                        }
-                    }
+                    _qmListValid = false;
                 }
             }
         }
@@ -1400,6 +1341,36 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "getCurrentTime: channel index is out of range.");
         }
+    }
+    
+    /** Return previously computed list of quantity managers or compute
+     *  new if the list has been invalidated.
+     *  @return The list of quantity managers.
+     *  @exception IllegalActionException Thrown if the token of the parameter
+     *      containing the quantity manager object cannot be retrieved.
+     */
+    public List<QuantityManager> getQuantityManagers()
+            throws IllegalActionException {
+        if (_qmListValid = false) {
+            _qmList = new ArrayList();
+            if (attributeList().size() > 0) {
+                for (int i = 0; i < attributeList().size(); i++) {
+                    Object attr = attributeList().get(i);
+                    if (attr instanceof Parameter) {
+                        Token paramToken = ((Parameter) attr).getToken();
+                        if (paramToken instanceof ObjectToken) {
+                            Object paramObject = ((ObjectToken) paramToken)
+                                    .getValue();
+                            if (paramObject instanceof QuantityManager) {
+                                _qmList.add((QuantityManager) paramObject);
+                            }
+                        }
+                    }
+                }
+            }
+            _qmListValid = true;
+        }
+        return _qmList;
     }
 
     /** If the port is an input, return the receivers that receive data
@@ -4287,28 +4258,7 @@ public class IOPort extends ComponentPort {
                 listener.portEvent(event);
             }
         }
-    }
-
-    private List<QuantityManager> _getQuantityManagers()
-            throws IllegalActionException {
-        List<QuantityManager> qmList = new ArrayList();
-        if (attributeList().size() > 0) {
-            for (int i = 0; i < attributeList().size(); i++) {
-                Object attr = attributeList().get(i);
-                if (attr instanceof Parameter) {
-                    Token paramToken = ((Parameter) attr).getToken();
-                    if (paramToken instanceof ObjectToken) {
-                        Object paramObject = ((ObjectToken) paramToken)
-                                .getValue();
-                        if (paramObject instanceof QuantityManager) {
-                            qmList.add((QuantityManager) paramObject);
-                        }
-                    }
-                }
-            }
-        }
-        return qmList;
-    }
+    } 
 
     /** If this port has parameters whose values are tokens that contain
      *  an object implementing {@link QuantityManager}, then wrap the
@@ -4329,7 +4279,7 @@ public class IOPort extends ComponentPort {
     protected Receiver _wrapReceiver(Receiver receiver)
             throws IllegalActionException {
         Receiver result = receiver;
-        List<QuantityManager> qmList = _getQuantityManagers();
+        List<QuantityManager> qmList = getQuantityManagers();
         if (isInput()) {
             for (int i = qmList.size() - 1; i >= 0; i--) {
                 result = qmList.get(i).getReceiver(result);
@@ -4736,6 +4686,14 @@ public class IOPort extends ComponentPort {
     private transient int _numberOfSources;
     private transient long _numberOfSourcesVersion = -1;
 
+    /** List of quantity managers specified for the port. */
+    private List<QuantityManager> _qmList;
+    
+    /** True if list of quantity managers was not modified since
+     *  it was last modified.
+     */
+    private boolean _qmListValid = false;
+    
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;
     private transient long _sinkPortListVersion;
