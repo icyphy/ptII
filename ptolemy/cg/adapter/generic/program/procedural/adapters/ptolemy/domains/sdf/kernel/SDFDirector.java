@@ -27,9 +27,12 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -93,14 +96,54 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Iterator<?> actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        List actorList = ((CompositeActor) _director.getContainer())
+            .deepEntityList();
+
+        // Sort by name so that we retrieve the actors from the list
+        // by composite.
+        Collections.sort(actorList, new Comparator() {
+                /** Compare two NamedObjs by fullName().
+                 *  @return -1 if object1 has fewer dots in its fullName(),
+                 *  1 if object1 has more dots in its fullName(),
+                 *  0 if the objects are the same.
+                 *  If the fullName()s of both NamedObjs have the
+                 *  same number of dots, then return the String compareTo()
+                 *  of the fullName()s.
+                 */
+                public int compare(Object object1, Object object2) {
+                    String name1 = ((NamedObj)object1).getFullName();
+                    String name2 = ((NamedObj)object2).getFullName();
+
+                    int index = 0;
+                    int dots1 = 0;
+                    while ((index = name1.indexOf(".", index)) != -1) {
+                        index++;
+                        dots1++;
+                    }
+                    int dots2 = 0;
+                    while ((index = name2.indexOf('.', index)) != -1) {
+                        index++;
+                        dots2++;
+                    }
+                    if (dots1 == dots2) {
+                        return 0;
+                    } else if (dots1 < dots2) {
+                        return -1;
+                    }
+                    return 1;
+                }
+            });
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
+        code.append(codeGenerator.comment("SDFDirector.generateFireFunctionCode()");
+
         boolean inline = ((BooleanToken) codeGenerator.inline.getToken())
                 .booleanValue();
         String className = "";
-        String lastClassName = "";
+        if (getComponent().getContainer().getContainer() == null) {
+            _lastClassName = "";
+        }
+        Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (!inline) {
@@ -108,26 +151,30 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // compile, we put some of the inline fire methods
                 // inside inner classes.  
 
-                // FIXME: This code depends on deepEntityList() being
-                // ordered by composite entity.
-               
                 // FIXME: What about other directors?
                 String results[] = codeGenerator.generateFireFunctionVariableAndMethodName((NamedObj)actor);
                 className = results[0];
-                if (!lastClassName.equals(className)) {
-                    if (lastClassName.length() > 0) {
+                //System.out.println("SDFDirector: " + actor.getFullName() + " className: " + results[0] + " lastClassName: " + _lastClassName);
+
+                if (!_lastClassName.equals(className)) {
+                    if (_lastClassName.length() > 0) {
                         code.append("}" + _eol);
+                        _curlyCount--;
                     }
                     code.append("class " + className + "{" + _eol);
-                    lastClassName = className;
+                    _curlyCount++;
+                    _lastClassName = className;
                 }
             }
             NamedProgramCodeGeneratorAdapter actorAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(actor);
             code.append(actorAdapter.generateFireFunctionCode());
         }
-        if (!inline) {
+        if (!inline && _curlyCount > 0) {
+            //code.append(_eol
+            //        + getCodeGenerator().comment(getComponent().getFullName() + "Closing curly" + _curlyCount));
             code.append("}" + _eol);
+            _curlyCount--;
         }
         return code.toString();
     }
@@ -880,5 +927,18 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  the associated actor.
      */
     protected HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>>();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /** The name of the last class processed by
+     * generateFireFunctionCode().
+     */
+    private static String _lastClassName = "";
+
+    /** The number of open curly brackets generated by
+     * generateFireFunctionCode().
+     */
+    private static int _curlyCount = 0;
+
 
 }

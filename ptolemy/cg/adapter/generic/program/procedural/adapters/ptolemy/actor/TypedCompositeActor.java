@@ -108,14 +108,20 @@ public class TypedCompositeActor extends
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) getComponent();
+        if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
+                .getToken()).booleanValue())) {
+            // Generate the code for the TypedComposite before generating code for the director.
+            // Needed by:
+            // $PTII/bin/ptcg -language java  -inline false  -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/ActorOrientedClass.xml
+            // See generateFireFunctionCode() in ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/kernel/SDFDirector.java
+
+            code.append(super.generateFireFunctionCode());
+        }
+
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorAdapter = (Director) getCodeGenerator().getAdapter(
                 director);
         code.append(directorAdapter.generateFireFunctionCode());
-        if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
-                .getToken()).booleanValue())) {
-            code.append(super.generateFireFunctionCode());
-        }
         return processCode(code.toString());
     }
 

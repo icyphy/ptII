@@ -944,7 +944,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             Set<String> variableDeclarations = new TreeSet<String>();
 
             // This seems expensive.
-            Iterator<?> actors = ((CompositeActor)getComponent().toplevel()).deepEntityList().iterator();
+            Iterator<?> actors = ((CompositeActor)getComponent().toplevel()).allAtomicEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 variableDeclarations.add(generateFireFunctionVariableDeclaration((NamedObj)actor));
