@@ -1,6 +1,6 @@
 /* Code generator for the Java language.
 
- Copyright (c) 2008-2010 The Regents of the University of California.
+ Copyright (c) 2008-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -76,7 +77,7 @@ import ptolemy.util.StringUtilities;
 
 /** Base class for Java code generator.
  *
- *  @author Gang Zhou
+ *  @author Gang Zhou, Contributor: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating red (zgang)
@@ -311,6 +312,127 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             throw new IllegalActionException("Unsuported type");
         }
 
+        return result;
+    }
+
+    /** Generate the fire function method invocation. This method is called
+     *  when the firing code of each actor is not inlined.  
+     *
+     *  <p>So as to reduce the size of classes to be compiled, this
+     *  code generator generates the fire function methods for the top
+     *  two levels of composites in separate inner classes.  This
+     *  method returns a String that contains variable that refers to
+     *  an instance of the inner class followed by the name of the
+     *  method to be invoked.</p>
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The name of the fire function method to be invoked.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionMethodInvocation(NamedObj namedObj) throws IllegalActionException {
+        String [] results = generateFireFunctionVariableAndMethodName(namedObj);
+        String result = "_inner" + results[0] + "." + results[1]; 
+        //System.out.println("JCG.generateFireFunctionMethodInvocation(): " + namedObj.getFullName() + " " + result);
+        return result;
+    }
+
+    /** Generate the fire function method name. This method is called
+     *  when the firing code of each actor is not inlined.  
+     *
+     *  <p>So as to reduce the size of classes to be compiled, this
+     *  code generator generates the fire function methods for the top
+     *  two levels of composites in separate inner classes.  This
+     *  method returns a String that contains the name of the method
+     *  to be invoked.</p>
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The name of the fire function method.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionMethodName(NamedObj namedObj) throws IllegalActionException {
+        String [] results = generateFireFunctionVariableAndMethodName(namedObj);
+        //System.out.println("JCG.generateFireFunctionMethodName(): " + namedObj.getFullName() + " " + results[1]);
+        return results[1];
+    }
+
+    /** Generate the fire function variable name and method
+     *  name. This method is called when the firing code of each actor
+     *  is not inlined.
+     *
+     *  <p>So as to reduce the size of classes to be compiled, this
+     *  code generator generates the fire function methods for the top
+     *  two levels of composites in separate inner classes.</p>
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return An array of two elements.  The first element is a String
+     *  that contains the variable name, the second is the name of the method.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String [] generateFireFunctionVariableAndMethodName(NamedObj namedObj)
+            throws IllegalActionException {
+        // Get the toplevel name and the name of the composite under the
+        // top level.  
+        // If we have Foo.Ramp, return _inner_Foo.Ramp
+        // If we have Foo.Bar.Ramp, return _inner_Foo_Bar.Ramp
+        // If we have Foo.Bar.Biz.Ramp, return _inner_Foo_Bar.Biz_Ramp
+        NamedObj container = namedObj.getContainer();
+        String [] results = new String[2];
+        if (container == null) {
+            results[0] = "";
+            results[1] = CodeGeneratorAdapter.generateName(namedObj);
+            return results;
+        }
+        String fullName = namedObj.getFullName();
+
+        int firstDot = fullName.indexOf('.');
+        if (firstDot == -1) {
+            throw new InternalErrorException(namedObj, null, "Could not find '.' in " + fullName);
+        }
+        if (firstDot == 0) {
+            firstDot = fullName.indexOf('.', firstDot + 1);
+        }
+        int secondDot = fullName.indexOf('.', firstDot + 1);
+        if (firstDot == -1) {            results[0] = "";
+            results[1] = CodeGeneratorAdapter.generateName(namedObj);
+            return results;
+        }
+
+        if (secondDot == -1) {
+
+            results[0] = StringUtilities.sanitizeName(fullName.substring(0, firstDot));
+            results[1] = StringUtilities.sanitizeName(fullName.substring(firstDot + 1, fullName.length()));
+        } else {
+            results[0] = StringUtilities.sanitizeName(fullName.substring(0, firstDot)
+                    + "_" + fullName.substring(firstDot + 1, secondDot));
+            results[1] = StringUtilities.sanitizeName(fullName.substring(secondDot + 1, fullName.length()));
+        }
+
+        //System.out.println("JCG: genVarAndMethName: " + firstDot + " " + secondDot + " " + fullName + " variableName: " + results[0] + " methodName: " + results[1]);
+
+        return results;
+    }
+
+    /** Generate the fire function variable declaration. This method
+     *  is called when the firing code of each actor is not inlined.
+     *  In this base class, the empty string is returned.  Derived
+     *  classes, such as JavaCodeGenerator, could return a variable
+     *  declaration that instantiates an inner class.
+     *
+     *  <p>So as to reduce the size of classes the Java Code
+     *  Generator, the fire function methods for the top two levels of
+     *  composites are placed in a separate inner class.</p>
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return In this baseclass, return the empty string. 
+     *  @exception IllegalActionException If there are problems
+     *  accessing the name of the namedObj or generating the variable
+     *  declaration.
+     */
+    public String generateFireFunctionVariableDeclaration(NamedObj namedObj)
+            throws IllegalActionException {
+        String [] results = generateFireFunctionVariableAndMethodName(namedObj);
+        String result = results[0] + " _inner" + results[0] + " = new " + results[0] + "();" + _eol;
+        //System.out.println("JCG.generateFireFunctionVariableDeclaration(): " + namedObj.getFullName() + " " + result);
         return result;
     }
 
@@ -816,6 +938,31 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         
+        if (!((BooleanToken) inline.getToken()).booleanValue()) {
+            // Variable declarations that refer to instances of inner classes.
+            // Used only if inline == false.
+            Set<String> variableDeclarations = new TreeSet<String>();
+
+            // This seems expensive.
+            Iterator<?> actors = ((CompositeActor)getComponent().toplevel()).deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                variableDeclarations.add(generateFireFunctionVariableDeclaration((NamedObj)actor));
+            }
+
+            // Collect all the variable declarations into a StringBuffer.
+            StringBuffer variables = new StringBuffer();
+            for (String variableDeclaration: variableDeclarations) {
+                variables.append(variableDeclaration);
+            }
+            if (variables.length() > 0) {
+                variables.insert(0, comment(
+                                "inline: true, Variables that refer to inner classes."));
+            }
+            code.append(variables);
+
+        }
+
         if (_variablesAsArrays) {
             // If variablesAsArrays is true, then use arrays of variables instead
             // of individual variables and save space.

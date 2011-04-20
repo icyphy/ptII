@@ -1,6 +1,6 @@
 /* Code generator adapter class associated with the SDFDirector class.
 
- Copyright (c)2009 The Regents of the University of California.
+ Copyright (c) 2009-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -81,6 +81,56 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. If the <i>inline</i> parameter of
+     *  the code generator is true, then each actor's firing code is in a
+     *  function with the same name as that of the actor.  If the <i>inline</i>
+     *  parameter is false, then the firing code is grouped in inner classes.
+     *
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
+        boolean inline = ((BooleanToken) codeGenerator.inline.getToken())
+                .booleanValue();
+        String className = "";
+        String lastClassName = "";
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (!inline) {
+                // To avoid really large .java files that won't
+                // compile, we put some of the inline fire methods
+                // inside inner classes.  
+
+                // FIXME: This code depends on deepEntityList() being
+                // ordered by composite entity.
+               
+                // FIXME: What about other directors?
+                String results[] = codeGenerator.generateFireFunctionVariableAndMethodName((NamedObj)actor);
+                className = results[0];
+                if (!lastClassName.equals(className)) {
+                    if (lastClassName.length() > 0) {
+                        code.append("}" + _eol);
+                    }
+                    code.append("class " + className + "{" + _eol);
+                    lastClassName = className;
+                }
+            }
+            NamedProgramCodeGeneratorAdapter actorAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(actor);
+            code.append(actorAdapter.generateFireFunctionCode());
+        }
+        if (!inline) {
+            code.append("}" + _eol);
+        }
+        return code.toString();
+    }
 
     /** Generate the initialize code for the associated SDF director.
      *  @return The generated initialize code.

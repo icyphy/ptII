@@ -65,9 +65,12 @@ import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-////ProgramCodeGenerator
+//// ProgramCodeGenerator
 
-/** Base class for Program code generator.
+/** Generate a programming language version of a model.
+*
+*  <p>This base class contains parameters and methods common to
+*   all programming langauges.</p>
 *
 *  @author Bert Rodiers
 *  @version $Id$
@@ -77,9 +80,9 @@ import ptolemy.util.StringUtilities;
 */
 public class ProgramCodeGenerator extends GenericCodeGenerator {
 
-    /** Create a new instance of the ProceduralCodeGenerator.
+    /** Create a new instance of the ProgramCodeGenerator.
      *  @param container The container.
-     *  @param name The name of the ProceduralCodeGenerator.
+     *  @param name The name of the ProgramCodeGenerator.
      *  @param outputFileExtension The extension of the output file.
      *   (for example c in case of C and java in case of Java)
      *  @param templateExtension The extension of the template files.
@@ -312,9 +315,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return "";
     }
 
-    /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a
-     *  function with the same name as that of the actor.
+    /** Generate The fire function code. This method is called when
+     *  the firing code of each actor is not inlined. In the default,
+     *  each actor's firing code is in a function with the name that
+     *  is returned by
+     *  {@link#generateFireFunctionMethodName(NamedObj)}.  Derived
+     *  classes such as JavaCodeGenerator may put the fire functions
+     *  in inner classes so as to reduce the Java file size.
      *
      *  @return The fire function code of the containing composite actor.
      *  @exception IllegalActionException If thrown while generating fire code.
@@ -324,6 +331,77 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         code.append(adapter.generateFireFunctionCode());
         return code.toString();
+    }
+
+    /** Generate the fire function method invocation. This method is called
+     *  when the firing code of each actor is not inlined.  In this
+     *  base class, each actor's firing code is in a function with the
+     *  same name as that of the actor.  
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The name of the fire function invocation.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes should throw this exception if there are problems
+     *  accessing the name or generating the name.
+     */
+    public String generateFireFunctionMethodInvocation(NamedObj namedObj) throws IllegalActionException {
+        return generateFireFunctionMethodName(namedObj) + "()";
+    }
+
+    /** Generate the fire function method name. This method is called
+     *  when the firing code of each actor is not inlined.  In this
+     *  base class, each actor's firing code is in a function with the
+     *  same name as that of the actor.  
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The name of the fire function method.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes should throw this exception if there are problems
+     *  accessing the name or generating the name.
+     */
+    public String generateFireFunctionMethodName(NamedObj namedObj) throws IllegalActionException {
+        return CodeGeneratorAdapter.generateName(namedObj);
+    }
+
+    /** Generate the fire function variable name and method
+     *  name. This method is called when the firing code of each actor
+     *  is not inlined. 
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return An array of two elements.  In this base class, the
+     *  first element is the empty string, the second element is the
+     *  method name.  In derived classes, the first element is a
+     *  String that contains the variable name, the second is the name
+     *  of the method.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String [] generateFireFunctionVariableAndMethodName(NamedObj namedObj)
+            throws IllegalActionException {
+        String [] results = new String[2];
+        results[0] = "";
+        results[1] = CodeGeneratorAdapter.generateName(namedObj);
+        return results;
+    }
+
+    /** Generate the fire function variable declaration. This method
+     *  is called when the firing code of each actor is not inlined.
+     *  In this base class, the empty string is returned.  Derived
+     *  classes, such as JavaCodeGenerator, could return a variable
+     *  declaration that instantiates an inner class.
+     *
+     *  <p>The purpose of this method is to allow derived generators
+     *  to generate code in inner classes and thus allow the compilation
+     *  of large models.</p>
+     *
+     *  @param namedObj The named object for which the name is generated.
+     *  @return In this baseclass, return the empty string. 
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes should throw this exception if there are problems
+     *  accessing the name or generating the name.
+     */
+    public String generateFireFunctionVariableDeclaration(NamedObj namedObj)
+            throws IllegalActionException {
+        return "";
     }
 
     /** Return true if the input contains code.
@@ -1344,15 +1422,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return code.toString();
     }
 
-    /** Generate the code for printing the execution time since
-     *  the code generated by _recordStartTime() was called.
-     *  This base class only generates a comment.
-     *  @return Return the code for printing the total execution time.
-     */
-    protected String _printExecutionTime() {
-        return comment("Print execution time.");
-    }
-
     /** Return the prototype for fire functions.
      *  @return In this base class, return "()".
      *  Derived classes, such as the C code generator adapter
@@ -1360,6 +1429,15 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected String _getFireFunctionArguments() {
         return "()";
+    }
+
+    /** Generate the code for printing the execution time since
+     *  the code generated by _recordStartTime() was called.
+     *  This base class only generates a comment.
+     *  @return Return the code for printing the total execution time.
+     */
+    protected String _printExecutionTime() {
+        return comment("Print execution time.");
     }
 
     /** Generate the code for recording the current time.

@@ -1,6 +1,6 @@
 /* Code generator adapter class associated with the SDFDirector class.
 
- Copyright (c) 2005-2010 The Regents of the University of California.
+ Copyright (c) 2005-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,13 +58,13 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-////SDFDirector
+//// SDFDirector
 
 /**
  Code generator adapter associated with the SDFDirector class. This class
  is also associated with a code generator.
 
- @author Ye Zhou, Gang Zhou
+ @author Ye Zhou, Gang Zhou, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (zgang)

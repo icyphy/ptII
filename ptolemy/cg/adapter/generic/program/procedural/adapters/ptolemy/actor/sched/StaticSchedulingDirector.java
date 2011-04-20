@@ -1,6 +1,6 @@
 /* Code generator adapter class associated with the StaticSchedulingDirector class.
 
- Copyright (c) 2005-2010 The Regents of the University of California.
+ Copyright (c) 2005-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,6 +47,7 @@ import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.BooleanToken;
@@ -72,7 +73,7 @@ import ptolemy.util.StringUtilities;
  Code generator adapter associated with the StaticSchedulingDirector class.
  This class is also associated with a code generator.
 
- @author Gang Zhou, Contributor: Bert Rodiers
+ @author Gang Zhou, Contributor: Bert Rodiers, Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (zgang)
@@ -153,42 +154,43 @@ public class StaticSchedulingDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(CodeStream.indent(getCodeGenerator().comment(
                 "The firing of the StaticSchedulingDirector")));
-        boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
-                .booleanValue();
 
         // Generate code for one iteration.
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
 
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
+        
         Iterator<?> actorsToFire = schedule.firingIterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
             Actor actor = firing.getActor();
 
-            // FIXME: Before looking for a adapter class, we should check to
+            // FIXME: Before looking for an adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
-            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter((NamedObj) actor);
+
+            boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
+                .booleanValue();
 
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
-
-                    // generate fire code for the actor
+                    // Generate fire code for the actor.
                     code.append(adapter.generateFireCode());
-
                     _generateUpdatePortOffsetCode(code, actor);
                 }
             } else {
-
+                //variableDeclarations.add(codeGenerator.generateFireFunctionVariableDeclaration((NamedObj)actor));
                 int count = firing.getIterationCount();
                 if (count > 1) {
                     code.append("for (int i = 0; i < " + count + " ; i++) {"
                             + _eol);
                 }
 
-                code.append(NamedProgramCodeGeneratorAdapter
-                        .generateName((NamedObj) actor)
+                code.append(codeGenerator.generateFireFunctionMethodInvocation
+                        ((NamedObj) actor)
                         + "();" + _eol);
 
                 _generateUpdatePortOffsetCode(code, actor);
@@ -198,6 +200,7 @@ public class StaticSchedulingDirector extends Director {
                 }
             }
         }
+
         return code.toString();
     }
 

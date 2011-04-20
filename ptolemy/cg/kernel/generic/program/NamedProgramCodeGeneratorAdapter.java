@@ -1,6 +1,6 @@
 /* Base class for named program code generator adapter.
 
- Copyright (c) 2005-2010 The Regents of the University of California.
+ Copyright (c) 2005-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -65,13 +65,13 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-////NamedProgramCodeGeneratorAdapter
+//// NamedProgramCodeGeneratorAdapter
 
 //FIXME: Overhaul comments.
 
 /**
-* Base class for code generator adapter.
-*
+* Base class for code generator adapter.  Actor adapters extend this
+* class.
 * <p>Subclasses should override generateFireCode(),
 * generateInitializeCode() generatePostfireCode(),
 * generatePreinitializeCode(), and generateWrapupCode() methods by
@@ -347,6 +347,7 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {
+        // FIXME: Whend does this get called?
         StringBuffer code = new StringBuffer();
 
         String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
@@ -393,9 +394,10 @@ public class NamedProgramCodeGeneratorAdapter extends
                 "_" +  NamedProgramCodeGeneratorAdapter.generateName(getComponent()) + "_",
                 fireCode);
         code.append(splitFireCode[0]);
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
         code.append(_eol + "void "
-                +  NamedProgramCodeGeneratorAdapter.generateName(getComponent())
-                + getCodeGenerator()._getFireFunctionArguments() + " {" + _eol);
+                + codeGenerator.generateFireFunctionMethodName(getComponent())
+                + codeGenerator._getFireFunctionArguments() + " {" + _eol);
         // code.append(_generateFireCode());
         code.append(splitFireCode[1]);
         code.append("}" + _eol);
@@ -1181,8 +1183,9 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @param component The given component.
      * @return The generated code.
      */
-    private static String _generateFireInvocation(NamedObj component) {
-        return CodeGeneratorAdapter.generateName(component) + "()";
+    private String _generateFireInvocation(NamedObj component) 
+            throws IllegalActionException {
+        return getCodeGenerator().generateFireFunctionMethodInvocation(component) + "()";
     }
 
     /**
