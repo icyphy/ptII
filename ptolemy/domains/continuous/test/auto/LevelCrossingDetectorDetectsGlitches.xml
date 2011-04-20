@@ -136,7 +136,7 @@ crosses the level 0.5 four times.</text></svg></configure>
         </property>
     </property>
     <entity name="SignalWithGlitches" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 135.0}">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
@@ -151,7 +151,7 @@ crosses the level 0.5 four times.</text></svg></configure>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 337, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -317,6 +317,8 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </entity>
         <entity name="const" class="ptolemy.domains.modal.modal.Refinement">
             <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
@@ -337,6 +339,8 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </entity>
         <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
             <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
@@ -434,22 +438,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
             </property>
         </port>
     </entity>
-    <entity name="Detected Events" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={940, 679, 364, 144}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[364, 100]">
-        </property>
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="6">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="30">
-        </property>
-        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Detected Events">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 145.0]">
-        </property>
-    </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 145.0]">
         </property>
@@ -491,7 +479,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.25, 1.25, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.50005, 0.0, 2.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.25, 1.25, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.50005, 0.0, 2.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -534,8 +522,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
         <vertex name="vertex1" value="[440.0, 135.0]">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -543,10 +529,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="{0.0, 0.0}">
-        </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -567,10 +549,8 @@ The final state (state4) simply connects the input to the output.</text></svg></
     <link port="Expression.input" relation="relation7"/>
     <link port="PeriodicSampler.input" relation="relation6"/>
     <link port="PeriodicSampler.output" relation="relation4"/>
-    <link port="Detected Events.input" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation8"/>
     <link port="AddSubtract.plus" relation="relation10"/>
-    <link port="AddSubtract.output" relation="relation2"/>
     <link port="LevelCrossingDetector1.output" relation="relation7"/>
     <link port="LevelCrossingDetector1.trigger" relation="relation3"/>
     <link port="LevelCrossingDetector2.output" relation="relation5"/>
