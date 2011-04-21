@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -140,13 +141,23 @@ public class SDFDirector extends StaticSchedulingDirector {
         boolean inline = ((BooleanToken) codeGenerator.inline.getToken())
                 .booleanValue();
         String className = "";
-        if (getComponent().getContainer().getContainer() == null) {
-            _lastClassName = "";
-        }
+
+        // Magic text used to pass the name of the inner class in which
+        // the code should be appended.
+        String hackStart = "/* SDFDirectorHack: ";
+
+        // Place the fire functions in different inner classes so as to
+        // result in smaller Java code that makes it possible for the compiler
+        // to compile large files.
+        HashMap<String,StringBuffer> innerClasses = new HashMap<String,StringBuffer>();
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            if (!inline) {
+            NamedProgramCodeGeneratorAdapter actorAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(actor);
+            if (inline) {
+                code.append(actorAdapter.generateFireFunctionCode());
+            } else {
                 // To avoid really large .java files that won't
                 // compile, we put some of the inline fire methods
                 // inside inner classes.  
@@ -154,27 +165,48 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // FIXME: What about other directors?
                 String results[] = codeGenerator.generateFireFunctionVariableAndMethodName((NamedObj)actor);
                 className = results[0];
-                //System.out.println("SDFDirector: " + actor.getFullName() + " className: " + results[0] + " lastClassName: " + _lastClassName);
 
-                if (!_lastClassName.equals(className)) {
-                    if (_lastClassName.length() > 0) {
-                        code.append("}" + _eol);
-                        _curlyCount--;
+                StringBuffer innerClassBuffer = innerClasses.get(className);
+                if (innerClassBuffer == null) {
+                    innerClassBuffer = new StringBuffer();
+                    if (!((ptolemy.actor.Director)getComponent()).isEmbedded()) {                    
+                        innerClassBuffer.append("class " + className + "{" + _eol);
+                    } else {
+                        // Place magic text into the code that is read
+                        // by the parent container so that the parent
+                        // container knows into which inner class to
+                        // place the code.
+                        innerClassBuffer.append(hackStart + className + " */");
                     }
-                    code.append("class " + className + "{" + _eol);
-                    _curlyCount++;
-                    _lastClassName = className;
+                    innerClassBuffer.append("/* " + className + " " + getComponent().getFullName() + " */");
+                    innerClasses.put(className, innerClassBuffer);
+                }
+                String subFireCode = actorAdapter.generateFireFunctionCode();
+                int startIndex = 0;
+                if ((startIndex = subFireCode.indexOf(hackStart)) != -1) {
+                    // Process the magic text and get the name of the inner class in
+                    // which to place the code.
+                    int endIndex = subFireCode.indexOf(" */", startIndex);
+                    className = subFireCode.substring(startIndex + hackStart.length(), endIndex);
+                    innerClassBuffer = innerClasses.get(className);
+                    if (innerClassBuffer == null) {
+                        innerClassBuffer = new StringBuffer();
+                        innerClassBuffer.append("class " + className + "{" + _eol);
+                        innerClasses.put(className, innerClassBuffer);
+                    }
+                }
+                innerClassBuffer.append(subFireCode);
+            }
+        }
+        if (!inline) {
+            // Go through each inner class, append the code and add a
+            // closing curly bracket.
+            for (Map.Entry<String, StringBuffer> innerClassBuffer: innerClasses.entrySet()) {
+                code.append(innerClassBuffer.getValue());
+                if (!((ptolemy.actor.Director)getComponent()).isEmbedded()) {
+                    code.append("}" + _eol);
                 }
             }
-            NamedProgramCodeGeneratorAdapter actorAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter(actor);
-            code.append(actorAdapter.generateFireFunctionCode());
-        }
-        if (!inline && _curlyCount > 0) {
-            //code.append(_eol
-            //        + getCodeGenerator().comment(getComponent().getFullName() + "Closing curly" + _curlyCount));
-            code.append("}" + _eol);
-            _curlyCount--;
         }
         return code.toString();
     }
@@ -927,18 +959,4 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  the associated actor.
      */
     protected HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>>();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    /** The name of the last class processed by
-     * generateFireFunctionCode().
-     */
-    private static String _lastClassName = "";
-
-    /** The number of open curly brackets generated by
-     * generateFireFunctionCode().
-     */
-    private static int _curlyCount = 0;
-
-
 }

@@ -401,6 +401,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             results[0] = StringUtilities.sanitizeName(fullName.substring(0, firstDot));
             results[1] = StringUtilities.sanitizeName(fullName.substring(firstDot + 1, fullName.length()));
+            if (namedObj instanceof ptolemy.actor.TypedCompositeActor) {
+                // A Hack for inline code generation.  The problem is
+                // that when we generate inline code, we want the top
+                // few composites to be generated inside inner classes
+                // so that we can reduce the code size for
+                // compilation.  Unfortunately, when SDFCodeGenerator
+                // finds a TypedComposite, it generates code for the
+                // TypedComposite and the inside of the TypedComposite
+                // at the same time.  Thus, the code needs to be
+                // inside the same inner class.  Thus, the name of the
+                // TypedComposite has the name of the NamedObj twice.
+                // This is a hack.
+                results[0] += "_" + results[1];
+            }
         } else {
             results[0] = StringUtilities.sanitizeName(fullName.substring(0, firstDot)
                     + "_" + fullName.substring(firstDot + 1, secondDot));
