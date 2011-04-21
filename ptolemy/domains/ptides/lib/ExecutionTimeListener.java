@@ -31,8 +31,7 @@ package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
 
-/** 
- *  This interface defines the method that has to be implemented by
+/** This interface defines the method that has to be implemented by
  *  an execution time listener.
  *   
  *  @author Patricia Derler

@@ -55,6 +55,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
 
+/** This plotter monitors the execution of actors and displays the
+ *  executions on a time line. 
+ *   
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (derler)
+ *  @Pt.AcceptedRating 
+ */
 public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionTimeListener {
 
     /** Construct a factory with the specified container and name.
