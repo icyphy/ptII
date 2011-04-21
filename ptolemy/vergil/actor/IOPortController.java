@@ -32,11 +32,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -45,6 +48,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.kernel.AnimationRenderer;
@@ -57,7 +61,6 @@ import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
@@ -301,6 +304,8 @@ public class IOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    List<MonitoredQuantityManager> _qmList;
+    
     /**
      * Render the ports of components as triangles. Multiports are rendered
      * hollow, while single ports are rendered filled.
@@ -313,7 +318,7 @@ public class IOPortController extends AttributeController {
          * set then use it to set the tooltip.
          * @see diva.graph.NodeRenderer#render(java.lang.Object)
          */
-        public Figure render(Object n) {
+        public Figure render(Object n) { 
             final Port port = (Port) n;
 
             // If the port has an attribute called "_hide", then
@@ -383,6 +388,51 @@ public class IOPortController extends AttributeController {
             } else {
                 fill = Color.black;
             }
+            
+            try {
+                if (port instanceof IOPort) {
+   
+                    List<MonitoredQuantityManager> qmList; 
+                    //port.workspace().getReadAccess();
+                    List list = ((IOPort)port).getQuantityManagers();
+                    if (list != null) {
+                    qmList = new ArrayList(list);
+                    //port.workspace().doneReading();
+                    
+                    if (qmList != _qmList && qmList.size() > 0) {
+                        
+                        _qmList = qmList;
+                        if (((IOPort)port).isOutput()) {
+                            fill = qmList.get(0).color.asColor();
+                        } else {
+                            fill = qmList.get(qmList.size() - 1).color.asColor(); 
+                        }
+    
+                        StringAttribute info = (StringAttribute) port.getAttribute("_showInfo");
+                        String qmString = "";
+                        if (info == null) {
+                            info = new StringAttribute(port,
+                                    "_showInfo");
+                        }
+    
+                        for (int j = 0; j < qmList.size(); j++) {
+                            qmString = qmString
+                                    + qmList.get(j).getName() + ", ";
+                        }
+                        info.setExpression("QM: "
+                                + qmString.substring(0,
+                                        qmString.length() - 2)); 
+                    }
+                    }
+                } 
+            } catch (IllegalActionException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // Ignore. This exception should be thrown because before adding the
+                // new ColorAttribute any previous attribute with the same name is
+                // removed.
+            }
 
             ColorAttribute colorAttribute;
             try {
@@ -397,6 +447,8 @@ public class IOPortController extends AttributeController {
                 e1.printStackTrace();
             }
 
+            
+            
             
            
 //            StringAttribute _colorAttr = (StringAttribute) (port
