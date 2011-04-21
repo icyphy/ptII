@@ -1534,6 +1534,87 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    /** Return the value of the delayOffset parameter. The delayOffset parameter
+     *  used in the safe to process analysis of Ptides. In Ptides, an event of
+     *  timestamp tau is safe to process at physical time t if
+     *  t >= tau - delayOffset.
+     *  For all non-pure(trigger) events, this delayOffset is stored at
+     *  each channel of each input port.
+     *  @param port The port with which this delayOffset parameter is
+     *  associated.
+     *  @param channel The channel with which this delayOffset parameter is
+     *  associated.
+     *  @param pureEvent a boolean -- true if the event is a pure event.
+     *  @return delayOffset parameter.
+     *  @exception IllegalActionException If the delayOffset parameter cannot
+     *  be evaluated.
+     */
+    protected double _getDelayOffset(IOPort port, int channel,
+            boolean pureEvent) throws IllegalActionException {
+        // If the event is a pure event, and if actors receive events in
+        // timestamp order, then the delayOffset is the smallest delay
+        // offset among all the ports in the equivalence class of the input
+        // port parameter. For the definition of the equivalence class, see
+        // _finiteEquivalencePorts()
+        // Note the checking of the parameter
+        // forceActorsToProcessEventsInTimestampOrder here is an optimization. 
+        // If forceActorsToProcessEventsInTimestampOrder
+        // is false, we could skip this if clause.
+        if (pureEvent
+                && ((BooleanToken) forceActorsToProcessEventsInTimestampOrder
+                        .getToken()).booleanValue()) {
+            double result = Double.POSITIVE_INFINITY;
+            assert (port != null);
+            Collection<IOPort> equivalentPorts = _finiteEquivalentPorts(port);
+            for (IOPort input : equivalentPorts) {
+                Parameter parameter = (Parameter) ((NamedObj) input)
+                        .getAttribute("delayOffset");
+                if (parameter != null) {
+                    for (int i = 0; i < input.getWidth(); i++) {
+                        DoubleToken token = ((DoubleToken) ((ArrayToken)
+                                parameter.getToken()).arrayValue()[channel]);
+                        if (token != null) {
+                            if (token.doubleValue() < result) {
+                                result = token.doubleValue();
+                            }
+                        } else {
+                            throw new IllegalActionException(port,
+                                    "delayOffset parameter is needed"
+                                            + "for channel, "
+                                            + "but it does not exist.");
+                        }
+                    }
+                } else {
+                    throw new IllegalActionException(port,
+                            "delayOffset parameter is needed, "
+                                    + "but it does not exist.");
+                }
+            }
+            return result;
+        }
+
+        // If event is not a pure event, or, if the event is a pure event and
+        // forceActorsToProcessEventsInTimestampOrder is false, then we can
+        // simply get the delayOffset from the port.
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("delayOffset");
+        if (parameter != null) {
+            DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
+                    .getToken()).arrayValue()[channel]);
+            if (token != null) {
+                return token.doubleValue();
+            } else {
+                throw new IllegalActionException(port,
+                        "delayOffset parameter is needed for channel "
+                                + channel + ", but it does not exist.");
+            }
+        } else {
+            throw new IllegalActionException(port,
+                    "delayOffset parameter is needed, "
+                            + "but it does not exist.");
+        }
+    }
+
     /** Get the dependency between an input and an output ports. If the
      *  ports do not belong to the same actor, an exception is thrown.
      *  Depending on the type of the actor (atomic or composite),
@@ -1568,8 +1649,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  director that is currently executing the specified actor.
      *  The returned MoML can include a sequence of instances of 
      *  VisibleAttribute or its subclasses. In this base class, this returns a
-     *  rectangle like the usual director green rectangle used by default for
-     *  directors, but filled with red instead of green.
+     *  red rectangle like the usual director rectangle.
      *  @see ptolemy.vergil.kernel.attributes.VisibleAttribute
      *  @param actorExecuting The actor that's executing.
      *  @return A MoML string.
@@ -1585,10 +1665,12 @@ public class PtidesBasicDirector extends DEDirector {
                 + "  </property>";
     }
 
-    /** Return the executionTime parameter.
-     *  @param port The port at which execution time is denoted.
-     *  @param actor an Actor object.
-     *  @return executionTime parameter.
+    /** Return the value of the executionTime parameter associated with
+     *  the port. If the port is null, then get the value of the parameter
+     *  associated with the actor. 
+     *  @param port The port at which execution time is annotated.
+     *  @param actor actor at which execution time is annotated.
+     *  @return The value of the executionTime parameter.
      *  @exception IllegalActionException If execution time from
      *  PtidesActorProperties cannot be obtained.
      */
@@ -1607,95 +1689,16 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return a MoML string describing the icon appearance for an idle
      *  director. This can include a sequence of instances of VisibleAttribute
-     *  or its subclasses. In this base class, this returns a rectangle like
-     *  the usual director green rectangle used by default for directors.
+     *  or its subclasses. In this base class, this returns a red rectangle like
+     *  the usual director rectangle used by default.
      *  @see ptolemy.vergil.kernel.attributes.VisibleAttribute
      *  @return A MoML string.
      */
-    protected String _getIdleIcon() {
+    protected static String _getIdleIcon() {
         return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">"
                 + "    <property name=\"height\" value=\"30\"/>"
                 + "    <property name=\"fillColor\" value=\"{0.0, 1.0, 0.0, 1.0}\"/>"
                 + "  </property>";
-    }
-
-    /** Return the delayOffset parameter. The delayOffset parameter is related
-     *  to the safe to process analysis of Ptides. In Ptides, an event of
-     *  timestamp tau is safe to process at physical time t if
-     *  t >= tau - delayOffset.
-     *  For all non-pure(trigger) events, this delayOffset is stored at
-     *  each channel of each input port.
-     *  @param port The port where this delayOffset parameter is associated to.
-     *  @param channel The channel where this delayOffset parameter is
-     *  associated to.
-     *  @return delayOffset parameter.
-     *  @param pureEvent a boolean -- true if the event is a pure event.
-     *  @exception IllegalActionException If the delayOffset parameter cannot
-     *  be evaluated.
-     */
-    protected double _getMinimumDelayOffset(IOPort port, int channel,
-            boolean pureEvent) throws IllegalActionException {
-        // If the event is a pure event, and if actors receive events in
-        // timestamp order, then the delayOffset is actually the smallest delay
-        // offset among all the equivalence classes.
-        // Note checking of the parameter
-        // forceActorsToProcessEventsInTimestampOrder here is an optimization. 
-        // If forceActorsToProcessEventsInTimestampOrder
-        // is false, we could simply just get the delay offset from the causally
-        // related port because all ports would have the same offsets.
-        if (pureEvent
-                && ((BooleanToken) forceActorsToProcessEventsInTimestampOrder
-                        .getToken()).booleanValue()) {
-            double result = Double.POSITIVE_INFINITY;
-            assert (port != null);
-            Collection<IOPort> equivalentPorts = _finiteEquivalentPorts(port);
-            for (IOPort input : equivalentPorts) {
-                Parameter parameter = (Parameter) ((NamedObj) input)
-                        .getAttribute("delayOffset");
-                if (parameter != null) {
-                    for (int i = 0; i < input.getWidth(); i++) {
-                        DoubleToken token = ((DoubleToken) ((ArrayToken)
-                                parameter.getToken()).arrayValue()[channel]);
-                        if (token != null) {
-                            if (token.doubleValue() < result) {
-                                result = token.doubleValue();
-                            }
-                        } else {
-                            throw new IllegalActionException(port,
-                                    "delayOffset parameter is needed"
-                                            + "for channel, "
-                                            + "but it does not exist.");
-                        }
-                    }
-                } else {
-                    throw new IllegalActionException(port,
-                            "delayOffset parameter is needed, "
-                                    + "but it does not exist.");
-                }
-            }
-            return result;
-        }
-
-        // If event is not a pure event, or if the event is a pure event, but
-        // forceActorsToProcessEventsInTimestampOrder is false, then we can
-        // simply get the delayOffset from the port.
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("delayOffset");
-        if (parameter != null) {
-            DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
-                    .getToken()).arrayValue()[channel]);
-            if (token != null) {
-                return token.doubleValue();
-            } else {
-                throw new IllegalActionException(port,
-                        "delayOffset parameter is needed for channel "
-                                + channel + ", but it does not exist.");
-            }
-        } else {
-            throw new IllegalActionException(port,
-                    "delayOffset parameter is needed, "
-                            + "but it does not exist.");
-        }
     }
 
     /** Return the actor to fire in this iteration, or null if no actor
@@ -1704,13 +1707,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  below. Execution times are assumed to be in oracle simulated physical
      *  time, not platform simulated physical time. The difference between
      *  these two times are described in the comment of this class.
+     *  <p>
      *  In this base class, this method first checks whether the top event from
-     *  the event queue is destined for an actuator. If it is, then we check
+     *  the event queue is has an actuator as its destination. If it is,
+     *  then we check
      *  if physical time has reached the timestamp of the actuation event. If it
-     *  has, then we fire the actuator. If it has not, then we take the actuator
-     *  event from the event queue and put it onto the _realTimeEventQueue, and
-     *  call fireAt() of the executive director. We then check if a real-time
-     *  event should be processed by looking at the top event of the
+     *  has, then the actuator is fired. If not, then the actuator event is
+     *  taken from the event queue and put it onto the _realTimeEventQueue, and
+     *  fireAt() of the executive director is called. We then check if a
+     *  real-time event should be processed by looking at the top event of the
      *  _realTimeEventQueue. If there is one that should be fired, that
      *  actor is returned for firing. If not, we go on and considers two
      *  cases, depending whether there is an actor currently executing,
@@ -1718,42 +1723,42 @@ public class PtidesBasicDirector extends DEDirector {
      *  <p>
      *  <b>Case 1</b>: If there is no actor currently
      *  executing, then this method checks the event queue and returns
-     *  null if it is empty. If it is not empty, it checks the destination actor
-     *  of the earliest event on the event queue, and if it has a non-zero
-     *  execution time, then it pushes it onto the currently executing stack and
-     *  returns null. Otherwise, if the execution time of the actor is
-     *  zero, it sets the current model time to the time stamp of
+     *  null if the queue is empty. If the queue is not empty, it checks the
+     *  destination actor of the earliest event on the event queue. If the
+     *  destination port or actor has a non-zero
+     *  execution time, then that event is pushes  onto the currently executing
+     *  stack and this method returns null.
+     *  Otherwise, if the execution time of the actor is
+     *  zero, this method sets the current model time to the time stamp of
      *  that earliest event and returns that actor.
      *  <p>
      *  <b>Case 2</b>: If there is an actor currently executing, then this
-     *  method checks whether it has a remaining execution time of zero.
-     *  If it does, then it returns the currently executing actor.
-     *  If it does not, then it checks whether
+     *  method checks whether that actor has a remaining execution time of zero.
+     *  If so, then the currently executing actor is return.
+     *  If not, then we check if
      *  the earliest event on the event queue should
-     *  preempt it (by invoking _preemptExecutingActor()),
-     *  and if so, checks the destination actor of that event
+     *  preempt it (by invoking _preemptExecutingActor()).
+     *  If so, this method checks the destination actor of that event
      *  and removes the event from the event queue. If that destination
-     *  actor has an execution time of zero, then it sets the current
+     *  actor has an execution time of zero, then this method sets the current
      *  model time to the time stamp of that event, and returns that actor.
-     *  Else if the destination actor has an execution time of bigger than
-     *  zero, then it calls fireAt()
-     *  on the enclosing director passing it the time it expects the currently
-     *  executing actor to finish executing, and returns null.
-     *  If there is no
-     *  event on the event queue or that event should not preempt the
-     *  currently executing actor, then it calls fireAt()
-     *  on the enclosing director passing it the time it expects the currently
-     *  executing actor to finish executing, and returns null.
-     *  @return The next actor to be fired, which can be null.
-     *  @exception IllegalActionException If event queue is not ready, or
-     *  an event is missed, or time is set backwards, or if the enclosing
-     *  director does not respect the fireAt call.
+     *  Otherwise if the destination actor has an execution time of greater than
+     *  zero, then fireAt() of the executive director is called, and the
+     *  physical time at which the currently
+     *  executing actor should finish executing is passed into fireAt() as an
+     *  input. Finally this method returns null.
+     *  <p>
+     *  If there is no event on the event queue or that event should not preempt
+     *  the currently executing actor, fireAt()
+     *  of the enclosing director is called, with the time at which the
+     *  currently executing actor to finish executing is passed inas input.
+     *  Finally this method returns null.
      *  <p>
      *  Also, when an actor is fired, not only is the top event processed,
      *  all events in the event queue are also checked to see whether they
-     *  have the same actor as destination, and they have the same timestamp
-     *  as the top event. Those that do are also taken out of the event queue
-     *  and processed.
+     *  have the same destination actor, and whether they have the same
+     *  timestamp as the top event. Events that fits the above description are
+     *  also taken out of the event queue and processed.
      *  <p>
      *  Finally, in any of the following situations: a sensor interrupt
      *  has occurred, a timed interrupt has occurred, or an actor has finished
@@ -1762,14 +1767,17 @@ public class PtidesBasicDirector extends DEDirector {
      *  physical time, we also simulate the overhead for the scheduler to make
      *  its decision.
      *  The parameter: {@link #schedulerExecutionTimeBound} indicates this time.
-     *  Note, when sensor and timed interrupts occurs, the currently executing
+     *  Note, when sensor and timed interrupts occur, the currently executing
      *  event will be preempted to perform the scheduling overhead.
      *  <p>
-     *  If at some simulated physical time, a sensor interrupt occurred, at the
-     *  same time, a previous event finished execution, then we always assume
-     *  the sensor interruption occurred first, and the event should be put
-     *  into the event queue before the finished event is dealt with.
+     *  Finally, note if a sensor interrupt occurs at the
+     *  same time as a previous event finishes execution, then we always assume
+     *  the sensor interrupt occurred first.
      *  @see #_preemptExecutingActor()
+     *  @return The next actor to be fired, which can be null.
+     *  @exception IllegalActionException If event queue is not ready, or
+     *  an event is missed, or time is set backwards, or if the enclosing
+     *  director does not respect the fireAt call.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         // FIXME: This method changes persistent state, yet it is called in
@@ -1797,6 +1805,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
         // When a sensor or timed interrupt occurs, the previously executing
         // event should be preempted.
+        // Note the next three if statements should not be merged, because
+        // each indicates the occurance of an external event, and we want to
+        // simulate the scheduling overhead for each case.
         if (_inputEventInterruptOccurred) {
             // Indicate that no other event is processing, only the scheduler is
             // running.
@@ -1806,8 +1817,8 @@ public class PtidesBasicDirector extends DEDirector {
                 _physicalTimeExecutionStarted = null;
                 return null;
             }
-            // If scheduler execution time is not simulated, then we simply
-            // go on executing.
+            // If scheduler overhead execution time is not simulated, then we
+            // simply go on executing.
         }
         if (_timedInterruptOccurred()) {
             // Indicate that no other event is processing, only the scheduler is
@@ -1817,8 +1828,8 @@ public class PtidesBasicDirector extends DEDirector {
                 _physicalTimeExecutionStarted = null;
                 return null;
             }
-            // If scheduler execution time is not simulated, then we simply
-            // go on executing.
+            // If scheduler overhead execution time is not simulated, then we
+            // simply go on executing.
         }
         if (_scheduleNewEvent) {
             _scheduleNewEvent = false;
@@ -1827,14 +1838,18 @@ public class PtidesBasicDirector extends DEDirector {
                 _physicalTimeExecutionStarted = null;
                 return null;
             }
-            // If scheduler execution time is not simulated, then we simply
-            // go on executing.
+            // If scheduler overhead execution time is not simulated, then we
+            // simply go on executing.
         }
 
         if (!_currentlyExecutingStack.isEmpty()) {
             // If we realize the previous execution was preempted by a system
             // scheduling or sensor interruption, then restart the event
             // execution at the current simulated physical time.
+            // Note: even though preemption is not supported in this director,
+            // its subclasses do need such as support. Ideally this code should
+            // be refactored and the code that deals with preemption should be
+            // put in the subclass.
             if (_physicalTimeExecutionStarted == null) {
                 _physicalTimeExecutionStarted = executionPhysicalTag.timestamp;
             }
@@ -1849,11 +1864,7 @@ public class PtidesBasicDirector extends DEDirector {
             int comparison = finishTime
                     .compareTo(executionPhysicalTag.timestamp);
             if (comparison < 0) {
-                // NOTE: This should not happen, so if it does, throw an exception.
-                throw new IllegalActionException(
-                        this,
-                        _getActorFromEventList((List<PtidesEvent>)
-                                currentEventList.contents),
+                throw new InternalErrorException(
                         "Physical time passed the finish time of the " +
                         "currently executing actor");
             } else if (comparison == 0) {
@@ -1874,7 +1885,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + executionPhysicalTag.timestamp);
                 }
 
-                // Animate, if appropriate.
+                // Animate, if needed.
                 _setIcon(_getIdleIcon(), false);
                 _clearHighlight(
                         _getActorFromEventList((List<PtidesEvent>)
@@ -1882,14 +1893,15 @@ public class PtidesBasicDirector extends DEDirector {
                 _lastExecutingActor = null;
 
                 // Request a refiring so we can process the next event
-                // on the event queue at the current physical time.
+                // on the event queue at the current execution physical time.
                 executiveDirector.fireAtCurrentTime((Actor) container);
 
                 _lastActorFired = _getActorFromEventList((List<PtidesEvent>)
                         currentEventList.contents);
 
-                // An event has finished processing. In this case, the scheduler
-                // should run to figure out what is the next event to process.
+                // Processing of an event has finished. In this case, the
+                // scheduler
+                // should run to figure out which is the next event to process.
                 // Unless the event is a sensor event, in which case the 
                 // scheduling overhead was accounted for when the sensor
                 // interrupt occurred.
@@ -1902,9 +1914,9 @@ public class PtidesBasicDirector extends DEDirector {
                 }
 
                 return _lastActorFired;
-            } else {
+            } else { // comparison > 0
                 _fireAtPlatformTime(finishTime, _executionTimeClock);
-                // Currently executing actor needs more execution time.
+                // The currently executing actor needs more execution time.
                 // Decide whether to preempt it.
                 if (_eventQueue.isEmpty() || !_preemptExecutingActor()) {
                     // Either the event queue is empty or the
@@ -1952,21 +1964,24 @@ public class PtidesBasicDirector extends DEDirector {
 
         Actor actorToFire = _getNextActorToFireForTheseEvents(eventsToProcess);
 
-        IOPort ioPort = eventFromQueue.ioPort();
-        if (ioPort == null) {
+        // This inPort is used to get the execution time of an event, in case
+        // that event's ioPort parameter is null.
+        IOPort inPort = eventFromQueue.ioPort();
+        if (inPort == null) {
             List<IOPort> inPortList = eventFromQueue.actor().inputPortList();
             if (inPortList.size() > 0) {
-                ioPort = inPortList.get(0);
+                inPort = inPortList.get(0);
             }
         }
 
         // If the firing of this event triggered another pure event, we need to
         // calculate the deadline of the pure event through the use of the last
         // timestamp, the (smallest) deadline of the last event(s), and the
-        // (smallest) \delta of the causality delays, which we save here.
+        // (smallest) delta of the causality delays, which we save here.
+        // FIXME: is this correct?
         _saveEventInformation(eventsToProcess);
 
-        Time executionTime = new Time(this, _getExecutionTime(ioPort,
+        Time executionTime = new Time(this, _getExecutionTime(inPort,
                 actorToFire));
 
         if (executionTime.compareTo(_zero) == 0) {
@@ -1994,7 +2009,7 @@ public class PtidesBasicDirector extends DEDirector {
 
             return actorToFire;
         } else {
-            // Execution time is not zero. Push the execution onto
+            // Execution time is not zero. Push the executing actor onto
             // the stack, call fireAt() on the enclosing director,
             // and return null.
             Time expectedCompletionTime = executionPhysicalTag.timestamp
@@ -2261,7 +2276,7 @@ public class PtidesBasicDirector extends DEDirector {
         // should move all actuation events to the outputs.
         assert (!port.isOutput());
 
-        double delayOffset = _getMinimumDelayOffset(port,
+        double delayOffset = _getDelayOffset(port,
                 ((PtidesEvent) event).channel(), event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(delayOffset);
         Tag platformPhysicalTag = getPlatformPhysicalTag(platformTimeClock);
