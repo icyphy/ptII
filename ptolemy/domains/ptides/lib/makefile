@@ -66,7 +66,9 @@ JSRCS = \
 	SensorHandler.java \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \
-	VariableDelayCounter.java
+	VariableDelayCounter.java \
+	ExecutionTimeListener.java \ 
+	ExecutionTimeMonitor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml

@@ -68,6 +68,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.ptides.lib.ActuatorSetup;
+import ptolemy.domains.ptides.lib.ExecutionTimeListener;
+import ptolemy.domains.ptides.lib.ExecutionTimeListener.ExecutionEventType;
 import ptolemy.domains.ptides.lib.NetworkReceiver;
 import ptolemy.domains.ptides.lib.NetworkTransmitter;
 import ptolemy.domains.ptides.lib.SensorHandler;
@@ -842,6 +844,16 @@ public class PtidesBasicDirector extends DEDirector {
         // In Ptides, we should never stop when queue is empty.
         stopWhenQueueIsEmpty.setExpression("false");
     }
+    
+    /** Add a new execution time listener to the list of listeners. 
+     *  @param listener New listener.
+     */
+    public void registerExecutionTimeListener(ExecutionTimeListener listener) {
+        if (_executionTimeListeners == null) {
+            _executionTimeListeners = new ArrayList();
+        }
+        _executionTimeListeners.add(listener);
+    }
 
     /** Set the microstep. A microstep is an
      *  integer which represents the index of the sequence of execution
@@ -905,6 +917,15 @@ public class PtidesBasicDirector extends DEDirector {
             _clearHighlight(_lastExecutingActor, false);
         }
     }
+    
+    
+    
+    public void registerExecutionListener(ExecutionTimeListener listener) {
+        if (_executionTimeListeners == null) {
+            _executionTimeListeners = new ArrayList();
+        }
+        _executionTimeListeners.add(listener);
+    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -946,6 +967,15 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _actorFired() throws IllegalActionException {
 
+        if ((_getExecutionTime((IOPort) _lastActorFired.inputPortList().get(0), _lastActorFired) == 0)) {
+            _sendExecutionTimeEvent(_lastActorFired, 
+                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                    ExecutionEventType.START); 
+            _sendExecutionTimeEvent(_lastActorFired, 
+                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                    ExecutionEventType.STOP);
+        } 
+        
         _getNextActuationEvent();
 
         // Now clear _pureEvent* since an actor has finished firing.
@@ -1533,7 +1563,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + temp.toString());
         }
     }
-
+    
     /** Return the value of the delayOffset parameter. The delayOffset parameter
      *  used in the safe to process analysis of Ptides. In Ptides, an event of
      *  timestamp tau is safe to process at physical time t if
@@ -1615,6 +1645,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    
     /** Get the dependency between an input and an output ports. If the
      *  ports do not belong to the same actor, an exception is thrown.
      *  Depending on the type of the actor (atomic or composite),
@@ -1686,7 +1717,6 @@ public class PtidesBasicDirector extends DEDirector {
             return PtidesActorProperties.getExecutionTime(actor);
         }
     }
-
     /** Return a MoML string describing the icon appearance for an idle
      *  director. This can include a sequence of instances of VisibleAttribute
      *  or its subclasses. In this base class, this returns a red rectangle like
@@ -1890,6 +1920,9 @@ public class PtidesBasicDirector extends DEDirector {
                 _clearHighlight(
                         _getActorFromEventList((List<PtidesEvent>)
                                 currentEventList.contents), false);
+                _sendExecutionTimeEvent(_lastExecutingActor, 
+                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                        ExecutionEventType.STOP);
                 _lastExecutingActor = null;
 
                 // Request a refiring so we can process the next event
@@ -2032,7 +2065,9 @@ public class PtidesBasicDirector extends DEDirector {
             // Animate if appropriate.
             _setIcon(_getExecutingIcon(actorToFire), false);
             _lastExecutingActor = actorToFire;
-
+            _sendExecutionTimeEvent(_lastExecutingActor, 
+                    this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                    ExecutionEventType.START); 
             return null;
         }
     }
@@ -2318,6 +2353,19 @@ public class PtidesBasicDirector extends DEDirector {
             return true;
         }
         return false;
+    }
+    
+    /** Send an execution time event to all listeners. 
+     *  @param actor Actor that produced an execution time event.
+     *  @param time Time when the event occured.
+     *  @param event Type of the event.
+     */
+    protected void _sendExecutionTimeEvent(Actor actor, double time, ExecutionEventType event) {
+        if (_executionTimeListeners != null) {
+            for (ExecutionTimeListener listener : _executionTimeListeners) {
+                listener.event(actor, time, event);
+            }
+        }
     }
 
     /** Set the icon for this director if the <i>animateExecution</i>
@@ -3709,6 +3757,11 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** List of listeners to be informed whenever an execution time
+     *  event occurs.
+     */
+    private ArrayList<ExecutionTimeListener> _executionTimeListeners;
 
     /** A list that keeps track of future fireAt oracle times for execution time
      *  simulation. When the cock drift

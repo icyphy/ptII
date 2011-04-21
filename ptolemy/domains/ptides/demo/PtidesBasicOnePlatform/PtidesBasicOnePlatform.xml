@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 230.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 143, 707, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 143, 697, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 400]">
     </property>
@@ -341,6 +341,10 @@
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
+    </entity>
+    <entity name="ExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.ExecutionTimeMonitor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 45.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
