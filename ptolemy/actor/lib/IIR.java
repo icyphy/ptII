@@ -234,6 +234,13 @@ public class IIR extends Transformer {
         _initStateVector();
         _currentTap = 0;
     }
+    
+    /** Return false if the input does not have a token. 
+     * @throws IllegalActionException */
+    public boolean prefire() throws IllegalActionException {
+        boolean result = super.prefire();
+        return result && input.hasToken(0);
+    }
 
     /** Update the filter state.
      *
