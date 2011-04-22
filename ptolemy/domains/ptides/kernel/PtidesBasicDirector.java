@@ -1993,13 +1993,6 @@ public class PtidesBasicDirector extends DEDirector {
         // This inPort is used to get the execution time of an event, in case
         // that event's ioPort parameter is null.
         IOPort inPort = eventFromQueue.ioPort();
-        if (inPort == null) {
-            List<IOPort> inPortList = eventFromQueue.actor().inputPortList();
-            if (inPortList.size() > 0) {
-                inPort = inPortList.get(0);
-            }
-        }
-
         // If the firing of this event triggered another pure event, we need to
         // calculate the deadline of the pure event through the use of the last
         // timestamp, the (smallest) deadline of the last event(s), and the
