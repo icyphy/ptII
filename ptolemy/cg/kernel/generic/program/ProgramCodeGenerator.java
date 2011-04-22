@@ -333,6 +333,32 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return code.toString();
     }
 
+    /** Generate the closing code for a group of fire functions common
+     *  to a Composite Actor.  This method is called when the firing
+     *  code of each actor is not inlined.
+     *
+     *  @return In this base class, return the empty string.  Derived
+     *  classes, such as the JavaCodeGenerator could return the
+     *  end of an inner class.
+     */
+    public String generateFireFunctionCompositeEnd() {
+        return "";
+    }
+
+    /** Generate the initial code for a group of fire functions common
+     *  to a Composite Actor.  This method is called when the firing
+     *  code of each actor is not inlined.
+     *
+     *  @parameter className The name of the class to include in the 
+     *  initial code.
+     *  @return In this base class, return the empty string.  Derived
+     *  classes, such as the JavaCodeGenerator could return the
+     *  start of an inner class.
+     */
+    public String generateFireFunctionCompositeStart(String className) {
+        return "";
+    }
+
     /** Generate the fire function method invocation. This method is called
      *  when the firing code of each actor is not inlined.  In this
      *  base class, each actor's firing code is in a function with the
@@ -345,7 +371,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  accessing the name or generating the name.
      */
     public String generateFireFunctionMethodInvocation(NamedObj namedObj) throws IllegalActionException {
-        return generateFireFunctionMethodName(namedObj) + "()";
+        return generateFireFunctionMethodName(namedObj);
     }
 
     /** Generate the fire function method name. This method is called

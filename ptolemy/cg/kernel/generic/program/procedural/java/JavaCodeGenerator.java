@@ -315,6 +315,28 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return result;
     }
 
+    /** Generate the closing code for a group of fire functions common
+     *  to a Composite Actor.  This method is called when the firing
+     *  code of each actor is not inlined.
+     *
+     *  @return a curly bracket and _eol.
+     */
+    public String generateFireFunctionCompositeEnd() {
+        return "}" + _eol;
+    }
+
+    /** Generate the initial code for a group of fire functions common
+     *  to a Composite Actor.  This method is called when the firing
+     *  code of each actor is not inlined.
+     *
+     *  @parameter className The name of the class to include in the 
+     *  initial code.
+     *  @return A string that defines an inner class.
+     */
+    public String generateFireFunctionCompositeStart(String className) {
+        return "class " + className + "{" + _eol;
+    }
+
     /** Generate the fire function method invocation. This method is called
      *  when the firing code of each actor is not inlined.  
      *
@@ -428,30 +450,38 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Generate the fire function variable declaration. This method
      *  is called when the firing code of each actor is not inlined.
-     *  In this base class, the empty string is returned.  Derived
-     *  classes, such as JavaCodeGenerator, could return a variable
-     *  declaration that instantiates an inner class.
      *
      *  <p>So as to reduce the size of classes the Java Code
      *  Generator, the fire function methods for the top two levels of
      *  composites are placed in a separate inner class.</p>
      *
      *  @param namedObj The named object for which the name is generated.
-     *  @return In this baseclass, return the empty string. 
+     *  @return If the namedObj is in a containment hierarchy that
+     *  also contains a GenericCodeGenerator, then the declaration is
+     *  returned.  Otherwise, the empty string is returned.
      *  @exception IllegalActionException If there are problems
      *  accessing the name of the namedObj or generating the variable
      *  declaration.
      */
     public String generateFireFunctionVariableDeclaration(NamedObj namedObj)
             throws IllegalActionException {
-        String [] results = generateFireFunctionVariableAndMethodName(namedObj);
-        String result = results[0] + " _inner" + results[0] + " = new " + results[0] + "();" + _eol;
-        //System.out.println("JCG.generateFireFunctionVariableDeclaration(): " + namedObj.getFullName() + " " + result);
-        return result;
+        // Go up the containment chain, looking for a GenericCodeGenerator.
+        // If there is one, return the declaration.  If there is not one,
+        // return the empty string.  This is needed for Composite Codegen.
+        NamedObj container = namedObj.getContainer();
+        while (container != null) {
+            List<GenericCodeGenerator> codeGenerators = container.attributeList(GenericCodeGenerator.class);
+            if (codeGenerators.size() > 0) {
+                String [] results = generateFireFunctionVariableAndMethodName(namedObj);
+                return results[0] + " _inner" + results[0] + " = new " + results[0] + "();" + _eol;
+            }
+            container = container.getContainer();
+        }
+        return "";
     }
 
-    /** Generate the function table.  In this base class return
-     *  the empty string.
+    /** Generate the function table. 
+     *
      *  @param types An array of types.
      *  @param functions An array of functions.
      *  @return The code that declares functions.
@@ -525,7 +555,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
         return _eol + _eol + "public void initialize() {" + _eol;
@@ -533,16 +563,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Generate the initialization procedure exit point.
      *  @return a string for the initialization procedure exit point.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown.
      */
     public String generateInitializeExitCode() throws IllegalActionException {
-
         return "}" + _eol;
     }
 
     /** Generate the initialization procedure name.
      *  @return a string for the initialization procedure name.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown.
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {

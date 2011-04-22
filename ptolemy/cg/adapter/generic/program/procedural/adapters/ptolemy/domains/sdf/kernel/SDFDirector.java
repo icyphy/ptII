@@ -146,6 +146,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         // the code should be appended.
         String hackStart = "/* SDFDirectorHack: ";
 
+        ptolemy.actor.Director director = (ptolemy.actor.Director)getComponent();
+
         // Place the fire functions in different inner classes so as to
         // result in smaller Java code that makes it possible for the compiler
         // to compile large files.
@@ -169,16 +171,16 @@ public class SDFDirector extends StaticSchedulingDirector {
                 StringBuffer innerClassBuffer = innerClasses.get(className);
                 if (innerClassBuffer == null) {
                     innerClassBuffer = new StringBuffer();
-                    if (!((ptolemy.actor.Director)getComponent()).isEmbedded()) {                    
-                        innerClassBuffer.append("class " + className + "{" + _eol);
+                    if (!director.isEmbedded() || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+                        innerClassBuffer.append(codeGenerator.generateFireFunctionCompositeStart(className));
                     } else {
-                        // Place magic text into the code that is read
-                        // by the parent container so that the parent
-                        // container knows into which inner class to
-                        // place the code.
+                        // If this director is not the top most
+                        // codegen director, then place magic text
+                        // into the code that is read by the parent
+                        // director so that the parent director knows
+                        // into which inner class to place the code.
                         innerClassBuffer.append(hackStart + className + " */");
                     }
-                    innerClassBuffer.append("/* " + className + " " + getComponent().getFullName() + " */");
                     innerClasses.put(className, innerClassBuffer);
                 }
                 String subFireCode = actorAdapter.generateFireFunctionCode();
@@ -203,8 +205,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             // closing curly bracket.
             for (Map.Entry<String, StringBuffer> innerClassBuffer: innerClasses.entrySet()) {
                 code.append(innerClassBuffer.getValue());
-                if (!((ptolemy.actor.Director)getComponent()).isEmbedded()) {
-                    code.append("}" + _eol);
+                    if (!director.isEmbedded() || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+                        code.append(codeGenerator.generateFireFunctionCompositeEnd());
                 }
             }
         }
