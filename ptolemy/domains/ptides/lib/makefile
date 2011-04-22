@@ -67,7 +67,7 @@ JSRCS = \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \
 	VariableDelayCounter.java \
-	ExecutionTimeListener.java \ 
+	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java
 
 OTHER_FILES_TO_BE_JARED = \
