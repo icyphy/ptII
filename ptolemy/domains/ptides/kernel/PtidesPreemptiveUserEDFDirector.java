@@ -266,7 +266,7 @@ public class PtidesPreemptiveUserEDFDirector extends
             // The event is not a pure event, or the event is a pure event,
             // but it depends on events coming from other input ports.
             List<PtidesEvent> eventList = new ArrayList();
-            for (DoubleTimedEvent timedEvent : _currentlyExecutingStack) {
+            for (ExecutionTimedEvent timedEvent : _currentlyExecutingStack) {
                 eventList.addAll((List<PtidesEvent>) timedEvent.contents);
             }
             for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {

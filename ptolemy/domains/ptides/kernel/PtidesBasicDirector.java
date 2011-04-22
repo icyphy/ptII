@@ -388,7 +388,8 @@ public class PtidesBasicDirector extends DEDirector {
                 .setTypeEquals(BaseType.BOOLEAN);
         forceActorsToProcessEventsInTimestampOrder.setExpression("false");
 
-        highlightModelTimeDelay = new Parameter(this, "highlightModelTimeDelay");
+        highlightModelTimeDelay = new Parameter(this, 
+                "highlightModelTimeDelay");
         highlightModelTimeDelay.setTypeEquals(BaseType.BOOLEAN);
         highlightModelTimeDelay.setExpression("false");
 
@@ -410,12 +411,16 @@ public class PtidesBasicDirector extends DEDirector {
         initialPlatformClockDrift.setTypeEquals(BaseType.DOUBLE);
         initialPlatformClockDrift.setExpression("1.0");
 
+        safeToProcessTimerHandlingOverhead = new Parameter(this,
+                "safeToProcessTimerHandlingOverhead");
+        safeToProcessTimerHandlingOverhead.setTypeEquals(BaseType.DOUBLE);
+        safeToProcessTimerHandlingOverhead.setExpression("0.0");
+
         schedulerExecutionTimeBound = new Parameter(this,
                 "schedulerExecutionTime");
         schedulerExecutionTimeBound.setTypeEquals(BaseType.DOUBLE);
         schedulerExecutionTimeBound.setExpression("0.0");
 
-        // FIXME: make this static final.  See LongToken.ZERO.
         _zero = new Time(this);
     }
 
@@ -449,13 +454,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  within this parameter.
      */
     public SharedParameter assumedPlatformTimeSynchronizationErrorBound;
-
-    /** An ID for the execution timer in this director. There are two timers
-     *  in a Ptides director: platform timer and execution timer. Actors
-     *  reference this ID in order to access a timer in the Ptides director.
-     *  @see #PLATFORM_TIMER
-     */
-    //public static final int EXECUTION_TIMER = 0;
 
     /** If true, force all actors to process events in timestamp
      *  order, even though some actors (in particular those without
@@ -496,7 +494,7 @@ public class PtidesBasicDirector extends DEDirector {
     public Parameter initialPlatformClockDrift;
 
     /** The initial platform time clock time. The initial oracle clock time
-     *  zero. If the initial platform         clock time differs from that time, then
+     *  zero. If the initial platform clock time differs from that time, then
      *  that time is captured in this parameter. Note this parameter is
      *  different from the assumedPlatformTimeSynchronizationErrorBound
      *  in that the other parameter is the estimated bound, while
@@ -504,12 +502,11 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter initialPlatformClockTime;
 
-    /** An ID for the platform timer in this director. There are two timers
-     *  in a Ptides director: platform timer and execution timer. Actors
-     *  reference this ID in order to access a timer in the Ptides director.
-     *  @see #EXECUTION_TIMER
+    /** The amount of execution time it takes for the system to handle the
+     *  safe-to-process timer. This value is used to simulate execution
+     *  time.
      */
-    //public static final int PLATFORM_TIMER = 1;
+    public Parameter safeToProcessTimerHandlingOverhead;
 
     /** A Parameter representing the bound on the simulated scheduling
      *  overhead time. In real-time programs, it takes time for the scheduler
@@ -680,7 +677,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  it or if there is no executive director.
      */
     public void initialize() throws IllegalActionException {
-        _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
+        _currentlyExecutingStack = new Stack<ExecutionTimedEvent>();
         _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
         _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         _lastConsumedTag = new HashMap<NamedObj, Tag>();
@@ -933,7 +930,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** The list of currently executing events (including value and
      *  timestamp) and their remaining execution times.
      */
-    protected Stack<DoubleTimedEvent> _currentlyExecutingStack;
+    protected Stack<ExecutionTimedEvent> _currentlyExecutingStack;
 
     /** The last actor that was fired by this director. If null, then after
      *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
@@ -1842,7 +1839,7 @@ public class PtidesBasicDirector extends DEDirector {
             // Indicate that no other event is processing, only the scheduler is
             // running.
             _inputEventInterruptOccurred = false;
-            if (_startScheduler()) {
+            if (_startScheduler(0.0)) {
                 _resetExecutionTimeForPreemptedEvent();
                 _physicalTimeExecutionStarted = null;
                 return null;
@@ -1853,7 +1850,22 @@ public class PtidesBasicDirector extends DEDirector {
         if (_timedInterruptOccurred()) {
             // Indicate that no other event is processing, only the scheduler is
             // running.
-            if (_startScheduler()) {
+            // Unlike the oter cases (input event or scheduling new event),
+            // where the overhead of the scheduling is captured in parameter
+            // schedulerExecutionTimeBound, here, the execution time also needs
+            // to include an additional execution time for the system to handle
+            // the safe-to-process interrupt. This time is captured in the
+            // parameter safeToProcessTimerHandlingOverhead. The value of this
+            // parameter is passed into _startScheduler and simulated as a part
+            // of execution time.
+            Parameter parameter = 
+                (Parameter) getAttribute("safeToProcessTimerHandlingOverhead");
+            double additionalExecutionTime = 0.0;
+            if (parameter != null) {
+                additionalExecutionTime = ((DoubleToken) parameter.getToken())
+                    .doubleValue();
+            }
+            if (_startScheduler(additionalExecutionTime)) {
                 _resetExecutionTimeForPreemptedEvent();
                 _physicalTimeExecutionStarted = null;
                 return null;
@@ -1863,7 +1875,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         if (_scheduleNewEvent) {
             _scheduleNewEvent = false;
-            if (_startScheduler()) {
+            if (_startScheduler(0.0)) {
                 _resetExecutionTimeForPreemptedEvent();
                 _physicalTimeExecutionStarted = null;
                 return null;
@@ -1884,7 +1896,7 @@ public class PtidesBasicDirector extends DEDirector {
                 _physicalTimeExecutionStarted = executionPhysicalTag.timestamp;
             }
             // We are currently executing an actor.
-            DoubleTimedEvent currentEventList = (DoubleTimedEvent)
+            ExecutionTimedEvent currentEventList = (ExecutionTimedEvent)
                 _currentlyExecutingStack.peek();
             // First check whether its remaining execution time is zero.
             Time remainingExecutionTime = 
@@ -1942,7 +1954,8 @@ public class PtidesBasicDirector extends DEDirector {
                 // events due to other input events (other than those created
                 // through sensor interrupts) then the following code is wrong.
                 // Instead, we simulate a scheduling overhead for the next run.
-                if (!(_lastActorFired instanceof SensorHandler)) {
+                if (!(_lastActorFired instanceof SensorHandler) &&
+                        !(_lastActorFired instanceof ActuatorSetup)) {
                     _scheduleNewEvent = true;
                 }
 
@@ -2036,7 +2049,8 @@ public class PtidesBasicDirector extends DEDirector {
             // due to other input events (other than those created through
             // sensor interrupts) then the following code is wrong. Instead, we
             // simulate a scheduling overhead for the next run.
-            if (!(_lastActorFired instanceof SensorHandler)) {
+            if (!(_lastActorFired instanceof SensorHandler) &&
+                    !(_lastActorFired instanceof ActuatorSetup)) {
                 _scheduleNewEvent = true;
             }
 
@@ -2052,7 +2066,7 @@ public class PtidesBasicDirector extends DEDirector {
             // If we are preempting a current execution, then
             // update information of the preempted event.
             _resetExecutionTimeForPreemptedEvent();
-            _currentlyExecutingStack.push(new DoubleTimedEvent(
+            _currentlyExecutingStack.push(new ExecutionTimedEvent(
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
             _physicalTimeExecutionStarted = executionPhysicalTag.timestamp;
@@ -2705,8 +2719,8 @@ public class PtidesBasicDirector extends DEDirector {
                             // while the timestamp of this event is based
                             // on platformPhysicalTime.
                             RealTimeEvent realTimeEvent = new RealTimeEvent(
-                                    port, i, t, new Tag(waitUntilTime,
-                                            executionPhysicalTag.microstep),
+                                    port, i, t, new Tag(waitUntilTime, 0),
+                                            //executionPhysicalTag.microstep),
                                     new Tag(platformPhysicalTag.timestamp,
                                             platformPhysicalTag.microstep));
                             _realTimeInputEventQueue.add(realTimeEvent);
@@ -3358,7 +3372,7 @@ public class PtidesBasicDirector extends DEDirector {
         // update information of the preempted event.
         if (!_currentlyExecutingStack.isEmpty()) {
             // We are preempting a current execution.
-            DoubleTimedEvent currentEventList = _currentlyExecutingStack.peek();
+            ExecutionTimedEvent currentEventList = _currentlyExecutingStack.peek();
             Time elapsedTime = getPlatformPhysicalTag(_executionTimeClock)
                     .timestamp.subtract(_physicalTimeExecutionStarted);
             currentEventList.remainingExecutionTime = 
@@ -3459,22 +3473,27 @@ public class PtidesBasicDirector extends DEDirector {
      *  this actor at the time when the scheduler finishes execution and
      *  return true. If schedulerExecutionTime doesn't exist, or is zero,
      *  then return false.
+     *  @param additionalExecutionTime The additional execution time that needs
+     *  to be added to the schedulerExecutionTime.
      *  @return true If simulation of scheduler execution started, else
      *  return false.
      *  @exception IllegalActionException If the director fails to get physical
      *  time or failed to get a token from the schedulerExecutionTime parameter.
      */
-    private boolean _startScheduler() throws IllegalActionException {
+    private boolean _startScheduler(double additionalExecutionTime)
+            throws IllegalActionException {
         _schedulerFinishTime = getPlatformPhysicalTag(
                 _executionTimeClock).timestamp;
         Parameter parameter = 
             (Parameter) getAttribute("schedulerExecutionTime");
-        if (parameter == null
-                || ((DoubleToken) parameter.getToken()).doubleValue() == 0) {
+        if ((parameter == null
+                || ((DoubleToken) parameter.getToken()).doubleValue() == 0.0) &&
+                additionalExecutionTime == 0.0) {
             return false;
         }
         _schedulerFinishTime = getPlatformPhysicalTag(_executionTimeClock)
-            .timestamp.add(((DoubleToken) parameter.getToken()).doubleValue());
+            .timestamp.add(((DoubleToken) parameter.getToken()).doubleValue())
+            .add(additionalExecutionTime);
         _fireAtPlatformTime(_schedulerFinishTime, _executionTimeClock);
         return true;
     }
@@ -3909,7 +3928,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the remaining execution time (in physical time) for processing
      *  the event.
      */
-    protected static class DoubleTimedEvent extends TimedEvent {
+    protected static class ExecutionTimedEvent extends TimedEvent {
 
         /** Construct a new event with the specified time stamp,
          *  destination actor, and execution time.
@@ -3918,7 +3937,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param executingEvents The events to execute.
          *  @param executionTime The execution time of the actor.
          */
-        public DoubleTimedEvent(Time timeStamp, int microstep,
+        public ExecutionTimedEvent(Time timeStamp, int microstep,
                 Object executingEvents, Time executionTime) {
             super(timeStamp, executingEvents);
             this.microstep = microstep;

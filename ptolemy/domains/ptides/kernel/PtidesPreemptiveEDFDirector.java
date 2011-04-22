@@ -46,6 +46,8 @@ import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ptides.lib.NetworkReceiver;
+import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -316,7 +318,20 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             if (port.isInput()) {
                 SuperdenseDependency dependency = (SuperdenseDependency) (portDeadlines
                         .get(port));
-                _setDeadline(port, dependency);
+                // If this port is an input port of SensorHandler or
+                // NetworkReceiver, give this port the highest priority so it
+                // execute first. We do this because in PtidyOS, interrupts
+                // are always executed (to insert new events into the event
+                // queue). Since the SensorHandler and NetworkReceiver simulates
+                // interrupt handling, these must execute with the highest
+                // priority in order to correctly simulate execute time.
+                if (port.getContainer() instanceof SensorHandler ||
+                        port.getContainer() instanceof NetworkReceiver) {
+                    _setDeadline(port, SuperdenseDependency
+                            .valueOf(Double.NEGATIVE_INFINITY, 0));
+                } else {
+                    _setDeadline(port, dependency);
+                }
             }
         }
     }
@@ -327,7 +342,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     protected boolean _currentlyFiring(Actor actor) {
         for (int index = 0; index < _currentlyExecutingStack.size(); index++) {
-            DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.get(0);
+            ExecutionTimedEvent doubleTimedEvent = _currentlyExecutingStack.get(0);
             List<PtidesEvent> executingEvents = (List<PtidesEvent>) doubleTimedEvent.contents;
             if (actor == executingEvents.get(0).actor()) {
                 return true;
@@ -458,7 +473,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         // First make smallestDeadline the smallest deadline among all events
         // at the top of the stack.
         Time smallestStackDeadline = new Time(this, Double.POSITIVE_INFINITY);
-        DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
+        ExecutionTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
         List eventList = (List<PtidesEvent>) (doubleTimedEvent.contents);
         PtidesEvent executingEvent = (PtidesEvent) eventList.get(0);
         for (int i = 0; i < eventList.size(); i++) {
@@ -546,7 +561,6 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             }
         }
         parameter.setToken(new DoubleToken(dependency.timeValue()));
-
     }
 
     /** Return all the events in the event queue that are of the same tag as the event
