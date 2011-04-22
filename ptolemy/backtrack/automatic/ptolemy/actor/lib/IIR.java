@@ -240,6 +240,15 @@ public class IIR extends Transformer implements Rollbackable {
     }
 
     /**     
+     * Return false if the input does not have a token. 
+     * @throws IllegalActionException 
+     */
+    public boolean prefire() throws IllegalActionException  {
+        boolean result = super.prefire();
+        return result && input.hasToken(0);
+    }
+
+    /**     
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */
