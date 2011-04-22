@@ -685,7 +685,6 @@ public class PtidesBasicDirector extends DEDirector {
         _pureEventSourcePorts = new HashMap<NamedObj, IOPort>();
         _physicalTimeExecutionStarted = null;
         _schedulerFinishTime = new Time(this, Double.NEGATIVE_INFINITY);
-        _inputEventInterruptOccurred = false;
         _scheduleNewEvent = false;
         _timedInterruptTimes = new LinkedList<TimedEvent>();
         _eventsWithTimedInterrupt = new HashSet<PtidesEvent>();
@@ -1830,23 +1829,11 @@ public class PtidesBasicDirector extends DEDirector {
         if (_schedulerStillRunning()) {
             return null;
         }
-        // When a sensor or timed interrupt occurs, the previously executing
+        // When a timed interrupt occurs, the previously executing
         // event should be preempted.
         // Note the next three if statements should not be merged, because
         // each indicates the occurance of an external event, and we want to
         // simulate the scheduling overhead for each case.
-        if (_inputEventInterruptOccurred) {
-            // Indicate that no other event is processing, only the scheduler is
-            // running.
-            _inputEventInterruptOccurred = false;
-            if (_startScheduler(0.0)) {
-                _resetExecutionTimeForPreemptedEvent();
-                _physicalTimeExecutionStarted = null;
-                return null;
-            }
-            // If scheduler overhead execution time is not simulated, then we
-            // simply go on executing.
-        }
         if (_timedInterruptOccurred()) {
             // Indicate that no other event is processing, only the scheduler is
             // running.
@@ -1950,14 +1937,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // Unless the event is a sensor event, in which case the 
                 // scheduling overhead was accounted for when the sensor
                 // interrupt occurred.
-                // FIXME: If this sensor input device also produces output
-                // events due to other input events (other than those created
-                // through sensor interrupts) then the following code is wrong.
-                // Instead, we simulate a scheduling overhead for the next run.
-                if (!(_lastActorFired instanceof SensorHandler) &&
-                        !(_lastActorFired instanceof ActuatorSetup)) {
-                    _scheduleNewEvent = true;
-                }
+                _scheduleNewEvent = true;
 
                 return _lastActorFired;
             } else { // comparison > 0
@@ -2045,15 +2025,7 @@ public class PtidesBasicDirector extends DEDirector {
             // should run to figure out what is the next event to process.
             // Unless the event is a sensor event, in which case the scheduling
             // overhead was accounted for when the sensor interrupt occurred.
-            // FIXME: If this sensor input device also produces output events
-            // due to other input events (other than those created through
-            // sensor interrupts) then the following code is wrong. Instead, we
-            // simulate a scheduling overhead for the next run.
-            if (!(_lastActorFired instanceof SensorHandler) &&
-                    !(_lastActorFired instanceof ActuatorSetup)) {
-                _scheduleNewEvent = true;
-            }
-
+            _scheduleNewEvent = true;
             return actorToFire;
         } else {
             // Execution time is not zero. Push the executing actor onto
@@ -2658,11 +2630,6 @@ public class PtidesBasicDirector extends DEDirector {
                     _debug(getName(), "transferring input from "
                             + realTimeEvent.port.getName());
                 }
-
-                // Indicate that a sensor interrupt has occurred, and the
-                // scheduler should run to figure out whether to continue
-                // processing or preempt the current processing event.
-                _inputEventInterruptOccurred = true;
                 result = true;
             } else {
                 throw new IllegalActionException(realTimeEvent.port,
@@ -2698,11 +2665,6 @@ public class PtidesBasicDirector extends DEDirector {
                         platformPhysicalTag.microstep);
             }
             if (super._transferInputs(port)) {
-                // Indicate that a sensor or network input
-                // interrupt has occurred, and the
-                // scheduler should run to figure out whether to continue
-                // processing or preempt the current processing event.
-                _inputEventInterruptOccurred = true;
                 result = true;
             }
             setTag(lastModelTime, lastMicrostep);
@@ -3890,13 +3852,6 @@ public class PtidesBasicDirector extends DEDirector {
     /** The time at which the scheduler finishes processing.
      */
     private Time _schedulerFinishTime;
-
-    /** Indicate whether a sensor interrupt has just occurred or a network
-     *  packet has been received.
-     *  We assume reception of a network packet takes the same amount of
-     *  simulated physical time as a sensor interrupt.
-     */
-    private boolean _inputEventInterruptOccurred;
 
     /** Indicate whether an event has finished processing.
      */
