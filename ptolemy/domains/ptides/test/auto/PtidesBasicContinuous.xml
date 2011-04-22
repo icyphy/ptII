@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.1825275397796, 253.0612186352509}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 46, 1027, 753}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 46, 1027, 755}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 640]">
     </property>
@@ -98,7 +98,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 286, 814, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 285, 814, 515}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -131,17 +131,19 @@
             </property>
         </entity>
         <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
             </property>
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
             </property>
         </entity>
         <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.005, 0.01, 0.01, 0.01, 0.02}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.01, 0.01, 0.01, 0.02}">
             </property>
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 130.0}">
             </property>
@@ -195,7 +197,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.5, 200.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={309, 226, 873, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={309, 226, 873, 515}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 400]">
         </property>
@@ -241,6 +243,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.005}">
+                </property>
             </port>
         </entity>
         <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
@@ -252,6 +256,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.005}">
+                </property>
             </port>
         </entity>
         <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
@@ -262,6 +268,8 @@
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
             </port>
         </entity>
@@ -277,12 +285,16 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.005}">
+                </property>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
             </port>
         </entity>
@@ -294,6 +306,8 @@
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
             </port>
         </entity>

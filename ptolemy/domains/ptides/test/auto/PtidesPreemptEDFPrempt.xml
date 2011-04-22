@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 1003, 564}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 994, 565}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 450]">
     </property>
@@ -23,7 +23,7 @@
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 265.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 117, 927, 656}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 117, 918, 657}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 542]">
         </property>
@@ -186,7 +186,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.29, 2.19, 3.29, 4.19, 5.29, 6.19, 7.29, 8.19, 9.29}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.19, 2.09, 3.19, 4.09, 5.19, 6.09, 7.19, 8.09, 9.19}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
