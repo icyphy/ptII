@@ -963,7 +963,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _actorFired() throws IllegalActionException {
 
-        if ((_getExecutionTime((IOPort) _lastActorFired.inputPortList().get(0), _lastActorFired) == 0)) {
+        if (_lastExecutionTime.compareTo(_zero) == 0) {
             _sendExecutionTimeEvent(_lastActorFired, 
                     this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
                     ExecutionEventType.START); 
@@ -2009,7 +2009,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         Time executionTime = new Time(this, _getExecutionTime(inPort,
                 actorToFire));
-
+        _lastExecutionTime = executionTime;
         if (executionTime.compareTo(_zero) == 0) {
             // If execution time is zero, return the actor.
             // It will be fired now.
@@ -2018,7 +2018,7 @@ public class PtidesBasicDirector extends DEDirector {
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
             executiveDirector.fireAtCurrentTime((Actor) container);
-
+            
             _lastActorFired = actorToFire;
 
             // An event has finished processing. In this case, the scheduler
@@ -2028,6 +2028,7 @@ public class PtidesBasicDirector extends DEDirector {
             _scheduleNewEvent = true;
             return actorToFire;
         } else {
+            
             // Execution time is not zero. Push the executing actor onto
             // the stack, call fireAt() on the enclosing director,
             // and return null.
@@ -3794,6 +3795,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
+    
+    /** Execution time of last actor fired. */
+    private Time _lastExecutionTime;
 
     /** Keep track of a set of input ports to the composite actor governed by
      *  this director. These input ports are network input ports, which are
