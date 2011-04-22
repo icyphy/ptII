@@ -2431,7 +2431,7 @@ $(PTII)/vendors/izpack:
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
+$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
