@@ -64,7 +64,8 @@ import ptolemy.plot.Plot;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating 
  */
-public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionTimeListener {
+public class ExecutionTimeMonitor extends TypedAtomicActor implements
+        ExecutionTimeListener {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -92,7 +93,6 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
 
-        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
      *  @param scheduleEvent The type of the event.
      */
     public void event(final Actor actor, double time,
-            ExecutionEventType scheduleEvent) { 
+            ExecutionEventType scheduleEvent) {
         if (plot == null) {
             return;
         }
@@ -121,30 +121,30 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
         if (scheduleEvent == null) {
             if (_previousY.get(actor) == null)
                 _previousY.put(actor, (double) actorDataset);
-            plot.addPoint(actorDataset, x, _previousY.get(actor), true); 
+            plot.addPoint(actorDataset, x, _previousY.get(actor), true);
             _previousY.put(actor, (double) actorDataset);
-        } else if (scheduleEvent == ExecutionEventType.START) { 
-            plot.addPoint(actorDataset, x, _previousY.get(actor), true); 
+        } else if (scheduleEvent == ExecutionEventType.START) {
+            plot.addPoint(actorDataset, x, _previousY.get(actor), true);
             plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
             _previousY.put(actor, actorDataset + 0.6);
         } else if (scheduleEvent == ExecutionEventType.STOP) {
-            plot.addPoint(actorDataset, x, actorDataset + 0.6, true); 
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
             plot.addPoint(actorDataset, x, actorDataset, true);
             _previousY.put(actor, (double) actorDataset);
         } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            plot.addPoint(actorDataset, x, actorDataset + 0.6, true); 
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
             plot.addPoint(actorDataset, x, actorDataset + 0.4, true);
             _previousY.put(actor, actorDataset + 0.4);
         }
         plot.fillPlot();
         plot.repaint();
     }
- 
+
     /** Initialize the plot and the legend. The legend will be created for all
      *  nodes and actors.
      *  @param nodesActors A list of nodes and contained actors.
      */
-    public void initialize() {  
+    public void initialize() {
         _actors = new ArrayList();
         if (getContainer() instanceof CompositeActor) {
             // We need to check if the container is a CompositeActor
@@ -152,33 +152,33 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
             // is not a CompositeActor
             Director director = ((CompositeActor) getContainer()).getDirector();
 
-            List<Actor> list = ((CompositeActor)director.getContainer()).entityList();
+            List<Actor> list = ((CompositeActor) director.getContainer())
+                    .entityList();
             for (Actor actor : list) {
-                if (actor instanceof CompositeActor && 
-                        actor.getDirector() instanceof PtidesBasicDirector) {
-                    ((PtidesBasicDirector)actor.getDirector()).registerExecutionListener(this);
-                    _addActors((CompositeActor)actor); 
+                if (actor instanceof CompositeActor
+                        && actor.getDirector() instanceof PtidesBasicDirector) {
+                    ((PtidesBasicDirector) actor.getDirector())
+                            .registerExecutionListener(this);
+                    _addActors((CompositeActor) actor);
                 }
             }
-        }  
-        
-        
+        }
+
         if (plot != null) {
             plot.clear(false);
             plot.clearLegends();
 
             for (Actor actor : _actors) {
-                plot.addLegend(_actors.indexOf(actor), actor
-                        .getName()); 
+                plot.addLegend(_actors.indexOf(actor), actor.getName());
                 event(actor, 0.0, null);
             }
             plot.doLayout();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                   private methods                             //
-    
+
     /** Add actors contained by the composite actor passed as an argument.
      *  @param compositeActor New actor to be added. 
      */
@@ -186,19 +186,19 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
         List<Actor> containedActors = compositeActor.entityList();
         for (Actor containedActor : containedActors) {
             _actors.add(containedActor);
-            if (containedActor instanceof CompositeActor &&
-                    !((CompositeActor)containedActor).isOpaque()) {
-                _addActors((CompositeActor)containedActor);
+            if (containedActor instanceof CompositeActor
+                    && !((CompositeActor) containedActor).isOpaque()) {
+                _addActors((CompositeActor) containedActor);
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                   private variables                           //
-    
+
     /** Contains the actors inside a ptides platform (=platforms). */
     private List<Actor> _actors;
-    
+
     /** Previous positions of the actor data set. */
     private HashMap<Actor, Double> _previousY = new HashMap();
 
@@ -244,7 +244,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
                 NamedObj container = object.getContainer();
 
                 plot = new Plot();
-                plot.setTitle("Task Execution Monitor");
+                plot.setTitle("Execution Time Monitor");
                 plot.setButtons(true);
                 plot.setMarksStyle("none");
 
@@ -254,7 +254,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
                 PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
                         container.uniqueName("schedulePlotterEffigy"));
                 schedulePlotterEffigy.setPlot(plot);
-                schedulePlotterEffigy.identifier.setExpression("TM Schedule");
+                schedulePlotterEffigy.identifier.setExpression("Execution Time Monitor");
 
                 configuration.createPrimaryTableau(schedulePlotterEffigy);
 
@@ -266,5 +266,4 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements ExecutionT
         }
     }
 
-    
 }
