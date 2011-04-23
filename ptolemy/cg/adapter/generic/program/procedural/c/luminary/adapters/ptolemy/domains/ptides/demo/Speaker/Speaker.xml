@@ -72,22 +72,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="GPInputDevice" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 205.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                </property>
-            </port>
-        </entity>
         <entity name="SpeakerOutputDevice" class="ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 205.0]">
             </property>
@@ -97,25 +81,29 @@
                 </property>
             </port>
         </entity>
+        <entity name="GPInputHandler" class="ptolemy.domains.ptides.lib.luminary.GPInputHandler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 205.0]">
+            </property>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation3"/>
         <link port="port3" relation="relation5"/>
         <link port="TimeDelay.input" relation="relation2"/>
         <link port="TimeDelay.output" relation="relation4"/>
         <link port="SongWrapper.output" relation="relation2"/>
-        <link port="SongWrapper.trigger" relation="relation3"/>
-        <link port="GPInputDevice.input" relation="relation"/>
-        <link port="GPInputDevice.output" relation="relation3"/>
+        <link port="SongWrapper.trigger" relation="relation"/>
         <link port="SpeakerOutputDevice.input" relation="relation4"/>
         <link port="SpeakerOutputDevice.output" relation="relation5"/>
+        <link port="GPInputHandler.input" relation="relation3"/>
+        <link port="GPInputHandler.output" relation="relation"/>
     </entity>
 </entity>

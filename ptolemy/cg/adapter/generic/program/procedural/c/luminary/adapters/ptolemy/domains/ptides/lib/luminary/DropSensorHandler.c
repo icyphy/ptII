@@ -89,39 +89,5 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
-Event* temp;
-saveState();
-GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
-#ifdef LCD_DEBUG
-debugMessage("$pad$pin");
-#endif
-// Push the currentModelTag onto the stack.
-// The following lines of code must be atomic. Atomicity is
-// guaranteed by giving all sensor/timer interrupts the same
-// priority.
-stackedModelTagIndex++;
-if (stackedModelTagIndex > MAX_EVENTS) {
-    die("MAX_EVENTS too small for stackedModelTagIndex");
-}
-executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
-executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
-// For sensing purposes, set the current time to the platform time.
-getRealTime(&currentModelTime);
-currentMicrostep = 0;
 
-temp = FREE_EVENT_LIST;
-$sensorFireMethod();
-if (temp != FREE_EVENT_LIST) {
-   	addStack();
-} else {
-	// processEvents is not called, return to the last executing event, thus
-    // restore the last executing stacked model tag.
-	// The following lines of code must be atomic. Atomicity is
-	// guaranteed by giving all sensor/timer interrupts the same
-	// priority.
-    currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
-    currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
-    stackedModelTagIndex--;
-	loadState();
-}
 /**/

@@ -99,7 +99,33 @@ public class GPInputHandler extends InputDevice {
         args.add(_pinID);
 
         _codeStream.clear();
+        _codeStream.append("Event* temp;" +_eol);
+        _codeStream.append("saveState();" +_eol);
+        _codeStream.append("stackedModelTagIndex++;" +_eol);
+        _codeStream.append("if (stackedModelTagIndex > MAX_EVENTS) {" +_eol);
+        _codeStream.append("die(\"MAX_EVENTS too small for stackedModelTagIndex\");" +_eol);
+        _codeStream.append("}" +_eol);
+        _codeStream.append("executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;" +_eol);
+        _codeStream.append("executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;" +_eol);
+        _codeStream.append("getRealTime(&currentModelTime);" +_eol);
+        _codeStream.append("currentMicrostep = 0;" +_eol);
+
         _codeStream.appendCodeBlock("sensingBlock", args);
+        
+        _codeStream.append("GPIOPinIntClear(GPIO_PORT" + _padID + "_BASE, GPIO_PIN_" + _pinID + ");" +_eol);
+
+        _codeStream.append("temp = FREE_EVENT_LIST;" +_eol);
+        _codeStream.append(args.get(0) + ";" +_eol);
+        _codeStream.append("if (temp != FREE_EVENT_LIST) {" +_eol);
+        _codeStream.append("addStack();" +_eol);
+        _codeStream.append("} else {" +_eol);
+        _codeStream.append("currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;" +_eol);
+        _codeStream.append("currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;" +_eol);
+        _codeStream.append("stackedModelTagIndex--;" +_eol);
+        _codeStream.append("loadState();" +_eol);
+        _codeStream.append("}" +_eol);
+        
+
 
         return processCode(_codeStream.toString());
     }

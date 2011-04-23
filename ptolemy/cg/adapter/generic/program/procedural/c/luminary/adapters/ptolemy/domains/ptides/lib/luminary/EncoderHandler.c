@@ -1,6 +1,5 @@
 /***preinitBlock***/
 int32 encoderInputInterruptStatus;
-int32 encoderInputPinStatus;
 /**/
 
 /*** sharedBlock ***/
@@ -49,38 +48,6 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
-#ifdef LCD_DEBUG
-    debugMessage("$pad$pin");
-#endif
-
-saveState();
-// need to push the currentModelTag onto the stack.
-int counter = locationCounter;
-stackedModelTagIndex++;
-if (stackedModelTagIndex > MAX_EVENTS) {
-    die("MAX_EVENTS too small for stackedModelTagIndex");
-}
-executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;
-executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;
-
-// for sensing purposes, set the current time to the physical time.
-getRealTime(&currentModelTime);
-currentMicrostep = 0;
-
 encoderInputInterruptStatus = GPIOPinIntStatus(ENCODER_BASE, 0);
-// Clear the interrupt
-GPIOPinIntClear(ENCODER_BASE, encoderInputInterruptStatus);
-GPIOPinIntClear(ENCODER_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
-
-encoderInputPinStatus = GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B);
-
-encoderInputInterruptStatus |= (encoderInputPinStatus << 8);
-
-// do not need to disable interrupts if all interrupts have the same priority
-//disableInterrupts();
-$sensorFireMethod();
-if (counter != locationCounter) {
-    // stack manipulation if event has been inserted into the event queue.
-    addStack();
-}
+encoderInputInterruptStatus |= (GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B) << 8);
 /**/
