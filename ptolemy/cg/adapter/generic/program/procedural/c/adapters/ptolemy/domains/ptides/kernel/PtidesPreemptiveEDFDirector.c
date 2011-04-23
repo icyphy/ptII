@@ -15,6 +15,11 @@ typedef struct {
 } Time;
 
 typedef struct {
+    int32 secs;
+    int32 nsecs;
+} SignedTime;
+
+typedef struct {
     Time timestamp;
     uint16 microstep;
 } Tag;
@@ -33,7 +38,7 @@ typedef struct event {
 
     struct event** sinkEvent;
     Time deadline;
-    Time offsetTime;
+    SignedTime offsetTime;
 
     struct event* nextEvent;
     struct event* prevEvent;
@@ -137,9 +142,10 @@ int compareEvents(Event* event1, Event* event2) {
 
 // Insert an event into the event queue.
 void addEvent(Event* newEvent) {
-    Event* compareDeadline = DEADLINE_QUEUE_HEAD;
+    Event* compareDeadline;
 	disableInterrupts();
-	if (DEADLINE_QUEUE_HEAD == NULL) {
+	compareDeadline = DEADLINE_QUEUE_HEAD;
+	if (compareDeadline == NULL) {
 		DEADLINE_QUEUE_HEAD = newEvent;
 		DEADLINE_QUEUE_TAIL = newEvent;
 		newEvent->prevEvent = NULL;
@@ -265,7 +271,6 @@ Event* newEvent(void) {
 // Deallocate this event, as well as all next events linked together using
 // the nextEvent construct to the free list of events.
 void freeEvent(Event* thisEvent) {
-    disableInterrupts();
 	// This line of code is confusing. To understand it, refer to the last
 	// line of removeAndPropagateSameTagEvents() method. There, the prevEvent
 	// pointer of thisEvent is set to the end of the list of events removed
@@ -273,7 +278,6 @@ void freeEvent(Event* thisEvent) {
 	// FREE_EVENT_LIST.
 	thisEvent->prevEvent->nextEvent = FREE_EVENT_LIST;
 	FREE_EVENT_LIST = thisEvent;
-    enableInterrupts();
 }
 
 /* time manipulation */
@@ -363,6 +367,14 @@ void processEvents() {
                 // actor. During this process more events may
                 // be posted onto the queue
                 fireActor(event);
+				// Get the current platform time. This time is later used to
+				// perform safe-to-process. This function must be called
+				// before interrupts are disabled to ensure DE semantics.
+			    getRealTime(&platformTime);
+                // We are ready to look at the next event in the
+                // event queue. Before doing that interrupts need
+                // to be disabled
+                disableInterrupts();
                 // The executed event can now be freed into the
                 // pool of available events
 				freeEvent(event);
@@ -373,14 +385,6 @@ void processEvents() {
 				// Reset event to null so the next peekNextEvent()
                 // looks at the top event.
                 event = NULL;
-				// Get the current platform time. This time is later used to
-				// perform safe-to-process. This function must be called
-				// before interrupts are disabled to ensure DE semantics.
-			    getRealTime(&platformTime);
-                // We are ready to look at the next event in the
-                // event queue. Before doing that interrupts need
-                // to be disabled
-                disableInterrupts();
             } else {
                 // save the current process level
                 uint32 localProcessVersion = processVersion;
@@ -497,20 +501,32 @@ void propagateDataToken(Event* currentEvent){
     *(currentEvent->sinkEvent) = currentEvent;
 }
 
-/* 
+/*
 * Determine the physical time at which an event becomes safe to process.
 * This time is calculated by subtracting the event's timestamp by an offset.
 */
 void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
-	int out = timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
-	if (out == -1) {
-		safeTimestamp->secs = 0;
-		safeTimestamp->nsecs = 0;
-	}
-#ifdef LCD_DEBUG
+    Time tempTime;
+
+	if (thisEvent->offsetTime.secs < 0 || (thisEvent->offsetTime.secs == 0
+			&& thisEvent->offsetTime.nsecs < 0)) {
+		tempTime.secs = (uint32) (-thisEvent->offsetTime.secs);
+		tempTime.nsecs = (uint32) (-thisEvent->offsetTime.nsecs);
+		timeAdd(thisEvent->tag.timestamp, tempTime, safeTimestamp);
+	} else {
+		int out;
+		tempTime.secs = (uint32) (thisEvent->offsetTime.secs);
+		tempTime.nsecs = (uint32) (thisEvent->offsetTime.nsecs);
+		out = timeSub(thisEvent->tag.timestamp, tempTime, safeTimestamp);
+		if (out == -1) {
+			safeTimestamp->secs = 0;
+			safeTimestamp->nsecs = 0;
+		}
+    }
+    #ifdef LCD_DEBUG
     sprintf(str, "STP=%d", safeTimestamp->secs);
     RIT128x96x4StringDraw(str, 0,40,15);
-#endif
+    #endif
 }
 /**/
 
@@ -595,6 +611,14 @@ void execute() {
                 // actor. During this process more events may
                 // be posted onto the queue
                 fireActor(event);
+				// Get the current platform time. This time is later used to
+				// perform safe-to-process. This function must be called
+				// before interrupts are disabled to ensure DE semantics.
+			    getRealTime(&platformTime);
+                // We are ready to look at the next event in the
+                // event queue. Before doing that interrupts need
+                // to be disabled
+                disableInterrupts();
                 // The executed event can now be freed into the
                 // pool of available events
 				freeEvent(event);
@@ -605,14 +629,6 @@ void execute() {
 				// Reset event to null so the next peekNextEvent()
                 // looks at the top event.
                 event = NULL;
-				// Get the current platform time. This time is later used to
-				// perform safe-to-process. This function must be called
-				// before interrupts are disabled to ensure DE semantics.
-			    getRealTime(&platformTime);
-                // We are ready to look at the next event in the
-                // event queue. Before doing that interrupts need
-                // to be disabled
-                disableInterrupts();
             } else {
                 // save the current process level
                 uint32 localProcessVersion = processVersion;
