@@ -133,7 +133,7 @@
         <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
             </property>
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
             </property>
@@ -143,7 +143,7 @@
             </property>
             <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 130.0}">
             </property>
