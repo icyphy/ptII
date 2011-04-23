@@ -1937,8 +1937,15 @@ public class PtidesBasicDirector extends DEDirector {
                 // Unless the event is a sensor event, in which case the 
                 // scheduling overhead was accounted for when the sensor
                 // interrupt occurred.
-                _scheduleNewEvent = true;
-
+                // If the event is a pure event, however, then no scheduling
+                // overhead is simulated. This is based on the assumption that
+                // PtidyOS does not have a separate fireAt() for pure events,
+                // and thus an actor such as TimeDelay would produce an output
+                // in the same firing at which the triggere event is consumed. 
+                if (!((List<PtidesEvent>)currentEventList.contents).get(0)
+                        .isPureEvent()) {
+                    _scheduleNewEvent = true;
+                }       
                 return _lastActorFired;
             } else { // comparison > 0
                 _fireAtPlatformTime(finishTime, _executionTimeClock);
@@ -2018,7 +2025,14 @@ public class PtidesBasicDirector extends DEDirector {
             // should run to figure out what is the next event to process.
             // Unless the event is a sensor event, in which case the scheduling
             // overhead was accounted for when the sensor interrupt occurred.
-            _scheduleNewEvent = true;
+            // If the event is a pure event, however, then no scheduling
+            // overhead is simulated. This is based on the assumption that
+            // PtidyOS does not have a separate fireAt() for pure events,
+            // and thus an actor such as TimeDelay would produce an output
+            // in the same firing at which the triggere event is consumed. 
+            if (!eventFromQueue.isPureEvent()) {
+                _scheduleNewEvent = true;
+            }
             return actorToFire;
         } else {
             
