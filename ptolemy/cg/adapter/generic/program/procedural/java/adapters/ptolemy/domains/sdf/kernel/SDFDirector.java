@@ -169,9 +169,13 @@ public class SDFDirector
                 NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
                 if (actor instanceof CompositeActor
-                        && ((CompositeActor) actor).isOpaque()) {
-                    code.append(adapterObject.generateVariableDeclaration());
+                        && ((CompositeActor) actor).isOpaque() 
+                        //&& actor.getContainer() == null
+                    ) {
+                    code.append(getCodeGenerator().comment("Java SDFDirector: actor is opaque: " + actor.getFullName()));
+                    //code.append(adapterObject.generateVariableDeclaration());
                 } else {
+                    //code.append(getCodeGenerator().comment("Java SDFDirector: actor is not opaque: " + actor.getFullName()));
                     code.append(_generatePortVariableDeclaration(adapterObject));
 
                     if (variablesAsArrays) {
@@ -413,13 +417,17 @@ public class SDFDirector
                         name = name + '#' + i;
                     }
 
+                    //System.out.println("SDFDirector: token outside transfer " + name + " " + rate + " " + compositeActorAdapter);
+                    //code.append(CodeStream.indent(getCodeGenerator().comment(
+                    //                        "SDFDirector: token outside transfer " + name + " " + rate + " " + compositeActorAdapter)));
+
                     for (int k = 0; k < rate; k++) {
-                        code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference(name + "," + k, false))
-                                + " ="
-                                + CodeStream.indent(compositeActorAdapter
-                                        .getReference("@" + name + "," + k, false))
-                                + ";" + _eol);
+                        String result = compositeActorAdapter.getReference(name + "," + k, false)
+                            + " = "
+                            + CodeStream.indent(compositeActorAdapter.getReference("@" + name + "," + k, false))
+                            + ";" + _eol;
+                        // System.out.println("SDFDirector: token outside transfer " + name + " " + rate + " " + result);
+                        code.append(result);
                     }
                 }
             }

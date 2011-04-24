@@ -415,14 +415,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         int secondDot = fullName.indexOf('.', firstDot + 1);
         if (firstDot == -1) {            results[0] = "";
-            results[1] = CodeGeneratorAdapter.generateName(namedObj);
+            results[1] = _javaKeywordSanitize(CodeGeneratorAdapter.generateName(namedObj));
             return results;
         }
 
         if (secondDot == -1) {
 
-            results[0] = StringUtilities.sanitizeName(fullName.substring(0, firstDot));
-            results[1] = StringUtilities.sanitizeName(fullName.substring(firstDot + 1, fullName.length()));
+            results[0] = _javaKeywordSanitize(StringUtilities.sanitizeName(fullName.substring(0, firstDot)));
+            results[1] = _javaKeywordSanitize(StringUtilities.sanitizeName(fullName.substring(firstDot + 1, fullName.length())));
             if (namedObj instanceof ptolemy.actor.TypedCompositeActor) {
                 // A Hack for inline code generation.  The problem is
                 // that when we generate inline code, we want the top
@@ -439,8 +439,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         } else {
             results[0] = StringUtilities.sanitizeName(fullName.substring(0, firstDot)
-                    + "_" + fullName.substring(firstDot + 1, secondDot));
-            results[1] = StringUtilities.sanitizeName(fullName.substring(secondDot + 1, fullName.length()));
+                            + "_" + fullName.substring(firstDot + 1, secondDot));
+            results[1] = _javaKeywordSanitize(StringUtilities.sanitizeName(fullName.substring(secondDot + 1, fullName.length())));
         }
 
         //System.out.println("JCG: genVarAndMethName: " + firstDot + " " + secondDot + " " + fullName + " variableName: " + results[0] + " methodName: " + results[1]);
@@ -2481,6 +2481,23 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         types.addAll(_newTypesUsed);
         return types;
+    }
+
+    /** If the word argument is a Java keyword, return a sanitized version.
+     *  This method is used when inline is false so that if we have
+     *  an actor with the same name as a Java keyword, we don't end
+     *  up trying to create a method with with that name.
+     *  @param word The string to be checked.   
+     *  @return the sanitized version.
+     */
+    private String _javaKeywordSanitize(String word) {
+        // This is needed by $PTII/bin/ptcg -language java -variablesAsArrays true -inline false $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
+        if (word.equals("default")) {
+            return "xdefault";
+        } else if (word.equals("true")) {
+            return "xtrue";
+        }
+        return word;
     }
 
     ///////////////////////////////////////////////////////////////////
