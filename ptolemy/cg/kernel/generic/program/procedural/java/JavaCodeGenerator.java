@@ -1299,11 +1299,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     }
 
-    /** Split a long function body into multiple functions.
+    /** Split a long function body into multiple inner classes.
      *  @param linesPerMethod The number of lines that should go into
      *  each method.
-     *  @param prefix The prefix to use when naming functions that
-     *  are created
+     *  @param prefix The prefix to use when naming inner classes that
+     *  are created.
      *  @param code The method body to be split.
      *  @return An array of two Strings, where the first element
      *  is the new definitions (if any), and the second element
@@ -1344,7 +1344,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // a try/catch, if or {} block, then keep reading and appending
             // until the block ends
             while ((line = bufferedReader.readLine()) != null) {
-                String methodName = prefix + "_" + methodNumber++;
+                //String methodName = prefix + "_" + methodNumber++;
+                String methodName = "_splitLong_" + methodNumber++;
                 lineNumber++;
                 body = new StringBuffer(line + _eol);
                 int commentCount = 0;
@@ -1446,9 +1447,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     }
                 }
 
-                callAllBody.append(prefix + "." + methodName + "();" + _eol);
-                bodies.append("void " + methodName + "() {" + _eol
+                //callAllBody.append(prefix + "." + methodName + "();" + _eol);
+                callAllBody.append("new " + methodName + "();" + _eol);
+//                 bodies.append("void " + methodName + "() {" + _eol
+//                         + body.toString() 
+//                         + "}" + _eol);
+
+                bodies.append("class " + methodName + " {" + _eol
+                        + methodName + "() {" + _eol
                         + body.toString() 
+                        + "}" + _eol
                         + "}" + _eol);
             }
             if (lineNumber <= linesPerMethod) {
