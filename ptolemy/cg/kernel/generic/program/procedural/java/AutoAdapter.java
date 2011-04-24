@@ -143,7 +143,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + "ptolemy.actor.TypeAttribute _type = "
                             + "new ptolemy.actor.TypeAttribute((("
                             + actorClassName + ")$actorSymbol(actor))." 
-                            + insidePort.getName() + ", \"inputType\");\n"
+                            + TemplateParser.escapePortName(insidePort.getName()) + ", \"inputType\");\n"
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
                             + "\");\n"
