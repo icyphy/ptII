@@ -80,6 +80,7 @@ JSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
+	PublisherTest.java \
 	Pulse.java \
 	Ramp.java \
 	RandomSource.java \
