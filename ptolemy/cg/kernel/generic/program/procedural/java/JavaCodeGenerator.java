@@ -1319,14 +1319,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer bodies = new StringBuffer("public class " + prefix + " {" + _eol);
         // One method calls all the other methods, thus reducing the
         // size of the top level caller.
-        StringBuffer callAllBody = new StringBuffer("");
+        String callAllBodyMethodName = "callAll" + prefix;
+        StringBuffer callAllBody = new StringBuffer("void "
+                + callAllBodyMethodName
+                + "() {" + _eol
+                + prefix + " " + prefix
+                + " = new " + prefix + "();" + _eol);
 
-        // The instance that is used to invoke the inner classes.
-        String  masterInstance = prefix + " " + prefix
-                + " = new " + prefix + "();" + _eol;
-
-        // All the inner class bodies.
-        StringBuffer masterBody = new StringBuffer(masterInstance);
+        StringBuffer masterBody = new StringBuffer(prefix + " " + prefix
+                + " = new " + prefix + "();" + _eol);
 
         try {
             bufferedReader = new BufferedReader(new StringReader(code));
@@ -1335,14 +1336,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             // lineNumber keeps track of the number of lines seen
             // so that we know whether we've reached the linesPerMethod
+            // Note that we don't reset lineNumer in the while loop.
             int lineNumber = 0;
-
-            // The length of the last line.  If lines are longer than
-            // a certain size, generate a new class so as to avoid
-            // "code too large".
-            int lineLength = 0;
-            int lineLengthLimit = 300;
-
             StringBuffer body = new StringBuffer();
             // Read lines until we reach the linesPerMethod.
             // If we reach the linesPerMethod line and we are inside
@@ -1389,27 +1384,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     ifCount++;
                 }
 
-                // We want to go through the for loop at least once,
-                // so we ignore the line size the first time
-                int firstLineLength = line.length();
-                boolean lineOverLength = false;
-
-                //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " " + firstLineLength + " a: " + line);
+                //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " a: " + line);
                 // Keep appending lines until we are do linesPerMethod lines
                 // or the if, {}, comment or try/catch block ends.
                 for (int i = 0;
-                     (i + 1 < linesPerMethod && line != null && lineLength < lineLengthLimit && !lineOverLength)
+                     (i + 1 < linesPerMethod && line != null)
                          || ifCount > 0 || openBracketCount > 0 || commentCount > 0 || tryCount > 0
                          ; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
-                    //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " " + lineLength + " b:" + line);
+                    //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
 
-                    if (firstLineLength > lineLengthLimit) {
-                        // The first line was very long, so we want to exit.
-                        lineLength = firstLineLength;
-                        lineOverLength = true;
-                    }
                     if (i > 100000000) {
                         throw new InternalErrorException("Internal Error: looped more than 10000000 lines?"
                                 + " This can happen if curly brackets are not on lines"
@@ -1422,13 +1407,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 			        + " line:\n" + line);
                     }
                     if (line != null) {
-                        if (firstLineLength <= lineLengthLimit) {
-                            lineLength = line.length();
-                            if (lineLength > lineLengthLimit) {
-                                lineOverLength = true;
-                            }
-                        }
-
                         body.append(line + _eol);
                         trimmedLine = line.trim();
                         if (trimmedLine.startsWith("/*")) {
@@ -1481,11 +1459,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + "}" + _eol
                         + "}" + _eol);
             }
-            //System.out.println(lineNumber + " <= " + linesPerMethod + " " + lineLength + " <= " + lineLengthLimit + " c:");
-            if (lineNumber <= linesPerMethod && lineLength <= lineLengthLimit) {
-                // We must have less than linesPerMethod lines in the
-                // body or the line length is shorter, so we will not
-                // generate a separate class.
+            if (lineNumber <= linesPerMethod) {
+                // We must have less than linesPerMethod lines in the body
                 bodies = new StringBuffer();
                 callAllBody = new StringBuffer();
                 masterBody = new StringBuffer(body);
@@ -1501,38 +1476,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (bodies.length() != 0) {
-//             if (prefix.indexOf("_call_split") == -1) {
-//                 // If the code block was very long, then the code that we
-//                 // generate might still be too long, so we split it again.
-//                 // FIXME: this only work with one level of indirection.
-//                 System.out.println("JCG: _callSplit");
-//                 String[] callAllBodySplit = splitLongBody(linesPerMethod, prefix + "_call_split", callAllBody.toString());
-//                 bodies.append(_eol + callAllBodySplit[0]);
-//                 masterBody.append(callAllBodySplit[1] + _eol);
-//             } else {
-                bodies.append("void callAll" + prefix
-                        + "() {" + _eol
-                        + prefix + " " + prefix
-                        + " = new " + prefix + "();" + _eol
-                        + callAllBody
-                        + "}" + _eol
-                        + "}" + _eol);
-                masterBody.append(prefix + "." + "callAll" + prefix + "();" + _eol);
-//            }
+            bodies.append(_eol + callAllBody);
+            bodies.append("}" + _eol);
+            bodies.append("}" + _eol);
+            masterBody.append(prefix + "." + "callAll" + prefix + "();" + _eol);
         }
 
-        String [] results = new String[2];
-//         if (prefix.indexOf("_call_split") == -1) {
-//             // If the code block was very long, then the code that we
-//             // generate might still be too long, so we split it again.
-//             // FIXME: this only work with one level of indirection.
-//             String[] masterSplit = splitLongBody(linesPerMethod, prefix + "_call_split", masterBody.toString());
-//             results[0] = bodies.toString() + masterInstance + masterSplit[0];
-//             results[1] = masterSplit[1];
-//         } else {
-            results[0] = bodies.toString();
-            results[1] = masterBody.toString();
-//        }
+        String[] results = { bodies.toString(), masterBody.toString() };
         return results;
     }
 
