@@ -186,10 +186,20 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     // specifies an existing actor class.
                     actorClass = Class.forName(actorClassNameString)
                             .asSubclass(Actor.class);
+                    
+                    // Set the name of the actor constraints attribute to be
+                    // "[name of class]ActorConstraints but make sure it
+                    // doesn't conflict with any other attributes in the model.
+                    setName(getContainer().uniqueName(actorClass.getSimpleName()
+                            + "ActorConstraints"));
                 } catch (ClassNotFoundException classEx) {
                     throw new IllegalActionException(this, classEx,
                             "Actor class " + actorClassNameString
                                     + " not found.");
+                } catch (NameDuplicationException nameDupEx) {
+                    throw new IllegalActionException(this, nameDupEx,
+                            "Name duplication error when trying to set the " +
+                            "name of the actor constraints attribute.");
                 }
                 
                 // Instantiate a temporary actor from this class in order
