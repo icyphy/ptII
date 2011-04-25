@@ -304,12 +304,10 @@ static Token Matrix_multiply(Token thisToken, Token... tokens) {
 		    ((Matrix)(result.payload)).elements[index] = multiply_Token_Token(element, Matrix_get(otherToken, 0, 0));
                 } else {
                     //result.payload.Matrix.elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
-                    throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported. thisToken: " 
-		   	  + ((String)(Matrix_toString(thisToken).payload))
-		    	  + "\nOtherToken: " + ((String)(Matrix_toString(otherToken).payload)));
-                    }
+                    throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported on otherTokens that are not 1x1");
                 }
             }
+        }
         break;
         #ifdef TYPE_Array
         case TYPE_Array:
