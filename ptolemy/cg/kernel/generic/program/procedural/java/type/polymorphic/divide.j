@@ -100,8 +100,8 @@ static Token divide_Integer_Array(int a1, Token a2) {
 /**/
 
 /*** divide_Integer_Double() ***/
-int divide_Integer_Double(int a1, double a2) {
-    return (int)(a1 / a2);
+double divide_Integer_Double(int a1, double a2) {
+    return (a1 / a2);
 }
 /**/
 
