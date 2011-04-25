@@ -160,22 +160,6 @@
             </property>
         </property>
     </property>
-    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == Unknown || factor2 == Unknown ? Unknown :&#10; (factor1 == Velocity_m_per_sec &amp;&amp; factor2 == Time_sec) || (factor1 == Time_sec &amp;&amp; factor2 == Velocity_m_per_sec) ? Position_m :&#10;  (factor1 == Acceleration_m_per_sec2 &amp;&amp; factor2 == Time_sec) || (factor1 == Time_sec &amp;&amp; factor2 == Acceleration_m_per_sec2) ? Velocity_m_per_sec :&#10;   factor1 == Dimensionless ? factor2 :&#10;    factor2 == Dimensionless ? factor1 :&#10;     Conflict">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="unitSystem">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 320.0]">
-        </property>
-    </property>
-    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unknown || divisor == Unknown ? Unknown :&#10; dividend == Velocity_m_per_sec &amp;&amp; divisor == Time_sec ? Acceleration_m_per_sec2 :&#10;  dividend == Position_m &amp;&amp; divisor == Time_sec ? Velocity_m_per_sec :&#10;   (dividend == Position_m &amp;&amp; divisor == Velocity_m_per_sec) || (dividend == Velocity_m_per_sec &amp;&amp; divisor == Acceleration_m_per_sec2) ? Time :&#10;    divisor == Dimensionless ? dividend :&#10;     dividend == divisor ? Dimensionless :&#10;      Conflict">
-        </property>
-        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="unitSystem">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 325.0]">
-        </property>
-    </property>
     <property name="MultiplyDivideActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
         </property>
@@ -218,6 +202,24 @@
         <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
         <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.unit.MultiplyOrDivideUnitConcepts">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{unitSystem, true}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 330.0]">
+        </property>
+    </property>
+    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{unitSystem, true}">
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
+        <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.unit.MultiplyOrDivideUnitConcepts">
+        </property>
+        <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{unitSystem, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 330.0]">
         </property>
     </property>
     <entity name="unitSystem" class="ptolemy.data.ontologies.lattice.adapters.unitSystem.unitSystem">
