@@ -124,7 +124,7 @@ static Token multiply_Long_Token(long a1, Token a2) {
 
 /*** multiply_Matrix_Matrix() ***/
 static Token multiply_Matrix_Matrix(Token a1, Token a2) {
-    return Matrix_multiply(a1, a2);
+    return $Matrix_multiply(a1, a2);
 }
 /**/
 
