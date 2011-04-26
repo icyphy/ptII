@@ -141,9 +141,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
                     code.append("{\n"
                             + "ptolemy.actor.TypeAttribute _type = "
-                            + "new ptolemy.actor.TypeAttribute((("
-                            + actorClassName + ")$actorSymbol(actor))." 
-                            + TemplateParser.escapePortName(insidePort.getName()) + ", \"inputType\");\n"
+                            + "new ptolemy.actor.TypeAttribute("
+
+                            //+ "$actorSymbol("
+                            //+ TemplateParser.escapePortName(insidePort.getName()) + "), \"inputType\");\n"
+                            //+ "((" + actorClassName + ")$actorSymbol(actor))." 
+                            //+ TemplateParser.escapePortName(insidePort.getName()) + ", \"inputType\");\n"
+
+                            // Certain actors may create ports on the
+                            // fly, so query the actor for its port.
+
+                            + "(TypedIOPort)((" + actorClassName + ")$actorSymbol(actor)).getPort(\"" 
+                            + insidePort.getName() + "\"), \"inputType\");\n"
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
                             + "\");\n"
