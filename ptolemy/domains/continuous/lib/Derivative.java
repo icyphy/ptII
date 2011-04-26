@@ -167,8 +167,8 @@ public class Derivative extends TypedAtomicActor {
         if (_previousTime == null) {
             // First firing.
             _previousTime = currentTime;
-            derivative.send(0, _zeroToken);
-            _previousOutput = _zeroToken;
+            derivative.send(0, DoubleToken.ZERO);
+            _previousOutput = DoubleToken.ZERO;
             
             _previousValue = currentInput.doubleValue();
             if (_previousValue != 0.0) {
@@ -218,7 +218,4 @@ public class Derivative extends TypedAtomicActor {
 
     /** The value of the previous input, or 0.0 on the first firing. */
     private double _previousValue;
-    
-    /** A zero token. */
-    private DoubleToken _zeroToken = new DoubleToken(0.0);
 }
