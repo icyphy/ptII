@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2009-2011 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,7 +51,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Display.java 
+	Display.java \
+	SequencePlotter.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)
