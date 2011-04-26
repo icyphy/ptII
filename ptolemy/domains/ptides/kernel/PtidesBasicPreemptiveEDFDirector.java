@@ -99,8 +99,8 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
                     + " with another event: " + event.toString()
                     + ". This preemption happened at platform execution " +
                     		"physical time "
-                    + getPlatformPhysicalTag(_executionTimeClock).timestamp + "."
-                    + getPlatformPhysicalTag(_executionTimeClock).microstep);
+                    + getPlatformPhysicalTag(executionTimeClock).timestamp + "."
+                    + getPlatformPhysicalTag(executionTimeClock).microstep);
         }
         return true;
     }

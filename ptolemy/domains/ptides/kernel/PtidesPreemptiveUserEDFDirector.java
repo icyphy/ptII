@@ -142,7 +142,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                 // in timestamp order regardless of the timestamps of events at the outputs. Thus
                 // we do not need to know the dependency between the equivalent input ports.
                 for (IOPort secondInput : (PtidesBasicDirector
-                        ._finiteEquivalentPorts(firstInput))) {
+                        ._portsBelongToTheSameInputGroup(firstInput))) {
                     Map<IOPort, Dependency> portDependency = _inputPairDependencies
                             .get(firstInput);
                     if (portDependency == null) {
@@ -172,7 +172,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                             }
                             portDependency.put(secondInput, dependency);
                             for (IOPort equivSecondInput : (PtidesBasicDirector
-                                    ._finiteEquivalentPorts(secondInput))) {
+                                    ._portsBelongToTheSameInputGroup(secondInput))) {
                                 portDependency
                                         .put(equivSecondInput, dependency);
                             }
@@ -310,7 +310,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                                 .timeValue()) {
                             // If they are equal, and these two events do not reside at the same
                             // equivalence class, then the event of interest is not safe.
-                            if (!_sameEquivalenceClass(earlierEvent,
+                            if (!_sameInputPortGroup(earlierEvent,
                                     event)) {
                                 return false;
                             }

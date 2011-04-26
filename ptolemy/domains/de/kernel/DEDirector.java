@@ -419,7 +419,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             if (result == 1) {
                 continue;
             } else if (result == -1) {
-                _getNextActuationEvent();
+                _noActorToFire();
                 return;
             } // else if 0, keep executing
 
@@ -2027,13 +2027,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return actorToFire;
     }
 
-    /** Remove all actuation events from the event queue. 
-     *  In this base class, do nothing.
+    /** There are no actor to fire. In this base class, do nothing. Subclasses
+     *  may override this method in case there is no actor to fire.
      *  @exception IllegalActionException Not thrown in this base class.
      *  Derived classes may throw it if unable to get the next actuation
      *  event.
      */
-    protected void _getNextActuationEvent() throws IllegalActionException {
+    protected void _noActorToFire() throws IllegalActionException {
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -113,50 +113,14 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Calculate the absolute deadline for the pure event. This uses
-     *  information stored earlier. The exact calculation is done as follows:
-     *  <p>
-     *  If the new event(e') is produced due to the processing of a trigger
-     *  event(e), then the absolute deadline of the new event
-     *  AD(e') = AD(e) + (tau(e') - tau(e) - delta). Here, tau(e') and
-     *  tau(e) are the timestamps of e' and e, while delta is the minimum
-     *  dependency between the destination port of the trigger event and any
-     *  of the output ports.
-     *  </p><p>
-     *  If the new event (e') is produced due to the processing of a earlier
-     *  pure event, then the formula is the same, only delta == 0;
-     *  FIXME: this above reasoning and equations only work in the case where
-     *  a pure event will lead to an output event of the same timestamp.
-     *  This is true for actors such as VariableDelayCounter, but it's not
-     *  true in general.s
+    /** Calculate the absolute deadline for the pure event, which is simply the
+     *  deadline of the last trigger event.
      *  @see #_saveEventInformation(List)
+     *  @param actor The destination actor for the pure event.
      */
-    protected Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
-
-        Time timeDiff = (Time) _pureEventDelays.get(actor);
+    protected Time _absoluteDeadlineForPureEvent(Actor actor) {
         Time lastAbsoluteDeadline = (Time) _pureEventDeadlines.get(actor);
-        // This could happen during initialization, and a modal model calls fireAt() in order
-        // to be initialized. In which case we give it the highest priority because it is
-        // an initialization event.
-        if (timeDiff == null) {
-            return Time.NEGATIVE_INFINITY;
-        }
-        timeDiff = nextTimestamp.subtract(timeDiff);
-        // If the difference between the new timestamp and the old timestamp is
-        // less than the minimum model time delay, then the absolute deadline is
-        // simply that of the trigger event.
-        // This case could happen if a pure event
-        // is produced, which later triggers another firing of the actor, and produces
-        // an event that is of timestamp greater than or equal to the minimum model
-        // time delay.
-        if (timeDiff.compareTo(_zero) < 0) {
-            return lastAbsoluteDeadline;
-            //            throw new InternalErrorException("While computing the absolute deadline" +
-            //                            "of a new pure event, the difference between the new " +
-            //                            "timestamp and the old timestamp is less than the minimum" +
-            //                            "model time delay");
-        }
-        return lastAbsoluteDeadline.add(timeDiff);
+        return lastAbsoluteDeadline;
     }
 
     /** Perform bookkeeping after actor firing. This procedure consist of
@@ -175,7 +139,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     protected void _actorFired() throws IllegalActionException {
         super._actorFired();
         if (_lastActorFired != null) {
-            _pureEventDelays.remove(_lastActorFired);
+            _pureEventDeadlines.remove(_lastActorFired);
         }
     }
 
@@ -337,7 +301,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     }
 
     /** Check to see if the current actor is already firing, in which case we should not preempt.
-     *  @param actor  an Actor object.
+     *  @param actor The currently firing actor.
      *  @return whether the current actor is firing or no.
      */
     protected boolean _currentlyFiring(Actor actor) {
@@ -500,8 +464,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             if (_debugging) {
                 _debug("We decided not to do preemption in this round, "
                         + "but to keep executing " + executingEvent.actor()
-                        + " at physical time " + getPlatformPhysicalTag(_executionTimeClock).timestamp
-                        + "." + getPlatformPhysicalTag(_executionTimeClock).microstep);
+                        + " at physical time " + getPlatformPhysicalTag(executionTimeClock).timestamp
+                        + "." + getPlatformPhysicalTag(executionTimeClock).microstep);
             }
             return false;
         } else {
@@ -512,19 +476,20 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         + " with another event at actor: "
                         + _eventToProcess.actor()
                         + ". This preemption happened at physical time "
-                        + getPlatformPhysicalTag(_executionTimeClock).timestamp + "."
-                        + getPlatformPhysicalTag(_executionTimeClock).microstep);
+                        + getPlatformPhysicalTag(executionTimeClock).timestamp + "."
+                        + getPlatformPhysicalTag(executionTimeClock).microstep);
             }
 
             return true;
         }
     }
 
-    /** Call this moethod from the super class, then save the absolute
+    /** Call this method from the super class, then save the absolute
      *  deadline for the last executing event.
+     *  @param eventsToProcess The set of events to be processed.
      */
     protected void _saveEventInformation(List<PtidesEvent> eventsToProcess)
-    throws IllegalActionException {
+            throws IllegalActionException {
         super._saveEventInformation(eventsToProcess);
         Actor actorToFire = eventsToProcess.get(0).actor();
         Time lastAbsoluteDeadline = Time.POSITIVE_INFINITY;
@@ -586,7 +551,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
                     .get(eventIndex);
             if (nextEvent.hasTheSameTagAs(event)) {
-                if (_sameEquivalenceClass(event, nextEvent)) {
+                if (_sameInputPortGroup(event, nextEvent)) {
                     eventList.add(((PtidesListEventQueue) _eventQueue)
                             .take(eventIndex));
                 } else {
@@ -600,7 +565,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
                     .get(_peekingIndex - 1);
             if (nextEvent.hasTheSameTagAs(event)) {
-                if (_sameEquivalenceClass(event, nextEvent)) {
+                if (_sameInputPortGroup(event, nextEvent)) {
                     eventList.add(((PtidesListEventQueue) _eventQueue)
                             .take(_peekingIndex - 1));
                 }
