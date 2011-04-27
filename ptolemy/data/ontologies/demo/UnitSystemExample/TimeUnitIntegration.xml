@@ -49,7 +49,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 105.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="dimensionlessValue &gt;= Dimensionless">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="dimensionlessValue &gt;= Dimensionless">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -64,7 +64,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 560.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -117,7 +117,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 105.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationValue &gt;= Acceleration_mph_per_sec">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationValue &gt;= Acceleration_mph_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

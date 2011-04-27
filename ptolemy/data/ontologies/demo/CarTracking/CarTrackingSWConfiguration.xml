@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={234, 263, 990, 624}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={234, 263, 992, 631}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 514]">
     </property>
@@ -136,7 +136,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 570.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -241,7 +241,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 20.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
+        <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -446,7 +446,7 @@
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 320.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 486, 1100, 521}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={409, 148, 1100, 521}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 404]">
         </property>
@@ -497,7 +497,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 485.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -512,7 +512,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 375.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -527,7 +527,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 430.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="speed &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="speed &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -542,7 +542,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 445.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="position &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="position &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -906,7 +906,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 20.0]">
                 </property>
             </property>
-            <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
+            <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1526,7 +1526,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time">
+        <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1541,7 +1541,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 280.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity">
+        <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1556,7 +1556,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 300.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity">
+        <property name="DimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1571,7 +1571,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 320.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+        <property name="DimensionSystemSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1710,7 +1710,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 120.0]">
                 </property>
             </property>
-            <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
+            <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1725,7 +1725,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 255.0]">
                 </property>
             </property>
-            <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+            <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2158,7 +2158,7 @@
     <entity name="UnitConversion" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 390.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 223, 767, 465}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 223, 815, 517}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -2178,7 +2178,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 120.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
+        <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2193,7 +2193,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+        <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

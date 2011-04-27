@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={508, 139, 1092, 881}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 87, 1092, 881}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 764]">
     </property>
@@ -91,7 +91,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 60.0]">
         </property>
     </property>
-    <property name="FuelUnitDimensionsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank2InFlow &gt;= Flow_L_per_sec">
+    <property name="FuelDimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank2InFlow &gt;= Flow_L_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -106,7 +106,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 385.0]">
         </property>
     </property>
-    <property name="FuelUnitDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank1OutFlow &gt;= Flow_L_per_sec">
+    <property name="FuelDimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank1OutFlow &gt;= Flow_L_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -121,7 +121,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 405.0]">
         </property>
     </property>
-    <property name="FuelUnitDimensionsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="capacity &gt;= Level_L">
+    <property name="FuelDimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="capacity &gt;= Level_L">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -241,7 +241,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={560, 617, 668, 467}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={626, 366, 668, 467}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 350]">
             </property>

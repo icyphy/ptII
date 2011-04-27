@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 125.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Discard.input &gt;= Position">
+    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Discard.input &gt;= Position">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -45,7 +45,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 435.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Discard3.input &gt;= Acceleration">
+    <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Discard3.input &gt;= Acceleration">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -60,7 +60,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 475.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Discard2.input &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Discard2.input &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

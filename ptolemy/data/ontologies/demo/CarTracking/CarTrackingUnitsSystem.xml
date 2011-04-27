@@ -136,7 +136,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 570.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity_mph">
+    <property name="DynamicsDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity_mph">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -247,7 +247,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 20.0]">
             </property>
         </property>
-        <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
+        <property name="DynamicsDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -920,7 +920,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 20.0]">
                 </property>
             </property>
-            <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
+            <property name="DynamicsDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time_sec">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1540,7 +1540,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
             </property>
         </property>
-        <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time_sec">
+        <property name="DynamicsDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time_sec">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1555,7 +1555,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 280.0]">
             </property>
         </property>
-        <property name="DynamicsDimensionsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity_mph">
+        <property name="DynamicsDimensionsSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity_mph">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1570,7 +1570,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 300.0]">
             </property>
         </property>
-        <property name="DynamicsDimensionsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity_mph">
+        <property name="DynamicsDimensionsSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity_mph">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1585,7 +1585,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 320.0]">
             </property>
         </property>
-        <property name="DynamicsDimensionsOntology::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+        <property name="DynamicsDimensionsSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.217803030303, 331.2806186868687}">
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -90,7 +90,7 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
         </property>
     </property>
-    <property name="dimensionSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const2.output &gt;= Acceleration">
+    <property name="DimensionSystemSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const2.output &gt;= Acceleration">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -105,7 +105,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 525.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -120,7 +120,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 460.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="JitterPeriod.output &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="JitterPeriod.output &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -24,7 +24,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{544.0, 390.0}">
     </property>
-    <property name="unitSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="kilometersValue &gt;= Position_km">
+    <property name="UnitSystemOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="kilometersValue &gt;= Position_km">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -39,7 +39,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 25.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="inchesValue &gt;= Position_inch">
+    <property name="UnitSystemOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="inchesValue &gt;= Position_inch">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -119,7 +119,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 60.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="CelsiusValue &gt;= Temperature_C">
+    <property name="UnitSystemOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="CelsiusValue &gt;= Temperature_C">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -174,7 +174,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityMetersPerSecValue &gt;= Velocity_m_per_sec">
+    <property name="UnitSystemOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityMetersPerSecValue &gt;= Velocity_m_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -189,7 +189,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 90.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityMPHValue &gt;= Velocity_mph">
+    <property name="UnitSystemOntologyAnalysis::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityMPHValue &gt;= Velocity_mph">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -223,7 +223,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 130.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationGravity &gt;= Acceleration_m_per_sec2">
+    <property name="UnitSystemOntologyAnalysis::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationGravity &gt;= Acceleration_m_per_sec2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -257,7 +257,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 150.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint7" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millilitersValue &gt;= Volume_mL">
+    <property name="UnitSystemOntologyAnalysis::constraint7" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millilitersValue &gt;= Volume_mL">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -291,7 +291,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 170.0]">
         </property>
     </property>
-    <property name="unitSystem::constraint8" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="poundForceValue &gt;= Force_lbf">
+    <property name="UnitSystemOntologyAnalysis::constraint8" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="poundForceValue &gt;= Force_lbf">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

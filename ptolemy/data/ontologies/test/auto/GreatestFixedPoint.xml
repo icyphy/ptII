@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 85.0]">
         </property>
     </property>
-    <property name="constLattice::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &lt;= Constant">
+    <property name="ConstNonconstSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &lt;= Constant">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

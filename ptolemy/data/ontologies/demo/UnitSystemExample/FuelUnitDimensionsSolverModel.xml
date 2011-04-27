@@ -26,9 +26,9 @@ Constraints</text></svg></configure>
         </property>
         <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Dimensionless">
         </property>
-        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
-        <property name="levelAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        <property name="levelAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
         </property>
         <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>

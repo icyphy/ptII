@@ -22,10 +22,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 50.0]">
         </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-        </property>
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -33,23 +29,45 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={451, 178, 922, 594}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 425, 1039, 583}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[707, 477]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[824, 466]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.5, 238.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.3232727050781, 231.6444600423177}">
     </property>
     <property name="DimensionOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 360.0]">
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
+                <property name="MultiplyDivideActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+                    </property>
+                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
+<line x1="-15" y1="-15" x2="-5" y2="-5"></line><line x1="-15" y1="-5" x2="-5" y2="-15"></line><line x1="-15" y1="10" x2="-5" y2="10"></line><circle cx="-10" cy="6" r="1" style="fill:black"></circle>
+<circle cx="-10" cy="14" r="1" style="fill:black"></circle>
+</svg>
+</configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 70.0]">
+                    </property>
+                    <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                    <property name="dividePortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                    <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(multiply, divide)">
+                    </property>
+                </property>
                 <property name="IntegratorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
                     <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
                     </property>
@@ -113,34 +131,36 @@ Constraints</text></svg></configure>
                         </property>
                     </property>
                 </property>
-                <property name="MultiplyDivideActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
-                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
-                    </property>
-                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
-                    </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg>
-<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
-<line x1="-15" y1="-15" x2="-5" y2="-5"></line><line x1="-15" y1="-5" x2="-5" y2="-15"></line><line x1="-15" y1="10" x2="-5" y2="10"></line><circle cx="-10" cy="6" r="1" style="fill:black"></circle>
-<circle cx="-10" cy="14" r="1" style="fill:black"></circle>
-</svg>
-</configure>
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 70.0]">
-                    </property>
-                    <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-                    </property>
-                    <property name="dividePortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
-                    </property>
-                    <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(multiply, divide)">
-                    </property>
-                </property>
                 <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
                     <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unknown || divisor == Unknown ? Unknown :&#10; dividend == Velocity &amp;&amp; divisor == Time ? Acceleration :&#10;  dividend == Position &amp;&amp; divisor == Time ? Velocity :&#10;   (dividend == Position &amp;&amp; divisor == Velocity) || (dividend == Velocity &amp;&amp; divisor == Acceleration) ? Time :&#10;    divisor == Dimensionless ? dividend :&#10;     dividend == divisor ? Dimensionless :&#10;      Conflict">
                     </property>
                     <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 195.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 195.0]">
+                    </property>
+                </property>
+                <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+                    </property>
+                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 220.0]">
+                    </property>
+                    <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
+                    </property>
+                    <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+                    </property>
+                    <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
                     </property>
                 </property>
                 <entity name="dimensionSystem" class="ptolemy.data.ontologies.Ontology">
@@ -393,104 +413,23 @@ Constraints</text></svg></configure>
     </property>
     <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 150.0]">
-        </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 95.0]">
         </property>
     </port>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 115.0]">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 210.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[423.38092041015625, 304.6166076660156]">
-        </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 105.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="timeConstant">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -499,224 +438,68 @@ Constraints</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 165.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 305.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[529.3184204101562, 394.9291076660156]">
-        </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
     </entity>
     <entity name="AccelerationPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 422, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 155.0]">
         </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[623.3809204101562, 209.61660766601562]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Acceleration</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="VelocityPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 422, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 240.0]">
         </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[623.3809204101562, 304.6166076660156]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Velocity</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="PositionPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 422, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 355.0]">
         </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[624.3184204101562, 394.9291076660156]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Position</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[470.0, 350.0]">
+        <vertex name="vertex1" value="[535.0, 240.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -728,12 +511,16 @@ Constraints</text></svg></configure>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[373.38092041015625, 249.61660766601562]">
+        <vertex name="vertex1" value="[420.0, 155.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[625.0, 355.0]">
+        </vertex>
     </relation>
     <link port="desiredSpeed" relation="relation"/>
     <link port="MultiplyDivide.multiply" relation="relation2"/>
@@ -742,12 +529,12 @@ Constraints</text></svg></configure>
     <link port="Integrator.derivative" relation="relation6"/>
     <link port="Integrator.state" relation="relation4"/>
     <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.minus" relation="relation6"/>
+    <link port="AddSubtract.minus" relation="relation7"/>
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Const.output" relation="relation5"/>
     <link port="Integrator2.derivative" relation="relation4"/>
-    <link port="Integrator2.state" relation="relation3"/>
+    <link port="Integrator2.state" relation="relation7"/>
     <link port="AccelerationPlot.input" relation="relation6"/>
     <link port="VelocityPlot.input" relation="relation4"/>
-    <link port="PositionPlot.input" relation="relation3"/>
+    <link port="PositionPlot.input" relation="relation7"/>
 </entity>

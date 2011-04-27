@@ -58,7 +58,7 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Temperature_K">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, 112, 1033, 840}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 128, 1033, 840}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[818, 723]">
     </property>
@@ -66,7 +66,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{27.6847550675675, 143.359375}">
     </property>
-    <property name="TestUnitsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeValue &gt;= Time_sec">
+    <property name="TestUnitsOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeValue &gt;= Time_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -81,7 +81,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -190.0]">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="KelvinValue &gt;= Temperature_K">
+    <property name="TestUnitsOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="KelvinValue &gt;= Temperature_K">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -117,7 +117,7 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Temperature_C">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="CelsiusValue &gt;= Temperature_C">
+    <property name="TestUnitsOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="CelsiusValue &gt;= Temperature_C">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -132,7 +132,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -140.0]">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="FahrenheitValue &gt;= Temperature_F">
+    <property name="TestUnitsOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="FahrenheitValue &gt;= Temperature_F">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

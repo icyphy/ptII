@@ -28,7 +28,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 10.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Position">
+    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Position">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 320.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const3.value &gt;= Acceleration">
+    <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const3.value &gt;= Acceleration">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -58,7 +58,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 360.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const2.value &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const2.value &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -73,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const4.value &gt;= Time">
+    <property name="DimensionSystemSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const4.value &gt;= Time">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

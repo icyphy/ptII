@@ -29,20 +29,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 325, 987, 595}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 325, 1039, 583}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 478]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[824, 466]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.3232727050781, 237.6444600423177}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.3232727050781, 231.6444600423177}">
     </property>
     <property name="DimensionOntologyAnalysis" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 360.0]">
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
@@ -411,7 +411,7 @@ Constraints</text></svg></configure>
             </entity>
         </configure>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
+    <property name="DimensionOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -423,10 +423,10 @@ Constraints</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 415.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="desiredSpeed &gt;= Velocity">
+    <property name="DimensionOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="desiredSpeed &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -438,24 +438,24 @@ Constraints</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 435.0]">
         </property>
     </property>
     <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 95.0]">
         </property>
     </port>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 115.0]">
         </property>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[478.38092041015625, 299.6166076660156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 210.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 105.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -468,11 +468,11 @@ Constraints</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 165.0]">
         </property>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[584.3184204101562, 389.9291076660156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 305.0]">
         </property>
     </entity>
     <entity name="AccelerationPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -480,15 +480,15 @@ Constraints</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[678.3809204101562, 204.61660766601562]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 155.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Acceleration</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -497,15 +497,15 @@ Constraints</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[678.3809204101562, 299.6166076660156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 240.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Velocity</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -514,22 +514,22 @@ Constraints</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[679.3184204101562, 389.9291076660156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 355.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Position</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[525.0, 345.0]">
+        <vertex name="vertex1" value="[535.0, 240.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -541,12 +541,16 @@ Constraints</text></svg></configure>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[428.38092041015625, 244.61660766601562]">
+        <vertex name="vertex1" value="[420.0, 155.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[625.0, 355.0]">
+        </vertex>
     </relation>
     <link port="desiredSpeed" relation="relation"/>
     <link port="MultiplyDivide.multiply" relation="relation2"/>
@@ -555,12 +559,12 @@ Constraints</text></svg></configure>
     <link port="Integrator.derivative" relation="relation6"/>
     <link port="Integrator.state" relation="relation4"/>
     <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.minus" relation="relation6"/>
+    <link port="AddSubtract.minus" relation="relation7"/>
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Const.output" relation="relation5"/>
     <link port="Integrator2.derivative" relation="relation4"/>
-    <link port="Integrator2.state" relation="relation3"/>
+    <link port="Integrator2.state" relation="relation7"/>
     <link port="AccelerationPlot.input" relation="relation6"/>
     <link port="VelocityPlot.input" relation="relation4"/>
-    <link port="PositionPlot.input" relation="relation3"/>
+    <link port="PositionPlot.input" relation="relation7"/>
 </entity>

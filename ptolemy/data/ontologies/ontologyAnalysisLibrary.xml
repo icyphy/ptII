@@ -21,7 +21,7 @@
     </group>
     <!-- Constraint Annotations -->
     <group>
-      <property name="ontologyName::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="">
+      <property name="ontologySolverName::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

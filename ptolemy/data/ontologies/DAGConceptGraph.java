@@ -304,7 +304,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *   be cast to a Concept.
      */
     private Concept _getInputObjectAsAConcept(Object input) {
-        if (input instanceof Concept) {
+        if (input == null || input instanceof Concept) {
             return (Concept) input;
         } else {
             String methodName = Thread.currentThread().getStackTrace()[1]

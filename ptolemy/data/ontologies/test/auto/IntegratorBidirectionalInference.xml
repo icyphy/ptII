@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 75.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="TimedPlotter.input &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="TimedPlotter.input &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -45,7 +45,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 225.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &gt;= Acceleration">
+    <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &gt;= Acceleration">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -110,7 +110,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
      *  @see #getConcept(String)
      */
     public void putConcept(String key, C concept) {
-        if (concept.equals(_defaultConcept)) {
+        if (concept != null && concept.equals(_defaultConcept)) {
             _keyToConcept.remove(key);
         } else {
             _keyToConcept.put(key, concept);

@@ -54,7 +54,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *   the ConceptTolen object.
      */
     public ConceptToken(Concept c) throws IllegalActionException {
-        super(c, c.getClass());
+        super(c, c == null ? null : c.getClass());
     }
 
     ///////////////////////////////////////////////////////////////////

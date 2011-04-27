@@ -60,15 +60,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 187, 1130, 708}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={225, 176, 1167, 704}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[915, 591]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[952, 587]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{85.3642676767677, 91.4057765151515}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{103.8642676767677, 89.4057765151515}">
     </property>
-    <property name="DynamicsDimensionsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeValue &gt;= Time_sec">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeValue &gt;= Time_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -83,7 +83,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -175.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -117,7 +117,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, -80.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millimetersValue &gt;= Position_mm">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millimetersValue &gt;= Position_mm">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -132,7 +132,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -125.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsOntology::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millisecondsValue &gt;= Time_ms">
+    <property name="DynamicsDimensionsOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="millisecondsValue &gt;= Time_ms">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

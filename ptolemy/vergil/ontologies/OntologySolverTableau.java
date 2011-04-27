@@ -90,7 +90,7 @@ public class OntologySolverTableau extends Tableau {
 
         if (!(model instanceof OntologySolverModel)) {
             throw new IllegalActionException(this,
-                    "Cannot edit a model that is not an Ontology.");
+                    "Cannot edit a model that is not an Ontology Solver.");
         }
 
         createGraphFrame((OntologySolverModel) model, defaultLibrary);

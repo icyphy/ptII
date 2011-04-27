@@ -57,14 +57,14 @@ public class OntologyAnnotationAttribute extends StringAttribute {
     }
 
     /** 
-     * Returns the name of the ontology for which this annotation
+     * Returns the name of the ontology solver for which this annotation
      * attribute is a constraint.
      *
      * @return A String representing the name of the referred ontology.
      * @exception IllegalActionException If a valid ontology identifier cannot be
      * found in the attribute name.
      */
-    public String getOntologyIdentifier() throws IllegalActionException {
+    public String getOntologySolverIdentifier() throws IllegalActionException {
         String[] tokens = getName().split("::");
 
         if (tokens.length == 2) {
@@ -73,6 +73,6 @@ public class OntologyAnnotationAttribute extends StringAttribute {
 
         throw new IllegalActionException(
                 "Invalid ontology annotation attribute name: " + getName()
-                        + ". (should have form ONTOLOGY_NAME::LABEL)");
+                        + ". (should have form ONTOLOGY_SOLVER_NAME::LABEL)");
     }
 }

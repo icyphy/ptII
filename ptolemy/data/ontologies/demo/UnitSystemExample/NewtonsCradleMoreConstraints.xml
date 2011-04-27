@@ -270,7 +270,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={461, 103, 1007, 690}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={527, 439, 877, 612}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 495]">
         </property>
@@ -384,7 +384,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
             </property>
         </property>
-        <property name="MechanicsUnitsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Acceleration_m_per_sec2">
+        <property name="MechanicsUnitsOntologySolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Acceleration_m_per_sec2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -399,7 +399,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 440.0]">
             </property>
         </property>
-        <property name="MechanicsUnitsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="length &gt;= PendulumLength_m">
+        <property name="MechanicsUnitsOntologySolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="length &gt;= PendulumLength_m">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -414,7 +414,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 460.0]">
             </property>
         </property>
-        <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
+        <property name="MechanicsUnitsOntologySolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -912,7 +912,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 </property>
                 <property name="x_offset" class="ptolemy.data.expr.Parameter" value="x_offset">
                 </property>
-                <property name="MechanicsUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
+                <property name="MechanicsUnitsOntologySolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.output &gt;= Dimensionless">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 480.0]">
                     </property>
                 </property>

@@ -540,13 +540,13 @@ public abstract class OntologyAdapter {
             for (Object attribute : ((NamedObj) _component).attributeList()) {
 
                 if (OntologyAnnotationAttribute.class.isInstance(attribute)) {
-                    String ontology = ((OntologyAnnotationAttribute) attribute)
-                            .getOntologyIdentifier();
+                    String ontologySolverName = ((OntologyAnnotationAttribute) attribute)
+                            .getOntologySolverIdentifier();
 
-                    // 12/18/09 Charles Shelton
-                    // Check to make sure the use case name of the AnnotationAttribute
-                    // matches the name of the ontology for this solver                    
-                    if (_solver.getOntology().getName().equals(ontology)) {
+                    // Check to make sure the use case name of the
+                    // AnnotationAttribute matches the name of the ontology
+                    // solver.                  
+                    if (_solver.getName().equals(ontologySolverName)) {
                         result.add(attribute);
                     }
                 }

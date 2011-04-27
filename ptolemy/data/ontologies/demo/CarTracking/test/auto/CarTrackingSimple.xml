@@ -34,7 +34,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 80.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="SpeedValue &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="SpeedValue &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -99,7 +99,7 @@
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
         </property>
     </property>
-    <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="TimeValue &gt;= Time">
+    <property name="DimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="TimeValue &gt;= Time">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -114,7 +114,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 545.0]">
         </property>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Velocity">
+    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -373,7 +373,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
             </property>
         </property>
-        <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
+        <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -690,7 +690,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </property>
-        <property name="dimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity">
+        <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -705,7 +705,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 355.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity">
+        <property name="DimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -770,7 +770,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </property>
-        <property name="dimensionSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+        <property name="DimensionSystemSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -785,7 +785,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 375.0]">
             </property>
         </property>
-        <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time">
+        <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -803,7 +803,7 @@
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
             </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To introduce an error, double-click on dimensionSystem::constraint3&#10;and change the second part of the expression to Acceleration:&#10;nominalSpeed &gt;= Acceleration&#10;&#10;To the solver, this means that the nominalSpeed parameter is at least an Acceleration.&#10;&#10;But, this causes a problem.  The Add2 actor will try to add an Acceleration&#10;(nominalSpeed) and a Velocity (other input).  This causes a Conflict, &#10;because only inputs of the same concept can be added together.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To introduce an error, double-click on DimensionSystemSolver::constraint3&#10;and change the second part of the expression to Acceleration:&#10;nominalSpeed &gt;= Acceleration&#10;&#10;To the solver, this means that the nominalSpeed parameter is at least an Acceleration.&#10;&#10;But, this causes a problem.  The Add2 actor will try to add an Acceleration&#10;(nominalSpeed) and a Velocity (other input).  This causes a Conflict, &#10;because only inputs of the same concept can be added together.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 275.0]">
             </property>
@@ -1112,7 +1112,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{369.7329545454545, 199.9207702020202}">
             </property>
-            <property name="dimensionSystem::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+            <property name="DimensionSystemSolver::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1127,7 +1127,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 285.0}">
                 </property>
             </property>
-            <property name="dimensionSystem::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
+            <property name="DimensionSystemSolver::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

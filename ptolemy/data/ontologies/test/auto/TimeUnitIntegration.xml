@@ -45,7 +45,7 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="dimensionlessValue &gt;= Dimensionless">
+    <property name="TestUnitsOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="dimensionlessValue &gt;= Dimensionless">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -60,7 +60,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 655.0]">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
+    <property name="TestUnitsOntologyAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="velocityValue &gt;= Velocity_m_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -117,7 +117,7 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_m_per_sec2">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMetersSec2Value &gt;= Acceleration_m_per_sec2">
+    <property name="TestUnitsOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMetersSec2Value &gt;= Acceleration_m_per_sec2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -153,7 +153,7 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_mph_per_sec">
         </property>
     </property>
-    <property name="TestUnitsOntology::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMPHSecValue &gt;= Acceleration_mph_per_sec">
+    <property name="TestUnitsOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMPHSecValue &gt;= Acceleration_mph_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
