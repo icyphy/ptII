@@ -43,9 +43,10 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  The derivative in the continuous domain.
  In continuous-time modeling, one should generally avoid taking derivatives
- directly. It is better to use an {@see Integrator} actor in a feedback loop.
+ directly. It is better to use an {@link Integrator} actor in a feedback loop.
  The input to the Integrator is the derivative of its output.
- The reason is that small amounts of noise on the input of
+ The reason for avoiding taking derivatives directly
+ is that small amounts of noise on the input of
  a derivative actor result in large output fluctuations.
  Since continuous-time simulation involves choosing step sizes,
  the choice of step size will strongly affect the resulting
@@ -53,10 +54,16 @@ import ptolemy.kernel.util.StringAttribute;
  <p>
  That said, if you have read this far, you are probably determined
  to compute a derivative. Hence, we provide this actor, which performs
- a simple operation and provides a simple guarantee. Specifically,
- a correctly connected Derivative followed by an Integrator is an
- identity function. And an Integrator followed by a Derivative is
- also an identity function.
+ a simple operation and provides a simple (partial) guarantee. Specifically,
+ a correctly connected Derivative followed by an Integrator is (almost)
+ an identity function. And an Integrator followed by a Derivative is
+ also (almost) an identity function. The reason for the "almost" is
+ that very first <i>derivative</i> output of the Derivative actor
+ is always zero. Determining a derivative without any past history
+ requires seeing the future. Although in principle it might be
+ possible for this actor to collaborate with the solver to
+ speculatively execute into the future to get the derivative,
+ we have not done that here. 
  <p>
  Upon firing, this actor produces an output on the <i>derivative</i>
  port, and may also produce an output on the <i>impulse</i> port.
@@ -66,13 +73,17 @@ import ptolemy.kernel.util.StringAttribute;
  between this input and the previous one is zero, and the value
  of the previous input and the current one is non-zero, then this
  actor will be produce the value difference on the <i>impulse</i>
- output and will produce zero on the <i>derivative</i> output.
+ output and will produce whatever
+ it previously produced on the <i>derivative</i> output.
  <p>
  On the very first firing after being initialized,
  this actor always produces zero
  on the <i>derivative</i> output. If the input is
  non-zero, then it will produce the value of the input on
- the <i>impulse</i> output.
+ the <i>impulse</i> output. This ensures that if the
+ <i>impulse</i> output is connected to the <i>impulse</i>
+ input of a downstream Integrator, that the Integrator will
+ be correctly initialized.
  <p>
  The <i>impulse</i> output should be interpreted as a Dirac
  delta function. It is a discrete output. If it is connected to
