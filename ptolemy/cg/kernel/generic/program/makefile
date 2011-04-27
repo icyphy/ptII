@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2005-2011 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/kernel/generic/program
 
-DIRS =		procedural
+DIRS =		procedural test
 
 # Root of the Java directory
 ROOT =		../../../../..
