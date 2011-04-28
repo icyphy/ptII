@@ -134,13 +134,20 @@ public class BandlimitedNoise extends Gaussian {
         }
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        // Use the quantized version of the interval. Note that this will never be zero.
-        double timeGapBetweenValues = _timeOfValueAtEnd.subtract(
-                _timeOfValueAtStart).getDoubleValue();
-        double interval = currentTime.subtract(_timeOfValueAtStart)
-                .getDoubleValue();
-        _current = _valueAtStart + (_valueAtEnd - _valueAtStart) * interval
-                / timeGapBetweenValues;
+        if (_timeOfValueAtStart != null) {
+            // Not the first firing after initialize.
+            // Use the quantized version of the interval.
+            // Note that this will never be zero.
+            double timeGapBetweenValues = _timeOfValueAtEnd.subtract(
+                    _timeOfValueAtStart).getDoubleValue();
+            // The time interval, however, may be zero.
+            double interval = currentTime.subtract(_timeOfValueAtStart)
+                    .getDoubleValue();
+            // FIXME: Linear iterpolation is not a good choice here.
+            // Should be doing filtering.
+            _current = _valueAtStart + (_valueAtEnd - _valueAtStart) * interval
+                    / timeGapBetweenValues;
+        }
         output.send(0, new DoubleToken(_current));
     }
 
@@ -158,6 +165,7 @@ public class BandlimitedNoise extends Gaussian {
         super._generateRandomNumber();
         _valueAtEnd = _current;
         _timeOfValueAtEnd = getDirector().getModelTime();
+        _timeOfValueAtStart = null;
 
         // Generate the second random number.
         _generateRandomNumber();
