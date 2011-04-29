@@ -4,7 +4,7 @@
 <entity name="DeltaConstraintTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 68, 1036, 700}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 44, 1036, 700}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 583]">
     </property>
@@ -45,8 +45,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 80.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-        </property>
     </property>
     <property name="nominalSpeed" class="ptolemy.data.expr.Parameter" value="45">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -66,8 +64,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 60.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-        </property>
     </property>
     <property name="a" class="ptolemy.data.expr.Parameter" value="6">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -86,8 +82,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 100.0]">
-        </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
         </property>
     </property>
     <property name="DimensionSystemSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const2.output &gt;= Acceleration">
@@ -138,6 +132,8 @@
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/dimensionSystem/DimensionSystemSolverModel.xml">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Time&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract2.plus&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.driverDesiredSpeed.output&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract2.minus&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.a&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.Const.output&quot;}, {Concept = &quot;Conflict&quot;, NamedObj = &quot;.DeltaConstraintTest.MultiplyDivide.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract3.minus&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract.minus&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.JitterPeriod.value&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.JitterPeriod.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.Const.value&quot;}, {Concept = &quot;Acceleration&quot;, NamedObj = &quot;.DeltaConstraintTest.Const2.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.driverDesiredSpeed.value&quot;}, {Concept = &quot;Conflict&quot;, NamedObj = &quot;.DeltaConstraintTest.MultiplyDivide.divide&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract.output&quot;}, {Concept = &quot;Conflict&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract2.output&quot;}, {Concept = &quot;Conflict&quot;, NamedObj = &quot;.DeltaConstraintTest.MultiplyDivide.multiply&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.Const2.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.jitterPeriod&quot;}, {Concept = &quot;Conflict&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract3.plus&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract.plus&quot;}, {Concept = &quot;Conflict&quot;, NamedObj = &quot;.DeltaConstraintTest.AddSubtract3.output&quot;}, {Concept = &quot;Time&quot;, NamedObj = &quot;.DeltaConstraintTest.CurrentTime.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DeltaConstraintTest.nominalSpeed&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 465.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
@@ -153,8 +149,6 @@
     </property>
     <entity name="driverDesiredSpeed" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="60">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -165,11 +159,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[146.75, 162.5]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -187,16 +176,9 @@
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 310.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time">
-            </property>
-        </port>
     </entity>
     <entity name="JitterPeriod" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="jitterPeriod">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 380.0]">
@@ -207,17 +189,10 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <display name="Const&#10;Nominal Speed&#10;in miles per hour"/>
         <property name="value" class="ptolemy.data.expr.Parameter" value="nominalSpeed">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 240.0]">
@@ -228,100 +203,25 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[311.75, 187.5]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 355.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
-            </property>
-        </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 260.0]">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
-            </property>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 270.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Conflict">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="a">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -332,11 +232,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 190.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

@@ -7,6 +7,8 @@
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/dimensionSystem/DimensionSystemSolverModel.xml">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.TimedPlotter.useLocalTime&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.TimedPlotter.automaticRescale&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.TimedPlotter.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.Const2.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.TimedPlotter.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.AddSubtract.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.TimedPlotter.fillOnWrapup&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.Const2.output&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.Const.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.AddSubtract.plus&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.AddSubtract.minus&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.TimedPlotter.startingDataset&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.LeastUpperBoundConstraint.Const.value&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 85.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -57,8 +59,6 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -69,11 +69,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 180.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -98,17 +93,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 170.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -119,32 +106,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 130.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 170.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

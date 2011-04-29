@@ -7,6 +7,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Scale2.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Display.suppressBlankLines&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.LatticeComposition.Display.title&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Const.value&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Display.rowsDisplayed&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Const.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Scale2.input&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Scale.scaleOnLeft&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Scale2.factor&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Scale.factor&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.LatticeComposition.Display.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.LatticeComposition.Scale.input&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Display.columnsDisplayed&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.LatticeComposition.Ramp.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Scale2.scaleOnLeft&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.LatticeComposition.Scale.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.LatticeComposition.Discard.input&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 25.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -19,6 +21,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Scale2.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Const.value&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Ramp.step&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Const.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.LatticeComposition.Ramp.trigger&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Scale2.input&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Scale.scaleOnLeft&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Scale2.factor&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.LatticeComposition.Ramp.step&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Scale.factor&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.LatticeComposition.Scale.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.LatticeComposition.Display.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.LatticeComposition.Ramp.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Scale2.scaleOnLeft&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.LatticeComposition.Scale.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Discard.input&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.LatticeComposition.Ramp.init&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 25.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -30,6 +34,8 @@
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/abstractInterpretation/AbstractInterpretationScalarSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Scale2.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Display.suppressBlankLines&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.LatticeComposition.Display.title&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Const.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Display.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Ramp.step&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Const.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Scale2.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Ramp.trigger&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Scale.scaleOnLeft&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Scale2.factor&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Ramp.step&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.LatticeComposition.Scale.factor&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.LatticeComposition.Display.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Scale.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Display.columnsDisplayed&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Ramp.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.LatticeComposition.Scale2.scaleOnLeft&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.LatticeComposition.Scale.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.LatticeComposition.Discard.input&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.LatticeComposition.Ramp.init&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 25.0]">
         </property>
@@ -46,10 +52,10 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8755021079206">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.4765625000005, 481.7070539772727}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.4765625000006, 481.7070539772727}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 190.0]">
         </property>
@@ -83,6 +89,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Scale2.output&quot;}, {Concept = &quot;UnobservableConstantUnknown&quot;, NamedObj = &quot;.LatticeComposition.Display.suppressBlankLines&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.LatticeComposition.Display.title&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Const.value&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Display.rowsDisplayed&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Ramp.step&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Const.output&quot;}, {Concept = &quot;UnobservableConstantUnknown&quot;, NamedObj = &quot;.LatticeComposition.Ramp.trigger&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Scale2.input&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Scale2.factor&quot;}, {Concept = &quot;UnobservableConstantUnknown&quot;, NamedObj = &quot;.LatticeComposition.Ramp.step&quot;}, {Concept = &quot;ObservableConstantZero&quot;, NamedObj = &quot;.LatticeComposition.Scale.factor&quot;}, {Concept = &quot;ObservableConstantZero&quot;, NamedObj = &quot;.LatticeComposition.Display.input&quot;}, {Concept = &quot;UnobservableNonconstantUnknown&quot;, NamedObj = &quot;.LatticeComposition.Scale.input&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Display.columnsDisplayed&quot;}, {Concept = &quot;UnobservableNonconstantUnknown&quot;, NamedObj = &quot;.LatticeComposition.Ramp.output&quot;}, {Concept = &quot;ObservableConstantZero&quot;, NamedObj = &quot;.LatticeComposition.Scale.output&quot;}, {Concept = &quot;UnobservableConstantPositive&quot;, NamedObj = &quot;.LatticeComposition.Discard.input&quot;}, {Concept = &quot;UnobservableConstantZero&quot;, NamedObj = &quot;.LatticeComposition.Ramp.init&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 195.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
@@ -92,16 +100,12 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantZero">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantZero">
             </property>
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
@@ -112,8 +116,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNonconstantUnknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNonconstantUnknown">
@@ -122,8 +124,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
@@ -131,8 +131,6 @@
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
@@ -141,16 +139,12 @@
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableConstantZero">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableConstantZero">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
@@ -164,8 +158,6 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableNonconstantUnknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNonconstantUnknown">
@@ -173,8 +165,6 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableConstantZero">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableConstantZero">
@@ -187,24 +177,18 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantUnknown">
@@ -215,8 +199,6 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableConstantZero">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableConstantZero">
@@ -225,8 +207,6 @@
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="7">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
@@ -243,8 +223,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
@@ -253,16 +231,12 @@
     </entity>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
             </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
@@ -276,8 +250,6 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
@@ -285,8 +257,6 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
@@ -302,8 +272,6 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstantPositive">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
             </property>

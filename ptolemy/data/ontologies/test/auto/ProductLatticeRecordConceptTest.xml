@@ -15,7 +15,7 @@
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, -15.0}">
         </property>
     </property>
     <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
@@ -36,13 +36,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 30.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachablePositive">
-        </property>
     </property>
     <property name="ConstAbsIntObservableReachableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="solvers/ConstAbsIntObservableReachableProductSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Scale15.input&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.columnsDisplayed&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.position&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const2.output&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.title&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.columnsDisplayed&quot;}, {Concept = &quot;{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.output&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const13.output&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.title&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.suppressBlankLines&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.acceleration&quot;}, {Concept = &quot;ObservableUnreachableBooleanTrue&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const2.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.title&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const13.value&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.input&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.control&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.time&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.acceleration&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.suppressBlankLines&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.input&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.time&quot;}, {Concept = &quot;ObservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const5.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.rowsDisplayed&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.rowsDisplayed&quot;}, {Concept = &quot;ObservableUnreachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Scale15.factor&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.input&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const3.value&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display2.suppressBlankLines&quot;}, {Concept = &quot;{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.input&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const5.output&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.input&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.trueOutput&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.falseOutput&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.BooleanSwitch.input&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Const3.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display.columnsDisplayed&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Scale15.output&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display3.title&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordAssembler.speed&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Constant1&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.position&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.RecordDisassembler.speed&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.columnsDisplayed&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.ProductLatticeRecordConceptTest.Display4.suppressBlankLines&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -10.0]">
         </property>
@@ -53,8 +53,6 @@
     </property>
     <entity name="Const13" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="546.72">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -65,11 +63,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 150.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -79,8 +72,6 @@
     </entity>
     <entity name="Scale15" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableZero">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
@@ -92,48 +83,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 195.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableReachablePositive">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
-            </property>
-        </port>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 290.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanTrue">
-            </property>
-        </port>
-        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
-            </property>
-        </port>
-        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableBooleanTrue">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -144,11 +100,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 345.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanTrue">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -158,8 +109,6 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachablePositive">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -170,11 +119,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 250.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -184,8 +128,6 @@
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableBooleanFalse">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -196,11 +138,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 375.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -211,73 +148,47 @@
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 270.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}">
-            </property>
-        </port>
         <port name="time" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
             </property>
         </port>
         <port name="acceleration" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
-            </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableUnknown">
-            </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
             </property>
         </port>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 80.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{acceleration = ObservableReachablePositive, position = ObservableReachableBooleanFalse, speed = ObservableUnreachableUnknown, time = ObservableReachableZero}">
-            </property>
-        </port>
         <port name="time" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="acceleration" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableUnknown">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -288,25 +199,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachableBooleanFalse">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, -10.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableZero">
-            </property>
-        </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -314,25 +213,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachableBooleanFalse">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 50.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachablePositive">
-            </property>
-        </port>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -340,25 +227,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachableBooleanFalse">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 110.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnreachableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -366,25 +241,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachablePositive">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnreachableBooleanFalse">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 185.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableReachableBooleanFalse">
-            </property>
-        </port>
     </entity>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
     </relation>

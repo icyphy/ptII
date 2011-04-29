@@ -4,7 +4,7 @@
 <entity name="BooleanSwitchDemoProductLattice" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={651, 62, 1189, 956}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={226, 58, 1189, 956}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[974, 839]">
     </property>
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{455.7426097972974, 383.278610641892}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 15.0]">
         </property>
@@ -36,8 +36,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 60.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-        </property>
     </property>
     <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -56,8 +54,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
-        </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
@@ -78,8 +74,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 100.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-        </property>
     </property>
     <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -98,8 +92,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 120.0]">
-        </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
         </property>
     </property>
     <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
@@ -120,13 +112,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 140.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-        </property>
     </property>
     <property name="ConstAbsIntObservableReachableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="ConstAbsIntObservableReachableProductSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.output&quot;}, {Concept = &quot;UnobservableUnreachableZero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant3&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.columnsDisplayed&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.input&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.input&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.title&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.control&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.columnsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.title&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.input&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.columnsDisplayed&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.output&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.factor&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.output&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.input&quot;}, {Concept = &quot;ObservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.value&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.input&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.output&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.columnsDisplayed&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.output&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.input&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.control&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.output&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.output&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.output&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.trueOutput&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.value&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.value&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.title&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant2&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.input&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.output&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.suppressBlankLines&quot;}, {Concept = &quot;UnobservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.output&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.input&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.input&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.output&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.input&quot;}, {Concept = &quot;ObservableUnreachableUnknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.falseOutput&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.input&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.value&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.factor&quot;}, {Concept = &quot;UnobservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.falseInput&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.input&quot;}, {Concept = &quot;ObservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.value&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.suppressBlankLines&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.suppressBlankLines&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.rowsDisplayed&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.suppressBlankLines&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant5&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.rowsDisplayed&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.control&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.value&quot;}, {Concept = &quot;UnobservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.output&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.falseOutput&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.columnsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.title&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.rowsDisplayed&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant1&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.trueInput&quot;}, {Concept = &quot;ObservableReachableZero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.input&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.suppressBlankLines&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.title&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.suppressBlankLines&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.suppressBlankLines&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.columnsDisplayed&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.factor&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.input&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.title&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.output&quot;}, {Concept = &quot;ObservableUnreachableZero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.factor&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.output&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.output&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.columnsDisplayed&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.columnsDisplayed&quot;}, {Concept = &quot;UnobservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.output&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.falseInput&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.trueOutput&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.value&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.rowsDisplayed&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.input&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.output&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.columnsDisplayed&quot;}, {Concept = &quot;ObservableUnreachableBooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.value&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.suppressBlankLines&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.rowsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.title&quot;}, {Concept = &quot;UnobservableUnreachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.suppressBlankLines&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.title&quot;}, {Concept = &quot;ObservableUnreachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant4&quot;}, {Concept = &quot;ObservableReachableBooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.control&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.output&quot;}, {Concept = &quot;ObservableReachableNegative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.input&quot;}, {Concept = &quot;ObservableReachableBooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.output&quot;}, {Concept = &quot;ObservableUnreachableBooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.value&quot;}, {Concept = &quot;ObservableReachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.trueInput&quot;}, {Concept = &quot;ObservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.factor&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.title&quot;}, {Concept = &quot;UnobservableUnreachablePositive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.rowsDisplayed&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 25.0]">
         </property>
@@ -140,6 +132,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.control&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant3&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.input&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.scaleOnLeft&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.falseOutput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.input&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.control&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.factor&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.scaleOnLeft&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.trueInput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant1&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.input&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.factor&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.factor&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.control&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.falseInput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.trueOutput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.trueOutput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant2&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.falseOutput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.input&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant4&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.control&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.output&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.factor&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.output&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.falseInput&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.input&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.trueInput&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.factor&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.scaleOnLeft&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.value&quot;}, {Concept = &quot;Observable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant5&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.scaleOnLeft&quot;}, {Concept = &quot;Unobservable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.scaleOnLeft&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -152,6 +146,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant3&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.input&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.title&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.control&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.columnsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.title&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.input&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.factor&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.scaleOnLeft&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.columnsDisplayed&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.input&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.control&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.output&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.trueOutput&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.title&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant2&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.rowsDisplayed&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.suppressBlankLines&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.falseOutput&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.rowsDisplayed&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.factor&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.falseInput&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.value&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.suppressBlankLines&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.suppressBlankLines&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.rowsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.suppressBlankLines&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant5&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.rowsDisplayed&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.scaleOnLeft&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.rowsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.control&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.value&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.scaleOnLeft&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.falseOutput&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.columnsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.title&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant1&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.trueInput&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.suppressBlankLines&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.title&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.suppressBlankLines&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.suppressBlankLines&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.factor&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.input&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.title&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.factor&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.falseInput&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.trueOutput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.columnsDisplayed&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.suppressBlankLines&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.rowsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.title&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.suppressBlankLines&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.title&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant4&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.control&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.input&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.output&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.trueInput&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.factor&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.scaleOnLeft&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.title&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.rowsDisplayed&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.scaleOnLeft&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 80.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -163,6 +159,8 @@
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/reachableLattice/ReachableSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant3&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.columnsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.input&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.title&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.control&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.columnsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.title&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.columnsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.factor&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.scaleOnLeft&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.input&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.value&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const10.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.columnsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.control&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.trueOutput&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.title&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant2&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.input&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.rowsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const15.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.suppressBlankLines&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const12.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.falseOutput&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.rowsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.input&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const9.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.factor&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.falseInput&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.input&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const5.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.suppressBlankLines&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.suppressBlankLines&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.rowsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.suppressBlankLines&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant5&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.rowsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.scaleOnLeft&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.rowsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.control&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const14.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale4.scaleOnLeft&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale9.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch2.falseOutput&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.columnsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.title&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.rowsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant1&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.trueInput&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.input&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.suppressBlankLines&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.title&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.suppressBlankLines&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.suppressBlankLines&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const11.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.columnsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.factor&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.input&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.title&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const3.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale15.factor&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const13.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display9.columnsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.columnsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const6.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.falseInput&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSwitch.trueOutput&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display5.rowsDisplayed&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display6.columnsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.suppressBlankLines&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.value&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.rowsDisplayed&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display3.title&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.suppressBlankLines&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const4.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display2.title&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Constant4&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect2.control&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const7.output&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display4.input&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const8.output&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Const2.value&quot;}, {Concept = &quot;Reachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.BooleanSelect.trueInput&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.factor&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale6.scaleOnLeft&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display8.title&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Display7.rowsDisplayed&quot;}, {Concept = &quot;Unreachable&quot;, NamedObj = &quot;.BooleanSwitchDemoProductLattice.Scale.scaleOnLeft&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 155.0]">
         </property>
@@ -177,30 +175,16 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 200.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -211,11 +195,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 205.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -225,11 +204,11 @@
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unreachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -238,16 +217,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 235.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -255,30 +224,16 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 10.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -289,11 +244,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 10.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -303,11 +253,11 @@
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unreachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -316,21 +266,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 55.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -341,11 +279,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 280.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -355,11 +288,11 @@
     </entity>
     <entity name="Scale6" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unreachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -368,21 +301,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 310.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const9" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -393,11 +314,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 95.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -407,11 +323,11 @@
     </entity>
     <entity name="Scale9" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unreachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -420,16 +336,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 140.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -437,30 +343,16 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const13" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="546.72">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -471,11 +363,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[53.25, 240.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -485,11 +372,11 @@
     </entity>
     <entity name="Scale15" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unreachable">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -498,43 +385,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 270.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.005859375, 418.3515625]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -542,25 +396,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 365.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -568,30 +410,16 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 455.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -602,11 +430,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 510.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -616,8 +439,6 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -628,11 +449,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 345.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -643,29 +459,6 @@
     <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 430.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -673,25 +466,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 380.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -699,30 +480,16 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 465.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -733,11 +500,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 525.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -747,8 +509,6 @@
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -759,11 +519,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 370.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -774,56 +529,10 @@
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 650.0]">
         </property>
-        <port name="trueInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="falseInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 645.0]">
         </property>
-        <port name="trueInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="falseInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -831,25 +540,13 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 715.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Display9" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -857,30 +554,16 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 705.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -891,11 +574,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 770.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -905,8 +583,6 @@
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -917,11 +593,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 765.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -931,8 +602,6 @@
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -943,11 +612,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 585.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -957,8 +621,6 @@
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -969,11 +631,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 705.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -983,8 +640,6 @@
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -995,11 +650,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 600.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -1009,8 +659,6 @@
     </entity>
     <entity name="Const15" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -1021,11 +669,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 695.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>

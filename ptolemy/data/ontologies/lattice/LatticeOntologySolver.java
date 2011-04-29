@@ -27,8 +27,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyAdapter;
@@ -37,6 +41,10 @@ import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.data.ontologies.OntologySolverBase;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
@@ -47,6 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// LatticeOntologySolver
@@ -96,6 +105,11 @@ public class LatticeOntologySolver extends OntologySolver {
         
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
+        
+        _trainedConceptRecordArray = new Parameter(this, "_trainedConceptRecordArray");
+        _trainedConceptRecordArray.setVisibility(Settable.NONE);
+        _trainedConceptRecordArray.setPersistent(true);
+        _setTrainedConceptsParameterType();        
         
         _addChoices();
 
@@ -416,10 +430,8 @@ public class LatticeOntologySolver extends OntologySolver {
     /** Run concept inference and check the values match those trained.
      * 
      *  This simply looks through the conceptable objects and
-     *  checks that their resolved concepts match the value
-     *  contained in the <i>_trainedConcept</i> attribute.  Conceptables
-     *  without a <i>_trainedConcept</i> attribute are just ignored, and
-     *  do not cause the test to fail.
+     *  checks that their resolved concepts match the values
+     *  contained in the <i>__trainedConceptRecordArray</i> attribute.
      * 
      *  @exception IllegalActionException If inference fails or the test
      *   resolves to the wrong values.
@@ -431,37 +443,64 @@ public class LatticeOntologySolver extends OntologySolver {
         } finally {
             workspace().doneWriting();
         }
-        for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-            StringParameter trained = (StringParameter) conceptable
-                    .getAttribute("_trainedConcept");
-            if (trained == null) {
-                // Testing a conceptable that is not trained should not
-                // cause the test to fail.
-                continue;
-            }
-            Concept inferredConcept = getConcept(conceptable);
-            if (inferredConcept == null) {
-                throw new IllegalActionException(conceptable,
-                        "Testing failure at " + conceptable.toString() + '\n'
-                                + "Expected '" + trained.stringValue()
+        
+        ArrayToken trainedConceptsArrayToken = (ArrayToken) _trainedConceptRecordArray.getToken();
+        if (trainedConceptsArrayToken == null) {
+            throw new IllegalActionException("The " + getName() +
+                        " ontology solver has not been trained for ontology " +
+                        "concept resolution, so its analysis cannot be tested.");
+        } else {
+            Token[] trainedConceptRecordsArray = trainedConceptsArrayToken.arrayValue();              
+            Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
+            
+            for (Token trainedConceptToken : trainedConceptRecordsArray) {
+                RecordToken conceptRecord = (RecordToken) trainedConceptToken;
+                
+                String conceptableFullName = ((StringToken)
+                        conceptRecord.get(_namedObjLabel)).stringValue();                
+                NamedObj conceptable = _getConceptableFromFullName(
+                        conceptableFullName, allNamedObjs);
+                if (conceptable == null) {
+                    throw new IllegalActionException(this, "The full name " +
+                            conceptableFullName +
+                            " does not refer to a valid model object that " +
+                            "can be resolved to an ontology concept.");
+                }
+                String trainedConceptString = (String) ((StringToken)
+                        conceptRecord.get(_conceptLabel)).stringValue();
+
+                Concept inferredConcept = getConcept(conceptable);
+                if (inferredConcept == null) {
+                    if (trainedConceptString != null && !trainedConceptString.equals("")) {
+                        throw new IllegalActionException(conceptable,
+                                "Testing failure at " + conceptable.toString() + '\n'
+                                + "Expected '" + trainedConceptString
                                 + "' but did not infer anything.");
+                    }
+                } else if (!inferredConcept.toString().equals(trainedConceptString)) {
+                    throw new IllegalActionException(conceptable,
+                            "Testing failure at " + conceptable.toString() + '\n'
+                            + "Expected '" + trainedConceptString
+                            + "' but got '" + inferredConcept.toString() +
+                            "' instead.");
+                }
             }
-            String inferred = inferredConcept.toString();
-            if (!inferred.equals(trained.stringValue())) {
-                throw new IllegalActionException(conceptable,
-                        "Testing failure at " + conceptable.toString() + '\n'
-                                + "Expected '" + trained.stringValue()
-                                + "' but got '" + inferred + "' instead.");
+            
+            if (!allNamedObjs.isEmpty()) {
+                throw new IllegalActionException(this, "Some of the " +
+                		"conceptable model elements do not have " +
+                		"trained concept values. They are: " +
+                		allNamedObjs.toArray().toString());
             }
         }
     }
 
     /** Run concept inference and save the inferred concept values.
      * 
-     *  For values that are correctly resolved to a non-null concept,
-     *  a string representation of the concept is stored in the
-     *  <i>_trainedConcept</i> attribute of the NamedObj.  For values
-     *  that resolve to null, nothing is recorded.
+     *  For all conceptable model elements, an array of records that maps the
+     *  full name of the Ptolemy element to the name of the concept to which it
+     *  was resolved is generated and stored as a parameter of the ontology
+     *  solver.
      *  
      *  @exception IllegalActionException If inference fails..
      */
@@ -470,32 +509,69 @@ public class LatticeOntologySolver extends OntologySolver {
             workspace().getWriteAccess();
             invokeSolver();
             Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
+            
+            RecordToken[] trainedConcepts = new RecordToken[allNamedObjs.size()];
+            int index = 0;
             for (NamedObj conceptable : allNamedObjs) {
-                Concept inferred = getConcept(conceptable);
-                if (inferred == null) {
-                    // If we have conceptables that do not resolve to concepts,
-                    // simply skip them.
-                    continue;
+                Concept inferredConcept = getConcept(conceptable);
+                
+                Token[] recordArray = new Token[2];
+                recordArray[0] = new StringToken(conceptable.getFullName());
+                if (inferredConcept == null) {                    
+                    recordArray[1] = new StringToken(null);
+                } else {
+                    recordArray[1] = new StringToken(inferredConcept.toString());
                 }
-                StringParameter trained;
-                try {
-                    trained = new StringParameter(conceptable,
-                            "_trainedConcept");
-                } catch (NameDuplicationException e) {
-                    trained = (StringParameter) conceptable
-                            .getAttribute("_trainedConcept");
+                RecordToken conceptRecord = new RecordToken(
+                        _trainedConceptRecordLabels, recordArray);
+                
+                trainedConcepts[index++] = conceptRecord;
+
+                // Remove all the old _trainedConcept attributes from the
+                // model because they are obsolete.
+                StringParameter trained = (StringParameter) conceptable
+                    .getAttribute("_trainedConcept");;
+                if (trained != null) {
+                    try {
+                        trained.setContainer(null);
+                    } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(this, e, "Could " +
+                        		"not remove the obselete " +
+                        		"_trainedConcept attribute from the " +
+                        		conceptable + " model element.");
+                    }
                 }
-                trained.setExpression(inferred.toString());
-                // The Variable class's setExpression can be handled lazily,
-                // so we need this to make sure that the MoML is really updated
-                // to the new value.
-                trained.getToken();
-            }
+            }            
+            _trainedConceptRecordArray.setToken(new ArrayToken(trainedConcepts));
         } finally {
             workspace().doneWriting();
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public inner classes              ////
+    
+    /**
+     * An enumeration type to represent the types of constraints for
+     * default constraint settings for actor inputs and outputs, connections
+     * and finite state machine transitions.
+     */
+    public static enum ConstraintType {
+        /** Represents that the two sides must be equal. */
+        EQUALS,
 
+        /** Represents that there is no constraint between the two sides. */
+        NONE,
+
+        /** Represents that the sink must be >= the source. */
+        SINK_GE_SOURCE,
+
+        /** Represents that the source must be >= the sink. */
+        SOURCE_GE_SINK
+    }  
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
     /** Return a string representing the list of terms that resolved to
      *  unacceptable concepts.  Returns an empty string if the solver has not
@@ -787,40 +863,6 @@ public class LatticeOntologySolver extends OntologySolver {
 
     }
 
-    /**
-     * Add choices to the parameters.
-     * @exception IllegalActionException If there is a problem accessing files
-     * or parameters.
-     */
-    private void _addChoices() throws IllegalActionException {
-        solverStrategy.addChoice("forward");
-        solverStrategy.addChoice("backward");
-        solverStrategy.addChoice("bidirectional");
-        solverStrategy.addChoice("none");
-        
-        solvingFixedPoint.addChoice("least");
-        solvingFixedPoint.addChoice("greatest");
- 
-    }
-
-    /** Return a string representing the list of inequality constraints specified
-     *  that can be written to a log file.
-     * 
-     *  @param constraintList The list of inequality constraints to be parsed into a string.
-     *  @return A string representing the list of inequality constraints that can be written to a log file.
-     *  @throws IllegalActionException If the string cannot be formed from the list of inequality constraints.
-     */
-    private String _getConstraintsAsString(
-            List<Inequality> constraintList) throws IllegalActionException {
-
-        StringBuffer output = new StringBuffer();
-        for (Inequality inequality : constraintList) {
-            output.append(inequality.toString() + _eol);
-        }
-
-        return output.toString();
-    }
-
     /** Return the constraint type based on the solver strategy and the
      *  type of the fixed point.
      *  Least fixed points with forward inference give constraints
@@ -854,28 +896,6 @@ public class LatticeOntologySolver extends OntologySolver {
         }
     }
 
-    /**
-     * An enumeration type to represent the types of constraints for
-     * default constraint settings for actor inputs and outputs, connections
-     * and finite state machine transitions.
-     */
-    public static enum ConstraintType {
-        /** Represents that the two sides must be equal. */
-        EQUALS,
-
-        /** Represents that there is no constraint between the two sides. */
-        NONE,
-
-        /** Represents that the sink must be >= the source. */
-        SINK_GE_SOURCE,
-
-        /** Represents that the source must be >= the sink. */
-        SOURCE_GE_SINK
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
@@ -889,6 +909,76 @@ public class LatticeOntologySolver extends OntologySolver {
      *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
      *  for a definition of unacceptable.  */
     protected List<InequalityTerm> _resolvedUnacceptableList;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /**
+     * Add choices to the parameters.
+     * @exception IllegalActionException If there is a problem accessing files
+     * or parameters.
+     */
+    private void _addChoices() throws IllegalActionException {
+        solverStrategy.addChoice("forward");
+        solverStrategy.addChoice("backward");
+        solverStrategy.addChoice("bidirectional");
+        solverStrategy.addChoice("none");
+        
+        solvingFixedPoint.addChoice("least");
+        solvingFixedPoint.addChoice("greatest");
+    }
+    
+    /** Return the conceptable model element NamedObj that has the given
+     *  full name string. Also remove that NamedObj from the given set of
+     *  all conceptable NamedObj elements.
+     *  @param fullName The full name of the model element.
+     *  @param allConceptableNamedObjs The set of all conceptable NamedObj
+     *   elements in the model.
+     *  @return The NamedObj element in the set with the given full name, or
+     *   null if it does not exist.
+     */
+    private NamedObj _getConceptableFromFullName(String fullName,
+            Set<NamedObj> allConceptableNamedObjs) {
+        for (NamedObj modelElement : allConceptableNamedObjs) {
+            if (modelElement.getFullName().equals(fullName)) {
+                allConceptableNamedObjs.remove(modelElement);
+                return modelElement;
+            }
+        }        
+        return null;
+    }
+
+    /** Return a string representing the list of inequality constraints specified
+     *  that can be written to a log file.
+     * 
+     *  @param constraintList The list of inequality constraints to be parsed into a string.
+     *  @return A string representing the list of inequality constraints that can be written to a log file.
+     *  @throws IllegalActionException If the string cannot be formed from the list of inequality constraints.
+     */
+    private String _getConstraintsAsString(
+            List<Inequality> constraintList) throws IllegalActionException {
+
+        StringBuffer output = new StringBuffer();
+        for (Inequality inequality : constraintList) {
+            output.append(inequality.toString() + _eol);
+        }
+
+        return output.toString();
+    }
+    
+    /** Set the type constraint for the _trainedConceptRecordArray parameter.
+     *  @throws IllegalActionException Thrown if there is a problem setting
+     *   the type constraint.
+     */
+    private void _setTrainedConceptsParameterType() throws IllegalActionException {
+        Type[] typeArray = new Type[2];
+        typeArray[0] = BaseType.STRING;
+        typeArray[1] = BaseType.STRING;
+        RecordType conceptRecordType = new RecordType(_trainedConceptRecordLabels, typeArray);
+        ArrayType conceptRecordArrayType = new ArrayType(conceptRecordType);
+        _trainedConceptRecordArray.setTypeEquals(conceptRecordArrayType);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -901,5 +991,19 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The concept term manager that keeps track of all the concept terms in the model for the LatticeOntologySolver. */
     private ConceptTermManager _conceptTermManager;
-
+    
+    /** The parameter that contains the array of trained concept values for
+     *  the model that contains this solver.
+     */
+    private Parameter _trainedConceptRecordArray;
+    
+    /** Label for the NamedObj field of the trained concept record tokens. */
+    private static final String _namedObjLabel = "NamedObj";
+    
+    /** Label for the Concept field of the trained concept record tokens. */
+    private static final String _conceptLabel = "Concept";
+    
+    /** The array of labels for the trained concept records. */
+    private static final String[] _trainedConceptRecordLabels =
+        new String[]{_namedObjLabel, _conceptLabel};
 }

@@ -23,6 +23,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstPropagationAbsIntScale.Scale4.scaleOnLeft&quot;}, {Concept = &quot;PositiveValue_20&quot;, NamedObj = &quot;.ConstPropagationAbsIntScale.Const4.value&quot;}, {Concept = &quot;NegativeValue_-160&quot;, NamedObj = &quot;.ConstPropagationAbsIntScale.Scale4.output&quot;}, {Concept = &quot;PositiveValue_20&quot;, NamedObj = &quot;.ConstPropagationAbsIntScale.Scale4.input&quot;}, {Concept = &quot;PositiveValue_20&quot;, NamedObj = &quot;.ConstPropagationAbsIntScale.Const4.output&quot;}, {Concept = &quot;NegativeValue_-8&quot;, NamedObj = &quot;.ConstPropagationAbsIntScale.Scale4.factor&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 25.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -32,8 +34,6 @@
     </property>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="20">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_20">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -44,11 +44,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 95.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_20">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -58,12 +53,8 @@
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-8">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-8">
-            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
-            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -71,16 +62,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 140.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="PositiveValue_20">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="NegativeValue_-160">
-            </property>
-        </port>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>

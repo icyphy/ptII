@@ -9,6 +9,8 @@
         </property>
         <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="greatest">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Constant&quot;, NamedObj = &quot;.GreatestFixedPoint.Const.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.GreatestFixedPoint.AddSubtract.plus&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.GreatestFixedPoint.AddSubtract.minus&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.GreatestFixedPoint.AddSubtract.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.GreatestFixedPoint.Const.value&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 90.0}">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -53,8 +55,6 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -65,11 +65,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 155.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -80,23 +75,6 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

@@ -7,6 +7,8 @@
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../../../demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Antimonotonic}&quot;, NamedObj = &quot;.MonotonicityDimensionLatticeAntimonotonic.Expression.expression&quot;}, {Concept = &quot;{x = Antimonotonic}&quot;, NamedObj = &quot;.MonotonicityDimensionLatticeAntimonotonic.Expression.output&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 70.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
@@ -14,7 +16,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 132, 958, 623}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 132, 960, 630}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 513]">
     </property>
@@ -23,19 +25,13 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.7314551767677, 144.4929766414142}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 70.0]">
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Acceleration) ? Conflict : Velocity">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
-            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -47,15 +43,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 160.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Antimonotonic}">
-            </property>
-        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>

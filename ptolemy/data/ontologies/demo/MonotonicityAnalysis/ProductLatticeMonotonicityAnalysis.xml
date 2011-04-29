@@ -4,7 +4,7 @@
 <entity name="ProductLatticeMonotonicityAnalysis" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 22, 972, 844}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 22, 974, 851}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 734]">
     </property>
@@ -13,13 +13,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.0671198513418, 250.1475249916416}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, -20.0}">
         </property>
     </property>
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="DimensionSquaredMonotonicitySolverModel.xml">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.IntegratorConstraintExpression.expression&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.expression&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.IntegratorConstraintExpression.output&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.output&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 50.0]">
         </property>
@@ -36,8 +38,6 @@
     </property>
     <entity name="IntegratorConstraintExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownUnknown) ? Unknown :&#10;Conflict">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -55,11 +55,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
-        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
@@ -68,8 +63,6 @@
     </entity>
     <entity name="ConstantExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Unknown">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
-            </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -87,11 +80,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
-            </property>
-        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">

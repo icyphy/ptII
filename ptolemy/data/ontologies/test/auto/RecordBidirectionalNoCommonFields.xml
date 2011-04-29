@@ -9,6 +9,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{}&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordAssembler.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const2.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const3.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordAssembler.unknown_input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordAssembler.vel_input&quot;}, {Concept = &quot;Position&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Discard.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordDisassembler.unknown_output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const.value&quot;}, {Concept = &quot;Acceleration&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Discard3.input&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordDisassembler.vel_output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordAssembler.acc_input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.TestExceptionHandler.correctExceptionMessage&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const2.output&quot;}, {Concept = &quot;Position&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordDisassembler.pos_output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordAssembler.pos_input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const3.value&quot;}, {Concept = &quot;Acceleration&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordDisassembler.acc_output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const4.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Discard4.input&quot;}, {Concept = &quot;Velocity&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Discard2.input&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.RecordDisassembler.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.RecordBidirectionalNoCommonFields.Const4.value&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 130.0}">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -89,8 +91,6 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -101,11 +101,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 190.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -115,8 +110,6 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -127,11 +120,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -141,8 +129,6 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -153,11 +139,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -168,36 +149,23 @@
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 235.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
-            </property>
-        </port>
         <port name="pos_input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </port>
         <port name="vel_input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </port>
         <port name="acc_input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </port>
         <port name="unknown_input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -205,44 +173,29 @@
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 335.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{}">
-            </property>
-        </port>
         <port name="pos_output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position">
             </property>
         </port>
         <port name="vel_output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
         </port>
         <port name="acc_output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
             </property>
         </port>
         <port name="unknown_output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -253,11 +206,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 360.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -275,8 +223,6 @@
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position">
-            </property>
         </port>
     </entity>
     <entity name="Discard2" class="ptolemy.actor.lib.Discard">
@@ -288,8 +234,6 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>
@@ -303,8 +247,6 @@
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
-            </property>
         </port>
     </entity>
     <entity name="Discard4" class="ptolemy.actor.lib.Discard">
@@ -317,14 +259,10 @@
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </port>
     </entity>
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Types resolved to unacceptable types in .RecordBidirectionalNoCommonFields due to the following inequalities:&#10;  (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.acc_output}, unknown) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.Discard3.input}, unknown)&#10;  (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.pos_output}, unknown) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.Discard.input}, unknown)&#10;  (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.unknown_output}, unknown) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.Discard4.input}, unknown)&#10;  (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.vel_output}, unknown) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.Discard2.input}, unknown)&#10;  (ptolemy.actor.lib.RecordDisassembler$PortFunction, unknown, Input Record doesn't have field named acc_output) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.acc_output}, unknown)&#10;  (ptolemy.actor.lib.RecordDisassembler$PortFunction, unknown, Input Record doesn't have field named pos_output) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.pos_output}, unknown)&#10;  (ptolemy.actor.lib.RecordDisassembler$PortFunction, unknown, Input Record doesn't have field named unknown_output) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.unknown_output}, unknown)&#10;  (ptolemy.actor.lib.RecordDisassembler$PortFunction, unknown, Input Record doesn't have field named vel_output) &lt;= (ptolemy.actor.TypedIOPort {.RecordBidirectionalNoCommonFields.RecordDisassembler.vel_output}, unknown)&#10;">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>

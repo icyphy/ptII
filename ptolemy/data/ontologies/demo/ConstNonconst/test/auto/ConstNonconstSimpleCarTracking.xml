@@ -7,6 +7,8 @@
     <property name="ConstNonconstSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$PTII/ptolemy/data/ontologies/lattice/adapters/constLattice/ConstNonconstSolverModel.xml">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Const.value&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale.factor&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Integrator.state&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale2.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.MultiplyDivide.multiply&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.initialPosition&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.jitterPeriod&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Sin.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale.output&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.TimedPlotter.useLocalTime&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Subtract.minus&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.TimedPlotter.automaticRescale&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Integrator.state&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Add2.plus&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale2.factor&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.JitterPeriod.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale2.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.speed&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Add2.minus&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.MultiplyDivide.divide&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.desiredSpeed&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Subtract.plus&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Const.value&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Integrator.derivative&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.TimedPlotter.startingDataset&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale2.factor&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.input&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.initialSpeed&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Sin.function&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale2.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.position&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.nominalSpeed&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.TimedPlotter.fillOnWrapup&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.MultiplyDivide4.multiply&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.MultiplyDivide.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Integrator.derivative&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.JitterPeriod.value&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.TimedPlotter.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Integrator2.derivative&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.MultiplyDivide4.divide&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale.scaleOnLeft&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Sin.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Const.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.desiredSpeed&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.MultiplyDivide4.output&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.jitterAmplitude&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Const.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Const.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.TimedPlotter.input&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Integrator2.state&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.CurrentTime2.output&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale.factor&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Const.value&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Scale2.scaleOnLeft&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.acceleration&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.Add2.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.DriverSimulator.UnitConversion.Scale2.output&quot;}, {Concept = &quot;Nonconstant&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.Subtract.output&quot;}, {Concept = &quot;Unused&quot;, NamedObj = &quot;.ConstNonconstSimpleCarTracking.Car Model.timeConstant&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 85.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -59,21 +61,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 175.0]">
         </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -84,11 +74,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 175.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -98,37 +83,21 @@
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 175.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
-        </port>
     </entity>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 300.0]">
@@ -169,8 +138,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 20.0]">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="initialSpeed" class="ptolemy.data.expr.Parameter" value="0.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -189,8 +156,6 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 40.0]">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
             </property>
         </property>
         <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -211,16 +176,12 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 20.0]">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 45.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
             </property>
         </port>
         <port name="acceleration" class="ptolemy.actor.TypedIOPort">
@@ -229,16 +190,12 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 165.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
             </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
@@ -247,55 +204,17 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
         </port>
         <entity name="Subtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 95.0]">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 105.0]">
             </property>
-            <port name="multiply" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="divide" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="timeConstant">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 145.0]">
@@ -306,11 +225,6 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-                </property>
-            </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -327,16 +241,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
             </property>
-            <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="state" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialSpeed">
@@ -347,16 +251,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 150.0}">
             </property>
-            <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="state" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[350.0, 190.0]">
@@ -445,8 +339,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="jitterPeriod" class="ptolemy.data.expr.Parameter" value="50">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -465,8 +357,6 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 80.0]">
-            </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
             </property>
         </property>
         <property name="nominalSpeed" class="ptolemy.data.expr.Parameter" value="55">
@@ -487,8 +377,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-            </property>
         </property>
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -502,14 +390,10 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 215.0]">
             </property>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-            </property>
         </port>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <display name="Const&#10;Nominal Speed&#10;in miles per hour"/>
             <property name="value" class="ptolemy.data.expr.Parameter" value="nominalSpeed">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 105.0]">
@@ -520,11 +404,6 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-                </property>
-            </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -548,8 +427,6 @@
                     <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
                     </property>
                 </property>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
             </property>
@@ -559,37 +436,13 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="Add2" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 200.0]">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
-            </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
                 </property>
             </port>
         </entity>
@@ -598,20 +451,11 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 160.0]">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="jitterAmplitude">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -619,25 +463,11 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="2*pi">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -645,42 +475,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 160.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 210.0}">
             </property>
-            <port name="multiply" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
-            <port name="divide" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
-            </port>
         </entity>
         <entity name="JitterPeriod" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="jitterPeriod">
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                </property>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 220.0}">
@@ -691,11 +492,6 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-                </property>
-            </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -730,24 +526,16 @@
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 185.0]">
                 </property>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
             </port>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 185.0]">
                 </property>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                </property>
             </port>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="1/1609.344">
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                    </property>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -755,25 +543,11 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 185.0}">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                    </property>
-                </port>
             </entity>
             <entity name="Scale2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="3600">
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                    </property>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unused">
-                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -781,16 +555,6 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 185.0]">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
-                    </property>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">

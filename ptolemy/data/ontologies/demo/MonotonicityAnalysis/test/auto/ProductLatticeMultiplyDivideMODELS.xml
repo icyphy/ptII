@@ -4,7 +4,7 @@
 <entity name="ProductLatticeMultiplyDivideMODELS" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={369, 37, 1280, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={203, 94, 1282, 885}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 768]">
     </property>
@@ -21,6 +21,8 @@
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$PTII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/DimensionSquaredMonotonicitySolverModel.xml">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMultiplyDivideMODELS.MultiplyConstraintExpression.output&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMultiplyDivideMODELS.MultiplyConstraintExpression.expression&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.ProductLatticeMultiplyDivideMODELS.DivideConstraintExpression.output&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.ProductLatticeMultiplyDivideMODELS.DivideConstraintExpression.expression&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 425.0}">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -30,8 +32,6 @@
     </property>
     <entity name="DivideConstraintExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;    (x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= VelocityTime) ? Acceleration :&#10;(x &lt;= PositionTime) ? Velocity :&#10;(x &lt;= PositionVelocity) ? Time :&#10;  (x &lt;= VelocityAcceleration) ? Time :&#10;(x &lt;= AccelerationAcceleration) ? Dimensionless :&#10;  (x &lt;= VelocityVelocity) ? Dimensionless :&#10;  (x &lt;= PositionPosition) ? Dimensionless :&#10;  (x &lt;= TimeTime) ? Dimensionless :&#10;  (x &lt;= DimensionlessDimensionless) ? Dimensionless :&#10;/* (x &lt;= ConflictDimensionless) ? x.project(0) : */&#10;(x &lt;= AccelerationDimensionless) ? Acceleration : &#10;  (x &lt;= VelocityDimensionless) ? Velocity :&#10;  (x &lt;= PositionDimensionless) ? Position :&#10;  (x &lt;= TimeDimensionless) ? Time :&#10;  (x &lt; ConflictDimensionless) ? Conflict :&#10;(x &lt; ConflictConflict) ?  Conflict : Dimensionless">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = General}">
-            </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -51,19 +51,12 @@
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = General}">
-            </property>
-        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="MultiplyConstraintExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;    (x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= AccelerationTime) ? Velocity :&#10;    (x &lt;= VelocityDimensionless) ? Velocity :&#10;(x &lt;= VelocityTime) ? Position :&#10;    (x &lt;= PositionDimensionless) ? Position :&#10;/* (x &lt;= DimensionlessConflict) ? x.project(1) : */&#10;(x &lt;= DimensionlessVelocity) ? Velocity :&#10;    (x &lt;= DimensionlessPosition) ? Position :&#10;    (x &lt;= DimensionlessAcceleration) ? Acceleration :&#10;    (x &lt;= DimensionlessTime) ? Time :&#10;/* (x &lt;= ConflictDimensionless) ? x.project(0) : */&#10;(x &lt;= AccelerationDimensionless) ? Acceleration :&#10;    (x &lt;= TimeDimensionless) ? Time :&#10;Conflict">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -83,11 +76,6 @@
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
-            </property>
-        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>

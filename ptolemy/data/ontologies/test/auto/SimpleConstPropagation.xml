@@ -7,6 +7,8 @@
     <property name="ConstPropagationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constPropagation/ConstPropagationSolverModel.xml">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;ConstantValue_false&quot;, NamedObj = &quot;.SimpleConstPropagation.TimedPlotter.useLocalTime&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.SimpleConstPropagation.TimedPlotter.input&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.SimpleConstPropagation.Minimum.channelNumber&quot;}, {Concept = &quot;ConstantValue_60.0&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide.divide&quot;}, {Concept = &quot;ConstantValue_10&quot;, NamedObj = &quot;.SimpleConstPropagation.Const.value&quot;}, {Concept = &quot;ConstantValue_30.0&quot;, NamedObj = &quot;.SimpleConstPropagation.Const3.value&quot;}, {Concept = &quot;ConstantValue_0.4285714285714&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide3.output&quot;}, {Concept = &quot;ConstantValue_70.0&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract2.plus&quot;}, {Concept = &quot;ConstantValue_70.0&quot;, NamedObj = &quot;.SimpleConstPropagation.Const7.output&quot;}, {Concept = &quot;ConstantValue_20&quot;, NamedObj = &quot;.SimpleConstPropagation.Const2.value&quot;}, {Concept = &quot;ConstantValue_60.0&quot;, NamedObj = &quot;.SimpleConstPropagation.Const6.output&quot;}, {Concept = &quot;ConstantValue_80&quot;, NamedObj = &quot;.SimpleConstPropagation.Const8.output&quot;}, {Concept = &quot;ConstantValue_60.0&quot;, NamedObj = &quot;.SimpleConstPropagation.Const6.value&quot;}, {Concept = &quot;ConstantValue_70.0&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide3.divide&quot;}, {Concept = &quot;ConstantValue_10&quot;, NamedObj = &quot;.SimpleConstPropagation.Const.output&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.SimpleConstPropagation.Minimum.input&quot;}, {Concept = &quot;ConstantValue_70.0&quot;, NamedObj = &quot;.SimpleConstPropagation.Const7.value&quot;}, {Concept = &quot;ConstantValue_20&quot;, NamedObj = &quot;.SimpleConstPropagation.Const2.output&quot;}, {Concept = &quot;ConstantValue_0.8333333333333&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide.output&quot;}, {Concept = &quot;ConstantValue_-0.0416666666667&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract3.output&quot;}, {Concept = &quot;ConstantValue_0&quot;, NamedObj = &quot;.SimpleConstPropagation.TimedPlotter.startingDataset&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract2.minus&quot;}, {Concept = &quot;ConstantValue_30&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract.plus&quot;}, {Concept = &quot;Constant&quot;, NamedObj = &quot;.SimpleConstPropagation.Minimum.minimumValue&quot;}, {Concept = &quot;ConstantValue_50&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide.multiply&quot;}, {Concept = &quot;ConstantValue_0.875&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract3.minus&quot;}, {Concept = &quot;ConstantValue_80&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide2.divide&quot;}, {Concept = &quot;ConstantValue_70.0&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide2.multiply&quot;}, {Concept = &quot;ConstantValue_false&quot;, NamedObj = &quot;.SimpleConstPropagation.TimedPlotter.automaticRescale&quot;}, {Concept = &quot;ConstantValue_70.0&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract2.output&quot;}, {Concept = &quot;ConstantValue_40&quot;, NamedObj = &quot;.SimpleConstPropagation.Const4.value&quot;}, {Concept = &quot;ConstantValue_50&quot;, NamedObj = &quot;.SimpleConstPropagation.Const5.value&quot;}, {Concept = &quot;ConstantValue_30&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract.output&quot;}, {Concept = &quot;ConstantValue_0.875&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide2.output&quot;}, {Concept = &quot;ConstantValue_0.8333333333333&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract3.plus&quot;}, {Concept = &quot;ConstantValue_30&quot;, NamedObj = &quot;.SimpleConstPropagation.MultiplyDivide3.multiply&quot;}, {Concept = &quot;ConstantValue_false&quot;, NamedObj = &quot;.SimpleConstPropagation.TimedPlotter.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;ConstantValue_30.0&quot;, NamedObj = &quot;.SimpleConstPropagation.Const3.output&quot;}, {Concept = &quot;ConstantValue_40&quot;, NamedObj = &quot;.SimpleConstPropagation.Const4.output&quot;}, {Concept = &quot;ConstantValue_50&quot;, NamedObj = &quot;.SimpleConstPropagation.Const5.output&quot;}, {Concept = &quot;ConstantValue_80&quot;, NamedObj = &quot;.SimpleConstPropagation.Const8.value&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.SimpleConstPropagation.AddSubtract.minus&quot;}, {Concept = &quot;ConstantValue_true&quot;, NamedObj = &quot;.SimpleConstPropagation.TimedPlotter.fillOnWrapup&quot;}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 90.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
@@ -36,8 +38,6 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_10">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -48,11 +48,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 150.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_10">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -62,8 +57,6 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="20">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_20">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -74,11 +67,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 215.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_20">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -88,8 +76,6 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="30.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_30.0">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -100,11 +86,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 260.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_30.0">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -114,8 +95,6 @@
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_40">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -126,11 +105,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 310.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_40">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -140,8 +114,6 @@
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="50">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_50">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -152,11 +124,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 355.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_50">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -166,8 +133,6 @@
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="60.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_60.0">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -178,11 +143,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 420.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_60.0">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -192,8 +152,6 @@
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="70.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_70.0">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -204,11 +162,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 465.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_70.0">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -218,8 +171,6 @@
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="80">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_80">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -230,11 +181,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 540.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_80">
-            </property>
-        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -245,172 +191,48 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 190.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_30">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_30">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 300.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_70.0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_70.0">
-            </property>
-        </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 385.0]">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_50">
-            </property>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_60.0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_0.8333333333333">
-            </property>
-        </port>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 500.0]">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_70.0">
-            </property>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_80">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_0.875">
-            </property>
-        </port>
     </entity>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 435.0]">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_0.8333333333333">
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_0.875">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_-0.0416666666667">
-            </property>
-        </port>
     </entity>
     <entity name="MultiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 245.0]">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_30">
-            </property>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_70.0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_0.4285714285714">
-            </property>
-        </port>
     </entity>
     <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 335.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
-        <port name="minimumValue" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
-        <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_true">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_false">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_0">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_false">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstantValue_false">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 270.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

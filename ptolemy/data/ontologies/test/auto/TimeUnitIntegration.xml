@@ -17,6 +17,8 @@
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.velocityValue&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.fillOnWrapup&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.startingDataset&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.useLocalTime&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.state&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.Const3.output&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.initialState&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.startingDataset&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.fillOnWrapup&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.Const.value&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.derivative&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.accelerationMetersSec2Value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.automaticRescale&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.startingDataset&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const4.output&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.state&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.initialState&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.accelerationMPHSecValue&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.dimensionlessValue&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.initialState&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.state&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.fillOnWrapup&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.automaticRescale&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.startingDataset&quot;}, {Concept = &quot;Acceleration_mph_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const4.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.fillOnWrapup&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.initialState&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.useLocalTime&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.initialState&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.state&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.Const.output&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator3.derivative&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.input&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.useLocalTime&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.initialState&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.useLocalTime&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.derivative&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator4.initialState&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const2.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.disconnectGraphOnAbsentValue&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator2.initialState&quot;}, {Concept = &quot;Acceleration_m_per_sec2&quot;, NamedObj = &quot;.TimeUnitIntegration.Const3.value&quot;}, {Concept = &quot;Velocity_m_per_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.Const2.value&quot;}, {Concept = &quot;Dimensionless&quot;, NamedObj = &quot;.TimeUnitIntegration.Integrator.derivative&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter3.automaticRescale&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter4.automaticRescale&quot;}, {Concept = &quot;Time_sec&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter.input&quot;}, {Concept = &quot;Position_m&quot;, NamedObj = &quot;.TimeUnitIntegration.TimedPlotter2.input&quot;}}">
+        </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
@@ -41,8 +43,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 105.0]">
-        </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
         </property>
     </property>
     <property name="TestUnitsOntologyAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="dimensionlessValue &gt;= Dimensionless">
@@ -93,8 +93,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 105.0}">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-        </property>
     </property>
     <property name="accelerationMetersSec2Value" class="ptolemy.data.expr.Parameter" value="9.8">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -113,8 +111,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 105.0]">
-        </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_m_per_sec2">
         </property>
     </property>
     <property name="TestUnitsOntologyAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMetersSec2Value &gt;= Acceleration_m_per_sec2">
@@ -150,8 +146,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 125.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_mph_per_sec">
-        </property>
     </property>
     <property name="TestUnitsOntologyAnalysis::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="accelerationMPHSecValue &gt;= Acceleration_mph_per_sec">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -176,8 +170,6 @@
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="dimensionlessValue">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -188,45 +180,24 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 175.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
-            </property>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1314, 121, 503, 450}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 205.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time_sec">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -239,31 +210,12 @@
     </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time_sec">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 205.0]">
         </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time_sec">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Time_sec">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="velocityValue">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -274,45 +226,24 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 290.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
-        </port>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={355, 548, 503, 450}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 320.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position_m">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -325,31 +256,12 @@
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position_m">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 320.0]">
         </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position_m">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position_m">
-            </property>
-        </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="accelerationMetersSec2Value">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_m_per_sec2">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -360,45 +272,24 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 405.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_m_per_sec2">
-            </property>
-        </port>
     </entity>
     <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={214, 647, 503, 450}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 440.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -411,31 +302,12 @@
     </entity>
     <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 440.0]">
         </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_m_per_sec2">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_m_per_sec">
-            </property>
-        </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="accelerationMPHSecValue">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_mph_per_sec">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -446,45 +318,24 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 520.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_mph_per_sec">
-            </property>
-        </port>
     </entity>
     <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 251, 503, 450}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 395]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 560.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_mph">
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -497,26 +348,9 @@
     </entity>
     <entity name="Integrator4" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_mph">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 560.0]">
         </property>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration_mph_per_sec">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_mph">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity_mph">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
