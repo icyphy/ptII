@@ -46,8 +46,115 @@ if {[info procs jdkCapture] == "" } then {
 }
 
 #####
-test TemplateParser-1.1 {Test processCode} {
+test TemplateParser-1.1 {Test processCode with $country once} {
     set code {new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");}
     set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
     $templateParser processCode $code
 } {new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");}
+
+#####
+test TemplateParser-1.1.2 {Test processCode on $actorSymbol(step) once} {
+    set code {$actorSymbol(step)}
+    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
+    set toplevel1_1_2 [java::new ptolemy.actor.TypedCompositeActor]
+    set ramp [java::new ptolemy.actor.lib.Ramp [java::cast ptolemy.kernel.CompositeEntity $toplevel1_1_2] MyRamp]
+    set codeGeneratorAdapter [java::new ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter $ramp]
+		       
+    $templateParser init $ramp $codeGeneratorAdapter
+    $templateParser setCodeGenerator \
+	[java::new ptolemy.cg.kernel.generic.program.ProgramCodeGenerator \
+	     $toplevel1_1_2 myCodeGenerator .j .j]
+    $templateParser processCode $code
+} {_MyRamp__step}
+
+#####
+test TemplateParser-1.1.3.1 {Test processCode with $country twice} {
+    set code {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
+    $templateParser processCode $code
+} {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+
+#####
+test TemplateParser-1.1.3.2 {Test processCode with $country three times} {
+    set code {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");
+new ptolemy.actor.TypeAttribute("$country_c_*_*_c_p_p", "inputType");}
+    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
+    $templateParser processCode $code
+} {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");
+new ptolemy.actor.TypeAttribute("$country_c_*_*_c_p_p", "inputType");}
+
+#####
+test TemplateParser-1.1.3.5 {Test processCode on $country, $actorSymbol, $country} {
+    set code {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+$actorSymbol(step)
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
+    set toplevel1_1_2 [java::new ptolemy.actor.TypedCompositeActor]
+    set ramp [java::new ptolemy.actor.lib.Ramp [java::cast ptolemy.kernel.CompositeEntity $toplevel1_1_2] MyRamp]
+    set codeGeneratorAdapter [java::new ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter $ramp]
+		       
+    $templateParser init $ramp $codeGeneratorAdapter
+    $templateParser setCodeGenerator \
+	[java::new ptolemy.cg.kernel.generic.program.ProgramCodeGenerator \
+	     $toplevel1_1_2 myCodeGenerator .j .j]
+    $templateParser processCode $code
+} {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+_MyRamp__step
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+
+#####
+test TemplateParser-1.1.4 {Test processCode on $country, ${foo}, $country} {
+    set code {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+${fooParameter}
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
+    set workspace1_1_3 [java::new ptolemy.kernel.util.Workspace]
+    set toplevel1_1_3 [java::new ptolemy.actor.TypedCompositeActor $workspace1_1_3]
+    set fooParameter [java::new ptolemy.data.expr.Parameter $toplevel1_1_3 {fooParameter}]
+    $fooParameter setExpression 42
+    set ramp [java::new ptolemy.actor.lib.Ramp [java::cast ptolemy.kernel.CompositeEntity $toplevel1_1_3] MyRamp]
+    set codeGeneratorAdapter [java::new ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter $ramp]
+		       
+    $templateParser init $ramp $codeGeneratorAdapter
+    $templateParser setCodeGenerator \
+	[java::new ptolemy.cg.kernel.generic.program.ProgramCodeGenerator \
+	     $toplevel1_1_3 myCodeGenerator .j .j]
+    $templateParser processCode $code
+} {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+42
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+
+#####
+test TemplateParser-1.1.5 {Test processCode on $country, \$, $country} {
+    set code {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+String bar = "\$foo";
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
+    set workspace1_1_3 [java::new ptolemy.kernel.util.Workspace]
+    set toplevel1_1_3 [java::new ptolemy.actor.TypedCompositeActor $workspace1_1_3]
+    set ramp [java::new ptolemy.actor.lib.Ramp [java::cast ptolemy.kernel.CompositeEntity $toplevel1_1_3] MyRamp]
+    set codeGeneratorAdapter [java::new ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter $ramp]
+		       
+    $templateParser init $ramp $codeGeneratorAdapter
+    $templateParser setCodeGenerator \
+	[java::new ptolemy.cg.kernel.generic.program.ProgramCodeGenerator \
+	     $toplevel1_1_3 myCodeGenerator .j .j]
+    $templateParser processCode $code
+} {
+new ptolemy.actor.TypeAttribute("$country_a_*_*_a_p_p", "inputType");
+String bar = "\$foo";
+new ptolemy.actor.TypeAttribute("$country_b_*_*_b_p_p", "inputType");}
+
