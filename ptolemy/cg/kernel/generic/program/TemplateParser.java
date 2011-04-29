@@ -654,7 +654,7 @@ public class TemplateParser {
      */
     final public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        System.out.println("TemplateParser: processCode(): ################ " + code);
+        //System.out.println("TemplateParser: processCode(): ################ " + code);
 
         int currentPos = _getMacroStartIndex(code, 0);
 
@@ -795,14 +795,14 @@ public class TemplateParser {
                             "Index " + (openParenIndex + 1) + " or Index "
                             + closeParenIndex + " is out of bounds in \n" + code);
                 }
-                System.out.println("TemplateParser: name before processCode(): "
-                        + name + " " + openParenIndex + " " + closeParenIndex);
+                //System.out.println("TemplateParser: name before processCode(): "
+                //        + name + " " + openParenIndex + " " + closeParenIndex);
                 name = processCode(name.trim());
 
                 //List arguments = parseArgumentList(name);
 
                 try {
-                    System.out.println("TemplateParser: about to call _replaceMacro(): " + macro + ", " + name); 
+		    // System.out.println("TemplateParser: about to call _replaceMacro(): " + macro + ", " + name); 
                     result.append(_replaceMacro(macro, name));
                 } catch (Throwable throwable) {
                     CGException.throwException(this, throwable,
