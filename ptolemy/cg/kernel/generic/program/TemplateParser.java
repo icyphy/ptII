@@ -152,7 +152,7 @@ public class TemplateParser {
      *  @see #unescapePortName(String)
      */
     public static String escapePortName(String name) {
-        return escapeName();
+        return escapeName(name);
     }
 
     /**
