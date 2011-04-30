@@ -560,15 +560,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     private String _generatePortInstantiation(String actorPortName,
             String codegenPortName, IOPort port) throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
-        codegenPortName = TemplateParser.escapePortName(codegenPortName);
+        String escapedCodegenPortName = TemplateParser.escapePortName(codegenPortName);
         PortParameter portParameter = (PortParameter)getComponent().getAttribute(actorPortName,
                 PortParameter.class);
-        StringBuffer code = new StringBuffer("    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
+        // Multiport need to have different codegenPortNames, see
+        // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml
+        StringBuffer code = new StringBuffer("    $actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(container)"
                 + ", \"" + codegenPortName + "\", "
                 + port.isInput()
                 + ", " + port.isOutput() + ");\n"
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-                + "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+                + "    $actorSymbol(" + escapedCodegenPortName + ").setTypeEquals("
                 + _typeToBaseType(((TypedIOPort)port).getType())
                 +");\n");
 
