@@ -386,7 +386,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  accessing the name or generating the name.
      */
     public String generateFireFunctionMethodName(NamedObj namedObj) throws IllegalActionException {
-        return CodeGeneratorAdapter.generateName(namedObj);
+        return TemplateParser.escapeName(CodeGeneratorAdapter.generateName(namedObj));
     }
 
     /** Generate the fire function variable name and method
@@ -1084,7 +1084,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         } catch (IllegalActionException ex) {
             callingMethod = ex.toString();
         }
-        return "/* " + callingMethod + comment + " */" + _eol;
+        // We escape the comment so that if there are $ in the comment
+        // then we don't interpret them later.
+        return "/* " + callingMethod + TemplateParser.escapeName(comment) + " */" + _eol;
     }
 
     /** Generate the body code that lies between variable declaration

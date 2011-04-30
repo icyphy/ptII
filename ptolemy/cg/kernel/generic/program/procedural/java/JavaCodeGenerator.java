@@ -402,6 +402,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (container == null) {
             results[0] = "";
             results[1] = CodeGeneratorAdapter.generateName(namedObj);
+            results[1] = TemplateParser.escapeName(results[1]);
             return results;
         }
         String fullName = namedObj.getFullName();
@@ -416,6 +417,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         int secondDot = fullName.indexOf('.', firstDot + 1);
         if (firstDot == -1) {            results[0] = "";
             results[1] = _javaKeywordSanitize(CodeGeneratorAdapter.generateName(namedObj));
+            results[1] = TemplateParser.escapeName(results[1]);
             return results;
         }
 
@@ -444,6 +446,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         //System.out.println("JCG: genVarAndMethName: " + firstDot + " " + secondDot + " " + fullName + " variableName: " + results[0] + " methodName: " + results[1]);
+
+        // If an actor name has a $ in it . . .
+        // $PTII/bin/ptcg -language java -inline false ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithDollarSignInName.xml
+        results[0] = TemplateParser.escapeName(results[0]);
+        results[1] = TemplateParser.escapeName(results[1]);
 
         return results;
     }

@@ -111,6 +111,30 @@ public class TemplateParser {
         _codeGenerator._newTypesUsed.add(typeName);
     }
 
+    /** Escape a port or actor name for use in the macro language.
+     *  The issue is that port or actor names can have certain
+     *  characters in them that cause problems with 
+     *  macro expansion.  Removing these characters is
+     *  not sufficient as the code generator sometimes
+     *  needs to refer to the corresponding port or actor.  The
+     *  solution is to replace the characters with a string
+     *  that we can then use to reverse the escape process
+     *  in {@link #unescapeName(String)}.
+     *  @param name The port or actorname, which may contain "$",
+     *  "-" and/or "*".
+     *  @return A sanitized string suitable for use with
+     *  the macro language.
+     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapter#generateName(NamedObj)
+     *  @see #unescapePortName(String)
+     */
+    public static String escapeName(String name) {
+        // FIXME:  Should this method be in this file
+        // or should it be elsewhere.
+        // See ptolemy.cg.kernel.generic.CodeGeneratorAdapter.generateName(String)
+        // for a possible bug in port names.
+        return name.replace("$", "_X_DOLLAR_X_").replace("-","_X_MINUS_X_").replace("*", "_X_STAR_X_");
+    }
+
     /** Escape a port name for use in the macro language.
      *  The issue is that port names can have certain
      *  characters in them that cause problems with 
@@ -128,11 +152,7 @@ public class TemplateParser {
      *  @see #unescapePortName(String)
      */
     public static String escapePortName(String name) {
-        // FIXME:  Should this method be in this file
-        // or should it be elsewhere.
-        // See ptolemy.cg.kernel.generic.CodeGeneratorAdapter.generateName(String)
-        // for a possible bug in port names.
-        return name.replace("$", "_X_DOLLAR_X_").replace("-","_X_MINUS_X_").replace("*", "_X_STAR_X_");
+        return escapeName();
     }
 
     /**
@@ -1123,6 +1143,21 @@ public class TemplateParser {
         _codeGenerator = codeGenerator;
     }
 
+    /** Unescape a port or actor name so that the return value
+     *  may be used to find the port in the model.   
+     *  @param name The port or actor name, which may contain "$",
+     *  "-" and/or "*".
+     *  @return A sanitized string suitable for use with
+     *  the macro language.
+     *  @see #escapePortName(String)
+     */
+    public static String unescapeName(String name) {
+        // This is probably slow, see
+        // ptolemy.util.StringUtilities.escapeForXML() for
+        // a possibly faster solution.
+        return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*");
+    }
+
     /** Unescape a port name so that the return value
      *  may be used to find the port in the model.   
      *  @param name The port name, which may contain "$",
@@ -1132,10 +1167,7 @@ public class TemplateParser {
      *  @see #escapePortName(String)
      */
     public static String unescapePortName(String name) {
-        // This is probably slow, see
-        // ptolemy.util.StringUtilities.escapeForXML() for
-        // a possibly faster solution.
-        return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*");
+        return unescapeName(name);
     }
 
     ///////////////////////////////////////////////////////////////////
