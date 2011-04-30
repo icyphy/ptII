@@ -126,6 +126,30 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         while (entityPorts.hasNext()) {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof IOPort) {
+
+                IOPort castPort = (IOPort) insidePort;
+                String name = TemplateParser.escapePortName(castPort.getName());
+                if (!castPort.isMultiport()) {
+                    code.append(_generatePortInstantiation(name, castPort.getName(), castPort));
+                } else {
+                    // Multiports.
+                    TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(name));
+
+                    code.append("    ((" + getComponent().getClass().getName()
+                            + ")$actorSymbol(actor))." + name + ".setTypeEquals("
+                            + _typeToBaseType(actorPort.getType()) + ");\n");
+
+                    int sources = actorPort.numberOfSources();
+                    for (int i = 0; i < sources; i++) {
+                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort));
+                    }
+
+                    int sinks = actorPort.numberOfSinks();
+                    for (int i = 0; i < sinks; i++) {
+                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort));
+                    }
+                }
+
                 List<TypeAttribute> typeAttributes = insidePort.attributeList(TypeAttribute.class);
                 if (typeAttributes.size() > 0) {
                     if (typeAttributes.size() > 1) {
@@ -151,34 +175,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             // Certain actors may create ports on the
                             // fly, so query the actor for its port.
 
-                            + "(TypedIOPort)((" + actorClassName + ")$actorSymbol(actor)).getPort(\"" 
+                            // + "(TypedIOPort)((" + actorClassName + ")$actorSymbol(actor)).getPort(\"" 
+                            + "(TypedIOPort)$actorSymbol(container).getPort(\"" 
                             + insidePort.getName() + "\"), \"inputType\");\n"
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
                             + "\");\n"
                             + "}\n");
-                }
-                IOPort castPort = (IOPort) insidePort;
-                String name = TemplateParser.escapePortName(castPort.getName());
-                if (!castPort.isMultiport()) {
-                    code.append(_generatePortInstantiation(name, name, castPort));
-                } else {
-                    // Multiports.
-                    TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(name));
-
-                    code.append("    ((" + getComponent().getClass().getName()
-                            + ")$actorSymbol(actor))." + name + ".setTypeEquals("
-                            + _typeToBaseType(actorPort.getType()) + ");\n");
-
-                    int sources = actorPort.numberOfSources();
-                    for (int i = 0; i < sources; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort));
-                    }
-
-                    int sinks = actorPort.numberOfSinks();
-                    for (int i = 0; i < sinks; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort));
-                    }
                 }
             }
         }
@@ -587,7 +590,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + actorPortName + ( portParameter instanceof PortParameter 
                         ? ".getPort()" : "");
             
-            code.append("    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), "
+            code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
                     + portOrParameter
                     + ");\n");
             if (port.isOutput()) {
