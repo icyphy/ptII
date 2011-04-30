@@ -648,27 +648,52 @@ public class TemplateParser {
     }
 
     /** Process the specified code, replacing macros with their values.
+     *  Macros have the possible forms:
+     *  <p>$xxx(), where are processed by {@link _replaceMacro(String, String)}
+     *  <p>${foo}, which means get the value of the parameter "foo"
+     *  <p>$country, which is ignored.
      * @param code The code to process.
      * @return The processed code.
      * @exception IllegalActionException If illegal macro names are found.
      */
     final public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        //System.out.println("TemplateParser: processCode(): ################ " + code);
 
+        int previousPos = 0;
         int currentPos = _getMacroStartIndex(code, 0);
 
         if (currentPos < 0) {
             // No "$" in the string
             return code;
         }
-
+        //System.out.println("processCode: ############ " + code);
         result.append(code.substring(0, currentPos));
+        //System.out.println("processCode: start "
+        //        + "\nresult:\n<<<" + result + "\n>>>");
+
         int closeParenIndex = -1;
         int nextPos = -1;
-
         // Loop through, looking for (
         while (currentPos < code.length()) {
+            while (currentPos > 0 
+                    && code.substring(currentPos - 1).startsWith("\"$country")) {
+                // Skip "$country
+                result.append(code.substring(currentPos, currentPos + 8));
+                currentPos += 8; // The length of "$country"
+
+                //result.append(code.substring(previousPos, currentPos));
+                previousPos = currentPos;
+                currentPos = _getMacroStartIndex(code, currentPos);
+                if (currentPos < 0) {
+                    // No "$" in the string
+                    result.append(code.substring(previousPos));
+                    //System.out.println("processCode: return $country: " + result);
+                    return result.toString();
+                }
+                result.append(code.substring(previousPos, currentPos));
+                previousPos = currentPos;
+            }
+
             if (code.charAt(currentPos) == '$'
                     && currentPos < code.length() - 1 && code.charAt(currentPos + 1) == '$') {
                 // Skip $$, which appears in ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
@@ -677,6 +702,7 @@ public class TemplateParser {
                     nextPos = code.length();
                 }
                 result.append(code.substring(currentPos, nextPos));
+                previousPos = currentPos;
                 currentPos = nextPos;
                 continue;
             }
@@ -685,22 +711,25 @@ public class TemplateParser {
             // Check for ${foo}, which is used in Parameters that are in string mode.
             int openCurlyBracketIndex = code.indexOf("{", currentPos + 1);
             if (openParenIndex == -1 && openCurlyBracketIndex == -1) {
-                try {
-                    // FIXME: A hack to look up $TMPDIR/FileWriter1Output.txt for
-                    // $PTII/bin/ptcg -language java  -inline false  $PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml
-                    StringParameter variable = new StringParameter(
-                            ((NamedObj)_component).getContainer(),
-                            ((NamedObj)_component).getContainer().uniqueName("TemporaryTemplateParser"));
-                    variable.setStringMode(true);
-                    variable.setExpression(code);
-                    variable.validate();
-                    String value = variable.stringValue();
-                    variable.setContainer(null);
-                    return value;
-                } catch (Throwable throwable) {
-                    CGException.throwException(_component, throwable,
-                            "Failed to find open paren or open curly bracket in \"" + code
-                            + "\".  Failed to create parse tree.");
+                if (_component != null) {
+                    try {
+                        // FIXME: A hack to look up $TMPDIR/FileWriter1Output.txt for
+                        // $PTII/bin/ptcg -language java  -inline false  $PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml
+                        StringParameter variable = new StringParameter(
+                                ((NamedObj)_component).getContainer(),
+                                ((NamedObj)_component).getContainer().uniqueName("TemporaryTemplateParser"));
+                        variable.setStringMode(true);
+                        variable.setExpression(code);
+                        variable.validate();
+                        String value = variable.stringValue();
+                        variable.setContainer(null);
+                        //System.out.println("processCode: return 0: " + value);
+                        return value;
+                    } catch (Throwable throwable) {
+                        CGException.throwException(_component, throwable,
+                                "Failed to find open paren or open curly bracket in \"" + code
+                                + "\".  Failed to create parse tree.");
+                    }
                 }
             }
             if (openCurlyBracketIndex != -1 
@@ -738,6 +767,7 @@ public class TemplateParser {
                     }
                 } 
 
+                previousPos = currentPos;
                 currentPos = closeCurlyBracketIndex;
                 nextPos = _getMacroStartIndex(code, closeCurlyBracketIndex + 1);
 
@@ -745,6 +775,7 @@ public class TemplateParser {
                     //currentPos is the last "$"
                     nextPos = code.length();
                 }
+                previousPos = nextPos;
                 currentPos = nextPos;
                 result.append(code.substring(closeCurlyBracketIndex + 1, nextPos));
             }
@@ -758,6 +789,7 @@ public class TemplateParser {
                     result.append(code.substring(currentPos));
                     // Running $PTII/bin/vergil $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen3.xml
                     // needs the next line
+                    //System.out.println("processCode: return 1: " + result);
                     return result.toString();
                 }
 
@@ -775,7 +807,10 @@ public class TemplateParser {
                     // FIXME: This is wrong. subcode may contain other macros
                     // to be processed.
                     // Should be result.append(processCode(subcode.substring(1)));
+                    // FIXME: Is this code ever called?  getMacroStartIndex()
+                    /// now checks for \$
                     result.append(subcode);
+                    previousPos = nextPos;
                     currentPos = nextPos;
                     continue;
                 }
@@ -802,8 +837,11 @@ public class TemplateParser {
                 //List arguments = parseArgumentList(name);
 
                 try {
-		    // System.out.println("TemplateParser: about to call _replaceMacro(): " + macro + ", " + name); 
+                    // This may call processCode() again.
+                    //System.out.println("processCode: about to call _replaceMacro(): " + macro + " " + name + "\nresult:\n<<<" + result + "\n>>>");
+
                     result.append(_replaceMacro(macro, name));
+                    //System.out.println("processCode: called _replaceMacro(): " + macro + " " + name + "\nresult:\n<<<" + result + "\n>>>");
                 } catch (Throwable throwable) {
                     CGException.throwException(this, throwable,
                             "Failed to replace the parameter \"" + name
@@ -813,6 +851,7 @@ public class TemplateParser {
 
                 result.append(code.substring(closeParenIndex + 1, nextPos));
                 //}
+                previousPos = nextPos;
                 currentPos = nextPos;
             }
         }
@@ -832,6 +871,7 @@ public class TemplateParser {
 //                 }
 //             }
 //         }
+        //System.out.println("processCode: return bottom: " + result);
         return result.toString();
     }
 
@@ -1208,7 +1248,6 @@ public class TemplateParser {
 
         } else if (macro.equals("typeFunc")) {
             return getFunctionInvocation(parameter, true);
-
         } else {
             // Try calling a method defined in the adapter first.
             try {
