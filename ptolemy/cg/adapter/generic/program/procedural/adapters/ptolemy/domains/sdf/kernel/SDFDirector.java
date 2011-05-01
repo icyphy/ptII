@@ -102,38 +102,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         // Sort by name so that we retrieve the actors from the list
         // by composite.
-        Collections.sort(actorList, new Comparator() {
-                /** Compare two NamedObjs by fullName().
-                 *  @return -1 if object1 has fewer dots in its fullName(),
-                 *  1 if object1 has more dots in its fullName(),
-                 *  0 if the objects are the same.
-                 *  If the fullName()s of both NamedObjs have the
-                 *  same number of dots, then return the String compareTo()
-                 *  of the fullName()s.
-                 */
-                public int compare(Object object1, Object object2) {
-                    String name1 = ((NamedObj)object1).getFullName();
-                    String name2 = ((NamedObj)object2).getFullName();
-
-                    int index = 0;
-                    int dots1 = 0;
-                    while ((index = name1.indexOf(".", index)) != -1) {
-                        index++;
-                        dots1++;
-                    }
-                    int dots2 = 0;
-                    while ((index = name2.indexOf('.', index)) != -1) {
-                        index++;
-                        dots2++;
-                    }
-                    if (dots1 == dots2) {
-                        return 0;
-                    } else if (dots1 < dots2) {
-                        return -1;
-                    }
-                    return 1;
-                }
-            });
+        Collections.sort(actorList, new FullNameComparator());
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
         code.append(codeGenerator.comment("SDFDirector.generateFireFunctionCode()"));
@@ -961,4 +930,45 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  the associated actor.
      */
     protected HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>>();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Compare two NamedObjs by full name.
+     */   
+    private static class FullNameComparator implements Comparator {
+
+        // Findbugs suggested that this be made static.
+
+        /** Compare two NamedObjs by fullName().
+         *  @return -1 if object1 has fewer dots in its fullName(),
+         *  1 if object1 has more dots in its fullName(),
+         *  0 if the objects are the same.
+         *  If the fullName()s of both NamedObjs have the
+         *  same number of dots, then return the String compareTo()
+         *  of the fullName()s.
+         */
+        public int compare(Object object1, Object object2) {
+            String name1 = ((NamedObj)object1).getFullName();
+            String name2 = ((NamedObj)object2).getFullName();
+
+            int index = 0;
+            int dots1 = 0;
+            while ((index = name1.indexOf(".", index)) != -1) {
+                index++;
+                dots1++;
+            }
+            int dots2 = 0;
+            while ((index = name2.indexOf('.', index)) != -1) {
+                index++;
+                dots2++;
+            }
+            if (dots1 == dots2) {
+                return 0;
+            } else if (dots1 < dots2) {
+                return -1;
+            }
+            return 1;
+        }
+    }
 }

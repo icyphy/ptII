@@ -792,16 +792,16 @@ public class SDFDirector
                 result.append("[" + channelAndOffset[0] + "]");
             }
 
-            if (port.getContainer() instanceof CompositeActor) {
+            //if (port.getContainer() instanceof CompositeActor) {
                 //                SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)port.getContainer()).getDirector());
                 //                result.append(directorAdapter._ports.generateOffset(port,
                 //                        channelAndOffset[1], channelNumber, isWrite));
                 result.append(_ports.generateOffset(port, channelAndOffset[1],
                         channelNumber, isWrite));
-            } else {
-                result.append(_ports.generateOffset(port, channelAndOffset[1],
-                        channelNumber, isWrite));
-            }
+                //} else {
+                //result.append(_ports.generateOffset(port, channelAndOffset[1],
+                //        channelNumber, isWrite));
+                //}
             //            result.append(_ports.generateOffset(port, channelAndOffset[1],
             //                    channelNumber, isWrite));
 

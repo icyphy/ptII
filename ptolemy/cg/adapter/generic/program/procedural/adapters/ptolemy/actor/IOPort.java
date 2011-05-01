@@ -142,8 +142,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                         }
                         //return "";
                     }
-                } catch (Exception ex) {
-                    throw new IllegalActionException(getComponent(), ex,
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(getComponent(), throwable,
                             " Failed to generate code for receiver " 
                             + receivers[channelIndex][0] + " on channel "
                             + channelIndex);

@@ -459,7 +459,7 @@ public class TypedCompositeActor extends
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
                 String reference = getReference(inputPort.getName(), false);
-                if (reference != "") {
+                if (!reference.equals("")) {
                     tempCode.append(reference);
                 } else {
                     // Look for the reference in the exeuctive director.  Needed for

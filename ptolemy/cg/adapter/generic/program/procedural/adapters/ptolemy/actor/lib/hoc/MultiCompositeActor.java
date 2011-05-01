@@ -79,7 +79,7 @@ public class MultiCompositeActor extends TypedCompositeActor {
 //             Director director = refinement.getDirector();
 //             NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(director);
 //             code.append(refinementAdapter.generateVariableDeclaration());
-            NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(refinement);
+            //NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(refinement);
             //code.append(refinementAdapter.generateVariableDeclaration());
         }
 //         code.append(((NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(
@@ -91,7 +91,7 @@ public class MultiCompositeActor extends TypedCompositeActor {
          while (ports.hasNext()) {
              ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) ports.next();
              code.append(getCodeGenerator().comment("Case Variable Declarations for port " + port.getFullName()));
-             NamedProgramCodeGeneratorAdapter portAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(port);
+             //NamedProgramCodeGeneratorAdapter portAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(port);
              _portVariableDeclaration(code, port);
          }
         return code.toString();

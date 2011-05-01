@@ -1043,8 +1043,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
         if (_executeCommands != null) {
             _executeCommands.stdout("Writing "
-                    + (codeFileName == null ? "<codeFileName was null?> "
-                            : codeFileName)
+                    // Findbugs says that codeFileName cannot be null,
+                    // so no need to check.
+                    + codeFileName
                     + " in "
                     + (codeDirectory == null ? "<codeDirectory was null?>"
                             : codeDirectory.getBaseDirectory()) + " ("
@@ -1194,7 +1195,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                             this, moml);
                     model.requestChange(request);
                 }
-                attribute = getAttribute(name);
             }
 
             if (model instanceof CompositeActor) {

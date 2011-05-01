@@ -497,7 +497,7 @@ public class StaticSchedulingDirector extends Director {
                 try {
                     channelNumber = (Integer.valueOf(channelAndOffset[0]))
                             .intValue();
-                } catch (Exception ex) {
+                } catch (NumberFormatException ex) {
                     isChannelNumberInt = false;
                 }
             } else {
@@ -555,7 +555,7 @@ public class StaticSchedulingDirector extends Director {
             for (int i = 0; i < sinkChannels.size(); i++) {
                 ProgramCodeGeneratorAdapter.Channel channel = sinkChannels
                         .get(i);
-                IOPort sinkPort = channel.port;
+                TypedIOPort sinkPort = (TypedIOPort)channel.port;
                 int sinkChannelNumber = channel.channelNumber;
 
                 // Type convert.
@@ -600,7 +600,7 @@ public class StaticSchedulingDirector extends Director {
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append(generatePortName((TypedIOPort)sinkPort));
+                    result.append(generatePortName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
@@ -816,14 +816,14 @@ public class StaticSchedulingDirector extends Director {
      * @return The expression that represents the offset for a channel determined
      *  dynamically in the generated code.
      */
-    private /*static*/ String _generateChannelOffset(IOPort port, boolean isWrite,
+    private /*static*/ String _generateChannelOffset(TypedIOPort port, boolean isWrite,
             String channelString) throws IllegalActionException {
         // By default, return the channel offset for the first channel.
         if (channelString.equals("")) {
             channelString = "0";
         }
 
-        String channelOffset = generatePortName((TypedIOPort)port)
+        String channelOffset = generatePortName(port)
             + ((isWrite) ? "_writeOffset" : "_readOffset")
             + "[" + channelString + "]";
 

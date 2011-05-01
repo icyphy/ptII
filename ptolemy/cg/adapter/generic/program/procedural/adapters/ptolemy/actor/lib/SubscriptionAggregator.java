@@ -74,7 +74,7 @@ public class SubscriptionAggregator extends NamedProgramCodeGeneratorAdapter {
         if (actor.input.isOutsideConnected()) {
             codeStream.appendCodeBlock("fireBlock0", false);
             ArrayList<String> args = new ArrayList<String>();
-            args.add(Integer.toString(0));
+            args.add("0");
             for (int i = 1; i < actor.input.getWidth(); i++) {
                 args.set(0, Integer.toString(i));
                 if (actor.operation.stringValue().equals("add")) {

@@ -99,7 +99,7 @@ public class VectorDisassembler extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args2 = new ArrayList<String>();
         Type type = actor.output.getType();
         if (getCodeGenerator().isPrimitive(type)) {
-            args2.add(getCodeGenerator().codeGenType(type).toString());
+            args2.add(getCodeGenerator().codeGenType(type));
             fireCode.append(getTemplateParser().generateBlockCode("fireBlock2", args2));
         } else {
             fireCode.append(getTemplateParser().generateBlockCode("fireBlock2", args2));

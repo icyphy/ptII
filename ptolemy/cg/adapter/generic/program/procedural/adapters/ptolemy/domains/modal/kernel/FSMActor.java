@@ -496,11 +496,11 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 // controller for an instance of MultirateFSMDirector.
 
                 Director director = fsmActor.getExecutiveDirector();
-                if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
+                //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
                     //         MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     //        directorHelper._updateConfigurationNumber(codeBuffer,
                     //              destinationState);
-                }
+                //}
                 codeBuffer.append("} ");
             }
 
@@ -525,11 +525,11 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 // MultirateFSMDirector.
 
                 Director director = fsmActor.getExecutiveDirector();
-                if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
+                //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
                     //     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     //   directorHelper
                     //         ._updateConfigurationNumber(codeBuffer, state);
-                }
+                //}
 
                 if (transitionCount > 0) {
                     codeBuffer.append("} " + _eol); // end of if statement

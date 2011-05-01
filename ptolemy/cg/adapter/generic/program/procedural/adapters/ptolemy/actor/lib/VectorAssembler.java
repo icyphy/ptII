@@ -72,7 +72,7 @@ public class VectorAssembler extends NamedProgramCodeGeneratorAdapter {
 
         StringBuffer fireCode = new StringBuffer();
         ArrayList<String> args = new ArrayList<String>();
-        args.add(Integer.toString(0));
+        args.add("0");
 
         Type type = actor.input.getType();
         if (getCodeGenerator().isPrimitive(type)) {

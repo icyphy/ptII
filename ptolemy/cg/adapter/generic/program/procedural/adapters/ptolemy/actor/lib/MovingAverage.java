@@ -74,7 +74,7 @@ public class MovingAverage extends NamedProgramCodeGeneratorAdapter {
 
         Type type = actor.output.getType();
         if (getCodeGenerator().isPrimitive(type)) {
-            args.add(targetType(type).toString());
+            args.add(targetType(type));
             codeStream.appendCodeBlock("CommonPreinitBlock", args);
         } else {
             throw new IllegalActionException("Non-primitive types " + type
