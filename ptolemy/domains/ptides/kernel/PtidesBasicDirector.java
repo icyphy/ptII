@@ -2318,7 +2318,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  information
      *  is used to calculate the absolute deadline of the produced pure event.
      *  @param eventsToProcess The list of events to be processed.
-     *  @exception IllegalActionException If absolute deadline of an event,
+     *  @throws IllegalActionException If absolute deadline of an event,
      *  finite dependent ports of a port, or dependency between two ports
      *  cannot be evaluated.
      */
@@ -2808,6 +2808,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  does not use deadline to perform scheduling, thus this method
      *  is not used. Instead it is a placeholder for subclasses to override.
      *  @param actor The destination actor of the pure event.
+     *  @return null.
      */
     protected Time _absoluteDeadlineForPureEvent(Actor actor) {
         return null;
