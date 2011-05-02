@@ -349,7 +349,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  to a Composite Actor.  This method is called when the firing
      *  code of each actor is not inlined.
      *
-     *  @parameter className The name of the class to include in the 
+     *  @param className The name of the class to include in the 
      *  initial code.
      *  @return In this base class, return the empty string.  Derived
      *  classes, such as the JavaCodeGenerator could return the
@@ -1360,13 +1360,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
          */
         //if (containsCode(wrapupCode)) {
-        // FIXME: The wrapup code can span multiple lines, so
-        // our first attempt will not work.
-        //String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
-        //code.append(splitWrapupCode[0]);
+        String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
+        code.append(splitWrapupCode[0]);
         code.append(wrapupEntryCode);
-        //code.append(splitWrapupCode[1]);
-        code.append(wrapupCode);
+        code.append(splitWrapupCode[1]);
+        //code.append(wrapupCode);
         code.append(wrapupExitCode);
         //}
 
