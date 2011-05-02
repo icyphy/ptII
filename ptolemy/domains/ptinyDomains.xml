@@ -18,8 +18,10 @@
             <input source="ptolemy/domains/ddf/lib/ddfentities.xml"/>	 
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
+            <input source="ptolemy/domains/ptides/lib/ptidesentities.xml"/>
             <input source="ptolemy/domains/rendezvous/lib/rendezvousentities.xml"/>
     	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
+    	    
 	    <!-- Do not include pthalesentities.xml here, this file is used by
                  ptiny, which includes only a subset of domains -->
             <!-- input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/-->

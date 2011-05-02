@@ -1,14 +1,42 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ptides" class="ptolemy.moml.EntityLibrary">
+<entity name="Ptides" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
 <doc>Ptides actors</doc>
 
-<property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter"/>
-<property name="GPIOA" class="ptolemy.domains.ptides.lib.targets.luminary.GPIOA_Transmitter"/>
+<!--property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter"/>
+<property name="GPIOA" class="ptolemy.domains.ptides.lib.targets.luminary.GPIOA_Transmitter"/-->
+
+<entity name="AbsoluteDelay" class="ptolemy.domains.ptides.lib.AbsoluteDelay">
+</entity>
+
+<entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
+</entity>
+
+<entity name="MasterClock" class="ptolemy.domains.ptides.lib.MasterClock">
+</entity>
+
+<entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
+</entity>
+
+<entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
+</entity>
+<entity name="RealisticSlaveClock" class="ptolemy.domains.ptides.lib.RealisticSlaveClock">
+</entity>
+<entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
+</entity>
+<entity name="SlaveClock" class="ptolemy.domains.ptides.lib.SlaveClock">
+</entity>
+
+<entity name="VariableDelayCounter" class="ptolemy.domains.ptides.lib.VariableDelayCounter">
+</entity>
+
+<entity name="ExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.ExecutionTimeMonitor">
+</entity>
+
 
       </group>
     ?>
