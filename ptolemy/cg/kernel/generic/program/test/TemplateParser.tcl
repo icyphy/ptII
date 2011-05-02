@@ -182,22 +182,5 @@ return functionTable[(int)input.type][FUNC_multiply](input, null);
 }
 }
 
-#####
-test TemplateParser-3.1 {Test processCode on a method call with $country} {
-    set code {
-_inner_Foo_433Test2WidthsSetNo999_Elvis_Module.$country_Beta_delta_Othello_50_64_Uncle_Popeye_subscriber();
-    }
-    set templateParser [java::new ptolemy.cg.kernel.generic.program.TemplateParser]
-    set workspace1_1_3 [java::new ptolemy.kernel.util.Workspace]
-    set toplevel1_1_3 [java::new ptolemy.actor.TypedCompositeActor $workspace1_1_3]
-    set ramp [java::new ptolemy.actor.lib.Ramp [java::cast ptolemy.kernel.CompositeEntity $toplevel1_1_3] MyRamp]
-    set codeGeneratorAdapter [java::new ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter $ramp]
-		       
-    $templateParser init $ramp $codeGeneratorAdapter
-    $templateParser setCodeGenerator \
-	[java::new ptolemy.cg.kernel.generic.program.ProgramCodeGenerator \
-	     $toplevel1_1_3 myCodeGenerator .j .j]
-    $templateParser processCode $code
-} {}
 
 
