@@ -40,6 +40,7 @@ import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////////
 ////GiottoReceiver
@@ -134,18 +135,25 @@ public class GiottoReceiver extends Receiver {
             forComposite = false;
         }
         String result = null;
-        try {
-            result = _getDirectorForReceiver().getReference(
-                    (TypedIOPort) sourcePort,
-                    new String[] { Integer.toString(channel), offset },
-                    forComposite, true, containingActorAdapter)
+        if (!(sourcePort instanceof TypedIOPort)) {
+            throw new InternalErrorException(sourcePort, null,
+                    "Could not cast " + sourcePort.getFullName()
+                    + " to a TypedIOPort.");
+        } else {
+            TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
+            try {
+                result = _getDirectorForReceiver().getReference(
+                        (TypedIOPort) sourcePort,
+                        new String[] { Integer.toString(channel), offset },
+                        forComposite, true, containingActorAdapter)
                     + "=" + token + ";" + _eol;
-        } catch (Exception ex) {
-            result = _getExecutiveDirectorForReceiver().getReference(
-                    (TypedIOPort) sourcePort,
-                    new String[] { Integer.toString(channel), offset },
-                    forComposite, true, containingActorAdapter)
+            } catch (Throwable throwable) {
+                result = _getExecutiveDirectorForReceiver().getReference(
+                        (TypedIOPort) sourcePort,
+                        new String[] { Integer.toString(channel), offset },
+                        forComposite, true, containingActorAdapter)
                     + "=" + token + ";" + _eol;
+            }
         }
         return result;
 

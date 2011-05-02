@@ -114,6 +114,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @see #getCodeGenerator()
      */
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
+        // FIXME: FindBugs warns that this is an unconfirmed cast.
         _codeGenerator = (ProgramCodeGenerator) codeGenerator;
     }
 

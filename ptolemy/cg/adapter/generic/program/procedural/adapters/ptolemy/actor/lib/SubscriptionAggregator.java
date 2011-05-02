@@ -111,7 +111,7 @@ public class SubscriptionAggregator extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args = new ArrayList<String>();
 
         Type type = actor.output.getType();
-        args.add(targetType(type).toString());
+        args.add(targetType(type));
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol

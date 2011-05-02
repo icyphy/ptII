@@ -590,8 +590,8 @@ public class CodeStream {
             codeBlockArgs.add(Integer.toString(3));
             code.appendCodeBlock("initBlock", codeBlockArgs, false);
             System.out.println(code);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
     }
 

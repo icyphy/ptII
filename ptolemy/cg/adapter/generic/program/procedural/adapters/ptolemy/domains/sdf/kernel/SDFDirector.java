@@ -605,18 +605,24 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
             // We are not certain that attribute is parameter.
-            Type elementType = ((ArrayType) ((Parameter) attribute).getType())
+            if (!(attribute instanceof Parameter)) {
+                throw new InternalErrorException(attribute, null,
+                        "The attribute " + attribute.getFullName()
+                        + " is not a Parameter.");
+            } else {
+                Type elementType = ((ArrayType) ((Parameter) attribute).getType())
                     .getElementType();
 
-            result.insert(0, "Array_get(");
-            if (getCodeGenerator().isPrimitive(elementType)) {
-                // Generate type specific Array_get(). e.g. IntArray_get().
-                result.insert(0, "/*CGH77*/"
-                        + getCodeGenerator().codeGenType(elementType));
-            }
-            result.insert(0, "/*CGH77*/");
+                result.insert(0, "Array_get(");
+                if (getCodeGenerator().isPrimitive(elementType)) {
+                    // Generate type specific Array_get(). e.g. IntArray_get().
+                    result.insert(0, "/*CGH77*/"
+                            + getCodeGenerator().codeGenType(elementType));
+                }
+                result.insert(0, "/*CGH77*/");
 
-            result.append(" ," + channelAndOffset[1] + ")");
+                result.append(" ," + channelAndOffset[1] + ")");
+            }
         }
         return result.toString();
     }

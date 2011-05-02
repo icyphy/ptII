@@ -109,13 +109,7 @@ public class ModalController
 
         // generate code for preemptive transition
         code.append(_eol + "/* Preemptive Transition */" + _eol + _eol);
-        controllerHelper.generateTransitionCode(code,
-                new TransitionRetriever() {
-                    public Iterator retrieveTransitions(State state) {
-                        return state.preemptiveTransitionList().iterator();
-                    }
-                });
-
+        controllerHelper.generateTransitionCode(code, new PreemptiveTransitions());
         code.append(_eol);
 
         // check to see if a preemptive transition is taken
@@ -129,13 +123,7 @@ public class ModalController
         // generate code for non-preemptive transition
         code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
         // generateTransitionCode(code);
-        controllerHelper.generateTransitionCode(code,
-                new TransitionRetriever() {
-                    public Iterator retrieveTransitions(State state) {
-                        return state.nonpreemptiveTransitionList().iterator();
-                    }
-                });
-
+        controllerHelper.generateTransitionCode(code, new NonPreemptiveTransitions());
         code.append("}" + _eol);
         code.append(_eol + "/* Transfer tokens to the outside */" + _eol);
         List<IOPort> outputPorts = _myController.outputPortList();
@@ -528,6 +516,30 @@ public class ModalController
             }
         }
         return code.toString();
+    }
+
+    /** Retrieve the nonpreemtive transitions. */
+    private static class NonPreemptiveTransitions implements TransitionRetriever {
+        // Findbugs wants this to be static.
+        /** Retrieve the nonpreemtive transitions.
+         *  @param state The state
+         *  @return An iterator that refers to the nonpreemptive transitions.
+         */
+        public Iterator retrieveTransitions(State state) {
+            return state.nonpreemptiveTransitionList().iterator();
+        }
+    }
+
+    /** Retrieve the nonpreemtive transitions. */
+    private static class PreemptiveTransitions implements TransitionRetriever {
+        // Findbugs wants this to be static.
+        /** Retrieve the prepemtive transitions.
+         *  @param state The state
+         *  @return An iterator that refers to the preemptive transitions.
+         */
+        public Iterator retrieveTransitions(State state) {
+            return state.preemptiveTransitionList().iterator();
+        }
     }
 
     static {

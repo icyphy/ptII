@@ -637,7 +637,7 @@ public class SDFDirector
                 try {
                     channelNumber = (Integer.valueOf(channelAndOffset[0]))
                             .intValue();
-                } catch (Exception ex) {
+                } catch (NumberFormatException ex) {
                     isChannelNumberInt = false;
                 }
             } else {

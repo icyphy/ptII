@@ -606,36 +606,40 @@ public class SDFDirector
         }
 
         if (!channelAndOffset[1].equals("")) {
-            // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
-            // We are not certain that attribute is parameter.
-            Type elementType = ((ArrayType) ((Parameter) attribute).getType())
+            if (!(attribute instanceof Parameter)) {
+                throw new InternalErrorException(attribute, null,
+                        "Attribute " + attribute.getFullName()
+                        + " is not a Parameter.");
+            } else {
+                Type elementType = ((ArrayType) ((Parameter) attribute).getType())
                     .getElementType();
 
-            //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "("
-                    + getCodeGenerator().codeGenType(elementType).replace(
-                            "Array", "Token").replace("Matrix", "Token")
-                    + ")(/*JCGH44*/Array_get(");
-            if (getCodeGenerator().isPrimitive(elementType)) {
-                result.insert(0, "(");
-            }
+                //result.append("[" + channelAndOffset[1] + "]");
+                result.insert(0, "("
+                        + getCodeGenerator().codeGenType(elementType).replace(
+                                "Array", "Token").replace("Matrix", "Token")
+                        + ")(/*JCGH44*/Array_get(");
+                if (getCodeGenerator().isPrimitive(elementType)) {
+                    result.insert(0, "(");
+                }
 
-            result.append(" ," + channelAndOffset[1] + ")");
+                result.append(" ," + channelAndOffset[1] + ")");
 
-            if (getCodeGenerator().isPrimitive(elementType)) {
-                String cgType = getCodeGenerator().codeGenType(elementType)
+                if (getCodeGenerator().isPrimitive(elementType)) {
+                    String cgType = getCodeGenerator().codeGenType(elementType)
                         .toLowerCase();
-                if (cgType.equals("integer")) {
-                    cgType = "int";
+                    if (cgType.equals("integer")) {
+                        cgType = "int";
+                    }
+                    String operator = "Value()";
+                    if (cgType.equals("string")) {
+                        cgType = "";
+                        operator = "toString()";
+                    }
+                    result.append(".payload/*jcgh2*/))." + cgType + operator);
+                } else {
+                    result.append(")");
                 }
-                String operator = "Value()";
-                if (cgType.equals("string")) {
-                    cgType = "";
-                    operator = "toString()";
-                }
-                result.append(".payload/*jcgh2*/))." + cgType + operator);
-            } else {
-                result.append(")");
             }
         }
         return result.toString();

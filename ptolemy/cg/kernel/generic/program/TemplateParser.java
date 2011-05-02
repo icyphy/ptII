@@ -711,7 +711,7 @@ public class TemplateParser {
                     return result.toString();
                 }
                 result.append(code.substring(previousPos, currentPos));
-                previousPos = currentPos;
+                //previousPos = currentPos;
             }
 
             if (code.charAt(currentPos) == '$'
@@ -722,7 +722,7 @@ public class TemplateParser {
                     nextPos = code.length();
                 }
                 result.append(code.substring(currentPos, nextPos));
-                previousPos = currentPos;
+                //previousPos = currentPos;
                 currentPos = nextPos;
                 continue;
             }
@@ -787,15 +787,15 @@ public class TemplateParser {
                     }
                 } 
 
-                previousPos = currentPos;
-                currentPos = closeCurlyBracketIndex;
+                //previousPos = currentPos;
+                //currentPos = closeCurlyBracketIndex;
                 nextPos = _getMacroStartIndex(code, closeCurlyBracketIndex + 1);
 
                 if (nextPos < 0) {
                     //currentPos is the last "$"
                     nextPos = code.length();
                 }
-                previousPos = nextPos;
+                //previousPos = nextPos;
                 currentPos = nextPos;
                 result.append(code.substring(closeCurlyBracketIndex + 1, nextPos));
             }
@@ -830,7 +830,7 @@ public class TemplateParser {
                     // FIXME: Is this code ever called?  getMacroStartIndex()
                     /// now checks for \$
                     result.append(subcode);
-                    previousPos = nextPos;
+                    //previousPos = nextPos;
                     currentPos = nextPos;
                     continue;
                 }
@@ -871,7 +871,7 @@ public class TemplateParser {
 
                 result.append(code.substring(closeParenIndex + 1, nextPos));
                 //}
-                previousPos = nextPos;
+                //previousPos = nextPos;
                 currentPos = nextPos;
             }
         }
@@ -1301,7 +1301,7 @@ public class TemplateParser {
                         new Class[] { List.class });
                 checker = userMacro.getMethod("checkArguments",
                         new Class[] { List.class });
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 // Don't print out error, since this is probably not an user macro.
                 return null;
             }
@@ -1312,8 +1312,8 @@ public class TemplateParser {
                                 new Object[] { parseList(parameter) });
                 return (String) handler.invoke(userMacro,
                         new Object[] { parseList(parameter) });
-            } catch (Exception ex) {
-                CGException.throwException(_component, ex,
+            } catch (Throwable throwable) {
+                CGException.throwException(_component, throwable,
                         "Failed to invoke user macro ($" + macro + ").");
             }
         }

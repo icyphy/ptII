@@ -76,7 +76,7 @@ public class VectorAssembler extends NamedProgramCodeGeneratorAdapter {
 
         Type type = actor.input.getType();
         if (getCodeGenerator().isPrimitive(type)) {
-            args.add(getCodeGenerator().codeGenType(type).toString());
+            args.add(getCodeGenerator().codeGenType(type));
         }
 
         for (int i = 0; i < actor.input.getWidth(); i++) {

@@ -1510,11 +1510,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                     NamedProgramCodeGeneratorAdapter
                     .generateName(getContainer()) + suffix,
                     code);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore
             System.out.println("Warning: Failed to split variable declaration: "
-                    + ex);
-            ex.printStackTrace();
+                    + throwable);
+            throwable.printStackTrace();
             results.add("");
             results.add(code);
         }
@@ -1585,10 +1585,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                     ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
                     prefix + NamedProgramCodeGeneratorAdapter
                             .generateName(getContainer()), code);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore
-            System.out.println("Warning: Failed to split code: " + ex);
-            ex.printStackTrace();
+            System.out.println("Warning: Failed to split code: " + throwable);
+            throwable.printStackTrace();
             results = new String[] { "", code };
         }
         return results;

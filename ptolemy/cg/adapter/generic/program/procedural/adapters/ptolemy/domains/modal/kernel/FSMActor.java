@@ -110,11 +110,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             }
         }
 
-        generateTransitionCode(code, new TransitionRetriever() {
-            public Iterator retrieveTransitions(State state) {
-                return state.outgoingPort.linkedRelationList().iterator();
-            }
-        });
+        generateTransitionCode(code, new OutgoingRelations());
         return processCode(code.toString());
     }
 
@@ -495,7 +491,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 // only when this FSMActor is used as a modal
                 // controller for an instance of MultirateFSMDirector.
 
-                Director director = fsmActor.getExecutiveDirector();
+                //Director director = fsmActor.getExecutiveDirector();
                 //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
                     //         MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     //        directorHelper._updateConfigurationNumber(codeBuffer,
@@ -524,7 +520,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 // modal controller for an instance of
                 // MultirateFSMDirector.
 
-                Director director = fsmActor.getExecutiveDirector();
+                //Director director = fsmActor.getExecutiveDirector();
                 //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
                     //     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     //   directorHelper
@@ -753,6 +749,13 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         public Set identifierSet() throws IllegalActionException {
             return ((ptolemy.domains.modal.kernel.FSMActor) getComponent())
                     .getPortScope().identifierSet();
+        }
+    }
+
+    private static class OutgoingRelations implements TransitionRetriever {
+        // Findbugs wants this to be static.
+        public Iterator retrieveTransitions(State state) {
+            return state.outgoingPort.linkedRelationList().iterator();
         }
     }
 }

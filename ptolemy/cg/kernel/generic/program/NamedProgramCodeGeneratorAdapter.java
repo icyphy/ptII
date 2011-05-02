@@ -818,7 +818,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                         .getDirector();
                 Director directorAdapter = (Director) getAdapter(director);
                 return directorAdapter.getReference(name, isWrite, this);
-            } catch (Exception ex) {
+            } catch (IllegalActionException ex) {
                 //If we can't find it with the local director, try the executive one. 
                 ptolemy.actor.Director director = ((Actor) _component)
                         .getExecutiveDirector();
