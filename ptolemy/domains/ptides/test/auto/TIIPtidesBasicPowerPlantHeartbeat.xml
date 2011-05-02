@@ -158,14 +158,14 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="port_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <entity name="MissDetector" class="ptolemy.domains.modal.modal.ModalModel">

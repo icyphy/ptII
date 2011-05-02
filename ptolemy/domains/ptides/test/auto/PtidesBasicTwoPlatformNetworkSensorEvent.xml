@@ -57,7 +57,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 115.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
         <port name="actuator" class="ptolemy.actor.TypedIOPort">
@@ -100,7 +100,7 @@
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
@@ -229,7 +229,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 160.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
         <port name="networkOut" class="ptolemy.actor.TypedIOPort">

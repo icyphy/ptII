@@ -66,7 +66,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.domains.ptides.lib.ExecutionTimeListener;
 import ptolemy.domains.ptides.lib.ExecutionTimeListener.ExecutionEventType;
@@ -239,7 +238,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  real time delays (see paper reference above)
  *  at sensors and network inputs. If an input port is connected to a
  *  SensorHandler, the port is considered a sensor port, and it
- *  could be annotated with parameter <i>realTimeDelay</i>, which is of
+ *  could be annotated with parameter <i>deviceDelay</i>, which is of
  *  type double. If an input port is
  *  connected to a NetworkReceiver, the port is considered a network
  *  port, and could be annotated with <i>networkDelay</i> and
@@ -267,14 +266,14 @@ import ptolemy.moml.MoMLChangeRequest;
  *  parameters. The <i>networkDelay</i> parameter is used to characterize the
  *  amount of simulated platform physical time
  *  delay experience by a packet, between when the packet first leaves the
- *  source platform, and when the packet arrives at the destination platform. This
- *  delay should be modeled as a part of the Ptides model, in the enclosing
+ *  source platform, and when the packet arrives at the destination platform.
+ *  This delay should be modeled in the enclosing
  *  DE director, while the maximum bound of this delay needs to be annotated
  *  as <i>networkDelay</i> at the input port of the destination platform. If it
  *  is not properly annotated, safe-to-process analysis of the Ptides platform
  *  could produce false positive results. On the other hand, the
  *  <i>networkDriverDelay</i>
- *  specifies the amount of execution time it takes for a packet to be
+ *  specifies the amount of physical time it takes for a packet to be
  *  consumed and an event produced in the destination platform. Note, the
  *  <i>d_o</i> parameter for network inputs is calculated by summing 
  *  <i>networkDelay</i> and <i>networkDriverDelay</i>.</p>
@@ -282,8 +281,8 @@ import ptolemy.moml.MoMLChangeRequest;
  *  <p> Like input ports, output ports of the composite actor governed by the
  *  Ptides director can also be annotated. By default, the director checks
  *  whether an output event's timestamp is smaller or equal to the simulated
- *  platform physical time of when this event is first produced. If the check fails,
- *  a deadline miss is implied, and
+ *  platform physical time of when this event is first produced. If the check
+ *  fails, a deadline miss is implied, and
  *  the director throws an exception. If the check passes, the director
  *  transfers this event to the outside of the platform at physical time equal
  *  to the timestamp of the output event. However, if the output port is
@@ -1034,7 +1033,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // If the start port is a network port, the delay we start with is the
                 // network delay + platform time synchronization error.
                 // Otherwise the port is a sensor port, and the delay
-                // we start with is the realTimeDelay.
+                // we start with is the deviceDelay.
                 Double start = null;
                 if (_isNetworkPort(inputPort)) {
                     start = _getNetworkTotalDelay(inputPort);
@@ -1047,7 +1046,7 @@ public class PtidesBasicDirector extends DEDirector {
                         start = getAssumedSynchronizationErrorBound();
                     }
                 } else {
-                    start = _getRealTimeDelay(inputPort);
+                    start = _getDeviceDelay(inputPort);
                 }
                 if (start == null) {
                     start = 0.0;
@@ -1174,12 +1173,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  </p><p>
      *  If an input port is a network port (annotated networkPort), then it 
      *  should always be connected to a NetworkReceiver. Also, it should not
-     *  have a realTimeDelay attribute.
+     *  have a deviceDelay attribute.
      *  </p>
      *  @exception IllegalActionException If sensor ports are connected to
      *  NetworkReceiver or have a networkDelay attribute; Or if a
      *  network port is not connected to a NetworkReceiver, or it has a
-     *  realTimeDelay attribute.
+     *  deviceDelay attribute.
      */
     protected void _checkSensorActuatorNetworkConsistency()
             throws IllegalActionException {
@@ -2493,7 +2492,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** For all events in the sensorEventQueue, transfer input events that are
      *  ready. For all events that are currently sitting at the input port, if
-     *  the realTimeDelay is 0.0, then transfer them into the platform,
+     *  the deviceDelay is 0.0, then transfer them into the platform,
      *  otherwise move them into the sensorEventQueue and call fireAt() of the
      *  executive director. In either case, if the input port is a networkPort,
      *  we make sure the timestamp of the data token transmitted is set to the
@@ -2518,16 +2517,6 @@ public class PtidesBasicDirector extends DEDirector {
             throw new IllegalActionException(this, port,
                     "Attempted to transferInputs on a port is not an opaque"
                             + "input port.");
-        }
-
-        // FIXME: This is more or less of a hack. If a modal model is used, then
-        // _transferInputs/_transferOutputs methods are used. However we do not
-        // want the input/output ports of modal models to have the same kind of
-        // behavior as sensor and actuator ports. Thus if they are
-        // RefinementPorts of modal models, we simply use the methods of the 
-        // super class.
-        if (port instanceof RefinementPort) {
-            return super._transferInputs(port);
         }
 
         boolean result = false;
@@ -2594,7 +2583,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         Double inputDelay = _getNetworkDriverDelay(port);
         if (inputDelay == null) {
-            inputDelay = _getRealTimeDelay(port);
+            inputDelay = _getDeviceDelay(port);
         }
         if (inputDelay == null) {
             inputDelay = 0.0;
@@ -2638,9 +2627,9 @@ public class PtidesBasicDirector extends DEDirector {
 
                             // Wait until oracle physical time to transfer
                             // the token into the platform
-                            // FIXME: this looks weird, should be realTimeDelay
+                            // FIXME: this looks weird, should be deviceDelay
                             // be the # of clock cycles? What does it mean
-                            // that the realTimeDelay is in a notion of time?
+                            // that the deviceDelay is in a notion of time?
                             // What does this time mean?
                             _fireAtPlatformTime(waitUntilTime,
                                     executionTimeClock);
@@ -2656,14 +2645,14 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Override the _transferOutputs() function.
-     *  First, for tokens that are stored in the actuator event queue and
+     *  First, for tokens that are stored in the actuator event queue,
      *  send them to the outside of the platform if physical time has arrived.
      *  Second, compare current model time with simulated physical time.
-     *  if physical time is smaller than current model time, then deadline
+     *  If physical time is smaller than current model time, then deadline
      *  has been missed. Throw an exception unless the port is annotated
-     *  with ignoreDeadline. If deadline has been missed and ignoreDeadline
+     *  with ignoreDeadline. If the deadline has been missed and ignoreDeadline
      *  is true, or if the current model time is equal to the physical time,
-     *  or if the port is annotated with transferImmediate, we send
+     *  or if the port is annotated with transferImmediately, we send
      *  the tokens to the outside. If current model time has not arrived
      *  at the physical time, we put the token along with the destination
      *  port and channel into the actuator event queue, and call fireAt of
@@ -2673,27 +2662,18 @@ public class PtidesBasicDirector extends DEDirector {
      *  platform simulated physical time. The time at which an actuation event
      *  is sent to the output port uses
      *  the platform simulated physical time. </p>
-     *  @param port The port to transfer tokens from.
+     *  @param port The port to transfer tokens to.
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, if the super class throws it, if physical tag cannot be
-     *   evaluated, if the token cannot be sent to the inside.     */
+     *   evaluated, or if the token cannot be sent to the inside.
+     */
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
                             + "is not an opaque output port.");
-        }
-
-        // FIXME: This is more or less of a hack. If a modal model is used, then
-        // _transferInputs/_transferOutputs methods are used. However we do not
-        // want the input/output ports of modal models to have the same kind of
-        // behavior as sensor and actuator ports. Thus if they are
-        // RefinementPorts
-        // of modal models, we simply use the methods of the super class.
-        if (port instanceof RefinementPort) {
-            return super._transferOutputs(port);
         }
 
         // First check for current time, and transfer any tokens that are
@@ -2708,8 +2688,8 @@ public class PtidesBasicDirector extends DEDirector {
         // platform.
         // FIXME: there is _NO_ guarantee from the priorityQueue that these
         // events are sent out in the order they arrive at the actuator. We can
-        // only be sure that they are sent in the order of the timestamps, but
-        // for two events of the same timestamp at an actuator, there's no
+        // only be sure that they are sent in the order of the tags, but
+        // for two events of the same tag at an actuator, there's no
         // guarantee on the order of events sent to the outside.
         while (true) {
             if (_realTimeOutputEventQueue.isEmpty()) {
@@ -2742,11 +2722,11 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         // Deadline of an actuation event is the timestamp subtracted by the
-        // realTimeDelay (d_a) at the actuators.
-        Double actuatorRealTimeDelay = _getRealTimeDelay(port);
+        // deviceDelay (d_a) at the actuators.
+        Double actuatorDeviceDelay = _getDeviceDelay(port);
         Time deadline = _currentTime;
-        if (actuatorRealTimeDelay != null) {
-            deadline = deadline.subtract(actuatorRealTimeDelay);
+        if (actuatorDeviceDelay != null) {
+            deadline = deadline.subtract(actuatorDeviceDelay);
         }
         compare = deadline.compareTo(platformPhysicalTag.timestamp);
 
@@ -2822,9 +2802,9 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** For a particular input port channel pair, calculate the delay offset.
-     *  @param inputPort The input port to find min delay for.
+     *  @param inputPort The input port to find delay offset.
      *  @param channel The channel at this input port.
-     *  @return The min delay associated with this port channel pair.
+     *  @return The delay offset associated with this port channel pair.
      *  @exception IllegalActionException If finite dependent ports cannot
      *  be evaluated, or token of actorsReceiveEventsInTimestampOrder
      *  parameter cannot be evaluated.
@@ -2874,11 +2854,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  Also, add all network ports into a set for future reference. Finally,
      *  make sure all sensor ports are not annotated with either networkDelay
      *  or networkDriverDelay parameters, while all network ports are not
-     *  annotated with realTimeDelay parameters.
+     *  annotated with deviceDelay parameters.
+     *  @param port Input port to check consistancy.
      *  @exception IllegalActionException If port is connected to both a
-     *  SensorHandler and a NetworkReceiver, a network port is annotated
-     *  with networkDelay or networkDriverDelay parameter, or a sensor port is
-     *  annotated with realTimeDelay parameter.
+     *  SensorHandler and a NetworkReceiver, or a network port is annotated
+     *  with the deviceDelay parameter, or a sensor port is
+     *  annotated with networkDelay or networkDriverDelay parameter.
      */
     private void _checkSensorNetworkInputConsistency(IOPort port)
             throws IllegalActionException {
@@ -2905,7 +2886,7 @@ public class PtidesBasicDirector extends DEDirector {
                     		"a sensor port or a network port.");
         }
         // If both sensorPort and networkPort are false, this port is assumed to
-        // be a sensor port with realTimeDelay = 0.0.
+        // be a sensor port with deviceDelay = 0.0.
         if (sensorPort
                 && (_getNetworkDelay(port) != null || 
                         _getNetworkDriverDelay(port) != null)) {
@@ -2915,11 +2896,11 @@ public class PtidesBasicDirector extends DEDirector {
                     "considered to be a sensor port, and a sensor port " +
                     "should not have networkDelay or networkDriverDelay " +
                     "parameters annotated on it.");
-        } else if (networkPort && _getRealTimeDelay(port) != null) {
+        } else if (networkPort && _getDeviceDelay(port) != null) {
             throw new IllegalActionException(
                     port, "A port that is connected to a NetworkReceiver is " +
                     		"considered to be a network port, and a " +
-                    		"network port should not have realTimeDelay " +
+                    		"network port should not have deviceDelay " +
                     		"parameter annotated on it.");
         }
     }
@@ -3046,16 +3027,16 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
-    /** Return the value stored in realTimeDelay parameter.
-     *  @param port The port the realTimeDelay is associated with.
-     *  @return realTimeDelay parameter
-     *  @exception IllegalActionException If the token of the realTimeDelay
+    /** Return the value stored in deviceDelay parameter.
+     *  @param port The port the deviceDelay is associated with.
+     *  @return deviceDelay parameter
+     *  @exception IllegalActionException If the token of the deviceDelay
      *  parameter cannot be evaluated.
      */
-    private static Double _getRealTimeDelay(IOPort port)
+    private static Double _getDeviceDelay(IOPort port)
             throws IllegalActionException {
         Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("realTimeDelay");
+                .getAttribute("deviceDelay");
         if (parameter != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
                     .doubleValue());

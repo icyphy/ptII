@@ -56,7 +56,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 250.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">

@@ -60,7 +60,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 135.0}">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.7">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.7">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
@@ -69,7 +69,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 255.0}">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">

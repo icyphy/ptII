@@ -62,7 +62,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 230.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="networkOutput2" class="ptolemy.actor.TypedIOPort">
@@ -781,7 +781,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 230.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="networkOutput2" class="ptolemy.actor.TypedIOPort">
@@ -853,7 +853,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 230.0]">
             </property>
-            <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </port>
         <port name="networkOutput" class="ptolemy.actor.TypedIOPort">
