@@ -81,6 +81,17 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
         _listeners = new ArrayList();
     }
     
+    /** Create an intermediate receiver that wraps a given receiver.
+     *  @param receiver The receiver that is being wrapped.
+     *  @return A new intermediate receiver.
+     *  @thows IllegalActionException Not thrown in this class but may be thrown in derived classes.
+     */
+    public IntermediateReceiver getReceiver(Receiver receiver) throws IllegalActionException {
+        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
+                this, receiver);
+        return intermediateReceiver;
+    }
+    
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
      */
@@ -104,8 +115,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
      *      the quantity manager.
      *  @param messageCnt The amount of messages currently being processed
      *      by the quantity manager.
-     *  @param time The time when the event happened.
-     *  @param event The type of the event. e.g. message received, message sent, ... 
+     *  @param eventType Type of event.
      */
     public void sendQMTokenEvent(Actor source, int messageId,
             int messageCnt, EventType eventType) {
@@ -138,7 +148,13 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
         super.attributeChanged(attribute);
     }
     
-    protected void _putToReceiver(Receiver receiver, Token token) throws NoRoomException, IllegalActionException { 
+    /** Send token to receiver.
+     *  @param receiver The receiver.
+     *  @param token The token.
+     *  @throws NoRoomException If the receiver has no room for the token.
+     *  @throws IllegalActionException If the receiver cannot receive the token.
+     */
+    protected void _sendToReceiver(Receiver receiver, Token token) throws NoRoomException, IllegalActionException { 
         if (receiver instanceof IntermediateReceiver) {
             ((IntermediateReceiver) receiver).source = this;
         }

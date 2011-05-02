@@ -46,23 +46,24 @@ public interface QuantityManagerListener {
     
     /** The event that is sent by the quantity manager and processed
      *  by the listener.
-     *  @param qm The quantity manager that sent the event.
+     *  @param quantityManager The quantity manager that sent the event.
      *  @param source The source actor that caused the event in the 
      *      quantity manager. 
      *  @param messageId The ID of the message that caused the event in 
      *      the quantity manager.
      *  @param messageCnt The amount of messages currently being processed
      *      by the quantity manager.
-     *  @param time The time when the event happened.
-     *  @param event The type of the event. e.g. message received, message sent, ... 
+     *  @param eventType The type of the event.  
      */
     public void event(QuantityManager quantityManager, Actor source, int messageId, 
             int messageCnt, double time, 
-            EventType scheduleEvent);
+            EventType eventType);
 
     /** Type of the event. */
     public static enum EventType { 
+        /** Token was received. */
         RECEIVED,  
+        /** Token was sent. */
         SENT
     }
 

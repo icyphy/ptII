@@ -203,7 +203,7 @@ public class CrossbarSwitch extends BasicSwitch {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
                     Token token = (Token) output[1];
-                    _putToReceiver(receiver, token);
+                    _sendToReceiver(receiver, token);
                     _outputTokens.get(i).remove(event);
                 }
             }

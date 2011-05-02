@@ -208,7 +208,7 @@ public class Bus extends MonitoredQuantityManager {
                 Actor container = (Actor) receiver.getContainer()
                         .getContainer();
                 if (receiver.getContainer().isOutput()) {
-                    _putToReceiver(receiver, token);
+                    _sendToReceiver(receiver, token);
                     // The fire that results from the following fireAt()
                     // call, at a minimum, will result in a
                     // transfer outputs to the outside of the composite.
@@ -224,14 +224,14 @@ public class Bus extends MonitoredQuantityManager {
                         // the container must have the correct model time before putting the token
                         ((Actor) container.getContainer()).getDirector()
                                 .fireAt(container, currentTime);
-                        _putToReceiver(receiver, token);
+                        _sendToReceiver(receiver, token);
                         // making sure the input is transferred inside.
                         ((Actor) container.getContainer()).getDirector()
                                 .fireAt(container, currentTime);
                     }
                 }
             } else {
-                _putToReceiver(receiver, token);
+                _sendToReceiver(receiver, token);
             }
 
             if (_debugging) {
@@ -317,6 +317,7 @@ public class Bus extends MonitoredQuantityManager {
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
      *  if there is not one already scheduled. 
+     *  @param source Sender of the token.
      *  @param receiver The receiver to send to.
      *  @param token The token to send.
      *  @throws IllegalActionException If the refiring request fails.

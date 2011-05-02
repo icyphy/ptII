@@ -336,7 +336,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
                         Object[] output = (Object[]) event.contents;
                         Receiver receiver = (Receiver) output[0];
                         Token token = (Token) output[1];
-                        _putToReceiver(receiver, token);
+                        _sendToReceiver(receiver, token);
                         _outputTokens.get(i).remove(event);
                     }
                 }
@@ -362,8 +362,8 @@ public class BasicSwitch extends MonitoredQuantityManager {
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
      *  if there is not one already scheduled.
-     *  @param source The sending receiver.
-     *  @param target receiver to send to.
+     *  @param source Sender of the token.
+     *  @param receiver The sending receiver. 
      *  @param token The token to send.
      *  @throws IllegalActionException If the refiring request fails.
      */
@@ -480,7 +480,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
     /** Time it takes for a token to be processed by the switch fabric. */
     protected double _switchFabricDelay;
 
-    /** Mapping of actors to switch ports */
+    /** Mapping of actors to switch ports. */
     protected HashMap<Actor, Integer> _actorPorts;
 
     /** Map target receivers to intermediate receivers. */

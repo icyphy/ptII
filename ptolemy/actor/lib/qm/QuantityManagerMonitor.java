@@ -148,7 +148,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
     Color[] colors;
     
     /** Initialize the plot and the legend with the list of quantity managers used
-     *  in this model
+     *  in this model.
      */
     public void initialize() {
         _quantityManagers = new ArrayList();
