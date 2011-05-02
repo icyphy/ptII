@@ -158,7 +158,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                 if (actor instanceof CompositeActor
                         && actor.getDirector() instanceof PtidesBasicDirector) {
                     ((PtidesBasicDirector) actor.getDirector())
-                            .registerExecutionListener(this);
+                            .registerExecutionTimeListener(this);
                     _addActors((CompositeActor) actor);
                 }
             }

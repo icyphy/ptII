@@ -912,15 +912,6 @@ public class PtidesBasicDirector extends DEDirector {
             _clearHighlight(_lastExecutingActor, false);
         }
     }
-    
-    
-    
-    public void registerExecutionListener(ExecutionTimeListener listener) {
-        if (_executionTimeListeners == null) {
-            _executionTimeListeners = new ArrayList();
-        }
-        _executionTimeListeners.add(listener);
-    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1913,7 +1904,8 @@ public class PtidesBasicDirector extends DEDirector {
                 _clearHighlight(
                         _getActorFromEventList((List<PtidesEvent>)
                                 currentEventList.contents), false);
-                _sendExecutionTimeEvent(_lastExecutingActor, 
+                _sendExecutionTimeEvent(_getActorFromEventList((List<PtidesEvent>)
+                        currentEventList.contents), 
                         this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
                         ExecutionEventType.STOP);
                 _lastExecutingActor = null;
@@ -1943,6 +1935,8 @@ public class PtidesBasicDirector extends DEDirector {
                 return _lastActorFired;
             } else { // comparison > 0
                 _fireAtPlatformTime(finishTime, executionTimeClock);
+                
+                
                 // The currently executing actor needs more execution time.
                 // Decide whether to preempt it.
                 if (_eventQueue.isEmpty() || !_preemptExecutingActor()) {
@@ -1957,6 +1951,10 @@ public class PtidesBasicDirector extends DEDirector {
                     // those will be checked when we are refired.
                     return null;
                 }
+                _sendExecutionTimeEvent(_getActorFromEventList((List<PtidesEvent>)
+                        _currentlyExecutingStack.peek().contents), 
+                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                        ExecutionEventType.START);
             }
         }
 
@@ -2040,9 +2038,18 @@ public class PtidesBasicDirector extends DEDirector {
             // If we are preempting a current execution, then
             // update information of the preempted event.
             _resetExecutionTimeForPreemptedEvent();
+            
+            if (_currentlyExecutingStack.size() > 0) {
+                _sendExecutionTimeEvent(_getActorFromEventList((List<PtidesEvent>)
+                        _currentlyExecutingStack.peek().contents), 
+                        this.getPlatformPhysicalTag(platformTimeClock).timestamp.getDoubleValue(), 
+                        ExecutionEventType.PREEMPTED);
+            }
             _currentlyExecutingStack.push(new ExecutionTimedEvent(
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
+            
+            
             _physicalTimeExecutionStarted = executionPhysicalTag.timestamp;
             if (_debugging) {
                 _debug("Actor " + actorToFire.toString()
@@ -3274,7 +3281,7 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         // If we are preempting a current execution, then
         // update information of the preempted event.
-        if (!_currentlyExecutingStack.isEmpty()) {
+        if (!_currentlyExecutingStack.isEmpty()) { 
             // We are preempting a current execution.
             ExecutionTimedEvent currentEventList = _currentlyExecutingStack.peek();
             Time elapsedTime = getPlatformPhysicalTag(executionTimeClock)
