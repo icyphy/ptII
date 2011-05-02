@@ -490,7 +490,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 throw new IllegalActionException(this, "Some of the " +
                 		"conceptable model elements do not have " +
                 		"trained concept values. They are: " +
-                		allNamedObjs.toArray().toString());
+                		allNamedObjs);
             }
         }
     }

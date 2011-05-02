@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DefaultAdapters Actor Lib
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DefaultAdapters Actor Lib Gui
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Authors: Charles Shelton, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 2009-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/ontologies/lattice/adapters/defaultAdapters/actor/lib
+ME =        ptolemy/data/ontologies/lattice/adapters/defaultAdapters/actor/lib/gui
 
-DIRS =      gui
+DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../../../..
+ROOT =      ../../../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,7 +43,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
+PTPACKAGE =     gui
 
 PTCLASSJAR =
 
@@ -52,12 +52,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 JSRCS = \
-	AddSubtract.java \
-	MultiplyDivide.java \
-	RecordAssembler.java \
-	RecordDisassembler.java \
-	Scale.java
-
+	Display.java
+	
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -11,7 +11,7 @@
         </property>
         <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
         </property>
-        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.trueInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.input&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.output&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.scaleOnLeft&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.multiply&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.divide&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.input&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.left&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.right&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.columnsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.output&quot;}, {Concept = &quot;&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.title&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.falseInput&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.factor&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.control&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.output&quot;}}">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.multiply&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.falseInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.input&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.left&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.divide&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.trueInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.factor&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.columnsDisplayed&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.scaleOnLeft&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.value&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.control&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.right&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 220.0]">
         </property>
@@ -46,13 +46,33 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 480.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Zero">
+            </property>
+        </port>
     </entity>
     <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
         <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
@@ -75,9 +95,34 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 510.0]">
         </property>
+        <port name="left" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
+        </port>
+        <port name="right" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
+            </property>
+        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -88,13 +133,47 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 405.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
+        </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 445.0}">
         </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
+        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="-5">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -105,9 +184,20 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 465.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
+        </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -118,13 +208,55 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 535.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
+        </port>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 400.0]">
         </property>
+        <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
+        </port>
+        <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Zero">
+            </property>
+        </port>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Zero">
+            </property>
+        </port>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Zero">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -135,9 +267,20 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 425.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Zero">
+            </property>
+        </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -148,11 +291,26 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 375.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
+        </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-8">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -160,6 +318,20 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 520.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Negative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Positive">
+            </property>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

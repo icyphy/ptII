@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Const extends LatticeOntologyAdapter {
 
-    /** Construct a default lattice ontology adapter for the Expression actor.
+    /** Construct a default lattice ontology adapter for the Const actor.
      *  @param solver The given solver.
      *  @param actor The given Const actor.
      *  @exception IllegalActionException If the adapter cannot be initialized.

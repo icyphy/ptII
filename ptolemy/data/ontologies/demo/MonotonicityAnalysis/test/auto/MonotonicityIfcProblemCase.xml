@@ -7,7 +7,7 @@
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../../../demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
         </property>
-        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = General}&quot;, NamedObj = &quot;.problem.Expression.output&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.problem.Expression.expression&quot;}}">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = General}&quot;, NamedObj = &quot;.MonotonicityIfcProblemCase.Expression.output&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.MonotonicityIfcProblemCase.Expression.expression&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 75.0]">
         </property>

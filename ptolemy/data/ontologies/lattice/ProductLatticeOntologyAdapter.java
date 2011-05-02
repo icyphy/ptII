@@ -27,6 +27,7 @@ package ptolemy.data.ontologies.lattice;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
@@ -110,9 +111,9 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @return The list of property-able named object.
      */
     public List<Object> getPropertyables() {
-        HashSet<Object> propertyableSet = new HashSet<Object>();
+        Set<Object> propertyableSet = new HashSet<Object>();
         
-        for (LatticeOntologyAdapter adapter : _tupleAdapters) {
+        for (LatticeOntologyAdapter adapter : _tupleAdapters) {           
             if (adapter != null) {
                 propertyableSet.addAll(adapter.getPropertyables());
             }
