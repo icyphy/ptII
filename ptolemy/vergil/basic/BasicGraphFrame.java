@@ -3124,7 +3124,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ////                         public methods                   ////
 
         /** Export an image.
-         *  @param ActionEvent e  The event that triggered this action.
+         *  @param e The event that triggered this action.
          */
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
@@ -3197,7 +3197,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public class ExportHTMLAction extends AbstractAction {
         /** Create a new action to export HTML.
-         *  @param frame The Frame which to which this action is added.
          */
         public ExportHTMLAction() {
             super("Export HTML");
@@ -3208,8 +3207,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                   ////
 
-        /** Export HTML image map.
-         *  @param ActionEvent e  The event that triggered this action.
+        /** Export an HTML image map.
+         *  @param e The event that triggered this action.
          */
         public void actionPerformed(ActionEvent e) {            
             // Open a file chooser to select a folder to write to.
