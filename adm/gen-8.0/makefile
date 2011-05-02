@@ -1405,6 +1405,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci \
