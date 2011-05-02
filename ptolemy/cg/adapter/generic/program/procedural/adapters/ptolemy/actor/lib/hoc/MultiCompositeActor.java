@@ -102,6 +102,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
      * underscores to avoid conflicts with systems functions.
      * @param port The port for which the name is generated.
      * @return The sanitized name.
+     * @exception IllegalActionException If there is a problem getting
+     * information about the port.
      */
     public  String generatePortName(TypedIOPort port) throws IllegalActionException {
         // FIXME: note that if we have a port that has a character that

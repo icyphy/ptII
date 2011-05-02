@@ -329,7 +329,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  to a Composite Actor.  This method is called when the firing
      *  code of each actor is not inlined.
      *
-     *  @parameter className The name of the class to include in the 
+     *  @param className The name of the class to include in the 
      *  initial code.
      *  @return A string that defines an inner class.
      */

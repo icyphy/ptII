@@ -45,10 +45,10 @@ import ptolemy.util.StringUtilities;
  the native look and feel.  Thus, this class invokes Java's user
  interface code which means that this class should be run in an
  environment that has a display.  To run in a environment
- that has no display, see the {@link ptolemy.actor.gui.Configuration}
+ that has no display, see the {@link ptolemy.actor.gui.ConfigurationApplication}
  parent class.
 
- <p>For complete usage, see the {@link ptolemy.actor.gui.Configuration}
+ <p>For complete usage, see the {@link ptolemy.actor.gui.ConfigurationApplication}
  parent class.
 
  @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands

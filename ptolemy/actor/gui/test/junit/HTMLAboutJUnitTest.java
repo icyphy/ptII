@@ -103,6 +103,7 @@ public class HTMLAboutJUnitTest {
      *  We use ptinvoke so that the classpath is set to include all the packages
      *  used by Ptolemy II.
      *
+     *  @param args Ignored.
      *  @exception args Not used.
      */
     public static void main(String args[]) {
