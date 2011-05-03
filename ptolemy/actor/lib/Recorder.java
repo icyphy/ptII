@@ -225,6 +225,18 @@ public class Recorder extends Sink {
         return true;
     }
 
+//     public void wrapup() throws IllegalActionException {
+//         super.wrapup();
+//         for (int channel = 0; channel < input.getWidth(); channel++) {
+//             List history = getHistory(channel);
+//             Iterator tokens = history.iterator();
+//             while (tokens.hasNext()) {
+//                 Token token = (Token)tokens.next();
+//                 System.out.println(getFullName() + channel + ": " + token);
+//             }
+//         }
+//     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Count of events seen.
