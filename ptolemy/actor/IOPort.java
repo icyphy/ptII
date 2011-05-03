@@ -51,7 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken; 
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;

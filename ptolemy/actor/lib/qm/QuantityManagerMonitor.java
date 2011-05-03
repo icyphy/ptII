@@ -34,9 +34,6 @@ package ptolemy.actor.lib.qm;
 import java.awt.Color;
 import java.awt.Frame;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;

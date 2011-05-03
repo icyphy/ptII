@@ -28,34 +28,20 @@
 
 package ptolemy.vergil.basic.test.junit;
 
-import static org.junit.Assert.assertArrayEquals;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
 
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.image.ImageReader;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.test.Diff;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.PtolemyLayoutAction;
-import ptolemy.vergil.basic.layout.KielerLayoutAction;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImageJUnitTest
@@ -246,7 +232,4 @@ public class ExportImageJUnitTest {
 
     /** The BasicGraphFrame of the model. */
     private BasicGraphFrame _basicGraphFrame;
-
-    /** Set to true for debugging messages. */
-    private final boolean _debug = false;
 }

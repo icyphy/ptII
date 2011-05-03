@@ -47,7 +47,6 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;

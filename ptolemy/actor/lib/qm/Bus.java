@@ -30,9 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IntermediateReceiver;
@@ -50,7 +48,7 @@ import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException; 
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its

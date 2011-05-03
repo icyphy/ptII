@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;

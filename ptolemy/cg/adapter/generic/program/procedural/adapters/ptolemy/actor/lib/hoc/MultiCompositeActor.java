@@ -28,14 +28,11 @@
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.hoc;
 import java.util.Iterator;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.TemplateParser;
-//import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 

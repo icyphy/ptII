@@ -36,7 +36,6 @@ import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;

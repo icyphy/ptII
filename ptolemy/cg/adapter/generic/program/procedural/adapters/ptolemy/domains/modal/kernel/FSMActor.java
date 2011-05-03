@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;

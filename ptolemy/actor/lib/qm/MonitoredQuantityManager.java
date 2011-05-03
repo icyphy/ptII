@@ -33,7 +33,7 @@ package ptolemy.actor.lib.qm;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import ptolemy.actor.Actor; 
+import ptolemy.actor.Actor;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.QuantityManager;

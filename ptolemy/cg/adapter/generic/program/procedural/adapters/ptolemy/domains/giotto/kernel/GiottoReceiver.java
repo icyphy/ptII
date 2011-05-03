@@ -140,7 +140,7 @@ public class GiottoReceiver extends Receiver {
                     "Could not cast " + sourcePort.getFullName()
                     + " to a TypedIOPort.");
         } else {
-            TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
+            //TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
             try {
                 result = _getDirectorForReceiver().getReference(
                         (TypedIOPort) sourcePort,

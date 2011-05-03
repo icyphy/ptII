@@ -29,7 +29,6 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -55,7 +54,6 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// SDFDirector

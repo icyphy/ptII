@@ -26,10 +26,10 @@
  */
 package ptolemy.actor.gui;
 
-import javax.swing.event.HyperlinkEvent;
-
 import java.net.URL;
 import java.net.URLConnection;
+
+import javax.swing.event.HyperlinkEvent;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

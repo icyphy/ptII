@@ -2086,18 +2086,18 @@ public class PlotBox extends JPanel implements Printable {
         return _automaticRescale;
     }
 
-    /** Copy the file with the given name from the $PTII/ptolemy/plot/latex directory
-     *  to the specified directory.
-     *  @param filename The name of the file to copy.
-     *  @param directory The directory into which to copy.
-     *  @throws FileNotFoundException If the file cannot be found.
-     *  @throws IOException If the file cannot be copied.
-     */
-    private void _copyFiles(String filename, File directory)
-            throws FileNotFoundException, IOException {
-        URL url = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/latex/" + filename, null, null);
-        FileUtilities.binaryCopyURLToFile(url, new File(directory, filename));
-    }
+//    /** Copy the file with the given name from the $PTII/ptolemy/plot/latex directory
+//     *  to the specified directory.
+//     *  @param filename The name of the file to copy.
+//     *  @param directory The directory into which to copy.
+//     *  @throws FileNotFoundException If the file cannot be found.
+//     *  @throws IOException If the file cannot be copied.
+//     */
+//    private void _copyFiles(String filename, File directory)
+//            throws FileNotFoundException, IOException {
+//        URL url = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/latex/" + filename, null, null);
+//        FileUtilities.binaryCopyURLToFile(url, new File(directory, filename));
+//    }
 
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.

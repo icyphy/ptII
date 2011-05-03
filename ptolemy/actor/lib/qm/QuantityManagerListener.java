@@ -30,8 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import ptolemy.actor.Actor; 
-import ptolemy.actor.QuantityManager; 
+import ptolemy.actor.Actor;
+import ptolemy.actor.QuantityManager;
 
 
 /** This interface defines a listener for quantity managers. 

@@ -30,20 +30,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;

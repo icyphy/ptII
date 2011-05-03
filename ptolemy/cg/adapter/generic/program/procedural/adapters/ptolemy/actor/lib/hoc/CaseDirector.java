@@ -27,16 +27,15 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.hoc;
 
+import static ptolemy.cg.kernel.generic.GenericCodeGenerator.INDENT2;
+
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import static ptolemy.cg.kernel.generic.GenericCodeGenerator.*;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;

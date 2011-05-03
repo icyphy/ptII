@@ -28,24 +28,10 @@
 
 package ptolemy.actor.gui.test.junit;
 
-import static org.junit.Assert.assertArrayEquals;
-
-import java.io.File;
-import java.util.Iterator;
-
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.test.Diff;
-import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLAboutJUnitTest
@@ -182,11 +168,5 @@ public class HTMLAboutJUnitTest {
             //Ignore
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
-    /** Set to true for debugging messages. */
-    private final boolean _debug = false;
-
 }
+
