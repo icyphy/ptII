@@ -477,8 +477,15 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
                             return;
                         }
                     }
-                    OutputStream out = new FileOutputStream(file);
-                    plot.exportImage(out, _formatName);
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        plot.exportImage(out, _formatName);
+                    } finally {
+                        if (out != null) {
+                            out.close();
+                        }
+                    }
 
                     // Open the PNG file.
                     // FIXME: We don't do the right thing with PNG files.

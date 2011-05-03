@@ -3170,8 +3170,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             return;
                         }
                     }
-                    OutputStream out = new FileOutputStream(file);
-                    getJGraph().exportImage(out, _formatName);
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        getJGraph().exportImage(out, _formatName);
+                    } finally {
+                        if (out != null) {
+                            out.close();
+                        }
+                    }
 
                     // Open the PNG file.
                     // FIXME: We don't do the right thing with PNG files.
@@ -3266,24 +3273,50 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // First, create the gif file showing whatever the current
                 // view in this frame shows.
                 File gifFile = new File(file, getModel().getName() + ".gif");
+                OutputStream out = null;
                 try {
-                    OutputStream out = new FileOutputStream(gifFile);
+                    out = new FileOutputStream(gifFile);
                     writeImage(out, "gif");
                 } catch (IOException ex) {
-                    MessageHandler.message("Unable to create image file.");
+                    MessageHandler.error("Unable to create image file "
+                            + gifFile + ".", ex);
                     return;  
                 } catch (PrinterException ex) {
-                    MessageHandler.message("Unable to write image file.");
+                    MessageHandler.error("Unable to write image file "
+                            + gifFile + ".", ex);
                     return;
+                } finally {
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException ex) {
+                            MessageHandler.error("Unable to close image file "
+                                    + gifFile + ".", ex);
+                            return;
+                        }
+                    }
                 }
                 
                 // Next, create an HTML file.
+                File indexFile = null;
+                FileWriter htmlFileWriter = null;
                 try {
-                    File indexFile = new File(file, "index.html");
-                    writeHTML(new FileWriter(indexFile));
+                    indexFile = new File(file, "index.html");
+                    htmlFileWriter = new FileWriter(indexFile);
+                    writeHTML(htmlFileWriter);
                 } catch (IOException ex) {
-                    MessageHandler.message("Unable to create HTML file.");
+                    MessageHandler.error("Unable to create HTML file "
+                            + indexFile + ".", ex);
                     return;  
+                } finally {
+                    if (htmlFileWriter != null) {
+                        try {
+                            htmlFileWriter.close();
+                        } catch (IOException ex) {
+                            MessageHandler.error("Unable to close HTML file "
+                                    + indexFile + ".", ex);
+                        }
+                    }
                 }
             }
         }
