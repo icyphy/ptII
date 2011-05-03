@@ -298,7 +298,15 @@ public class Configuration extends CompositeEntity implements
             // Directors as well
             if (containedObject instanceof TypedAtomicActor
                     || containedObject instanceof Attribute) {
-                results.append(_checkCloneFields(containedObject));
+		try {
+		    results.append(_checkCloneFields(containedObject));
+		} catch (Throwable throwable) {
+		    throw new InternalErrorException((TypedAtomicActor)containedObject,
+						     null, throwable,
+						     "The check for " 
+						     + "clone methods properly setting "
+						     + "the fields failed.");
+		}
             }
         }
 
