@@ -400,6 +400,7 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.constPropagation.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.domains.ontologies.lib \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib \
+	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib.gui \
 	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
