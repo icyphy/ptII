@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
 //// PID
@@ -84,6 +85,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.de.lib.Derivative
  */
 public class PID extends DETransformer {
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -106,6 +108,31 @@ public class PID extends DETransformer {
         Kd = new Parameter(this, "Kd");
         Kd.setExpression("0.0");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The reset port, which has undeclared type. If this port
+     *  receives a token, this actor resets to its initial state,
+     *  and no output is generated until two inputs have been received.
+     */
+    public TypedIOPort reset;
+
+    /** Proportional gain of the controller. Default value is 1.0.
+     * */
+    public Parameter Kp;
+
+    /** Integral gain of the controller. Default value is 0.0,
+     *  which disables integral control.
+     * */
+    public Parameter Ki;
+
+    /** Derivative gain of the controller. Default value is 0.0, which disables
+     *  derivative control. If Kd=0.0, this actor can receive discontinuous
+     *  signals as input; otherwise, if Kd is nonzero and a discontinuous signal
+     *  is received, an exception will be thrown.
+     */
+    public Parameter Kd;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////   
@@ -196,15 +223,16 @@ public class PID extends DETransformer {
                 // signal was already generated. However if the value has changed, then the signal
                 // is discontinuous and we should throw an exception unless derivative control
                 // is disabled (Kd=0).
-                if (timeGap.equals(0)) {
-                    if (!Kd.equals(0) && !currentToken.equals(lastToken)) {
+                if (timeGap.isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
+                    if (!((DoubleToken)Kd.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()
+                            && !currentToken.equals(lastToken)) {
                         throw new IllegalActionException(
                                 "PID controller recevied discontinuous input.");
                     }
                 }
                 // Otherwise, the signal is continuous and we add integral and derivative components
                 else {
-                    if (!Ki.getExpression().equals(0)) {
+                    if (!((DoubleToken)Ki.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
                         //Calculate integral component and accumulate
                         _accumulated = (DoubleToken) _accumulated
                                 .add(currentToken.add(lastToken).multiply(
@@ -248,31 +276,6 @@ public class PID extends DETransformer {
         _lastInput = _currentInput;
         return super.postfire();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The reset port, which has undeclared type. If this port
-     *  receives a token, this actor resets to its initial state,
-     *  and no output is generated until two inputs have been received.
-     */
-    public TypedIOPort reset;
-
-    /** Proportional gain of the controller. Default value is 1.0.
-     * */
-    public Parameter Kp;
-
-    /** Integral gain of the controller. Default value is 0.0,
-     *  which disables integral control.
-     * */
-    public Parameter Ki;
-
-    /** Derivative gain of the controller. Default value is 0.0, which disables
-     *  derivative control. If Kd=0.0, this actor can receive discontinuous
-     *  signals as input; otherwise, if Kd is nonzero and a discontinuous signal
-     *  is received, an exception will be thrown.
-     */
-    public Parameter Kd;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
