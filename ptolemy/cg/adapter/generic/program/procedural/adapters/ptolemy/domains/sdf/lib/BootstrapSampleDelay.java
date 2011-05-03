@@ -1,6 +1,6 @@
-/* A adapter class for ptolemy.domains.sdf.lib.SampleDelay
+/* A adapter class for ptolemy.domains.sdf.lib.BootstrapSampleDelay
 
- Copyright (c) 2006-2010 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,10 +35,10 @@ import ptolemy.data.ArrayToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// SampleDelay
+//// BootstrapSampleDelay
 
 /**
- A adapter class for SampleDelay.
+ A adapter class for BootstrapSampleDelay.
 
  @author Martin Schoeberl, Christopher Brooks
  @version $Id$
@@ -46,12 +46,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */
-public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
+public class BootstrapSampleDelay extends NamedProgramCodeGeneratorAdapter {
     /**
-     *  Construct a SampleDelay adapter.
-     *  @param actor The given ptolemy.domains.sdf.lib.SampleDelay actor.
+     *  Construct a BootstrapSampleDelay adapter.
+     *  @param actor The given ptolemy.domains.sdf.lib.BootstrapSampleDelay actor.
      */
-    public SampleDelay(ptolemy.domains.sdf.lib.SampleDelay actor) {
+    public BootstrapSampleDelay(ptolemy.domains.sdf.lib.BootstrapSampleDelay actor) {
         super(actor);
     }
 
@@ -68,7 +68,7 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
 //     public String generatePreinitializeCode() throws IllegalActionException {
 //         super.generatePreinitializeCode();
 
-//         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+//         ptolemy.domains.sdf.lib.BootstrapSampleDelay actor = (ptolemy.domains.sdf.lib.BootstrapSampleDelay) getComponent();
 
 //         ArrayList<String> args = new ArrayList<String>();
 
@@ -88,18 +88,18 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
 //         return processCode(codeStream.toString());
 //     }
 
-    /** Generate the initialize code for the SampleDelay actor by
+    /** Generate the initialize code for the BootstrapSampleDelay actor by
      *  declaring the initial values of the sink channels of the
-     *  output port of the SampleDelay actor.
-     *  @return The generated initialize code for the SampleDelay actor.
+     *  output port of the BootstrapSampleDelay actor.
+     *  @return The generated initialize code for the BootstrapSampleDelay actor.
      *  @exception IllegalActionException If the base class throws it,
      *   or if the initial
-     *   outputs of the SampleDelay actor is not defined.
+     *   outputs of the BootstrapSampleDelay actor is not defined.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+        ptolemy.domains.sdf.lib.BootstrapSampleDelay actor = (ptolemy.domains.sdf.lib.BootstrapSampleDelay) getComponent();
 
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
@@ -111,7 +111,12 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args = new ArrayList<String>();
         args.add("");
         for (int i = 0; i < length; i++) {
+            /* Token element =*/((ArrayToken) actor.initialOutputs.getToken())
+                    .getElement(i);
+
             args.set(0, Integer.toString(i));
+            System.out.println("BootstrapSampleDelay " + getComponent().getFullName() + " " + args.get(0) + " " + length + " "
+                    + ((ArrayToken) actor.initialOutputs.getToken()).getElement(i).toString());
             codeStream.appendCodeBlock("initTokens", args);
         }
 
