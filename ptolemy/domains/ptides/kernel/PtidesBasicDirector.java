@@ -2700,6 +2700,14 @@ public class PtidesBasicDirector extends DEDirector {
             compare = tokenEvent.deliveryTag.compareTo(platformPhysicalTag);
 
             if (compare > 0) {
+                // If the physical time has reached the deliveryTag's timestamp,
+                // however microstep has not reached the delivery tag, we call
+                // fireAt at the current physical time so microstep can advance.
+                if (tokenEvent.deliveryTag.timestamp
+                        .equals(platformPhysicalTag.timestamp)) {
+                    (((Actor) getContainer()).getExecutiveDirector())
+                    .fireAtCurrentTime((Actor) getContainer());
+                }
                 break;
             } else if (compare == 0) {
                 _realTimeOutputEventQueue.poll();
