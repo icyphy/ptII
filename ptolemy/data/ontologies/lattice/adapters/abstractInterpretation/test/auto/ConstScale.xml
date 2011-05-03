@@ -209,8 +209,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -307,8 +305,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -405,8 +401,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
@@ -503,8 +497,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
@@ -601,8 +593,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale5" class="ptolemy.actor.lib.Scale">
@@ -665,8 +655,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale6" class="ptolemy.actor.lib.Scale">
@@ -729,8 +717,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale7" class="ptolemy.actor.lib.Scale">
@@ -793,8 +779,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale8" class="ptolemy.actor.lib.Scale">
@@ -857,8 +841,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale9" class="ptolemy.actor.lib.Scale">
@@ -921,8 +903,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale10" class="ptolemy.actor.lib.Scale">
@@ -1019,8 +999,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale11" class="ptolemy.actor.lib.Scale">
@@ -1083,8 +1061,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Scale12" class="ptolemy.actor.lib.Scale">

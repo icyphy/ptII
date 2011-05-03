@@ -44,12 +44,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 95.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
-        </port>
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-8">

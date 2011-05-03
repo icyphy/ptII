@@ -162,16 +162,12 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
@@ -213,16 +209,12 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
@@ -250,16 +242,12 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Scale6" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
@@ -287,16 +275,12 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Scale9" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
@@ -338,16 +322,12 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Scale15" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
@@ -407,8 +387,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
@@ -426,8 +404,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
@@ -477,8 +453,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
@@ -496,8 +470,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
@@ -551,8 +523,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
@@ -570,8 +540,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
@@ -589,8 +557,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
@@ -608,8 +574,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
@@ -627,8 +591,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <entity name="Const15" class="ptolemy.actor.lib.Const">
@@ -646,8 +608,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Reachable">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

@@ -158,8 +158,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const30" class="ptolemy.actor.lib.Const">
@@ -177,8 +175,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
@@ -232,8 +228,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -251,8 +245,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator2" class="ptolemy.actor.lib.logic.Comparator">
@@ -306,8 +298,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
@@ -325,8 +315,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator3" class="ptolemy.actor.lib.logic.Comparator">
@@ -380,8 +368,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
@@ -399,8 +385,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator4" class="ptolemy.actor.lib.logic.Comparator">
@@ -454,8 +438,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
@@ -473,8 +455,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator5" class="ptolemy.actor.lib.logic.Comparator">
@@ -528,8 +508,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
@@ -547,8 +525,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator6" class="ptolemy.actor.lib.logic.Comparator">
@@ -602,8 +578,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
@@ -621,8 +595,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator7" class="ptolemy.actor.lib.logic.Comparator">
@@ -676,8 +648,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
@@ -695,8 +665,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator8" class="ptolemy.actor.lib.logic.Comparator">
@@ -750,8 +718,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const16" class="ptolemy.actor.lib.Const">
@@ -769,8 +735,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Comparator9" class="ptolemy.actor.lib.logic.Comparator">

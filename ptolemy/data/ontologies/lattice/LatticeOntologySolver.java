@@ -526,21 +526,6 @@ public class LatticeOntologySolver extends OntologySolver {
                         _trainedConceptRecordLabels, recordArray);
                 
                 trainedConcepts[index++] = conceptRecord;
-
-                // Remove all the old _trainedConcept attributes from the
-                // model because they are obsolete.
-                StringParameter trained = (StringParameter) conceptable
-                    .getAttribute("_trainedConcept");;
-                if (trained != null) {
-                    try {
-                        trained.setContainer(null);
-                    } catch (NameDuplicationException e) {
-                        throw new IllegalActionException(this, e, "Could " +
-                        		"not remove the obselete " +
-                        		"_trainedConcept attribute from the " +
-                        		conceptable + " model element.");
-                    }
-                }
             }            
             _trainedConceptRecordArray.setToken(new ArrayToken(trainedConcepts));
         } finally {

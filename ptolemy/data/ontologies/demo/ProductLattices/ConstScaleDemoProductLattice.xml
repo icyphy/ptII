@@ -153,19 +153,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 265.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -202,19 +194,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[48.25, 430.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -251,19 +235,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 655.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -300,19 +276,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[517.75, 257.5]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -349,19 +317,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 435.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale5" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant1">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -384,19 +344,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale6" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -419,19 +371,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 520.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale7" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -454,19 +398,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 725.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale8" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -489,19 +425,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[517.75, 342.5]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale9" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -524,19 +452,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 530.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale10" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant1">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -573,19 +493,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 650.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale11" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -608,19 +520,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 745.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale12" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -649,8 +553,6 @@
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -665,8 +567,6 @@
         <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>
@@ -703,19 +603,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{53.25, 160.0}">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
-        </port>
     </entity>
     <entity name="Scale15" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
             </property>
         </property>

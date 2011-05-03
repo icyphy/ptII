@@ -160,8 +160,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -179,8 +177,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
@@ -202,8 +198,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
@@ -221,8 +215,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -258,8 +250,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
@@ -277,8 +267,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
@@ -300,8 +288,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
@@ -319,8 +305,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
@@ -356,8 +340,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
@@ -375,8 +357,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide6" class="ptolemy.actor.lib.MultiplyDivide">
@@ -398,8 +378,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
@@ -417,8 +395,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
@@ -454,8 +430,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
@@ -473,8 +447,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide8" class="ptolemy.actor.lib.MultiplyDivide">
@@ -496,8 +468,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const16" class="ptolemy.actor.lib.Const">
@@ -515,8 +485,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
@@ -552,8 +520,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const18" class="ptolemy.actor.lib.Const">
@@ -571,8 +537,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide10" class="ptolemy.actor.lib.MultiplyDivide">
@@ -594,8 +558,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const20" class="ptolemy.actor.lib.Const">
@@ -613,8 +575,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
@@ -650,8 +610,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const22" class="ptolemy.actor.lib.Const">
@@ -669,8 +627,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide12" class="ptolemy.actor.lib.MultiplyDivide">
@@ -692,8 +648,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const24" class="ptolemy.actor.lib.Const">
@@ -711,8 +665,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
@@ -748,8 +700,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const26" class="ptolemy.actor.lib.Const">
@@ -767,8 +717,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplyDivide14" class="ptolemy.actor.lib.MultiplyDivide">
@@ -790,8 +738,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <entity name="Const28" class="ptolemy.actor.lib.Const">
@@ -809,8 +755,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
-            </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
