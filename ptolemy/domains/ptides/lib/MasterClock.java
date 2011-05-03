@@ -76,7 +76,7 @@ public class MasterClock extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        trigger = new TypedIOPort(this, "input", true, false);
+        trigger = new TypedIOPort(this, "trigger", true, false);
     }
 
     ///////////////////////////////////////////////////////////////////

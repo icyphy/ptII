@@ -40,20 +40,20 @@
             </property>
             <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="forceActorsToProcessEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="highlightModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="schedulerExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
             <property name="initializePlatformSynchronizationError" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 90.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 235, 823, 514}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 235, 814, 515}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -84,27 +84,22 @@
                 </property>
             </port>
         </entity>
-        <entity name="MasterClock" class="ptolemy.domains.ptides.lib.MasterClock">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 200.0]">
+        <entity name="MasterClock2" class="ptolemy.domains.ptides.lib.MasterClock">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 200.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="port" relation="relation3"/>
+        <link port="port" relation="relation4"/>
         <link port="port2" relation="relation2"/>
-        <link port="NetworkTransmitter.input" relation="relation"/>
+        <link port="NetworkTransmitter.input" relation="relation3"/>
         <link port="NetworkTransmitter.output" relation="relation2"/>
-        <link port="MasterClock.output" relation="relation"/>
-        <link port="MasterClock.input" relation="relation3"/>
+        <link port="MasterClock2.output" relation="relation3"/>
+        <link port="MasterClock2.trigger" relation="relation4"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -139,8 +134,6 @@
             </property>
             <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="forceActorsToProcessEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="highlightModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
@@ -148,6 +141,8 @@
             <property name="initialPlatformSynchronizationError" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
             <property name="schedulerExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="AssumedSynchronizationErrorBound" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="initializePlatformSynchronizationError" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>

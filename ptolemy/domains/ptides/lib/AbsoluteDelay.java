@@ -72,7 +72,6 @@ public class AbsoluteDelay extends TimeDelay {
         super(container, name);
 
         outputTime = new TypedIOPort(this, "outputTime", true, false);
-        _zero = new Time(getDirector());
 
         Set<Port> dependentPorts = _causalityMarker.causalityMarker.get(0);
         dependentPorts.add(input);
@@ -160,7 +159,7 @@ public class AbsoluteDelay extends TimeDelay {
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         Time time = currentTime.subtract(_outputTime);
-        if (time.compareTo(_zero) < 0) {
+        if (time.isNegative()) {
             _delay = -time.getDoubleValue();
         } else {
             _delay = 0;
