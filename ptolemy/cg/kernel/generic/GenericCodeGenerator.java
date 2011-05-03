@@ -508,8 +508,24 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 } finally {
                     // Destroy the top level so that we avoid
                     // problems with running the model after generating code
-                    if (toplevel != null) {
-                        toplevel.setContainer(null);
+                    if (toplevel != null 
+                            && toplevel.getManager().getState().equals(Manager.IDLE)) {
+                        try {
+                            // Only set the container to null if the Manager is IDLE.
+                            // If it is not IDLE, then we probably have thrown an exception.
+                            toplevel.setContainer(null);
+                        } catch (KernelException ex) {
+                            throw new InternalErrorException(toplevel, null,
+                                    "Failed to set the container of \""
+                                    + toplevel.getFullName()
+                                    + "\" to null?  This is done so as to avoid "
+                                    + "problems with running the model after "
+                                    + "generating code.  The Manager state was: "
+                                    + toplevel.getManager().getState()
+                                    + " Note that calling setContainer(null) "
+                                    + "on a model with level crossing links can "
+                                    + "result in problems if the Manager is not IDLE.");
+                        }
                     }
                 }
             }
