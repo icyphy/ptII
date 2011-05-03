@@ -1004,8 +1004,8 @@ public class GiottoDirector extends
                         // else do nothing
                     }
                     code.append("}" + _eol);
-                } else if ((dir.getClassName() == "ptolemy.domains.fsm.kernel.FSMDirector")
-                        || dir.getClassName() == "ptolemy.domains.sdf.kernel.SDFDirector") {
+                } else if (dir.getClassName().equals("ptolemy.domains.fsm.kernel.FSMDirector")
+                        || dir.getClassName().equals("ptolemy.domains.sdf.kernel.SDFDirector")) {
                     // code.append("//second if"+_eol);
 
                     if (actor.getClass().getName().contains(

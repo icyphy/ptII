@@ -29,7 +29,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLDrawableFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import javax.swing.SwingUtilities;
 
 public class TourModelsGL extends JFrame implements WindowListener
 {
@@ -125,17 +125,29 @@ public class TourModelsGL extends JFrame implements WindowListener
 
   public static void main(String[] args)
   { 
-    int fps = DEFAULT_FPS;
-    
-    
-//    if (args.length != 0)
-//      fps = Integer.parseInt(args[0]);
+      try {
+          // Run this in the Swing Event Thread.
+          Runnable doActions = new Runnable() {
+                  public void run() {
+                      try {
+                          int fps = DEFAULT_FPS;
+                          //    if (args.length != 0)
+                          //      fps = Integer.parseInt(args[0]);
 
-    long period = (long) 1000.0/fps;
-    System.out.println("fps: " + fps + "; period: " + period + " ms");
-
-    new TourModelsGL(period*1000000L);    // ms --> nanosecs 
-  } // end of main()
-
+                          long period = (long) 1000.0/fps;
+                          System.out.println("fps: " + fps + "; period: " + period + " ms");
+                          new TourModelsGL(period*1000000L);    // ms --> nanosecs 
+                      } catch (Exception ex) {
+                          System.err.println(ex.toString());
+                          ex.printStackTrace();
+                      }
+                  }
+              };
+          SwingUtilities.invokeAndWait(doActions);
+      } catch (Exception ex) {
+          System.err.println(ex.toString());
+          ex.printStackTrace();
+      } // end of main()
+  }
 
 } // end of TourModelsGL class

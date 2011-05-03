@@ -542,7 +542,7 @@ public class GiottoDirector extends
             throws IllegalActionException {
 
         if (port.isOutput()) {
-            if (channelAndOffset[0] == "") {
+            if (channelAndOffset[0].equals("")) {
                 channelAndOffset[0] = "0";
             }
             // will need to take care of the case of where the output is for a composite actor
@@ -574,7 +574,7 @@ public class GiottoDirector extends
             CodeGeneratorHelper helper) throws IllegalActionException {
 
         if (port.isOutput()) {
-            if (channelAndOffset[0] == "") {
+            if (channelAndOffset[0].equals("")) {
                 channelAndOffset[0] = "0";
             }
             // will need to take care of the case of where the output is for a composite actor

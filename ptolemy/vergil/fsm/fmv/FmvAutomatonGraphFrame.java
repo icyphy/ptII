@@ -289,8 +289,19 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                                         JOptionPane.QUESTION_MESSAGE, null, null,
                                         null);
                                 if (selected == 0) {
-                                    smvFileWriter = new FileWriter(smvFile);
-                                    smvFileWriter.write(fmvFormat.toString());
+                                    try {
+                                        smvFileWriter = new FileWriter(smvFile);
+                                        smvFileWriter.write(fmvFormat.toString());
+                                    } finally {
+                                        if (smvFileWriter != null) {
+                                            try {
+                                                smvFileWriter.close();
+                                            } catch (IOException ex) {
+                                                MessageHandler.error("Failed to close "
+                                                        + smvFile, ex);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
