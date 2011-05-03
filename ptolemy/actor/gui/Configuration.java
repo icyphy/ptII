@@ -309,7 +309,14 @@ public class Configuration extends CompositeEntity implements
             Object entity = entities.next();
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
-                results.append(_checkCloneFields((TypedAtomicActor) entity));
+		try {
+		    results.append(_checkCloneFields((TypedAtomicActor) entity));
+		} catch (Throwable throwable) {
+		    throw new InternalErrorException((TypedAtomicActor)entity, null, throwable,
+						     "The check for " 
+						     + "clone methods properly setting "
+						     + "the fields failed.");
+		}
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
                 String fullName = actor.getName(this);
                 TypedAtomicActor clone = (TypedAtomicActor) cloneConfiguration
