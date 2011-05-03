@@ -51,6 +51,7 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = \
 	ArrayToSequence.java \
 	Autocorrelation.java \
+	BootstrapSampleDelay.java \
 	BitsToInt.java \
 	Chop.java \
 	CountTrues.java \
