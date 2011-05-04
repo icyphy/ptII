@@ -1024,6 +1024,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     protected long _printTimeAndMemory(long startTime, String message) {
         long currentTime = (new Date()).getTime();
         if (currentTime - startTime > 10000) {
+            System.gc();
             System.out.println(message + Manager.timeAndMemory(startTime));
         }
         return currentTime;
