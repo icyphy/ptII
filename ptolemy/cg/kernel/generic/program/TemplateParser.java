@@ -671,7 +671,7 @@ public class TemplateParser {
      *  Macros have the possible forms:
      *  <p>$xxx(), where are processed by {@link _replaceMacro(String, String)}
      *  <p>${foo}, which means get the value of the parameter "foo"
-     *  <p>$country, which is ignored.
+     *  <p>$nation, which is ignored.
      * @param code The code to process.
      * @return The processed code.
      * @exception IllegalActionException If illegal macro names are found.
@@ -696,10 +696,10 @@ public class TemplateParser {
         // Loop through, looking for (
         while (currentPos < code.length()) {
             while (currentPos > 0 
-                    && code.substring(currentPos - 1).startsWith("\"$country")) {
-                // Skip "$country
-                result.append(code.substring(currentPos, currentPos + 8));
-                currentPos += 8; // The length of "$country"
+                    && code.substring(currentPos - 1).startsWith("\"$nation")) {
+                // Skip "$nation
+                result.append(code.substring(currentPos, currentPos + 7));
+                currentPos += 7; // The length of "$nation"
 
                 //result.append(code.substring(previousPos, currentPos));
                 previousPos = currentPos;
@@ -707,7 +707,7 @@ public class TemplateParser {
                 if (currentPos < 0) {
                     // No "$" in the string
                     result.append(code.substring(previousPos));
-                    //System.out.println("processCode: return $country: " + result);
+                    //System.out.println("processCode: return $nation: " + result);
                     return result.toString();
                 }
                 result.append(code.substring(previousPos, currentPos));
