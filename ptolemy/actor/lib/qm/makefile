@@ -1,10 +1,10 @@
 # Makefile for Ptolemy II scripting actors
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -57,6 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 JSRCS = \
 	BasicSwitch.java \
 	Bus.java \
+	ColoredQuantityManager.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
 	MonitoredQuantityManager.java \
@@ -74,7 +75,9 @@ MISC_FILES = test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-        doc
+        doc \
+	'QuantityManagerListener$$EventType.class' \
+	'QuantityManagerMonitor$$QuantityManagerEditorFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

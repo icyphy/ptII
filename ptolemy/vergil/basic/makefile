@@ -102,7 +102,11 @@ OPTIONAL_FILES = \
 	'BasicGraphController$$OpenBaseClassAction.class' \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
 	'BasicGraphController$$UnitSolverDialogAction.class' \
-	'BasicGraphFrame$$MousePressedLayerAdapter.class' \
+	'BasicGraphFrame$$1.class' \
+	'BasicGraphFrame$$ExportHTMLAction.class' \
+	'BasicGraphFrame$$ExportImageAction.class' \
+	'BasicGraphFrame$$FolderFileFilter.class' \
+	'BasicGraphFrame$$IconVisibleLocation.class' \
 	'BasicGraphFrame$$DeletionListener.class' \
 	'BasicGraphFrame$$CopyAction.class' \
 	'BasicGraphFrame$$CutAction.class' \
@@ -115,6 +119,7 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$MoveToBackAction.class' \
 	'BasicGraphFrame$$MoveToFrontAction$$1.class' \
 	'BasicGraphFrame$$MoveToFrontAction.class' \
+	'BasicGraphFrame$$MousePressedLayerAdapter.class' \
 	'BasicGraphFrame$$OpenContainerAction.class' \
 	'BasicGraphFrame$$OpenLibraryMenuItemFactory$$1.class' \
 	'BasicGraphFrame$$OpenLibraryMenuItemFactory.class' \
@@ -136,12 +141,19 @@ OPTIONAL_FILES = \
 	'DependencyHighlighter$$HighlightDependents.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \
+	'ExportImage$$1.class' \
+	'ExportImage$$2.class' \
+	'ExportImage$$3.class' \
+	'ExportImage$$4.class' \
+	'ExportImage$$5.class' \
 	'ExtendedGraphFrame$$FullScreenAction.class' \
 	'IconController$$IconRenderer$$1.class' \
 	'IconController$$IconRenderer.class' \
 	'LocatableNodeDragInteractor$$1.class' \
 	'MoMLModelAttributeController$$LookInsideAction$$1.class' \
 	'MoMLModelAttributeController$$LookInsideAction.class' \
+	'PtolemyLayoutAction$$PtolemyLayout.class' \
+	'PtolemyLayoutAction$$PtolemyLayoutTarget.class' \
 	'RunnableGraphController$$1.class' \
 	'RunnableGraphController$$2.class' \
 	'RunnableGraphController$$ButtonFigureAction.class' \

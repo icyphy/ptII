@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test the Ptolemy actors
+# Makefile for the CG actor tests
 #
 # @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,10 +30,9 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/space/test
-
+ME = 		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/gui/test/
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,15 +44,13 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-	ExportModel.java
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
+JSIMPLE_TESTS = dummy.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -62,12 +59,14 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS)
+
+#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
-		auto
+                     auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -85,11 +84,22 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+# If necessary, build the actors and domains
+RAMP_CLASS = $(ROOT)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/Ramp.class
+
+$(RAMP_CLASS): 
+	if [ ! -f $(RAMP_CLASS) ]; then \
+	    echo "Building cg/adapter classes so tests work"; \
+	    cd $(ROOT)/ptolemy/cg/adapter; $(MAKE) fast; \
+        fi
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) \
+		alljtests.tcl test_auto test_java_cg
 	$(JTCLSH) alljtests.tcl
 
-
+# 'make clean' removes $(KRUFT)
+KRUFT = 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -76,6 +76,7 @@ MISC_FILES =	procedural
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	test \
 	'CodeStream$$1.class' \
 	'CodeStream$$CodeBlockTable.class' \
 	'CodeStream$$Signature.class'\

@@ -118,6 +118,7 @@ OPTIONAL_FILES = \
 	'PlotterBase$$1.class' \
 	'PlotterBase$$PlotWindowTableau.class' \
 	'PlotterBase$$PlotterPlotFrame.class' \
+	'PlotterBase$$WindowClosingAdapter.class' \
 	'SliderSource$$1.class' \
 	'SliderSource$$SliderFrame.class' \
 	'SketchedSource$$1.class'

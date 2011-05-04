@@ -72,7 +72,8 @@ OPTIONAL_FILES = \
 	'cubeTriangle$$1.class' \
 	'TourModelsCanvasGL$$1.class' \
 	'TourModelsCanvasGL$$2.class' \
-	'TourModelsGL$$1.class'
+	'TourModelsGL$$1.class' \
+	'TourModelsGL$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

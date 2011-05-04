@@ -177,6 +177,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'AbstractPlaceableActor$$WindowClosingAdapter.class' \
 	'ArrayOfRecordsPane$$1.class' \
 	'ArrayOfRecordsPane$$ArrayAsTable.class' \
 	'ArrayOfRecordsPane$$EmptyTableModel.class' \
@@ -200,6 +201,8 @@ OPTIONAL_FILES = \
 	'EditParametersDialog$$2.class' \
 	'EditParametersDialog$$3.class' \
 	'EditParametersDialog$$4.class' \
+	'EditParametersDialog$$ChangeExecutedRunnable.class' \
+	'EditParametersDialog$$ChangeFailedRunnable.class' \
 	'ExpressionShellEffigy$$ShellFactory.class' \
 	'ExpressionShellTableau$$1.class' \
 	'ExpressionShellTableau$$Factory.class' \
@@ -238,6 +241,7 @@ OPTIONAL_FILES = \
 	'PlotEffigy$$Factory.class' \
 	'PlotTableau$$Factory.class' \
 	'PlotTableauFrame$$EPSFileFilter.class' \
+	'PlotTableauFrame$$ExportImageAction.class' \
 	'PlotTableauFrame$$FormatAction.class' \
 	'PlotTableauFrame$$SpecialMenuListener.class' \
 	'PortConfigurerDialog$$10.class' \
@@ -289,6 +293,7 @@ OPTIONAL_FILES = \
 	'RunTableau$$TopFactory.class' \
 	'ShellTextArea$$3$1.class' \
 	'Tableau$$1.class' \
+	'Tableau$$WindowClosedAdapter.class' \
 	'TableauFactory$$1.class' \
 	'TableauFrame$$MenuItemListener.class' \
 	'TableauFrame$$ExtensionFileFilter.class' \

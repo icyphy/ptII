@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =		ptolemy/data/ontologies/demo
 
 DIRS = 	CarTracking ConstAbstractInterpretation ConstAbstractInterpretationObservable \
 	ConstNonconst ConstPropagation DimensionSystemExample MonotonicityAnalysis \

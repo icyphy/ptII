@@ -53,6 +53,8 @@ PTCLASSALLJARS =
 
 JSRCS = \
 	AddSubtract.java \
+	Const.java \
+	Expression.java \
 	MultiplyDivide.java \
 	RecordAssembler.java \
 	RecordDisassembler.java \

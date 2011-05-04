@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	CarTracking.xml \
-	CarTrackingSWConfiguration.xml
+	CarTrackingSWConfiguration.xml \
+	CarTrackingUnitsSystem.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

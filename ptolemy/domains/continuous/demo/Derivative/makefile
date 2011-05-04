@@ -1,11 +1,9 @@
-# Makefile for the PTIDES domain library
-# PTIDES: Programming Temporally Integrated Distributed Embedded Systems
-#
-# @Authors: Christopher Brooks (makefile only)
+# Makefile for Ptolemy II demonstration
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,12 +28,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/lib
-
-DIRS =		luminary test
+ME =		ptolemy/domains/continuous/demo/Derivative
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -44,58 +40,48 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =
+PTPACKAGE = 	Derivative
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	luminary/luminary.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	AbsoluteDelay.java \
-	ActuationDevice.java \
-	ActuatorSetup.java \
-	InputDevice.java \
-	MasterClock.java \
-	NetworkReceiver.java \
-	NetworkTransmitter.java \
-	OutputDevice.java \
-	RealisticSlaveClock.java \
-	SensorHandler.java \
-	SimulatedPlatformPhysicalTime.java \
-	SlaveClock.java \
-	VariableDelayCounter.java \
-	ExecutionTimeListener.java \
-	ExecutionTimeMonitor.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ptidesentities.xml
+	$(JSRCS) \
+	Derivative.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
+
+#	Derivative.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	luminary test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'ExecutionTimeListener$$ExecutionEventType.class' \
-	'ExecutionTimeMonitor$$SchedulePlotterEditorFactory.class' \
-	'NetworkReceiver$$1.class' \
-	'NetworkReceiver$$PortFunction.class' \
-	'ScheduleListener$$ScheduleEventType.class' \
-	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer Derivative.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Derivative.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Derivative.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

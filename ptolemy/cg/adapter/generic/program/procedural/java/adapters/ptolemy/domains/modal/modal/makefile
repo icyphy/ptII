@@ -73,7 +73,9 @@ MISC_FILES = kernel
 OPTIONAL_FILES = \
 	demo \
 	'ModalController$$1.class' \
-	'ModalController$$2.class'
+	'ModalController$$2.class' \
+	'ModalController$$NonPreemptiveTransitions.class' \
+	'ModalController$$PreemptiveTransitions.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

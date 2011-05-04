@@ -83,6 +83,7 @@ OPTIONAL_FILES = \
 	'KielerLayoutTableau$$1.class' \
 	'KielerLayoutTableau$$BaseLayoutAction.class' \
 	'KielerLayoutTableau$$HideVerticesAction.class' \
+	'KielerLayoutTableau$$KielerTableauPtolemyLayoutAction.class' \
 	'KielerLayoutTableau$$PlaceAction.class' \
 	'KielerLayoutTableau$$PlaceAllAction.class' \
 	'KielerLayoutTableau$$PlaceAndRouteAction.class' \

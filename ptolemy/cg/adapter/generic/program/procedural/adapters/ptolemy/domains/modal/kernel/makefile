@@ -73,6 +73,7 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	demo \
 	'FSMActor$$1.class' \
+	'FSMActor$$OutgoingRelations.class' \
 	'FSMActor$$PortScope.class' \
 	'FSMActor$$TransitionRetriever.class'
 

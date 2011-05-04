@@ -55,7 +55,11 @@ OTHER_FILES_TO_BE_JARED = \
 	FuelSystemUnitOntologyExample.xml \
 	FuelUnitDimensionsOntology.xml \
 	FuelUnitDimensionsSolverModel.xml \
+	MechanicsUnitsOntology.xml \
+	MechanicsUnitsSolverModel.xml \
 	MultiplyDivideUnits.xml \
+	NewtonsCradle.xml \
+	NewtonsCradleMoreConstraints.xml \
 	TimeUnitIntegration.xml \
 	UnitSystemExample.xml
 

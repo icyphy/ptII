@@ -127,6 +127,8 @@ OPTIONAL_FILES = \
 	'PlotApplication$$1.class' \
 	'PlotApplication$$2.class' \
 	'PlotApplication$$3.class' \
+	'PlotFrame$$FilterForGIF.class' \
+	'PlotFrame$$FolderForLatex.class' \
 	'Plot$$1.class' \
 	'Plot$$2.class' \
 	'Plot$$3.class' \

@@ -87,6 +87,8 @@ OPTIONAL_FILES = \
 	doc \
 	'ComponentDialog$$1.class' \
 	'ComponentDialog$$2.class' \
+	'ComponentDialog$$PropChangeListener.class' \
+	'ComponentDialog$$WindowClosingAdapter.class' \
 	'GraphicalMessageHandler$$1.class' \
 	'GraphicalMessageHandler$$2.class' \
 	'GraphicalMessageHandler$$3.class' \
@@ -101,6 +103,9 @@ OPTIONAL_FILES = \
 	'JTextAreaExec$$4$$1.class' \
 	'JTextAreaExec$$4.class' \
 	'JTextAreaExec$$5.class' \
+	'JTextAreaExec$$1$$1.class' \
+	'JTextAreaExec$$3$$1.class' \
+	'JTextAreaExec$$5$$1.class' \
 	'JTextAreaExec$$6$$1.class' \
 	'JTextAreaExec$$6.class' \
 	'JTextAreaExec$$7.class' \

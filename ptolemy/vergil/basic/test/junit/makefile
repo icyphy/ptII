@@ -68,8 +68,11 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
-
+OPTIONAL_FILES = \
+	'ExportImageJUnitTest$$1.class' \
+	'ExportImageJUnitTest$$2.class' \
+	'ExportImageJUnitTest$$3.class' \
+	'ExportImageJUnitTest$$4.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
