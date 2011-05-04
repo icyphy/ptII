@@ -111,12 +111,7 @@ public class BootstrapSampleDelay extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args = new ArrayList<String>();
         args.add("");
         for (int i = 0; i < length; i++) {
-            /* Token element =*/((ArrayToken) actor.initialOutputs.getToken())
-                    .getElement(i);
-
             args.set(0, Integer.toString(i));
-            System.out.println("BootstrapSampleDelay " + getComponent().getFullName() + " " + args.get(0) + " " + length + " "
-                    + ((ArrayToken) actor.initialOutputs.getToken()).getElement(i).toString());
             codeStream.appendCodeBlock("initTokens", args);
         }
 
