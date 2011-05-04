@@ -92,6 +92,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -182,7 +183,7 @@ import diva.util.java2d.ShapeUtilities;
  */
 public abstract class BasicGraphFrame extends PtolemyFrame implements
         Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
-        MouseListener, MouseMotionListener {
+        MouseListener, MouseMotionListener, ImageExportable {
 
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
@@ -1402,15 +1403,28 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  current view using the {@link #writeImage(OutputStream, String)}
      *  method.
      *  @param destination The destination byte stream to write to.
+     *  @param directory The directory in which to put any associated files.
+     *  @throws IOException If unable to write associated files.
+     *  @throws PrinterException If unable to write associated files.
      */
-    public void writeHTML(Writer destination) {
+    public void writeHTML(Writer destination, File directory) throws PrinterException, IOException {
         PrintWriter writer = new PrintWriter(destination);
         writer.println("<html><head>");
+        // Include jquery and lightbox.
+        // FIXME: Copy source files into destination directory.
+        writer.println("<script type=\"text/javascript\" src=\"js/jquery.js\"></script>");
+        writer.println("<script type=\"text/javascript\" src=\"js/jquery.lightbox-0.5.js\"></script>");
+        writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
+
         // FIXME: Need to parameterize the functions somehow.
         writer.println("<script type=\"text/javascript\">");
         writer.println("function writeText(text) {");
         writer.println("  document.getElementById(\"actorName\").innerHTML = text;");
         writer.println("}");
+        // The following requires the jquery lightbox extension.
+        writer.println("$(function() {");
+        writer.println("  $('area.lightbox').lightBox();");
+        writer.println("});");
         writer.println("</script>");
         writer.println("</head><body>");
         
@@ -1426,21 +1440,64 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
         for (IconVisibleLocation location : iconLocations) {
             // Create a table with parameter values for the actor.
-            StringBuffer table = new StringBuffer("<table border=&quot;1&quot;>");
+            StringBuffer table = new StringBuffer();
             List<Settable> parameters = location.object.attributeList(Settable.class);
+            boolean hasParameter = false;
             for (Settable parameter : parameters) {
                 if (parameter.getVisibility().equals(Settable.FULL)) {
+                    hasParameter = true;
                     table.append("<tr><td>");
                     table.append(parameter.getName());
+                    table.append("</td><td>");
+                    String expression = parameter.getExpression();
+                    expression = StringUtilities.escapeForXML(expression);
+                    expression = expression.replaceAll("'", "\\\\'");
+                    if (expression.length() == 0) {
+                        expression="&nbsp;";
+                    }
+                    table.append(expression);
                     table.append("</td><td>");
                     String value = parameter.getValueAsString();
                     value = StringUtilities.escapeForXML(value);
                     value = value.replaceAll("'", "\\\\'");
+                    if (value.length() == 0) {
+                        value="&nbsp;";
+                    }
                     table.append(value);
                     table.append("</td></tr>");
                 }
             }
-            table.append("</table>");
+            if (hasParameter) {
+                table.insert(0, "<table border=&quot;1&quot;>" +
+                		"<tr><td><b>Parameter</b></td>" +
+                		"<td><b>Expression</b></td>" +
+                		"<td><b>Value</b></td></tr>");
+                table.append("</table>");
+            } else {
+                table.append("Has no parameters.");
+            }
+            
+            String linkTo = "";
+            Effigy effigy = Configuration.findEffigy(location.object);
+            if (effigy != null) {
+                // Look for any open tableaux for the object.
+                List<Tableau> tableaux = effigy.entityList(Tableau.class);
+                // If there are multiple tableaux open, use only the first one.
+                if (tableaux.size() > 0) {
+                    Frame frame = tableaux.get(0).getFrame();
+                    // FIXME: If it's a composite actor, then we probably
+                    // want to export HTML, not use lightbox.
+                    if (frame instanceof ImageExportable) {
+                        String name = location.object.getName();
+                        File gifFile = new File(directory, name + ".gif");
+                        OutputStream out = new FileOutputStream(gifFile);
+                        writeImage(out, "gif");
+                        linkTo = "href=\""  + name + ".gif\"" +
+                                " class=\"lightbox\"" +
+                                " title=\"" + name + "\"";
+                    }
+                }
+            }
             
             // Write the name of the actor followed by the table.
             writer.println("<area shape=\"rect\" coords=\""
@@ -1451,7 +1508,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     + location.object.getName()
                     + "</h2>"
                     + table.toString()
-                    + "')\"/>");
+                    + "')\""
+                    + linkTo
+                    + "/>");
 
         }
         writer.println("</map>");
@@ -3302,11 +3361,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 FileWriter htmlFileWriter = null;
                 try {
                     indexFile = new File(file, "index.html");
-                    htmlFileWriter = new FileWriter(indexFile);
-                    writeHTML(htmlFileWriter);
+                    writeHTML(new FileWriter(indexFile), file);
                 } catch (IOException ex) {
-                    MessageHandler.error("Unable to create HTML file "
-                            + indexFile + ".", ex);
+                    MessageHandler.error("Unable to create HTML file.", ex);
+                    return;  
+                } catch (PrinterException e1) {
+                    MessageHandler.error("Failed to created associated files.", e1);
                     return;  
                 } finally {
                     if (htmlFileWriter != null) {

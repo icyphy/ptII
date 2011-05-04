@@ -71,6 +71,7 @@ JSRCS = \
 	GetDocumentationAction.java \
 	IconController.java \
 	IGuiAction.java \
+	ImageExportable.java \
 	KeplerDocumentationAttribute.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \

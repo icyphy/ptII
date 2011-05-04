@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import javax.print.PrintService;
@@ -62,6 +63,7 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.ImageExportable;
 
 // TO DO:
 //   - Add a mechanism for combining two plots into one
@@ -101,7 +103,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotFrame extends JFrame implements PropertyChangeListener {
+public class PlotFrame extends JFrame implements PropertyChangeListener, ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -267,6 +269,22 @@ public class PlotFrame extends JFrame implements PropertyChangeListener {
         _editMenu.setBackground(_menubar.getBackground());
         _fileMenu.setBackground(_menubar.getBackground());
         _specialMenu.setBackground(_menubar.getBackground());
+    }
+    
+    /** Write an image to the specified output stream in the specified format.
+     *  Supported formats include at least "gif" and "png", standard image file formats.
+     *  The image is a rendition of the current view of the model.
+     *  @param stream The output stream to write to.
+     *  @param format The image format to generate.
+     *  @see #writeHTML(Writer)
+     *  @throws IOException If writing to the stream fails.
+     *  @throws PrinterException  If the specified format is not supported.
+     */
+    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
+        if (plot == null) {
+            throw new IOException("No plot to write image from!");
+        }
+        plot.exportImage(stream, format);
     }
 
     ///////////////////////////////////////////////////////////////////
