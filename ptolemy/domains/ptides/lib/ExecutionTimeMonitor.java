@@ -51,6 +51,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 /** This plotter monitors the execution of actors and displays the
@@ -136,6 +137,26 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         }
         plot.fillPlot();
         plot.repaint();
+    }
+    
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new Bus.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ExecutionTimeMonitor newObject = (ExecutionTimeMonitor) super.clone(workspace);
+        newObject._actors = new ArrayList<Actor>();
+        newObject._previousY = new HashMap<Actor, Double>();
+        return super.clone();
     }
 
     /** Initialize the plot and the legend. The legend will be created for all
