@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib
 
-DIRS =		colt conversions gui jopio logic string test
+DIRS =		colt conversions gui hoc jopio logic string test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	conversions/conversions.jar \
+	hoc/hoc.jar \
 	gui/gui.jar \
 	jopio/jopio.jar \
 	logic/logic.jar \
