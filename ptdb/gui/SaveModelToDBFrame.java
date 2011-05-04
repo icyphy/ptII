@@ -135,8 +135,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             if (attribute instanceof StringParameter) {
 
-                if (((StringParameter) attribute).getName() != XMLDBModel.DB_REFERENCE_ATTR
-                        && ((StringParameter) attribute).getName() != XMLDBModel.DB_MODEL_ID_ATTR
+                if (!((StringParameter) attribute).getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
+                        && !((StringParameter) attribute).getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
                         && _attributesListPanel
                                 .isDBAttribute(((StringParameter) attribute)
                                         .getName())) {
@@ -847,8 +847,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             // set of attributes obtained from the DB.
             for (StringParameter attribute : attributesList) {
 
-                if (attribute.getName() != XMLDBModel.DB_REFERENCE_ATTR
-                        && attribute.getName() != XMLDBModel.DB_MODEL_ID_ATTR
+                if (!attribute.getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
+                        && !attribute.getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
                         && _attributesListPanel.isDBAttribute(attribute
                                 .getName())) {
 
@@ -1061,8 +1061,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             // set of attributes obtained from the DB.
             for (StringParameter attribute : attributesList) {
 
-                if (attribute.getName() != XMLDBModel.DB_REFERENCE_ATTR
-                        && attribute.getName() != XMLDBModel.DB_MODEL_ID_ATTR
+                if (attribute.getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
+                        && attribute.getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
                         && _attributesListPanel.isDBAttribute(attribute
                                 .getName())) {
 
