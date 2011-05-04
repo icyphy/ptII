@@ -1548,7 +1548,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     // The second check below guards against a refinement with no director.
                     if (refinementDirector instanceof FSMDirector
                             && refinementDirector != this) {
-                        // The refinement is an FSM, so we perform analysis
+                        // The refinement is an FSM, so we perform must/may analysis
                         // to identify outputs that can be determined to be absent.
                         FSMActor refinementController = ((FSMDirector)refinementDirector).getController();
                         if (!_assertAbsentOutputs(refinementController, checkRefinement)) {
