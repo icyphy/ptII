@@ -72,8 +72,8 @@ double add_Double_Integer(double a1, int a2) {
 /**/
 
 /*** add_Double_String() ***/
-char* add_Double_String(double a1, char* a2) {
-    return $add_String_Double(a2, a1);
+double add_Double_String(double a1, String a2) {
+    return Double.valueOf($add_String_Double(a2, a1));
 }
 /**/
 
@@ -107,10 +107,8 @@ int add_Integer_Integer(int a1, int a2) {
 /**/
 
 /*** add_Integer_String() ***/
-char* add_Integer_String(int a1, char* a2) {
-    char* string = (char*) malloc(sizeof(char) * (12 + strlen(a2)));
-    sprintf((char*) string, "%d%s", a1, a2);
-    return string;
+int add_Integer_String(int a1, String a2) {
+    return Integer.valueOf($add_String_Integer(a2, a1));
 }
 /**/
 
@@ -157,7 +155,7 @@ String add_String_Double(String a1, double a2) {
 /**/
 
 /*** add_String_Integer() ***/
-String add_Strng_Integer(String a1, int a2) {
+String add_String_Integer(String a1, int a2) {
     return $add_Integer_String(a2, a1);
 }
 /**/
@@ -288,8 +286,9 @@ int add_UnsignedByte_Integer(int a1, int a2) {
 /**/
 
 /*** add_UnsignedByte_String() ***/
-char* add_UnsignedByte_String(int a1, char* a2) {
-    return $add_String_UnsignedByte(a2, a1);
+int add_UnsignedByte_String(int a1, String a2) {
+    // FIXME: Integer.valueOf() is probably not correct.
+    return Integer.valueOf($add_String_UnsignedByte(a2, a1));
 }
 /**/
 

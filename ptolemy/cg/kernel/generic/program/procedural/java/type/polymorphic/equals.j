@@ -36,7 +36,7 @@ static boolean equals_Boolean_Integer(boolean a1, int a2) {
 /**/
 
 /*** equals_Boolean_String() ***/
-static boolean equals_Boolean_String(boolean a1, char* a2) {
+static boolean equals_Boolean_String(boolean a1, String a2) {
     return $equals_String_Boolean(a2, a1);
 }
 /**/
@@ -66,7 +66,7 @@ static boolean equals_Double_Integer(double a1, int a2) {
 /**/
 
 /*** equals_Double_String() ***/
-static boolean equals_Double_String(double a1, char* a2) {
+static boolean equals_Double_String(double a1, String a2) {
     return $equals_String_Double(a2, a1);
 }
 /**/
@@ -103,7 +103,7 @@ static boolean equals_Int_Integer(int a1, int a2) {
 /**/
 
 /*** equals_Int_String() ***/
-static boolean equals_Int_String(int a1, char* a2) {
+static boolean equals_Int_String(int a1, String a2) {
     return a1 == atoi(a2);
 }
 /**/
@@ -141,27 +141,31 @@ static boolean equals_Long_Token(long long a1, Token a2) {
 /**/
 
 /*** equals_String_Boolean() ***/
-static boolean equals_String_Boolean(char* a1, boolean a2) {
-    char* a2String = a2 ? "true" : "false";
-    return strcmp(a1, a2String) == 0 ? true : false;
+static boolean equals_String_Boolean(String a1, boolean a2) {
+    if (a2 && a1.equals("true") 
+            || !a2 && a2.equals("false")) {
+        return true;	    
+    }
+    return false;
 }
 /**/
 
 /*** equals_String_Double() ***/
-static boolean equals_String_Double(char* a1, double a2) {
-        return atof(a1) == a2;
+static boolean equals_String_Double(String a1, double a2) {
+    // FIXME: What about epsilon?       
+    return Double.valueOf(a1) == a2;       
 }
 /**/
 
 /*** equals_String_Integer() ***/
-static boolean char* equals_String_Integer(char* a1, int a2) {
-        return atoi(a1) == a2;
+static boolean equals_String_Integer(String a1, int a2) {
+    return Integer.valueOf(a1) == a1;       
 }
 /**/
 
 /*** equals_String_String() ***/
-static boolean equals_String_String(char* a1, char* a2) {
-    return strcmp(a1, a2) == 0 ? true : false;
+static boolean equals_String_String(String a1, String a2) {
+    return a1.equals(a2);
 }
 /**/
 
