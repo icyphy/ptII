@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={389, 390, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 182, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test out Ports with names that have $,* and/or - with&#10;actors that do not have a codegen template.&#10;&#10;Maximum is an actor for which we do not have a template.&#10;Maximum has a port with the name &quot;PortWith$And*And-&quot;&#10;that has a tokenConsumptionRate of 4.&#10; &#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test out Ports with names that have $,* space and/or - with&#10;actors that do not have a codegen template.&#10;&#10; &#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 65.0]">
         </property>
@@ -31,7 +31,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.5, 180.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -42,15 +42,15 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 215.0]">
         </property>
     </entity>
     <entity name="ExpressionActorToBeAutoCodeGenerated" class="ptolemy.cg.kernel.generic.program.procedural.java.test.ExpressionActorToBeAutoCodeGenerated">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Foo&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.5, 150.0]">
         </property>
-        <port name="PorWith$*-InName" class="ptolemy.actor.TypedIOPort">
+        <port name="PorWith$* And Space -InName" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -63,5 +63,5 @@
     <link port="Test.input" relation="relation2"/>
     <link port="Const2.output" relation="relation"/>
     <link port="ExpressionActorToBeAutoCodeGenerated.output" relation="relation2"/>
-    <link port="ExpressionActorToBeAutoCodeGenerated.PorWith$*-InName" relation="relation"/>
+    <link port="ExpressionActorToBeAutoCodeGenerated.PorWith$* And Space -InName" relation="relation"/>
 </entity>

@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.java;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
@@ -214,8 +216,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
             // FIXME: handle multiline values
             String parameterValue = "";
-            if (parameter != null
-                    && parameter instanceof Variable
+            if (parameter instanceof Variable
                     && ((Variable)parameter).getToken() != null) {
                 // Evaluate things like $PTII
                 parameterValue = ((Variable)parameter).getToken().toString();
@@ -578,16 +579,47 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 +");\n");
 
         try {
+            Field foundPortField = null;
             // Make sure that there is a field with that name
             // $PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml
             // has a NonStrict actor with an output that is not connected.
             // If we don't check for the field, then the generated Java code
             // fails.
-            getComponent().getClass().getField(actorPortName);
-
+            String unescapedActorPortName = TemplateParser.unescapePortName(actorPortName);
+            try {
+                foundPortField = getComponent().getClass().getField(unescapedActorPortName);
+            } catch (Exception ex) {
+                // It could be that the name of the port and the variable name
+                // do not match.
+                StringBuffer portNames = new StringBuffer();
+                Field[] fields = getComponent().getClass().getFields();
+                try {
+                    for (int i = 0; i < fields.length; i++) {
+                        if (fields[i].get(getComponent()) instanceof Port) {
+                            Port portField = (Port) fields[i].get(getComponent());
+                            String portName = portField.getName();
+                            portNames.append(portName + " ");
+                            if (portName.equals(unescapedActorPortName)) {
+                                foundPortField = fields[i];
+                                break;
+                            }
+                        }
+                    }
+                } catch (Exception ex2) {
+                    ex2.printStackTrace();
+                }
+                if (foundPortField == null) {
+                    System.out.println("Warning: could not find port \""
+                            + unescapedActorPortName + "\" in " + getComponent().getFullName()
+                            + " Ports were: " + portNames);
+                }
+            }
+            if (foundPortField == null) {
+                throw new NoSuchFieldException("Could not find port " + unescapedActorPortName);
+            }
             String portOrParameter = "((" + getComponent().getClass().getName()
                 + ")$actorSymbol(actor))." 
-                + actorPortName + ( portParameter instanceof PortParameter 
+                + foundPortField.getName() + ( portParameter instanceof PortParameter 
                         ? ".getPort()" : "");
             
             code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
@@ -601,7 +633,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
         } catch (NoSuchFieldException ex) {
-            // Ignore.
+            System.out.println("Warning, could not find field " + actorPortName);
+            ex.printStackTrace();
         }
         return code.toString();
 

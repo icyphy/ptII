@@ -152,7 +152,7 @@ public class TemplateParser {
      *  @see #unescapePortName(String)
      */
     public static String escapePortName(String name) {
-        return escapeName(name);
+        return escapeName(name).replace(" ", "_X_SPACE_X");
     }
 
     /**
@@ -1167,7 +1167,7 @@ public class TemplateParser {
      *  @see #escapePortName(String)
      */
     public static String unescapePortName(String name) {
-        return unescapeName(name);
+        return unescapeName(name.replace("_X_SPACE_X", " "));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	ActorWithPortNameProblem.java \
 	ActorWithPrivateParameter.java \
 	ExpressionActorToBeAutoCodeGenerated.java
 
