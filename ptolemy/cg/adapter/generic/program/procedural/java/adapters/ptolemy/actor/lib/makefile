@@ -54,7 +54,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	conversions/conversions.jar \
-	hoc/hoc.jar \
 	gui/gui.jar \
 	jopio/jopio.jar \
 	logic/logic.jar \
