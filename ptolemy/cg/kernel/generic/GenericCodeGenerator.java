@@ -509,6 +509,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     // Destroy the top level so that we avoid
                     // problems with running the model after generating code
                     if (toplevel != null 
+                            && toplevel.getManager() != null
                             && toplevel.getManager().getState().equals(Manager.IDLE)) {
                         try {
                             // Only set the container to null if the Manager is IDLE.
