@@ -180,10 +180,13 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         // The component port is not connected to anything, so get should
         // always return something trivial;
 
-        System.err.println("cg IOPort: Warning: component port is not connected, returning 0?");
-        // FIXME: This is wrong, this could be a PortParameter.
-        return "$convert_" + getCodeGenerator().codeGenType(BaseType.INT) + "_"
+        String returnValue = "$convert_" + getCodeGenerator().codeGenType(BaseType.INT) + "_"
                 + typeString + "(0)";
+        System.err.println("cg IOPort: Warning: component port \""
+                + getComponent().getFullName()
+                + "\" is not connected, returning: " + returnValue);
+        // FIXME: This is wrong, this could be a PortParameter.
+        return returnValue;
     }
 
     /**
