@@ -293,7 +293,8 @@ public class Server {
                 Thread.sleep(10); // in milliseconds
                 ser[iSer].read();
                 //                Thread.sleep(10);
-                ser[iSer].write(0, new Double(iLoo).doubleValue(), dbl);
+                // FindBugs: Primitive value is boxed and then immediately unboxed.
+                ser[iSer].write(0, Double.valueOf(iLoo).doubleValue(), dbl);
                 System.out.println("Loop number: " + iLoo);
             }
             iLoo++;

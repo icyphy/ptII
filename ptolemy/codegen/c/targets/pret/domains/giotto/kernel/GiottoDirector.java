@@ -250,7 +250,7 @@ public class GiottoDirector extends
         }
         if (port.isOutput() && forComposite == false
                 && !director.getFullName().contains("SDF")) {
-            if (channelAndOffset[0] == "") {
+            if (channelAndOffset[0].equals("")) {
                 channelAndOffset[0] = "0";
             }
             return CodeGeneratorHelper.generateName(port);

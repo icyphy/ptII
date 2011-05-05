@@ -409,19 +409,19 @@ public class IOPortController extends AttributeController {
                         }
     
                         StringAttribute info = (StringAttribute) port.getAttribute("_showInfo");
-                        String qmString = "";
                         if (info == null) {
                             info = new StringAttribute(port,
                                     "_showInfo");
                         }
     
+                        StringBuffer qmStringBuffer = new StringBuffer();
                         for (int j = 0; j < qmList.size(); j++) {
-                            qmString = qmString
-                                    + qmList.get(j).getName() + ", ";
+                            if (qmStringBuffer.length() > 0) {
+                                qmStringBuffer.append(", ");
+                            }
+                            qmStringBuffer.append(qmList.get(j).getName());
                         }
-                        info.setExpression("QM: "
-                                + qmString.substring(0,
-                                        qmString.length() - 2)); 
+                        info.setExpression("QM: " + qmStringBuffer.toString());
                     }
                     }
                 } 

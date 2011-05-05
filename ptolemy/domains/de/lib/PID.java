@@ -201,28 +201,32 @@ public class PID extends DETransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        //Consume input, generate output only if input provided
+        // Consume input, generate output only if input provided.
         if (input.hasToken(0)) {
             Time currentTime = getDirector().getModelTime();
             DoubleToken currentToken = (DoubleToken) input.get(0);
             _currentInput = new TimedEvent(currentTime, currentToken);
 
-            //Add proportional component to controller output
+            // Add proportional component to controller output.
             DoubleToken currentOutput = (DoubleToken) currentToken.multiply(Kp
                     .getToken());
 
-            //If a previous input was given, then add integral and derivative components
+            // If a previous input was given, then add integral and
+            // derivative components.
             if (_lastInput != null) {
                 DoubleToken lastToken = (DoubleToken) _lastInput.contents;
                 Time lastTime = _lastInput.timeStamp;
                 DoubleToken timeGap = new DoubleToken(currentTime.subtract(
                         lastTime).getDoubleValue());
 
-                //If the timeGap is zero, then we have received a simultaneous event. If the
-                // value of the input has not changed, then we can ignore this input, as a control
-                // signal was already generated. However if the value has changed, then the signal
-                // is discontinuous and we should throw an exception unless derivative control
-                // is disabled (Kd=0).
+                //If the timeGap is zero, then we have received a
+                // simultaneous event. If the value of the input has
+                // not changed, then we can ignore this input, as a
+                // control signal was already generated. However if
+                // the value has changed, then the signal is
+                // discontinuous and we should throw an exception
+                // unless derivative control is disabled (Kd=0).
+
                 if (timeGap.isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
                     if (!((DoubleToken)Kd.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()
                             && !currentToken.equals(lastToken)) {
@@ -230,20 +234,21 @@ public class PID extends DETransformer {
                                 "PID controller recevied discontinuous input.");
                     }
                 }
-                // Otherwise, the signal is continuous and we add integral and derivative components
+                // Otherwise, the signal is continuous and we add
+                // integral and derivative components.
                 else {
                     if (!((DoubleToken)Ki.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
                         //Calculate integral component and accumulate
                         _accumulated = (DoubleToken) _accumulated
                                 .add(currentToken.add(lastToken).multiply(
                                         timeGap).multiply(new DoubleToken(0.5)));
-                        //Add integral component to controller output
+                        // Add integral component to controller output.
                         currentOutput = (DoubleToken) currentOutput
                                 .add(_accumulated.multiply(Ki.getToken()));
                     }
 
-                    //Add derivative component to controller output
-                    if (!Kd.equals(0)) {
+                    // Add derivative component to controller output.
+                    if (!((DoubleToken)Kd.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
                         currentOutput = (DoubleToken) currentOutput
                                 .add(currentToken.subtract(lastToken).divide(
                                         timeGap).multiply(Kd.getToken()));
@@ -263,13 +268,13 @@ public class PID extends DETransformer {
         //If reset port is connected and has a token, reset state.
         if (reset.getWidth() > 0) {
             if (reset.hasToken(0)) {
-                //Consume reset token
+                // Consume reset token.
                 reset.get(0);
 
-                //Reset the current input
+                // Reset the current input.
                 _currentInput = null;
 
-                //Reset accumulation
+                // Reset accumulation.
                 _accumulated = new DoubleToken(0.0);
             }
         }

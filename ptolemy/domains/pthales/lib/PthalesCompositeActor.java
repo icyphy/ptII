@@ -231,20 +231,20 @@ public class PthalesCompositeActor extends TypedCompositeActor {
      * @param repetition The number of times this actor is fired.
      */
     public void setIterations(Integer[] repetition) {
-        String repetitionString = "{";
+        StringBuffer repetitionStringBuffer = new StringBuffer("{");
 
         for (int i = 0; i < repetition.length; i++) {
-            repetitionString += repetition[i];
+            repetitionStringBuffer.append(repetition[i]);
             if (i < repetition.length - 1) {
-                repetitionString += ",";
+                repetitionStringBuffer.append(",");
             }
         }
 
-        repetitionString += "}";
+        repetitionStringBuffer.append("}");
 
         Attribute repetitions = getAttribute(PthalesCompositeActor._REPETITIONS);
         if (repetitions != null && repetitions instanceof Parameter) {
-            ((Parameter) repetitions).setExpression(repetitionString);
+            ((Parameter) repetitions).setExpression(repetitionStringBuffer.toString());
         }
     }
 

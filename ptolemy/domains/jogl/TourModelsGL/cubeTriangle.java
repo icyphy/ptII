@@ -23,6 +23,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.sun.opengl.util.FPSAnimator;
 
@@ -57,30 +58,47 @@ public class cubeTriangle extends JPanel implements GLEventListener {
       final int WINDOW_HEIGHT = 240;
       final String WINDOW_TITLE = "Display3D";
 
-      JFrame frame = new JFrame();
-      final cubeTriangle joglMain = new cubeTriangle();
-      frame.setContentPane(joglMain);
-      frame.addWindowListener(new WindowAdapter() {
-         @Override 
-         public void windowClosing(WindowEvent e) {
-            // Use a dedicate thread to run the stop() to ensure that the
-            // animator stops before program exits.
-            new Thread() {
-               @Override 
-               public void run() {
-                  joglMain.animator.stop(); // stop the animator loop
-                  System.exit(0);
-               }
-            }.start();
-         }
-      });
-      frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-      frame.setTitle(WINDOW_TITLE);
-      frame.setVisible(true);
-      joglMain.animator.start(); // start the animation loop
+      try {
+          // Run this in the Swing Event Thread.
+          Runnable doActions = new Runnable() {
+                  public void run() {
+                      try {
+                          JFrame frame = new JFrame();
+                          final cubeTriangle joglMain = new cubeTriangle();
+                          frame.setContentPane(joglMain);
+                          frame.addWindowListener(new WindowAdapter() {
+                                  @Override 
+                                  public void windowClosing(WindowEvent e) {
+                                      // Use a dedicate thread to run the stop() to ensure that the
+                                      // animator stops before program exits.
+                                      new Thread() {
+                                          @Override 
+                                          public void run() {
+                                              joglMain.animator.stop(); // stop the animator loop
+                                              System.exit(0);
+                                          }
+                                      }.start();
+                                  }
+                              });
+                          frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+                          frame.setTitle(WINDOW_TITLE);
+                          frame.setVisible(true);
+                          joglMain.animator.start(); // start the animation loop
+                      } catch (Exception ex) {
+                          System.err.println(ex.toString());
+                          ex.printStackTrace();
+                      }
+                  }
+              };
+          SwingUtilities.invokeAndWait(doActions);
+      } catch (Exception ex) {
+          System.err.println(ex.toString());
+          ex.printStackTrace();
+
+      }
    }
 
-   // ------ Implement methods declared in GLEventListener ------
+    // ------ Implement methods declared in GLEventListener ------
 
    /**
     * Called back immediately after the OpenGL context is initialized. Can be used 

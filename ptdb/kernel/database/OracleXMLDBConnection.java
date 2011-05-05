@@ -549,7 +549,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     public List<XMLDBModel> executeGetFirstLevelParents(
             GetFirstLevelParentsTask task) throws DBExecutionException {
-        String references = "";
+        StringBuffer references = new StringBuffer("");
         ArrayList<XMLDBModel> parentsList = new ArrayList<XMLDBModel>();
         HashSet alreadyFetchedParents = new HashSet();
         XMLDBModel model = task.getModel();
@@ -571,11 +571,11 @@ public class OracleXMLDBConnection implements DBConnection {
             if (results != null && results.size() > 0) {
                 while (results.hasNext()) {
                     XmlValue xmlValue = results.next();
-                    references += xmlValue.asString();
+                    references.append(xmlValue.asString());
                 }
 
-                references = "<entities>" + references + "</entities>";
-                Node entitiesNode = Utilities.parseXML(references);
+                Node entitiesNode = Utilities.parseXML(
+                        "<entities>" + references.toString() + "</entities>");
 
                 NodeList entityList = entitiesNode.getFirstChild()
                         .getChildNodes();

@@ -780,7 +780,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                         try {
 
                             SearchCriteriaManager.save(_searchCriteria,
-                                    filename.getCanonicalPath().toString());
+                                    filename.getCanonicalPath());
 
                             _saveLocation = chooser.getSelectedFile()
                                     .getCanonicalPath();

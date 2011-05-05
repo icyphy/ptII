@@ -570,17 +570,17 @@ public class PthalesIOPort {
             }
         }
 
-        String s = "[";
+        StringBuffer s = new StringBuffer("[");
         if (pattern instanceof Parameter) {
             for (int i = 0; i < dims.length; i++) {
-                s += dims[i] + "={" + dimSizes[i] + ",1}";
+                s.append(dims[i] + "={" + dimSizes[i] + ",1}");
                 if (i < dims.length - 1) {
-                    s += ",";
+                    s.append(",");
                 }
             }
         }
-        s += "]";
-        ((Parameter) pattern).setExpression(s);
+        s.append("]");
+        ((Parameter) pattern).setExpression(s.toString());
     }
 
     /** Propagate the header through application relations

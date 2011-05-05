@@ -194,8 +194,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             // reference indication or the model name AND it is one of the
             // attributes configured in the DB, show it in the panel.
             if (stringParameter instanceof StringParameter
-                    && ((StringParameter) stringParameter).getName() != XMLDBModel.DB_REFERENCE_ATTR
-                    && ((StringParameter) stringParameter).getName() != XMLDBModel.DB_MODEL_ID_ATTR
+                    && !((StringParameter) stringParameter).getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
+                    && !((StringParameter) stringParameter).getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
                     && _attributesListPanel
                             .isDBAttribute(((StringParameter) stringParameter)
                                     .getName())) {

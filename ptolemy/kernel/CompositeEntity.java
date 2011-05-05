@@ -1893,7 +1893,7 @@ public class CompositeEntity extends ComponentEntity {
             int entityCount = atomicEntities.size();
 
             Map<String, Integer> actorMap = new HashMap<String, Integer>();
-            Integer one = new Integer(1);
+            Integer one = Integer.valueOf(1);
 
             int attributeCount = 0, entityClassCount = 0;
             Iterator entities = atomicEntities.iterator();

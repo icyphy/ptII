@@ -815,7 +815,7 @@ public class SaveModelManager {
             
             newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
             
-            newModelContent.trim();
+            newModelContent = newModelContent.trim();
 
         }
         
@@ -828,14 +828,8 @@ public class SaveModelManager {
             
             newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
             
-            newModelContent.trim();
-            
-
+            newModelContent = newModelContent.trim();
         }
-        
-        
         return newModelContent;
-        
-        
     }
 }

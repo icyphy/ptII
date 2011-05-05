@@ -228,7 +228,7 @@ public class XMLDBAttribute {
             if (_attributeValues != null && _attributeValues.size() > 0) {
                 for (int i = 0; i < _attributeValues.size(); i++) {
                     attributeBuffer.append("<item name='"
-                            + _attributeValues.get(i).toString() + "'/>");
+                            + _attributeValues.get(i) + "'/>");
                 }
             }
         }
