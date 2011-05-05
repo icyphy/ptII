@@ -61,7 +61,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
@@ -92,7 +91,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -124,7 +122,6 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -148,7 +145,6 @@ import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
 import diva.canvas.CanvasUtilities;
-import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.JCanvas;
@@ -183,7 +179,7 @@ import diva.util.java2d.ShapeUtilities;
  */
 public abstract class BasicGraphFrame extends PtolemyFrame implements
         Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
-        MouseListener, MouseMotionListener, ImageExportable {
+        MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
@@ -1393,7 +1389,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
     
     /** Write an HTML page based on the current view of the model
-     *  to the specified destination.
+     *  to the specified destination directory. The file will be
+     *  named "index.html," and supporting files, including at
+     *  least a gif image showing the contents currently visible in
+     *  the graph frame, will be created. If there are any plot windows
+     *  open or any composite actors open, then gif and/or HTML will
+     *  be generated for those as well and linked to the gif image
+     *  created for this frame.
+     *  <p>
      *  The generated page has a header with the name of the model,
      *  a reference to a GIF image file with name equal to the name
      *  of the model with a ".gif" extension appended, and a script
@@ -1407,118 +1410,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @throws IOException If unable to write associated files.
      *  @throws PrinterException If unable to write associated files.
      */
-    public void writeHTML(Writer destination, File directory) throws PrinterException, IOException {
-        PrintWriter writer = new PrintWriter(destination);
-        writer.println("<html><head>");
-        // Include jquery and lightbox.
-        // FIXME: Copy source files into destination directory.
-        writer.println("<script type=\"text/javascript\" src=\"js/jquery.js\"></script>");
-        writer.println("<script type=\"text/javascript\" src=\"js/jquery.lightbox-0.5.js\"></script>");
-        writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
-
-        // FIXME: Need to parameterize the functions somehow.
-        writer.println("<script type=\"text/javascript\">");
-        writer.println("function writeText(text) {");
-        writer.println("  document.getElementById(\"actorName\").innerHTML = text;");
-        writer.println("}");
-        // The following requires the jquery lightbox extension.
-        writer.println("$(function() {");
-        writer.println("  $('area.lightbox').lightBox();");
-        writer.println("});");
-        writer.println("</script>");
-        writer.println("</head><body>");
-        
-        // Put a header in.
-        writer.println("<h1>" + getModel().getName() + "</h1>");
-        
-        // Put the image in.
-        writer.println("<img src=\"" + getModel().getName()
-                + ".gif\" usemap=\"#actormap\"/>");
-
-        // Write the map next.
-        writer.println("<map name=\"actormap\">");
-        List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
-        for (IconVisibleLocation location : iconLocations) {
-            // Create a table with parameter values for the actor.
-            StringBuffer table = new StringBuffer();
-            List<Settable> parameters = location.object.attributeList(Settable.class);
-            boolean hasParameter = false;
-            for (Settable parameter : parameters) {
-                if (parameter.getVisibility().equals(Settable.FULL)) {
-                    hasParameter = true;
-                    table.append("<tr><td>");
-                    table.append(parameter.getName());
-                    table.append("</td><td>");
-                    String expression = parameter.getExpression();
-                    expression = StringUtilities.escapeForXML(expression);
-                    expression = expression.replaceAll("'", "\\\\'");
-                    if (expression.length() == 0) {
-                        expression="&nbsp;";
-                    }
-                    table.append(expression);
-                    table.append("</td><td>");
-                    String value = parameter.getValueAsString();
-                    value = StringUtilities.escapeForXML(value);
-                    value = value.replaceAll("'", "\\\\'");
-                    if (value.length() == 0) {
-                        value="&nbsp;";
-                    }
-                    table.append(value);
-                    table.append("</td></tr>");
-                }
-            }
-            if (hasParameter) {
-                table.insert(0, "<table border=&quot;1&quot;>" +
-                		"<tr><td><b>Parameter</b></td>" +
-                		"<td><b>Expression</b></td>" +
-                		"<td><b>Value</b></td></tr>");
-                table.append("</table>");
-            } else {
-                table.append("Has no parameters.");
-            }
-            
-            String linkTo = "";
-            Effigy effigy = Configuration.findEffigy(location.object);
-            if (effigy != null) {
-                // Look for any open tableaux for the object.
-                List<Tableau> tableaux = effigy.entityList(Tableau.class);
-                // If there are multiple tableaux open, use only the first one.
-                if (tableaux.size() > 0) {
-                    Frame frame = tableaux.get(0).getFrame();
-                    // FIXME: If it's a composite actor, then we probably
-                    // want to export HTML, not use lightbox.
-                    if (frame instanceof ImageExportable) {
-                        String name = location.object.getName();
-                        File gifFile = new File(directory, name + ".gif");
-                        OutputStream out = new FileOutputStream(gifFile);
-                        writeImage(out, "gif");
-                        linkTo = "href=\""  + name + ".gif\"" +
-                                " class=\"lightbox\"" +
-                                " title=\"" + name + "\"";
-                    }
-                }
-            }
-            
-            // Write the name of the actor followed by the table.
-            writer.println("<area shape=\"rect\" coords=\""
-                    + (int)location.topLeftX + ","
-                    + (int)location.topLeftY + ","
-                    + (int)location.bottomRightX + ","
-                    + (int)location.bottomRightY + "\" onmouseover=\"writeText('<h2>"
-                    + location.object.getName()
-                    + "</h2>"
-                    + table.toString()
-                    + "')\""
-                    + linkTo
-                    + "/>");
-
+    public void writeHTML(File directory) throws PrinterException, IOException {
+        if (_exportHTMLAction != null) {
+            ((HTMLExportable)_exportHTMLAction).writeHTML(directory);
         }
-        writer.println("</map>");
-        
-        // Section into which actor information is written.
-        writer.println("<p id=\"actorName\">Mouse over the actors to get a description</p>");
-
-        writer.close(); // Without this, the output file may be empty
     }
     
     /** Write an image to the specified output stream in the specified format.
@@ -2119,43 +2014,65 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         
         try {
             // Get the "export PDF" action classname from the configuration.
-            // FIXME: this does not work because the configuration is
-            // not set when this method is called. Hence, the code below
-            // this has to be uncommented rather than using the configuration
-            // to enable export PDF.
-            Configuration configuration = getConfiguration();
-            if (configuration == null) {
-                //new Exception("BSF: configuration is null").printStackTrace();
-            } else {
+            // This may or many not be included because it depends on GPL'd code,
+            // and hence cannot be included included in any pure BSD distribution.
+            // NOTE: Cannot use getConfiguration() because the configuration is
+            // not set when this method is called. Hence, we assume that there
+            // is only one configuration, or that if there are multiple configurations
+            // in this execution, that the first one will determine whether PDF
+            // export is provided.
+            Configuration configuration = (Configuration)Configuration.configurations().get(0);
+            // NOTE: Configuration should not be null, but just in case:
+            if (configuration != null) {
                 // Deal with the PDF Action first.
                 StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
                         .getAttribute("_exportPDFActionClassName",
                                 StringParameter.class);
 
-                if (exportPDFActionClassNameParameter == null) {
-                    // Parameter not set, so just return
-                    return fileMenuItems;
+                if (exportPDFActionClassNameParameter != null) {
+                    if (_exportPDFAction == null) {
+                        String exportPDFActionClassName = exportPDFActionClassNameParameter
+                                .stringValue();
+                        try {
+                            Class exportPDFActionClass = Class.forName(exportPDFActionClassName);
+                            Constructor exportPDFActionConstructor = exportPDFActionClass
+                                    .getDeclaredConstructor(Top.class);
+                            _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                                    .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
+                                    null,
+                                    throwable,
+                                    "Failed to construct export PDF class \""
+                                    + exportPDFActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
+                    }
                 }
+                
+                // Deal with the HTML Action first.
+                StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
+                        .getAttribute("_exportHTMLActionClassName",
+                                StringParameter.class);
 
-                if (_exportPDFAction == null) {
-                    String exportPDFActionClassName = exportPDFActionClassNameParameter
-                            .stringValue();
-                    try {
-                        Class exportPDFActionClass = Class
-                                .forName(exportPDFActionClassName);
-                        Constructor exportPDFActionConstructor = exportPDFActionClass
-                                .getDeclaredConstructor(Top.class);
-                        _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-                                .newInstance(this);
-                        System.out.println("BGF: _exportPDFAction: "
-                                + _exportPDFAction);
-                    } catch (Throwable throwable) {
-                        new InternalErrorException(
-                                null,
-                                throwable,
-                                "Failed to construct export PDF class \""
-                                        + exportPDFActionClassName
-                                        + "\", which was read from the configuration.");
+                if (exportHTMLActionClassNameParameter != null) {
+                    if (_exportHTMLAction == null) {
+                        String exportHTMLActionClassName = exportHTMLActionClassNameParameter
+                                .stringValue();
+                        try {
+                            Class exportHTMLActionClass = Class.forName(exportHTMLActionClassName);
+                            Constructor exportHTMLActionConstructor = exportHTMLActionClass
+                                    .getDeclaredConstructor(BasicGraphFrame.class);
+                            _exportHTMLAction = (AbstractAction) exportHTMLActionConstructor
+                                    .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
+                                    null,
+                                    throwable,
+                                    "Failed to construct export HTML class \""
+                                    + exportHTMLActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
                     }
                 }
             }
@@ -2212,12 +2129,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         exportMenu.add(exportItem);
 
         // Next do the export HTML action.
-        if (_exportHTMLAction == null) {
-            _exportHTMLAction = new ExportHTMLAction();
+        if (_exportHTMLAction != null) {
+            // Insert the Export PDF item.
+            exportItem = new JMenuItem(_exportHTMLAction);
+            exportMenu.add(exportItem);
         }
-        exportItem = new JMenuItem(_exportHTMLAction);
-        exportMenu.add(exportItem);
-
         return fileMenuItems;
     }
 
@@ -2391,104 +2307,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return _rightComponent;
     }
     
-    /** Return a list of data structures with one entry for each visible
-     *  entity. Each data structure contains
-     *  a reference to the entity and the coordinates
-     *  of the upper left corner and lower right corner of the main
-     *  part of its icon (not including decorations like the name
-     *  and any highlights it may have). The coordinates are relative
-     *  to the current visible rectangle, where the upper left corner
-     *  of the visible rectangle has coordinates (0,0), and the lower
-     *  right corner has coordinates (w,h), where w is the width
-     *  and h is the height (in pixels).
-     *  @return A list representing the space occupied by each
-     *   visible icon for the entities in the model, or an empty
-     *   list if no icons are visible.
-     */
-    protected List<IconVisibleLocation> _getIconVisibleLocations() {
-        List<IconVisibleLocation> result = new LinkedList<IconVisibleLocation>();
-        
-        Rectangle2D viewSize = getVisibleRectangle();
-        // System.out.println("Visible rectangle: " + viewSize);
-
-        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
-        AffineTransform transform = canvas.getCanvasPane().getTransformContext()
-                .getTransform();
-        double scaleX = transform.getScaleX();
-        double scaleY = transform.getScaleY();
-        double translateX = transform.getTranslateX();
-        double translateY = transform.getTranslateY();
-        
-        NamedObj model = getModel();
-        if (model instanceof CompositeEntity) {
-            List<Entity> entities = ((CompositeEntity)model).entityList();
-            for (Entity entity : entities) {
-                Locatable location = null;
-                try {
-                    location = (Locatable)entity.getAttribute("_location", Locatable.class);
-                } catch (IllegalActionException e1) {
-                    // FIXME: What to do here? For now, ignoring the node.
-                }
-                if (location != null) {
-                    GraphController controller = getJGraph().getGraphPane().getGraphController();
-                    Figure figure = controller.getFigure(location);
-                    if (figure != null) {
-                        Figure mainIcon = figure;
-                        Point2D origin = ((CompositeFigure)figure).getOrigin();
-                        double iconOriginX = origin.getX();
-                        double iconOriginY = origin.getY();
-                        
-                        if (figure instanceof CompositeFigure) {
-                            mainIcon = ((CompositeFigure)figure).getBackgroundFigure();
-                            origin = ((CompositeFigure)figure).getOrigin();
-                            iconOriginX = origin.getX();
-                            iconOriginY = origin.getY();
-                        }
-                        Rectangle2D iconBounds = mainIcon.getBounds();
-                        
-                        IconVisibleLocation i = new IconVisibleLocation();
-                        i.object = entity;
-                        
-                        // Calculate the location of the icon relative to the visible rectangle.
-                        i.topLeftX = (iconOriginX + iconBounds.getX())*scaleX + translateX;
-                        i.topLeftY = (iconOriginY + iconBounds.getY())*scaleY + translateY;
-                        
-                        i.bottomRightX 
-                                = (iconOriginX + iconBounds.getX() + iconBounds.getWidth())
-                                *scaleX + translateX;
-                        i.bottomRightY 
-                                = (iconOriginY + iconBounds.getY() + iconBounds.getHeight())
-                                *scaleY + translateY;
-                        
-                        if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
-                                || i.topLeftX > viewSize.getWidth() || i.topLeftY > viewSize.getHeight()) {
-                            // Icon is out of view.
-                            continue;
-                        } else {
-                            // Clip the rectangle so it does not include any portion
-                            // that is not in the visible rectangle.
-                            if (i.topLeftX < 0.0) {
-                                i.topLeftX = 0.0;
-                            }
-                            if (i.topLeftY < 0.0) {
-                                i.topLeftY = 0.0;
-                            }
-                            if (i.bottomRightX > viewSize.getWidth()) {
-                                i.bottomRightX = viewSize.getWidth();
-                            }
-                            if (i.bottomRightY > viewSize.getHeight()) {
-                                i.bottomRightY = viewSize.getHeight();
-                            }
-                            // Add the data to the result list.
-                            result.add(i);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     /** Return a set of instances of NamedObj representing the objects
      *  that are currently selected.  This set has no particular order
      *  to it. If you need the selection objects in proper order, as
@@ -3258,133 +3076,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ExportMapAction
 
-    /** Action to export a map of the locations of actors
-     *  relative to the image created by exporting to GIF or PNG.
-     */
-    public class ExportHTMLAction extends AbstractAction {
-        /** Create a new action to export HTML.
-         */
-        public ExportHTMLAction() {
-            super("Export HTML");
-            putValue("tooltip", "Export HTML with a description of this model.");
-            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                   ////
-
-        /** Export an HTML image map.
-         *  @param e The event that triggered this action.
-         */
-        public void actionPerformed(ActionEvent e) {            
-            // Open a file chooser to select a folder to write to.
-            JFileChooser fileDialog = new JFileChooser();
-            fileDialog.addChoosableFileFilter(new FolderFileFilter());
-            fileDialog.setDialogTitle("Choose a directory to write HTML...");
-            fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-            if (_directory != null) {
-                fileDialog.setCurrentDirectory(_directory);
-            } else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                String cwd = StringUtilities.getProperty("user.dir");
-
-                if (cwd != null) {
-                    fileDialog.setCurrentDirectory(new File(cwd));
-                }
-            }
-            int returnVal = fileDialog.showDialog(BasicGraphFrame.this, "Export HTML");
-            
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileDialog.getSelectedFile();
-                if (file.exists()) {
-                    if (file.isDirectory()) {
-                        if (!MessageHandler.yesNoQuestion("Directory exists. Overwrite contents?")) {
-                            MessageHandler.message("HTML export canceled.");
-                            return;
-                        }
-                    } else {
-                        if (!MessageHandler.yesNoQuestion(
-                                "File exists with the same name. Overwrite file?")) {
-                            MessageHandler.message("HTML export canceled.");
-                            return;
-                        }
-                        if (!file.delete()) {
-                            MessageHandler.message("Unable to delete file.");
-                            return;                            
-                        }
-                        if (!file.mkdir()) {
-                            MessageHandler.message("Unable to create directory.");
-                            return;                            
-                        }
-                    }
-                } else {
-                    if (!file.mkdir()) {
-                        MessageHandler.message("Unable to create directory.");
-                        return;                            
-                    }
-                }
-                // At this point, file is a directory and we have permission
-                // to overwrite its contents.
-                
-                // First, create the gif file showing whatever the current
-                // view in this frame shows.
-                File gifFile = new File(file, getModel().getName() + ".gif");
-                OutputStream out = null;
-                try {
-                    out = new FileOutputStream(gifFile);
-                    writeImage(out, "gif");
-                } catch (IOException ex) {
-                    MessageHandler.error("Unable to create image file "
-                            + gifFile + ".", ex);
-                    return;  
-                } catch (PrinterException ex) {
-                    MessageHandler.error("Unable to write image file "
-                            + gifFile + ".", ex);
-                    return;
-                } finally {
-                    if (out != null) {
-                        try {
-                            out.close();
-                        } catch (IOException ex) {
-                            MessageHandler.error("Unable to close image file "
-                                    + gifFile + ".", ex);
-                            return;
-                        }
-                    }
-                }
-                
-                // Next, create an HTML file.
-                File indexFile = null;
-                FileWriter htmlFileWriter = null;
-                try {
-                    indexFile = new File(file, "index.html");
-                    writeHTML(new FileWriter(indexFile), file);
-                } catch (IOException ex) {
-                    MessageHandler.error("Unable to create HTML file.", ex);
-                    return;  
-                } catch (PrinterException e1) {
-                    MessageHandler.error("Failed to created associated files.", e1);
-                    return;  
-                } finally {
-                    if (htmlFileWriter != null) {
-                        try {
-                            htmlFileWriter.close();
-                        } catch (IOException ex) {
-                            MessageHandler.error("Unable to close HTML file "
-                                    + indexFile + ".", ex);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// FolderFileFilter
-
     /** Accept only folders in a file browser. */
     static class FolderFileFilter extends FileFilter {
         /** Accept only folders.
@@ -3401,43 +3092,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /**  The description of this filter */
         public String getDescription() {
             return "Choose a Folder";
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// IconVisibleLocation
-    
-    /** A data structure consisting of a NamedObj and the coordinates
-     *  of the upper left corner and lower right corner of the main
-     *  part of its icon (not including decorations like the name
-     *  and any highlights it may have). The coordinates are relative
-     *  to the current visible rectangle, where the upper left corner
-     *  of the visible rectangle has coordinates (0,0), and the lower
-     *  right corner has coordinates (w,h), where w is the width
-     *  and h is the height (in pixels).
-     */
-    static private class IconVisibleLocation {
-        
-        /** The object with a visible icon. */
-        public NamedObj object;
-        
-        /** The top left X coordinate. */
-        public double topLeftX;
-        
-        /** The top left Y coordinate. */
-        public double topLeftY;
-
-        /** The bottom right X coordinate. */
-        public double bottomRightX;
-
-        /** The bottom right Y coordinate. */
-        public double bottomRightY;
-        
-        /** String representation. */
-        public String toString() {
-            return (object.getName() 
-                    + " from (" + topLeftX + ", " + topLeftY + ") to ("
-                    + bottomRightX + ", " + bottomRightY + ")");
         }
     }
 

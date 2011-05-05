@@ -36,6 +36,12 @@
             class="ptolemy.data.expr.StringParameter"
             value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/>
 
+  <!-- Add support for exporting HTML. -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_exportHTMLActionClassName"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.ExportHTMLAction"/>
+            
   <!-- Use the Kieler graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
   <property name="_layoutGraphDialog"

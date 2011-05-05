@@ -49,7 +49,7 @@ import ptolemy.plot.PlotBox;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (neuendor)
  */
-public class PlotEffigy extends Effigy {
+public class PlotEffigy extends PtolemyEffigy {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.

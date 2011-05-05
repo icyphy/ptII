@@ -154,6 +154,10 @@ public class Plotter extends PlotterBase {
             try {
                 PlotEffigy plotEffigy = new PlotEffigy(containerEffigy,
                         containerEffigy.uniqueName("plot"));
+                // Specify that the associated plot is the one created here.
+                plotEffigy.setPlot(plot);
+                // Specify that the associated Ptolemy model is this actor.
+                plotEffigy.setModel(this);
 
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as

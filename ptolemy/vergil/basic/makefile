@@ -66,9 +66,11 @@ JSRCS = \
 	DocViewerFactory.java \
 	EditorDropTarget.java \
 	EditorDropTargetListener.java \
+	ExportHTMLAction.java \
 	ExportImage.java \
 	ExtendedGraphFrame.java \
 	GetDocumentationAction.java \
+	HTMLExportable.java \
 	IconController.java \
 	IGuiAction.java \
 	ImageExportable.java \

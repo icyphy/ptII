@@ -1,4 +1,4 @@
-/* Interface indicating support for exporting an image.
+/* Interface indicating support for exporting an HTML file and supporting files.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -29,29 +29,29 @@
 package ptolemy.vergil.basic;
 
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
 
 ///////////////////////////////////////////////////////////////////
-//// ImageExportable
+//// HTMLExportable
 /** 
- * Interface indicating support for exporting an image.
+ * Interface indicating support for exporting an HTML file and supporting files.
  * @author Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public interface ImageExportable {
+public interface HTMLExportable {
     
-    /** Write an image to the specified output stream in the specified format.
-     *  Supported formats include at least "gif" and "png", standard image file formats.
-     *  The image is a rendition of the current view of the model.
-     *  @param stream The output stream to write to.
-     *  @param format The image format to generate.
-     *  @throws IOException If writing to the stream fails.
-     *  @throws PrinterException  If the specified format is not supported.
+    /** Export to HTML in the specified directory.
+     *  Implementers should write an "index.html" file plus any
+     *  required supporting files in the specified directory. 
+     *  The caller is responsible for checking with the user whether
+     *  any contents of the specified directory can be overwritten.
+     *  @param directory The directory in which to put the files.
+     *  @throws IOException If unable to write any files.
+     *  @throws PrinterException If unable to write associated files.
      */
-    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException;
+    public void writeHTML(File directory) throws PrinterException, IOException;
 }

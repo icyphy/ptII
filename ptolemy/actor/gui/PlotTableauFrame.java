@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
@@ -50,12 +51,16 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.gui.Top;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFormatter;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.ImageExportable;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotTableauFrame
@@ -78,7 +83,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotTableauFrame extends TableauFrame implements Printable {
+public class PlotTableauFrame extends TableauFrame implements Printable, ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -172,6 +177,22 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
             System.out.println("TableauFrame.dispose() : " + this.getName());
         }
         super.dispose();
+    }
+
+    /** Write an image to the specified output stream in the specified format.
+     *  Supported formats include at least "gif" and "png", standard image file formats.
+     *  The image is a rendition of the current view of the model.
+     *  @param stream The output stream to write to.
+     *  @param format The image format to generate.
+     *  @see #writeHTML(Writer)
+     *  @throws IOException If writing to the stream fails.
+     *  @throws PrinterException  If the specified format is not supported.
+     */
+    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
+        if (plot == null) {
+            throw new IOException("No plot to write image from!");
+        }
+        plot.exportImage(stream, format);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -276,28 +297,73 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         JMenu exportMenu = (JMenu)fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
         
+        try {
+            // Get the "export PDF" action classname from the configuration.
+            // This may or many not be included because it depends on GPL'd code,
+            // and hence cannot be included included in any pure BSD distribution.
+            // NOTE: Cannot use getConfiguration() because the configuration is
+            // not set when this method is called. Hence, we assume that there
+            // is only one configuration, or that if there are multiple configurations
+            // in this execution, that the first one will determine whether PDF
+            // export is provided.
+            Configuration configuration = (Configuration)Configuration.configurations().get(0);
+            // NOTE: Configuration should not be null, but just in case:
+            if (configuration != null) {
+                // Deal with the PDF Action first.
+                StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
+                        .getAttribute("_exportPDFActionClassName",
+                                StringParameter.class);
+
+                if (exportPDFActionClassNameParameter != null) {
+                    if (_exportPDFAction == null) {
+                        String exportPDFActionClassName = exportPDFActionClassNameParameter
+                                .stringValue();
+                        try {
+                            Class exportPDFActionClass = Class.forName(exportPDFActionClassName);
+                            Constructor exportPDFActionConstructor = exportPDFActionClass
+                                    .getDeclaredConstructor(Top.class);
+                            _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                                    .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
+                                    null,
+                                    throwable,
+                                    "Failed to construct export PDF class \""
+                                    + exportPDFActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw new InternalErrorException(null, ex,
+                    "Failed to read _exportPDFActionName from the Configuration");
+        }
+
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
-        /*
-         if (_exportPDFAction == null) {
-             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-             try {
-                 Class exportPDFActionClass = Class
-                         .forName(exportPDFActionClassName);
-                 Constructor exportPDFActionConstructor = exportPDFActionClass
-                         .getDeclaredConstructor(Top.class);
-                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-                         .newInstance(this);
-             } catch (Throwable throwable) {
-                 new InternalErrorException(null, throwable,
-                         "Failed to construct export PDF class \""
-                                 + exportPDFActionClassName
-                                 + "\", which was read from the configuration.");
-             }
-         }
-         */
+        
+        // NOTE: Comment out the entire block with lines that begin with //
+        // so that the test in adm notices that the block is commented out.
+
+//         if (_exportPDFAction == null) {
+//             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+//             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+//             try {
+//                 Class exportPDFActionClass = Class
+//                         .forName(exportPDFActionClassName);
+//                 Constructor exportPDFActionConstructor = exportPDFActionClass
+//                         .getDeclaredConstructor(Top.class);
+//                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+//                         .newInstance(this);
+//             } catch (Throwable throwable) {
+//                 new InternalErrorException(null, throwable,
+//                         "Failed to construct export PDF class \""
+//                                 + exportPDFActionClassName
+//                                 + "\", which was read from the configuration.");
+//             }
+//         }
         // End of block to uncomment.
 
         if (_exportPDFAction != null) {
