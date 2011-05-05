@@ -52,6 +52,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
@@ -134,11 +135,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (!castPort.isMultiport()) {
                     code.append(_generatePortInstantiation(name, castPort.getName(), castPort));
                 } else {
-                    // Multiports.
-                    TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(name));
+                    // Multiports.  Not all multiports have port names
+                    // that match the field name. See
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
+
+                    //TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(castPort.getName()));
+
+                    Field foundPortField = null;
+                    TypedIOPort actorPort = null;
+                    try {
+                        foundPortField = _findFieldByPortName(castPort.getName());
+                        actorPort = (TypedIOPort)foundPortField.get(getComponent());
+                    } catch (Exception ex) {
+                        throw new IllegalActionException(castPort, ex,
+                                "Could not find port " + castPort.getName());
+                    }
 
                     code.append("    ((" + getComponent().getClass().getName()
-                            + ")$actorSymbol(actor))." + name + ".setTypeEquals("
+                            + ")$actorSymbol(actor))." + foundPortField.getName() + ".setTypeEquals("
                             + _typeToBaseType(actorPort.getType()) + ");\n");
 
                     int sources = actorPort.numberOfSources();
@@ -323,7 +337,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // of the multiport.  Could we just connect directly to the channels
                     // of the multiport?  The problem I had was that the receivers are
                     // not created if I connect directly to the channels.
-                    IOPort actorPort = (IOPort)(((Entity)getComponent()).getPort(name));
+
+                    // Use castPort.getName() and get the real name of the port. 
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
+                    IOPort actorPort = (IOPort)(((Entity)getComponent()).getPort(castPort.getName()));
 
                     int sources = actorPort.numberOfSources();
                     for (int i = 0; i < sources; i++) {
@@ -533,6 +550,58 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     ////                         private methods                   ////
 
 
+    /** Look for a field in the actor by port name.  This method is
+     *  necessary because some ports have different names than the name
+     *  of the field.
+     *  @param portName The escaped name of the port.
+     *  @exception Exception Thrown if a field cannot be access, or if
+     *  getComponent() fails.
+     */
+    private Field _findFieldByPortName(String portName) throws NoSuchFieldException {
+        portName = TemplateParser.unescapePortName(portName);
+        Field foundPortField = null;
+        // Make sure that there is a field with that name
+        // $PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml
+        // has a NonStrict actor with an output that is not connected.
+        // If we don't check for the field, then the generated Java code
+        // fails.
+        NamedObj component = null;
+        try {
+            foundPortField = getComponent().getClass().getField(portName);
+        } catch (NoSuchFieldException ex) {
+            StringBuffer portNames = new StringBuffer();
+            try {
+                component = getComponent();
+                // It could be that the name of the port and the variable name
+                // do not match.
+                Field[] fields = component.getClass().getFields();
+                for (int i = 0; i < fields.length; i++) {
+                    if (fields[i].get(component) instanceof Port) {
+                        Port portField = (Port) fields[i].get(component);
+                        String portFieldName = portField.getName();
+                        portNames.append("<" + portFieldName + "> ");
+                        if (portName.equals(portFieldName)) {
+                            foundPortField = fields[i];
+                            break;
+                        }
+                    }
+                }
+                if (foundPortField == null) {
+                    throw new NoSuchFieldException(component.getFullName()
+                            + "Could not find field that corresponds with "
+                            + portName + " Ports: " + portNames);
+                }
+            } catch (Exception ex2) {
+                throw new NoSuchFieldException(component.getFullName()
+                        + ": Failed to find the field that corresponds with " + portName
+                        + " Ports: " + portNames
+                        + ": " + ex);
+            }
+        }
+        //System.out.println("AutoAdapter._find " + portName + " " + foundPortField);
+        return foundPortField;
+    }
+
     /**
      * Generate execution code for the actor execution methods.
      * @param executionMethod One of "prefire", "postfire" or "wrapup".
@@ -548,11 +617,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + "    throw new RuntimeException(\"Failed to "
             + executionMethod  + "() $actorSymbol(actor))\", ex);\n"
             + "};\n";
-        return processCode(code.toString());
+        return processCode(code);
     }
 
     /** Return the code necessary to instantiate the port.
-     *  @param actorPortName The name of the Actor port to be instantiated.
+     *  @param actorPortName The escaped name of the Actor port to be instantiated.
      *  @param codegenPortName The name of the port on the codegen side.
      *  For non-multiports, actorPortName and codegenPortName are the same.
      *  For multiports, codegenPortName will vary according to channel number
@@ -563,7 +632,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generatePortInstantiation(String actorPortName,
             String codegenPortName, IOPort port) throws IllegalActionException {
-        actorPortName = TemplateParser.escapePortName(actorPortName);
+        //String escapedActorPortName = TemplateParser.escapePortName(actorPortName);
+        String unescapedActorPortName = TemplateParser.unescapePortName(actorPortName);
         String escapedCodegenPortName = TemplateParser.escapePortName(codegenPortName);
         PortParameter portParameter = (PortParameter)getComponent().getAttribute(actorPortName,
                 PortParameter.class);
@@ -579,44 +649,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 +");\n");
 
         try {
-            Field foundPortField = null;
-            // Make sure that there is a field with that name
-            // $PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml
-            // has a NonStrict actor with an output that is not connected.
-            // If we don't check for the field, then the generated Java code
-            // fails.
-            String unescapedActorPortName = TemplateParser.unescapePortName(actorPortName);
-            try {
-                foundPortField = getComponent().getClass().getField(unescapedActorPortName);
-            } catch (Exception ex) {
-                // It could be that the name of the port and the variable name
-                // do not match.
-                StringBuffer portNames = new StringBuffer();
-                Field[] fields = getComponent().getClass().getFields();
-                try {
-                    for (int i = 0; i < fields.length; i++) {
-                        if (fields[i].get(getComponent()) instanceof Port) {
-                            Port portField = (Port) fields[i].get(getComponent());
-                            String portName = portField.getName();
-                            portNames.append(portName + " ");
-                            if (portName.equals(unescapedActorPortName)) {
-                                foundPortField = fields[i];
-                                break;
-                            }
-                        }
-                    }
-                } catch (Exception ex2) {
-                    ex2.printStackTrace();
-                }
-                if (foundPortField == null) {
-                    System.out.println("Warning: could not find port \""
-                            + unescapedActorPortName + "\" in " + getComponent().getFullName()
-                            + " Ports were: " + portNames);
-                }
-            }
+            Field foundPortField = _findFieldByPortName(unescapedActorPortName);
+                    
+
             if (foundPortField == null) {
                 throw new NoSuchFieldException("Could not find port " + unescapedActorPortName);
             }
+
             String portOrParameter = "((" + getComponent().getClass().getName()
                 + ")$actorSymbol(actor))." 
                 + foundPortField.getName() + ( portParameter instanceof PortParameter 
@@ -633,11 +672,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
         } catch (NoSuchFieldException ex) {
-            System.out.println("Warning, could not find field " + actorPortName);
-            ex.printStackTrace();
+            throw new IllegalActionException(getComponent(), ex,
+                    "Could not find field that corresponds with " + unescapedActorPortName);
         }
         return code.toString();
-
     }
 
     /** 
@@ -730,7 +768,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     private String _generateGetInside(String actorPortName,
             String codegenPortName, Type type, int channel) {
         actorPortName = TemplateParser.escapePortName(actorPortName);
-        codegenPortName = TemplateParser.escapePortName(codegenPortName);
+        //codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
             
             ArrayType array = (ArrayType)type;

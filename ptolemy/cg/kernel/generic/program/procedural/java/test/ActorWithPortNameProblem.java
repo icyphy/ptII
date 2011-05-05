@@ -61,7 +61,10 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "port with * - and spaces", true, false);
-        //input = new TypedIOPort(this, "input", true, false);
+
+        multiportInput = new TypedIOPort(this, "multiport with * - and spaces", true, false);
+        multiportInput.setMultiport(true);
+
         output = new TypedIOPort(this, "output", false, true);
 
         // set the type constraints.
@@ -78,6 +81,12 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
      */
     public TypedIOPort input;
 
+    /** The multoport input port.  This base class imposes no type constraints except
+     *  that the type of the input cannot be greater than the type of the
+     *  output.
+     */
+    public TypedIOPort multiportInput;
+
     /** The output port. By default, the type of this output is constrained
      *  to be at least that of the input.
      */
@@ -92,13 +101,23 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        Token sum = null;
         if (input.hasToken(0)) {
-            Token in = input.get(0);
-            output.send(0, in);
+            sum = input.get(0);
+        }
+
+
+        for (int i = 0; i < multiportInput.getWidth(); i++) {
+            if (multiportInput.hasToken(i)) {
+                if (sum == null) {
+                    sum = multiportInput.get(i);
+                } else {
+                    sum = sum.add(multiportInput.get(i));
+                }
+            }
+        }
+        if (sum != null) {
+            output.send(0, sum);
         }
     }
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
-    private Parameter _myPrivateParameter;
 }

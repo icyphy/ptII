@@ -23,7 +23,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 4, 6}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -32,15 +32,24 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 265.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ActorWithPortNameProblem.port with * - and spaces" relation="relation2"/>
+    <link port="ActorWithPortNameProblem.multiport with * - and spaces" relation="relation3"/>
     <link port="ActorWithPortNameProblem.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp2.output" relation="relation3"/>
 </entity>
