@@ -132,7 +132,22 @@ public class TemplateParser {
         // or should it be elsewhere.
         // See ptolemy.cg.kernel.generic.CodeGeneratorAdapter.generateName(String)
         // for a possible bug in port names.
-        return name.replace("$", "_X_DOLLAR_X_").replace("-","_X_MINUS_X_").replace("*", "_X_STAR_X_");
+
+        // If the string contains [A-Za-z0-9_], then return.
+        boolean checkString = false;
+        char[] nameArray = name.toCharArray();
+        for (int i = 0; i < nameArray.length; i++) {
+            if (!Character.isJavaIdentifierPart(nameArray[i]) || nameArray[i] == '$') {
+                checkString = true;
+                break;
+            }
+        }
+
+        if (checkString) {
+            return name.replace("$", "_X_DOLLAR_X_").replace("-","_X_MINUS_X_").replace("*", "_X_STAR_X_").replace("[", "_X_LBRACKET_X_").replace("]", "_X_RBRACKET_X_").replace("+", "_X_PLUS_X_").replace("\\", "_X_BACKSLASH_X_").replace("^", "_X_CARET_X_");
+        } else {
+            return name;
+        }
     }
 
     /** Escape a port name for use in the macro language.
@@ -1155,7 +1170,11 @@ public class TemplateParser {
         // This is probably slow, see
         // ptolemy.util.StringUtilities.escapeForXML() for
         // a possibly faster solution.
-        return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*");
+        if (name.indexOf("_X_") != -1) {
+            return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*").replace("_X_LBRACKET_X_", "[").replace("_X_RBRACKET_X_", "]").replace("_X_PLUS_X_", "+").replace("_X_BACKSLASH_X_", "\\").replace("_X_CARET_X_", "^");
+        } else {
+            return name;
+        }
     }
 
     /** Unescape a port name so that the return value
