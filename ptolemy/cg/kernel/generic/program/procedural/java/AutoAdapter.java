@@ -155,9 +155,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         //        "Could not find port " + castPort.getName());
                         actorPort = (TypedIOPort)((Entity)getComponent()).getPort(castPort.getName());
                         code.append("new TypedIOPort($actorSymbol(container), \""
-                                + actorPort.getName() + "\", " 
-                                + (actorPort.isInput() ? "true, " : "false, ")
-                                + (actorPort.isOutput() ? "true" : "false") + ").setMultiport(true);" + _eol);
+                                + actorPort.getName().replace("\\", "\\\\") + "\", " 
+                                + actorPort.isInput() + ", "
+                                + actorPort.isOutput() + ").setMultiport(true);" + _eol);
 
                     }
 
@@ -198,9 +198,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             // Certain actors may create ports on the
                             // fly, so query the actor for its port.
 
-                            // + "(TypedIOPort)((" + actorClassName + ")$actorSymbol(actor)).getPort(\"" 
                             + "(TypedIOPort)$actorSymbol(container).getPort(\"" 
-                            + insidePort.getName() + "\"), \"inputType\");" + _eol
+                            + insidePort.getName().replace("\\", "\\\\") + "\"), \"inputType\");" + _eol
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression()
                             + "\");" + _eol
@@ -648,9 +647,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // Multiport need to have different codegenPortNames, see
         // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml
         StringBuffer code = new StringBuffer("    $actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(container)"
-                + ", \"" + codegenPortName + "\", "
-                + port.isInput()
-                + ", " + port.isOutput() + ");" + _eol
+                // Need to deal with backslashes in port names, see
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
+                + ", \"" + codegenPortName.replace("\\", "\\\\") + "\", "
+                + port.isInput() + ", "
+                + port.isOutput() + ");" + _eol
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 + "    $actorSymbol(" + escapedCodegenPortName + ").setTypeEquals("
                 + _typeToBaseType(((TypedIOPort)port).getType())
@@ -684,13 +685,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                      "Could not find field that corresponds with " + unescapedActorPortName);
             // The port is not a field
             code.append("new TypedIOPort($actorSymbol(actor), \""
-                    + unescapedActorPortName + "\", " 
-                    + (port.isInput() ? "true, " : "false, ")
-                    + (port.isOutput() ? "true" : "false") + ");" + _eol);
+                    + unescapedActorPortName.replace("\\", "\\\\") + "\", " 
+                    + port.isInput() + ", "
+                    + port.isOutput() + ");" + _eol);
 
             String portOrParameter = 
                 "(TypedIOPort)$actorSymbol(actor).getPort(\"" 
-                + unescapedActorPortName + "\")";
+                + unescapedActorPortName.replace("\\", "\\\\") + "\")";
             code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
                     + portOrParameter
                     + ");" + _eol);
