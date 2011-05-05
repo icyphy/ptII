@@ -156,7 +156,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         ExecutionTimeMonitor newObject = (ExecutionTimeMonitor) super.clone(workspace);
         newObject._actors = new ArrayList<Actor>();
         newObject._previousY = new HashMap<Actor, Double>();
-        return super.clone();
+        return newObject;
     }
 
     /** Initialize the plot and the legend. The legend will be created for all
