@@ -167,7 +167,7 @@ static Token divide_Token_Double(Token a1, double a2) {
 /**/
 
 /*** divide_Token_Integer() ***/
-int divide_Token_Integer(Token a1, int a2) {
+static Token divide_Token_Integer(Token a1, int a2) {
     Token token = $new(Integer(a2));
     return $divide_Token_Token(a1, token);
 }

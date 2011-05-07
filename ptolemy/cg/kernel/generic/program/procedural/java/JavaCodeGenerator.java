@@ -565,7 +565,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Not thrown.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-        return _eol + _eol + "public void initialize() {" + _eol;
+        return _eol + _eol + "public void initialize() throws Exception {" + _eol;
     }
 
     /** Generate the initialization procedure exit point.
@@ -658,7 +658,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 addComma = true;
             }
 
-            mainEntryCode.append("){" + _eol);
+            mainEntryCode.append(") throws Exception {" + _eol);
 
         }
 
@@ -1221,7 +1221,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
-        return _eol + _eol + "public void wrapup() {" + _eol;
+        return _eol + _eol + "public void wrapup() throws Exception {" + _eol;
     }
 
     /** Generate the wrapup procedure exit point.
@@ -1323,13 +1323,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         BufferedReader bufferedReader = null;
-        StringBuffer bodies = new StringBuffer("public class " + prefix + " {" + _eol);
+        StringBuffer bodies = new StringBuffer("class " + prefix + " {" + _eol);
         // One method calls all the other methods, thus reducing the
         // size of the top level caller.
         String callAllBodyMethodName = "callAll" + prefix;
         StringBuffer callAllBody = new StringBuffer("void "
                 + callAllBodyMethodName
-                + "() {" + _eol
+                + "() throws Exception {" + _eol
                 + prefix + " " + prefix
                 + " = new " + prefix + "();" + _eol);
 
@@ -1352,7 +1352,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // until the block ends
             while ((line = bufferedReader.readLine()) != null) {
                 //String methodName = prefix + "_" + methodNumber++;
-                String methodName = "_splitLong_" + methodNumber++;
+                // Don't create really long names or javac exits with "(File name too long)"
+                String methodName = "_" + prefix.substring(0,2) + "_sL_" + methodNumber++;
                 lineNumber++;
                 body = new StringBuffer(line + _eol);
                 int commentCount = 0;
@@ -1461,7 +1462,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 //                         + "}" + _eol);
 
                 bodies.append("class " + methodName + " {" + _eol
-                        + methodName + "() {" + _eol
+                        + methodName + "() throws Exception {" + _eol
                         + body.toString() 
                         + "}" + _eol
                         + "}" + _eol);
@@ -1888,6 +1889,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // See
         // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=342
         return AutoAdapter.getAutoAdapter(codeGenerator, object);
+    }
+
+    /** Return the prototype for fire functions.
+     * @return The string " throws Exception" is
+     * appended to the value returned by the superclass.
+     */
+    protected String _getFireFunctionArguments() {
+        return super._getFireFunctionArguments() + " throws Exception";
     }
 
     /** Generate the code for printing the execution time since

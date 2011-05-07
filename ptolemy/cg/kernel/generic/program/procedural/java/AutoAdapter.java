@@ -451,9 +451,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateFireCode() throws IllegalActionException {
         // FIXME: what if the inline parameter is set?
-        StringBuffer code = new StringBuffer("try {" + _eol);
+        StringBuffer code = new StringBuffer(getCodeGenerator().comment("AutoAdapter._generateFireCode() start"));
 
-        code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() start"));
         // FIXME: it is odd that we are transferring data around in the fire code.
         // Shouldn't we do this in prefire() and posfire()?
 
@@ -491,38 +490,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         // Fire the actor.
-        code.append("    $actorSymbol(actor).fire();" + _eol);
+        
+        code.append("$actorSymbol(actor).fire();" + _eol);
 
-        // Create temporary variables for each port so that we don't
-        // read from empty mailbox.
-        Iterator outputPorts = ((Actor)getComponent()).outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-            String name = outputPort.getName();
-            Type type = outputPort.getType();
-            if (!outputPort.isMultiport()) {
-                // Generate a temporary variable for a single port. 
-                // Check to see that the output is connected.  For example
-                // NonStrictTest has an output port that is not usually connected.
-                if (outputPort.isOutsideConnected()) {
-                    code.append(_generateGetInsideDeclarations(name, name, type, 0));
-                }
-            } else {
-                // Generate a temporary variable for each source and sink.
-                int sources = outputPort.numberOfSources();
-                for (int i = 0; i < sources; i++) {
-                    code.append(_generateGetInsideDeclarations(name, name + "Source" + i, type, i));
-                }
-                int sinks = outputPort.numberOfSinks();
-                for (int i = 0; i < sinks; i++) {
-                    code.append(_generateGetInsideDeclarations(name, name + "Sink" + i, type, i));
-                }
-            }
-
-        }
 
         // Transfer data from the actor output ports to the codegen variables.
-        outputPorts = ((Actor)getComponent()).outputPortList().iterator();
+        Iterator outputPorts = ((Actor)getComponent()).outputPortList().iterator();
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
             String name = outputPort.getName();
@@ -531,26 +504,44 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // Get data from the actor.
             if (!outputPort.isMultiport()) {
                 if (outputPort.isOutsideConnected()) {
-                    code.append(_generateGetInside(name, name, type, 0));
+                    // Place the temporary variable inside a block so that
+                    // if we split a long body, the declaration does not
+                    // get separated from the use.
+                    code.append("{" + _eol
+                            // Create temporary variables for each port so that we don't
+                            // read from empty mailbox.
+                            + _generateGetInsideDeclarations(name, name, type, 0)
+                            + _generateGetInside(name, name, type, 0)
+                            + _eol + "}" + _eol);
                 }
             } else {
                 // Multiports.
                 int sources = outputPort.numberOfSources();
                 for (int i = 0; i < sources; i++) {
-                    code.append(_generateGetInside(name, name + "Source" + i, type, i));
+                    code.append("{" + _eol
+                            + _generateGetInsideDeclarations(name, name + "Source" + i, type, i) 
+                            + _generateGetInside(name, name + "Source" + i, type, i)
+                            + _eol + "}" + _eol);
                 }
                 int sinks = outputPort.numberOfSinks();
                 for (int i = 0; i < sinks; i++) {
-                    code.append(_generateGetInside(name, name + "Sink" + i, type, i));
+                    code.append("{" + _eol
+                            + _generateGetInsideDeclarations(name, name + "Sink" + i, type, i)
+                            + _generateGetInside(name, name + "Sink" + i, type, i)
+                            + _eol + "}" + _eol);
                 }
             }
 
         }
 
-        code.append(_eol + "} catch (Exception ex) {" + _eol
-                + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\" /*+ $actorSymbol(toplevel).exportMoML()*/, ex);" + _eol
-                + " }" + _eol);
-        return code.toString();
+        String [] splitFireCode = getCodeGenerator()._splitBody("_AutoAdapter_", code.toString());
+
+        return "try {" + _eol
+            + splitFireCode[0] + _eol
+            + splitFireCode[1] + _eol
+            + "} catch (Exception ex) {" + _eol
+            + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\", ex);" + _eol
+            + " }" + _eol;
     }
 
     ///////////////////////////////////////////////////////////////////
