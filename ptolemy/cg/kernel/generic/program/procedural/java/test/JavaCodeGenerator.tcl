@@ -120,9 +120,9 @@ line 5;
 test JavaCodeGenerator-2.4 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 6 5]
     list [$results get 0] [$results get 1]
-} {{public class foo {
-class _splitLong_0 {
-_splitLong_0() {
+} {{class foo {
+class _fo_sL_0 {
+_fo_sL_0() throws Exception {
 line 1;
 line 2;
 line 3;
@@ -130,16 +130,16 @@ line 4;
 line 5;
 }
 }
-class _splitLong_1 {
-_splitLong_1() {
+class _fo_sL_1 {
+_fo_sL_1() throws Exception {
 line 6;
 }
 }
 
-void callAllfoo() {
+void callAllfoo() throws Exception {
 foo foo = new foo();
-new _splitLong_0();
-new _splitLong_1();
+new _fo_sL_0();
+new _fo_sL_1();
 }
 }
 } {foo foo = new foo();
@@ -151,9 +151,9 @@ foo.callAllfoo();
 test JavaCodeGenerator-2.5 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 12 5]
     $results getrange
-} {{public class foo {
-class _splitLong_0 {
-_splitLong_0() {
+} {{class foo {
+class _fo_sL_0 {
+_fo_sL_0() throws Exception {
 line 1;
 line 2;
 line 3;
@@ -161,8 +161,8 @@ line 4;
 line 5;
 }
 }
-class _splitLong_1 {
-_splitLong_1() {
+class _fo_sL_1 {
+_fo_sL_1() throws Exception {
 line 6;
 line 7;
 line 8;
@@ -170,18 +170,18 @@ line 9;
 line 10;
 }
 }
-class _splitLong_2 {
-_splitLong_2() {
+class _fo_sL_2 {
+_fo_sL_2() throws Exception {
 line 11;
 line 12;
 }
 }
 
-void callAllfoo() {
+void callAllfoo() throws Exception {
 foo foo = new foo();
-new _splitLong_0();
-new _splitLong_1();
-new _splitLong_2();
+new _fo_sL_0();
+new _fo_sL_1();
+new _fo_sL_2();
 }
 }
 } {foo foo = new foo();
@@ -206,9 +206,9 @@ line3.5;
 
    set results [$codeGenerator splitLongBody 2 foo $code]
    $results getrange
-} {{public class foo {
-class _splitLong_0 {
-_splitLong_0() {
+} {{class foo {
+class _fo_sL_0 {
+_fo_sL_0() throws Exception {
 try {
 line1;
 line2;
@@ -225,9 +225,9 @@ line3.5;
 }
 }
 
-void callAllfoo() {
+void callAllfoo() throws Exception {
 foo foo = new foo();
-new _splitLong_0();
+new _fo_sL_0();
 }
 }
 } {foo foo = new foo();
@@ -248,28 +248,28 @@ test JavaCodeGenerator-2.7 {one line per method start with a comment} {
 test JavaCodeGenerator-2.8 {one line per method} {
     set results [testSplitLongBody 3 1]
    $results getrange
-} {{public class foo {
-class _splitLong_0 {
-_splitLong_0() {
+} {{class foo {
+class _fo_sL_0 {
+_fo_sL_0() throws Exception {
 line 1;
 }
 }
-class _splitLong_1 {
-_splitLong_1() {
+class _fo_sL_1 {
+_fo_sL_1() throws Exception {
 line 2;
 }
 }
-class _splitLong_2 {
-_splitLong_2() {
+class _fo_sL_2 {
+_fo_sL_2() throws Exception {
 line 3;
 }
 }
 
-void callAllfoo() {
+void callAllfoo() throws Exception {
 foo foo = new foo();
-new _splitLong_0();
-new _splitLong_1();
-new _splitLong_2();
+new _fo_sL_0();
+new _fo_sL_1();
+new _fo_sL_2();
 }
 }
 } {foo foo = new foo();
