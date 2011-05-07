@@ -114,17 +114,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // names with the same name as the actor.
         String actorClassName = getComponent().getClass().getName();
 
-        StringBuffer code = new StringBuffer(
-                getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
-                + "try {" + _eol
-                + "    $actorSymbol(container) = new TypedCompositeActor();" +_eol
-                // Some custom actors such as ElectricalOverlord
-                // want to be in a container with a particular name.
-                + "    $actorSymbol(container).setName(\""
-                + getComponent().getContainer().getName()
-                + "\");" + _eol
-                + "    $actorSymbol(actor) = new " + actorClassName + "($actorSymbol(container), \"$actorSymbol(actor)\");" + _eol );
-
+        StringBuffer code = new StringBuffer();
         // Generate code that creates and connects each port.
         Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
         while (entityPorts.hasNext()) {
@@ -208,20 +198,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
         }
 
-        code.append("    new ptolemy.actor.Director($actorSymbol(container), \"director\");" + _eol
-                + "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
-                + "    $actorSymbol(container).preinitialize();" + _eol
-                + "} catch (Exception ex) {" + _eol
-                + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);" + _eol
-                + "}" + _eol
-                + "try {" + _eol
-                + "    TypedCompositeActor.resolveTypes($actorSymbol(container));" + _eol
-                + "    $actorSymbol(actor).initialize();" + _eol
-                + "} catch (Exception ex) {" + _eol
-                + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);" + _eol
-                + "}" + _eol);
+        String [] splitInitializeConnectionCode = getCodeGenerator()._splitBody("_AutoAdapterI_", code.toString());
 
-
+        code = new StringBuffer();
         // Handle parameters.
         Iterator parameters = getComponent().attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
@@ -306,7 +285,39 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
         //code.append(getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start"));
 
-        return processCode(code.toString());
+        String [] splitInitializeParameterCode = getCodeGenerator()._splitBody("_AutoAdapterP_", code.toString());
+
+        String result = getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
+            + "try {" + _eol
+            //+ "    $actorSymbol(container) = new TypedCompositeActor();" +_eol
+            + "    $actorSymbol(container) = new " + getComponent().getContainer().getClass().getName() + "();" +_eol
+            // Some custom actors such as ElectricalOverlord
+            // want to be in a container with a particular name.
+            + "    $actorSymbol(container).setName(\""
+            + getComponent().getContainer().getName()
+            + "\");" + _eol
+            + "    $actorSymbol(actor) = new " + actorClassName
+            + "($actorSymbol(container), \"$actorSymbol(actor)\");" + _eol
+            + splitInitializeConnectionCode[0]
+            + splitInitializeConnectionCode[1]
+            + "    new ptolemy.actor.Director($actorSymbol(container), \"director\");" + _eol
+            + "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
+            + "    $actorSymbol(container).preinitialize();" + _eol
+            + "} catch (Exception ex) {" + _eol
+                + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);" + _eol
+            + "}" + _eol
+            + "try {" + _eol
+            + "    TypedCompositeActor.resolveTypes($actorSymbol(container));" + _eol
+            + "    $actorSymbol(actor).initialize();" + _eol
+            + "} catch (Exception ex) {" + _eol
+            + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);" + _eol
+            + "}" + _eol
+            + "{" + _eol
+            + splitInitializeParameterCode[0]
+            + splitInitializeParameterCode[1]
+            + "}" + _eol;
+
+        return processCode(result);
     }
 
     /**
@@ -534,7 +545,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         }
 
-        String [] splitFireCode = getCodeGenerator()._splitBody("_AutoAdapter_", code.toString());
+        String [] splitFireCode = getCodeGenerator()._splitBody("_AutoAdapterF_", code.toString());
 
         return "try {" + _eol
             + splitFireCode[0] + _eol
