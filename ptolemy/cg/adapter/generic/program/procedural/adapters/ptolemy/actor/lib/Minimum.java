@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.type.Type;
 
 /**
  * An adapther class for ptolemy.actor.lib.Minimum.
@@ -49,6 +50,30 @@ public class Minimum extends NamedProgramCodeGeneratorAdapter {
      */
     public Minimum(ptolemy.actor.lib.Minimum actor) {
         super(actor);
+    }
+
+    /**
+     * Generate preinitialize code.  Reads the
+     * <code>preinitBlock</code> and replace macros with their values
+     * and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+
+        ArrayList<String> args = new ArrayList<String>();
+
+        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
+
+        Type type = actor.input.getType();
+
+        args.add(targetType(type));
+
+        code.append(getTemplateParser().generateBlockCode("preinitBlock", args));
+        return code.toString();
     }
 
     /**

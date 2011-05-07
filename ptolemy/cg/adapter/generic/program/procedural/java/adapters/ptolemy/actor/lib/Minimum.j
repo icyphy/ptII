@@ -1,5 +1,5 @@
-/*** preinitBlock ***/
-int $actorSymbol(minimumTemp);
+/*** preinitBlock($type) ***/
+$type $actorSymbol(minimumTemp);
 int $actorSymbol(channelTemp);
 /**/
 
