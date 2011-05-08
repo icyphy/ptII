@@ -115,8 +115,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     /** Calculate the absolute deadline for the pure event, which is simply the
      *  deadline of the last trigger event.
-     *  @see #_saveEventInformation(List)
      *  @param actor The destination actor for the pure event.
+     *  @see #_saveEventInformation(List)
+     *  @return The absolute deadline for this event.
      */
     protected Time _absoluteDeadlineForPureEvent(Actor actor) {
         Time lastAbsoluteDeadline = (Time) _pureEventDeadlines.get(actor);
@@ -487,6 +488,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Call this method from the super class, then save the absolute
      *  deadline for the last executing event.
      *  @param eventsToProcess The set of events to be processed.
+     *  @throws IllegalActionException If the super class throws it or if failed
+     *  to get the absolute deadline for input events.
      */
     protected void _saveEventInformation(List<PtidesEvent> eventsToProcess)
             throws IllegalActionException {
