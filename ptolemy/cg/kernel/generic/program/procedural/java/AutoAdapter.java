@@ -114,6 +114,61 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // names with the same name as the actor.
         String actorClassName = getComponent().getClass().getName();
 
+        // Generate code that creates the hierarchy.
+        // This wacky.  What we do is move up the hierarchy and instantiate 
+        // TypedComposites as necessary and *insert* the appropriate code into
+        // the StringBuffer.  When we get to the top, we *append* code that
+        // inserts the hierarchy into the toplevel and that creates the container
+        // for the actor.  At runtime, when we are generating the hierarchy,
+        // we need to avoid generating duplicate entities (entities that
+        // already exist in a container that has more than one actor handled
+        // by AutoAdapter).
+
+        StringBuffer containmentCode = new StringBuffer();
+
+        NamedObj child = getComponent();
+        NamedObj toplevel = child.toplevel();
+        NamedObj parentContainer = child.getContainer();
+        NamedObj grandparentContainer = parentContainer.getContainer();
+        while (grandparentContainer != null && grandparentContainer.getContainer() != null && grandparentContainer.getContainer().getContainer() != null) {
+            containmentCode.insert(0, 
+                    "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\"" + grandparentContainer.getName() + "\");" + _eol
+                    + "if (temporaryContainer == null) { " + _eol
+                    + "    cgContainer = new "
+                    // Use the actual class of the container, not TypedCompositeActor.
+                    + grandparentContainer.getClass().getName()
+                    + "(cgContainer, \"" + grandparentContainer.getName() + "\");" + _eol
+                    + "} else {" + _eol
+                    + "    cgContainer = temporaryContainer;" + _eol
+                    + "}" + _eol);
+            child = parentContainer;
+            parentContainer = grandparentContainer;
+            grandparentContainer = grandparentContainer.getContainer();
+        }
+
+        NamedObj container = grandparentContainer;
+        if (container == null) {
+            container = parentContainer;
+        }
+        containmentCode.insert(0, "{" + _eol
+                + "TypedCompositeActor cgContainer = null;" + _eol
+                + "TypedCompositeActor temporaryContainer = null;" + _eol
+                + "if ((cgContainer = (TypedCompositeActor)_toplevel.getEntity(\"" + container.getName() + "\")) == null) { " + _eol
+                + "   cgContainer = new "
+                + container.getClass().getName() + "(_toplevel, \""
+                + container.getName()  + "\");" + _eol
+                + "}" + _eol);
+        
+        containmentCode.append("    $actorSymbol(container) = new "
+                + getComponent().getContainer().getClass().getName()
+                // Some custom actors such as ElectricalOverlord
+                // want to be in a container with a particular name.
+                + "(cgContainer, \"" + getComponent().getContainer().getName()
+                + "\");" +_eol
+                + "}" + _eol);
+
+        // Whew.
+
         StringBuffer code = new StringBuffer();
         // Generate code that creates and connects each port.
         Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
@@ -239,8 +294,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                  getComponent().getClass().getField(parameterName);
             } catch (NoSuchFieldException ex) {
                 privateParameter = true;
-                code.append("try{" + _eol
-                        + "{" + _eol
+                code.append(// "try{" + _eol
+                        "{" + _eol
                         + "// Accessing private field" + _eol
                         + "Object actor = $actorSymbol(actor);" + _eol
                         + "java.lang.reflect.Field fields[] = actor.getClass().getDeclaredFields();" + _eol
@@ -274,40 +329,44 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + "\");" + _eol;
                     }
                 } 
-                code.append("try {" + _eol
+                code.append(//"try {" + _eol
+                        "{ " + _eol
                         + setParameter
-                        + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");" + _eol);
+                        + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");" + _eol
+                        + "}" + _eol);
             }
-            code.append("} catch (Exception ex) {" + _eol
-                    + "    throw new RuntimeException(\"Failed to set parameter \\\"" + parameterName
-                    + "\\\" in $actorSymbol(actor) to \\\"" + StringUtilities.escapeString(parameterValue) + "\\\"\", ex);" + _eol
-                + "}" + _eol);
+// Exclude the catch code because it bulks up the code too much for large models.
+//             code.append("} catch (Exception ex) {" + _eol
+//                     + "    throw new RuntimeException(\"Failed to set parameter \\\"" + parameterName
+//                     + "\\\" in $actorSymbol(actor) to \\\"" + StringUtilities.escapeString(parameterValue) + "\\\"\", ex);" + _eol
+//                 + "}" + _eol);
         }
         //code.append(getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start"));
 
         String [] splitInitializeParameterCode = getCodeGenerator()._splitBody("_AutoAdapterP_", code.toString());
 
+        // Stitch every thing together.  We do this last because of
+        // the _splitBody() calls.
         String result = getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
             + "try {" + _eol
             //+ "    $actorSymbol(container) = new TypedCompositeActor();" +_eol
-            + "    $actorSymbol(container) = new " + getComponent().getContainer().getClass().getName() + "();" +_eol
-            // Some custom actors such as ElectricalOverlord
-            // want to be in a container with a particular name.
-            + "    $actorSymbol(container).setName(\""
-            + getComponent().getContainer().getName()
-            + "\");" + _eol
+            + "    instantiateToplevel(\"" + getComponent().toplevel().getName() + "\");" + _eol
+            + containmentCode
             + "    $actorSymbol(actor) = new " + actorClassName
             + "($actorSymbol(container), \"$actorSymbol(actor)\");" + _eol
             + splitInitializeConnectionCode[0]
             + splitInitializeConnectionCode[1]
             + "    new ptolemy.actor.Director($actorSymbol(container), \"director\");" + _eol
-            + "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
-            + "    $actorSymbol(container).preinitialize();" + _eol
+            //+ "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
+            //+ "    $actorSymbol(container).preinitialize();" + _eol
+            + getCodeGenerator().comment("FIXME: Don't call _toplevel.preinitialize() for each AutoAdapter")
+            + "    _toplevel.preinitialize();" + _eol
             + "} catch (Exception ex) {" + _eol
                 + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);" + _eol
             + "}" + _eol
             + "try {" + _eol
-            + "    TypedCompositeActor.resolveTypes($actorSymbol(container));" + _eol
+            //+ "    TypedCompositeActor.resolveTypes($actorSymbol(container));" + _eol
+            + "    TypedCompositeActor.resolveTypes(_toplevel);" + _eol
             + "    $actorSymbol(actor).initialize();" + _eol
             + "} catch (Exception ex) {" + _eol
             + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);" + _eol
@@ -336,8 +395,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If illegal macro names are found.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer("TypedCompositeActor $actorSymbol(toplevel);" + _eol
-                + "TypedCompositeActor $actorSymbol(container);" + _eol
+        StringBuffer code = new StringBuffer("TypedCompositeActor $actorSymbol(container);" + _eol
                 + "TypedAtomicActor $actorSymbol(actor);" + _eol);
 
         // Handle inputs and outputs on a per-actor basis.
@@ -450,6 +508,36 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
 
+    /**
+     * Generate shared code that includes the declaration of the toplevel
+     * composite.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set<String> getSharedCode() throws IllegalActionException {
+        Set<String> sharedCode = super.getSharedCode();
+        sharedCode.add("static TypedCompositeActor _toplevel = null;" + _eol
+                + getCodeGenerator().comment("If necessary, create a top level for actors"
+                        + "that do not have adapters that are handled by AutoAdapter.")
+                + "static void instantiateToplevel(String name) throws Exception {" + _eol
+                + "    if (_toplevel == null) { " + _eol
+                + "        _toplevel = new TypedCompositeActor();" + _eol
+                + "        _toplevel.setName(name);" + _eol
+                + "        new ptolemy.actor.Director(_toplevel, \"director\");" + _eol
+                + "        _toplevel.setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
+                + "    }" + _eol
+                + "}" + _eol
+                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
+//                 + "static ptolemy.kernel.CompositeEntity getContainer(ptolemy.kernel.util.NamedObj namedObj) {" + _eol
+//                 + "    NamedObj child = namedObj;" + _eol
+//                 + "    NamedObj container = child.getContainer();" + _eol
+//                 + "    while (container != null) {" + _eol
+//                 + "        " + _eol
+//                 + "        container = child.getContainer();" + _eol
+//                 + "    }" + _eol
+//                 + "}" + _eol
+                       );
+        return sharedCode;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
