@@ -2080,8 +2080,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
         } catch (Exception ex) {
-            throw new InternalErrorException(null, ex,
-                    "Failed to read _exportPDFActionName from the Configuration");
+            // We do not want to abort at this point because the worst
+            // case is that we will have no Export PDF in the menu.
+            // That is better than preventing the user from opening a model.
+            System.err.println("Warning: Tried to create Export PDF menu item, but failed: " + ex);
         }
 
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
