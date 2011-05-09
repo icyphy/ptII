@@ -1407,12 +1407,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  method.
      *  @param destination The destination byte stream to write to.
      *  @param directory The directory in which to put any associated files.
-     *  @throws IOException If unable to write associated files.
+     *  @throws IOException If unable to write associated files, or if the
+     *   current configuration does not support it.
      *  @throws PrinterException If unable to write associated files.
      */
     public void writeHTML(File directory) throws PrinterException, IOException {
         if (_exportHTMLAction != null) {
             ((HTMLExportable)_exportHTMLAction).writeHTML(directory);
+        } else {
+            throw new IOException("Export to Web not supported.");
         }
     }
     
