@@ -49,10 +49,14 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -198,7 +202,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     public void writeHTML(File directory) throws PrinterException, IOException {
         // First, create the gif file showing whatever the current
         // view in this frame shows.
-        File gifFile = new File(directory, _basicGraphFrame.getModel().getName() + ".gif");
+        NamedObj model = _basicGraphFrame.getModel();
+        File gifFile = new File(directory, model.getName() + ".gif");
         OutputStream out = new FileOutputStream(gifFile);
         try {
             _basicGraphFrame.writeImage(out, "gif");
@@ -290,8 +295,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         writer.println("</script>");
         writer.println("</head><body>");
         
-        // Put a header in.
-        writer.println("<h1>" + _basicGraphFrame.getModel().getName() + "</h1>");
+        // Put a header in. Use the name of the ModalModel rather
+        // than the Controller if we have a ModalModel.
+        String modelName = model.getName();
+        if (model instanceof FSMActor) {
+            NamedObj container = model.getContainer();
+            if (container instanceof ModalModel) {
+                modelName = container.getName();
+            }
+        }
+        writer.println("<h1>" + modelName + "</h1>");
         
         // Put the image in.
         writer.println("<img src=\"" + _basicGraphFrame.getModel().getName()
@@ -307,8 +320,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         Effigy myEffigy = (Effigy)myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
         for (PtolemyEffigy effigy : effigies) {
-            NamedObj model = effigy.getModel();
-            openEffigies.put(model, effigy);
+            openEffigies.put(effigy.getModel(), effigy);
         }
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
         for (IconVisibleLocation location : iconLocations) {
@@ -322,10 +334,29 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             if (effigy != null) {
                 linkTo = _linkToText(effigy, directory);
             } else {
-                // There is no open effigy, but the object might
-                // be an instance of a class where the class definition
-                // is open. Look for that.
-                if (location.object instanceof Instantiable) {
+                if (location.object instanceof State) {
+                    // In a ModalModel, location.object is a State
+                    // inside the _Controller.  But the effigy is stored
+                    // under the refinements of that state, which have the
+                    // same container as the _Controller.
+                    try {
+                        TypedActor[] refinements = ((State)location.object).getRefinement();
+                        // FIXME: There may be more
+                        // than one refinement. How to open all of them?
+                        // We have only one link. For now, just open the first one.
+                        if (refinements != null && refinements.length > 0) {
+                            effigy = openEffigies.get((NamedObj)refinements[0]);
+                            if (effigy != null) {
+                                linkTo = _linkToText(effigy, directory);
+                            }
+                        }
+                    } catch (IllegalActionException e) {
+                        // Ignore errors here. Just don't export this refinement.
+                    }
+                } else if (location.object instanceof Instantiable) {
+                    // There is no open effigy, but the object might
+                    // be an instance of a class where the class definition
+                    // is open. Look for that.
                     Instantiable parent = ((Instantiable)location.object).getParent();
                     if (parent instanceof NamedObj) {
                         Effigy classEffigy = Configuration.findEffigy((NamedObj) parent);
