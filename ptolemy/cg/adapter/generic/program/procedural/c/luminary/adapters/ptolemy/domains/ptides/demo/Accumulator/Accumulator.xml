@@ -64,7 +64,7 @@
             </property>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-        </port>
+        </port> 
         <port name="DisplayActuator" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 195.0]">
