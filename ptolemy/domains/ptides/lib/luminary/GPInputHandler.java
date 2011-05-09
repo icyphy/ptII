@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class GPInputHandler extends LuminarySensorHandler {
 
     /**
-     * Construct a GPInputDevice object.
+     * Construct a GPInputHandler object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.
@@ -85,7 +85,7 @@ public class GPInputHandler extends LuminarySensorHandler {
      */
     public StringParameter pad;
 
-    /** A GPInputDevice's configuration is its pad name.
+    /** A GPInputHandler's configuration is its pad name.
      *  @exception IllegalActionException 
      */
     public String configuration() throws IllegalActionException {

@@ -38,8 +38,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * All input devices for Luminary should extend this class. This class
  * saves the total number of configurations of interrupts.
- * For example, if we only support GPInputDevice, i.e., the only subclass
- * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports 8
+ * For example, if we only support GPInputHandler, i.e., the only subclass
+ * of LuminaryInputDevice is GPInputHandler, and GPInputHandler supports 8
  * configurations, then numberOfSupportedInputDeviceConfigurations is set to
  * 8. If more devices are implemented, numberOfSupportedInputDeviceConfigurations
  * should be updated.

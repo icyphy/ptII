@@ -1,4 +1,4 @@
-/* A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice
+/* A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputHandler
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputHandler.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -51,8 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class GPInputHandler extends InputDevice {
     /** Construct an adapter with the given
-     *  ptolemy.domains.ptides.lib.GPInputDevice actor.
-     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor.
+     *  ptolemy.domains.ptides.lib.GPInputHandler actor.
+     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputHandler actor.
      *  @exception IllegalActionException 
      * @exception NameDuplicationException 
      */

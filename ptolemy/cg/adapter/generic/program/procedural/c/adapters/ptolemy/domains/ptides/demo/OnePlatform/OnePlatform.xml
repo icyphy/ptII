@@ -146,7 +146,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="GPInputDevice" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
+        <entity name="GPInputHandler" class="ptolemy.domains.ptides.lib.luminary.GPInputHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 205.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -160,7 +160,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="GPInputDevice2" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
+        <entity name="GPInputHandler2" class="ptolemy.domains.ptides.lib.luminary.GPInputHandler">
             <property name="pin" class="ptolemy.data.expr.Parameter" value="5">
             </property>
             <property name="pad" class="ptolemy.data.expr.StringParameter" value="C">
@@ -221,10 +221,10 @@
         <link port="TimeDelay.output" relation="relation9"/>
         <link port="TimeDelay2.input" relation="relation6"/>
         <link port="TimeDelay2.output" relation="relation10"/>
-        <link port="GPInputDevice.input" relation="relation3"/>
-        <link port="GPInputDevice.output" relation="relation"/>
-        <link port="GPInputDevice2.input" relation="relation5"/>
-        <link port="GPInputDevice2.output" relation="relation4"/>
+        <link port="GPInputHandler.input" relation="relation3"/>
+        <link port="GPInputHandler.output" relation="relation"/>
+        <link port="GPInputHandler2.input" relation="relation5"/>
+        <link port="GPInputHandler2.output" relation="relation4"/>
         <link port="GPOutputDevice.input" relation="relation8"/>
         <link port="GPOutputDevice.output" relation="relation7"/>
     </entity>

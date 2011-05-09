@@ -31,7 +31,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A code generation adapter class for 
  * ptolemy.domains.ptides.lib.targets.luminary.TimeTriggeredEncoderInputDevice. This actor
- * is basically the same as GPInputDevice, only the C template includes more
+ * is basically the same as GPInputHandler, only the C template includes more
  * calculations.
  * @author Jia Zou
  * @version $Id$
