@@ -95,9 +95,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      * @param basicGraphFrame TODO
      */
     public ExportHTMLAction(BasicGraphFrame basicGraphFrame) {
-        super("Export HTML");
+        super("Export to Web");
         _basicGraphFrame = basicGraphFrame;
-        putValue("tooltip", "Export HTML with a description of this model.");
+        putValue("tooltip", "Export HTML and GIF files showing this model.");
         // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
     }
 
@@ -212,8 +212,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         writer.println("<html><head>");
         // Include jquery and lightbox.
         // Copy Javascript source files into destination directory,
-        // if they are available. Since the code is GPL'd, it may
-        // not be available on all Ptolemy II installations.
+        // if they are available. The files are under an MIT license,
+        // which is compatible with the Ptolemy license.
         File jsDirectory = FileUtilities.nameToFile("$CLASSPATH/ptolemy/vergil/javascript", null);
         boolean warn = true;
         // We assume that if the directory exists, then the files exist.
