@@ -166,8 +166,8 @@ public class PtidesBasicReceiver
             deadlineSecsString = Integer.toString(intPart);
             deadlineNsecsString = Integer.toString(fracPart);
         } else {
-            deadlineSecsString = new String("0");
-            deadlineNsecsString = new String("0");
+            deadlineSecsString = "0";
+            deadlineNsecsString = "0";
         }
 
         // Getting offsetTime.

@@ -1304,8 +1304,9 @@ public class TemplateParser {
             try {
                 Method method = getClass().getMethod(macro, new Class[0]);
                 return (String) method.invoke(this, new Object[0]);
-            } catch (Exception ex) {
-                // Don't print out error, since this is probably not an user macro.
+            } catch (Throwable throwable) {
+                // Don't print out error, since this is probably not
+                // an user macro.
             }
 
             // Try to treat this as an user macro class.

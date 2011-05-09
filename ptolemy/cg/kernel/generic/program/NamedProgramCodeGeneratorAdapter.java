@@ -762,13 +762,15 @@ public class NamedProgramCodeGeneratorAdapter extends
     }
 
     /**
-     * Return the associated actor's rates for all configurations of this actor.
-     * In this base class, return null.
-     * @return null
+     * Return the associated actor's rates for all configurations of
+     * this actor.  In this base class, return an array of length 0.
+     * @return an array of length 0.
      */
-    public int[][] getRates() {
-        return null;
-    }
+//     public int[][] getRates() {
+//         // Findbugs suggests returning an array of length 0 instead
+//         // of returning null.
+//         return new int[0][0] 
+//     }
 
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in

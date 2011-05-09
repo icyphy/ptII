@@ -494,12 +494,12 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
             if (actor instanceof ActuatorSetup) {
-                actuators.put(actor, new Integer(actuatorIndex));
+                actuators.put(actor, Integer.valueOf(actuatorIndex));
                 actuatorIndex++;
             }
 
             if (actor instanceof SensorHandler) {
-                sensors.put(actor, new Integer(sensorIndex));
+                sensors.put(actor, Integer.valueOf(sensorIndex));
                 sensorIndex++;
             }
         }

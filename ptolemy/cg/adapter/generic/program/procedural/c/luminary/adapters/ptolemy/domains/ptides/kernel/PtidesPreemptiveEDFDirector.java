@@ -102,47 +102,51 @@ public class PtidesPreemptiveEDFDirector
             return code;
         }
         
-        // Get all actors that are interruptDevices. Then for each of these actors,
-        // generate a name for it, and put the name along with this actor into a
-        // HashMap.
-        Map devices = new HashMap<Actor, String>();
+        // Get all actors that are interruptDevices. Then for each of
+        // these actors, generate a name for it, and put the name
+        // along with this actor into a HashMap.
+        Map<LuminarySensorHandler, String> devices = new HashMap<LuminarySensorHandler, String>();
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent()
                 .getContainer()).deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof LuminarySensorHandler) {
-                devices.put(actor, new String("Sensing_"
+                devices.put((LuminarySensorHandler)actor, "Sensing_"
                         + NamedProgramCodeGeneratorAdapter
-                                .generateName((NamedObj) actor)));
+                                .generateName((NamedObj) actor));
             }
         }
 
         // List of args used to get the template.
         List args = new LinkedList();
 
-        // The first element in the args should be the externs. For each device in the set,
-        // we need to add an external method.
+        // The first element in the args should be the externs. For
+        // each device in the set, we need to add an external method.
         StringBuffer externs = new StringBuffer();
-        for (Actor actor : (Set<Actor>) devices.keySet()) {
+        for (LuminarySensorHandler actor : (Set<LuminarySensorHandler>) devices.keySet()) {
             externs.append("        EXTERN  " + devices.get(actor) + _eol);
         }
         args.add(externs.toString());
 
-        // Now we create an array for each device. The length of the array should be the number of
-        // supported configurations in this device. For each actor that fits a device and
-        // a particular configuration, add it into the array associated with the device, 
-        // and the index of this actor should equal to the index of the configuration in
+        // Now we create an array for each device. The length of the
+        // array should be the number of supported configurations in
+        // this device. For each actor that fits a device and a
+        // particular configuration, add it into the array associated
+        // with the device, and the index of this actor should equal
+        // to the index of the configuration in
         // supportedConfigurations().
         int configurationSize = LuminarySensorHandler.numberOfSupportedInputDeviceConfigurations;
         String[] GPHandlers = new String[configurationSize];
         boolean foundConfig = false;
-        for (LuminarySensorHandler actor : (Set<LuminarySensorHandler>) devices
-                .keySet()) {
+        //for (LuminarySensorHandler actor : (Set<LuminarySensorHandler>) devices
+        //        .keySet()) {
+        for (Map.Entry<LuminarySensorHandler, String> entry : devices.entrySet()) {
+            LuminarySensorHandler actor = entry.getKey();
+            String actorName = entry.getValue();
             for (int i = 0; i < actor.supportedConfigurations().size(); i++) {
                 if (actor.configuration().compareTo(
                         actor.supportedConfigurations().get(i)) == 0) {
                     GPHandlers[i
-                            + Integer.parseInt(actor.startingConfiguration())] = (String) devices
-                            .get(actor);
+                            + Integer.parseInt(actor.startingConfiguration())] = /*(String) devices.get(actor)*/ actorName;
                     foundConfig = true;
                     break;
                 }

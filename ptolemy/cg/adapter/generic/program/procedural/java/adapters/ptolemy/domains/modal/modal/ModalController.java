@@ -158,11 +158,11 @@ public class ModalController
 
             actor = (Actor) actors.next();
             getAdapter(actor);
-            if (actor.getDisplayName().contains("_Controller")) {
+            //if (actor.getDisplayName().contains("_Controller")) {
                 //actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 //      .getAdapter(actor);
                 //code.append(actorHelper.generateFireFunctionCode());
-            }
+            //}
  
         }
         return code.toString();

@@ -1405,6 +1405,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
 
         code.append(bodyCode);
+        // Findbugs warns that it is not necessary to set these fields
+        // to null in JSSE1.6, but these strings are so huge that it
+        // seems to help reduce the memory footprint.
         bodyCode = null;
 
         // If the container is in the top level, we are generating code

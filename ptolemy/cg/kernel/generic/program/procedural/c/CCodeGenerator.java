@@ -1453,6 +1453,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     break;
                 } else {
                     // Not found, please try again.
+                    // Findbugs warns about this explicit path.
                     potentialJavaHomeParentFile = new File(
                             "C:\\Program Files\\Java");
                 }
