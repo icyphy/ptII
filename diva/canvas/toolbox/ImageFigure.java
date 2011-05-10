@@ -157,6 +157,18 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      */
     public boolean imageUpdate(Image image, int infoflags, int x, int y,
             int width, int height) {
+
+        // Sven Koeler writes:
+        // "we recently needed support for animated GIFs on the canvas in Kepler.
+        // I made some changes in Ptolemy to repaint the Image on frame change
+        // events and haven't seen any performance issues."
+
+        // start
+        if ( (infoflags & ImageObserver.FRAMEBITS) != 0 ) {
+            repaint();
+        }
+        // end
+
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
             // Create a default error image.
             URL url = getClass().getResource(
