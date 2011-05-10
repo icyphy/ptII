@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Repeat" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 54, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 54, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,7 +19,9 @@
         </property>
     </property>
     <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
-        <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="useMake" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 75.0]">
         </property>
@@ -68,4 +70,12 @@
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp2.output" relation="relation3"/>
     <link port="Test.input" relation="relation"/>
+    <property name="SDF Director._Repeat_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
+        </property>
+    </property>
 </entity>
