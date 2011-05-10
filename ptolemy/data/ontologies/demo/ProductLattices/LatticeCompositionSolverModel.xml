@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{680.1458333333333, 382.984375}">
     </property>
     <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/observableLattice/ObservableSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/observableLattice/ObservableSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
         </property>
@@ -25,7 +25,7 @@
         </property>
     </property>
     <property name="AbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/abstractInterpretation/AbstractInterpretationScalarSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/AbstractInterpretationScalarSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
@@ -97,7 +97,7 @@
         </property>
     </property>
     <property name="ConstSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constLattice/ConstNonconstTwoConceptsOnlySolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constLattice/ConstNonconstTwoConceptsOnlySolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>

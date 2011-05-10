@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LatticeComposition" class="ptolemy.actor.TypedCompositeActor">
     <property name="ConstSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constLattice/ConstNonconstTwoConceptsOnlySolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constLattice/ConstNonconstTwoConceptsOnlySolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
@@ -17,7 +17,7 @@
         </property>
     </property>
     <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/observableLattice/ObservableSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/observableLattice/ObservableSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
         </property>
@@ -31,7 +31,7 @@
         </property>
     </property>
     <property name="AbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/abstractInterpretation/AbstractInterpretationScalarSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/abstractInterpretation/AbstractInterpretationScalarSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
@@ -85,7 +85,7 @@
         </property>
     </property>
     <property name="ConstAbsIntObservableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../demo/ProductLattices/LatticeCompositionSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/demo/ProductLattices/LatticeCompositionSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>

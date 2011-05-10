@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="ConstPropagationAbsIntSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constPropagationAbsInt/ConstPropagationAbsIntSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constPropagationAbsInt/ConstPropagationAbsIntSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
