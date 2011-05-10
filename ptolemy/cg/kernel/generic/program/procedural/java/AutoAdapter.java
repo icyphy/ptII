@@ -109,153 +109,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * the block or processing the macros.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        // Use the full class name so that we don't have to import the
-        // actor.  If we import the actor, then we cannot have model
-        // names with the same name as the actor.
+        StringBuffer code = new StringBuffer();
         String actorClassName = getComponent().getClass().getName();
 
-        // Generate code that creates the hierarchy.
-        // This wacky.  What we do is move up the hierarchy and instantiate 
-        // TypedComposites as necessary and *insert* the appropriate code into
-        // the StringBuffer.  When we get to the top, we *append* code that
-        // inserts the hierarchy into the toplevel and that creates the container
-        // for the actor.  At runtime, when we are generating the hierarchy,
-        // we need to avoid generating duplicate entities (entities that
-        // already exist in a container that has more than one actor handled
-        // by AutoAdapter).
-
-        StringBuffer containmentCode = new StringBuffer();
-
-        NamedObj child = getComponent();
-        NamedObj toplevel = child.toplevel();
-        NamedObj parentContainer = child.getContainer();
-        NamedObj grandparentContainer = parentContainer.getContainer();
-        while (grandparentContainer != null && grandparentContainer.getContainer() != null && grandparentContainer.getContainer().getContainer() != null) {
-            containmentCode.insert(0, 
-                    "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\"" + grandparentContainer.getName() + "\");" + _eol
-                    + "if (temporaryContainer == null) { " + _eol
-                    + "    cgContainer = new "
-                    // Use the actual class of the container, not TypedCompositeActor.
-                    + grandparentContainer.getClass().getName()
-                    + "(cgContainer, \"" + grandparentContainer.getName() + "\");" + _eol
-                    + "} else {" + _eol
-                    + "    cgContainer = temporaryContainer;" + _eol
-                    + "}" + _eol);
-            child = parentContainer;
-            parentContainer = grandparentContainer;
-            grandparentContainer = grandparentContainer.getContainer();
-        }
-
-        NamedObj container = grandparentContainer;
-        if (container == null) {
-            container = parentContainer;
-        }
-        containmentCode.insert(0, "{" + _eol
-                + "TypedCompositeActor cgContainer = null;" + _eol
-                + "TypedCompositeActor temporaryContainer = null;" + _eol
-                + "if ((cgContainer = (TypedCompositeActor)_toplevel.getEntity(\"" + container.getName() + "\")) == null) { " + _eol
-                + "   cgContainer = new "
-                + container.getClass().getName() + "(_toplevel, \""
-                + container.getName()  + "\");" + _eol
-                + "}" + _eol);
-        
-        containmentCode.append("    $actorSymbol(container) = new "
-                + getComponent().getContainer().getClass().getName()
-                // Some custom actors such as ElectricalOverlord
-                // want to be in a container with a particular name.
-                + "(cgContainer, \"" + getComponent().getContainer().getName()
-                + "\");" +_eol
-                + "}" + _eol);
-
-        // Whew.
-
-        StringBuffer code = new StringBuffer();
-        // Generate code that creates and connects each port.
-        Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
-        while (entityPorts.hasNext()) {
-            ComponentPort insidePort = (ComponentPort) entityPorts.next();
-            if (insidePort instanceof IOPort) {
-
-                IOPort castPort = (IOPort) insidePort;
-                String name = TemplateParser.escapePortName(castPort.getName());
-                if (!castPort.isMultiport()) {
-                    code.append(_generatePortInstantiation(name, castPort.getName(), castPort));
-                } else {
-                    // Multiports.  Not all multiports have port names
-                    // that match the field name. See
-                    // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
-
-                    //TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(castPort.getName()));
-
-                    TypedIOPort actorPort = null;
-                    try {
-                        Field foundPortField = _findFieldByPortName(castPort.getName());
-                        actorPort = (TypedIOPort)foundPortField.get(getComponent());
-                        code.append("    ((" + getComponent().getClass().getName()
-                                + ")$actorSymbol(actor))." + foundPortField.getName() + ".setTypeEquals("
-                                + _typeToBaseType(actorPort.getType()) + ");" + _eol);
-
-                    } catch (Exception ex) {
-                        //throw new IllegalActionException(castPort, ex,
-                        //        "Could not find port " + castPort.getName());
-                        actorPort = (TypedIOPort)((Entity)getComponent()).getPort(castPort.getName());
-                        code.append("new TypedIOPort($actorSymbol(container), \""
-                                + actorPort.getName().replace("\\", "\\\\") + "\", " 
-                                + actorPort.isInput() + ", "
-                                + actorPort.isOutput() + ").setMultiport(true);" + _eol);
-
-                    }
-
-
-                    int sources = actorPort.numberOfSources();
-                    for (int i = 0; i < sources; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort));
-                    }
-
-                    int sinks = actorPort.numberOfSinks();
-                    for (int i = 0; i < sinks; i++) {
-                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort));
-                    }
-                }
-
-                List<TypeAttribute> typeAttributes = insidePort.attributeList(TypeAttribute.class);
-                if (typeAttributes.size() > 0) {
-                    if (typeAttributes.size() > 1) {
-                        new Exception("Warning, " + insidePort.getFullName()
-                                + " has more than one typeAttribute."
-                                      ).printStackTrace();
-                    }
-                    // only get the first element of the list.
-                    TypeAttribute typeAttribute = typeAttributes.get(0);
-                    // The port has a type attribute, which means the
-                    // type was set via the UI.
-                    // This is needed by:
-                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
-                    code.append("{" + _eol
-                            + "ptolemy.actor.TypeAttribute _type = "
-                            + "new ptolemy.actor.TypeAttribute("
-
-                            //+ "$actorSymbol("
-                            //+ TemplateParser.escapePortName(insidePort.getName()) + "), \"inputType\");" + _eol
-                            //+ "((" + actorClassName + ")$actorSymbol(actor))." 
-                            //+ TemplateParser.escapePortName(insidePort.getName()) + ", \"inputType\");" + _eol
-
-                            // Certain actors may create ports on the
-                            // fly, so query the actor for its port.
-
-                            + "(TypedIOPort)$actorSymbol(container).getPort(\"" 
-                            + insidePort.getName().replace("\\", "\\\\") + "\"), \"inputType\");" + _eol
-                            + "_type.setExpression(\""
-                            + typeAttribute.getExpression()
-                            + "\");" + _eol
-                            + "}" + _eol);
-                }
-            }
-        }
-
-        String [] splitInitializeConnectionCode = getCodeGenerator()._splitBody("_AutoAdapterI_", code.toString());
-
-        code = new StringBuffer();
         // Handle parameters.
         Iterator parameters = getComponent().attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
@@ -347,24 +203,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         // Stitch every thing together.  We do this last because of
         // the _splitBody() calls.
-        String result = getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
-            + "try {" + _eol
-            //+ "    $actorSymbol(container) = new TypedCompositeActor();" +_eol
-            + "    instantiateToplevel(\"" + getComponent().toplevel().getName() + "\");" + _eol
-            + containmentCode
-            + "    $actorSymbol(actor) = new " + actorClassName
-            + "($actorSymbol(container), \"$actorSymbol(actor)\");" + _eol
-            + splitInitializeConnectionCode[0]
-            + splitInitializeConnectionCode[1]
-            + "    new ptolemy.actor.Director($actorSymbol(container), \"director\");" + _eol
-            //+ "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
-            //+ "    $actorSymbol(container).preinitialize();" + _eol
-            + getCodeGenerator().comment("FIXME: Don't call _toplevel.preinitialize() for each AutoAdapter")
-            + "    _toplevel.preinitialize();" + _eol
-            + "} catch (Exception ex) {" + _eol
-                + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);" + _eol
-            + "}" + _eol
-            + "try {" + _eol
+        String result =
+            "try {" + _eol
             //+ "    TypedCompositeActor.resolveTypes($actorSymbol(container));" + _eol
             + "    TypedCompositeActor.resolveTypes(_toplevel);" + _eol
             + "    $actorSymbol(actor).initialize();" + _eol
@@ -377,6 +217,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + "}" + _eol;
 
         return processCode(result);
+    }
+
+    /**
+     * Generate the postfire code.
+     * @return Code that calls postfire() on the inner actor.
+     * @exception IllegalActionException If illegal macro names are found.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        return _generateExecutionCode("postfire");
     }
 
     /**
@@ -432,13 +281,218 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return processCode(code.toString());
     }
 
-    /**
-     * Generate the postfire code.
-     * @return Code that calls postfire() on the inner actor.
-     * @exception IllegalActionException If illegal macro names are found.
+    /** Generate the preinitialization method body.
+     *        
+     *  <p>Typically, the preinitialize code consists of variable
+     *   declarations.  However, AutoAdapter generates method calls
+     *   that instantiate wrapper TypedCompositeActors, so we need
+     *   to invoke those method calls.</p>
+     *
+     *  @return a string for the preinitialization method body.  In
+     *  this base class, return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generatePostfireCode() throws IllegalActionException {
-        return _generateExecutionCode("postfire");
+    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        // Use the full class name so that we don't have to import the
+        // actor.  If we import the actor, then we cannot have model
+        // names with the same name as the actor.
+        String actorClassName = getComponent().getClass().getName();
+
+        // Generate code that creates the hierarchy.
+
+        StringBuffer containmentCode = new StringBuffer();
+
+        NamedObj child = getComponent();
+        NamedObj toplevel = child.toplevel();
+        NamedObj parentContainer = child.getContainer();
+        NamedObj grandparentContainer = parentContainer.getContainer();
+
+        if (grandparentContainer == null) {
+            // The simple case, where the actor is in the top level and
+            // we only need to create a TypedCompositeActor container.
+            containmentCode.append("    $actorSymbol(container) = new "
+                    + getComponent().getContainer().getClass().getName()
+                    // Some custom actors such as ElectricalOverlord
+                    // want to be in a container with a particular name.
+                    + "(_toplevel, \"" + getComponent().getName()
+                    + "\");" +_eol);
+        } else {
+            // This wacky.  What we do is move up the hierarchy and instantiate 
+            // TypedComposites as necessary and *insert* the appropriate code into
+            // the StringBuffer.  When we get to the top, we *append* code that
+            // inserts the hierarchy into the toplevel and that creates the container
+            // for the actor.  At runtime, when we are generating the hierarchy,
+            // we need to avoid generating duplicate entities (entities that
+            // already exist in a container that has more than one actor handled
+            // by AutoAdapter).
+
+            //            while (grandparentContainer != null && grandparentContainer.getContainer() != null && grandparentContainer.getContainer().getContainer() != null) {
+            while (parentContainer != null /*&& parentContainer.getContainer() != null && parentContainer.getContainer().getContainer() != null*/) {
+                containmentCode.insert(0, 
+//                         "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\"" + grandparentContainer.getName() + "\");" + _eol
+//                         + "if (temporaryContainer == null) { " + _eol
+//                         + "    cgContainer = new "
+//                         // Use the actual class of the container, not TypedCompositeActor.
+//                         + grandparentContainer.getClass().getName()
+//                         + "(cgContainer, \"" + grandparentContainer.getName() + "\");" + _eol
+//                         + "} else {" + _eol
+//                         + "    cgContainer = temporaryContainer;" + _eol
+//                         + "}" + _eol);
+
+                        "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\"" + parentContainer.getName() + "\");" + _eol
+                        + "if (temporaryContainer == null) { " + _eol
+                        + "    cgContainer = new "
+                        // Use the actual class of the container, not TypedCompositeActor.
+                        + parentContainer.getClass().getName()
+                        + "(cgContainer, \"" + parentContainer.getName() + "\");" + _eol
+                        + "} else {" + _eol
+                        + "    cgContainer = temporaryContainer;" + _eol
+                        + "}" + _eol);
+                child = parentContainer;
+                parentContainer = parentContainer.getContainer();
+                //parentContainer = grandparentContainer;
+                //grandparentContainer = grandparentContainer.getContainer();
+            }
+
+            NamedObj container = grandparentContainer;
+            if (container == null) {
+                container = parentContainer;
+            }
+            containmentCode.insert(0, "{" + _eol
+                    + getCodeGenerator().comment(getComponent().getFullName()) + _eol 
+                    + "TypedCompositeActor cgContainer = null;" + _eol
+                    + "TypedCompositeActor temporaryContainer = null;" + _eol
+                    + "if ((cgContainer = (TypedCompositeActor)_toplevel.getEntity(\"" + container.getName() + "\")) == null) { " + _eol
+                    + "   cgContainer = new "
+                    + container.getClass().getName() + "(_toplevel, \""
+                    + container.getName()  + "\");" + _eol
+                    + "}" + _eol);
+        
+            containmentCode.append(
+                    //"    if ((temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
+                    //+ getComponent().getContainer().getName()
+                    //+ "\")) == null) {" + _eol
+                    "        $actorSymbol(container) = new "
+                    + getComponent().getContainer().getClass().getName()
+                    // Some custom actors such as ElectricalOverlord
+                    // want to be in a container with a particular name.
+                    + "(cgContainer, \"" + getComponent().getName() + "_container"
+                    + "\");" +_eol
+                    //+ "    } else {" + _eol
+                    //+ "       $actorSymbol(container) = cgContainer;" + _eol
+                    //+ "    }" + _eol
+                    + "}" + _eol);
+            
+            // Whew.
+        }
+
+
+        StringBuffer code = new StringBuffer();
+        // Generate code that creates and connects each port.
+        Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
+        while (entityPorts.hasNext()) {
+            ComponentPort insidePort = (ComponentPort) entityPorts.next();
+            if (insidePort instanceof IOPort) {
+
+                IOPort castPort = (IOPort) insidePort;
+                String name = TemplateParser.escapePortName(castPort.getName());
+                if (!castPort.isMultiport()) {
+                    code.append(_generatePortInstantiation(name, castPort.getName(), castPort));
+                } else {
+                    // Multiports.  Not all multiports have port names
+                    // that match the field name. See
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
+
+                    //TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(castPort.getName()));
+
+                    TypedIOPort actorPort = null;
+                    try {
+                        Field foundPortField = _findFieldByPortName(castPort.getName());
+                        actorPort = (TypedIOPort)foundPortField.get(getComponent());
+                        code.append("    ((" + getComponent().getClass().getName()
+                                + ")$actorSymbol(actor))." + foundPortField.getName() + ".setTypeEquals("
+                                + _typeToBaseType(actorPort.getType()) + ");" + _eol);
+
+                    } catch (Exception ex) {
+                        //throw new IllegalActionException(castPort, ex,
+                        //        "Could not find port " + castPort.getName());
+                        actorPort = (TypedIOPort)((Entity)getComponent()).getPort(castPort.getName());
+                        code.append("new TypedIOPort($actorSymbol(container), \""
+                                + actorPort.getName().replace("\\", "\\\\") + "\", " 
+                                + actorPort.isInput() + ", "
+                                + actorPort.isOutput() + ").setMultiport(true);" + _eol);
+
+                    }
+
+
+                    int sources = actorPort.numberOfSources();
+                    for (int i = 0; i < sources; i++) {
+                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort));
+                    }
+
+                    int sinks = actorPort.numberOfSinks();
+                    for (int i = 0; i < sinks; i++) {
+                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort));
+                    }
+                }
+
+                List<TypeAttribute> typeAttributes = insidePort.attributeList(TypeAttribute.class);
+                if (typeAttributes.size() > 0) {
+                    if (typeAttributes.size() > 1) {
+                        new Exception("Warning, " + insidePort.getFullName()
+                                + " has more than one typeAttribute."
+                                      ).printStackTrace();
+                    }
+                    // only get the first element of the list.
+                    TypeAttribute typeAttribute = typeAttributes.get(0);
+                    // The port has a type attribute, which means the
+                    // type was set via the UI.
+                    // This is needed by:
+                    // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml 
+                    code.append("{" + _eol
+                            + "ptolemy.actor.TypeAttribute _type = "
+                            + "new ptolemy.actor.TypeAttribute("
+
+                            //+ "$actorSymbol("
+                            //+ TemplateParser.escapePortName(insidePort.getName()) + "), \"inputType\");" + _eol
+                            //+ "((" + actorClassName + ")$actorSymbol(actor))." 
+                            //+ TemplateParser.escapePortName(insidePort.getName()) + ", \"inputType\");" + _eol
+
+                            // Certain actors may create ports on the
+                            // fly, so query the actor for its port.
+
+                            + "(TypedIOPort)$actorSymbol(container).getPort(\"" 
+                            + insidePort.getName().replace("\\", "\\\\") + "\"), \"inputType\");" + _eol
+                            + "_type.setExpression(\""
+                            + typeAttribute.getExpression()
+                            + "\");" + _eol
+                            + "}" + _eol);
+                }
+            }
+        }
+
+        String [] splitInitializeConnectionCode = getCodeGenerator()._splitBody("_AutoAdapterI_", code.toString());
+
+        // Stitch every thing together.  We do this last because of
+        // the _splitBody() calls.
+        String result = getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
+            + "try {" + _eol
+            //+ "    $actorSymbol(container) = new TypedCompositeActor();" +_eol
+            + "    instantiateToplevel(\"" + getComponent().toplevel().getName() + "\");" + _eol
+            + containmentCode
+            + "    $actorSymbol(actor) = new " + actorClassName
+            + "($actorSymbol(container), \"$actorSymbol(actor)\");" + _eol
+            + splitInitializeConnectionCode[0]
+            + splitInitializeConnectionCode[1]
+            + "    new ptolemy.actor.Director($actorSymbol(container), \"director\");" + _eol
+            //+ "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
+            //+ "    $actorSymbol(container).preinitialize();" + _eol
+            //+ getCodeGenerator().comment("FIXME: Don't call _toplevel.preinitialize() for each AutoAdapter")
+            //+ "    _toplevel.preinitialize();" + _eol
+            + "} catch (Exception ex) {" + _eol
+                + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);" + _eol
+            + "}" + _eol;
+        return processCode(result);
     }
 
     /**
@@ -526,7 +580,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "        _toplevel.setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
                 + "    }" + _eol
                 + "}" + _eol
-                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
+//                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
 //                 + "static ptolemy.kernel.CompositeEntity getContainer(ptolemy.kernel.util.NamedObj namedObj) {" + _eol
 //                 + "    NamedObj child = namedObj;" + _eol
 //                 + "    NamedObj container = child.getContainer();" + _eol
@@ -651,7 +705,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  necessary because some ports have different names than the name
      *  of the field.
      *  @param portName The escaped name of the port.
-     *  @exception Exception Thrown if a field cannot be access, or if
+     *  @exception Exception If a field cannot be access, or if
      *  getComponent() fails.
      */
     private Field _findFieldByPortName(String portName) throws NoSuchFieldException {
@@ -695,7 +749,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + ": " + ex);
             }
         }
-        //System.out.println("AutoAdapter._find " + portName + " " + foundPortField);
         return foundPortField;
     }
 
@@ -715,6 +768,145 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + executionMethod  + "() $actorSymbol(actor))\", ex);" + _eol
             + "}" + _eol;
         return processCode(code);
+    }
+
+    /** 
+     * Return the code that gets data from the actor port and sends
+     * it to the codegen port
+     *  @param actorPortName The name of the Actor port from which
+     *  data will be read.
+     *  @param codegenPortName The name of the port on the codegen side.
+     *  For non-multiports, actorPortName and codegenPortName are the same.
+     *  For multiports, codegenPortName will vary according to channel number
+     *  while actorPortName will remain the same.
+     * @param type The type of the port.
+     * @param channel The channel number.
+     * For non-multiports, the channel number will be 0.
+     */
+    private String _generateGetInside(String actorPortName,
+            String codegenPortName, Type type, int channel) {
+        actorPortName = TemplateParser.escapePortName(actorPortName);
+        //codegenPortName = TemplateParser.escapePortName(codegenPortName);
+        if (type instanceof ArrayType) {
+            
+            ArrayType array = (ArrayType)type;
+
+            String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
+            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
+            return
+                "{" + _eol
+//                 // Get the data from the Ptolemy port
+//                 + type.getTokenClass().getName() + " " + ptolemyData + "= (("
+//                 + type.getTokenClass().getName() + ")($actorSymbol("
+//                 + codegenPortName + ").getInside(0"
+//                 // For non-multiports "". For multiports, ", 0", ", 1" etc.
+//                 + (channel == 0 ? "" : ", " + channel)
+//                 + ")));" + _eol
+
+                // Create an array for the codegen data.
+                + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
+                + " Token codeGenData = $Array_new("
+                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length() , 0);" + _eol
+
+                // Copy from the Ptolemy data to the codegen data.
+                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData +").length(); i++) {" + _eol
+                + "   Array_set(codeGenData, i, "
+                + getCodeGenerator().codeGenType(array.getDeclaredElementType())
+                + "_new(((("
+                + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
+                + targetElementType + "Value())));" + _eol
+                + "  }" + _eol
+
+                // Output our newly constructed token
+                + " $put(" + actorPortName
+                + ", codeGenData);" + _eol
+                + "}" + _eol;
+        } else {
+            String portData = actorPortName + "_portData"
+                + (channel == 0 ? "" : channel);
+            return
+                "$put(" + actorPortName
+                // Refer to the token by the full class name and obviate the
+                // need to manage imports.
+                // + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
+                + ", ($actorSymbol("
+                + portData + ")))";
+        }
+    }
+
+    /** 
+     *  Return the code that creates temporary variables that hold the
+     *  values to be read.  We need to do this so as to avoid
+     *  reading from the same Ptolemy receiver twice, which would happen
+     *  if we have an automatically generated actor with a regular
+     *  non-multiport that feeds its output to two actors.
+     *  @param actorPortName The name of the Actor port from which
+     *  data will be read.
+     *  @param codegenPortName The name of the port on the codegen side.
+     *  For non-multiports, actorPortName and codegenPortName are the same.
+     *  For multiports, codegenPortName will vary according to channel number
+     *  while actorPortName will remain the same.
+     * @param type The type of the port.
+     * @param channel The channel number.
+     * For non-multiports, the channel number will be 0.
+     */
+    private String _generateGetInsideDeclarations(String actorPortName,
+            String codegenPortName, Type type, int channel) {
+        actorPortName = TemplateParser.escapePortName(actorPortName);
+        codegenPortName = TemplateParser.escapePortName(codegenPortName);
+        // This method is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+        String portData = actorPortName + "_portData"
+            + (channel == 0 ? "" : channel);
+        if (type instanceof ArrayType) {
+            ArrayType array = (ArrayType)type;
+
+            String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
+            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+
+            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
+            return
+                // Get the data from the Ptolemy port
+                type.getTokenClass().getName() + " " + ptolemyData + " = (("
+                + type.getTokenClass().getName() + ")($actorSymbol("
+                + codegenPortName + ").getInside(0"
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                + (channel == 0 ? "" : ", " + channel)
+                + ")));" + _eol
+                // Create an array for the codegen data.
+                + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
+                + " Token $actorSymbol(" + portData + ") = $Array_new("
+                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length(), 0);" + _eol
+
+                // Copy from the Ptolemy data to the codegen data.
+                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData + ").length(); i++) {" + _eol
+                + "   Array_set($actorSymbol(" + portData + "), i, "
+                + getCodeGenerator().codeGenType(array.getDeclaredElementType())
+                + "_new(((("
+                + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
+                + targetElementType + "Value())));" + _eol
+                + "  }" + _eol;
+        } else if (type == BaseType.COMPLEX) {
+            return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
+                + "Complex complex = (Complex)(((" + type.getTokenClass().getName() + ")"
+                + "($actorSymbol(" + codegenPortName + ").getInside(0"
+                + ")))." + type.toString().toLowerCase() + "Value());" + _eol
+                + "double real = complex.real;" + _eol
+                + "double imag = complex.imag;" + _eol
+                + "$actorSymbol(" + portData + ") = $typeFunc(TYPE_Complex::new(real, imag));" + _eol;
+
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                //+ (channel == 0 ? "" : ", " + channel)
+        } else {
+            return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
+                + "$actorSymbol(" + portData + ") = "
+                +  "((" + type.getTokenClass().getName() + ")"
+                + "($actorSymbol(" + codegenPortName + ").getInside(0"
+                + ")))." + type.toString().toLowerCase() + "Value();" + _eol;
+
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                //+ (channel == 0 ? "" : ", " + channel)
+        }
     }
 
     /** Return the code necessary to instantiate the port.
@@ -793,145 +985,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
         }
         return code.toString();
-    }
-
-    /** 
-     *  Return the code that creates temporary variables that hold the
-     *  values to be read.  We need to do this so as to avoid
-     *  reading from the same Ptolemy receiver twice, which would happen
-     *  if we have an automatically generated actor with a regular
-     *  non-multiport that feeds its output to two actors.
-     *  @param actorPortName The name of the Actor port from which
-     *  data will be read.
-     *  @param codegenPortName The name of the port on the codegen side.
-     *  For non-multiports, actorPortName and codegenPortName are the same.
-     *  For multiports, codegenPortName will vary according to channel number
-     *  while actorPortName will remain the same.
-     * @param type The type of the port.
-     * @param channel The channel number.
-     * For non-multiports, the channel number will be 0.
-     */
-    private String _generateGetInsideDeclarations(String actorPortName,
-            String codegenPortName, Type type, int channel) {
-        actorPortName = TemplateParser.escapePortName(actorPortName);
-        codegenPortName = TemplateParser.escapePortName(codegenPortName);
-        // This method is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
-        String portData = actorPortName + "_portData"
-            + (channel == 0 ? "" : channel);
-        if (type instanceof ArrayType) {
-            ArrayType array = (ArrayType)type;
-
-            String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
-            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
-
-            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
-            return
-                // Get the data from the Ptolemy port
-                type.getTokenClass().getName() + " " + ptolemyData + " = (("
-                + type.getTokenClass().getName() + ")($actorSymbol("
-                + codegenPortName + ").getInside(0"
-                // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                + (channel == 0 ? "" : ", " + channel)
-                + ")));" + _eol
-                // Create an array for the codegen data.
-                + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
-                + " Token $actorSymbol(" + portData + ") = $Array_new("
-                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length(), 0);" + _eol
-
-                // Copy from the Ptolemy data to the codegen data.
-                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData + ").length(); i++) {" + _eol
-                + "   Array_set($actorSymbol(" + portData + "), i, "
-                + getCodeGenerator().codeGenType(array.getDeclaredElementType())
-                + "_new(((("
-                + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
-                + targetElementType + "Value())));" + _eol
-                + "  }" + _eol;
-        } else if (type == BaseType.COMPLEX) {
-            return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
-                + "Complex complex = (Complex)(((" + type.getTokenClass().getName() + ")"
-                + "($actorSymbol(" + codegenPortName + ").getInside(0"
-                + ")))." + type.toString().toLowerCase() + "Value());" + _eol
-                + "double real = complex.real;" + _eol
-                + "double imag = complex.imag;" + _eol
-                + "$actorSymbol(" + portData + ") = $typeFunc(TYPE_Complex::new(real, imag));" + _eol;
-
-                // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                //+ (channel == 0 ? "" : ", " + channel)
-        } else {
-            return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
-                + "$actorSymbol(" + portData + ") = "
-                +  "((" + type.getTokenClass().getName() + ")"
-                + "($actorSymbol(" + codegenPortName + ").getInside(0"
-                + ")))." + type.toString().toLowerCase() + "Value();" + _eol;
-
-                // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                //+ (channel == 0 ? "" : ", " + channel)
-        }
-    }
-
-    /** 
-     * Return the code that gets data from the actor port and sends
-     * it to the codegen port
-     *  @param actorPortName The name of the Actor port from which
-     *  data will be read.
-     *  @param codegenPortName The name of the port on the codegen side.
-     *  For non-multiports, actorPortName and codegenPortName are the same.
-     *  For multiports, codegenPortName will vary according to channel number
-     *  while actorPortName will remain the same.
-     * @param type The type of the port.
-     * @param channel The channel number.
-     * For non-multiports, the channel number will be 0.
-     */
-    private String _generateGetInside(String actorPortName,
-            String codegenPortName, Type type, int channel) {
-        actorPortName = TemplateParser.escapePortName(actorPortName);
-        //codegenPortName = TemplateParser.escapePortName(codegenPortName);
-        if (type instanceof ArrayType) {
-            
-            ArrayType array = (ArrayType)type;
-
-            String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
-            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
-            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
-            return
-                "{" + _eol
-//                 // Get the data from the Ptolemy port
-//                 + type.getTokenClass().getName() + " " + ptolemyData + "= (("
-//                 + type.getTokenClass().getName() + ")($actorSymbol("
-//                 + codegenPortName + ").getInside(0"
-//                 // For non-multiports "". For multiports, ", 0", ", 1" etc.
-//                 + (channel == 0 ? "" : ", " + channel)
-//                 + ")));" + _eol
-
-                // Create an array for the codegen data.
-                + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
-                + " Token codeGenData = $Array_new("
-                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length() , 0);" + _eol
-
-                // Copy from the Ptolemy data to the codegen data.
-                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData +").length(); i++) {" + _eol
-                + "   Array_set(codeGenData, i, "
-                + getCodeGenerator().codeGenType(array.getDeclaredElementType())
-                + "_new(((("
-                + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
-                + targetElementType + "Value())));" + _eol
-                + "  }" + _eol
-
-                // Output our newly constructed token
-                + " $put(" + actorPortName
-                + ", codeGenData);" + _eol
-                + "}" + _eol;
-        } else {
-            String portData = actorPortName + "_portData"
-                + (channel == 0 ? "" : channel);
-            return
-                "$put(" + actorPortName
-                // Refer to the token by the full class name and obviate the
-                // need to manage imports.
-                // + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
-                + ", ($actorSymbol("
-                + portData + ")))";
-        }
     }
 
     /** 

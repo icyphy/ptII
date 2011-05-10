@@ -503,7 +503,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             code.append("private static final int NUM_FUNC = " + functions.length
                     + ";" + _eol);
             code.append("//Token (*functionTable[NUM_TYPE][NUM_FUNC])"
-                    + "(Token, ...)= {" + _eol);
+                    + "(Token, ...) = {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
                 code.append("//\t{");
@@ -562,7 +562,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class..
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
         return _eol + _eol + "public void initialize() throws Exception {" + _eol;
@@ -570,7 +570,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Generate the initialization procedure exit point.
      *  @return a string for the initialization procedure exit point.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class..
      */
     public String generateInitializeExitCode() throws IllegalActionException {
         return "}" + _eol;
@@ -578,7 +578,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Generate the initialization procedure name.
      *  @return a string for the initialization procedure name.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this baseclass.
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
@@ -636,6 +636,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + _eol + _sanitizedModelName + " model = new "
                             + _sanitizedModelName + "();" + _eol
                             + recordStartTimeCode + _eol
+                            + "model.preinitialize();" + _eol
                             + "model.initialize();" + _eol
                             + "model.execute();" + _eol
                             + "model.doWrapup();" + _eol
@@ -1133,7 +1134,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
                 //String parameterValue = "";
                 try {
-                    /*parameterValue =*/ containerAdapter.getParameterValue(
+                    /*parameterValue = */ containerAdapter.getParameterValue(
                             variable.getName(), variable.getContainer());
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(container, throwable, "Failed to get the value of \""
@@ -1877,6 +1878,52 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return code.toString();
     }
 
+    /** Generate the preinitialization method body.
+     *        
+     *  <p>Typically, the preinitialize code consists of variable
+     *   declarations.  However, AutoAdapter generates method calls
+     *   that instantiate wrapper TypedCompositeActors, so we need
+     *   to invoke those method calls.</p>
+     *
+     *  @return a string for the preinitialization method body.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer(super._generatePreinitializeMethodBodyCode() + _eol);
+        if (containsCode(code.toString())) {
+            code.append("if (_toplevel != null) {" + _eol
+            + "    _toplevel.preinitialize();" + _eol
+                    + "}" + _eol);
+        }
+        return comment("JCG preintialization body code") + _eol
+            + code.toString();
+    }
+
+    /** Generate the preinitialization procedure entry point.
+     *  @return a string for the preinitialization procedure entry point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generatePreinitializeMethodEntryCode() throws IllegalActionException {
+        return _eol + _eol + "public void preinitialize() throws Exception {" + _eol;
+    }
+
+    /** Generate the preinitialization procedure exit point.
+     *  @return a string for the preinitialization procedure exit point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generatePreinitializeMethodExitCode() throws IllegalActionException {
+        return "}" + _eol;
+    }
+
+    /** Generate the preinitialization procedure name.
+     *  @return a string for the preinitialization procedure name.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generatePreinitializeMethodProcedureName()
+            throws IllegalActionException {
+        return "// Don't call preinitialize() here, it is called in main.";
+    }
+
     /**
      * Attempt to automatically generate an adapter.
      * @param codeGenerator The code generator with which to associate the adapter.
@@ -2022,7 +2069,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         //File codeDirectoryFile = null;
         //try {
-        //    /*codeDirectoryFile =*/ _codeDirectoryAsFile();
+        //    /*codeDirectoryFile = */ _codeDirectoryAsFile();
         //} catch (IOException ex) {
         //    throw new IllegalActionException(this, getComponent(),
         //            "Failed to get the codeDirectory as a parameter");

@@ -346,7 +346,9 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {
-        // FIXME: Whend does this get called?
+        // This method gets called by
+        // ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director.generateFireCode()
+        // on each actor.
         StringBuffer code = new StringBuffer();
 
         String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
@@ -486,6 +488,21 @@ public class NamedProgramCodeGeneratorAdapter extends
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         return _generateBlockByName(_defaultBlocks[0]);
+    }
+
+    /** Generate the preinitialization method body.
+     *        
+     *  <p>Typically, the preinitialize code consists of variable
+     *   declarations.  However, AutoAdapter generates method calls
+     *   that instantiate wrapper TypedCompositeActors, so we need
+     *   to invoke those method calls.</p>
+     *
+     *  @return a string for the preinitialization method body.  In
+     *  this base class, return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        return "/* NamedProgramCodeGeneratorAdapter.generatePreinitializeMethodBodyCode()*/";
     }
 
     /** Generate sanitized name for the given named object. Remove all

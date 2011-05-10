@@ -249,6 +249,47 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         return code.toString();
     }
 
+    /** Generate the preinitialization method body.
+     *        
+     *  <p>Typically, the preinitialize code consists of variable
+     *   declarations.  However, AutoAdapter generates method calls
+     *   that instantiate wrapper TypedCompositeActors, so we need
+     *   to invoke those method calls.</p>
+     *
+     *  @return a string for the preinitialization method body.  In
+     *  this base class, return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+
+        boolean addedDirectorComment = false;
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
+
+            // If a adapter generates preinitialization code, then
+            // print a comment
+            String adapterObjectPreinitializationCode = adapterObject
+                    .generatePreinitializeMethodBodyCode();
+
+            if (!addedDirectorComment
+                    && ProgramCodeGenerator
+                            .containsCode(adapterObjectPreinitializationCode)) {
+                addedDirectorComment = true;
+                code.append(getCodeGenerator().comment(0,
+                        "The preinitialization method of the director."));
+            }
+            code.append(adapterObjectPreinitializationCode);
+        }
+
+        return code.toString();
+    }
+
     /** Generate mode transition code. It delegates to the adapters of
      *  actors under the control of this director. The mode transition
      *  code generated in this method is executed after each global
