@@ -965,11 +965,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } catch (NoSuchFieldException ex) {
 //              throw new IllegalActionException(getComponent(), ex,
 //                      "Could not find field that corresponds with " + unescapedActorPortName);
-            // The port is not a field
-            code.append("new TypedIOPort($actorSymbol(actor), \""
+
+            // The port is not a field, it might be a PortParameter
+            // that whose name is not the same as the declared name.
+            // We check before we create it.  To test, use:
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
+            code.append("if ($actorSymbol(actor).getPort(\""
+                    + unescapedActorPortName.replace("\\", "\\\\") + "\") == null) {" + _eol
+                    + "    new TypedIOPort($actorSymbol(actor), \""
                     + unescapedActorPortName.replace("\\", "\\\\") + "\", " 
                     + port.isInput() + ", "
-                    + port.isOutput() + ");" + _eol);
+                    + port.isOutput() + ");" + _eol
+                    + "}" + _eol);
 
             String portOrParameter = 
                 "(TypedIOPort)$actorSymbol(actor).getPort(\"" 

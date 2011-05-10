@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	ActorWithPortNameProblem.java \
 	ActorWithPrivateParameter.java \
+	PortParameterActor.java \
 	ExpressionActorToBeAutoCodeGenerated.java
 
 # Non-graphical Java tests written in Tcl
