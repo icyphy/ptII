@@ -144,7 +144,8 @@ public class CodeGeneratorUtilities {
      *  values.
      *
      *  @param input The input string that contains substrings
-     *  like "@codeBase@".
+     *  like "@codeBase@".  If the string "@help:all@" appears, then
+     *  all the key/value pairs are echoed.
      *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @return  A string with the keys properly substituted with
@@ -152,6 +153,10 @@ public class CodeGeneratorUtilities {
      */
     public static String substitute(String input,
             Map<String, String> substituteMap) {
+        StringBuffer allResults = null;
+        if (input.indexOf("@help:all@") != -1) {
+            allResults = new StringBuffer("echo \"");
+        }
         // At first glance it would appear that we could use StringTokenizer
         // however, the token is really the String @codeBase@, not
         // the @ character.  StringTokenizer has problems with
@@ -163,7 +168,16 @@ public class CodeGeneratorUtilities {
         while (substituteMapEntries.hasNext()) {
             Map.Entry<String, String> entries = substituteMapEntries.next();
             String key = entries.getKey();
-            input = StringUtilities.substitute(input, key, entries.getValue());
+
+            if (input.indexOf("@help:all@") != -1) {
+                allResults.append(key + " = " + entries.getValue() + "\n");
+            } else {
+                input = StringUtilities.substitute(input, key, entries.getValue());
+            }
+        }
+
+        if (allResults != null) {
+            input = allResults.toString() + "\"";
         }
 
         return input;

@@ -49,6 +49,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
@@ -119,6 +120,14 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
 
+        runCommand = new StringParameter(this, "runCommand");
+        // Set it to a default so that derived classes may override it.
+        runCommand.setExpression(_runCommandDefault);
+
+        useMake = new Parameter(this, "useMake");
+        useMake.setTypeEquals(BaseType.BOOLEAN);
+        useMake.setExpression("true");
+
         variablesAsArrays = new Parameter(this, "variablesAsArrays");
         variablesAsArrays.setTypeEquals(BaseType.BOOLEAN);
         variablesAsArrays.setExpression("false");
@@ -145,7 +154,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public Parameter inline;
 
-
     /** The maximum number of lines per block.  Maximum number of
      *  lines in initialize(), postfire() and wrapup() methods. This
      *  parameter is used to make smaller methods so that compilers
@@ -166,6 +174,27 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  value is a parameter with the value true.
      */
     public Parameter run;
+
+    /** The command to use to run the generated code if the
+     *  <i>useMake</i> parameter is false.  The initial default value
+     *  is "make -f @modelName@.mk run".  Various '@' delimited
+     *  key/value pairs will be automatically substituted.  In the
+     *  default case @modelName@ will be replaced with a sanitized
+     *  (Java-safe) version of the model name.
+     *
+     *  <p>If the string "@help:all@" appears, then all the key/value
+     *  pairs are echoed at run time, though this may not result in a
+     *  syntactically correct command.</p>
+     * 
+     *  <p>If <i>useMake</i> is true, then the value of this parameter
+     *  is ignored.</p>
+     */
+    public StringParameter runCommand;
+
+    /** If true, then use the 'make' command to compile and run
+     *  the generated code.  The default is true;
+     */
+    public Parameter useMake;
 
     /** If true, then generate code that puts variables into arrays;
      *  otherwise, use standalone variables.  This parameter is used
@@ -796,36 +825,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return _templateExtension;
     }
 
-    /** Instantiate the given code generator adapter.
-     *  @param component The given component.
-     *  @param componentClass The class of the component to be instantiated.
-     *  The constructor for class named by the adapterClassName argument
-     *  must take an argument of the class componentClass.
-     *  @param adapterClassName The dot separated name of the adapter.
-     *  @return The code generator adapter.
-     *  @exception IllegalActionException If the adapter class cannot be found.
-     */
-    protected CodeGeneratorAdapter _instantiateAdapter(Object component,
-            Class<?> componentClass, String adapterClassName)
-            throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super
-                ._instantiateAdapter(component, componentClass,
-                        adapterClassName);
-        try {
-            Class<?> templateParserClass = _templateParserClass();
-            if (templateParserClass != null) {
-                adapter.setTemplateParser((TemplateParser) templateParserClass
-                        .newInstance());
-            }
-        } catch (InstantiationException e) {
-            throw new InternalErrorException(e);
-        } catch (IllegalAccessException e) {
-            throw new InternalErrorException(e);
-        }
-
-        return adapter;
-    }
-
     /**
      * Determine if the given type is primitive.
      * @param cgType The given codegen type.
@@ -965,9 +964,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[][] options = {
             { "-generateComment", "   true|false (default: true)" },
             { "-inline", "            true|false (default: false)" },
-            { "-maximumLinesPerBlock", "<an integer, default: 2500)"}, 
+            { "-maximumLinesPerBlock", "<an integer, default: 2500>"}, 
             { "-measureTime", "       true|false (default: false)" },
             { "-run", "               true|false (default: true)" },
+            { "-runCommand", "        <a string, default: make -f @modelName@.mk run>" },
             { "-variablesAsArrays", " true|false (default:false)"},
             { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
 
@@ -1548,6 +1548,36 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return "";
     }
 
+    /** Instantiate the given code generator adapter.
+     *  @param component The given component.
+     *  @param componentClass The class of the component to be instantiated.
+     *  The constructor for class named by the adapterClassName argument
+     *  must take an argument of the class componentClass.
+     *  @param adapterClassName The dot separated name of the adapter.
+     *  @return The code generator adapter.
+     *  @exception IllegalActionException If the adapter class cannot be found.
+     */
+    protected CodeGeneratorAdapter _instantiateAdapter(Object component,
+            Class<?> componentClass, String adapterClassName)
+            throws IllegalActionException {
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super
+                ._instantiateAdapter(component, componentClass,
+                        adapterClassName);
+        try {
+            Class<?> templateParserClass = _templateParserClass();
+            if (templateParserClass != null) {
+                adapter.setTemplateParser((TemplateParser) templateParserClass
+                        .newInstance());
+            }
+        } catch (InstantiationException e) {
+            throw new InternalErrorException(e);
+        } catch (IllegalAccessException e) {
+            throw new InternalErrorException(e);
+        }
+
+        return adapter;
+    }
+
     /** Return the prototype for fire functions.
      *  @return In this base class, return "()".
      *  Derived classes, such as the C code generator adapter
@@ -1636,7 +1666,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected void _writeMakefile() throws IllegalActionException {
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1793,6 +1822,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
             "Pointer"});
 
+    /** The initial default value of the <i>runCommand</i> parameter.
+     *  The constructor of a derived class may compare the value of <i>runCommand</i>
+     *  and this variable and decide to override the value of the <i>runCommand</i>
+     *  parameter with a new value.
+     */   
+    protected final static String _runCommandDefault = "make -f @modelName@.mk run";
+
     /** A set that contains all token functions referenced in the model.
      *  When the codegen kernel processes a $tokenFunc() macro, it must add
      *  the token function to this set.
@@ -1820,5 +1856,4 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *   (for example c in case of C and j in case of Java)
      */
     private String _templateExtension;
-
 }

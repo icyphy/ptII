@@ -35,6 +35,7 @@ import java.util.Set;
 
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -75,6 +76,11 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         compile.setTypeEquals(BaseType.BOOLEAN);
         compile.setExpression("true");
 
+        compileCommand = new StringParameter(this, "compileCommand");
+        compileCommand.setTypeEquals(BaseType.STRING);
+        // Set it to a default so that derived classes may override it.
+        compileCommand.setExpression(_compileCommandDefault);
+
         generateEmbeddedCode = new Parameter(this, "generateEmbeddedCode");
         generateEmbeddedCode.setTypeEquals(BaseType.BOOLEAN);
         generateEmbeddedCode.setExpression("true");
@@ -91,6 +97,22 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  value is a parameter with the value true.
      */
     public Parameter compile;
+
+    /** The command to use to compile the generated code if the
+     *  <i>useMake</i> parameter is false.  The initial default value
+     *  is "make -f @modelName@.mk".  Various '@' delimited
+     *  key/value pairs will be automatically substituted.  In the
+     *  default case @modelName@ will be replaced with a sanitized
+     *  (Java-safe) version of the model name.
+     *
+     *  <p>If the string "@help:all@" appears, then all the key/value
+     *  pairs are echoed at run time, though this may not result in a
+     *  syntactically correct command.</p>
+     * 
+     *  <p>If <i>useMake</i> is true, then the value of this parameter
+     *  is ignored.</p>
+     */
+    public StringParameter compileCommand;
 
     /** If true, then generate code for that uses the reflection for Java
      *  and JNI for C and is embedded within the model 
@@ -165,4 +187,10 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     protected List<String> _libraries = new LinkedList<String>();
 
+    /** The initial default value of the <i>compileCommand</i> parameter.
+     *  The constructor of a derived class may compare the value of <i>compileCommand</i>
+     *  and this variable and decide to override the value of the <i>compileCommand</i>
+     *  parameter with a new value.
+     */   
+    protected final static String _compileCommandDefault = "make -f @modelName@.mk";
 }

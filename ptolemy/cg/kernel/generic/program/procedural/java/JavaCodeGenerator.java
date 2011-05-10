@@ -59,6 +59,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -96,6 +97,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public JavaCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, "java", "j");
+
+        // compileCommand is only used if useMake is false.
+        if (compileCommand.getExpression().equals( _compileCommandDefault)) {
+            compileCommand.setExpression("javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
+        }
+
+        // runCommand is only used if useMake is false.
+        if (runCommand.getExpression().equals( _runCommandDefault)) {
+            runCommand.setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @modelName@");
+        }
 
         generatorPackageList.setExpression("generic.program.procedural.java");
         // A list of the primitive types supported by the code generator.
@@ -1413,7 +1424,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 + " openBracketCount: " + openBracketCount
                                 + " commentCount: " + commentCount
                                 + " tryCount: " + tryCount
-			        + " line:\n" + line);
+			        + " line:\n" + line
+                                + " code:\n" + code);
                     }
                     if (line != null) {
                         body.append(line + _eol);
@@ -1752,15 +1764,31 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  parameters or executing the commands.
      */
     protected int _executeCommands() throws IllegalActionException {
-
         List<String> commands = new LinkedList<String>();
+
+        // The compile command.
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("make -f " + _sanitizedModelName + ".mk ");
+            if (((BooleanToken) useMake.getToken()).booleanValue()) {
+                commands.add("make -f " + _sanitizedModelName + ".mk ");
+            } else {
+                String command = CodeGeneratorUtilities.substitute(((StringToken) compileCommand.getToken()).stringValue(),
+                        _substituteMap);
+                System.out.println("JavaCodeGenerator: compile command: " + command);
+                commands.add(command);
+            }
         }
 
+        // The run command.
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-                commands.add("make -f " + _sanitizedModelName + ".mk run");
+                if (((BooleanToken) useMake.getToken()).booleanValue()) {
+                    commands.add("make -f " + _sanitizedModelName + ".mk run");
+                } else {
+                    String command = CodeGeneratorUtilities.substitute(((StringToken) runCommand.getToken()).stringValue(),
+                                    _substituteMap);
+                    System.out.println("JavaCodeGenerator: run command: " + command);
+                    commands.add(command);
+                }
             }
         }
 
@@ -2075,16 +2103,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         //            "Failed to get the codeDirectory as a parameter");
         //}
 
-        Map<String, String> substituteMap;
         try {
             // Add substitutions for all the parameter.
             // For example, @generatorPackage@ will be replaced with
             // the value of the generatorPackage.
-            substituteMap = CodeGeneratorUtilities.newMap(this);
-            substituteMap.put("@modelName@", _sanitizedModelName);
-            substituteMap.put("@CLASSPATHSEPARATOR@", StringUtilities
+            _substituteMap = CodeGeneratorUtilities.newMap(this);
+            _substituteMap.put("@modelName@", _sanitizedModelName);
+            _substituteMap.put("@CLASSPATHSEPARATOR@", StringUtilities
                     .getProperty("path.separator"));
-            substituteMap
+            _substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
 
             if (!_libraries.isEmpty()) {
@@ -2094,16 +2121,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 _addClassPathLibraries();
             }
 
-            substituteMap.put("@PTCGLibraries@",
+            _substituteMap.put("@PTCGLibraries@",
                     _concatenateClasspath(_libraries));
 
             // Define substitutions to be used in the makefile
-            substituteMap.put("@PTJNI_NO_CYGWIN@", "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
-            substituteMap.put("@PTJavaCompiler@", "javac");
+            _substituteMap.put("@PTJNI_NO_CYGWIN@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
+            _substituteMap.put("@PTJavaCompiler@", "javac");
 
             String root = ".";
             String modelClass = _sanitizedModelName;
@@ -2111,34 +2138,34 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 root = "..";
                 modelClass = _sanitizedModelName + "." + _sanitizedModelName;
             }
-            substituteMap.put("@MODELCLASS@", modelClass);
-            substituteMap.put("@ROOT@", root);
+            _substituteMap.put("@MODELCLASS@", modelClass);
+            _substituteMap.put("@ROOT@", root);
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {
                 // Keep these alphabetical
                 if (osName.startsWith("Linux")) {
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 } else if (osName.startsWith("Mac OS X")) {
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
                 } else if (osName.startsWith("SunOS")) {
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 } else if (osName.startsWith("Windows")) {
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    _substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "-Wl,--add-stdcall-alias");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
                 } else {
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "# Unknown java property os.name \"" + osName
                                     + "\" please edit ptolemy/cg/"
                                     + "kernel/generic/program/procedural/java/"
@@ -2206,7 +2233,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + "\"," + _eol + "    writing \""
                             + makefileOutputName + "\"");
                     CodeGeneratorUtilities.substitute(makefileTemplateReader,
-                            substituteMap, makefileOutputName);
+                            _substituteMap, makefileOutputName);
                     success = true;
                     break;
                 }
@@ -2603,6 +2630,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  We use one method so as to reduce code size.
      */
     private static Set<String> _scalarDeleteTypes;
+
+    /** Map of '@' delimited keys to values.  Used to create
+     *  the makefile from makefile.in.
+     *  Use "@help:all@" to list all key/value pairs.
+     */
+    private Map<String, String> _substituteMap;
 
     static {
         _unsupportedTypeFunctions = new HashSet<String>();
