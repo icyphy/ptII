@@ -105,7 +105,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // runCommand is only used if useMake is false.
         if (runCommand.getExpression().equals( _runCommandDefault)) {
-            runCommand.setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @modelName@");
+            runCommand.setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
         }
 
         generatorPackageList.setExpression("generic.program.procedural.java");
@@ -2121,6 +2121,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 _addClassPathLibraries();
             }
 
+            String root = ".";
+            String modelClass = _sanitizedModelName;
+            if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                root = "..";
+                modelClass = _sanitizedModelName + "." + _sanitizedModelName;
+                addLibraryIfNecessary("..");
+            }
+
+            if (_libraries.size() == 0) {
+                addLibraryIfNecessary(".");
+            }
+
             _substituteMap.put("@PTCGLibraries@",
                     _concatenateClasspath(_libraries));
 
@@ -2132,12 +2144,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
             _substituteMap.put("@PTJavaCompiler@", "javac");
 
-            String root = ".";
-            String modelClass = _sanitizedModelName;
-            if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
-                root = "..";
-                modelClass = _sanitizedModelName + "." + _sanitizedModelName;
-            }
+
             _substituteMap.put("@MODELCLASS@", modelClass);
             _substituteMap.put("@ROOT@", root);
 
@@ -2505,12 +2512,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         Iterator<String> iterator = collection.iterator();
         while (iterator.hasNext()) {
             if (buffer.length() > 0) {
-                buffer.append("$(CLASSPATHSEPARATOR)");
+                //buffer.append("$(CLASSPATHSEPARATOR)");
+                buffer.append(File.pathSeparator);
             }
             buffer.append(iterator.next());
         }
         if (buffer.length() > 0) {
-            buffer.append("$(CLASSPATHSEPARATOR)");
+            //buffer.append("$(CLASSPATHSEPARATOR)");
+            buffer.append(File.pathSeparator);
         }
         return buffer.toString();
     }
