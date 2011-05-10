@@ -177,6 +177,8 @@ public class TestMigrateModelsManager {
             try {
 
                 int count = 0;
+                // Findbugs warns about this, but it ok, we just
+                // want there to be three lines.
                 while (input.readLine() != null) {
                     count++;
                 }
@@ -229,6 +231,8 @@ public class TestMigrateModelsManager {
 
             try {
                 int count = 0;
+                // Findbugs warns about this, but it ok, we just
+                // want there to be three lines.
                 while (input.readLine() != null) {
                     count++;
                 }
@@ -283,6 +287,8 @@ public class TestMigrateModelsManager {
             try {
 
                 int count = 0;
+                // Findbugs warns about this, but it ok, we just
+                // want there to be three lines.
                 while (input.readLine() != null) {
                     count++;      
                 }

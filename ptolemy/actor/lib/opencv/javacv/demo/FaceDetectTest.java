@@ -87,7 +87,7 @@ public class FaceDetectTest {
         String libname = cv.libname;
         String version = "100";
         System.out.println(libname);
-        if(libname.indexOf(version) > 0){
+        if(libname.indexOf(version) >= 0){
             System.out.println("ver.1");
         }
         

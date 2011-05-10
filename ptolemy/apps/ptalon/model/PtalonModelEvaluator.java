@@ -111,8 +111,10 @@ public final class PtalonModelEvaluator {
             NameDuplicationException {
         switch (ast.getType()) {
         case PtalonTokenTypes.DANGLING_PORTS_OKAY:
-            break;
         case PtalonTokenTypes.ATTACH_DANGLING_PORTS:
+        case PtalonTokenTypes.PARAM_EQUALS:
+        case PtalonTokenTypes.ACTOR:
+        case PtalonTokenTypes.IF:
             break;
         case PtalonTokenTypes.PORT:
             return addPort(ast);
@@ -128,10 +130,6 @@ public final class PtalonModelEvaluator {
             return addMultiOutPort(ast);
         case PtalonTokenTypes.PARAMETER:
             return addParameter(ast);
-        case PtalonTokenTypes.PARAM_EQUALS:
-            break;
-        case PtalonTokenTypes.ACTOR:
-            break;
         case PtalonTokenTypes.ACTOR_EQUALS:
             return addActorDefinition(ast);
         case PtalonTokenTypes.RELATION:
@@ -140,8 +138,6 @@ public final class PtalonModelEvaluator {
             return addTransparentRelation(ast);
         case PtalonTokenTypes.ACTOR_DECLARATION:
             return addActorDeclaration(ast);
-        case PtalonTokenTypes.IF:
-            break;
         case PtalonTokenTypes.FOR:
             return addForLoop(ast);
         }

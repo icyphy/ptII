@@ -530,11 +530,7 @@ public class REDUtility {
             Iterator<String> it = globalSynchronizerSet.iterator();
             while (it.hasNext()) {
                 String sync = it.next();
-                if (it.hasNext()) {
-                    returnREDFormat.append(sync + ", ");
-                } else {
-                    returnREDFormat.append(sync + ", ");
-                }
+                returnREDFormat.append(sync + ", ");
             }
         }
 

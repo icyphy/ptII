@@ -275,9 +275,6 @@ public class BoundsGeometry implements Geometry {
          */
         public double getNormal() {
             switch (_id) {
-            case SwingConstants.EAST:
-                return 0.0;
-
             case SwingConstants.NORTH_EAST:
                 return piOver4 * 7;
 
@@ -298,9 +295,12 @@ public class BoundsGeometry implements Geometry {
 
             case SwingConstants.SOUTH_EAST:
                 return piOver4 * 1;
+            case SwingConstants.EAST:
+            default:    
+                return 0.0;
             }
 
-            return 0.0;
+
         }
 
         /** Get the point location of the site.

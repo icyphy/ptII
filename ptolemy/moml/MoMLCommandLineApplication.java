@@ -163,21 +163,19 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                 }
 
                 // Now try for parameters in the director
-                if (toplevel instanceof CompositeActor) {
-                    Director director = (toplevel).getDirector();
+                Director director = (toplevel).getDirector();
 
-                    if (director != null) {
-                        attribute = director.getAttribute(parameterName);
+                if (director != null) {
+                    attribute = director.getAttribute(parameterName);
 
-                        if (attribute instanceof Settable) {
-                            // Use a MoMLChangeRequest so that visual rendition (if
-                            // any) is updated and listeners are notified.
-                            String moml = "<property name=\"" + parameterName
-                                    + "\" value=\"" + parameterValue + "\"/>";
-                            MoMLChangeRequest request = new MoMLChangeRequest(
-                                    this, director, moml);
-                            director.requestChange(request);
-                        }
+                    if (attribute instanceof Settable) {
+                        // Use a MoMLChangeRequest so that visual rendition (if
+                        // any) is updated and listeners are notified.
+                        String moml = "<property name=\"" + parameterName
+                            + "\" value=\"" + parameterValue + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(
+                                this, director, moml);
+                        director.requestChange(request);
                     }
                 }
                 i++;

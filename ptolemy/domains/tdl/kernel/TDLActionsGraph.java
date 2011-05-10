@@ -659,7 +659,6 @@ public class TDLActionsGraph {
                 prevSymbolWasAsterisk = true;
                 break;
             case '-':
-                break;
             case '~': // optional
                 break;
             case '|':

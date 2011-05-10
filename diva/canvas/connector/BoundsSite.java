@@ -88,14 +88,12 @@ public class BoundsSite extends AbstractSite {
         case SwingConstants.SOUTH:
             return Math.PI / 2;
 
-        case SwingConstants.EAST:
-            return 0.0;
-
         case SwingConstants.WEST:
             return Math.PI;
+        case SwingConstants.EAST:
+        default:    
+            return 0.0;
         }
-
-        return 0.0;
     }
 
     /** Get the distance to be located along the side, in percent.
