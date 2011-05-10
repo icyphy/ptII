@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.9422348484849, 82.2542613636364}">
     </property>
     <property name="ObservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../observableLattice/ObservableSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/observableLattice/ObservableSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
         </property>
@@ -25,7 +25,7 @@
         </property>
     </property>
     <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
