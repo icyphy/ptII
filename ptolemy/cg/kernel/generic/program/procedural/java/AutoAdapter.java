@@ -689,12 +689,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         String [] splitFireCode = getCodeGenerator()._splitBody("_AutoAdapterF_", code.toString());
 
-        return "try {" + _eol
+        return //"try {" + _eol
+            "{" + _eol 
             + splitFireCode[0] + _eol
             + splitFireCode[1] + _eol
-            + "} catch (Exception ex) {" + _eol
-            + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\", ex);" + _eol
-            + " }" + _eol;
+            + "}" + _eol;
+            //+ "} catch (Exception ex) {" + _eol
+            //+ "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\", ex);" + _eol
+            //+ " }" + _eol;
     }
 
     ///////////////////////////////////////////////////////////////////
