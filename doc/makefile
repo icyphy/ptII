@@ -405,8 +405,6 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr \
-	ptolemy.data.ontologies.lattice.adapters.unitSystem \
-	ptolemy.data.ontologies.lattice.adapters.unitSystem.domains.ontologies.lib \
 	ptolemy.data.ontologies.lattice.unit \
 	ptolemy.domains.ontologies.lib
 
@@ -669,7 +667,6 @@ ALLPACKAGES = \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.petrinet.lib \
-	ptolemy.domains.petrinet.gui \
 	ptolemy.domains.psdf.kernel \
 	ptolemy.domains.ptera.kernel \
 	ptolemy.domains.ptera.lib \
