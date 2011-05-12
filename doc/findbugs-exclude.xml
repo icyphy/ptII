@@ -71,7 +71,9 @@
     <Match classregex="xjava.*"/>
     <Match classregex=".*">
        <!-- Exclude Serializable warnings -->
+       <!-- Exclude class names shouldn't shadow simple name of super class
+            because cg adapters shadow. -->
        <!-- Exclude class is Serializable; consider declaring a serialVersionUID -->
-       <BugCode name="Se,SnVI" />
+       <BugCode name="Nm,Se,SnVI" />
     </Match>
 </FindBugsFilter>

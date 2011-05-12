@@ -148,8 +148,8 @@ public class PtalonMatcher extends TypedCompositeActor implements
                 _mirrorPtalonActor();
                 _createParameters();
                 _rearrangePtalonActors();
-            } catch (Exception e) {
-                throw new IllegalActionException(null, e, "Unable to "
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(null, throwable, "Unable to "
                         + "create Ptalon actor inside.");
             } finally {
                 _handleAttributeChange = true;

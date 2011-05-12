@@ -207,8 +207,8 @@ public class AudioReader extends Source {
             try {
                 // Read in audio data.
                 _audioIn = _soundReader.getSamples();
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Unable to get samples from the file.");
             }
 
@@ -303,8 +303,8 @@ public class AudioReader extends Source {
             try {
                 // Read in audio data.
                 _audioIn = _soundReader.getSamples();
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Unable to get samples from the file.");
             }
 

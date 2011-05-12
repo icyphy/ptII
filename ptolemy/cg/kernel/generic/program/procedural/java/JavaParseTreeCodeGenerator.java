@@ -1336,7 +1336,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
 
         ptolemy.data.Token rightToken = _evaluateChild(node, 1);
-        ptolemy.data.Token resultToken = null;
+        //ptolemy.data.Token resultToken = null;
 
         //_fireCode.append(")");
         _childCode = "(" + result + _childCode + ")";
@@ -1371,7 +1371,9 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
             }
         }
 
-        _evaluatedChildToken = (resultToken);
+        // FindBugs reports "Load of known null value"
+        //_evaluatedChildToken = (resultToken);
+        _evaluatedChildToken = null;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -1417,7 +1419,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
 
         /*ptolemy.data.Token bitsToken =*/_evaluateChild(node, 1);
-        ptolemy.data.Token resultToken = null;
+        //ptolemy.data.Token resultToken = null;
 
         //_fireCode.append(")");
         _childCode = "(" + result + _childCode + ")";
@@ -1458,7 +1460,9 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
          */
 
-        _evaluatedChildToken = (resultToken);
+        // FindBugs reports "Load of known null value"
+        //_evaluatedChildToken = (resultToken);
+        _evaluatedChildToken = null;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);

@@ -243,10 +243,10 @@ public class VideoCamera extends Source implements ControllerListener {
         // Attempt to create a processor for this locator.
         try {
             _processor = Manager.createProcessor(locator);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             throw new IllegalActionException(
                     null,
-                    ex,
+                    throwable,
                     "Failed to create a processor for the media locator '"
                             + locator
                             + "'. Note that you may need to run jmfinit, "
@@ -351,7 +351,8 @@ public class VideoCamera extends Source implements ControllerListener {
                 while ((_processor.getState() != state) && _stateTransitionOK) {
                     _waitSync.wait();
                 }
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
+                // Ignored.
             }
         }
 

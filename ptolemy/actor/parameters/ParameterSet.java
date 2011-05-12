@@ -185,8 +185,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             if (!fileOrURL.getExpression().equals(_fileName)) {
                 try {
                     read();
-                } catch (Exception exception) {
-                    throw new IllegalActionException(this, exception,
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
                             "Failed to read file: " + fileOrURL.getExpression());
                 }
             }
@@ -325,7 +325,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (Exception ex) {
+                } catch (Throwable throwable) {
                     // Ignore.
                 }
             }

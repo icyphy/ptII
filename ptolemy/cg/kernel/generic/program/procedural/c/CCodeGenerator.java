@@ -139,7 +139,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param functions An array of functions.
      *  @return The code that declares functions.
      */
-    public Object generateFunctionTable(Object[] types, Object[] functions) {
+    public Object generateFunctionTable(String[] types, String[] functions) {
+        // FIXME: make this private?
         StringBuffer code = new StringBuffer();
 
         if (functions.length > 0 && types.length > 0) {
@@ -391,9 +392,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         HashSet<String> functions = _getReferencedFunctions();
 
-        HashSet<?> types = _getTypeIDToUsed(_getNewTypesUsed(functions));
+        HashSet<String> types = _getTypeIDToUsed(_getNewTypesUsed(functions));
 
-        Object[] typesArray = types.toArray();
+        String[] typesArray = new String[types.size()];
+        types.toArray(typesArray);
+
         CodeStream[] typeStreams = new CodeStream[types.size()];
 
         // Generate type map.
@@ -415,7 +418,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        Object[] functionsArray = functions.toArray();
+        String[] functionsArray = new String [functions.size()];
+        functions.toArray(functionsArray);
 
         // True if we have a delete function that needs to return a Token
         boolean defineEmptyToken = false;
@@ -962,14 +966,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         try {
             // FIXME: need to put this output in to the UI, if any.
             _executeCommands.start();
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             StringBuffer errorMessage = new StringBuffer();
             Iterator<String> allCommands = commands.iterator();
             while (allCommands.hasNext()) {
                 errorMessage.append((String) allCommands.next() + _eol);
             }
             throw new IllegalActionException("Problem executing the "
-                    + "commands:" + _eol + errorMessage);
+                    + "commands:" + _eol + errorMessage + _eol + throwable);
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
@@ -1342,8 +1346,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     break;
                 }
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to read \""
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable, "Failed to read \""
                     + makefileTemplateName + "\" or write \""
                     + makefileOutputName + "\"");
         } finally {
@@ -1439,12 +1443,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             for (int loop = 2; loop > 0; loop--) {
                 // Get all the directories that have include/jni.h under them.
                 File[] jdkFiles = potentialJavaHomeParentFile
-                        .listFiles(new FileFilter() {
-                            public boolean accept(File pathname) {
-                                return new File(pathname, "/include/jni.h")
-                                        .canRead();
-                            }
-                        });
+                    .listFiles(new _JniFileFilter());
                 if (jdkFiles != null && jdkFiles.length >= 1) {
                     // Sort and get the last directory, which should
                     // be the most recent JDK.
@@ -1524,8 +1523,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                                             libjvmAbsolutePath.length() - 6);
 
                         }
-                    } catch (Exception ex) {
-                        throw new IllegalActionException(getComponent(), ex,
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(getComponent(), throwable,
                                 "Could not copy \"" + libjvmURL
                                         + "\" to the file system, path was: \""
                                         + libjvmAbsolutePath + "\"");
@@ -1583,12 +1582,25 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             //                // if the user has Array_foo, foo is added.  Is this right?
             //                _tokenFuncUsed.add(name.substring(6));
             //            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
                     "Failed to mark function called for \"" + name + "\" in \""
                             + getComponent().getFullName() + "\"");
         }
 
+    }
+
+    /** Return true if include/jni.h is found. */
+    private static class _JniFileFilter implements FileFilter {
+        // FindBugs suggested "Could be refactored into a named static
+        // inner class (1)"
+        /** Return true if include/jni.h is found.
+         *  @return true if include/jni.h is found.  
+         */
+        public boolean accept(File pathname) {
+            return new File(pathname, "/include/jni.h")
+                .canRead();
+        }
     }
 
     private CodeStream _overloadedFunctions;

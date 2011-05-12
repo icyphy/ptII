@@ -91,8 +91,7 @@ public class RotateOrFlipPorts extends FigureAction {
         String moml = "";
         if (_direction == CLOCKWISE || _direction == COUNTERCLOCKWISE) {
             int rotation = 90;
-            switch (_direction) {
-            case COUNTERCLOCKWISE:
+            if (_direction == COUNTERCLOCKWISE) {
                 rotation = -90;
             }
             // First determine whether the ports are already rotated.

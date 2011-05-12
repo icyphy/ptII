@@ -271,16 +271,17 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
         _specialMenu.setBackground(_menubar.getBackground());
     }
     
-    /** Write an image to the specified output stream in the specified format.
-     *  Supported formats include at least "gif" and "png", standard image file formats.
-     *  The image is a rendition of the current view of the model.
+    /** Write an image to the specified output stream in the specified
+     *  format.  Supported formats include at least "gif" and "png",
+     *  standard image file formats.  The image is a rendition of the
+     *  current view of the model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @see #writeHTML(Writer)
      *  @throws IOException If writing to the stream fails.
      *  @throws PrinterException  If the specified format is not supported.
      */
-    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
+    public void writeImage(OutputStream stream, String format)
+            throws PrinterException, IOException {
         if (plot == null) {
             throw new IOException("No plot to write image from!");
         }

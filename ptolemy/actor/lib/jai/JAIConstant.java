@@ -76,9 +76,12 @@ public class JAIConstant extends Source {
         height = new Parameter(this, "height", new IntToken(0));
         bandValues = new Parameter(this, "bandValues", new ArrayToken(
                 BaseType.INT, _defaultValues));
+        _values = ((ArrayToken) bandValues.getToken()).arrayValue();
+
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
         _dataFormat = _BYTE;
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,13 +113,7 @@ public class JAIConstant extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bandValues) {
-            values = ((ArrayToken) bandValues.getToken()).arrayValue();
-
-            //_bandValues = new Double[values.length];
-            //for (int i = 0; i < values.length; i++) {
-            //    _bandValues[i] =
-            //        Double.valueOf(((DoubleToken)values[i]).doubleValue());
-            //}
+            _values = ((ArrayToken) bandValues.getToken()).arrayValue();
         } else if (attribute == height) {
             _height = ((IntToken) height.getToken()).intValue();
         } else if (attribute == width) {
@@ -152,48 +149,48 @@ public class JAIConstant extends Source {
 
         //parameters.add(_bandValues);
         if (_dataFormat == _BYTE) {
-            Byte[] byteValues = new Byte[values.length];
+            Byte[] byteValues = new Byte[_values.length];
 
-            for (int i = 0; i < values.length; i++) {
-                byteValues[i] = Byte.valueOf((byte) (((ScalarToken) values[i])
+            for (int i = 0; i < _values.length; i++) {
+                byteValues[i] = Byte.valueOf((byte) (((ScalarToken) _values[i])
                         .intValue()));
             }
 
             parameters.add(byteValues);
         } else if (_dataFormat == _DOUBLE) {
-            Double[] doubleValues = new Double[values.length];
+            Double[] doubleValues = new Double[_values.length];
 
-            for (int i = 0; i < values.length; i++) {
-                doubleValues[i] = Double.valueOf(((ScalarToken) values[i])
+            for (int i = 0; i < _values.length; i++) {
+                doubleValues[i] = Double.valueOf(((ScalarToken) _values[i])
                         .doubleValue());
             }
 
             parameters.add(doubleValues);
         } else if (_dataFormat == _FLOAT) {
-            Float[] floatValues = new Float[values.length];
+            Float[] floatValues = new Float[_values.length];
 
-            for (int i = 0; i < values.length; i++) {
+            for (int i = 0; i < _values.length; i++) {
                 floatValues[i] = Float
-                        .valueOf((float) (((ScalarToken) values[i])
+                        .valueOf((float) (((ScalarToken) _values[i])
                                 .doubleValue()));
             }
 
             parameters.add(floatValues);
         } else if (_dataFormat == _INT) {
-            Integer[] intValues = new Integer[values.length];
+            Integer[] intValues = new Integer[_values.length];
 
-            for (int i = 0; i < values.length; i++) {
-                intValues[i] = Integer.valueOf(((ScalarToken) values[i])
+            for (int i = 0; i < _values.length; i++) {
+                intValues[i] = Integer.valueOf(((ScalarToken) _values[i])
                         .intValue());
             }
 
             parameters.add(intValues);
         } else if (_dataFormat == _SHORT) {
-            Short[] shortValues = new Short[values.length];
+            Short[] shortValues = new Short[_values.length];
 
-            for (int i = 0; i < values.length; i++) {
+            for (int i = 0; i < _values.length; i++) {
                 shortValues[i] = Short
-                        .valueOf((short) (((ScalarToken) values[i]).intValue()));
+                        .valueOf((short) (((ScalarToken) _values[i]).intValue()));
             }
 
             parameters.add(shortValues);
@@ -215,7 +212,7 @@ public class JAIConstant extends Source {
 
     private int _width;
 
-    private Token[] values;
+    private Token[] _values;
 
     private int _dataFormat;
 

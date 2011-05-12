@@ -191,8 +191,8 @@ public class CAViewer extends AbstractPlaceableActor {
                     _frame.pack();
                     _tableau.show();
                 }
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, null, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, null, throwable,
                         "Error creating effigy and tableau");
             }
         }

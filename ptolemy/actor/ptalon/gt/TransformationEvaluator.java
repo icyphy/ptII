@@ -120,8 +120,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
             }
         } catch (PtalonScopeException e) {
             // Ignore if we can't resolve the name.
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to preserve object.", e);
+        } catch (Throwable throwable) {
+            throw new PtalonRuntimeException("Unable to preserve object.",
+                    throwable);
         }
     }
 
@@ -153,8 +154,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
             }
         } catch (PtalonScopeException e) {
             // Ignore if we can't resolve the name.
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to preserve object.", e);
+        } catch (Throwable throwable) {
+            throw new PtalonRuntimeException("Unable to preserve object.",
+                    throwable);
         }
     }
 
@@ -196,8 +198,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
             }
         } catch (PtalonScopeException e) {
             // Ignore if we can't resolve the name.
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to preserve object.", e);
+        } catch (Throwable throwable) {
+            throw new PtalonRuntimeException("Unable to preserve object.",
+                    throwable);
         }
     }
 
@@ -234,8 +237,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
             }
         } catch (PtalonScopeException e) {
             // Ignore if we can't resolve the name.
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to remove object.", e);
+        } catch (Throwable throwable) {
+            throw new PtalonRuntimeException("Unable to remove object.",
+                    throwable);
         }
     }
 
@@ -263,18 +267,18 @@ public class TransformationEvaluator extends PtalonEvaluator {
                 GTTools.deepRemoveAttributes(object,
                         PreservationAttribute.class);
                 new CreationAttribute(object, object.uniqueName("_created"));
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
-                        e);
+                        throwable);
             }
         } else if (_isPreservingTransformation()) {
             try {
                 GTTools.deepRemoveAttributes(object, CreationAttribute.class);
                 new PreservationAttribute(object, object
                         .uniqueName("_preserved"));
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
-                        e);
+                        throwable);
             }
         }
     }

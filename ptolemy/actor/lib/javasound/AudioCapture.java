@@ -233,8 +233,9 @@ public class AudioCapture extends LiveSoundActor {
         try {
             // Read in audio data.
             _audioInDoubleArray = LiveSound.getSamples(this);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Cannot capture audio.");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Cannot capture audio.");
         }
 
         for (int j = 0; j < _channels; j++) {

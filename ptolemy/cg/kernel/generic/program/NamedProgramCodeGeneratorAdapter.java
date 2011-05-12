@@ -502,7 +502,7 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
-        return "/* NamedProgramCodeGeneratorAdapter.generatePreinitializeMethodBodyCode()*/";
+        return "";
     }
 
     /** Generate sanitized name for the given named object. Remove all

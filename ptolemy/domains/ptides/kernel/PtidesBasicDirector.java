@@ -2252,12 +2252,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  process and setup a timed interrupt. This method calls
      *  {@link #_fireAtPlatformTime(Time, RealTimeClock)}.
      *  at the oracle time of the corresponding safe-to-process time.
-     *  @see #_getOraclePhysicalTagForPlatformPhysicalTag(Tag)
+     *  @see #_getOraclePhysicalTimeForPlatformPhysicalTime(Time, RealTimeClock)
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException If port is null and event is not a
      *   pure event.
-     *  @see #_setTimedInterrupt(Time)
      */
     protected boolean _safeToProcess(PtidesEvent event)
             throws IllegalActionException {

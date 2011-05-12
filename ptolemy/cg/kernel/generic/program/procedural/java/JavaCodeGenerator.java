@@ -214,7 +214,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // by the model.
         // FIXME: why does this return a Short, but codeGenTypeToPtType()
         // takes an int?
-        Short typeReturn = -2;
+        Short typeReturn;
         if (type.equals("Token")) {
             typeReturn = -1;
         } else if (type.equals("String")) {
@@ -504,7 +504,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @param functions An array of functions.
      *  @return The code that declares functions.
      */
-    public Object generateFunctionTable(Object[] types, Object[] functions) {
+    public Object generateFunctionTable(String[] types, String[] functions) {
+        // FIXME: consider making this private?
         StringBuffer code = new StringBuffer();
 
         if (functions.length > 0 && types.length > 0) {
@@ -774,7 +775,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         HashSet<String> types = _getReferencedTypes(functions);
 
-        Object[] typesArray = types.toArray();
+        String[] typesArray = new String [types.size()];
+        types.toArray(typesArray);
+
         CodeStream[] typeStreams = new CodeStream[types.size()];
 
         // Generate type map.
@@ -793,7 +796,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             //            code.append("private static final short TYPE_" + typesArray[i] + " = " + i
             code.append("private static final short TYPE_" + typesArray[i] + " = "
-                    + codeGenTypeValue(typesArray[i].toString()) + ";" + _eol);
+                    + codeGenTypeValue(typesArray[i]) + ";" + _eol);
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
@@ -805,7 +808,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        Object[] functionsArray = functions.toArray();
+        String[] functionsArray = new String[functions.size()];
+        functions.toArray(functionsArray);
 
         // True if we have a delete function that needs to return a Token
         boolean defineEmptyToken = false;
@@ -829,7 +833,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (_generateInSubdirectory) {
                     declareBlock.insert(0, generatePackageStatement());
                 }
-                String typeName = typesArray[i].toString();
+                String typeName = typesArray[i];
                 if (typeName.equals("Complex")) {
                     typeName = "ComplexCG";
                 }
@@ -1310,8 +1314,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // if the user has Array_foo, foo is added.  Is this right?
                 _tokenFuncUsed.add(name.substring(6));
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
                     "Failed to mark function called for \"" + name + "\" in \""
                             + getComponent().getFullName() + "\"");
         }
@@ -1560,14 +1564,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + topPackageName + "Token;" + _eol);
             HashSet<String> functions = _getReferencedFunctions();
             HashSet<String> types = _getReferencedTypes(functions);
-            Object[] typesArray = types.toArray();
+            String[] typesArray = new String[types.size()];
+            types.toArray(typesArray);
             // Add imports for non-empty declareBlocks (usually just Array)
             for (int i = 0; i < typesArray.length; i++) {
                 String typesTemplate = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/" + typesArray[i] + ".j";
                 CodeStream codeStream = new CodeStream(typesTemplate, this);
                 try {
                     if (codeStream.getCodeBlock("declareBlock").length() > 0) {
-                        String typeName = typesArray[i].toString();
+                        String typeName = typesArray[i];
                         if (typeName.equals("Complex")) {
                             typeName = "ComplexCG";
                         }
@@ -1583,7 +1588,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
 
-            StringBuffer body = new StringBuffer();
+            StringBuffer body;
 
             // imports for the classes that define the variables.
             StringBuffer declarations = new StringBuffer();
@@ -1802,14 +1807,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         try {
             // FIXME: need to put this output in to the UI, if any.
             _executeCommands.start();
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             StringBuffer errorMessage = new StringBuffer();
             Iterator<?> allCommands = commands.iterator();
             while (allCommands.hasNext()) {
                 errorMessage.append((String) allCommands.next() + _eol);
             }
             throw new IllegalActionException("Problem executing the "
-                    + "commands:" + _eol + errorMessage);
+                    + "commands:" + _eol + errorMessage
+                    + _eol + throwable);
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
@@ -2245,8 +2251,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     break;
                 }
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to read \""
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to read \""
                     + makefileTemplateName + "\" or write \""
                     + makefileOutputName + "\"");
         } finally {
@@ -2320,7 +2327,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         HashSet<String> functions = _getReferencedFunctions();
         HashSet<String> types = _getReferencedTypes(functions);
         types.add("Token");
-        Object[] typesArray = types.toArray();
+        String[] typesArray = new String[types.size()];
+        types.toArray(typesArray);
 
         BufferedReader importReader = null;
         StringBuffer result = new StringBuffer();
@@ -2341,11 +2349,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (importLine != null) {
                     // The first import is of the form "import RepeatVariables.Token;"
                     // FIXME: This is weak, what happens if the format changes.
-                    for (int i = 0; i < typesArray.length && importLine != null; i++) {
+                    int i = 0;
+                    for (;i < typesArray.length && importLine != null; i++) {
                         if (importLine.endsWith(".Token;")) {
                             sawTokenImport = true;
                         }
-                        String typeName = typesArray[i].toString();
+                        String typeName = typesArray[i];
                         if (typeName.equals("Complex")) {
                             typeName = "ComplexCG";
                         }
@@ -2367,6 +2376,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     } 
                     // Second and successive lines are of
                     // the form "import static RepeatVariables.class0.*;".
+
+                    if (importLine == null) {
+                        throw new InternalErrorException(
+                                "Last import line was null? Read " + i
+                                + " lines of " + typesArray.length + " lines.");
+                    }
 
                     // Get rid of the ".*;".
                     if (importLine.lastIndexOf(".*;") == -1) {
@@ -2488,10 +2503,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // into a subdirectory.
                     File topTokenFile = new File(codeDirectoryFile,
                             typesAndTokenArray[i] + ".java");
-                    topTokenFile.delete();
+                    if (!topTokenFile.delete()) {
+                        throw new IllegalActionException(
+                                "Failed to delete " + topTokenFile);
+                    }
                     File topTokenClass = new File(codeDirectoryFile,
                             typesAndTokenArray[i] + ".class");
-                    topTokenClass.delete();
+                    if (!topTokenClass.delete()) {
+                        throw new IllegalActionException(
+                                "Failed to delete " + topTokenClass);
+                    }
                 }
             }
         }

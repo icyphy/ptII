@@ -184,7 +184,6 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
      *  The image is a rendition of the current view of the model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @see #writeHTML(Writer)
      *  @throws IOException If writing to the stream fails.
      *  @throws PrinterException  If the specified format is not supported.
      */

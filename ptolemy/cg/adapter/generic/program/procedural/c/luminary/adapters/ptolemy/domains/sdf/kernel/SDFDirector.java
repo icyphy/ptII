@@ -78,6 +78,8 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
+        // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
+        // done using instanceof operator"
         if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
                 .getToken()).booleanValue())
                 // Findbugs says that we don't need this instance check
@@ -184,6 +186,8 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
+        // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
+        // done using instanceof operator"
         if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
                 .getToken()).booleanValue())
                 // Findbugs says that we don't need this instance check

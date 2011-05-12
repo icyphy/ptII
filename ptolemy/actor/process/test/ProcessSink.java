@@ -29,7 +29,6 @@ package ptolemy.actor.process.test;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Sink;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -71,16 +70,9 @@ public class ProcessSink extends Sink {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token token = input.get(0);
+        /*Token token =*/ input.get(0);
 
-        if (token != null) {
-            System.out.println(_name + ": Just finished getting a token");
-        } else {
-            System.out.println(_name + ": Get returned with no token");
-        }
-
-        /*
-         */
+        System.out.println(_name + ": Just finished getting a token");
     }
 
     /**

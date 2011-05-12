@@ -317,8 +317,8 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             try {
                 processor = Manager.createProcessor(imageDataSource);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Can't create processor");
             }
 

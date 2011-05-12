@@ -84,8 +84,9 @@ public class StreamLoader extends Source {
         } else {
             try {
                 _dataSource = Manager.createDataSource(url);
-            } catch (Exception error) {
-                throw new IllegalActionException("Invalid URL");
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Invalid URL " + url);
             }
         }
 

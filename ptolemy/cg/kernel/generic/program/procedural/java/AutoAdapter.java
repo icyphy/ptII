@@ -251,8 +251,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
         while (entityPorts.hasNext()) {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
-            if (insidePort instanceof IOPort) {
-                IOPort castPort = (IOPort) insidePort;
+            if (insidePort instanceof TypedIOPort) {
+                TypedIOPort castPort = (TypedIOPort) insidePort;
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
                     code.append("TypedIOPort $actorSymbol(" + name + ");" + _eol);
@@ -302,9 +302,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         StringBuffer containmentCode = new StringBuffer();
 
-        NamedObj child = getComponent();
-        NamedObj toplevel = child.toplevel();
-        NamedObj parentContainer = child.getContainer();
+        //NamedObj child = getComponent();
+        NamedObj parentContainer = getComponent().getContainer();
         NamedObj grandparentContainer = parentContainer.getContainer();
 
         if (grandparentContainer == null) {
@@ -348,16 +347,16 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + "} else {" + _eol
                         + "    cgContainer = temporaryContainer;" + _eol
                         + "}" + _eol);
-                child = parentContainer;
+                //child = parentContainer;
                 parentContainer = parentContainer.getContainer();
                 //parentContainer = grandparentContainer;
                 //grandparentContainer = grandparentContainer.getContainer();
             }
 
             NamedObj container = grandparentContainer;
-            if (container == null) {
-                container = parentContainer;
-            }
+            //if (container == null) {
+            //    container = parentContainer;
+            //}
             containmentCode.insert(0, "{" + _eol
                     + getCodeGenerator().comment(getComponent().getFullName()) + _eol 
                     + "TypedCompositeActor cgContainer = null;" + _eol
@@ -392,9 +391,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
         while (entityPorts.hasNext()) {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
-            if (insidePort instanceof IOPort) {
-
-                IOPort castPort = (IOPort) insidePort;
+            if (insidePort instanceof TypedIOPort) {
+                TypedIOPort castPort = (TypedIOPort) insidePort;
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
                     code.append(_generatePortInstantiation(name, castPort.getName(), castPort));
@@ -413,8 +411,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + ")$actorSymbol(actor))." + foundPortField.getName() + ".setTypeEquals("
                                 + _typeToBaseType(actorPort.getType()) + ");" + _eol);
 
-                    } catch (Exception ex) {
-                        //throw new IllegalActionException(castPort, ex,
+                    } catch (Throwable throwable) {
+                        //throw new IllegalActionException(castPort, throwable,
                         //        "Could not find port " + castPort.getName());
                         actorPort = (TypedIOPort)((Entity)getComponent()).getPort(castPort.getName());
                         code.append("new TypedIOPort($actorSymbol(container), \""
@@ -744,7 +742,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + "Could not find field that corresponds with "
                             + portName + " Fields: " + portNames);
                 }
-            } catch (Exception ex2) {
+            } catch (Throwable throwable2) {
                 throw new NoSuchFieldException(component.getFullName()
                         + ": Failed to find the field that corresponds with " + portName
                         + " Fields: " + portNames
@@ -922,7 +920,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  actorPortName is a PortParameter.
      */
     private String _generatePortInstantiation(String actorPortName,
-            String codegenPortName, IOPort port) throws IllegalActionException {
+            String codegenPortName, TypedIOPort port) throws IllegalActionException {
         //String escapedActorPortName = TemplateParser.escapePortName(actorPortName);
         String unescapedActorPortName = TemplateParser.unescapePortName(actorPortName);
         String escapedCodegenPortName = TemplateParser.escapePortName(codegenPortName);
@@ -938,7 +936,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + port.isOutput() + ");" + _eol
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 + "    $actorSymbol(" + escapedCodegenPortName + ").setTypeEquals("
-                + _typeToBaseType(((TypedIOPort)port).getType())
+                + _typeToBaseType(port.getType())
                 +");" + _eol);
 
         try {
@@ -951,8 +949,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             String portOrParameter = "((" + getComponent().getClass().getName()
                 + ")$actorSymbol(actor))." 
-                + foundPortField.getName() + ( portParameter instanceof PortParameter 
-                        ? ".getPort()" : "");
+                + foundPortField.getName() + portParameter.getPort();
             
             code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
                     + portOrParameter
@@ -960,7 +957,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (port.isOutput()) {
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 code.append("    " + portOrParameter + ".setTypeEquals("
-                    + _typeToBaseType(((TypedIOPort)port).getType())
+                    + _typeToBaseType(port.getType())
                     +");" + _eol);
             }
 
@@ -989,7 +986,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (port.isOutput()) {
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 code.append("    (" + portOrParameter + ").setTypeEquals("
-                    + _typeToBaseType(((TypedIOPort)port).getType())
+                    + _typeToBaseType(port.getType())
                     +");" + _eol);
             }
         }

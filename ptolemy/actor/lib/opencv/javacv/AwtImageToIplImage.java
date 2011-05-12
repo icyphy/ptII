@@ -27,8 +27,6 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import java.awt.Image;
-
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
@@ -77,7 +75,9 @@ public class AwtImageToIplImage extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
-            Image inputObject = (Image)inputToken.getValue();
+            // FIXME: this reads the input and ignores the value.
+            // Perhaps "input" should be renamed to "trigger".
+            /*Image inputObject = (Image) */ inputToken.getValue();
             _frame = new IplImage();
             output.send(0, new ObjectToken(_frame));
         }

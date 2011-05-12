@@ -37,7 +37,6 @@ import java.util.PriorityQueue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -130,17 +129,14 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  If the event is a pure event, it also needs to wait for all events to be
      *  present at the current inputs to ensure this event is safe to process.
      *
-     *  FIXME: this does not work properly for variable delay yet.
-     *
-     *  FIXME: assumes each input port is not multiport.
-     *
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException
-     *  @see #_setTimedInterrupt(Time)
      */
     protected boolean _safeToProcess(PtidesEvent event)
             throws IllegalActionException {
+        // FIXME: this does not work properly for variable delay yet.
+        // FIXME: assumes each input port is not multiport.
         IOPort port = event.ioPort();
         Tag currentTag = new Tag(event.timeStamp(), event.microstep());
         // if this event is a pure event, then we need to make sure
@@ -189,9 +185,10 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         return result;
     }
 
-    /** Return all the events in the event queue that are of the same tag as the event
-     *  passed in, AND are destined to the same finite equivalence class. These events
-     *  should be removed from the event queue in the process.
+    /** Return all the events in the event queue that are of the same
+     *  tag as the event passed in, AND are destined to the same
+     *  finite equivalence class. These events should be removed from
+     *  the event queue in the process.
      *  @param event The reference event.
      *  @return List of events of the same tag.
      *  @exception IllegalActionException

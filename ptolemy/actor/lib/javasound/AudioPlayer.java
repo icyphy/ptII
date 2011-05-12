@@ -207,8 +207,9 @@ public class AudioPlayer extends LiveSoundActor {
         try {
             // Write out samples to speaker.
             LiveSound.putSamples(this, _audioPutArray);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Cannot playback audio.");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Cannot playback audio.");
         }
 
         return true;

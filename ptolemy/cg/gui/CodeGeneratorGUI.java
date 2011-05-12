@@ -195,12 +195,18 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
         stopButton.addActionListener(new ActionListener() {
+            // FindBugs 1.8.3 incorrectly warns "Could be refactored
+            // into a named static inner class".  The issue is that
+            // exec is not static.
             public void actionPerformed(ActionEvent evt) {
                 exec.cancel();
             }
         });
 
         clearButton.addActionListener(new ActionListener() {
+            // FindBugs 1.8.3 incorrectly warns "Could be refactored
+            // into a named static inner class".  The issue is that
+            // exec is not static.
             public void actionPerformed(ActionEvent evt) {
                 exec.clear();
             }

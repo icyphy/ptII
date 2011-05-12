@@ -28,21 +28,10 @@
 
 package ptolemy.domains.sdf.lib;
 
-import java.awt.Font;
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.lib.SampleDelay;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.vergil.icon.BoxedValueIcon;
 
 /**
  * 

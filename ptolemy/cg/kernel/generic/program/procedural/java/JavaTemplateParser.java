@@ -116,9 +116,10 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             throw new NullPointerException("Call TemplateParser.setCodeGenerator() "
                     + "before calling getFunctionInvocation()");
         }
-        if (functionName.indexOf("Complex") != -1
-                || functionName.indexOf("convert") != -1) {
-        }
+//         if (functionName.indexOf("Complex") != -1
+//                 || functionName.indexOf("convert") != -1) {
+//             throw new RuntimeException("FIXME! missing if block?");
+//         }
         // Record the referenced type function in _typeFuncUsed
         addFunctionUsed(functionName);
         int underbar = typeOrToken.indexOf("_");

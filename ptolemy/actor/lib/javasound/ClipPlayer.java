@@ -188,8 +188,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 clip.open(stream);
                 clip.start();
                 _clips.add(clip);
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Error opening audio file or URL: "
                         + fileOrURL.getExpression());
             }

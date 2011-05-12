@@ -31,7 +31,6 @@ package ptolemy.vergil.basic;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageExportable

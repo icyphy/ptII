@@ -465,7 +465,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  Thus $CLASSPATH/Foo.xml should have a toplevel named "Foo".
      *  If the name of the model and the name of the top level do
      *  not match, then the last CompositeActor is returned.
-     *  @see #closeModel(NamedObj)
+     *  @see #closeModelWithoutSavingOrExiting(TypedCompositeActor)
      *  @return The model that was opened.
      *  @exception Throwable If the model cannot be opened.
      */

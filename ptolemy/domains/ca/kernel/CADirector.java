@@ -435,7 +435,7 @@ public class CADirector extends Director {
         try {
             Thread.sleep((int) (1000.0 * ((DoubleToken) delay.getToken())
                     .doubleValue()));
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // Ignored.
         }
 
