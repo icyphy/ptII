@@ -454,6 +454,10 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public SharedParameter assumedPlatformTimeSynchronizationErrorBound;
 
+    /** The clock that keeps track of the execution time on this platform.
+     */
+    public RealTimeClock executionTimeClock;
+
     /** If true, force all actors to process events in timestamp
      *  order, even though some actors (in particular those without
      *  states) could process events out of timestamp order without
@@ -501,6 +505,10 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter initialPlatformClockTime;
 
+    /** The clock that keeps track of the platform time on this platform.
+     */
+    public RealTimeClock platformTimeClock;
+
     /** The amount of execution time it takes for the system to handle the
      *  safe-to-process timer. This value is used to simulate execution
      *  time.
@@ -517,14 +525,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  scheduling overhead.
      */
     public Parameter schedulerExecutionTimeBound;
-
-    /** The clock that keeps track of the execution time on this platform.
-     */
-    public RealTimeClock executionTimeClock;
-
-    /** The clock that keeps track of the platform time on this platform.
-     */
-    public RealTimeClock platformTimeClock;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
