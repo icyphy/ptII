@@ -949,7 +949,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             String portOrParameter = "((" + getComponent().getClass().getName()
                 + ")$actorSymbol(actor))." 
-                + foundPortField.getName() + portParameter.getPort();
+                + foundPortField.getName()
+                + ( portParameter != null
+                        ? ".getPort()" : "");
             
             code.append("    $actorSymbol(container).connect($actorSymbol(" + escapedCodegenPortName +"), "
                     + portOrParameter
