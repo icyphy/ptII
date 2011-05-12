@@ -344,6 +344,7 @@ proc doneTests {args} {
     # This line must exist so that we can easily parse the results
     # it is all on one line so that the nightly build scripts can search
     # for 'Total Tests'
+    puts [clock format  [clock seconds] -format "%D %T"]
     puts "Failed: $FAILED \
 	    Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
 	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
