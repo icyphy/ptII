@@ -2490,8 +2490,11 @@ public class PtidesBasicDirector extends DEDirector {
         _lastConsumedTag.put(obj, tag);
     }
 
-    /** For all events in the sensorEventQueue, transfer input events that are
-     *  ready. For all events that are currently sitting at the input port, if
+    /** Transfer input events from outside of the Ptides platform to the inside.
+     *  These events are assumed to be either sensor events or network events.
+     *  For all events in the sensorEventQueue, transfer input events that are
+     *  ready. For all events that are currently sitting at the port as
+     *  indicated by the "port" parameter, if
      *  the deviceDelay is 0.0, then transfer them into the platform,
      *  otherwise move them into the sensorEventQueue and call fireAt() of the
      *  executive director. In either case, if the input port is a networkPort,
@@ -2515,7 +2518,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an opaque"
+                    "Attempted to transferInputs on a port is not an opaque "
                             + "input port.");
         }
 
@@ -2528,10 +2531,10 @@ public class PtidesBasicDirector extends DEDirector {
         // in question. Instead, we do it for ALL events that can be transferred
         // out of this platform.
         // FIXME: there is _NO_ guarantee from the priorityQueue that these
-        // events are sent out in the order they arrive at the actuator. We can
+        // events are sent out in the order they arrive at the sensor. We can
         // only be sure that they are sent in the order of the timestamps, but
-        // for two events of the same timestamp at an actuator, there's no
-        // guarantee on the order of events sent to the outside.
+        // for two events of the same timestamp at a sensor, there's no
+        // guarantee on the order of events sent to the inside.
         while (true) {
             if (_realTimeInputEventQueue.isEmpty()) {
                 break;
@@ -2547,22 +2550,18 @@ public class PtidesBasicDirector extends DEDirector {
             } else if (compare == 0) {
                 Time lastModelTime = _currentTime;
                 int lastMicrostep = _microstep;
+                _realTimeInputEventQueue.poll();
                 if (_isNetworkPort(realTimeEvent.port)) {
                     // If transferring a network input, make it always safe to
                     // process.
-                    _realTimeInputEventQueue.poll();
                     setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
-                    realTimeEvent.port.sendInside(realTimeEvent.channel,
-                            realTimeEvent.token);
-                    setTag(lastModelTime, lastMicrostep);
                 } else {
                     setTag(realTimeEvent.timestampTag.timestamp,
                             realTimeEvent.timestampTag.microstep);
-                    _realTimeInputEventQueue.poll();
-                    realTimeEvent.port.sendInside(realTimeEvent.channel,
-                            realTimeEvent.token);
-                    setTag(lastModelTime, lastMicrostep);
                 }
+                realTimeEvent.port.sendInside(realTimeEvent.channel,
+                        realTimeEvent.token);
+                setTag(lastModelTime, lastMicrostep);
                 if (_debugging) {
                     _debug(getName(), "transferring input from "
                             + realTimeEvent.port.getName());
@@ -2601,50 +2600,51 @@ public class PtidesBasicDirector extends DEDirector {
                 setTag(platformPhysicalTag.timestamp,
                         platformPhysicalTag.microstep);
             }
-            if (super._transferInputs(port)) {
-                result = true;
-            }
+            result |= super._transferInputs(port);
             setTag(lastModelTime, lastMicrostep);
         } else {
             for (int i = 0; i < port.getWidth(); i++) {
-                try {
-                    if (i < port.getWidthInside()) {
-                        if (port.hasToken(i)) {
-                            Token t = port.get(i);
-                            Time waitUntilTime = executionPhysicalTag.timestamp
-                                    .add(inputDelay);
-                            // For the realTimeEvent, the delivery time to
-                            // the platform is based on oraclePhysicalTag,
-                            // while the timestamp of this event is based
-                            // on platformPhysicalTime.
-                            RealTimeEvent realTimeEvent = new RealTimeEvent(
-                                    port, i, t, new Tag(waitUntilTime, 0),
-                                            //executionPhysicalTag.microstep),
-                                    new Tag(platformPhysicalTag.timestamp,
-                                            platformPhysicalTag.microstep));
-                            _realTimeInputEventQueue.add(realTimeEvent);
-                            result = true;
-
-                            // Wait until oracle physical time to transfer
-                            // the token into the platform
-                            // FIXME: this looks weird, should be deviceDelay
-                            // be the # of clock cycles? What does it mean
-                            // that the deviceDelay is in a notion of time?
-                            // What does this time mean?
-                            _fireAtPlatformTime(waitUntilTime,
-                                    executionTimeClock);
+                if (i < port.getWidthInside()) {
+                    if (port.hasToken(i)) {
+                        Token t = null;
+                        try {
+                            t = port.get(i);
+                        } catch (NoTokenException ex) {
+                            // This shouldn't happen.
+                            throw new IllegalActionException(this, ex, null);
                         }
+                        Time waitUntilTime = executionPhysicalTag.timestamp
+                        .add(inputDelay);
+                        // For the realTimeEvent, the delivery time to
+                        // the platform is based on oraclePhysicalTag,
+                        // while the timestamp of this event is based
+                        // on platformPhysicalTime.
+                        RealTimeEvent realTimeEvent = new RealTimeEvent(
+                                port, i, t, new Tag(waitUntilTime, 0),
+                                //executionPhysicalTag.microstep),
+                                new Tag(platformPhysicalTag.timestamp,
+                                        platformPhysicalTag.microstep));
+                        _realTimeInputEventQueue.add(realTimeEvent);
+                        result = true;
+
+                        // Wait until oracle physical time to transfer
+                        // the token into the platform
+                        // FIXME: this looks weird, should be deviceDelay
+                        // be the # of clock cycles? What does it mean
+                        // that the deviceDelay is in a notion of time?
+                        // What does this time mean?
+                        _fireAtPlatformTime(waitUntilTime,
+                                executionTimeClock);
                     }
-                } catch (NoTokenException ex) {
-                    // This shouldn't happen.
-                    throw new IllegalActionException(this, ex, null);
                 }
             }
         }
         return result;
     }
 
-    /** Override the _transferOutputs() function.
+    /** Transfer output events from inside of the Ptides platform to the
+     *  outside. These events are either actuator events or network events.
+     *  These events are assumed to be either sensor events or network events.
      *  First, for tokens that are stored in the actuator event queue,
      *  send them to the outside of the platform if physical time has arrived.
      *  Second, compare current model time with simulated physical time.
@@ -2930,9 +2930,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  then we take the conservative approach, and say all inputs causally
      *  affect the pure event.
      *  @param actor The destination actor.
-     *  @return whether the future pure event is causally related to any input
-     *   port(s)
-     *  @exception IllegalActionException If whether causality marker contains
+     *  @return the port that causally relates to the pure event. If there is
+     *  no such port, return null.
+     *  @exception IllegalActionException If the causality marker contains
      *  source port cannot be evaluated.
      */
     private IOPort _getCausalPortForThisPureEvent(Actor actor)
@@ -2959,7 +2959,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the network delay of the port, if the parameter exists.
      *  @param port The port with network delay.
-     *  @return
+     *  @return the network delay associated with this port.
      *  @exception IllegalActionException If token of networkDelay parameter
      *  cannot be evaluated.
      */
@@ -2976,7 +2976,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the network delay of the port, if the parameter exists.
      *  @param port The port with network delay.
-     *  @return
+     *  @return the network driver delay associated with this port.
      *  @exception IllegalActionException If token of networkDelay parameter
      *  cannot be evaluated.
      */
@@ -3769,13 +3769,13 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Maps ports to dependencies. Used to determine delayOffset parameter
      */
-    private Map _portDelays;
+    private Map<IOPort, SuperdenseDependency> _portDelays;
 
     /** Store source port information for pure events that will be produced
      *  in the future.
-     *  This variable maps the next actor to be fired to the source input port
-     *  of the last event. This is used to determine the causality information
-     *  of the pure event that is to be produced.
+     *  This variable maps the destination actor to be fired to the destination
+     *  input port of the last event. This is used to determine the causality
+     *  information of the pure event that is to be produced.
      */
     private Map _pureEventSourcePorts;
 
