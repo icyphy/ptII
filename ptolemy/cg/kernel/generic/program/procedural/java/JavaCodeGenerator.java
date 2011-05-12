@@ -2510,8 +2510,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     File topTokenClass = new File(codeDirectoryFile,
                             typesAndTokenArray[i] + ".class");
                     if (!topTokenClass.delete()) {
-                        throw new IllegalActionException(
-                                "Failed to delete " + topTokenClass);
+			System.out.println("Warning: Failed to delete " + topTokenClass);
                     }
                 }
             }
