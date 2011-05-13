@@ -126,7 +126,7 @@ public class MoMLVariableChecker {
                     doParse = _findUndefinedConstantsOrIdentifiers(ex2,
                             container, parsedContainer, hideVariables);
 
-                } catch (Exception ex2a) {
+                } catch (Throwable throwable) {
                     return _variableBuffer.toString();
                 }
             } catch (Exception ex3) {
@@ -210,7 +210,7 @@ public class MoMLVariableChecker {
             try {
                 parseTree = ptParser.generateParseTree(settable
                         .getExpression());
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 // Skip things we can't parse, like StringAttributes
                 // that are docs.
 

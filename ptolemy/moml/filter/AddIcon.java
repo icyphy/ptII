@@ -191,6 +191,8 @@ public class AddIcon implements MoMLFilter {
     private String _lastNameSeen;
 
     // The parser we use to parse the MoML when we add an _icon.
+    // FindBugs: "Incorrect lazy initialization of static field".
+    // So, we make this volatile.
     private static MoMLParser _parser;
 
     static {

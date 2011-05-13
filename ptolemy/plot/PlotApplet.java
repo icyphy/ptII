@@ -90,9 +90,9 @@ public class PlotApplet extends JApplet {
                         _plot = null;
                     }
                 });
-        } catch (Exception ex) { 
+        } catch (Throwable throwable) { 
             System.err.println("init() didn't successfully complete");
-            ex.printStackTrace();
+            throwable.printStackTrace();
         }
         super.destroy();
     }
@@ -221,7 +221,7 @@ public class PlotApplet extends JApplet {
             // if we call invokeLater() then demo/PlotFourierSeries.java
             // has problems.
             SwingUtilities.invokeAndWait(doActions);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore InterruptedException.
             // Other exceptions should not occur.
         }

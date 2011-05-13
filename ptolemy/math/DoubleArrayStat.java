@@ -657,5 +657,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     // a random number.  If we do not share a single Random, then
     // under Windows, closely spaced calls to nextGaussian() on two
     // separate Randoms could yield the same return value.
-    private static Random _random;
+    // FindBugs reports: "Incorrect lazy initialization of static field"
+    // so we mark the volatile.
+    private static volatile Random _random;
 }

@@ -135,7 +135,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
         // look and feel of the platform we are running on.
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
 
@@ -702,12 +702,12 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
                 } else if (actionCommand.equals("Close")) {
                     _close();
                 }
-            } catch (Exception exception) {
+            } catch (Throwable throwable) {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null, "File Menu Exception:\n"
-                        + exception.toString(), "Ptolemy Plot Error",
+                        + throwable, "Ptolemy Plot Error",
                         JOptionPane.WARNING_MESSAGE);
             }
 
@@ -801,15 +801,11 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
 
             String extension = fileOrDirectoryName.substring(dotIndex);
 
-            if (extension != null) {
-                if (extension.equalsIgnoreCase(".eps")) {
-                    return true;
-                } else {
-                    return false;
-                }
+            if (extension.equalsIgnoreCase(".eps")) {
+                return true;
+            } else {
+                return false;
             }
-
-            return false;
         }
 
         /**  The description of this filter */
@@ -857,15 +853,11 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
 
             String extension = fileOrDirectoryName.substring(dotIndex);
 
-            if (extension != null) {
-                if (extension.equalsIgnoreCase(".gif")) {
-                    return true;
-                } else {
-                    return false;
-                }
+            if (extension.equalsIgnoreCase(".gif")) {
+                return true;
+            } else {
+                return false;
             }
-
-            return false;
         }
 
         /**  The description of this filter */
@@ -894,16 +886,12 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
 
             String extension = fileOrDirectoryName.substring(dotIndex);
 
-            if (extension != null) {
-                if (extension.equalsIgnoreCase(".plt")
-                        || extension.equalsIgnoreCase(".xml")) {
-                    return true;
-                } else {
-                    return false;
-                }
+            if (extension.equalsIgnoreCase(".plt")
+                    || extension.equalsIgnoreCase(".xml")) {
+                return true;
+            } else {
+                return false;
             }
-
-            return false;
         }
 
         /**  The description of this filter */

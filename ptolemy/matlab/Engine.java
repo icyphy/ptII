@@ -818,8 +818,11 @@ public class Engine {
 
             if (t instanceof BooleanToken) {
                 a[0] = ((BooleanToken) t).booleanValue() ? 1.0 : 0.0;
-            } else {
+            } else if (t instanceof BooleanToken) {
                 a[0] = ((ScalarToken) t).doubleValue();
+            } else {
+                throw new IllegalActionException("Token " + t + " is of type "
+                        + t.getType());
             }
 
             ma = ptmatlabCreateDoubleMatrixOneDim(name, a, 1);
@@ -834,6 +837,9 @@ public class Engine {
     }
 
     private boolean _doubleisInteger(double d) {
+        // FindBugs reports "Test for floating point equality", which
+        // may be ignored here because we really want to know if
+        // the double is equal to the floor of the double.
         return (d == Math.floor(d)) && (d <= Integer.MAX_VALUE)
                 && (d >= Integer.MIN_VALUE);
     }

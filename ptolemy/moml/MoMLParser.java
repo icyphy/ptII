@@ -1449,7 +1449,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (_toplevel != null && _toplevel instanceof ComponentEntity) {
                 try {
                     ((ComponentEntity) _toplevel).setContainer(null);
-                } catch (Exception ex2) {
+                } catch (Throwable throwable2) {
                     // Ignore.  setContainer(null) might throw an exception
                     // if there are deferrables, but we don't want to hide
                     // the original exception.
@@ -5237,6 +5237,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if ((_current.getDerivedLevel() < Integer.MAX_VALUE)
+                    // FindBugs reports a problem with the cast, but
+                    // isIOPort is set by checking whether _current is
+                    // an instanceof IOPort, so the warning is superfluous
                     && (((IOPort) _current).isMultiport() != newValue)) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is "
@@ -5244,6 +5247,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + "the class definition.");
             }
 
+            // FindBugs reports a problem with the cast, but
+            // isIOPort is set by checking whether _current is
+            // an instanceof IOPort, so the warning is superfluous
             ((IOPort) _current).setMultiport(newValue);
 
             // Propagate.
@@ -5292,6 +5298,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if ((_current.getDerivedLevel() < Integer.MAX_VALUE)
+                    // FindBugs reports a problem with the cast, but
+                    // isIOPort is set by checking whether _current is
+                    // an instanceof IOPort, so the warning is superfluous
                     && (((IOPort) _current).isOutput() != newValue)) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is "
@@ -5299,6 +5308,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + "the class definition.");
             }
 
+            // FindBugs reports a problem with the cast, but
+            // isIOPort is set by checking whether _current is
+            // an instanceof IOPort, so the warning is superfluous
             ((IOPort) _current).setOutput(newValue);
 
             // Propagate.
@@ -5348,6 +5360,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if ((_current.getDerivedLevel() < Integer.MAX_VALUE)
+                    // FindBugs reports a problem with the cast, but
+                    // isIOPort is set by checking whether _current is
+                    // an instanceof IOPort, so the warning is superfluous
                     && (((IOPort) _current).isInput() != newValue)) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is "
@@ -5355,6 +5370,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + "the class definition.");
             }
 
+            // FindBugs reports a problem with the cast, but
+            // isIOPort is set by checking whether _current is
+            // an instanceof IOPort, so the warning is superfluous
             ((IOPort) _current).setInput(newValue);
 
             // Propagate.

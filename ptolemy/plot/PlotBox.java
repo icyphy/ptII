@@ -465,7 +465,7 @@ public class PlotBox extends JPanel implements Printable {
                     // NOTE: Using invokeAndWait() here risks causing
                     // deadlock.  Don't do it!
                     SwingUtilities.invokeLater(doActions);
-                } catch (Exception ex) {
+                } catch (Throwable throwable) {
                     // Ignore InterruptedException.
                     // Other exceptions should not occur.
                 }
@@ -627,7 +627,10 @@ public class PlotBox extends JPanel implements Printable {
     public synchronized void exportLatex(File directory) {
         try {
             if (!directory.isDirectory()) {
-                directory.mkdir();
+                if (!directory.mkdir()) {
+                    throw new RuntimeException("Failed to create "
+                            + directory);
+                }
             }
             // Copy the required latex files.
             // Not currently using anything from pst-sigsys.
@@ -691,14 +694,14 @@ public class PlotBox extends JPanel implements Printable {
             JOptionPane.showMessageDialog(this, message,
                     "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
             return;
-        } catch (Exception ex) {
-            String message = "Export failed: " + ex.getMessage();
+        } catch (Throwable throwable) {
+            String message = "Export failed: " + throwable.getMessage();
             JOptionPane.showMessageDialog(this, message,
                     "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
 
             // Rethrow the exception so that we don't report success,
             // and so the stack trace is displayed on standard out.
-            throw (RuntimeException) ex.fillInStackTrace();
+            throw (RuntimeException) throwable.fillInStackTrace();
         }
     }
 
@@ -2214,7 +2217,7 @@ public class PlotBox extends JPanel implements Printable {
             _title = "";
         }
 
-        if ((_title != null) || (_yExp != 0)) {
+        if ((_yExp != 0)) {
             titley = titlefontheight + _topPadding;
         }
 
@@ -4409,7 +4412,9 @@ public class PlotBox extends JPanel implements Printable {
     private boolean _timedRepaint = false;
 
     // The timer task that does the repainting.
-    static private TimedRepaint _timerTask = null;
+    // _timerTask should be volatile because FindBugs says:
+    // "Incorrect lazy initialization of static field"
+    static private volatile TimedRepaint _timerTask = null;
 
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
@@ -4743,6 +4748,7 @@ public class PlotBox extends JPanel implements Printable {
 
             default:
                 // None
+                break;
             }
         }
 
@@ -4760,6 +4766,7 @@ public class PlotBox extends JPanel implements Printable {
 
             default:
                 // None
+                break;
             }
         }
 

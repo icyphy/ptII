@@ -197,7 +197,8 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
             IllegalActionException {
         if (_decorator == null) {
-            if (p.getName().equals("_decorator")) {
+            if (p.getName().equals("_decorator")
+                    && p instanceof StringAttribute) {
                 _decoratorPath = (StringAttribute) p;
                 _decoratorPath.setVisibility(Settable.NONE);
             }

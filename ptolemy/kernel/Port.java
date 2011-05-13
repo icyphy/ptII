@@ -915,7 +915,14 @@ public class Port extends NamedObj {
             throws IllegalActionException {
         try {
             Port newObject = (Port) super._propagateExistence(container);
-            newObject.setContainer((Entity) container);
+            // FindBugs warns that the cast of container is
+            // unchecked.  
+            if (container instanceof CompositeEntity) {
+                throw new InternalErrorException(container 
+                        + " is not a CompositeEntity.");
+            } else {
+                newObject.setContainer((Entity) container);
+            }
             return newObject;
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(e);

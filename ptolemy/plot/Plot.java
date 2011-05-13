@@ -247,7 +247,7 @@ public class Plot extends PlotBox {
             String possibleLegend = getLegend(dataset);
 
             if ((possibleLegend == null)
-                    || ((possibleLegend != null) && !possibleLegend
+                    || (possibleLegend != null && !possibleLegend
                             .equals(legend))) {
                 super.addLegend(dataset, legend);
             }
@@ -435,6 +435,11 @@ public class Plot extends PlotBox {
      * @see #setConnected
      */
     public boolean getConnected() {
+        // FindBugs reports "Unsynchronize get method, synchronized
+        // set method".  FindBugs reports that this method is
+        // unsyncronized, whereas setConnected(boolean, int) is
+        // syncronized.  However, the set* method corresponding to
+        // this method is setConnected(boolean).
         return _connected;
     }
 
@@ -445,6 +450,11 @@ public class Plot extends PlotBox {
      *  @see #setImpulses
      */
     public boolean getImpulses() {
+        // FindBugs reports "Unsynchronize get method, synchronized
+        // set method".  FindBugs reports that this method is
+        // unsyncronized, whereas setImpulses(boolean, int) is
+        // syncronized.  However, the set* method corresponding to
+        // this method is setImpulses(boolean).
         return _impulses;
     }
 
@@ -455,6 +465,9 @@ public class Plot extends PlotBox {
      *  @see #setLineStyles(boolean)
      */
     public boolean getLineStyles() {
+        // FIXME: should this be syncronized?
+        // FindBugs reports "Unsynchronize get method, synchronized
+        // set method".  
         return _lineStyles;
     }
 
@@ -1054,6 +1067,9 @@ public class Plot extends PlotBox {
         case 5:
             defaults.append(" marks=\"pixels\"");
             break;
+        default:
+            throw new RuntimeException("Internal Error.  Mark "
+                    + "style " + _marks + " not supported.");
         }
 
         // Write the defaults for formats that can be controlled by dataset
@@ -1911,8 +1927,15 @@ public class Plot extends PlotBox {
             break;
 
         case 4:
-            output.println("Marks: pixels");
+            output.println("Marks: bigdots");
             break;
+
+        case 5:
+            output.println("Marks: pixelss");
+            break;
+        default:
+            throw new RuntimeException("Internal Error.  Mark "
+                    + "style " + _marks + " not supported.");
         }
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
@@ -2834,6 +2857,9 @@ public class Plot extends PlotBox {
                         ypoints[4] = yposi - _radius;
                         graphics.fillPolygon(xpoints, ypoints, 5);
                         break;
+                    default:
+                        throw new RuntimeException("Internal Error.  Mark "
+                                + "style " + mark + " not supported.");
                     }
 
                     break;
@@ -2863,7 +2889,8 @@ public class Plot extends PlotBox {
                     break;
 
                 default:
-                    // none
+                    throw new RuntimeException("Internal Error.  Mark "
+                            + "style " + marks + " not supported.");
                 }
             }
         }

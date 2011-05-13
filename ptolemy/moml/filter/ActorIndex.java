@@ -139,15 +139,17 @@ public class ActorIndex {
             if (classesReader != null) {
                 try {
                     classesReader.close();
-                } catch (Exception ex) {
-                    // Ignore
+                } catch (IOException ex) {
+                    System.out.println("Failed to close "
+                            + classesReader + " " + ex);
                 }
             }
             if (modelReader != null) {
                 try {
                     modelReader.close();
-                } catch (Exception ex) {
-                    // Ignore
+                } catch (IOException ex) {
+                    System.out.println("Failed to close "
+                            + modelReader + " " + ex);
                 }
             }
         }
@@ -186,7 +188,7 @@ public class ActorIndex {
                     throw new InternalErrorException(null, ex,
                             "Failed to process PTII " + ptII);
                 }
-                if (ptII.length() == 0) {
+                if (ptII == null || ptII.length() == 0) {
                     throw new InternalErrorException("Failed to process "
                             + "ptolemy.ptII.dirAsURL property, ptII = null?");
                 }

@@ -614,6 +614,6 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     // A map from overflow type name to the overflow type for all
     //  overflow types.
-    private static Map _nameToOverflow;
+    private static volatile Map _nameToOverflow;
 
 }

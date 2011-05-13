@@ -192,6 +192,8 @@ public class AddEditorFactory implements MoMLFilter {
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;
 
-    // The parser we use to parse the MoML when we add an _icon.
-    private static MoMLParser _parser;
+    // The parser we use to parse the MoML when we add an editor factory.
+    // FindBugs: "Incorrect lazy initialization of static field".
+    // So, we make this volatile.
+    private static volatile MoMLParser _parser;
 }

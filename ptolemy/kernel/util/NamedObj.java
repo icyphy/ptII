@@ -409,6 +409,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   cannot be cloned.
      */
     public Object clone() throws CloneNotSupportedException {
+        // FindBugs warns that "clone method does not call super.clone()",
+        // but that can be ignored because clone(Workspace) calls
+        // super.clone().
         return clone(_workspace);
     }
 

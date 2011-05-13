@@ -586,7 +586,14 @@ public class ComponentRelation extends Relation {
         try {
             ComponentRelation newObject = (ComponentRelation) super
                     ._propagateExistence(container);
-            newObject.setContainer((CompositeEntity) container);
+            // FindBugs warns that the cast of container is
+            // unchecked.  
+            if (container instanceof CompositeEntity) {
+                throw new InternalErrorException(container 
+                        + " is not a CompositeEntity.");
+            } else {
+                newObject.setContainer((CompositeEntity) container);
+            }
             return newObject;
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(e);

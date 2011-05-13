@@ -200,13 +200,13 @@ public class Entity extends InstantiableNamedObj {
 
                         fields[i].set(newEntity, port);
                     }
-                } catch (Exception ex) {
+                } catch (Throwable throwable) {
                     // CloneNotSupportedException does not have a
                     // constructor that takes a cause argument, so we call
                     // initCause() and then throw.
                     CloneNotSupportedException cloneException = new CloneNotSupportedException(
                             "Problem cloning '" + fields[i].getName() + "'");
-                    cloneException.initCause(ex);
+                    cloneException.initCause(throwable);
                     throw cloneException;
                 }
             }
@@ -741,7 +741,10 @@ public class Entity extends InstantiableNamedObj {
          *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
         public void remove() {
-            super.remove();
+            // Findbugs complains about Call to unsupported method.
+            throw new UnsupportedOperationException("remove() not supported "
+                    + "because attributeList().iterator() returns a NamedList "
+                    + "that is unmodifiable");
         }
 
         private Iterator _portListIterator = null;

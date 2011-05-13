@@ -140,14 +140,7 @@ public class PlotApplication extends PlotFrame {
         super("PlotApplication", plot);
 
         // Handle window closing by exiting the application.
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                // Strangely, calling _close() here sends javac into
-                // an infinite loop (in jdk 1.1.4).
-                //              _close();
-                System.exit(0);
-            }
-        });
+        addWindowListener(new WindowClosingAdapter());
 
         _parseArgs(args);
 
@@ -174,14 +167,7 @@ public class PlotApplication extends PlotFrame {
         super("PlotApplication", plot);
 
         // Handle window closing by exiting the application.
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                // Strangely, calling _close() here sends javac into
-                // an infinite loop (in jdk 1.1.4).
-                //              _close();
-                System.exit(0);
-            }
-        });
+        addWindowListener(new WindowClosingAdapter()); 
 
         setVisible(true);
     }
@@ -206,9 +192,8 @@ public class PlotApplication extends PlotFrame {
             };
 
             SwingUtilities.invokeAndWait(doActions);
-        } catch (Exception ex) {
-            System.err.println(ex.toString());
-            ex.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -398,4 +383,13 @@ public class PlotApplication extends PlotFrame {
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
+
+    private static class WindowClosingAdapter extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
+            // Strangely, calling _close() here sends javac into
+            // an infinite loop (in jdk 1.1.4).
+            //              _close();
+            System.exit(0);
+        }
+    }
 }
