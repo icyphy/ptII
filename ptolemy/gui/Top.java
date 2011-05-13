@@ -32,6 +32,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.FileDialog;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -47,6 +48,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -742,6 +744,103 @@ public abstract class Top extends JFrame {
      *  _read() to open the file.
      */
     protected void _open() {
+        if (PtGUIUtilities.macOSLookAndFeel()) {
+            _openFileDialog();
+        } else {
+            _openJFileChooser();
+        }
+    }
+
+
+    /** Open a file dialog using the java.awt.Dialog class to identify
+     *  a file to be opened, and then call _read() to open the file.
+     *  Under Mac OS X, this method is preferred over _openJFileChooser()
+     *  because this method uses java.awt.Dialog, whereas _openJFileChooser()
+     *  uses javax.swing.JFileChooser.
+     */
+    protected void _openFileDialog() {
+        FileDialog fileDialog = new FileDialog(this, "Select a model file", FileDialog.LOAD);
+
+        if (_filenameFilter != null) {
+            fileDialog.setFilenameFilter(_filenameFilter);
+        }
+        boolean fail = false;
+        if (_directory != null) {
+            try {
+                fileDialog.setDirectory(_directory.getCanonicalPath());
+            } catch (IOException ex) {
+                fail = true;
+            }
+        }
+        if (fail || _directory == null) {
+            // The default on Windows is to open at user.home, which is
+            // typically an absurd directory inside the O/S installation.
+            // So we use the current directory instead.
+            // This will throw a security exception in an applet.
+            // FIXME: we should support users under applets opening files
+            // on the server.
+            String currentWorkingDirectory = StringUtilities
+                .getProperty("user.dir");
+
+            if (currentWorkingDirectory != null) {
+                fileDialog.setDirectory(currentWorkingDirectory);
+            }
+        }
+
+        fileDialog.show();
+
+        _directory = new File(fileDialog.getDirectory());
+        try {
+            // NOTE: It would be nice if it were possible to enter
+            // a URL in the file chooser, but Java's file chooser does
+            // not permit this, regrettably.  So we have a separate
+            // menu item for this.
+            File file = new File(_directory, fileDialog.getFile());
+            // Report on the time it takes to open the model.
+            long startTime = System.currentTimeMillis();
+            _read(file.toURI().toURL());
+            long endTime = System.currentTimeMillis();
+            if (endTime > startTime + 10000) {
+                // Only print the time if it is more than 10
+                // seconds See also PtolemyEffigy.  Perhaps
+                // this code should be in PtolemyEffigy, but
+                // if it is here, we get the time it takes to
+                // read any file, not just a Ptolemy model.
+                System.out.println("Opened " + file + " in "
+                        + (System.currentTimeMillis() - startTime)
+                        + " ms.");
+            }
+            // Only add file if no exception
+            _updateHistory(file.getAbsolutePath(), false);
+
+        } catch (Error error) {
+            // Be sure to catch Error here so that if we throw an
+            // Error, then we will report it to with a window.
+            try {
+                throw new RuntimeException(error);
+            } catch (Exception ex2) {
+                report("Error while reading input:", ex2);
+            }
+        } catch (Exception ex) {
+            // NOTE: The XML parser can only throw an
+            // XmlException.  It signals that it is a user
+            // cancellation with the special string pattern
+            // "*** Canceled." in the message.
+
+            if ((ex.getMessage() != null)
+                    && !ex.getMessage().startsWith("*** Canceled.")) {
+                // No need to report a CancelException, since
+                // it results from the user clicking a
+                // "Cancel" button.
+                report("Error reading input", ex);
+            }
+        }
+    }
+
+    /** Open a file dialog to identify a file to be opened, and then call
+     *  _read() to open the file.
+     */
+    protected void _openJFileChooser() {
         // Swap backgrounds and avoid white boxes in "common places" dialog
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
@@ -1163,6 +1262,15 @@ public abstract class Top extends JFrame {
      *  applied, which results in all files being displayed.
      */
     protected FileFilter _fileFilter = null;
+
+    /** The FileFilter used by the java.awt.FileDialog that determines
+     *  what files are displayed by the Open dialog and the Save As
+     *  dialog The initial default is null, which causes no FileFilter
+     *  to be applied, which results in all files being displayed.
+     *
+     *  FIXME: we have both FileFilter and FilenameFilter.
+     */
+    protected FilenameFilter _filenameFilter = null;
 
     /** File menu for this frame. */
     protected JMenu _fileMenu = new JMenu("File");
