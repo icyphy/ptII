@@ -77,8 +77,6 @@ $CLASSPATH/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTra
 $CLASSPATH/ptolemy/configs/doc/ClassesIllustrated.xml
 $CLASSPATH/ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation.xml
-$CLASSPATH/ptolemy/data/ontologies/demo/ConstNonconst/Const.xml
-$CLASSPATH/ptolemy/data/ontologies/demo/ConstNonconst/ConstNonconst.xml
 $CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis.xml
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
