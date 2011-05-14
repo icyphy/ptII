@@ -125,8 +125,7 @@ OPTIONAL_FILES = \
 	'PlotApplet$$1.class' \
 	'PlotApplet$$2.class' \
 	'PlotApplication$$1.class' \
-	'PlotApplication$$2.class' \
-	'PlotApplication$$3.class' \
+	'PlotApplication$$WindowClosingAdapter.class' \
 	'PlotFrame$$FilterForGIF.class' \
 	'PlotFrame$$FolderForLatex.class' \
 	'Plot$$1.class' \
