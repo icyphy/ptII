@@ -45,14 +45,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 
-PTCLASSJAR =
+PTPACKAGE = hoc
+PTCLASSJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS =
+#PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS =
