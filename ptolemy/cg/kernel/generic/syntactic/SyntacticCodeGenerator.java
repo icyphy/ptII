@@ -136,15 +136,22 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
         return SyntacticCodeGeneratorAdapter.class;
     }
     
-    /** Show the SyntacticGraph in a Tableau. */
-    protected void _showGraph() {
+    /** Show the SyntacticGraph in a Tableau.
+     *  @exception IllegalActionException Thrown if there is a problem
+     *  getting the configuration, opening the instance of the
+     *  syntactic graph or showing the tableau.
+     */
+    protected void _showGraph() throws IllegalActionException {
         try {
             Configuration config = (Configuration)Configuration.configurations().get(0);
             _syntaxTableau = config.openInstance(_syntaxGraph);
             _syntaxTableau.show();
+        } catch (Exception ex) {
+            throw new IllegalActionException(getComponent(), ex,
+                    "Failed to show "
+                    + "the SyntacticGraph in a Tableau");
+
         }
-        
-        catch (Exception ex) {}
     }
     
     ///////////////////////////////////////////////////////////////////

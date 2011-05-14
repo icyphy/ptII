@@ -696,7 +696,7 @@ public class ConfigurationApplication implements ExecutionListener {
                 //InputStream urlStream = specURL.openStream();
                 //urlStream.close();
                 return specURL;
-            } catch (Exception ex2) {
+            } catch (Throwable throwable) {
                 try {
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
@@ -737,7 +737,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     // have no hope of telling us why Web Start failed.
                     IOException exception = new IOException("File not found: '"
                             + spec + "'\n caused by:\n" + ex + "\n AND:\n"
-                            + ex2 + "\n AND:\n" + ex3);
+                            + throwable + "\n AND:\n" + ex3);
 
                     // IOException does not have a cause argument
                     exception.initCause(ex3);
@@ -766,7 +766,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
                 argsStringBuffer.append(args[i]);
             }
-        } catch (Exception ex2) {
+        } catch (Throwable throwable) {
             //Ignored
         }
 
@@ -978,7 +978,7 @@ public class ConfigurationApplication implements ExecutionListener {
         // Load the properties file
         try {
             StringUtilities.mergePropertiesFile();
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // FIXME: this should be logged, not ignored
             // Ignore the exception, it clutters the start up.
         }
@@ -1144,13 +1144,13 @@ public class ConfigurationApplication implements ExecutionListener {
 
                     try {
                         inURL = specToURL(arg);
-                    } catch (Exception ex) {
+                    } catch (IOException ex) {
                         try {
                             // Create a File and get the URL so that commands like
                             // $PTII/bin/vergil $PTII/doc/index.htm#in_browser work.
                             File inFile = new File(arg);
                             inURL = inFile.toURI().toURL();
-                        } catch (Exception ex2) {
+                        } catch (Throwable throwable) {
                             if (StringUtilities.inApplet()) {
                                 inURL = new URL(arg);
                             } else {
@@ -1227,7 +1227,7 @@ public class ConfigurationApplication implements ExecutionListener {
                                             + "pathname to the jnlp file had a "
                                             + "space in it";
                                 }
-                            } catch (Exception ex2) {
+                            } catch (Throwable throwable) {
                                 // Ignored
                             }
 
@@ -1549,7 +1549,7 @@ public class ConfigurationApplication implements ExecutionListener {
                 if (configurationFile.isFile() && introFile.isFile()) {
                     return true;
                 }
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 return false;
             }
 
