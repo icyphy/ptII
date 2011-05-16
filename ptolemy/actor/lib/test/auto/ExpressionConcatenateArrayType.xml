@@ -30,18 +30,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1108, 832}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1411, 803}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[895, 722]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1198, 693]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.5, 361.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{599.0, 346.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="I've read the documentation about expressions, because what I need is to concatenate&#10;two arrays of type: string. When I run it inside Expression Evaluator I get:&#10;&#10;&gt;&gt; t1 = {&quot;a&quot;}&#10;{&quot;a&quot;}&#10;&gt;&gt; t2 = {&quot;b&quot;}&#10;{&quot;b&quot;}&#10;&gt;&gt; t1.getType()&#10;object(arrayType(string,1))&#10;&gt;&gt; t2.getType()&#10;object(arrayType(string,1))&#10;&gt;&gt; concatenate(t1, t2)&#10;{&quot;a&quot;, &quot;b&quot;}&#10;&gt;&gt; concatenate(t1, t2).getType()&#10;object(arrayType(string,2))&#10;&#10;This is correct and such behaviour is what I'd like to have.&#10;However in Kepler, expression actor always&#10;returns type &quot;general&quot; after concatenation no matter what&#10;are its input types. Because of this, I cannot run my workflow&#10;as I get type resolve exception. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edward writes:&#10;&#10;This is a also a feature request...&#10;&#10;It might be easy to fix for this particular example by providing&#10;a type constraints function to go with the concatenate function.&#10;I.e., provide a method concatenateType(Array, Array) in UtilityFunctions.&#10;&#10;At the same time, we should fix a similar limitation in the&#10;ArrayAppend actor, which has the following in its constructor:&#10;&#10;        // FIXME: correct type constraint for length&#10;        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);&#10;&#10;&#10;Any volunteers to do these? It would be good practice with&#10;a modern type system... ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 375.0]">
         </property>
     </property>
     <entity name="Constant" class="ptolemy.actor.lib.Const">
@@ -134,7 +140,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 200.0}">
         </property>
         <port name="t1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -144,7 +150,21 @@
         </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Constant = {output = &quot;arrayType(string,2)&quot;, trigger = &quot;unknown&quot;}, Constant2 = {output = &quot;arrayType(string,1)&quot;, trigger = &quot;unknown&quot;}, Expression = {output = &quot;arrayType(string,3)&quot;, t1 = &quot;arrayType(string,2)&quot;, t2 = &quot;arrayType(string,1)&quot;}, Test = {input = &quot;arrayType(general)&quot;, output = &quot;boolean&quot;}}">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Constant = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;arrayType(string,2)&quot;}, Constant2 = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;arrayType(string,1)&quot;}, Test = {correctValues = &quot;arrayType(arrayType(arrayType(string,3),1),1)&quot;, requireAllCorrectValues = &quot;boolean&quot;, tolerance = &quot;double&quot;, trainingMode = &quot;boolean&quot;}}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Constant = {output = &quot;arrayType(string,2)&quot;, trigger = &quot;unknown&quot;}, Constant2 = {output = &quot;arrayType(string,1)&quot;, trigger = &quot;unknown&quot;}, Expression = {output = &quot;arrayType(string,3)&quot;, t1 = &quot;arrayType(string,2)&quot;, t2 = &quot;arrayType(string,1)&quot;}, Test = {input = &quot;arrayType(string,3)&quot;, output = &quot;boolean&quot;}}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

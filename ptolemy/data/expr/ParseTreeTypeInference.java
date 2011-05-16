@@ -228,6 +228,21 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             //  return;
         }
 
+        if ((functionName.compareTo("concatenate") == 0) && (argCount == 2)) {
+             try {
+                 // Tested with $PTII/ptolemy/actor/lib/test/auto/ExpressionConcatenateArrayType.xml
+                 ArrayType firstArgumentType = (ArrayType)_inferChild(node, 1);
+                 ArrayType secondArgumentType = (ArrayType)_inferChild(node, 2);
+                 _setType(node, new ArrayType(((ArrayType) (TypeLattice.lattice()
+                       .leastUpperBound(firstArgumentType, secondArgumentType))).getElementType(),
+                       firstArgumentType.length() + secondArgumentType.length()));
+                return;
+            } catch (Throwable ex) {
+                // Do nothing... rely on the regular method resolution
+                // to generate the right type.
+            }
+        }
+
         // A hack, because the result of the 'fix' function is
         // dependent on its arguments, which should be constant.
         if ((functionName.compareTo("fix") == 0) && (argCount == 3)) {
