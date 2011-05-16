@@ -238,6 +238,27 @@ public class UtilityFunctions {
         return new ArrayToken(result);
     }
 
+    /** Return the return type of the concatenate method, given the types
+     *  of the arguments.
+     *  This specialized method is called by the CachedMethod class and used
+     *  to provide a better return type.
+     *  @param firstArrayType The type of the predicate function.
+     *  @param secondArrayType The type of the array to be filtered.
+     *  @return The type of the result, which is an array of the least
+     *   upper bound of the array arguments.  The length of the array type
+     *   is the sum of the length of the arguments.
+     *  @exception IllegalActionException If the types of the array arguments
+     *   are not Arrays.
+     */
+    public static Type concatenateReturnType(Type firstArrayType, Type secondArrayType)
+            throws IllegalActionException {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
+        return new ArrayType(((ArrayType) (TypeLattice.lattice()
+                                .leastUpperBound(firstArrayType, secondArrayType))).getElementType(),
+                ((ArrayType)firstArrayType).length()
+                + ((ArrayType)secondArrayType).length());
+    }
     /** Return a record token that contains the names of all the
      *  constants and their values.
      *  @return A token containing the names of all the constants

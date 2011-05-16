@@ -204,6 +204,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     + " The type of the function was \"" + baseType + "\".");
         }
 
+        // Note that an alternative to searching for functions by name
+        // is to define fooReturnType() in data.expr.UtilityFunctions
+        // so that fooReturnType() is found by CacheMethod.
         // Psuedo-temporary hack for casts....
         if ((functionName.compareTo("cast") == 0) && (argCount == 2)) {
             ASTPtRootNode castTypeNode = ((ASTPtRootNode) node
@@ -226,21 +229,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             //  _setType(node,
             //     ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
             //  return;
-        }
-
-        if ((functionName.compareTo("concatenate") == 0) && (argCount == 2)) {
-             try {
-                 // Tested with $PTII/ptolemy/actor/lib/test/auto/ExpressionConcatenateArrayType.xml
-                 ArrayType firstArgumentType = (ArrayType)_inferChild(node, 1);
-                 ArrayType secondArgumentType = (ArrayType)_inferChild(node, 2);
-                 _setType(node, new ArrayType(((ArrayType) (TypeLattice.lattice()
-                       .leastUpperBound(firstArgumentType, secondArgumentType))).getElementType(),
-                       firstArgumentType.length() + secondArgumentType.length()));
-                return;
-            } catch (Throwable ex) {
-                // Do nothing... rely on the regular method resolution
-                // to generate the right type.
-            }
         }
 
         // A hack, because the result of the 'fix' function is
