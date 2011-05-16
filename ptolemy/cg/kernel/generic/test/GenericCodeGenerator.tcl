@@ -205,9 +205,10 @@ Options that take values:
  -<parameter name>      <parameter value>
  -generateComment    true|false (default: true)
  -inline             true|false (default: false)
- -maximumLinesPerBlock <an integer, default: 2500)
+ -maximumLinesPerBlock <an integer, default: 2500>
  -measureTime        true|false (default: false)
  -run                true|false (default: true)
+ -runCommand         <a string, default: make -f @modelName@.mk run>
  -variablesAsArrays  true|false (default:false)
  -verbosity          <an integer, try 1 or 10>, (default: 0)
 
