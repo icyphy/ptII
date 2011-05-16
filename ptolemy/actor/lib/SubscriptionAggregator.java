@@ -29,7 +29,10 @@ package ptolemy.actor.lib;
 
 import java.util.regex.Pattern;
 
+import java.util.Iterator;
+
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
@@ -242,11 +245,31 @@ public class SubscriptionAggregator extends Subscriber {
         NamedObj container = getContainer();
         if (container instanceof CompositeActor) {
             try {
-                ((CompositeActor) container).linkToPublishedPort(
-                        _channelPattern, input, _global);
+                try {
+                    ((CompositeActor) container).linkToPublishedPort(
+                            _channelPattern, input, _global);
+                } catch (IllegalActionException ex) {
+                    // If we have a LazyTypedCompositeActor that
+                    // contains the Publisher, then populate() the
+                    // model, expanding the LazyTypedCompositeActors
+                    // and retry the link.  This is computationally
+                    // expensive.
+                    // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
+                    Iterator namedObjs = ((TypedCompositeActor)toplevel()).allAtomicEntityList().iterator();
+                    while (namedObjs.hasNext()) {
+                        NamedObj namedObj = (NamedObj)namedObjs.next();
+                        if (namedObj instanceof Publisher) {
+                            Publisher publisher = (Publisher)namedObj;
+                            publisher.attributeChanged(publisher.channel);
+                        }
+                    }
+                    
+                    ((CompositeActor) container).linkToPublishedPort(
+                            _channelPattern, input, _global);
+                }
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                        "Can't link SubscriptionAggregator with Publisher.");
+                "Can't link SubscriptionAggregator with Publisher.");
             }
         }
     }
