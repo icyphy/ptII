@@ -1,5 +1,4 @@
-/*
- * The node controller for lattice elements.
+/* The node controller for ontology concept model elements.
  * 
  * Copyright (c) 1998-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -27,73 +26,72 @@ package ptolemy.vergil.ontologies;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.KeyStroke;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.modal.StateController;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 
-/**
- * This class provides interaction with nodes that represent elements in an
- * lattice graph. It extends the StateController which provides a double click
- * binding to edit the parameters of the state, and a context menu containing a
- * commands to edit parameters ("Configure"), rename, get documentation, and
- * look inside. In addition, it binds the action to edit the acceptability flag
- * for an lattice element.
+/** The node controller for ontology concept model elements.
+ *  This class provides interaction with nodes that represent concepts in an
+ *  ontology model. It extends the AttributeController which provides a double
+ *  click binding to edit the parameters of the concept, and a context menu
+ *  containing commands to edit parameters ("Configure"), rename, and get
+ *  documentation. In addition, it binds the action to edit the acceptability
+ *  flag for a concept.
  * 
- * @author Man-Kit Leung
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ *  @author Charles Shelton, Man-Kit Leung
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
  */
-public class ConceptController extends StateController {
+public class ConceptController extends AttributeController {
 
-    /**
-     * Create a lattice element controller associated with the specified graph
-     * controller.
-     * @param controller The associated graph controller.
+    /** Create a concept controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
      */
     public ConceptController(GraphController controller) {
-        super(controller);
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _toggleAcceptabilityAction));
+        this(controller, FULL);
     }
 
-    /**
-     * Create a lattice element controller associated with the specified graph
-     * controller.
-     * @param controller The associated graph controller.
-     * @param access The access level.
+    /** Create a concept controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     *  @param access The access level.
      */
     public ConceptController(GraphController controller, Access access) {
         super(controller, access);
+        
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _toggleAcceptabilityAction));
-
-        // FIXME: Having this action is only temporary.
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _checkIsLatticeAction));
-    }
+        
+        // Remove the "Listen To Attribute" menu action since it has no
+        // relevance for an ontology concept.
+        MenuActionFactory listenToActionFactory = _getListenToMenuActionFactory();
+        if (listenToActionFactory != null) {
+            _menuFactory.removeMenuItemFactory(listenToActionFactory);
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Add hot keys to the actions in the given JGraph. It would be better that
-     * this method was added higher in the hierarchy. Now most controllers
-     * @param jgraph The JGraph to which hot keys are to be added.
+    /** Add hot keys to the actions in the given JGraph. It would be better that
+     *  this method was added higher in the hierarchy. Now most controllers
+     *  @param jgraph The JGraph to which hot keys are to be added.
      */
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
@@ -103,23 +101,44 @@ public class ConceptController extends StateController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The edit custom icon action. */
+    /** The toggle acceptability context menu action. */
     protected ToggleAcceptabilityAction _toggleAcceptabilityAction = new ToggleAcceptabilityAction();
-
-    /**
-     * The action for checking whether the container graph is a lattice.
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Get the MenuActionFactory in the _menuFactory object's menu item
+     *  factory list that contains the "Listen To Attribute" menu action.
+     *  @return the MenuActionFactory that contains the "Listen To Attribute"
+     *   menu action, or null if it does not exist.
      */
-    protected CheckIsLatticeAction _checkIsLatticeAction = new CheckIsLatticeAction();
+    private MenuActionFactory _getListenToMenuActionFactory() {
+        List menuItemFactories = _menuFactory.menuItemFactoryList();
+        for (Object menuItemFactory : menuItemFactories) {
+            if (menuItemFactory instanceof MenuActionFactory) {
+                if (((MenuActionFactory) menuItemFactory).substitute(
+                        _listenToAction, _listenToAction)) {
+                    return (MenuActionFactory) menuItemFactory;
+                }
+            }
+        }        
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+    ////                         private inner classes             ////
 
-    /**
-     * An action to look inside a state at its refinement, if it has one. NOTE:
-     * This requires that the configuration be non null, or it will report an
-     * error with a fairly cryptic message.
+    ///////////////////////////////////////////////////////////////////
+    //// ToggleAcceptabilityAction
+    
+    /** An action to toggle the isAcceptable attribute of the concept.
+     *  NOTE: This requires that the configuration be non null, or it will
+     *   report an error with a fairly cryptic message.
      */
-    protected static class ToggleAcceptabilityAction extends FigureAction {
+    private static class ToggleAcceptabilityAction extends FigureAction {
+        
+        /** Create a new ToggleAcceptabilityAction object.
+         */
         public ToggleAcceptabilityAction() {
             super("Toggle Acceptability");
 
@@ -128,6 +147,10 @@ public class ConceptController extends StateController {
                             .getMenuShortcutKeyMask()));
         }
 
+        /** Execute the Toggle Acceptability action on the ontology concept.
+         *  @param e The ActionEvent that is received to execute the
+         *   toggle acceptability action.
+         */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             NamedObj target = getTarget();
@@ -146,28 +169,7 @@ public class ConceptController extends StateController {
                 } catch (IllegalActionException ex) {
                     MessageHandler.error("Toggle acceptability failed: ", ex);
                 }
-
             }
-        }
-    }
-
-    /** An action that checks whether the ontology model graph is a valid lattice.
-     *  If the check is successful, the user is given an OK message. If not,
-     *  the user is given a message showing a counterexample that shows why the
-     *  graph is not a lattice, and the relevant nodes are highlighted in the model.
-     */
-    protected class CheckIsLatticeAction extends FigureAction {
-        public CheckIsLatticeAction() {
-            super("Check Lattice Graph");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            Concept target = (Concept) getTarget();
-            Ontology ontologyModel = target.getOntology();            
-            ReportOntologyLatticeStatus.showStatusAndHighlightCounterExample(
-                    ontologyModel, (OntologyGraphController) getController());
         }
     }
 }

@@ -69,7 +69,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     public Concept(CompositeEntity ontology, String name)
             throws IllegalActionException, NameDuplicationException {
         super(ontology, name);
-
+        
         isAcceptable = new Parameter(this, "isAcceptable");
         isAcceptable.setTypeEquals(BaseType.BOOLEAN);
         isAcceptable.setExpression("true");

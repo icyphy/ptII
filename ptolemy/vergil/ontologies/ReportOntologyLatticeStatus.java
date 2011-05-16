@@ -37,8 +37,6 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.NonLatticeCounterExample;
 import ptolemy.graph.NonLatticeCounterExample.GraphExampleType;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.util.MessageHandler;
 
 /**
@@ -60,9 +58,8 @@ public class ReportOntologyLatticeStatus {
      *  @param modelGraphController The graph controller for the ontology model.
      */
     public static void showStatusAndHighlightCounterExample(Ontology ontologyModel, OntologyGraphController modelGraphController) {
-        boolean isLattice = ontologyModel.isLattice();
-        
-        _clearOntologyErrorHighlights(ontologyModel, modelGraphController);
+        boolean isLattice = ontologyModel.isLattice();        
+        modelGraphController.clearAllErrorHighlights();
 
         if (isLattice) {
             MessageHandler.message("The ontology model graph is a valid lattice.");
@@ -101,27 +98,5 @@ public class ReportOntologyLatticeStatus {
 
             MessageHandler.error(errorMessageBuffer.toString());
         }
-    }
-    
-    /** Clear all the error highlighting from all concepts in the ontology
-     *  before checking whether or not the ontology is a lattice.
-     *  @param ontology The ontology which we are checking.
-     *  @param modelGraphController The graph controller for the ontology model.
-     */
-    private static void _clearOntologyErrorHighlights(final Ontology ontology,
-            OntologyGraphController modelGraphController) {        
-        ChangeRequest request = new ChangeRequest(modelGraphController,
-                "Clear Ontology Error Highlights") {
-            protected void _execute() throws Exception {                
-                List<Concept> allConcepts = ontology.entityList(Concept.class);
-                for (Concept concept : allConcepts) {
-                    Attribute highlightColor = concept.getAttribute("_highlightColor");
-                    if (highlightColor != null) {
-                        highlightColor.setContainer(null);
-                    }
-                }
-            }
-        };
-        ontology.requestChange(request);
     }
 }

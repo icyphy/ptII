@@ -62,7 +62,7 @@ public class ConceptIcon extends NameIcon {
         super(container, name);
         
         // Change the default rounding to 20.
-        rounding.setExpression("20");
+        rounding.setExpression("20.0");
     }
 
     /** Return the fill color.

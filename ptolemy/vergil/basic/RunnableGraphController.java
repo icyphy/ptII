@@ -31,8 +31,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -44,20 +42,16 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypeConflictException;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.JGraph;
@@ -152,26 +146,6 @@ public abstract class RunnableGraphController extends WithIconGraphController
     public synchronized void executionFinished(Manager manager) {
         getFrame().report("execution finished.");
     }
-    
-    /** Highlight the specified object and all its containers to
-     *  indicate that it is the source of an error.
-     *  @param culprit The culprit.
-     */
-    public void highlightError(final Nameable culprit) {
-        if (culprit instanceof NamedObj) {
-            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
-                protected void _execute() throws Exception {
-                    _addErrorHighlightIfNeeded(culprit);
-                    NamedObj container = culprit.getContainer();
-                    while (container != null) {
-                        _addErrorHighlightIfNeeded(container);
-                        container = container.getContainer();
-                    }
-                }
-            };
-            ((NamedObj) culprit).requestChange(request);
-        }
-    }
 
     /** Report that a manager state has changed.
      *  This method is called by the specified manager.
@@ -189,21 +163,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // idle (and the previous one was something else), since we want
             // to update visual effects that might have changed by running the
             // model.
-            if (newState == Manager.IDLE || _errorHighlights.size() > 0) {
-                ChangeRequest request = new ChangeRequest(this,
-                        "Error Highlight Clearer", true) {
-                    protected void _execute() throws Exception {
-                        for (Attribute highlight : _errorHighlights) {
-                            highlight.setContainer(null);
-                        }
-                    }
-                };
-
-                // Mark the Error Highlight Clearer request as
-                // non-persistant so that we don't mark the model as being
-                // modified.  ptolemy/actor/lib/jni/test/Scale/Scale.xml
-                // required this change.
-                request.setPersistent(false);
+            if (newState == Manager.IDLE || _areThereActiveErrorHighlights()) {                
+                ChangeRequest request = _getClearAllErrorHighlightsChangeRequest();
                 manager.requestChange(request);
             }
 
@@ -286,34 +247,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Add an error highlight color to the specified culprit if it is
-     *  not already present.
-     *  @param culprit The culprit to highlight.
-     *  @exception IllegalActionException If the highlight cannot be added.
-     *  @exception NameDuplicationException Should not be thrown.
-     */
-    private void _addErrorHighlightIfNeeded(Nameable culprit)
-            throws IllegalActionException, NameDuplicationException {
-        Attribute highlightColor = ((NamedObj) culprit)
-                .getAttribute("_highlightColor");
-        if (highlightColor == null) {
-            highlightColor = new ColorAttribute((NamedObj) culprit,
-                    "_highlightColor");
-            ((ColorAttribute) highlightColor)
-                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
-            highlightColor.setPersistent(false);
-            ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
-            _errorHighlights.add(highlightColor);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** List of error highlight attributes we have created. */
-    private List<Attribute> _errorHighlights = new LinkedList<Attribute>();
 
     /** The manager we are currently listening to. */
     private Manager _manager = null;

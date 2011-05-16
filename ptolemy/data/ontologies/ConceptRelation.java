@@ -26,16 +26,13 @@
  */
 package ptolemy.data.ontologies;
 
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -138,13 +135,6 @@ public class ConceptRelation extends ComponentRelation {
      */
     public StringParameter annotation;
 
-    /** Attribute the exit angle of a visual rendition.
-     *  This parameter contains a DoubleToken, initially with value PI/5.
-     *  It must lie between -PI and PI.  Otherwise, it will be truncated
-     *  to lie within this range.
-     */
-    public Parameter exitAngle;
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -188,10 +178,5 @@ public class ConceptRelation extends ComponentRelation {
         Variable textHighlightHint = new Variable(annotation, "_textHeightHint");
         textHighlightHint.setExpression("5");
         textHighlightHint.setPersistent(false);
-
-        exitAngle = new Parameter(this, "exitAngle");
-        exitAngle.setVisibility(Settable.NONE);
-        exitAngle.setExpression("0.0");
-        exitAngle.setTypeEquals(BaseType.DOUBLE);
     }
 }

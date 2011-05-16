@@ -250,7 +250,7 @@ public class Ontology extends CompositeEntity {
         }
         return null;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

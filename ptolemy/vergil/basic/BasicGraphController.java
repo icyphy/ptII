@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -40,14 +41,20 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
@@ -100,6 +107,31 @@ public abstract class BasicGraphController extends AbstractGraphController
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public void clearAllErrorHighlights() {
+        ChangeRequest request = _getClearAllErrorHighlightsChangeRequest();
+        _frame.getModel().requestChange(request);
+    }
+    
+    /** Highlight the specified object and all its containers to
+     *  indicate that it is the source of an error.
+     *  @param culprit The culprit.
+     */
+    public void highlightError(final Nameable culprit) {
+        if (culprit instanceof NamedObj) {
+            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+                protected void _execute() throws Exception {
+                    _addErrorHighlightIfNeeded(culprit);
+                    NamedObj container = culprit.getContainer();
+                    while (container != null) {
+                        _addErrorHighlightIfNeeded(container);
+                        container = container.getContainer();
+                    }
+                }
+            };
+            ((NamedObj) culprit).requestChange(request);
+        }
+    }
+    
     /** Add commands to the specified menu and toolbar, as appropriate
      *  for this controller.  In this base class, nothing is added.
      *  @param menu The menu to add to, or null if none.
@@ -406,6 +438,32 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
+    }    
+    
+    protected boolean _areThereActiveErrorHighlights() {
+        return !_errorHighlights.isEmpty();
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    protected ChangeRequest _getClearAllErrorHighlightsChangeRequest() {
+        ChangeRequest request = new ChangeRequest(this,
+                "Error Highlight Clearer", true) {
+            protected void _execute() throws Exception {
+                for (Attribute highlight : _errorHighlights) {
+                    highlight.setContainer(null);
+                }
+            }
+        };
+
+        // Mark the Error Highlight Clearer request as
+        // non-persistant so that we don't mark the model as being
+        // modified.  ptolemy/actor/lib/jni/test/Scale/Scale.xml
+        // required this change.
+        request.setPersistent(false);
+        return request;
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -542,6 +600,30 @@ public abstract class BasicGraphController extends AbstractGraphController
     protected UnitSolverDialogAction _unitSolverDialogAction = new UnitSolverDialogAction();
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Add an error highlight color to the specified culprit if it is
+     *  not already present.
+     *  @param culprit The culprit to highlight.
+     *  @exception IllegalActionException If the highlight cannot be added.
+     *  @exception NameDuplicationException Should not be thrown.
+     */
+    private void _addErrorHighlightIfNeeded(Nameable culprit)
+            throws IllegalActionException, NameDuplicationException {
+        Attribute highlightColor = ((NamedObj) culprit)
+                .getAttribute("_highlightColor");
+        if (highlightColor == null) {
+            highlightColor = new ColorAttribute((NamedObj) culprit,
+                    "_highlightColor");
+            ((ColorAttribute) highlightColor)
+                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
+            highlightColor.setPersistent(false);
+            ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
+            _errorHighlights.add(highlightColor);
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The time to sleep upon animation. */
@@ -557,6 +639,9 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     private static ContextMenuFactoryCreator _contextMenuFactoryCreator;
 
+    /** List of error highlight attributes we have created. */
+    private List<Attribute> _errorHighlights = new LinkedList<Attribute>();
+    
     // The get documentation action.
     private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
 
