@@ -47,7 +47,7 @@ import java.awt.geom.Rectangle2D;
  * storing doubles.
  *
  * @version        $Id$
- * @author         John Reekie
+ * @author         John Reekie, Contributor: Billy Hinners
  */
 public abstract class Polygon2D implements Shape {
     /** The current number of coordinates
@@ -96,10 +96,46 @@ public abstract class Polygon2D implements Shape {
             double y1 = getY(i - 1);
             double y2 = getY(i);
 
+            // Billy Hinners found the following bugs:
+
+            // "I'll give a brief explanation of the two problems. For a little
+            // background, though, the algorithm works by counting the number of
+            // times a horizontal ray from the specified x, y to infinity in the
+            // positive direction intersects segments of the polygon. If odd, it
+            // returns true, if even, false."
+
+            // "The first problem was that the algorithm didn't
+            // correctly handle the case where the x, y pair shares
+            // the same y value as a horizontal segment of the
+            // polygon. In that case, it counted the segment before
+            // the horizontal segment and the horizontal segment,
+            // thereby counting what should be one intersection as
+            // two. My fix was simply to skip horizontal segments
+            // because either they don't intersect at all, or they get
+            // counted by the preceding segment."
+
+            // "The second problem also occurred when x, y shared the
+            // y value with one of the polygon vertices, but it was
+            // independent of horizontal segments.  If the y value was
+            // shared with the second vertex of the segment and the
+            // specified x value fell to the left of the first vertex
+            // n the segment and to the right of the second vertex,
+            // the algorithm ncorrectly counted an intersection. In
+            // this case, another check was needed to ensure the x
+            // value fell to the left of the second vertex."
+
+            // Skip horizontal segments - either they don't intersect or
+            // they're counted by the previous segment
+            if (y1 == y2) {
+                continue;
+            }
+
             // Crossing if lines intersect
             if ((x < x1) || (x < x2)) {
                 if (y == y2) {
-                    crossings++;
+                    if (x < x2) {
+                        crossings++;
+                    }
                 } else if (y == y1) {
                     // do nothing, so that two adjacent segments
                     // don't both get counted
