@@ -171,7 +171,7 @@ public class ConceptController extends AttributeController {
                             isAcceptableParameter);                    
                     MoMLChangeRequest toggleAcceptabilityRequest =
                         new MoMLChangeRequest(ConceptController.this, target,
-                                moml.toString());                    
+                                moml);                    
                     toggleAcceptabilityRequest.setUndoable(true);
                     target.requestChange(toggleAcceptabilityRequest);
                     
