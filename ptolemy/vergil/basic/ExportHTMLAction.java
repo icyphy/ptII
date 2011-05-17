@@ -194,7 +194,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  The gif image is assumed to have been generated with the
      *  current view using the {@link #writeImage(OutputStream, String)}
      *  method.
-     *  @param destination The destination byte stream to write to.
      *  @param directory The directory in which to put any associated files.
      *  @throws IOException If unable to write associated files.
      *  @throws PrinterException If unable to write associated files.
