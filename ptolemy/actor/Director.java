@@ -977,9 +977,20 @@ public class Director extends Attribute implements Executable {
         _currentTime = getModelStartTime();
         _stopRequested = false;
         _finishRequested = false;
-        // preinitialize all the contained actors.
+
+
         Nameable container = getContainer();
+        // Preinitialize all the contained actors.
         if (container instanceof CompositeActor) {
+            // Populate any LazyTypedComposites.
+            // Needed by $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen4.xml
+            Iterator entities = ((TypedCompositeActor)toplevel()).entityList(LazyTypedCompositeActor.class).iterator();
+            while (entities.hasNext()) {
+                LazyTypedCompositeActor lazyComposite = (LazyTypedCompositeActor)entities.next();
+                lazyComposite.populate();
+            }
+
+            // Preinitialize all the contained actors.
             Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
             while (actors.hasNext()) {
@@ -991,7 +1002,9 @@ public class Director extends Attribute implements Executable {
                 preinitialize(actor);
             }
         }
+
         _createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
+
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
         }

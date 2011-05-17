@@ -84,29 +84,38 @@ A TypedCompositeActor with Lazy evaluation for Modular code generation.
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-
 public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
-    /** Construct a library in the default workspace with no
-     *  container and an empty string as its name. Add the library to the
-     *  workspace directory.
-     *  Increment the version number of the workspace.
+    /** Construct a library in the default workspace with no container
+     *  and an empty string as its name. Add the library to the
+     *  workspace directory.  Increment the version number of the
+     *  workspace.
      */
     public ModularCodeGenTypedCompositeActor() {
         super();
-        _init();
+        try {
+            _init();
+        } catch (KernelException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to initialize Parameters.");
+        }
     }
 
-    /** Construct a library in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
+    /** Construct a library in the specified workspace with no
+     *  container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null,
+     *  then use the default workspace. Add the actor to the workspace
+     *  directory.  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
      */
     public ModularCodeGenTypedCompositeActor(Workspace workspace) {
         super(workspace);
-        _init();
+        try {
+            _init();
+        } catch (KernelException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to initialize Parameters.");
+        }
     }
 
     /** Construct a library with the given container and name.
@@ -267,11 +276,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         if (!_USE_PROFILE || profile == null) {
             populate();
         } else {
-            System.err.println("Error");
+            throw new InternalErrorException(this, null,
+                    "This should not be happening."
+                    + " _USE_PROFILE was " + _USE_PROFILE
+                    + " and profile was " + profile + "?");
         }
-
         return super.portList();
-
     }
 
     /** If this actor is opaque, transfer any data from the input ports
@@ -431,31 +441,24 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling fire method of generated code.");
             }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalActionException(this, e,
-                    "Could no execute the generated code.");
-        } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this, e,
-                    "Could no execute the generated code.");
-        } catch (InvocationTargetException e) {
-            throw new IllegalActionException(this, e,
-                    "Could no execute the generated code.");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Could not execute the generated code.");
         }
     }
 
-    /** Create receivers and invoke the
-     *  preinitialize() method of the local director. If this actor is
-     *  not opaque, throw an exception.  This method also resets
-     *  the protected variable _stopRequested
-     *  to false, so if a derived class overrides this method, then it
-     *  should also do that.  This method is
+    /** Create receivers and invoke the preinitialize() method of the
+     *  local director. If this actor is not opaque, throw an
+     *  exception.  This method also resets the protected variable
+     *  _stopRequested to false, so if a derived class overrides this
+     *  method, then it should also do that.  This method is
      *  read-synchronized on the workspace, so the preinitialize()
      *  method of the director need not be, assuming it is only called
      *  from here.
      *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's preinitialize() method throws it, or if this actor
-     *   is not opaque.
+     *  @exception IllegalActionException If there is no director, or
+     *   if the director's preinitialize() method throws it, or if
+     *   this actor is not opaque.
      */
     public void initialize() throws IllegalActionException {
         super.initialize(); // TODO only do when not generating code
@@ -546,6 +549,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     /** Return true if this actor contains a local director.
      *  Otherwise, return false.  This method is <i>not</i>
      *  synchronized on the workspace, so the caller should be.
+     *  @return true if _USE_PROFILE is true and there is
+     *  a profile class or if the parent method returns true.
      */
     public boolean isOpaque() {
         return (_USE_PROFILE && _getProfile() != null) || super.isOpaque();
@@ -576,12 +581,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return super.newRelation(name);
     }
 
-    /** Create receivers and invoke the
-     *  preinitialize() method of the local director. If this actor is
-     *  not opaque, throw an exception.  This method also resets
-     *  the protected variable _stopRequested
-     *  to false, so if a derived class overrides this method, then it
-     *  should also do that.  This method is
+    /** Create receivers and invoke the preinitialize() method of the
+     *  local director. If this actor is not opaque, throw an
+     *  exception.  This method also resets the protected variable
+     *  _stopRequested to false, so if a derived class overrides this
+     *  method, then it should also do that.  This method is
      *  read-synchronized on the workspace, so the preinitialize()
      *  method of the director need not be, assuming it is only called
      *  from here.
@@ -856,7 +860,13 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
 
-    private void _init() {
+    /** Set up actor parameters.
+     *  @exception IllegalActionException If a parameter cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the actor already has a
+     *   parameter with this name.
+     */  
+    private void _init() throws IllegalActionException, NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
         // However, a parent class, TypedCompositeActor sets the classname
@@ -865,33 +875,39 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         // derived class Java definition. Thus, we force the class name
         // here to be ModularCodeGenTypedCompositeActor.
         setClassName("ptolemy.cg.lib.ModularCodeGenTypedCompositeActor");
-        try {
-            recompileHierarchy = new Parameter(this, "recompileHierarchy");
-            recompileHierarchy.setExpression("true");
-            recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);
 
-            recompileThisLevel = new Parameter(this, "recompileThisLevel");
-            recompileThisLevel.setExpression("true");
-            recompileThisLevel.setTypeEquals(BaseType.BOOLEAN);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex);
-        }
+        recompileHierarchy = new Parameter(this, "recompileHierarchy");
+        recompileHierarchy.setExpression("true");
+        recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);
+
+        recompileThisLevel = new Parameter(this, "recompileThisLevel");
+        recompileThisLevel.setExpression("true");
+        recompileThisLevel.setTypeEquals(BaseType.BOOLEAN);
     }
 
+    /** Return true if the port is a is connected to a subscriber.
+     *  @param port The port to look up.   
+     *  @return Return true if the port is a is connected to a subscriber.
+     */   
     private boolean _isSubscribedPort(IOPort port) {
-        // FIXME: this method might be slow
+        // FIXME: this method might be slow.
         return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
 
+    /** Return true if the port is a is connected to a publisher.
+     *  @param port The port to look up.   
+     *  @return Return true if the port is a is connected to a publisher.
+     */   
     private boolean _isPublishedPort(IOPort port) {
-        // FIXME: this method might be slow
+        // FIXME: this method might be slow.
         boolean isPublishPort = false;
 
-        //published ports are in stored in the immediate opaque parent's composite
+        // Published ports are in stored in the immediate opaque parent's composite.
         NamedObj container = getContainer();
         while ((container instanceof CompositeActor)
-                && !((CompositeActor) container).isOpaque())
+                && !((CompositeActor) container).isOpaque()) {
             container = ((CompositeActor) container).getContainer();
+        }
 
         if ((container instanceof CompositeActor)) {
             isPublishPort = ((CompositeActor) container).isPublishedPort(port);
@@ -900,18 +916,27 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return isPublishPort;
     }
 
+    /** Generate code and create the profile.
+     */
     private void _generateCode() throws KernelException {
         _createCodeGenerator();
         _codeGenerator.createProfile();
         int returnValue = 0;
         if ((returnValue = _codeGenerator.generateCode()) != 0) {
-            new Exception("Failed to generate code").printStackTrace();
             throw new KernelException(this, null, "Failed to generate code, "
                     + "the return value of the last subprocess was "
                     + returnValue);
         }
     }
 
+    /** Return the profile.
+     *  The profile is a Java class that is the sanitized name of
+     *  the name of this actor, followed by "_profile".  The Java
+     *  class is searched for in $HOME/cg.  If the profile class
+     *  is not found, and _USE_PROFILE is true, then recompilation
+     *  will occur.
+     *  @return The profile, if it is found, otherwise, return null.
+     */
     private Profile _getProfile() {
         try {
             if (_profile != null || _modelChanged()) {
@@ -975,6 +1000,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return false;
     }
 
+    /** Return the name of a Publisher or Subscriber channel name.
+     *  @param port The port.
+     *  @param publisher True if the corresponding Publisher should
+     *  be returned.
+     *  @param subscriber True if the corresponding Subscriber should
+     *  be returned.
+     *  @return the name of the channel.
+     */
     private String _pubSubChannelName(IOPort port, boolean publisher,
             boolean subscriber) {
         // FIXME: this method might be slow
@@ -996,6 +1029,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return "";
     }
 
+    /** If configure is done, populating is not occuring,
+     *  code is not being generated and Pub/Subs are not being
+     *  created, then set the <i>recompileThisLevel</i> parameter
+     *  to true.  Otherwise, do nothing.
+     */    
     private void _setRecompileFlag() throws IllegalActionException {
         if (_configureDone && !_populating && !_generatingCode
                 && _creatingPubSub == 0) {
@@ -1004,6 +1042,10 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
 
+    /** Transfer outputs.
+     *  @param port The port to which to transfer tokens.
+     *  @param outputTokens The tokens to be transferred.
+     */  
     private void _transferOutputs(IOPort port, Object outputTokens)
             throws IllegalActionException {
 
@@ -1143,6 +1185,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
     private Map<String, IOPort> _subscriberPorts;
 
-    static private boolean _USE_PROFILE = true;
+    /** If true, then use the 
+     *  {@link ptolemy.cg.lib.Profile}, which contains
+     *  meta information such as information about
+     *  the ports. The default value of this
+     *  variable is true.
+     */
+    static private final boolean _USE_PROFILE = true;
 
 }
