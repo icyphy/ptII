@@ -240,6 +240,12 @@ public class TemplateParser {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
                     .getAdapter(source.port.getContainer()))
                     .getReference(sourcePortChannel, true);
+            if (sourceRef.equals("")) {
+                // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
+                sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                        .getAdapter(source.port.getContainer()))
+                    .getReference(sourcePortChannel, false);
+            }
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -257,6 +263,12 @@ public class TemplateParser {
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
                 .getAdapter(sink.port.getContainer())).getReference(
                 sinkPortChannel, false);
+        if (sinkRef.equals("")) {
+            // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
+            sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                .getAdapter(sink.port.getContainer())).getReference(
+                sinkPortChannel, true);
+        }
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need

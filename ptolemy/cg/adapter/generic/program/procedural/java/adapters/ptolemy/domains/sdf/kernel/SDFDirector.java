@@ -415,21 +415,23 @@ public class SDFDirector
                         name = name + '#' + i;
                     }
 
-                    //System.out.println("SDFDirector: token outside transfer " + name + " " + rate + " " + compositeActorAdapter);
-                    //code.append(CodeStream.indent(getCodeGenerator().comment(
-                    //                        "SDFDirector: token outside transfer " + name + " " + rate + " " + compositeActorAdapter)));
+                    // code.append(CodeStream.indent(getCodeGenerator().comment(
+                    //   "SDFDirector: token outside transfer " + name + " "
+                    //   + rate + " " + compositeActorAdapter + " " + compositeActorAdapter.getClass())));
 
                     for (int k = 0; k < rate; k++) {
                         String result = compositeActorAdapter.getReference(name + "," + k, false)
                             + " = "
                             + CodeStream.indent(compositeActorAdapter.getReference("@" + name + "," + k, false))
                             + ";" + _eol;
-                        // System.out.println("SDFDirector: token outside transfer " + name + " " + rate + " " + result);
                         code.append(result);
                     }
                 }
             }
         }
+        // Generate the type conversion code before fire code.
+        // Needed by adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
+        code.append(compositeActorAdapter.generateTypeConvertFireCode(false));
 
         // The offset of the ports connected to the output port is
         // updated by outside director.
