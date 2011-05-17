@@ -27,7 +27,7 @@
  */
 package ptolemy.vergil.modal;
 
-import ptolemy.kernel.ComponentRelation;
+import ptolemy.vergil.kernel.Link;
 
 //////////////////////////////////////////////////////////////////////////
 //// Arc
@@ -37,6 +37,7 @@ import ptolemy.kernel.ComponentRelation;
  machine visualization.  To see how this class is used and links are made
  using this class, see ArcModel in FSMGraphModel.
 
+ @deprecated Use {@link ptolemy.vergil.kernel.Link}
  @author Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 8.0
@@ -44,66 +45,5 @@ import ptolemy.kernel.ComponentRelation;
  @Pt.AcceptedRating Red (johnr)
  @see FSMGraphModel.ArcModel
  */
-public class Arc {
-    /** Return the head of this link.   This will be the icon of a state.
-     *  @return The head of this link
-     *  @see #setHead(Object)
-     */
-    public Object getHead() {
-        return _head;
-    }
-
-    /** Return the relation that this link represents.  This should always
-     *  be an instance of Transition.
-     *  @return The relation that represents this link
-     *  @see #setRelation(ComponentRelation)
-     */
-    public ComponentRelation getRelation() {
-        return _relation;
-    }
-
-    /** Return the tail of this link.   This will be the icon of a state.
-     *  @return The tail of this link.
-     *  @see #setTail(Object)
-     */
-    public Object getTail() {
-        return _tail;
-    }
-
-    /** Set the head of this link.  This will be the icon of a state.
-     *  @param head The head of this link.
-     *  @see #getHead()
-     */
-    public void setHead(Object head) {
-        _head = head;
-    }
-
-    /** Set the relation that this link represents.  This should always
-     *  be an instance of Transition.
-     *  @param relation The relation of this link.
-     *  @see #getRelation()
-     */
-    public void setRelation(ComponentRelation relation) {
-        _relation = relation;
-    }
-
-    /** Set the tail of this link.  This will be the icon of a state.
-     *  @param tail The Tail of this link.
-     *  @see #getTail()
-     */
-    public void setTail(Object tail) {
-        _tail = tail;
-    }
-
-    /** Return a string representation of this link.
-     */
-    public String toString() {
-        return "Arc(" + _head + ", " + _tail + ", " + _relation + ")";
-    }
-
-    private Object _head;
-
-    private Object _tail;
-
-    private ComponentRelation _relation;
+public class Arc extends Link {
 }

@@ -52,6 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
+import ptolemy.vergil.kernel.Link;
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.modular.EdgeModel;
@@ -151,7 +152,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *   Otherwise return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
-        if (edge instanceof Arc) {
+        if (edge instanceof Link) {
             return _arcModel;
         } else {
             return null;
@@ -188,8 +189,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
-        if (element instanceof Arc) {
-            return ((Arc) element).getRelation();
+        if (element instanceof Link) {
+            return ((Link) element).getRelation();
         }
 
         return super.getSemanticObject(element);
@@ -253,7 +254,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         Iterator links = _linkSet.iterator();
 
         while (links.hasNext()) {
-            Arc link = (Arc) links.next();
+            Link link = (Link) links.next();
             Relation relation = link.getRelation();
 
             if (relation == null) {
@@ -320,14 +321,14 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Check to make sure that there is an Arc object representing
+    // Check to make sure that there is an Link object representing
     // the given relation.
     private void _updateLinks(ComponentRelation relation) {
         Iterator links = _linkSet.iterator();
-        Arc foundLink = null;
+        Link foundLink = null;
 
         while (links.hasNext()) {
-            Arc link = (Arc) links.next();
+            Link link = (Link) links.next();
 
             // only consider links that are associated with this relation.
             if (link.getRelation() == relation) {
@@ -354,10 +355,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         Port port2 = (Port) linkedPortList.get(1);
         Locatable location2 = _getLocation(port2.getContainer());
 
-        Arc link;
+        Link link;
 
         try {
-            link = new Arc();
+            link = new Link();
         } catch (Exception e) {
             throw new InternalErrorException("Failed to create "
                     + "new link, even though one does not " + "already exist:"
@@ -431,7 +432,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @see #setHead(Object, Object)
          */
         public Object getHead(Object edge) {
-            return ((Arc) edge).getHead();
+            return ((Link) edge).getHead();
         }
 
         /** Return a MoML String that will delete the given edge from the
@@ -440,7 +441,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {
-            final Arc link = (Arc) edge;
+            final Link link = (Link) edge;
             //NamedObj linkHead = (NamedObj) link.getHead();
             //NamedObj linkTail = (NamedObj) link.getTail();
             Relation linkRelation = link.getRelation();
@@ -552,13 +553,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
 
         /** Return the tail node of the specified edge.
-         *  @param edge The edge, which is assumed to be an instance of Arc.
+         *  @param edge The edge, which is assumed to be an instance of Link.
          *  @return The node that is the tail of the specified edge.
          *  @see #getHead(Object)
          *  @see #setTail(Object, Object)
          */
         public Object getTail(Object edge) {
-            return ((Arc) edge).getTail();
+            return ((Link) edge).getTail();
         }
 
         /** Return true if this edge is directed.
@@ -576,7 +577,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an arc.
          */
         public void removeEdge(final Object edge) {
-            final Arc link = (Arc) edge;
+            final Link link = (Link) edge;
             Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
@@ -617,13 +618,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
          *  @param edge The edge, which is assumed to be an arc.
-         *  @param newArcHead The new head for the edge, which is assumed to
+         *  @param newLinkHead The new head for the edge, which is assumed to
          *   be an icon.
          *  @see #setTail(Object, Object)
          *  @see #getHead(Object)
          */
-        public void setHead(final Object edge, final Object newArcHead) {
-            final Arc link = (Arc) edge;
+        public void setHead(final Object edge, final Object newLinkHead) {
+            final Link link = (Link) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
             NamedObj linkTail = (NamedObj) link.getTail();
             Relation linkRelation = link.getRelation();
@@ -641,7 +642,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // If there is a previous connection, remove it.
             if (linkRelation != null) {
-                if (newArcHead == null) {
+                if (newLinkHead == null) {
                     // There will be no further connection, so just
                     // delete the relation.
                     moml.append(_deleteRelation(container, linkRelation));
@@ -654,10 +655,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             String relationName = null;
 
-            if (newArcHead != null) {
+            if (newLinkHead != null) {
                 // create moml to make the new link.
                 relationName = _linkHead(container, moml, failmoml,
-                        (NamedObj) newArcHead, linkTail, linkRelation);
+                        (NamedObj) newLinkHead, linkTail, linkRelation);
             }
 
             moml.append("</group>\n");
@@ -668,7 +669,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     FSMGraphModel.this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
-                    link.setHead(newArcHead);
+                    link.setHead(newLinkHead);
 
                     if (relationNameToAdd != null) {
                         ComponentRelation relation = ((CompositeEntity) getPtolemyModel())
@@ -717,13 +718,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
          *  @param edge The edge, which is assumed to be an arc.
-         *  @param newArcTail The new tail for the edge, which is assumed to
+         *  @param newLinkTail The new tail for the edge, which is assumed to
          *  be an icon.
          *  @see #setHead(Object, Object)
          *  @see #getTail(Object)
          */
-        public void setTail(final Object edge, final Object newArcTail) {
-            final Arc link = (Arc) edge;
+        public void setTail(final Object edge, final Object newLinkTail) {
+            final Link link = (Link) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
             NamedObj linkTail = (NamedObj) link.getTail();
             Relation linkRelation = link.getRelation();
@@ -741,7 +742,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // If there is a previous connection, remove it.
             if (linkRelation != null) {
-                if (newArcTail == null) {
+                if (newLinkTail == null) {
                     // There will be no further connection, so just
                     // delete the relation.
                     moml.append(_deleteRelation(container, linkRelation));
@@ -754,10 +755,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             String relationName = null;
 
-            if (newArcTail != null) {
+            if (newLinkTail != null) {
                 // create moml to make the new links.
                 relationName = _linkTail(container, moml, failmoml, linkHead,
-                        (NamedObj) newArcTail, linkRelation);
+                        (NamedObj) newLinkTail, linkRelation);
             }
 
             moml.append("</group>\n");
@@ -769,7 +770,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     FSMGraphModel.this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
-                    link.setTail(newArcTail);
+                    link.setTail(newLinkTail);
 
                     if (relationNameToAdd != null) {
                         link.setRelation(((CompositeEntity) getPtolemyModel())
@@ -1295,7 +1296,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  object for every link. The iterator is constructed by
          *  removing any arcs that do not have the given node as head.
          *  @param node The node, which is assumed to be a location.
-         *  @return An iterator of Arc objects, all of which have
+         *  @return An iterator of link objects, all of which have
          *   the given node as their head.
          */
         public Iterator inEdges(Object node) {
@@ -1307,7 +1308,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             Iterator links = _linkSet.iterator();
 
             while (links.hasNext()) {
-                Arc link = (Arc) links.next();
+                Link link = (Link) links.next();
                 NamedObj head = (NamedObj) link.getHead();
 
                 if ((head != null) && head.equals(icon)) {
@@ -1323,7 +1324,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  object for every link. The iterator is constructed by
          *  removing any arcs that do not have the given node as tail.
          *  @param node The node, which is assumed to be a location.
-         *  @return An iterator of Arc objects, all of which have
+         *  @return An iterator of Link objects, all of which have
          *   the given node as their tail.
          */
         public Iterator outEdges(Object node) {
@@ -1335,7 +1336,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             Iterator links = _linkSet.iterator();
 
             while (links.hasNext()) {
-                Arc link = (Arc) links.next();
+                Link link = (Link) links.next();
                 Object tail = link.getTail();
 
                 if ((tail != null) && tail.equals(icon)) {

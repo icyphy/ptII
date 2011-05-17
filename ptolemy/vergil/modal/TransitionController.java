@@ -53,6 +53,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.PopupMouseFilter;
+import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -179,8 +180,8 @@ public class TransitionController extends BasicEdgeController {
             c.setLineWidth((float) 2.0);
             c.setUserObject(edge);
 
-            Arc arc = (Arc) edge;
-            Transition transition = (Transition) arc.getRelation();
+            Link link = (Link) edge;
+            Transition transition = (Transition) link.getRelation();
 
             // When first dragging out a transition, the relation
             // may still be null.
@@ -244,7 +245,7 @@ public class TransitionController extends BasicEdgeController {
                         exitAngle = -maximum;
                     }
 
-                    // If the angle is zero, then the arc does not get
+                    // If the angle is zero, then the link does not get
                     // drawn.  So we restrict it so that it can't quite
                     // go to zero.
                     double minimum = Math.PI / 999.0;
@@ -401,16 +402,16 @@ public class TransitionController extends BasicEdgeController {
                         "Cannot handle both ends of an edge being dragged.");
             }
 
-            // Make the arc rerender itself so that geometry is preserved
-            Arc arc = (Arc) edge;
-            ComponentRelation transition = arc.getRelation();
+            // Make the link rerender itself so that geometry is preserved
+            Link link = (Link) edge;
+            ComponentRelation transition = link.getRelation();
 
             if ((transition != null) && c instanceof ArcConnector) {
                 double angle = ((ArcConnector) c).getAngle();
                 double gamma = ((ArcConnector) c).getGamma();
 
                 // Set the new exitAngle and gamma parameter values based
-                // on the current arc. These will be created if they
+                // on the current link. These will be created if they
                 // don't already exist.
                 String moml = "<group><property name=\"exitAngle\" value=\""
                         + angle + "\" class=\"ptolemy.data.expr.Parameter\"/>"

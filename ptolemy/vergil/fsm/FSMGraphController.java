@@ -54,6 +54,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.unit.ConfigureUnitsAction;
@@ -80,7 +81,7 @@ import diva.gui.toolbox.FigureIcon;
 
 /**
  A Graph Controller for FSM models.  This controller allows states to be
- dragged and dropped onto its graph. Arcs can be created by
+ dragged and dropped onto its graph. Link can be created by
  control-clicking and dragging from one state to another.
 
  @author Steve Neuendorffer, Contributor: Edward A. Lee
@@ -359,7 +360,7 @@ public class FSMGraphController extends FSMViewerGraphController {
             Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();
 
-            Arc link = new Arc();
+            Link link = new Link();
 
             // Set the tail, going through the model so the link is added
             // to the list of links.

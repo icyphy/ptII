@@ -35,7 +35,7 @@ import ptolemy.domains.ptera.kernel.SchedulingRelation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.modal.Arc;
+import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.modal.TransitionController;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
@@ -94,8 +94,8 @@ public class SchedulingRelationController extends TransitionController {
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector connector = (ArcConnector) super.render(edge,
                     tailSite, headSite);
-            Arc arc = (Arc) edge;
-            SchedulingRelation relation = (SchedulingRelation) arc
+            Link link = (Link) edge;
+            SchedulingRelation relation = (SchedulingRelation) link
                     .getRelation();
             if (relation != null && relation.isCanceling()) {
                 BasicStroke stroke = new BasicStroke(2.0f,
