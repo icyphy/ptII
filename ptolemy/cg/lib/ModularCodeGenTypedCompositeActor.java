@@ -480,11 +480,16 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 url = _codeGenerator.codeDirectory.asFile().getParentFile()
                         .toURI().toURL();
             }
-            Class<?> classInstance = null;
 
+            if (!url.getPath().endsWith("/")) {
+                // URLClassLoader needs to end in a /, otherwise the
+                // URL is assumed to be a jar file.
+                url = new URL(url.toString() + "/");
+            }
             URL[] urls = new URL[] { url };
+            URLClassLoader classLoader = new URLClassLoader(urls);
 
-            ClassLoader classLoader = new URLClassLoader(urls);
+            Class<?> classInstance = null;
             try {
                 classInstance = classLoader.loadClass(className);
             } catch (ClassNotFoundException ex) {
@@ -495,9 +500,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 try {
                     classInstance = classLoader.loadClass(className);
                 } catch (ClassNotFoundException ex2) {
+                    ex2.printStackTrace();
                     throw new ClassNotFoundException("Failed to load "
                             + className + " using URLClassLoader based on "
-                            + url + ".");
+                            + url + ", urls were: "
+                            + java.util.Arrays.deepToString(classLoader.getURLs())
+                            + "\n" + ex2);
                 }
             }
 

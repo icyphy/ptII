@@ -103,13 +103,19 @@ test ModularCodeGenTypedCompositeActor-1.2 {change the value of a parameter in a
             [$toplevel getEntity "A1.A2.Scale"]]
     set factor [getParameter $scale factor]
     $factor setExpression {10}
+
+    # FIXME: If a parameter is changed, then the container should be marked as modified.
+    set scaleContainer [java::cast ptolemy.cg.lib.ModularCodeGenTypedCompositeActor [$scale getContainer]]
+    set recompileThisLevel [getParameter $scaleContainer recompileThisLevel]
+    $recompileThisLevel setExpression {true}
+
     $manager execute
     set recorder [java::cast ptolemy.actor.lib.Recorder \
             [$toplevel getEntity "Recorder"]]
     list [enumToTokenValues [$recorder getRecord 0]]
 } {{20 20}}
 
-test ModularCodeGenTypedCompositeActor-1.2 {reparse the model and rerun} {
+test ModularCodeGenTypedCompositeActor-1.3 {reparse the model and rerun} {
     file delete -force $env(HOME)/cg
     set r1 [list \
 		[file exists $env(HOME)/cg/ModularCodeGenPubSub3_A1.class] \
