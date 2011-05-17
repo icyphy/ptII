@@ -84,7 +84,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
-     *  @thows IllegalActionException Not thrown in this class but may be thrown in derived classes.
+     *  @throws IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
     public IntermediateReceiver getReceiver(Receiver receiver) throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(

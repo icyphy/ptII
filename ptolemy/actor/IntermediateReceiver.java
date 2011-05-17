@@ -58,7 +58,7 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** Construct an intermediate receiver with no container that wraps the
      *  specified receiver using the specified quantity manager.
-     *  @param quantityManager The quantity manager that receives tokens received by this receiver.
+     *  @param qm The quantity manager that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      */
     public IntermediateReceiver(QuantityManager qm,
@@ -148,6 +148,7 @@ public class IntermediateReceiver extends AbstractReceiver {
         _receiver.setContainer(port);
     }
 
+    /** The source actor that sent a token to this receiver. */
     public Actor source;
     
 

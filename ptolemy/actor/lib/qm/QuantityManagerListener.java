@@ -53,7 +53,8 @@ public interface QuantityManagerListener {
      *      the quantity manager.
      *  @param messageCnt The amount of messages currently being processed
      *      by the quantity manager.
-     *  @param eventType The type of the event.  
+     *  @param eventType The type of the event. 
+     *  @param time The timestamp of the event. 
      */
     public void event(QuantityManager quantityManager, Actor source, int messageId, 
             int messageCnt, double time, 

@@ -41,8 +41,9 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.TableauFrame;
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.gui.TableauFrame; 
+import ptolemy.data.BooleanToken; 
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -117,6 +118,9 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         }
         double x = time;
         int actorDataset = _actors.indexOf(actor);
+        if (actorDataset == -1) {
+            return; // actor is not being monitored
+        }
         if (scheduleEvent == null) {
             if (_previousY.get(actor) == null)
                 _previousY.put(actor, (double) actorDataset);
@@ -174,15 +178,15 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
             List<Actor> list = ((CompositeActor) director.getContainer())
                     .entityList();
             for (Actor actor : list) {
-                if (actor instanceof CompositeActor
-                        && actor.getDirector() instanceof PtidesBasicDirector) {
-                    ((PtidesBasicDirector) actor.getDirector())
-                            .registerExecutionTimeListener(this);
+                if (actor instanceof CompositeActor) {
+                    if (actor.getDirector() instanceof PtidesBasicDirector) { 
+                        ((PtidesBasicDirector) actor.getDirector())
+                                .registerExecutionTimeListener(this);
+                    }
                     _addActors((CompositeActor) actor);
-                }
+                } 
             }
-        }
-
+        } 
         if (plot != null) {
             plot.clear(false);
             plot.clearLegends();
@@ -204,10 +208,26 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
     private void _addActors(CompositeActor compositeActor) {
         List<Actor> containedActors = compositeActor.entityList();
         for (Actor containedActor : containedActors) {
-            _actors.add(containedActor);
-            if (containedActor instanceof CompositeActor
-                    && !((CompositeActor) containedActor).isOpaque()) {
+            if (containedActor instanceof CompositeActor) {
+                if (containedActor.getDirector() instanceof PtidesBasicDirector) { 
+                    ((PtidesBasicDirector) containedActor.getDirector())
+                            .registerExecutionTimeListener(this);
+                }
                 _addActors((CompositeActor) containedActor);
+            }
+            boolean monitor = false;
+            try {
+                Parameter parameter = (Parameter) ((NamedObj) containedActor)
+                        .getAttribute("monitor"); 
+                if (parameter != null) {
+                    BooleanToken token = (BooleanToken) parameter.getToken();
+                    monitor = token.booleanValue();
+                }
+            } catch (Exception ex) {
+                // do nothing, assume the actor should not be monitored
+            }
+            if (monitor) {
+                _actors.add(containedActor);
             }
         }
     }

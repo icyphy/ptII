@@ -66,7 +66,8 @@ public interface QuantityManager {
     /** Take the specified token and mediate communication to the specified
      *  receiver. An implementer could, for example, delay the communication
      *  to account for resource contention. Or, it could make a record of the
-     *  energy consumed by the communication. 
+     *  energy consumed by the communication.
+     *  @param source Receiver that sent the token. 
      *  @param receiver The receiver for which this quantity manager is mediating
      *   communication.
      *  @param token The token for the communication to mediate.
