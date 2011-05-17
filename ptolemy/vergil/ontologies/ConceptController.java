@@ -35,6 +35,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -135,17 +136,19 @@ public class ConceptController extends AttributeController {
      *  NOTE: This requires that the configuration be non null, or it will
      *   report an error with a fairly cryptic message.
      */
-    private static class ToggleAcceptabilityAction extends FigureAction {
+    private class ToggleAcceptabilityAction extends FigureAction {
         
         /** Create a new ToggleAcceptabilityAction object.
          */
         public ToggleAcceptabilityAction() {
             super("Toggle Acceptability");
-
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_A, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
         }
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
         /** Execute the Toggle Acceptability action on the ontology concept.
          *  @param e The ActionEvent that is received to execute the
@@ -157,19 +160,46 @@ public class ConceptController extends AttributeController {
 
             // If the target is not an instance of LatticeElement, do nothing.
             if (target instanceof Concept) {
-                Parameter parameter = ((Concept) target).isAcceptable;
+                Parameter isAcceptableParameter = ((Concept) target).isAcceptable;
 
                 try {
-                    BooleanToken value = (BooleanToken) parameter.getToken();
-                    parameter.setToken(value.not());
-                    target.attributeChanged(parameter);
-
-                    // FIXME: how do we force a repaint immediately?
-
+                    // Use a MoML change request here so that if the action
+                    // is executed via hotkey, the model graph is automatically
+                    // repainted to reflect the change in the isAcceptable
+                    // parameter on the Concept's icon.
+                    String moml = _getToggleAcceptabilityMoML(
+                            isAcceptableParameter);                    
+                    MoMLChangeRequest toggleAcceptabilityRequest =
+                        new MoMLChangeRequest(ConceptController.this, target,
+                                moml.toString());                    
+                    toggleAcceptabilityRequest.setUndoable(true);
+                    target.requestChange(toggleAcceptabilityRequest);
+                    
                 } catch (IllegalActionException ex) {
                     MessageHandler.error("Toggle acceptability failed: ", ex);
                 }
             }
+        }
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                         private methods                   ////
+        
+        /** Return the MoML string that will change the boolean value of the
+         *  isAcceptable parameter in a Concept to its opposite value (false
+         *  to true, and true to false).
+         *  @param isAcceptableParameter The isAcceptable parameter.
+         *  @return The MoML string that will execute the change.
+         *  @throws IllegalActionException Thrown if there is a problem getting
+         *   the current value of the isAcceptable parameter.
+         */
+        private String _getToggleAcceptabilityMoML(Parameter
+                isAcceptableParameter) throws IllegalActionException {
+            BooleanToken value = (BooleanToken) isAcceptableParameter.getToken();
+            value = value.not();
+            
+            return new String("<property name=\"" +
+                    isAcceptableParameter.getName() + "\" value = \"" +
+                    value.toString() + "\" />");
         }
     }
 }
