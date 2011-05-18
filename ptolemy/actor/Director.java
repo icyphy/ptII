@@ -984,7 +984,7 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             // Populate any LazyTypedComposites.
             // Needed by $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen4.xml
-            Iterator entities = ((TypedCompositeActor)toplevel()).entityList(LazyTypedCompositeActor.class).iterator();
+            Iterator entities = ((CompositeActor)toplevel()).entityList(LazyTypedCompositeActor.class).iterator();
             while (entities.hasNext()) {
                 LazyTypedCompositeActor lazyComposite = (LazyTypedCompositeActor)entities.next();
                 lazyComposite.populate();
