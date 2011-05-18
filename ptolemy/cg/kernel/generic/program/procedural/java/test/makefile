@@ -49,6 +49,7 @@ JSRCS = \
 	ActorWithPortNameProblem.java \
 	ActorWithPrivateParameter.java \
 	PortParameterActor.java \
+	ReadParametersAcrossLink.java \
 	ExpressionActorToBeAutoCodeGenerated.java
 
 # Non-graphical Java tests written in Tcl
