@@ -182,8 +182,6 @@ public class PtidesBasicReceiver
             offsetSecsString = Integer.toString(intPart);
             offsetNsecsString = Integer.toString(fracPart);
         } else {
-//            offsetSecsString = "deleteMe";
-//            offsetNsecsString = "deleteMe";
             throw new IllegalActionException(sinkPort,
                     "Cannot get the delayOffset Parameter.");
         }
