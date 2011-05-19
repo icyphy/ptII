@@ -3883,10 +3883,10 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         /** The port. */
-        private IOPort port;
+        protected IOPort port;
 
         /** The dependency. */
-        private Dependency dependency;
+        protected Dependency dependency;
 
         /** Compares this PortDependency with another. Compares the
          *  dependencies of these two objects.
