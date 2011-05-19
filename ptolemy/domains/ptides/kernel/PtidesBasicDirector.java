@@ -1838,7 +1838,7 @@ public class PtidesBasicDirector extends DEDirector {
                 additionalExecutionTime = ((DoubleToken) parameter.getToken())
                     .doubleValue();
             }
-            if (_startScheduler(additionalExecutionTime)) {
+            if (_schedulerStarts(additionalExecutionTime)) {
                 _resetExecutionTimeForPreemptedEvent();
                 _physicalTimeExecutionStarted = null;
                 return null;
@@ -1848,7 +1848,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         if (_scheduleNewEvent) {
             _scheduleNewEvent = false;
-            if (_startScheduler(0.0)) {
+            if (_schedulerStarts(0.0)) {
                 _resetExecutionTimeForPreemptedEvent();
                 _physicalTimeExecutionStarted = null;
                 return null;
@@ -2976,9 +2976,11 @@ public class PtidesBasicDirector extends DEDirector {
         return null;
     }
 
-    /** Return the value stored in deviceDelay parameter.
+    /** Return the value stored in the deviceDelay parameter associated with
+     *  the input port.
      *  @param port The port the deviceDelay is associated with.
-     *  @return deviceDelay parameter
+     *  @return the value of the deviceDelay parameter if the parameter is not
+     *  null. Otherwise return null.
      *  @exception IllegalActionException If the token of the deviceDelay
      *  parameter cannot be evaluated.
      */
@@ -3053,8 +3055,8 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the model time of the enclosing director, which is our model
      *  of time in the physical environment. Note this oracle physical time
-     *  is different from the platform physical time, which is offset by
-     *  the platform clock synchronization error.
+     *  is different from the platform physical time, since platform time can
+     *  drift away from the oracle time.
      *  @return the model time of the enclosing director, which is a model of
      *  time in the physical environment.
      */
@@ -3068,12 +3070,13 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** For all deeply contained actors, if annotateModelDelay is true, and if
-     *  the actor has a dependency that is not equal to the OTimesIdentity,
-     *  then this actor is
+     *  the actor has a dependency that is not equal to the OTimesIdentity or
+     *  OPlusIdentity, then this actor is
      *  annotated with a certain color. This process is repeated recursively.
      *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
      *  @param compositeActor actor to highlight model delays.
+     *  @param highlightModelDelay Whether to highlight model delay.
      *  @exception IllegalActionException If causality interface cannot
      *  be evaluated, dependency cannot be evaluated, or finite dependent
      *  ports cannot be evaluated.
@@ -3082,6 +3085,9 @@ public class PtidesBasicDirector extends DEDirector {
             boolean highlightModelDelay) throws IllegalActionException {
 
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
+            if (!highlightModelDelay) {
+                _clearHighlight(actor, true);
+            }
             boolean annotateThisActor = false;
             CausalityInterface causalityInterface = actor
                     .getCausalityInterface();
@@ -3104,12 +3110,8 @@ public class PtidesBasicDirector extends DEDirector {
                     break;
                 }
             }
-            if (annotateThisActor) {
-                if (highlightModelDelay) {
+            if (annotateThisActor && highlightModelDelay) {
                     _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
-                } else {
-                    _clearHighlight(actor, true);
-                }
             }
             if (actor instanceof CompositeActor) {
                 _highlightModelDelays((CompositeActor) actor,
@@ -3121,19 +3123,21 @@ public class PtidesBasicDirector extends DEDirector {
     /** Check if we should output to the enclosing director immediately.
      *  This method returns false by default.
      *  @param port Output port to transmit output event immediately.
-     *  @return true If the token is to be transferred immediately
-     *  from the port.
-     *  @exception IllegalActionException If token of this parameter
-     *  cannot be evaluated.
+     *  @return true If the output evnet should be transferred to the outside
+     *  regardless of the deadline of the event.
+     *  @exception IllegalActionException If token of the ignoreDeadline
+     *  parameter cannot be evaluated.
      */
     private static boolean _ignoreDeadline(IOPort port)
             throws IllegalActionException {
+        // FIXME: if the port is both an input or output port, what should we
+        // do?
         if (port.isInput()) {
             IllegalActionException up = new IllegalActionException(
                     port,
                     "Trying to get the ignore deadline parameter of an " +
-                    "input port. However, this parameter should only be " +
-                    "annotated on an output port.");
+                    "input port. However, this ignoreDeadline parameter " +
+                    "should only be annotated on an output port.");
             throw up;
         }
         Parameter parameter = (Parameter) ((NamedObj) port)
@@ -3144,7 +3148,8 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** If the execution and platform ignore fireAt times contains the current
+    /** Return true if the current firing should be skipped.
+     *  If the execution and platform ignore fireAt times contains the current
      *  oracle time, and if the execution and platform fireAt times does not
      *  contain the current oracle time, return true. Otherwise return false.
      *  Also, from each of the four lists, remove the current oracle time from
@@ -3173,49 +3178,49 @@ public class PtidesBasicDirector extends DEDirector {
         if (!_ignoredPlatformFireAtTimes.isEmpty()) {
             platformIgnoreTime = _ignoredPlatformFireAtTimes.get(0);
         }
-        int compareEF = -1;
+        int compareExecutionFireAtTime = -1;
         if (executionFireAtTime != null) {
-            compareEF = oraclePhysicalTag.timestamp
+            compareExecutionFireAtTime = oraclePhysicalTag.timestamp
                     .compareTo(executionFireAtTime);
-            if (compareEF > 0) {
+            if (compareExecutionFireAtTime > 0) {
                 throw new IllegalActionException(this, "A fireAt time "
                         + "that was to happen at: "
                         + executionFireAtTime.toString() + " is "
                         + "still in the list of fireAt times, while the "
                         + "current oracle time is: "
                         + oraclePhysicalTag.toString() + ".");
-            } else if (compareEF == 0) {
+            } else if (compareExecutionFireAtTime == 0) {
                 _futureExecutionFireAtTimes.remove(0);
             }
         }
-        int comparePF = -1;
+        int comparePlatformFireAtTime = -1;
         if (platformFireAtTime != null) {
-            comparePF = oraclePhysicalTag.timestamp
+            comparePlatformFireAtTime = oraclePhysicalTag.timestamp
                     .compareTo(platformFireAtTime);
-            if (comparePF > 0) {
+            if (comparePlatformFireAtTime > 0) {
                 throw new IllegalActionException(this, "A fireAt time "
                         + "that was to happen at: "
                         + platformFireAtTime.toString() + " is "
                         + "still in the list of fireAt times, while the "
                         + "current oracle time is: "
                         + oraclePhysicalTag.toString() + ".");
-            } else if (comparePF == 0) {
+            } else if (comparePlatformFireAtTime == 0) {
                 _futurePlatformFireAtTimes.remove(0);
             }
         }
-        int compareEI = -1;
+        int compareExecutionIgnoreTime = -1;
         if (executionIgnoreTime != null) {
             oraclePhysicalTag.timestamp.compareTo(executionIgnoreTime);
-            if (compareEI > 0) {
+            if (compareExecutionIgnoreTime > 0) {
                 throw new IllegalActionException(
                         this,
                         "A fireAt time to ignore "
-                                + "happened in the past. The current oracle time is "
-                                + oraclePhysicalTag.toString()
+                                + "happened in the past. The current oracle "
+                                + "time is " + oraclePhysicalTag.toString()
                                 + ", and the fireAt "
                                 + "time to be ignored is due to execution clock"
                                 + executionIgnoreTime.toString() + ".");
-            } else if (compareEI == 0) {
+            } else if (compareExecutionIgnoreTime == 0) {
                 if (_debugging) {
                     _debug("The current oracle time is "
                             + oraclePhysicalTag.timestamp + "."
@@ -3227,10 +3232,10 @@ public class PtidesBasicDirector extends DEDirector {
                 _ignoredExecutionFireAtTimes.remove(0);
             }
         }
-        int comparePI = -1;
+        int comparePlatformIgnoreTime = -1;
         if (platformIgnoreTime != null) {
             oraclePhysicalTag.timestamp.compareTo(platformIgnoreTime);
-            if (comparePI > 0) {
+            if (comparePlatformIgnoreTime > 0) {
                 throw new IllegalActionException(
                         this,
                         "A fireAt time to ignore " +
@@ -3238,7 +3243,7 @@ public class PtidesBasicDirector extends DEDirector {
                         oraclePhysicalTag.toString() + ", and the fireAt " +
                         "time to be ignored is due to platform clock " +
                         platformIgnoreTime.toString() + ".");
-            } else if (comparePI == 0) {
+            } else if (comparePlatformIgnoreTime == 0) {
                 if (_debugging) {
                     _debug("The current oracle time is "
                             + oraclePhysicalTag.timestamp + "."
@@ -3250,8 +3255,9 @@ public class PtidesBasicDirector extends DEDirector {
                 _ignoredPlatformFireAtTimes.remove(0);
             }
         }
-        if ((compareEI == 0 || comparePI == 0) && compareEF != 0
-                && comparePF != 0) {
+        if ((compareExecutionIgnoreTime == 0 || comparePlatformIgnoreTime == 0)
+                && compareExecutionFireAtTime != 0
+                && comparePlatformFireAtTime != 0) {
             return true;
         }
         return false;
@@ -3275,8 +3281,8 @@ public class PtidesBasicDirector extends DEDirector {
         throw up;
     }
 
-    /** The previously execution event has been preempted, either by another
-     *  event or by the scheduler. The remaining execution time of the
+    /** The previously executing event has been preempted by the scheduler. The
+     *  remaining execution time of the
      *  previously executing event is updated.
      *  @exception IllegalActionException If the director failed to get physical
      *  time, or if the remaining execution is less than 0 for the preempted
@@ -3328,6 +3334,38 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    /** If schedulerExecutionTime exists and is non-zero, indicate the
+     *  director is currently running scheduler by updating private
+     *  variable {@link #_schedulerFinishTime}. When this occurs, the
+     *  system cannot be preempted. Then set the enclosing director to fire
+     *  this actor at the time when the scheduler finishes execution and
+     *  return true. If schedulerExecutionTime doesn't exist, or is zero,
+     *  then return false.
+     *  @param additionalExecutionTime The additional execution time that needs
+     *  to be added to the schedulerExecutionTime.
+     *  @return true If simulation of scheduler execution started, else
+     *  return false.
+     *  @exception IllegalActionException If the director fails to get physical
+     *  time or failed to get a token from the schedulerExecutionTime parameter.
+     */
+    private boolean _schedulerStarts(double additionalExecutionTime)
+            throws IllegalActionException {
+        _schedulerFinishTime = getPlatformPhysicalTag(
+                executionTimeClock).timestamp;
+        Parameter parameter = 
+            (Parameter) getAttribute("schedulerExecutionTime");
+        if ((parameter == null
+                || ((DoubleToken) parameter.getToken()).doubleValue() == 0.0) &&
+                additionalExecutionTime == 0.0) {
+            return false;
+        }
+        _schedulerFinishTime = getPlatformPhysicalTag(executionTimeClock)
+            .timestamp.add(((DoubleToken) parameter.getToken()).doubleValue())
+            .add(additionalExecutionTime);
+        _fireAtPlatformTime(_schedulerFinishTime, executionTimeClock);
+        return true;
+    }
+
     /** Set the delayOffset of a port to an array of delayOffset values.
      *  @param inputPort The input port to be annotated.
      *  @param delayOffsets The delayOffset values to annotate.
@@ -3354,10 +3392,10 @@ public class PtidesBasicDirector extends DEDirector {
         parameter.setToken(arrayToken);
     }
 
-    /** Check if timed interrupt has just occurred.
+    /** Check if the safe-to-process timed interrupt has just occurred.
      *  @return true if a timed interrupt has occurred. Return false otherwise.
      *  @exception IllegalActionException If failed to get physical tag or if
-     *  time interrupt occurred in the past.
+     *  timed interrupt occurred in the past.
      */
     private boolean _timedInterruptOccurred() throws IllegalActionException {
         if (_timedInterruptTimes.isEmpty()) {
@@ -3376,46 +3414,17 @@ public class PtidesBasicDirector extends DEDirector {
                     getPlatformPhysicalTag(platformTimeClock).timestamp + ".");
         } else if (result == 0) {
             _timedInterruptTimes.remove(0);
+            // Findbugs doesn't like the fact timedEvent.contents is an object,
+            // but since we want timedEvent to be as general as possible, we
+            // leave contents as an object.
             _eventsWithTimedInterrupt.remove(timedEvent.contents);
             return true;
         }
         return false;
     }
 
-    /** If schedulerExecutionTime exists and is non-zero, indicate the
-     *  director is currently running scheduler by updating private
-     *  variable {@link #_schedulerFinishTime}. When this occurs, the
-     *  system cannot be preempted. Then set the enclosing director to fire
-     *  this actor at the time when the scheduler finishes execution and
-     *  return true. If schedulerExecutionTime doesn't exist, or is zero,
-     *  then return false.
-     *  @param additionalExecutionTime The additional execution time that needs
-     *  to be added to the schedulerExecutionTime.
-     *  @return true If simulation of scheduler execution started, else
-     *  return false.
-     *  @exception IllegalActionException If the director fails to get physical
-     *  time or failed to get a token from the schedulerExecutionTime parameter.
-     */
-    private boolean _startScheduler(double additionalExecutionTime)
-            throws IllegalActionException {
-        _schedulerFinishTime = getPlatformPhysicalTag(
-                executionTimeClock).timestamp;
-        Parameter parameter = 
-            (Parameter) getAttribute("schedulerExecutionTime");
-        if ((parameter == null
-                || ((DoubleToken) parameter.getToken()).doubleValue() == 0.0) &&
-                additionalExecutionTime == 0.0) {
-            return false;
-        }
-        _schedulerFinishTime = getPlatformPhysicalTag(executionTimeClock)
-            .timestamp.add(((DoubleToken) parameter.getToken()).doubleValue())
-            .add(additionalExecutionTime);
-        _fireAtPlatformTime(_schedulerFinishTime, executionTimeClock);
-        return true;
-    }
-
-    /** Check if we should output to the enclosing director immediately.
-     *  This method returns false by default.
+    /** Check if we should produce output events to the enclosing director
+     *  immediately. This method returns false by default.
      *  @param port Output port to transmit output event immediately.
      *  @return true If the token is to be transferred immediately
      *  from the port.
@@ -3489,7 +3498,7 @@ public class PtidesBasicDirector extends DEDirector {
                     // already exists for that pair, that dependency must have a
                     // greater value, meaning it should be replaced. This is
                     // because the output port that led to that pair would not
-                    // be in distQueue if it the dependency was smaller.
+                    // be in distQueue if the dependency was smaller.
                     Receiver[][] remoteReceivers = port.getRemoteReceivers();
                     if (remoteReceivers != null) {
                         for (int i = 0; i < remoteReceivers.length; i++) {
@@ -3595,7 +3604,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  The equation to calculate o2 is:
      *  <code>o2 = o + (p1 - p) / c'</code>
      *  Also add the original future fire times into the list of
-     *  ignored fireAt times.
+     *  ignored fireAt times if the input ignoreFireAtTimes is not null.
      *  Note, even if an oracle time is added to the ignore list,
      *  it does not guarantee that the director will not fire at that time.
      *  @see #_ignoredPlatformFireAtTimes
@@ -3636,10 +3645,10 @@ public class PtidesBasicDirector extends DEDirector {
                 throw new IllegalActionException(
                         this,
                         "The original fireAt time: " + 
-                        originalFireAtTime.toString() +
+                        originalFireAtTime +
                         ", which is supposed to happen in the future, " +
                         "is actually in the past: " +
-                        _getOraclePhysicalTag().timestamp.toString());
+                        _getOraclePhysicalTag().timestamp);
             }
             // o2 = o + (p1 - p) / c'
             Time platformTimeDiff = getPlatformPhysicalTag(realTimeClock)
@@ -3649,10 +3658,10 @@ public class PtidesBasicDirector extends DEDirector {
             Time newFireAtTime = realTimeClock._lastOracleTime.add(diff);
             if (newFireAtTime.compareTo(realTimeClock._lastOracleTime) < 0) {
                 throw new InternalErrorException("The new fireAt time: "
-                        + newFireAtTime.toString()
+                        + newFireAtTime
                         + ", which is supposed to happen in the future, "
                         + "is greater than the last oracle time of the "
-                        + "clock: " + realTimeClock._lastOracleTime.toString());
+                        + "clock: " + realTimeClock._lastOracleTime);
             }
             newFireAtTimes.add(newFireAtTime);
             Time temp = executiveDirector.fireAt((Actor) container,
@@ -3660,17 +3669,17 @@ public class PtidesBasicDirector extends DEDirector {
             if (temp.compareTo(newFireAtTime) != 0) {
                 throw new IllegalActionException(this,
                         "The fireAt wanted to occur " + "at time: "
-                                + newFireAtTime.toString()
+                                + newFireAtTime
                                 + ", however the actual time to fireAt is at: "
-                                + temp.toString());
+                                + temp);
             }
             if (ignoreFireAtTimes != null) {
                 ignoreFireAtTimes.add(originalFireAtTime);
             }
-            // When the oracle time updated, the cached oracle time/platform
+            // When the oracle time is updated, the cached oracle time/platform
             // time pair is no longer valid. A new oracle time now applies for
-            // each cached platform time. This new pair is saved in So we throw
-            // away the old times, but for each new
+            // each cached platform time. This new pair is saved in
+            // timeCachePair, so we throw away the old times, but for each new
             // oracle time, the platform time is saved.
             Time platformTime = oldTimeCachePair.get(originalFireAtTime);
             if (platformTime == null) {
@@ -3720,7 +3729,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  actor should be skipped. When the clock drift changes, all future
      *  fireAt() calls should be updated to fire at a new oracle time, and
      *  the old fireAt times should be written into this list, so these
-     *  fireAt can be ignored.
+     *  fireAt times can be ignored.
      */
     private List<Time> _ignoredExecutionFireAtTimes;
 
@@ -3729,7 +3738,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  analysis and actuator actuation time. When the clock drift changes, all
      *  future fireAt() calls should be updated to fire at a new oracle time,
      *  and the old fireAt times should be written into this list, so these
-     *  fireAt can be ignored.
+     *  fireAt times can be ignored.
      */
     private List<Time> _ignoredPlatformFireAtTimes;
 
@@ -3739,8 +3748,9 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Map _inputModelTimeDelays;
 
-    /** Map actors to tags. Each actor keeps track of the tag of the last event
-     *  that was consumed when this actor fired. This helps to identify cases
+    /** Map actors or ports to tags. Each actor keeps track of the tag of the
+     *  last event that was consumed when this actor (or the actor containing
+     *  the port) fired. This helps to identify cases
      *  where safe-to-process analysis failed unexpectedly.
      */
     private HashMap<NamedObj, Tag> _lastConsumedTag;
@@ -3756,14 +3766,14 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Keep track of a set of input ports to the composite actor governed by
      *  this director. These input ports are network input ports, which are
-     *  input ports that are directly connected to NetworkReceiver's.
+     *  input ports that are directly connected to NetworkReceivers.
      */
     private HashSet<IOPort> _networkInputPorts;
 
     /** Pairs of "simultaneous" future oracle and execution time. This map
      *  serves as a cache to help simplify the conversion from oracle
      *  time to execution time. Also, since the conversions between these
-     *  times are not a bijection (i.e., converting from execution to oracle
+     *  times is not a bijection (i.e., converting from execution to oracle
      *  time and back would not necessarily give you back the original
      *  oracle time, this cache also makes sure this problem does not
      *  surface in the Ptides director.
@@ -3773,7 +3783,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Pairs of "simultaneous" future oracle and platform time. This map
      *  serves as a cache to help simplify the conversion from oracle
      *  time and platform time. Also, since the conversions between these
-     *  times are not a bijection (i.e., converting from platform to oracle
+     *  times is not a bijection (i.e., converting from platform to oracle
      *  time and back would not necessarily give you back the original
      *  oracle time, this cache also makes sure this problem does not
      *  surface in the Ptides director.
@@ -3803,7 +3813,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private PriorityQueue _realTimeInputEventQueue;
 
-    /** A sorted queue of RealTimeEvents that buffer events before they are sent
+    /** A sorted queue of RealTimeEvents that buffers events before they are sent
      *  to the output.
      */
     private PriorityQueue _realTimeOutputEventQueue;
@@ -3937,7 +3947,7 @@ public class PtidesBasicDirector extends DEDirector {
         /** Construct a real time clock, with all the times and clock drifts
          *  set to default values: All clock drifts are initialized to Time 1.0,
          *  and the oracle time is initialized to Time 0.0. However the
-         *  corresponding platform is initialized to the
+         *  corresponding platform time is initialized to the value of the
          *  initialClockSynchronizationError parameter. The <i>clockDrift</i>
          *  parameter specifies how much platform time should be incremented for
          *  each unit increment of oracle time. A clock drift of 1.0 means that
@@ -3974,7 +3984,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  See {@link #_oracleExecutionTimePair},
          *  {@link #_oraclePlatformTimePair}
          *  All parameters of the realTimeClock are also updated in the process.
-         *  @param newClockDrift a Time object that indicates the new drift of
+         *  @param newClockDrift a double that indicates the new drift of
          *  that particular clock.
          *  @exception IllegalActionException If either the original or updated
          *  fireAt time is in the past, or if the new clock drift is less than
@@ -4002,7 +4012,6 @@ public class PtidesBasicDirector extends DEDirector {
                         "Trying to update a clock that is neither " +
                         "platform time clock or execution time clock.");
             }
-            // FIXME: FindBugs: Test for floating point equality.
             double thisTimeResolution = ((DoubleToken) timeResolution.getToken())
                 .doubleValue();
             if (Math.abs(_clockDrift - newClockDrift) > thisTimeResolution) {
