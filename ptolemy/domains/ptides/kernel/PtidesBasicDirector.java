@@ -1035,7 +1035,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // Otherwise the port is a sensor port, and the delay
                 // we start with is the deviceDelay.
                 Double start = null;
-                if (_isNetworkPort(inputPort)) {
+                if (_isNetworkInputPort(inputPort)) {
                     start = _getNetworkTotalDelay(inputPort);
                     if (start != null) {
                         // FIXME: this is wrong, need to get the max between all
@@ -1192,7 +1192,7 @@ public class PtidesBasicDirector extends DEDirector {
 
             for (TypedIOPort sinkPort : (List<TypedIOPort>) port
                     .deepInsidePortList()) {
-                if (!_isNetworkPort(port)) {
+                if (!_isNetworkInputPort(port)) {
                     // The port is a sensor port.
                     // If the schedulerExecutionTime is non-zero, then to
                     // simulate the correct behavior, sensors must be connected
@@ -2550,7 +2550,7 @@ public class PtidesBasicDirector extends DEDirector {
                 Time lastModelTime = _currentTime;
                 int lastMicrostep = _microstep;
                 _realTimeInputEventQueue.poll();
-                if (_isNetworkPort(realTimeEvent.port)) {
+                if (_isNetworkInputPort(realTimeEvent.port)) {
                     // If transferring a network input, make it always safe to
                     // process.
                     setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
@@ -2590,7 +2590,7 @@ public class PtidesBasicDirector extends DEDirector {
             Time lastModelTime = _currentTime;
             int lastMicrostep = _microstep;
             // If transferring a network input, make it always safe to process.
-            if (_isNetworkPort(port)) {
+            if (_isNetworkInputPort(port)) {
                 setTag(new Time(this, Double.NEGATIVE_INFINITY), 0);
             } else {
                 // By default we assume the input is a sensor input, and
@@ -2974,6 +2974,23 @@ public class PtidesBasicDirector extends DEDirector {
         return null;
     }
 
+    /** Return the value stored in deviceDelay parameter.
+     *  @param port The port the deviceDelay is associated with.
+     *  @return deviceDelay parameter
+     *  @exception IllegalActionException If the token of the deviceDelay
+     *  parameter cannot be evaluated.
+     */
+    private static Double _getDeviceDelay(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("deviceDelay");
+        if (parameter != null) {
+            return Double.valueOf(((DoubleToken) parameter.getToken())
+                    .doubleValue());
+        }
+        return null;
+    }
+
     /** Return the network delay of the port, if the parameter exists.
      *  @param port The port with network delay.
      *  @return the network delay associated with this port.
@@ -3038,12 +3055,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  the platform clock synchronization error.
      *  @return the model time of the enclosing director, which is a model of
      *  time in the physical environment.
-     *  @exception IllegalActionException If enclosing director is not
-     *  a DE of PtidesTopLevelDirector, or if the platform
-     *  synchronization error is non-zero and the enclosing director
-     *  is not a PtidesTopLevelDirector.
      */
-    private Tag _getOraclePhysicalTag() throws IllegalActionException {
+    private Tag _getOraclePhysicalTag() {
         Tag tag = new Tag();
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
@@ -3052,25 +3065,9 @@ public class PtidesBasicDirector extends DEDirector {
         return tag;
     }
 
-    /** Return the value stored in deviceDelay parameter.
-     *  @param port The port the deviceDelay is associated with.
-     *  @return deviceDelay parameter
-     *  @exception IllegalActionException If the token of the deviceDelay
-     *  parameter cannot be evaluated.
-     */
-    private static Double _getDeviceDelay(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("deviceDelay");
-        if (parameter != null) {
-            return Double.valueOf(((DoubleToken) parameter.getToken())
-                    .doubleValue());
-        }
-        return null;
-    }
-
-    /** For all deeply contained actors, if annotateModelDelay is true,
-     *  the actor has a dependency that is not equal to the OTimesIdentity is
+    /** For all deeply contained actors, if annotateModelDelay is true, and if
+     *  the actor has a dependency that is not equal to the OTimesIdentity,
+     *  then this actor is
      *  annotated with a certain color. This process is repeated recursively.
      *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
@@ -3263,7 +3260,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  port, then throw an exception.
      *  @exception IllegalActionException If port is an output port.
      */
-    private boolean _isNetworkPort(IOPort port) throws IllegalActionException {
+    private boolean _isNetworkInputPort(IOPort port) throws IllegalActionException {
         if (port.isInput()) {
             return _networkInputPorts.contains(port);
         }
@@ -3474,9 +3471,6 @@ public class PtidesBasicDirector extends DEDirector {
                         SuperdenseDependency minimumDelay = 
                             (SuperdenseDependency) _getDependency(
                                     port, outputPort);
-                        // FIXME: what do we do with the microstep portion of
-                        // the dependency?
-                        // Need to make sure we did not visit this port before.
                         SuperdenseDependency modelTime = (SuperdenseDependency)
                                 prevDependency.oTimes(minimumDelay);
                         if (((SuperdenseDependency) localPortDelays
@@ -3693,14 +3687,19 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
+    /** Keep track of a set of Ptides events that already have its
+     *  timed interrupt set.
+     */
+    private Set<PtidesEvent> _eventsWithTimedInterrupt;
+
     /** List of listeners to be informed whenever an execution time
      *  event occurs.
      */
     private ArrayList<ExecutionTimeListener> _executionTimeListeners;
 
     /** A list that keeps track of future fireAt oracle times for execution time
-     *  simulation. When the cock drift
+     *  simulation. When the clock drift
      *  changes, all times in this list should be updated to fire at a new
      *  oracle time, and this list should be updated.
      */
@@ -3708,7 +3707,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** A list that keeps track of future fireAt oracle times for platform time
      *  simulation, i.e., fireAt times for safe-to-process analysis and
-     *  actuator actuation time. When the cock drift
+     *  actuator actuation time. When the clock drift
      *  changes, all times in this list should be updated to fire at a new
      *  oracle time, and this list should be updated.
      */
@@ -3825,11 +3824,6 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private List<TimedEvent> _timedInterruptTimes;
 
-    /** Keep track of a set of Ptides events that already have its
-     *  timed interrupt set.
-     */
-    private Set<PtidesEvent> _eventsWithTimedInterrupt;
-
     /** Keep track of visited actors during delayOffset calculation.
      */
     private Set _visitedActors;
@@ -3850,7 +3844,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param executingEvents The events to execute.
          *  @param executionTime The execution time of the actor.
          */
-        public ExecutionTimedEvent(Time timeStamp, int microstep,
+        protected ExecutionTimedEvent(Time timeStamp, int microstep,
                 Object executingEvents, Time executionTime) {
             super(timeStamp, executingEvents);
             this.microstep = microstep;
@@ -3858,10 +3852,10 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         /** Remaining execution time of the currently executing event. */
-        public Time remainingExecutionTime;
+        private Time remainingExecutionTime;
 
         /** Microstep of the executing event. */
-        public int microstep;
+        private int microstep;
 
         /** Converts the executing event to a string. */
         public String toString() {
@@ -3870,27 +3864,27 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Store a PortChannel and a dependency
+    /** Store a port and a dependency
      *  associated with that port. This structure is comparable, and
      *  it compares using the dependency information.
      */
-    public static class PortDependency implements Comparable {
+    protected static class PortDependency implements Comparable {
 
         /** Construct a structure that holds a port and the associated
          *  dependency.
          *  @param port The port.
          *  @param dependency The Dependency.
          */
-        public PortDependency(IOPort port, Dependency dependency) {
+        protected PortDependency(IOPort port, Dependency dependency) {
             this.port = port;
             this.dependency = dependency;
         }
 
         /** The port. */
-        public IOPort port;
+        private IOPort port;
 
         /** The dependency. */
-        public Dependency dependency;
+        private Dependency dependency;
 
         /** Compares this PortDependency with another. Compares the
          *  dependencies of these two objects.
@@ -3961,7 +3955,6 @@ public class PtidesBasicDirector extends DEDirector {
                     platformTimeAtOracleTimeZero);
             _clockDrift = clockDrift;
             _lastOracleTime = new Time(PtidesBasicDirector.this);
-            _PtidesDirector = ptidesDirector;
         }
 
         /** Update the clock drift of the realTimeClock, specified by the
@@ -4003,12 +3996,14 @@ public class PtidesBasicDirector extends DEDirector {
                 timeCachePair = _oracleExecutionTimePair;
             } else {
                 throw new IllegalActionException(
-                        this._PtidesDirector,
-                        "Trying to update a clock with an ID that is neither " +
+                        PtidesBasicDirector.this,
+                        "Trying to update a clock that is neither " +
                         "platform time clock or execution time clock.");
             }
             // FIXME: FindBugs: Test for floating point equality.
-            if (_clockDrift != newClockDrift) {
+            double thisTimeResolution = ((DoubleToken) timeResolution.getToken())
+                .doubleValue();
+            if (Math.abs(_clockDrift - newClockDrift) > thisTimeResolution) {
                 // First update all the parameters in realTimeClock.
                 Time newOracleTime = _getOraclePhysicalTag().timestamp;
                 _lastPlatformTime = 
@@ -4033,10 +4028,8 @@ public class PtidesBasicDirector extends DEDirector {
                     _timedInterruptTimes = (List<TimedEvent>) _updateFireAtTimes(
                             _timedInterruptTimes, null, this, timeCachePair);
                 } else {
-                    // FIXME: should we ignore this case, or should we throw
-                    // an exception?
                     throw new InternalErrorException(
-                            this._PtidesDirector, null, "The real time " +
+                            PtidesBasicDirector.this, null, "The real time " +
                             "clock that's trying to update fireAtTimes " +
                             "is neither a execution time clock nor a " +
                             "platform time clock. The Ptides director " +
@@ -4059,10 +4052,6 @@ public class PtidesBasicDirector extends DEDirector {
          *  simultaneous with the value of _lastPlatformTime.
          */
         private Time _lastOracleTime;
-
-        /** The enclosing Ptides director.
-         */
-        private Director _PtidesDirector;
     }
 
     /** A structure that holds a token with the port and channel it's
@@ -4070,7 +4059,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  token.  This object is used to hold sensor and actuation
      *  events.
      */
-    public static class RealTimeEvent implements Comparable {
+    protected static class RealTimeEvent implements Comparable {
 
         /** Construct a structure that holds a real-time event. This
          *  event saves the token to be transmitted, the port and
@@ -4082,7 +4071,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param deliveryTag The platform time of delivery of this token.
          *  @param timestampTag The timestamp tag of this token.
          */
-        public RealTimeEvent(IOPort port, int channel, Token token,
+        protected RealTimeEvent(IOPort port, int channel, Token token,
                 Tag deliveryTag, Tag timestampTag) {
             this.port = port;
             this.channel = channel;
@@ -4092,19 +4081,19 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         /** The channel. */
-        public int channel;
+        private int channel;
 
         /** The time of delivery. */
-        public Tag deliveryTag;
+        private Tag deliveryTag;
 
         /** The port. */
-        public IOPort port;
+        private IOPort port;
 
         /** The tag of the input event. */
-        public Tag timestampTag;
+        private Tag timestampTag;
 
         /** The token. */
-        public Token token;
+        private Token token;
 
         /** Compares this RealTimeEvent with another. Compares the delivery
          *  times of these two events.
