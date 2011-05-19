@@ -291,7 +291,7 @@ COMPLEXCLASSFILES = \
 # Class files used in applications
 APPLICATIONCLASSFILES = \
 		'$(ME)/PlotApplication$$1.class' \
-		'PlotApplication$$WindowClosingAdapter.class' \
+		'$(ME)/PlotApplication$$WindowClosingAdapter.class' \
 		$(ME)/PlotApplication.class
 
 # Jar file for simple applets
