@@ -39,6 +39,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -406,12 +407,13 @@ public class StringUtilities {
                 // Return the previously calculated value
                 return _ptolemyPtIIDir;
             } else {
+
                 String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
 
                 // PTII variable was not set
                 URL namedObjURL = Thread.currentThread()
-                        .getContextClassLoader().getResource(
-                                stringUtilitiesPath);
+                        .getContextClassLoader()
+                        .getResource(stringUtilitiesPath);
 
                 if (namedObjURL != null) {
                     // Get the file portion of URL
@@ -429,7 +431,8 @@ public class StringUtilities {
                         }
                     }
 
-                    String abnormalHome = namedObjFileName.substring(0,
+                    String abnormalHome = namedObjFileName.substring(
+                            0,
                             namedObjFileName.length()
                                     - stringUtilitiesPath.length());
 
@@ -453,7 +456,8 @@ public class StringUtilities {
                             + File.separator + "RMptsupport.jar";
 
                     if (_ptolemyPtIIDir.endsWith(ptsupportJarName)) {
-                        _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
+                        _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
+                                0,
                                 _ptolemyPtIIDir.length()
                                         - ptsupportJarName.length());
                     } else {
@@ -492,7 +496,10 @@ public class StringUtilities {
                             _ptolemyPtIIDir, "%20", " ");
                 }
 
-                if (_ptolemyPtIIDir == null) {
+                //FIXME: Figure out more elegant way of checking if the system is running on Android. ahuseyno
+                // Workaround to make Ptolemy work on Android. It seems that _ptolemyPtIIDir is not necessary to get Ptolemy run on Android so there is no need to throw an exception
+                if (_ptolemyPtIIDir == null
+                        && !"Dalvik".equals(System.getProperty("java.vm.name"))) {
                     throw new RuntimeException("Could not find "
                             + "'ptolemy.ptII.dir'" + " property.  "
                             + "Also tried loading '" + stringUtilitiesPath
@@ -573,8 +580,8 @@ public class StringUtilities {
      *  @return The expected source file name.
      */
     public static String objectToSourceFileName(Object object) {
-        String sourceFileNameBase = object.getClass().getName().replace('.',
-                '/');
+        String sourceFileNameBase = object.getClass().getName()
+                .replace('.', '/');
 
         // Inner classes: Get rid of everything past the first $
         if (sourceFileNameBase.indexOf("$") != -1) {
@@ -596,8 +603,7 @@ public class StringUtilities {
         String preferencesDirectoryName = StringUtilities
                 .getProperty("user.home")
                 + File.separator
-                + StringUtilities.PREFERENCES_DIRECTORY
-                + File.separator;
+                + StringUtilities.PREFERENCES_DIRECTORY + File.separator;
         File preferencesDirectory = new File(preferencesDirectoryName);
 
         if (!preferencesDirectory.isDirectory()) {
