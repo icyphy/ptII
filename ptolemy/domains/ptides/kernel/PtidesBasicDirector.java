@@ -2597,6 +2597,15 @@ public class PtidesBasicDirector extends DEDirector {
                 // a sensor event would have timestamp equal to the platform's
                 // physical time.
                 setTag(platformPhysicalTag.timestamp,
+                        // Even though it may seem like the sensor should
+                        // always produce an output event with microstep 0,
+                        // If two events are received at the same timestamp
+                        // but different microsteps, we would get an
+                        // exception because the downstream actor would have
+                        // received two events with the same timestamp and
+                        // microstep consecutively. This is not allowed by
+                        // DE semantics.
+                        //0);
                         platformPhysicalTag.microstep);
             }
             result |= super._transferInputs(port);
@@ -2622,6 +2631,15 @@ public class PtidesBasicDirector extends DEDirector {
                                 port, i, t, new Tag(waitUntilTime, 0),
                                 //executionPhysicalTag.microstep),
                                 new Tag(platformPhysicalTag.timestamp,
+                                        // Even though it may seem like the sensor should
+                                        // always produce an output event with microstep 0,
+                                        // If two events are received at the same timestamp
+                                        // but different microsteps, we would get an
+                                        // exception because the downstream actor would have
+                                        // received two events with the same timestamp and
+                                        // microstep consecutively. This is not allowed by
+                                        // DE semantics.
+                                        //0));
                                         platformPhysicalTag.microstep));
                         _realTimeInputEventQueue.add(realTimeEvent);
                         result = true;
