@@ -348,6 +348,8 @@ import ptolemy.moml.MoMLChangeRequest;
  *  transmitted to the destination receiver when the Ptides director
  *  is ready to process the corresponding event.
  *  @see PtidesEvent
+ *  FIXME: This class is too big, to refactor it, all the methods that deal
+ *  with calculation of delayOffsets should be put in another class.
  *
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
